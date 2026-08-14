@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription Publicateur - CAMUS SERVICES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="top-bar">
+    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
+    </div>
+    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+  </header>
+
+  <!-- Overlay & Menu latéral -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="inscription.html" class="login-link"><i class="fa-solid fa-user-plus"></i> S'inscrire</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
+
+  <!-- Formulaire d'inscription -->
+  <main class="annonces-container" style="padding-top: 30px;">
+    <div class="card" style="max-width: 500px; margin: 0 auto; padding: 25px;">
+      <h2 style="text-align: center; margin-bottom: 10px;">Devenir Publicateur</h2>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Créez votre compte pour publier vos services et gérer vos annonces.</p>
+      
+      <form id="registerForm">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-user" style="color: #e53935;"></i> Nom complet / Nom de l'entreprise</label>
+          <input type="text" id="regName" placeholder="Ex: Jean Dupont ou Auto Service RDC" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-phone" style="color: #e53935;"></i> Numéro WhatsApp / Téléphone</label>
+          <input type="tel" id="regPhone" placeholder="Ex: +243 000 000 000" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-briefcase" style="color: #e53935;"></i> Secteur d'activité principal</label>
+          <select id="regCategory" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff;">
+            <option value="Prestataire de Services">Prestataire de Services</option>
+            <option value="Vendeur / Commerce">Vendeur / Commerce</option>
+            <option value="Immobilier">Immobilier & Véhicules</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-lock" style="color: #e53935;"></i> Mot de passe</label>
+          <input type="password" id="regPassword" placeholder="Créez un mot de passe" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">Créer mon compte publicateur</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Navigation fixe du bas -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    // Gestion ouverture/fermeture du menu
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+
+    // Script d'enregistrement local rapide
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = {
+        name: document.getElementById('regName').value,
+        phone: document.getElementById('regPhone').value,
+        category: document.getElementById('regCategory').value
+      };
+      localStorage.setItem('camus_user', JSON.stringify(user));
+      alert('Inscription réussie ! Vous pouvez maintenant publier vos annonces.');
+      window.location.href = 'publier.html';
+    });
+  </script>
+</body>
+</html>
