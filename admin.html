@@ -2,126 +2,446 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - CAMU SERVICES</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAMU SERVICES — Administration</title>
+  
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Design global */
-    body { background: #f4f4f9; font-family: sans-serif; margin: 0; }
-    .hidden { display: none; }
-    
-    /* Navigation des onglets */
-    .nav-tabs { display: flex; overflow-x: auto; background: #111; padding: 10px; color: white; }
-    .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: none; color: #ccc; font-size: 14px; }
-    .tab-btn.active { color: #d32f2f; border-bottom: 2px solid #d32f2f; }
 
-    /* Contenu des pages */
-    .content-area { padding: 20px; }
-    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    
-    /* Formulaire de publication */
-    textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    button.primary { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    
-    /* Styles pour listes */
-    .item-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0; }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #111111;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Page de Connexion */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .icon-shield {
+      font-size: 42px;
+      color: #d32f2f;
+      margin-bottom: 12px;
+    }
+
+    .auth-card h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .auth-card p {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      text-align: center;
+    }
+
+    .input-group input:focus {
+      border-color: #d32f2f;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #d32f2f;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-login:active {
+      background: #b71c1c;
+    }
+
+    .error-msg {
+      color: #d32f2f;
+      font-size: 12px;
+      margin-top: 12px;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* Dashboard Admin */
+    .admin-dashboard {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f4f4f9;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    .top-bar {
+      background: #111;
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-bar h3 { font-size: 16px; font-weight: 800; }
+    .top-bar h3 span { color: #d32f2f; }
+
+    .btn-logout {
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Tabs Bar */
+    .nav-tabs {
+      display: flex;
+      background: #222;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 10px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: #d32f2f;
+      background: #1a1a1a;
+    }
+
+    .content-area {
+      padding: 15px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+    }
+
+    .card h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #111;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Formulaires */
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      height: 80px;
+    }
+
+    .btn-primary {
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #e0e0e0;
+    }
+
+    .stat-box .num {
+      font-size: 22px;
+      font-weight: 800;
+      color: #d32f2f;
+    }
+
+    .stat-box .label {
+      font-size: 11px;
+      color: #666;
+    }
+
+    /* Lists */
+    .item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .item-row:last-child { border-bottom: none; }
+
+    .item-info h5 { font-size: 12px; font-weight: 700; color: #111; }
+    .item-info p { font-size: 10px; color: #777; }
+
+    .actions { display: flex; gap: 5px; }
+
+    .btn-sm {
+      padding: 5px 8px;
+      border-radius: 4px;
+      border: none;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .btn-green { background: #25D366; }
+    .btn-red { background: #d32f2f; }
+    .btn-orange { background: #ff9800; }
+
+    .btn-back-site {
+      display: block;
+      text-align: center;
+      background: #111;
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Connexion (toujours sécurisée) -->
-  <div id="login-box" style="display:flex; justify-content:center; align-items:center; height:100vh;">
-    <div class="card" style="width:300px; text-align:center;">
-      <h2>Accès Admin</h2>
-      <input type="password" id="pass" placeholder="Mot de passe" style="width:100%; padding:10px; margin:10px 0;">
-      <button class="primary" onclick="check()">Connexion</button>
-      <p id="err" style="color:red; font-size:12px;"></p>
+  <!-- Écran de connexion -->
+  <div id="login-box" class="login-container">
+    <div class="auth-card">
+      <i class="fa-solid fa-user-shield icon-shield"></i>
+      <h2>Accès Sécurisé</h2>
+      <p>Entrez le mot de passe administrateur</p>
+
+      <form onsubmit="verifyAdminPassword(event)">
+        <div class="input-group">
+          <input type="password" id="admin-pass-input" placeholder="Mot de passe" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-login">Se connecter</button>
+        <div id="error-msg" class="error-msg">Mot de passe incorrect !</div>
+      </form>
     </div>
   </div>
 
   <!-- Dashboard Admin -->
-  <div id="admin-panel" class="hidden">
+  <div id="admin-panel" class="admin-dashboard hidden">
+    
+    <div class="top-bar">
+      <h3>CAMU <span>ADMIN</span></h3>
+      <button class="btn-logout" onclick="logoutAdmin()">Déconnexion</button>
+    </div>
+
+    <!-- Menu des Onglets -->
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="showTab('tab1')">Stats</button>
-      <button class="tab-btn" onclick="showTab('tab2')">Publier</button>
-      <button class="tab-btn" onclick="showTab('tab3')">Modération</button>
-      <button class="tab-btn" onclick="showTab('tab4')">Comptes</button>
+      <button class="tab-btn active" onclick="switchAdminTab('tab-stats', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
+      <button class="tab-btn" onclick="switchAdminTab('tab-publish', this)"><i class="fa-solid fa-bullhorn"></i> Publier</button>
+      <button class="tab-btn" onclick="switchAdminTab('tab-moderation', this)"><i class="fa-solid fa-shield-halved"></i> Modération</button>
+      <button class="tab-btn" onclick="switchAdminTab('tab-users', this)"><i class="fa-solid fa-users-gear"></i> Comptes</button>
     </div>
 
     <div class="content-area">
-      <!-- Tab 1: Statistiques -->
-      <div id="tab1" class="tab-content">
-        <h3>Statistiques globales</h3>
-        <div class="stats">
-          <div class="card"><strong>150</strong><br>Annonces</div>
-          <div class="card"><strong>45</strong><br>Entrepreneurs</div>
-          <div class="card"><strong>12</strong><br>Signalements</div>
-          <div class="card"><strong>2.4k</strong><br>Vues</div>
-        </div>
-      </div>
 
-      <!-- Tab 2: Publication officielle -->
-      <div id="tab2" class="tab-content hidden">
-        <h3>Publier une info officielle</h3>
-        <div class="card">
-          <input type="text" placeholder="Titre..." style="width:100%; padding:10px;">
-          <textarea placeholder="Contenu de l'annonce..."></textarea>
-          <input type="file" accept="image/*,video/*">
-          <button class="primary" style="margin-top:10px;" onclick="alert('Fonctionnalité prête pour connexion API')">Publier</button>
-        </div>
-      </div>
-
-      <!-- Tab 3: Modération (Annonces et Signalements) -->
-      <div id="tab3" class="tab-content hidden">
-        <h3>Modération & Signalements</h3>
-        <div class="card">
-          <div class="item-row">
-            <span>Annonce #402 (Signalée)</span>
-            <button onclick="alert('Annonce supprimée')">Supprimer</button>
+      <!-- TAB 1: STATISTIQUES -->
+      <div id="tab-stats" class="tab-content">
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="num">18</div>
+            <div class="label">Annonces Actives</div>
           </div>
-          <div class="item-row">
-            <span>Annonce #405 (En attente)</span>
-            <button>Valider</button>
+          <div class="stat-box">
+            <div class="num">7</div>
+            <div class="label">Entrepreneurs</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">2</div>
+            <div class="label">Signalements</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">1.2k</div>
+            <div class="label">Visites totales</div>
           </div>
         </div>
       </div>
 
-      <!-- Tab 4: Gestion des comptes -->
-      <div id="tab4" class="tab-content hidden">
-        <h3>Contrôle des comptes</h3>
+      <!-- TAB 2: PUBLICATION OFFICIELLE -->
+      <div id="tab-publish" class="tab-content hidden">
         <div class="card">
-          <div class="item-row">
-            <span>User: Jean_Entrepreneur</span>
-            <button style="background:orange;">Bannir</button>
+          <h4><i class="fa-solid fa-upload" style="color:#d32f2f;"></i> Diffuser une annonce / vidéo / photo</h4>
+          <input type="text" class="form-control" placeholder="Titre de la publication officielle...">
+          <textarea class="form-control" placeholder="Message ou détails de l'annonce officielle..."></textarea>
+          <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">Ajouter Photo ou Vidéo</label>
+          <input type="file" class="form-control" accept="image/*,video/*">
+          <button class="btn-primary" onclick="alert('Publication officielle diffusée sur le site !')">Publier officiellement</button>
+        </div>
+      </div>
+
+      <!-- TAB 3: MODÉRATION & SIGNALEMENTS -->
+      <div id="tab-moderation" class="tab-content hidden">
+        <div class="card">
+          <h4><i class="fa-solid fa-triangle-exclamation" style="color:#ff9800;"></i> Gestion des Signalements</h4>
+          <div class="item-row" id="rep-1">
+            <div class="item-info">
+              <h5>Service Maintenance Groupe</h5>
+              <p>Signalé pour : Numéro erroné</p>
+            </div>
+            <div class="actions">
+              <button class="btn-sm btn-red" onclick="removeItem('rep-1')">Supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4><i class="fa-solid fa-clock" style="color:#d32f2f;"></i> Annonces en attente</h4>
+          <div class="item-row" id="pending-1">
+            <div class="item-info">
+              <h5>Installation Solaire 5KW</h5>
+              <p>Par: Carl Muteb • Sur Devis</p>
+            </div>
+            <div class="actions">
+              <button class="btn-sm btn-green" onclick="removeItem('pending-1')">Valider</button>
+              <button class="btn-sm btn-red" onclick="removeItem('pending-1')">Refuser</button>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- TAB 4: GESTION DES COMPTES -->
+      <div id="tab-users" class="tab-content hidden">
+        <div class="card">
+          <h4><i class="fa-solid fa-user-check" style="color:#d32f2f;"></i> Liste des Entrepreneurs</h4>
+          
+          <div class="item-row" id="usr-1">
+            <div class="item-info">
+              <h5>Carl Muteb</h5>
+              <p>Électricité Industrial • +243...</p>
+            </div>
+            <div class="actions">
+              <button class="btn-sm btn-orange" onclick="alert('Compte suspendu.')">Suspendre</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-back-site"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
+
     </div>
+
   </div>
 
   <script>
-    // Mot de passe hashé
-    const SECRET_HASH = "ca291ee5bf0d22f982937748dc74828588506e12739504be042c13dce84249bf";
+    function verifyAdminPassword(event) {
+      event.preventDefault();
+      const pwd = document.getElementById('admin-pass-input').value.trim();
+      const errorMsg = document.getElementById('error-msg');
 
-    async function check() {
-      const p = document.getElementById('pass').value;
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
-      const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-      if (hash === SECRET_HASH) {
-        document.getElementById('login-box').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
+      // Vérification directe (Sensible à la casse)
+      if (pwd === "Carl1800") {
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        errorMsg.style.display = 'none';
       } else {
-        document.getElementById('err').innerText = "Mot de passe incorrect";
+        errorMsg.style.display = 'block';
       }
     }
 
-    function showTab(id) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.remove('hidden');
-      event.currentTarget.classList.add('active');
+    function logoutAdmin() {
+      document.getElementById('admin-pass-input').value = '';
+      document.getElementById('login-box').classList.remove('hidden');
+      document.getElementById('admin-panel').classList.add('hidden');
+    }
+
+    function switchAdminTab(tabId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabId).classList.remove('hidden');
+      btnElement.classList.add('active');
+    }
+
+    function removeItem(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) el.remove();
     }
   </script>
+
 </body>
 </html>
