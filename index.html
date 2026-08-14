@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAMUS SERVICES</title>
 
-  <!-- Liens vers les fichiers CSS -->
+  <!-- Fichier CSS local -->
   <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <!-- Lien Manifest PWA -->
@@ -14,38 +16,132 @@
 </head>
 <body>
 
-  <!-- Navigation / Header -->
-  <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="Logo CAMUS SERVICES" width="40">
-      <span>CAMUS SERVICES</span>
+  <!-- 1. En-tête haut avec logo centré -->
+  <header class="top-bar">
+    <div class="menu-icon" id="openMenu">
+      <i class="fa-solid fa-bars"></i>
     </div>
-    <nav>
-      <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Accueil</a>
-      <a href="publier.html"><i class="fa-solid fa-plus-circle"></i> Publier</a>
-      <a href="chat.html"><i class="fa-solid fa-comments"></i> Discussion</a>
-      <a href="favoris.html"><i class="fa-solid fa-heart"></i> Favoris</a>
-    </nav>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
+    </div>
+    <div class="user-icon">
+      <i class="fa-solid fa-circle-user"></i>
+    </div>
   </header>
 
-  <!-- Section principale -->
-  <main class="container">
-    <section class="hero">
-      <h1>Bienvenue sur CAMUS SERVICES</h1>
-      <p>Trouvez et publiez vos annonces en toute simplicité.</p>
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Que recherchez-vous ?">
-        <button onclick="searchAds()"><i class="fa-solid fa-magnifying-glass"></i> Rechercher</button>
-      </div>
-    </section>
+  <!-- 2. Overlay et Menu latéral (Sidebar) -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
 
-    <!-- Affichage des annonces -->
-    <section class="ads-grid" id="adsContainer">
-      <!-- Les annonces générées dynamiquement apparaîtront ici -->
-    </section>
+  <!-- 3. Section Hero principale -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Bienvenue sur CAMUS SERVICES</h1>
+      <p class="hero-subtitle">Trouvez et publiez vos annonces en toute simplicité.</p>
+      
+      <!-- Barre de recherche -->
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Que recherchez-vous ?">
+        <button class="btn-search" onclick="searchAds()"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <ul class="hero-bullets">
+        <li><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Services vérifiés et de qualité</li>
+        <li><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Publication rapide et gratuite</li>
+      </ul>
+      <a href="publier.html" class="btn-hero-action">Publier maintenant</a>
+    </div>
+  </section>
+
+  <!-- 4. Conteneur des annonces -->
+  <main class="annonces-container">
+    <h3 class="section-title">Annonces récentes</h3>
+    
+    <!-- Filtres par catégorie défilants -->
+    <div class="category-bar">
+      <button class="cat-btn active">Toutes</button>
+      <button class="cat-btn">Services</button>
+      <button class="cat-btn">Ventes</button>
+      <button class="cat-btn">Emplois</button>
+    </div>
+
+    <!-- Grille dynamique des annonces -->
+    <div class="annonces-grid" id="adsContainer">
+      <!-- Les annonces s'afficheront ici via app.js -->
+    </div>
   </main>
+
+  <!-- 5. Pied de page -->
+  <footer class="footer-mic">
+    <div class="mic-menu-group">
+      <a href="contact.html" class="mic-menu-item"><span>Contactez-nous</span> <i class="fa-solid fa-chevron-right"></i></a>
+      <a href="confidentialite.html" class="mic-menu-item"><span>Politique de confidentialité</span> <i class="fa-solid fa-chevron-right"></i></a>
+    </div>
+    <p class="mic-copyright">&copy; 2026 CAMUS SERVICES. Tous droits réservés.</p>
+  </footer>
+
+  <!-- 6. Navigation fixe du bas (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html" class="nav-item">
+      <i class="fa-solid fa-plus-circle"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html" class="nav-item">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="favoris.html" class="nav-item">
+      <i class="fa-solid fa-heart"></i>
+      <span>Favoris</span>
+    </a>
+  </nav>
 
   <!-- Script JS principal -->
   <script src="app.js"></script>
+
+  <!-- Script pour l'ouverture du menu latéral -->
+  <script>
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    if(openBtn) {
+      openBtn.addEventListener('click', () => {
+        sidebar.classList.add('active');
+        overlay.classList.add('active');
+      });
+    }
+
+    if(closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    }
+
+    if(overlay) {
+      overlay.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    }
+  </script>
 </body>
 </html>
