@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Entrepreneur - Inscription - CAMU SERVICES</title>
+  <title>Inscription / Connexion - CAMU SERVICES</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -16,14 +16,14 @@
       <h2>CAMU <span>SERVICES</span></h2>
     </div>
     <div class="user-icon">
-      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
+      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user"></i></a>
     </div>
   </header>
 
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="inscription.html" class="login-link"><i class="fa-solid fa-user-tie"></i> Compte Entrepreneur</a>
+      <a href="inscription.html" class="login-link"><i class="fa-solid fa-user"></i> Compte Utilisateur</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
@@ -34,40 +34,67 @@
     </ul>
   </aside>
 
-  <main class="annonces-container" style="padding-top: 30px;">
-    <div class="card" style="max-width: 500px; margin: 0 auto; padding: 25px;">
+  <main class="annonces-container" style="padding-top: 30px; max-width: 500px; margin: 0 auto;">
+    
+    <!-- Choix entre Entrepreneur et Client -->
+    <div style="display: flex; background: #eee; border-radius: 8px; padding: 4px; margin-bottom: 20px;">
+      <button id="tabEntrepreneur" onclick="switchAccountType('entrepreneur')" style="flex: 1; padding: 10px; border: none; border-radius: 6px; background: #e53935; color: white; font-weight: bold; cursor: pointer;">
+        <i class="fa-solid fa-briefcase"></i> Entrepreneur
+      </button>
+      <button id="tabClient" onclick="switchAccountType('client')" style="flex: 1; padding: 10px; border: none; border-radius: 6px; background: transparent; color: #555; font-weight: bold; cursor: pointer;">
+        <i class="fa-solid fa-user"></i> Client
+      </button>
+    </div>
+
+    <!-- Formulaire Entrepreneur -->
+    <div id="formEntrepreneur" class="card" style="padding: 25px;">
       <h2 style="text-align: center; margin-bottom: 10px;">Compte Entrepreneur</h2>
-      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Inscrivez-vous pour proposer vos services, gérer vos annonces et développer votre clientèle.</p>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 20px;">Inscrivez-vous pour publier vos offres et gérer votre profil.</p>
       
-      <form id="registerForm">
+      <form id="registerFormEntrepreneur">
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-user-tie" style="color: #e53935;"></i> Nom de l'Entrepreneur ou Entreprise</label>
-          <input type="text" id="regName" placeholder="Ex: Jean Dupont ou Auto Express" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nom de l'Entrepreneur / Entreprise</label>
+          <input type="text" id="regName" placeholder="Ex: Jean Dupont ou Auto Express" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
         </div>
-
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Numéro WhatsApp / Téléphone</label>
-          <input type="tel" id="regPhone" placeholder="Ex: +243 000 000 000" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Numéro WhatsApp / Tél</label>
+          <input type="tel" id="regPhone" placeholder="Ex: +243 ..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
         </div>
-
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-briefcase" style="color: #e53935;"></i> Domaine d'activité</label>
-          <select id="regCategory" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff;">
-            <option value="Prestation de Services">Prestation de Services</option>
-            <option value="Commerce & Vente">Commerce & Vente</option>
-            <option value="Immobilier & Transport">Immobilier & Transport</option>
-            <option value="Autre">Autre</option>
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Domaine principal</label>
+          <select id="regCategory" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+            <option value="Vente">Vente</option>
+            <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
+            <option value="Établissement">Établissement</option>
+            <option value="Agence Immobilière">Agence Immobilière</option>
+            <option value="Mobilier">Mobilier</option>
+            <option value="Terrasses">Terrasses</option>
+            <option value="Services">Services</option>
+            <option value="Autres">Autres</option>
           </select>
         </div>
-
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-lock" style="color: #e53935;"></i> Mot de passe</label>
-          <input type="password" id="regPassword" placeholder="Choisissez un mot de passe" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
-        </div>
-
-        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">Créer mon compte Entrepreneur</button>
+        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px;">Créer mon compte Entrepreneur</button>
       </form>
     </div>
+
+    <!-- Formulaire Client -->
+    <div id="formClient" class="card" style="padding: 25px; display: none;">
+      <h2 style="text-align: center; margin-bottom: 10px;">Compte Client</h2>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 20px;">Créez votre profil pour laisser des avis et enregistrer vos favoris.</p>
+      
+      <form id="registerFormClient">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Votre Nom complet</label>
+          <input type="text" id="clientName" placeholder="Ex: Paul Mukendi" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Numéro de téléphone</label>
+          <input type="tel" id="clientPhone" placeholder="Ex: +243 ..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px; background: #222;">Créer mon compte Client</button>
+      </form>
+    </div>
+
   </main>
 
   <nav class="bottom-nav">
@@ -87,16 +114,37 @@
     if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
     if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
 
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
+    function switchAccountType(type) {
+      const btnEnt = document.getElementById('tabEntrepreneur');
+      const btnCli = document.getElementById('tabClient');
+      const formEnt = document.getElementById('formEntrepreneur');
+      const formCli = document.getElementById('formClient');
+
+      if (type === 'entrepreneur') {
+        btnEnt.style.background = '#e53935'; btnEnt.style.color = '#fff';
+        btnCli.style.background = 'transparent'; btnCli.style.color = '#555';
+        formEnt.style.display = 'block'; formCli.style.display = 'none';
+      } else {
+        btnCli.style.background = '#222'; btnCli.style.color = '#fff';
+        btnEnt.style.background = 'transparent'; btnEnt.style.color = '#555';
+        formCli.style.display = 'block'; formEnt.style.display = 'none';
+      }
+    }
+
+    document.getElementById('registerFormEntrepreneur').addEventListener('submit', function(e) {
       e.preventDefault();
-      const user = {
-        name: document.getElementById('regName').value,
-        phone: document.getElementById('regPhone').value,
-        category: document.getElementById('regCategory').value
-      };
+      const user = { name: document.getElementById('regName').value, phone: document.getElementById('regPhone').value, role: 'entrepreneur' };
       localStorage.setItem('camus_user', JSON.stringify(user));
-      alert('Bienvenue ! Votre compte Entrepreneur est prêt.');
+      alert('Bienvenue ! Votre compte Entrepreneur est créé.');
       window.location.href = 'compte-entrepreneur.html';
+    });
+
+    document.getElementById('registerFormClient').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = { name: document.getElementById('clientName').value, phone: document.getElementById('clientPhone').value, role: 'client' };
+      localStorage.setItem('camus_user', JSON.stringify(user));
+      alert('Bienvenue sur CAMU SERVICES !');
+      window.location.href = 'index.html';
     });
   </script>
 </body>
