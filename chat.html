@@ -3,52 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Messagerie - Camu Services</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Messagerie - CAMUS SERVICES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- En-tête -->
-  <header class="header">
-    <div class="logo">
-      <h1>CAMU <span>SERVICES</span></h1>
-      <p>Messagerie & Discussions</p>
+  <header class="top-bar">
+    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
     </div>
+    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
   </header>
 
-  <!-- Liste des conversations -->
-  <main class="annonces-section" style="margin-top: 15px;">
-    <h2>Vos messages récents</h2>
-    <div class="annonces-grid">
-      
-      <div class="card" style="padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <div style="font-size: 24px;">👤</div>
-        <div style="flex-1;">
-          <h3 style="font-size: 15px;">Vendeur RAV4</h3>
-          <p style="font-size: 12px; color: #6c757d;">Bonjour, le véhicule est-il toujours disponible ?</p>
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
+
+  <main class="annonces-container" style="padding-top: 20px;">
+    <h3 class="section-title"><i class="fa-solid fa-comments" style="color: #e53935;"></i> Vos messages récents</h3>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div class="card" style="flex-direction: row; align-items: center; gap: 15px; cursor: pointer;">
+        <i class="fa-solid fa-user-circle" style="font-size: 35px; color: #888;"></i>
+        <div>
+          <h4 style="font-size: 15px; margin-bottom: 3px;">Vendeur RAV4</h4>
+          <p style="font-size: 13px; color: #666;">Bonjour, le véhicule est-il toujours disponible ?</p>
         </div>
       </div>
 
-      <div class="card" style="padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <div style="font-size: 24px;">🏠</div>
-        <div style="flex-1;">
-          <h3 style="font-size: 15px;">Agence Immo Golf</h3>
-          <p style="font-size: 12px; color: #6c757d;">Visite programmée pour demain à 10h.</p>
+      <div class="card" style="flex-direction: row; align-items: center; gap: 15px; cursor: pointer;">
+        <i class="fa-solid fa-building" style="font-size: 30px; color: #888;"></i>
+        <div>
+          <h4 style="font-size: 15px; margin-bottom: 3px;">Agence Immo Golf</h4>
+          <p style="font-size: 13px; color: #666;">Visite programmée pour demain à 10h.</p>
         </div>
       </div>
-
     </div>
   </main>
 
-  <!-- Navigation fixe du bas -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item">🏠 Accueil</a>
-    <a href="favoris.html" class="nav-item">⭐ Favoris</a>
-    <a href="publier.html" class="nav-item btn-add">+ Publier</a>
-    <a href="chat.html" class="nav-item active">💬 Chat</a>
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
   </nav>
 
-  <script src="js/app.js"></script>
-
+  <script src="app.js"></script>
+  <script>
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+  </script>
 </body>
 </html>
