@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMUS SERVICES</title>
-
+  <title>CAMUS SERVICES - Accueil</title>
+  
   <!-- Fichier CSS local -->
   <link rel="stylesheet" href="style.css">
   
@@ -26,7 +26,7 @@
       <h2>CAMUS <span>SERVICES</span></h2>
     </div>
     <div class="user-icon">
-      <i class="fa-solid fa-circle-user"></i>
+      <a href="inscription.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-circle-user"></i></a>
     </div>
   </header>
 
@@ -34,7 +34,7 @@
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <a href="inscription.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-plus"></i> S'inscrire / Connexion</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
@@ -61,25 +61,25 @@
         <li><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Services vérifiés et de qualité</li>
         <li><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Publication rapide et gratuite</li>
       </ul>
-      <a href="publier.html" class="btn-hero-action">Publier maintenant</a>
+      <a href="publier.html" class="btn-hero-action"><i class="fa-solid fa-plus"></i> Publier une annonce</a>
     </div>
   </section>
 
-  <!-- 4. Conteneur des annonces -->
+  <!-- 4. Conteneur principal des annonces -->
   <main class="annonces-container">
     <h3 class="section-title">Annonces récentes</h3>
     
-    <!-- Filtres par catégorie défilants -->
+    <!-- Filtres par catégorie -->
     <div class="category-bar">
-      <button class="cat-btn active">Toutes</button>
-      <button class="cat-btn">Services</button>
-      <button class="cat-btn">Ventes</button>
-      <button class="cat-btn">Emplois</button>
+      <button class="cat-btn active" onclick="filterCategory('Toutes')">Toutes</button>
+      <button class="cat-btn" onclick="filterCategory('Services')">Services</button>
+      <button class="cat-btn" onclick="filterCategory('Ventes')">Ventes</button>
+      <button class="cat-btn" onclick="filterCategory('Emplois')">Emplois</button>
     </div>
 
     <!-- Grille dynamique des annonces -->
     <div class="annonces-grid" id="adsContainer">
-      <!-- Les annonces s'afficheront ici via app.js -->
+      <!-- Les annonces générées dynamiquement apparaîtront ici -->
     </div>
   </main>
 
@@ -92,7 +92,7 @@
     <p class="mic-copyright">&copy; 2026 CAMUS SERVICES. Tous droits réservés.</p>
   </footer>
 
-  <!-- 6. Navigation fixe du bas (Mobile) -->
+  <!-- 6. Navigation fixe du bas -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">
       <i class="fa-solid fa-house"></i>
@@ -112,36 +112,64 @@
     </a>
   </nav>
 
-  <!-- Script JS principal -->
+  <!-- Scripts JS -->
   <script src="app.js"></script>
 
-  <!-- Script pour l'ouverture du menu latéral -->
   <script>
+    // 1. Menu latéral
     const openBtn = document.getElementById('openMenu');
     const closeBtn = document.getElementById('closeMenu');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
 
-    if(openBtn) {
-      openBtn.addEventListener('click', () => {
-        sidebar.classList.add('active');
-        overlay.classList.add('active');
-      });
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+
+    // 2. Affichage statut utilisateur connecté
+    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    if (currentUser && currentUser.name && userMenuBtn) {
+      userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> ${currentUser.name}`;
+      userMenuBtn.href = "publier.html";
     }
 
-    if(closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-      });
+    // 3. Charger et afficher les annonces publiées
+    function loadAnnonces() {
+      const container = document.getElementById('adsContainer');
+      const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+
+      if (ads.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
+            <p style="color: #666;">Aucune annonce publiée pour le moment.</p>
+            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Soyez le premier à publier !</a>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = ads.map(ad => `
+        <div class="card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
+              <small style="color: #888; font-size: 11px;">${ad.date || ''}</small>
+            </div>
+            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #222;">${ad.title}</h4>
+            <p style="font-size: 13px; color: #555; margin-bottom: 12px; line-height: 1.4;">${ad.description}</p>
+            <div style="font-weight: bold; color: #2e7d32; font-size: 14px; margin-bottom: 10px;">${ad.price}</div>
+          </div>
+          
+          <div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 5px; display: flex; justify-content: space-between; align-items: center;">
+            <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user" style="color: #888;"></i> ${ad.publisher || 'Anonyme'}</small>
+            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contact</a>` : ''}
+          </div>
+        </div>
+      `).join('');
     }
 
-    if(overlay) {
-      overlay.addEventListener('click', () => {
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-      });
-    }
+    // Charger les annonces au démarrage
+    document.addEventListener('DOMContentLoaded', loadAnnonces);
   </script>
 </body>
 </html>
