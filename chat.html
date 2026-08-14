@@ -4,184 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Discussions — CAMU SERVICES</title>
-  
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body { background-color: #f8f9fa; color: #222; line-height: 1.5; padding-bottom: 80px; }
-
-    /* En-tête compact */
-    .top-header {
-      background: #111;
-      color: #fff;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: sticky;
-      top: 0; z-index: 1000;
-      height: 60px;
-    }
-
-    .top-header h1 { font-size: 16px; font-weight: 700; }
-    .top-header a { color: #fff; font-size: 18px; }
-
-    .container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
-
-    /* Carte explicative WhatsApp (Design conforme) */
-    .info-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .info-card i.main-icon {
-      font-size: 40px;
-      color: #25D366; /* Couleur WhatsApp */
-      margin-bottom: 12px;
-    }
-
-    .info-card h2 { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 8px; }
-    .info-card p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 15px; }
-
-    /* Étapes de contact */
-    .steps-list {
-      text-align: left;
-      background: #f9f9f9;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .steps-list div {
-      font-size: 12px;
-      color: #444;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .steps-list div:last-child { margin-bottom: 0; }
-    .steps-list i { color: #d32f2f; }
-
-    .btn-explore {
-      display: inline-block;
-      background: #d32f2f;
-      color: #ffffff;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    /* Carte Support Administration */
-    .support-card {
-      background: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .support-card h3 { font-size: 14px; color: #1b5e20; margin-bottom: 4px; }
-    .support-card p { font-size: 12px; color: #388e3c; margin-bottom: 12px; }
-
-    .btn-whatsapp-admin {
-      display: inline-block;
-      background: #25D366;
-      color: #fff;
-      padding: 9px 18px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    /* Barre de Navigation du bas */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; width: 100%;
-      background: #ffffff;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      z-index: 1000;
-      height: 65px;
-    }
-
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
+    .header { background: #111; color: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .header h1 { font-size: 16px; font-weight: 800; }
+    .container { padding: 20px 15px; max-width: 600px; margin: 0 auto; text-align: center; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
-
-  <!-- En-tête avec retour Accueil -->
-  <header class="top-header">
-    <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <h1>Discussions via WhatsApp</h1>
+  <header class="header">
+    <a href="index.html" style="color:#fff;"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Discussions</h1>
+    <div style="width:18px;"></div>
   </header>
-
   <main class="container">
-
-    <!-- Section Prise de contact WhatsApp -->
-    <div class="info-card">
-      <i class="fa-brands fa-whatsapp main-icon"></i>
-      <h2>Messagerie Directe WhatsApp</h2>
-      <p>
-        Sur <strong>CAMU SERVICES</strong>, toutes les discussions entre <strong>Entrepreneurs</strong> et <strong>Clients</strong> se font directement sur WhatsApp pour un échange instantané et sécurisé.
-      </p>
-
-      <div class="steps-list">
-        <div><i class="fa-solid fa-circle-check"></i> Parcourez les annonces sur l'Accueil.</div>
-        <div><i class="fa-solid fa-circle-check"></i> Cliquez sur <strong>« Contacter l'Entrepreneur »</strong>.</div>
-        <div><i class="fa-solid fa-circle-check"></i> Votre WhatsApp s'ouvre directement avec le prestataire.</div>
-      </div>
-
-      <a href="index.html" class="btn-explore">Voir les annonces récentes</a>
-    </div>
-
-    <!-- Support Administration (Correct Numéro) -->
-    <div class="support-card">
-      <h3><i class="fa-solid fa-headset"></i> Assistance Administration</h3>
-      <p>Besoin d'aide administrative, d'informations ou d'un signalement ?</p>
-      <a href="https://wa.me/243976993469?text=Bonjour%20Administration%20CAMU%20SERVICES," target="_blank" class="btn-whatsapp-admin">
-        <i class="fa-brands fa-whatsapp"></i> Écrire à l'Admin (+243 976 993 469)
-      </a>
-    </div>
-
+    <p style="font-size: 13px; color: #666; margin-top: 20px;">Aucune discussion en cours.</p>
   </main>
-
-  <!-- Navigation du bas (Fix Favoris) -->
   <nav class="bottom-nav">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html" class="active">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="favoris.html">
-      <i class="fa-solid fa-heart"></i>
-      <span>Favoris</span>
-    </a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html" class="active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
 </body>
 </html>
