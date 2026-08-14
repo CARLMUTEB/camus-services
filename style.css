@@ -1,250 +1,103 @@
-/* ==========================================
-   1. REINITIALISATION ET STYLES DE BASE
-   ========================================== */
+/* =======================================================
+   CAMU SERVICES - STYLES GLOBAUX & FINITIONS
+   ======================================================= */
+
+:root {
+  --primary-red: #d32f2f;
+  --primary-red-hover: #b71c1c;
+  --text-dark: #222222;
+  --text-gray: #666666;
+  --border-light: #e0e0e0;
+  --bg-hover: #f5f5f5;
+  --bg-light: #f8f9fa;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #f5f5f7;
-  padding-bottom: 70px; /* Espace pour la barre de navigation fixe */
-  color: #333333;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  padding-bottom: 70px; /* Espace pour la barre de navigation du bas */
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ==========================================
-   2. EN-TÊTE ET CENTRAGE DU LOGO
-   ========================================== */
+/* En-tête / Header */
 .top-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 18px;
-  background: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 900;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.top-bar .menu-icon, 
-.top-bar .user-icon {
-  width: 40px;
-  font-size: 22px;
-  cursor: pointer;
-  color: #222222;
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.top-bar .user-icon {
-  text-align: right;
+.brand-logo img {
+  height: 28px;
+  width: auto;
 }
 
-/* Centrage parfait du logo et du titre */
-.brand-logo, 
-.header, 
-div.logo {
-  flex: 1;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  width: 100%;
-}
-
-.brand-logo img, 
-.header img, 
-div.logo img {
-  display: block !important;
-  margin: 0 auto 6px auto !important;
-  max-height: 55px !important;
-  width: auto !important;
-  object-fit: contain;
-}
-
-.brand-logo h2, 
-.header h2, 
-div.logo h2 {
-  font-size: 18px;
+.brand-logo h2 {
+  font-size: 1.1rem;
   font-weight: 800;
-  color: #111111;
+  color: #111;
   margin: 0;
 }
 
 .brand-logo h2 span {
-  color: #d93025;
+  color: var(--primary-red);
 }
 
-.brand-logo p, 
-.header p, 
-div.logo p {
-  font-size: 12px;
-  color: #666666;
-  margin-top: 2px;
-}
-
-/* ==========================================
-   3. SECTION HERO (ACCEUIL)
-   ========================================== */
-.hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
-              url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-  padding: 35px 20px 40px 20px;
-  color: #ffffff;
-}
-
-.hero-content h1 {
-  font-size: 22px;
-  font-weight: 900;
-  line-height: 1.25;
-  margin-bottom: 8px;
-}
-
-.hero-subtitle {
-  font-size: 13px;
-  color: #dddddd;
-  margin-bottom: 20px;
-}
-
-/* Barre de recherche Hero */
-.search-box {
-  display: flex;
-  background: #ffffff;
-  border-radius: 25px;
-  overflow: hidden;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.search-box input {
-  flex: 1;
-  border: none;
-  padding: 12px 16px;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-box .btn-search {
-  background-color: #e53935;
-  color: #ffffff;
-  border: none;
-  padding: 12px 20px;
-  font-weight: bold;
-  font-size: 14px;
+.menu-icon, .user-icon {
+  font-size: 1.2rem;
   cursor: pointer;
+  color: #333;
 }
 
-.hero-bullets {
-  list-style: none;
-  margin-bottom: 25px;
+/* Menu latéral (Sidebar Drawer) */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.hero-bullets li {
-  font-size: 13px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
 }
 
-.btn-hero-action {
-  display: inline-block;
-  border: 1px solid #ffffff;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 10px 22px;
-  border-radius: 25px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* ==========================================
-   4. BLOCS SERVICES ET ANNONCES
-   ========================================== */
-.features-section {
-  padding: 15px;
-}
-
-.feature-item {
-  background: #3c3836;
-  color: #ffffff;
-  padding: 16px 20px;
-  border-bottom: 1px solid #4e4a47;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-}
-
-.feature-item:first-child {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.feature-item:last-child {
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  border-bottom: none;
-}
-
-.feature-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Conteneur des cartes d'annonces centrales */
-.annonces-container {
-  padding: 20px 15px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #222222;
-  margin-bottom: 15px;
-}
-
-.annonces-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 15px;
-}
-
-.card-annonce, .card {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eeeeee;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* ==========================================
-   5. MENU LATÉRAL (SIDEBAR & OVERLAY)
-   ========================================== */
 .sidebar {
   position: fixed;
   top: 0;
-  left: -280px;
-  width: 280px;
+  left: -300px;
+  width: 300px;
   height: 100%;
-  background: #ffffff;
-  z-index: 1000;
-  transition: 0.3s ease;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  z-index: 999;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.active {
@@ -252,97 +105,146 @@ div.logo p {
 }
 
 .sidebar-header {
-  padding: 20px;
-  border-bottom: 1px solid #eeeeee;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.sidebar-header .close-btn {
-  font-size: 28px;
+.user-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-title h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-red);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #666;
   cursor: pointer;
-  color: #888888;
+  line-height: 1;
 }
 
-.sidebar-header .login-link {
-  color: #e53935;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .sidebar-menu {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.sidebar-menu li a {
+.sidebar-menu li {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-menu a {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  color: #333333;
   text-decoration: none;
-  font-size: 14px;
-  border-bottom: 1px solid #f0f0f0;
+  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
-.overlay {
+.sidebar-menu a:hover {
+  background-color: var(--bg-hover);
+}
+
+.sidebar-menu i {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.text-red {
+  color: var(--primary-red) !important;
+  font-weight: 700 !important;
+}
+
+.admin-item a:hover {
+  background-color: #fde8e8;
+}
+
+/* Finitions - Effets Cartes & Badges */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Bouton Flottant (FAB) */
+.fab-btn {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  z-index: 999;
-}
-
-.overlay.active {
-  display: block;
-}
-
-/* ==========================================
-   6. PIED DE PAGE (STYLE MADE-IN-CHINA)
-   ========================================== */
-.footer-mic {
-  background-color: #f4f4f4;
-  padding: 20px 0 80px 0;
-}
-
-.mic-menu-group {
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 15px;
-}
-
-.mic-menu-item {
-  padding: 14px 20px;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
-  color: #444444;
+  bottom: 75px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border-radius: 50%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
   text-decoration: none;
+  z-index: 99;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.mic-menu-item:last-child {
-  border-bottom: none;
+.fab-btn:active {
+  transform: scale(0.92);
 }
 
-.mic-copyright {
-  padding: 15px 20px;
-  font-size: 12px;
-  color: #888888;
-  line-height: 1.5;
-  text-align: center;
+/* Notification Toast */
+#toast-container {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
 }
 
-/* ==========================================
-   7. BARRE DE NAVIGATION FIXE DU BAS
-   ========================================== */
+.toast {
+  background-color: #222222;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Navigation Basse / Bottom Nav */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -350,58 +252,28 @@ div.logo p {
   width: 100%;
   height: 60px;
   background: #ffffff;
+  border-top: 1px solid var(--border-light);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid #e0e0e0;
   z-index: 900;
 }
 
-.bottom-nav .nav-item {
+.nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #666666;
   text-decoration: none;
+  color: #777;
   font-size: 11px;
+  gap: 3px;
 }
 
-.bottom-nav .nav-item i {
+.nav-item i {
   font-size: 18px;
-  margin-bottom: 2px;
 }
 
-.bottom-nav .nav-item.active {
-  color: #e53935;
-}
-/* Barre de filtres défilante */
-.category-bar {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  white-space: nowrap;
-}
-
-.category-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.cat-btn {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #444;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.cat-btn.active {
-  background-color: #e53935;
-  color: #ffffff;
-  border-color: #e53935;
+.nav-item.active {
+  color: var(--primary-red);
+  font-weight: bold;
 }
