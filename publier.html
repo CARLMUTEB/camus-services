@@ -32,6 +32,7 @@
       <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="conditions.html"><span>Conditionnalités</span> <i class="fa-solid fa-angle-right"></i></a></li>
     </ul>
   </aside>
 
@@ -40,7 +41,7 @@
     <div id="authRequiredBox" class="card" style="max-width: 500px; margin: 0 auto; padding: 30px; text-align: center;">
       <i class="fa-solid fa-user-tie" style="font-size: 50px; color: #e53935; margin-bottom: 15px;"></i>
       <h2 style="margin-bottom: 10px;">Espace Entrepreneur</h2>
-      <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Créez ou connectez votre compte Entrepreneur pour publier vos prestations de services sur CAMU SERVICES.</p>
+      <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Créez ou connectez votre compte Entrepreneur pour publier vos prestations. Profitez de 2 mois d'essai gratuit !</p>
       
       <a href="inscription.html" class="btn-search" style="display: block; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 15px; margin-bottom: 10px;">
         <i class="fa-solid fa-user-plus"></i> Créer mon compte Entrepreneur
@@ -63,7 +64,7 @@
       <form id="publishForm">
         <div style="margin-bottom: 15px;">
           <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-heading" style="color: #e53935;"></i> Intitulé de l'offre</label>
-          <input type="text" id="title" placeholder="Ex: Vente d'ordinateurs, Location chambre..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <input type="text" id="title" placeholder="Ex: Vente d'ordinateurs, Location terrasse..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
         </div>
 
         <div style="margin-bottom: 15px;">
@@ -81,13 +82,21 @@
         </div>
 
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-tag" style="color: #e53935;"></i> Tarif / Prix (Optionnel)</label>
-          <input type="text" id="price" placeholder="Ex: 50$, Sur devis, 20$/nuit..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-tag" style="color: #e53935;"></i> Tarif / Prix</label>
+          <input type="text" id="price" placeholder="Ex: 50$, Sur devis, 20$/jour..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
         </div>
 
-        <div style="margin-bottom: 20px;">
+        <div style="margin-bottom: 15px;">
           <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description complète</label>
-          <textarea id="description" rows="4" placeholder="Détaillez votre offre de service ou produit..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
+          <textarea id="description" rows="4" placeholder="Détaillez votre offre..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
+        </div>
+
+        <!-- Case à cocher d'acceptation -->
+        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-size: 13px;">
+          <input type="checkbox" id="acceptConditions" required style="width: 16px; height: 16px; cursor: pointer;">
+          <label for="acceptConditions" style="cursor: pointer; color: #444;">
+            J'accepte les <a href="conditions.html" target="_blank" style="color: #e53935; text-decoration: underline; font-weight: bold;">conditionnalités d'utilisation</a>.
+          </label>
         </div>
 
         <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">
@@ -123,7 +132,7 @@
     if (currentUser && currentUser.name) {
       authBox.style.display = 'none';
       formBox.style.display = 'block';
-      publisherDisplay.textContent = `${currentUser.name} (${currentUser.phone})`;
+      publisherDisplay.textContent = `${currentUser.name} (${currentUser.phone || ''})`;
     } else {
       authBox.style.display = 'block';
       formBox.style.display = 'none';
