@@ -46,11 +46,6 @@
         <li><a href="chat.html"><span class="menu-label">Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
         <li><a href="favoris.html"><span class="menu-label">Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
         
-        <!-- Liens d'information -->
-        <li><a href="aide.html"><span class="menu-label">Aide & FAQ</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="a-propos.html"><span class="menu-label">À propos de nous</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="confidentialite.html"><span class="menu-label">Confidentialité</span> <i class="fa-solid fa-angle-right"></i></a></li>
-
         <li class="admin-item">
           <a href="admin.html">
             <span class="menu-label text-red">Administration</span>
@@ -63,16 +58,18 @@
     </nav>
   </aside>
 
-  <!-- Hero Section d'origine -->
+  <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1>Bienvenue sur CAMU SERVICES</h1>
+      <h1>SOYEZ LES BIENVENUS</h1>
+      <p style="font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #ff5252; margin-top: -5px; margin-bottom: 10px; text-transform: uppercase;">TROUVER. ACHETER. RÉSERVER.</p>
+      
       <p>Découvrez des prestations qualifiées ou proposez vos services en tant qu'Entrepreneur.</p>
       
       <!-- Barre de recherche -->
       <div class="search-box" style="display: flex; gap: 8px;">
         <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?" style="flex: 1; padding: 12px 14px; border: none; border-radius: 8px; font-size: 13px; outline: none;">
-        <button onclick="searchAds()" style="background: var(--primary-red); color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button onclick="searchAds()" style="background: var(--primary-red, #d32f2f); color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
 
       <!-- Engagements & Bouton Proposer -->
@@ -105,17 +102,48 @@
     </div>
 
     <div class="annonces-grid" id="adsContainer"></div>
+
+    <!-- SECTIONS COMPLÉMENTAIRES -->
+    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; text-align: left;">
+      
+      <!-- À Propos -->
+      <div style="background: #fff; border-radius: 10px; padding: 15px; border: 1px solid #eee;">
+        <h4 style="font-size: 13px; font-weight: 800; color: #d32f2f; margin-bottom: 6px; text-transform: uppercase;"><i class="fa-solid fa-circle-info"></i> À Propos de Nous</h4>
+        <p style="font-size: 12px; color: #555; line-height: 1.4;"><strong>CAMU SERVICES</strong> est une plateforme dédiée à la mise en relation directe entre Entrepreneurs et clients pour faciliter la recherche, l'achat et la réservation de services qualifiés.</p>
+      </div>
+
+      <!-- Aide & FAQ -->
+      <div style="background: #fff; border-radius: 10px; padding: 15px; border: 1px solid #eee;">
+        <h4 style="font-size: 13px; font-weight: 800; color: #d32f2f; margin-bottom: 6px; text-transform: uppercase;"><i class="fa-solid fa-circle-question"></i> Aide & FAQ</h4>
+        <details style="font-size: 12px; color: #444; margin-bottom: 6px; border: 1px solid #f0f0f0; border-radius: 6px; padding: 6px 10px;">
+          <summary style="font-weight: 700; cursor: pointer;">Comment publier un service ?</summary>
+          <p style="margin-top: 5px; color: #666;">Cliquez sur le bouton « Proposer un service » ou l'icône « Publier » dans le menu bas, puis remplissez le formulaire.</p>
+        </details>
+        <details style="font-size: 12px; color: #444; border: 1px solid #f0f0f0; border-radius: 6px; padding: 6px 10px;">
+          <summary style="font-weight: 700; cursor: pointer;">Comment contacter un Entrepreneur ?</summary>
+          <p style="margin-top: 5px; color: #666;">Sur chaque fiche d'annonce, cliquez sur le bouton vert WhatsApp pour entamer une discussion directe.</p>
+        </details>
+      </div>
+
+      <!-- Confidentialité -->
+      <div style="background: #fff; border-radius: 10px; padding: 15px; border: 1px solid #eee;">
+        <h4 style="font-size: 13px; font-weight: 800; color: #d32f2f; margin-bottom: 6px; text-transform: uppercase;"><i class="fa-solid fa-shield-halved"></i> Confidentialité</h4>
+        <p style="font-size: 12px; color: #555; line-height: 1.4;">Les données collectées servent exclusivement à l'affichage des prestations et à la mise en relation sécurisée.</p>
+      </div>
+
+      <!-- Support -->
+      <div style="background: #ffebee; border-radius: 10px; padding: 12px 15px; border: 1px solid #ffcdd2; text-align: center;">
+        <p style="font-size: 12px; font-weight: 700; color: #b71c1c; margin-bottom: 6px;">Besoin d'aide ou d'assistance ?</p>
+        <a href="chat.html" style="display: inline-block; background: #d32f2f; color: #fff; font-size: 11px; font-weight: bold; padding: 6px 12px; border-radius: 6px; text-decoration: none;"><i class="fa-solid fa-headset"></i> Contacter le Support</a>
+      </div>
+
+    </div>
   </main>
 
   <!-- Pied de page -->
-  <footer style="text-align: center; padding: 25px 10px; margin-top: 30px; border-top: 1px solid #eee; color: #888; font-size: 12px;">
+  <footer style="text-align: center; padding: 25px 10px 80px 10px; margin-top: 30px; border-top: 1px solid #eee; color: #888; font-size: 12px;">
     <p>© 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.</p>
     <p style="margin-top: 5px;">Plateforme d'interconnexion pour Entrepreneurs.</p>
-    <div style="margin-top: 10px; display: flex; justify-content: center; gap: 15px;">
-      <a href="aide.html" style="color: #666; text-decoration: none;">Aide & FAQ</a>
-      <a href="a-propos.html" style="color: #666; text-decoration: none;">À propos</a>
-      <a href="confidentialite.html" style="color: #666; text-decoration: none;">Confidentialité</a>
-    </div>
   </footer>
 
   <!-- Bouton Flottant (FAB) -->
