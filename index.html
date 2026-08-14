@@ -3,395 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Plateforme Entrepreneurs</title>
-
-  <!-- FontAwesome Icons -->
+  <title>CAMU SERVICES — Accueil</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
 
-    body {
-      background-color: #f4f4f9;
-      color: #333;
-      padding-top: 60px;
-      padding-bottom: 75px;
-    }
-
-    /* En-tête (Header Top) */
-    .header-bar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 60px;
-      background: #111111;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    .brand-logo {
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-      text-decoration: none;
-    }
-
+    /* Header Top */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .brand-logo { font-size: 18px; font-weight: 800; color: #ffffff; text-decoration: none; }
     .brand-logo span { color: #d32f2f; }
-
-    .menu-trigger {
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 22px;
-      cursor: pointer;
-    }
+    .menu-trigger { background: none; border: none; color: #ffffff; font-size: 22px; cursor: pointer; }
 
     /* Barre de recherche */
-    .search-box {
-      padding: 12px 15px;
-      background: #ffffff;
-      border-bottom: 1px solid #eee;
-    }
+    .search-box { padding: 12px 15px; background: #ffffff; border-bottom: 1px solid #eee; }
+    .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #ddd; outline: none; background: #f9f9f9; font-size: 13px; }
 
-    .search-input {
-      width: 100%;
-      padding: 10px 15px;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      outline: none;
-      background: #f9f9f9;
-      font-size: 13px;
-    }
-
-    /* Menu Latéral (Drawer) */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1001;
-      display: none;
-    }
-
-    .side-menu {
-      position: fixed;
-      top: 0; left: -280px;
-      width: 280px; height: 100%;
-      background: #ffffff;
-      z-index: 1002;
-      transition: left 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-    }
-
+    /* Menu Drawer */
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1001; display: none; }
+    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #ffffff; z-index: 1002; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
     .side-menu.active { left: 0; }
-
-    .menu-header {
-      background: #111111;
-      color: #ffffff;
-      padding: 18px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 800;
-      font-size: 16px;
-    }
-
+    .menu-header { background: #111111; color: #ffffff; padding: 18px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 16px; }
     .menu-header span { color: #d32f2f; }
+    .btn-close-menu { background: none; border: none; color: #ffffff; font-size: 20px; cursor: pointer; }
+    .menu-body { flex: 1; overflow-y: auto; }
+    .menu-link { display: flex; align-items: center; padding: 14px 18px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f0f0f0; gap: 12px; }
+    .menu-link i { width: 20px; color: #d32f2f; text-align: center; }
 
-    .btn-close-menu {
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 20px;
-      cursor: pointer;
-    }
+    /* Sous-menu Catégories */
+    .category-toggle { justify-content: space-between; cursor: pointer; }
+    .category-list { display: none; background: #f9f9f9; border-bottom: 1px solid #eee; }
+    .category-item { display: flex; align-items: center; padding: 10px 18px 10px 45px; color: #555; text-decoration: none; font-size: 13px; font-weight: 500; gap: 10px; }
 
-    .menu-body {
-      flex: 1;
-      overflow-y: auto;
-    }
+    /* Contenu */
+    .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+    .welcome-card { background: linear-gradient(135deg, #111111 0%, #222222 100%); padding: 22px 15px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-align: center; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+    .welcome-card h2 { font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 6px; }
+    .welcome-card .slogan { font-size: 12px; color: #d32f2f; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
 
-    .menu-link {
-      display: flex;
-      align-items: center;
-      padding: 14px 18px;
-      color: #333;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      border-bottom: 1px solid #f0f0f0;
-      cursor: pointer;
-      gap: 12px;
-    }
+    .section-title { font-size: 15px; font-weight: 800; color: #111; margin-bottom: 12px; }
+    .annonces-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
+    .ad-card { background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #eee; display: flex; flex-direction: column; }
+    .ad-img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
+    .ad-info { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .ad-info h4 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .price { color: #d32f2f; font-weight: 800; font-size: 13px; margin-bottom: 8px; }
+    .btn-contact-sm { background: #111111; color: #ffffff; border: none; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none; display: block; }
 
-    .menu-link i {
-      width: 20px;
-      color: #d32f2f;
-      text-align: center;
-    }
-
-    /* Section Catégories Dépliable */
-    .category-toggle {
-      justify-content: space-between;
-    }
-
-    .category-list {
-      display: none;
-      background: #f9f9f9;
-      border-bottom: 1px solid #eee;
-    }
-
-    .category-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 18px 10px 45px;
-      color: #555;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      gap: 10px;
-    }
-
-    .category-item:hover { color: #d32f2f; }
-
-    /* Zone de Contenu */
-    .container {
-      padding: 15px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .welcome-card {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .welcome-card h2 { font-size: 18px; margin-bottom: 8px; }
-    .welcome-card p { font-size: 13px; color: #666; }
-
-    .section-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Grille des Annonces */
-    .annonces-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    .ad-card {
-      background: #ffffff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      border: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .ad-img {
-      width: 100%;
-      height: 110px;
-      object-fit: cover;
-      background-color: #eee;
-    }
-
-    .ad-info {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      justify-content: space-between;
-    }
-
-    .ad-info h4 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .price {
-      color: #d32f2f;
-      font-weight: 800;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .btn-contact-sm {
-      background: #111111;
-      color: #ffffff;
-      border: none;
-      padding: 7px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-    }
-
-    /* Pied de Page (Footer) */
-    .app-footer {
-      background: #ffffff;
-      border-top: 1px solid #eee;
-      padding: 20px 15px;
-      text-align: center;
-      margin-top: 20px;
-      border-radius: 12px 12px 0 0;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .footer-link {
-      color: #555;
-      font-size: 13px;
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
+    /* Footer */
+    .app-footer { background: #ffffff; border-top: 1px solid #eee; padding: 20px 15px; text-align: center; margin-top: 20px; border-radius: 12px 12px 0 0; }
+    .footer-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+    .footer-link { color: #555; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .footer-link i { color: #d32f2f; }
+    .copyright { font-size: 11px; color: #888; border-top: 1px solid #f0f0f0; padding-top: 12px; }
 
-    .copyright {
-      font-size: 11px;
-      color: #888;
-      border-top: 1px solid #f0f0f0;
-      padding-top: 12px;
-    }
+    /* Modal Infos */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: #fff; padding: 20px; border-radius: 12px; max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .modal-body { font-size: 13px; color: #444; line-height: 1.6; }
+    .btn-close-modal { background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 12px; margin-top: 15px; width: 100%; cursor: pointer; font-weight: bold; }
 
-    /* Pop-up Modale */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 450px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-weight: bold;
-      font-size: 16px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
-    .modal-body {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.6;
-    }
-
-    .btn-close-modal {
-      background: #111;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-top: 15px;
-      width: 100%;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    /* Navigation Inférieure */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: #ffffff; border-top: 1px solid #eee;
-      display: flex; justify-content: space-around;
-      padding: 8px 0; z-index: 1000; height: 65px;
-    }
-
-    .bottom-nav a {
-      text-align: center; color: #666; font-size: 11px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: 25%; text-decoration: none;
-    }
-
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- En-tête -->
   <header class="header-bar">
     <a href="index.html" class="brand-logo">CAMU <span>SERVICES</span></a>
     <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- Arrière-plan sombre -->
   <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-  <!-- Menu Latéral -->
   <nav id="sideMenu" class="side-menu">
     <div class="menu-header">
       CAMU <span>SERVICES</span>
       <button class="btn-close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-
     <div class="menu-body">
       <a href="index.html" class="menu-link"><i class="fa-solid fa-house"></i> Accueil</a>
-      
-      <!-- Section Catégories -->
       <div class="menu-link category-toggle" onclick="toggleCategories()">
         <span><i class="fa-solid fa-layer-group"></i> Catégories</span>
-        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px; transition: transform 0.2s;"></i>
+        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
       </div>
-
-      <!-- Sous-menu des Catégories -->
       <div id="categoryList" class="category-list">
         <a href="#" class="category-item"><i class="fa-solid fa-martini-glass-citrus"></i> Bars & Lounges</a>
         <a href="#" class="category-item"><i class="fa-solid fa-utensils"></i> Restaurants</a>
@@ -403,9 +102,8 @@
         <a href="#" class="category-item"><i class="fa-solid fa-laptop"></i> Électronique & Informatique</a>
         <a href="#" class="category-item"><i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage</a>
         <a href="#" class="category-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux & Électricité</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-handshake-angle"></i> Divers & Autres Services</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-handshake-angle"></i> Divers & Services</a>
       </div>
-
       <a href="#" class="menu-link"><i class="fa-solid fa-star"></i> Mes Favoris</a>
       <a href="publier.html" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
       <a href="chat.html" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
@@ -415,31 +113,27 @@
   </nav>
 
   <main>
-    <!-- Barre de recherche -->
     <div class="search-box">
       <input type="text" class="search-input" placeholder="Que recherchez-vous aujourd'hui ?">
     </div>
 
     <div class="container">
       <div class="welcome-card">
-        <h2>Bienvenue sur CAMU SERVICES</h2>
-        <p>La plateforme dédiée aux entrepreneurs.</p>
+        <h2>Soyez le bienvenu</h2>
+        <p class="slogan">TROUVER. ACHETER. RÉSERVER.</p>
       </div>
 
       <div class="section-title">Services récents</div>
 
       <div class="annonces-grid">
-        <!-- Carte 1 -->
         <div class="ad-card">
-          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400" class="ad-img" alt="Installation">
+          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400" class="ad-img" alt="Panneau Solaire">
           <div class="ad-info">
             <h4>Installation Solaire</h4>
             <div class="price">Sur Devis</div>
             <a href="chat.html" class="btn-contact-sm">Contacter</a>
           </div>
         </div>
-
-        <!-- Carte 2 -->
         <div class="ad-card">
           <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" class="ad-img" alt="Maison">
           <div class="ad-info">
@@ -450,7 +144,6 @@
         </div>
       </div>
 
-      <!-- Footer en bas de l'interface d'accueil -->
       <footer class="app-footer">
         <div class="footer-links">
           <span class="footer-link" onclick="openInfoModal('apropos')"><i class="fa-solid fa-circle-info"></i> À propos de nous</span>
@@ -462,88 +155,48 @@
           © 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.
         </div>
       </footer>
-
     </div>
   </main>
 
-  <!-- Structure Pop-up Modale -->
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <span id="modalTitle">Titre</span>
+        <span id="modalTitle"></span>
         <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeInfoModal()"></i>
       </div>
-      <div id="modalBody" class="modal-body">
-        Texte d'information...
-      </div>
+      <div id="modalBody" class="modal-body"></div>
       <button class="btn-close-modal" onclick="closeInfoModal()">Fermer</button>
     </div>
   </div>
 
-  <!-- Navigation Inférieure -->
   <nav class="bottom-nav">
-    <a href="index.html" class="active">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="profil.html">
-      <i class="fa-solid fa-user"></i>
-      <span>Profil</span>
-    </a>
+    <a href="index.html" class="active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
   <script>
     function toggleMenu() {
       const menu = document.getElementById('sideMenu');
       const overlay = document.getElementById('overlay');
-      
       menu.classList.toggle('active');
-      if (menu.classList.contains('active')) {
-        overlay.style.display = 'block';
-      } else {
-        overlay.style.display = 'none';
-      }
+      overlay.style.display = menu.classList.contains('active') ? 'block' : 'none';
     }
 
     function toggleCategories() {
       const catList = document.getElementById('categoryList');
       const catArrow = document.getElementById('catArrow');
-
-      if (catList.style.display === 'block') {
-        catList.style.display = 'none';
-        catArrow.style.transform = 'rotate(0deg)';
-      } else {
-        catList.style.display = 'block';
-        catArrow.style.transform = 'rotate(180deg)';
-      }
+      const isVisible = catList.style.display === 'block';
+      catList.style.display = isVisible ? 'none' : 'block';
+      catArrow.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
-    /* Textes officiels complets */
     const siteInfos = {
-      apropos: {
-        title: "À propos de CAMU SERVICES",
-        html: "<p style='margin-bottom:10px;'><strong>Slogan :</strong> <em>TROUVER. ACHETER. RÉSERVER.</em></p><p style='margin-bottom:10px;'><strong>Bienvenue sur CAMU SERVICES</strong>, la solution numérique conçue pour stimuler l'entrepreneuriat et faciliter le quotidien des utilisateurs.</p><p style='margin-bottom:8px;'><strong>Notre Mission :</strong><br>Créer une passerelle directe, fluide et sécurisée entre les entrepreneurs, artisans, prestataires de services et leur clientèle. Nous donnons de la visibilité aux talents locaux et permettons à chacun d'accéder rapidement à des offres de qualité.</p><p><strong>Ce que nous proposons :</strong></p><ul style='padding-left:18px; margin-top:5px;'><li><strong>Interconnexion Rapide :</strong> Espace centralisé pour publier et consulter des annonces dans divers secteurs.</li><li><strong>Contact Direct :</strong> Échanges faciles via WhatsApp ou appel téléphonique.</li><li><strong>Soutien aux Entrepreneurs :</strong> Outil moderne pour développer son réseau et accroître ses ventes.</li></ul>"
-      },
-      conditions: {
-        title: "Conditions d'utilisation",
-        html: "<p style='margin-bottom:10px;'><strong>1. Règles de publication :</strong><br>Toute annonce publiée doit être réelle, légale et conforme. Les visuels et descriptions doivent refléter fidèlement le bien ou le service. Tout contenu trompeur ou illégal est strictement interdit.</p><p style='margin-bottom:10px;'><strong>2. Responsabilités :</strong><br>Chaque prestataire assume l'entière responsabilité de la qualité et du suivi de ses prestations. CAMU SERVICES agit comme vitrine de mise en relation et décline toute responsabilité concernant les litiges commerciaux entre utilisateurs.</p><p><strong>3. Modération & Sanctions :</strong><br>L'administration se réserve le droit de supprimer toute annonce non conforme et de suspendre définitivement les comptes d'utilisateurs frauduleux.</p>"
-      },
-      confidentialite: {
-        title: "Politique de confidentialité",
-        html: "<p style='margin-bottom:10px;'><strong>1. Collecte des données :</strong><br>Nous collectons uniquement les informations essentielles : nom, numéro WhatsApp, e-mail et détails d'annonces.</p><p style='margin-bottom:10px;'><strong>2. Utilisation & Protection :</strong><br>Vos données servent exclusivement à la mise en relation et à l'amélioration du service. Vos informations personnelles ne seront jamais vendues ni cédées à des tiers.</p><p><strong>3. Vos Droits :</strong><br>Vous conservez le contrôle total sur vos informations et pouvez modifier ou supprimer votre compte à tout moment.</p>"
-      },
-      contact: {
-        title: "Nous contacter",
-        html: "<p style='margin-bottom:10px;'>Pour toute question, assistance technique ou signalement :</p><p style='margin-bottom:6px;'><i class='fa-brands fa-whatsapp' style='color:#25D366; margin-right:6px;'></i> <strong>WhatsApp / Tél :</strong> +243 976 993 469</p><p><i class='fa-solid fa-envelope' style='color:#d32f2f; margin-right:6px;'></i> <strong>E-mail :</strong> meschackmuteb@gmail.com</p>"
-      }
+      apropos: { title: "À propos de CAMU SERVICES", html: "<p><strong>CAMU SERVICES</strong> interconnecte les entrepreneurs, prestataires et clients avec un slogan simple : <em>TROUVER. ACHETER. RÉSERVER.</em></p>" },
+      conditions: { title: "Conditions d'utilisation", html: "<p>1. Les publications doivent être véridiques.<br>2. Les transactions restent sous la responsabilité des parties concernées.</p>" },
+      confidentialite: { title: "Politique de confidentialité", html: "<p>Vos données personnelles ne sont ni partagées ni vendues à des tierces parties.</p>" },
+      contact: { title: "Nous contacter", html: "<p><i class='fa-brands fa-whatsapp'></i> WhatsApp: +243 976 993 469<br><i class='fa-solid fa-envelope'></i> Email: meschackmuteb@gmail.com</p>" }
     };
 
     function openInfoModal(key) {
@@ -554,10 +207,7 @@
       }
     }
 
-    function closeInfoModal() {
-      document.getElementById('infoModal').style.display = 'none';
-    }
+    function closeInfoModal() { document.getElementById('infoModal').style.display = 'none'; }
   </script>
-
 </body>
 </html>
