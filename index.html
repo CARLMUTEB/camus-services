@@ -26,7 +26,7 @@
       <h2>CAMUS <span>SERVICES</span></h2>
     </div>
     <div class="user-icon">
-      <a href="inscription.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-circle-user"></i></a>
+      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
     </div>
   </header>
 
@@ -34,12 +34,13 @@
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="inscription.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-plus"></i> S'inscrire / Connexion</a>
+      <a href="compte-entrepreneur.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-tie"></i> Espace Entrepreneur</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
       <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
     </ul>
@@ -49,25 +50,25 @@
   <section class="hero-section">
     <div class="hero-content">
       <h1>Bienvenue sur CAMUS SERVICES</h1>
-      <p class="hero-subtitle">Trouvez et publiez vos annonces en toute simplicité.</p>
+      <p class="hero-subtitle">Découvrez des services qualifiés ou proposez vos prestations en tant qu'Entrepreneur.</p>
       
       <!-- Barre de recherche -->
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Que recherchez-vous ?">
+        <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?">
         <button class="btn-search" onclick="searchAds()"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
 
       <ul class="hero-bullets">
-        <li><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Services vérifiés et de qualité</li>
-        <li><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Publication rapide et gratuite</li>
+        <li><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Entrepreneurs et prestataires vérifiés</li>
+        <li><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Mises en relation directes via WhatsApp</li>
       </ul>
-      <a href="publier.html" class="btn-hero-action"><i class="fa-solid fa-plus"></i> Publier une annonce</a>
+      <a href="publier.html" class="btn-hero-action"><i class="fa-solid fa-plus"></i> Proposer un service</a>
     </div>
   </section>
 
   <!-- 4. Conteneur principal des annonces -->
   <main class="annonces-container">
-    <h3 class="section-title">Annonces récentes</h3>
+    <h3 class="section-title">Services récents</h3>
     
     <!-- Filtres par catégorie -->
     <div class="category-bar">
@@ -102,13 +103,13 @@
       <i class="fa-solid fa-plus-circle"></i>
       <span>Publier</span>
     </a>
+    <a href="compte-entrepreneur.html" class="nav-item">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Espace</span>
+    </a>
     <a href="chat.html" class="nav-item">
       <i class="fa-solid fa-comments"></i>
       <span>Chat</span>
-    </a>
-    <a href="favoris.html" class="nav-item">
-      <i class="fa-solid fa-heart"></i>
-      <span>Favoris</span>
     </a>
   </nav>
 
@@ -126,15 +127,14 @@
     if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
     if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
 
-    // 2. Affichage statut utilisateur connecté
+    // 2. Affichage profil Entrepreneur si connecté
     const currentUser = JSON.parse(localStorage.getItem('camus_user'));
     const userMenuBtn = document.getElementById('userMenuBtn');
     if (currentUser && currentUser.name && userMenuBtn) {
-      userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> ${currentUser.name}`;
-      userMenuBtn.href = "publier.html";
+      userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> Mon Espace (${currentUser.name})`;
     }
 
-    // 3. Charger et afficher les annonces publiées
+    // 3. Charger et afficher les services disponibles
     function loadAnnonces() {
       const container = document.getElementById('adsContainer');
       const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
@@ -142,8 +142,8 @@
       if (ads.length === 0) {
         container.innerHTML = `
           <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
-            <p style="color: #666;">Aucune annonce publiée pour le moment.</p>
-            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Soyez le premier à publier !</a>
+            <p style="color: #666;">Aucun service disponible pour le moment.</p>
+            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Proposer le premier service !</a>
           </div>`;
         return;
       }
@@ -161,14 +161,13 @@
           </div>
           
           <div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 5px; display: flex; justify-content: space-between; align-items: center;">
-            <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user" style="color: #888;"></i> ${ad.publisher || 'Anonyme'}</small>
-            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contact</a>` : ''}
+            <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user-tie" style="color: #e53935;"></i> ${ad.publisher || 'Entrepreneur'}</small>
+            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contacter</a>` : ''}
           </div>
         </div>
       `).join('');
     }
 
-    // Charger les annonces au démarrage
     document.addEventListener('DOMContentLoaded', loadAnnonces);
   </script>
 </body>
