@@ -37,7 +37,6 @@
 
   <main class="annonces-container" style="padding-top: 20px; max-width: 550px; margin: 0 auto;">
     
-    <!-- Choix d'onglet -->
     <div style="display: flex; background: #eee; border-radius: 8px; padding: 4px; margin-bottom: 20px;">
       <button id="tabEntrepreneur" onclick="switchAccountType('entrepreneur')" style="flex: 1; padding: 10px; border: none; border-radius: 6px; background: #e53935; color: white; font-weight: bold; cursor: pointer;">
         <i class="fa-solid fa-briefcase"></i> Entrepreneur
@@ -47,12 +46,17 @@
       </button>
     </div>
 
-    <!-- Formulaire Entrepreneur Complet -->
+    <!-- Formulaire Entrepreneur -->
     <div id="formEntrepreneur" class="card" style="padding: 25px;">
       <h2 style="text-align: center; margin-bottom: 5px;">Créer un compte Entrepreneur</h2>
       <p style="text-align: center; color: #2e7d32; font-size: 13px; font-weight: bold; margin-bottom: 20px;"><i class="fa-solid fa-gift"></i> Essai gratuit pendant 2 mois !</p>
       
       <form id="registerFormEntrepreneur">
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Photo de profil / Logo d'entreprise</label>
+          <input type="file" id="regLogo" accept="image/*" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px;">
+        </div>
+
         <div style="margin-bottom: 12px;">
           <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Nom ou Raison Sociale *</label>
           <input type="text" id="regName" placeholder="Ex: Jean Dupont / CAMU Store" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
@@ -60,7 +64,7 @@
 
         <div style="margin-bottom: 12px;">
           <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Ville *</label>
-          <input type="text" id="regCity" placeholder="Ex: Lubumbashi, Kinshasa..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+          <input type="text" id="regCity" placeholder="Ex: Lubumbashi, Kolwezi..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
         </div>
 
         <div style="margin-bottom: 12px;">
@@ -172,20 +176,35 @@
 
     document.getElementById('registerFormEntrepreneur').addEventListener('submit', function(e) {
       e.preventDefault();
-      const user = { 
-        name: document.getElementById('regName').value, 
-        city: document.getElementById('regCity').value,
-        address: document.getElementById('regAddress').value,
-        phone: document.getElementById('regPhone').value, 
-        email: document.getElementById('regEmail').value,
-        mobileMoney: document.getElementById('regMobileMoney').value,
-        category: document.getElementById('regCategory').value,
-        role: 'entrepreneur',
-        trialStartDate: new Date().toISOString()
+      
+      const fileInput = document.getElementById('regLogo');
+      const processSave = (logoData) => {
+        const user = { 
+          name: document.getElementById('regName').value, 
+          city: document.getElementById('regCity').value,
+          address: document.getElementById('regAddress').value,
+          phone: document.getElementById('regPhone').value, 
+          email: document.getElementById('regEmail').value,
+          mobileMoney: document.getElementById('regMobileMoney').value,
+          category: document.getElementById('regCategory').value,
+          logo: logoData || '',
+          role: 'entrepreneur',
+          createdAt: new Date().getTime()
+        };
+        localStorage.setItem('camus_user', JSON.stringify(user));
+        alert('Félicitations ! Votre compte Entrepreneur est créé avec 2 mois d\'essai gratuit.');
+        window.location.href = 'compte-entrepreneur.html';
       };
-      localStorage.setItem('camus_user', JSON.stringify(user));
-      alert('Félicitations ! Votre compte Entrepreneur est créé avec 2 mois d\'essai gratuit.');
-      window.location.href = 'compte-entrepreneur.html';
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          processSave(e.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        processSave('');
+      }
     });
 
     document.getElementById('registerFormClient').addEventListener('submit', function(e) {
