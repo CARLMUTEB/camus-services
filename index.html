@@ -20,7 +20,6 @@
       background-color: #f8f9fa;
       color: #222;
       line-height: 1.5;
-      padding-bottom: 75px;
     }
 
     /* En-tête / Header */
@@ -64,6 +63,68 @@
       font-size: 20px;
       color: #333;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Menu Latéral Déroulant */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 250px;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      z-index: 2000;
+      transition: left 0.3s ease;
+      padding: 20px;
+    }
+
+    .side-menu.active {
+      left: 0;
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .menu-header button {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .side-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .side-menu li {
+      margin-bottom: 15px;
+    }
+
+    .side-menu a {
+      text-decoration: none;
+      color: #333;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .side-menu a i {
+      color: #d32f2f;
     }
 
     /* Bannière Sombre / Hero avec Image de fond */
@@ -210,81 +271,153 @@
       margin-bottom: 10px;
     }
 
-    /* Sections du bas */
-    .extra-sections {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 15px 20px;
+    /* Footer Style Exact */
+    .custom-footer {
+      background-color: #f2f2f2;
+      padding: 20px 15px 90px 15px;
+      text-align: center;
+      position: relative;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .footer-links {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .card-box {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 16px;
-      border: 1px solid #e0e0e0;
-    }
-
-    .card-box h4 {
-      font-size: 14px;
-      font-weight: 800;
-      color: #d32f2f;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 13px;
       margin-bottom: 8px;
-      text-transform: uppercase;
     }
 
-    .card-box p, .card-box li {
+    .footer-links button, .contact-trigger {
+      background: none;
+      border: none;
+      color: #333;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+
+    .footer-links button:hover, .contact-trigger:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links .divider {
+      color: #ccc;
+    }
+
+    .footer-contact-row {
+      margin-bottom: 12px;
+    }
+
+    .copyright-text {
       font-size: 12px;
+      color: #777;
+    }
+
+    .back-to-top {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.08);
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 10px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+
+    /* Modals (Fenêtres d'affichage au clic) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .modal-content h3 {
+      font-size: 16px;
+      color: #111;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .modal-body {
+      font-size: 13px;
       color: #444;
       line-height: 1.5;
     }
 
-    .card-box ul {
+    .modal-body ul {
       padding-left: 18px;
     }
 
-    details {
-      background: #fdfdfd;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      padding: 10px;
-      margin-top: 6px;
-      cursor: pointer;
+    .modal-body li {
+      margin-bottom: 6px;
     }
 
-    summary {
-      font-weight: 700;
-      font-size: 12px;
-      color: #222;
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    /* Contact Support Box */
-    .support-box {
-      background: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      border-radius: 10px;
-      padding: 16px;
-      text-align: center;
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
     }
 
-    .support-box h4 {
-      color: #2e7d32;
-      font-size: 14px;
-      margin-bottom: 4px;
+    .email-item {
+      background: #f1f3f4;
+      color: #333;
     }
 
-    .whatsapp-btn {
-      display: inline-block;
+    .whatsapp-item {
       background: #25D366;
       color: #fff;
-      padding: 10px 20px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 10px;
     }
 
     /* Barre de Navigation du bas */
@@ -323,15 +456,34 @@
 
   <!-- En-tête -->
   <header class="top-header">
-    <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+    <button class="icon-btn" onclick="toggleMenu()" aria-label="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
     
     <div class="brand-container">
       <img src="logo.png" alt="CAMU SERVICES">
       <h1>CAMU <span>SERVICES</span></h1>
     </div>
 
-    <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+    <a href="espace.html" class="icon-btn" style="text-decoration: none;" aria-label="Espace Entrepreneur">
+      <i class="fa-solid fa-user"></i>
+    </a>
   </header>
+
+  <!-- Menu Latéral Déroulant -->
+  <div id="side-menu" class="side-menu">
+    <div class="menu-header">
+      <span>Menu CAMU SERVICES</span>
+      <button onclick="toggleMenu()">&times;</button>
+    </div>
+    <ul>
+      <li><a href="index.html" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Accueil</a></li>
+      <li><a href="publier.html" onclick="toggleMenu()"><i class="fa-solid fa-circle-plus"></i> Publier un service</a></li>
+      <li><a href="espace.html" onclick="toggleMenu()"><i class="fa-solid fa-user-tie"></i> Espace Entrepreneur</a></li>
+      <li><a href="chat.html" onclick="toggleMenu()"><i class="fa-solid fa-comments"></i> Discussions & Chat</a></li>
+      <li><a href="javascript:void(0)" onclick="toggleMenu(); openModal('modal-contact')"><i class="fa-brands fa-whatsapp"></i> Support Administration</a></li>
+    </ul>
+  </div>
 
   <main>
     <!-- Hero Banner -->
@@ -376,55 +528,85 @@
         <p style="font-size: 12px; color: #d32f2f; margin-top: 4px;">Soyez le premier à proposer un service !</p>
       </div>
     </section>
+  </main>
 
-    <!-- Sections du bas -->
-    <div class="extra-sections">
-      
-      <!-- À Propos -->
-      <div class="card-box">
-        <h4><i class="fa-solid fa-circle-info"></i> À Propos de CAMU SERVICES</h4>
-        <p><strong>CAMU SERVICES</strong> est une plateforme moderne qui facilite la mise en relation directe entre Entrepreneurs et clients. Notre slogan : <strong>TROUVER. ACHETER. RÉSERVER.</strong></p>
+  <!-- Footer / Pied de page -->
+  <footer class="custom-footer">
+    <div class="footer-links">
+      <button onclick="openModal('modal-apropos')">À propos</button>
+      <span class="divider">|</span>
+      <button onclick="openModal('modal-conditions')">Contrat d'utilisation</button>
+      <span class="divider">|</span>
+      <button onclick="openModal('modal-confidentialite')">politique de confidentialité</button>
+    </div>
+
+    <div class="footer-contact-row">
+      <button class="contact-trigger" onclick="openModal('modal-contact')">Contact</button>
+    </div>
+
+    <div class="copyright-text">
+      Copyright © 2026 CAMU SERVICES. Tous droits réservés.
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">HAUT</button>
+  </footer>
+
+  <!-- POPUPS / MODALS -->
+  <div id="modal-apropos" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('modal-apropos')">&times;</span>
+      <h3><i class="fa-solid fa-circle-info" style="color: #d32f2f;"></i> À propos de CAMU SERVICES</h3>
+      <div class="modal-body">
+        <p><strong>CAMU SERVICES</strong> est une plateforme interactive conçue pour faciliter la mise en relation directe entre les entrepreneurs et les clients.</p>
+        <p style="margin-top: 8px;">Notre vision se résume en trois mots : <strong>TROUVER. ACHETER. RÉSERVER.</strong></p>
       </div>
+    </div>
+  </div>
 
-      <!-- Aide & FAQ -->
-      <div class="card-box">
-        <h4><i class="fa-solid fa-circle-question"></i> Aide & FAQ</h4>
-        <details>
-          <summary>Comment publier un service en tant qu'Entrepreneur ?</summary>
-          <p style="margin-top: 6px;">Cliquez sur « + Proposer un service » ou sur l'onglet « Publier » en bas. Complétez le formulaire avec vos détails et votre WhatsApp.</p>
-        </details>
-        <details>
-          <summary>Comment contacter un prestataire ?</summary>
-          <p style="margin-top: 6px;">Sur chaque offre, cliquez sur le bouton de contact pour ouvrir directement une discussion WhatsApp avec l'Entrepreneur.</p>
-        </details>
-      </div>
-
-      <!-- Conditionnalités -->
-      <div class="card-box">
-        <h4><i class="fa-solid fa-file-contract"></i> Conditionnalités</h4>
+  <div id="modal-conditions" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('modal-conditions')">&times;</span>
+      <h3><i class="fa-solid fa-file-contract" style="color: #d32f2f;"></i> Contrat d'utilisation</h3>
+      <div class="modal-body">
         <ul>
-          <li>Les publications doivent concerner des prestations ou produits réels et légaux.</li>
-          <li>Chaque Entrepreneur est responsable des détails et engagements de ses services.</li>
+          <li>Toutes les annonces publiées doivent être légales, véridiques et claires.</li>
+          <li>Chaque Entrepreneur est pleinement responsable des services ou produits qu'il propose.</li>
+          <li>La plateforme décline toute responsabilité en cas de litige direct hors du cadre fixé.</li>
         </ul>
       </div>
+    </div>
+  </div>
 
-      <!-- Confidentialité -->
-      <div class="card-box">
-        <h4><i class="fa-solid fa-shield-halved"></i> Confidentialité</h4>
-        <p>Vos informations de contact servent uniquement à l'affichage des annonces et à la mise en relation directe.</p>
+  <div id="modal-confidentialite" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('modal-confidentialite')">&times;</span>
+      <h3><i class="fa-solid fa-shield-halved" style="color: #d32f2f;"></i> Politique de confidentialité</h3>
+      <div class="modal-body">
+        <p>Vos données personnelles (nom, numéro WhatsApp, email) sont utilisées uniquement dans le cadre de la mise en relation sur la plateforme.</p>
+        <p style="margin-top: 8px;"><strong>CAMU SERVICES</strong> s'engage à ne jamais partager vos informations privées à des tiers.</p>
       </div>
+    </div>
+  </div>
 
-      <!-- Contact Support WhatsApp -->
-      <div class="support-box">
-        <h4><i class="fa-brands fa-whatsapp"></i> Support & Assistance</h4>
-        <p style="font-size: 12px; color: #555;">Une question ou un problème ? Contactez l'administration.</p>
-        <a href="https://wa.me/243976993469?text=Bonjour%20CAMU%20SERVICES,%20j'ai%20une%20question." target="_blank" class="whatsapp-btn">
-          Contacter le +243 976 993 469
+  <div id="modal-contact" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('modal-contact')">&times;</span>
+      <h3><i class="fa-solid fa-headset" style="color: #d32f2f;"></i> Contactez-nous</h3>
+      <p class="modal-subtitle">Une question ou une assistance technique ?</p>
+      
+      <div class="contact-methods">
+        <a href="mailto:meschackmuteb@gmail.com" class="contact-item email-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>meschackmuteb@gmail.com</span>
+        </a>
+
+        <a href="https://wa.me/243976993469?text=Bonjour%20CAMU%20SERVICES," target="_blank" class="contact-item whatsapp-item">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>+243 976 993 469</span>
         </a>
       </div>
-
     </div>
-  </main>
+  </div>
 
   <!-- Navigation du bas -->
   <nav class="bottom-nav">
@@ -446,5 +628,26 @@
     </a>
   </nav>
 
+  <!-- Scripts JavaScript -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('side-menu');
+      menu.classList.toggle('active');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        event.target.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>
