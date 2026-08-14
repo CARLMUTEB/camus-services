@@ -64,11 +64,17 @@
   <main class="annonces-container">
     <h3 class="section-title">Services récents</h3>
     
-    <div class="category-bar">
+    <!-- Barre de catégories avec défilement horizontal -->
+    <div class="category-bar" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none;">
       <button class="cat-btn active" onclick="filterCategory('Toutes')">Toutes</button>
+      <button class="cat-btn" onclick="filterCategory('Vente')">Vente</button>
+      <button class="cat-btn" onclick="filterCategory('Hôtel & Restaurant')">Hôtel & Restaurant</button>
+      <button class="cat-btn" onclick="filterCategory('Établissement')">Établissement</button>
+      <button class="cat-btn" onclick="filterCategory('Agence Immobilière')">Agence Immobilière</button>
+      <button class="cat-btn" onclick="filterCategory('Mobilier')">Mobilier</button>
+      <button class="cat-btn" onclick="filterCategory('Terrasses')">Terrasses</button>
       <button class="cat-btn" onclick="filterCategory('Services')">Services</button>
-      <button class="cat-btn" onclick="filterCategory('Ventes')">Ventes</button>
-      <button class="cat-btn" onclick="filterCategory('Emplois')">Emplois</button>
+      <button class="cat-btn" onclick="filterCategory('Autres')">Autres</button>
     </div>
 
     <div class="annonces-grid" id="adsContainer">
@@ -122,21 +128,74 @@
       userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> Mon Espace (${currentUser.name})`;
     }
 
+    let currentCategory = 'Toutes';
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => {
+        if(btn.textContent.trim() === cat) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      loadAnnonces();
+    }
+
+    function searchAds() {
+      loadAnnonces();
+    }
+
+    function addComment(adId) {
+      const commentText = prompt("Écrivez votre avis sur ce service :");
+      if (!commentText || commentText.trim() === "") return;
+
+      const userName = currentUser ? currentUser.name : "Client Anonyme";
+      
+      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      const adIndex = ads.findIndex(a => a.id === adId);
+      
+      if (adIndex !== -1) {
+        if (!ads[adIndex].comments) ads[adIndex].comments = [];
+        
+        ads[adIndex].comments.push({
+          user: userName,
+          text: commentText.trim(),
+          date: new Date().toLocaleDateString('fr-FR')
+        });
+        
+        localStorage.setItem('camus_ads', JSON.stringify(ads));
+        loadAnnonces();
+      }
+    }
+
     function loadAnnonces() {
       const container = document.getElementById('adsContainer');
-      const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      if (currentCategory !== 'Toutes') {
+        ads = ads.filter(ad => ad.category === currentCategory);
+      }
+
+      if (searchVal !== '') {
+        ads = ads.filter(ad => ad.title.toLowerCase().includes(searchVal) || ad.description.toLowerCase().includes(searchVal));
+      }
 
       if (ads.length === 0) {
         container.innerHTML = `
           <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
-            <p style="color: #666;">Aucun service disponible pour le moment.</p>
-            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Proposer le premier service !</a>
+            <p style="color: #666;">Aucun service disponible pour cette catégorie.</p>
+            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Proposer un service !</a>
           </div>`;
         return;
       }
 
-      container.innerHTML = ads.map(ad => `
-        <div class="card">
+      container.innerHTML = ads.map(ad => {
+        const commentsList = ad.comments || [];
+        return `
+        <div class="card" style="margin-bottom: 20px; border-radius: 10px; background: #fff; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
@@ -149,10 +208,28 @@
           
           <div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 5px; display: flex; justify-content: space-between; align-items: center;">
             <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user-tie" style="color: #e53935;"></i> ${ad.publisher || 'Entrepreneur'}</small>
-            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contacter</a>` : ''}
+            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Bonjour, je vous contacte au sujet de votre annonce "' + ad.title + '" sur CAMU SERVICES.')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contacter</a>` : ''}
+          </div>
+
+          <!-- Section Commentaires -->
+          <div style="margin-top: 15px; border-top: 1px dashed #eee; padding-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 12px; font-weight: bold; color: #444;"><i class="fa-solid fa-comments"></i> Avis clients (${commentsList.length})</span>
+              <button onclick="addComment(${ad.id})" style="background: #f0f0f0; border: none; padding: 5px 10px; border-radius: 5px; font-size: 11px; cursor: pointer; color: #333; font-weight: 600;">
+                <i class="fa-solid fa-pen"></i> Laisser un avis
+              </button>
+            </div>
+            <div style="max-height: 120px; overflow-y: auto;">
+              ${commentsList.length > 0 ? commentsList.map(c => `
+                <div style="background: #f9f9f9; padding: 6px 10px; border-radius: 6px; margin-bottom: 5px; font-size: 12px; border-left: 3px solid #e53935;">
+                  <strong>${c.user}</strong> <small style="color:#888;">(${c.date})</small> : <span>${c.text}</span>
+                </div>
+              `).join('') : '<small style="color: #999; font-style: italic;">Aucun avis pour le moment. Soyez le premier !</small>'}
+            </div>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     document.addEventListener('DOMContentLoaded', loadAnnonces);
