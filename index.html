@@ -48,10 +48,96 @@
 
     .header-btn {
       color: #fff;
-      font-size: 18px;
+      font-size: 20px;
       background: none;
       border: none;
       cursor: pointer;
+      padding: 5px;
+    }
+
+    /* --- MENU LATÉRAL (DRAWER) --- */
+    .side-menu-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .side-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0; left: -280px;
+      width: 280px; height: 100%;
+      background: #ffffff;
+      z-index: 2001;
+      transition: left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .side-menu.active {
+      left: 0;
+    }
+
+    .menu-header {
+      background: #111;
+      color: #fff;
+      padding: 20px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .menu-header h3 span { color: #d32f2f; }
+
+    .close-menu-btn {
+      color: #fff;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .menu-links {
+      list-style: none;
+      padding: 15px 0;
+      flex: 1;
+    }
+
+    .menu-links li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .menu-links li a i {
+      font-size: 16px;
+      width: 20px;
+      color: #d32f2f;
+    }
+
+    .menu-links li a:active {
+      background: #f8f9fa;
     }
 
     .container {
@@ -71,24 +157,11 @@
       margin-bottom: 15px;
     }
 
-    .hero-card h2 {
-      font-size: 18px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 6px;
-    }
-
-    .hero-card p {
-      font-size: 12px;
-      color: #666;
-    }
+    .hero-card h2 { font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px; }
+    .hero-card p { font-size: 12px; color: #666; }
 
     /* Barre de recherche */
-    .search-box {
-      position: relative;
-      margin-bottom: 15px;
-    }
-
+    .search-box { position: relative; margin-bottom: 15px; }
     .search-box input {
       width: 100%;
       padding: 12px 15px 12px 40px;
@@ -97,58 +170,17 @@
       font-size: 13px;
       outline: none;
       background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     }
+    .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; font-size: 14px; }
 
-    .search-box i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 14px;
-    }
-
-    /* Filtres Catégories Horizonales */
-    .categories-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-      scrollbar-width: none;
-    }
-
+    /* Filtres Catégories */
+    .categories-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
     .categories-scroll::-webkit-scrollbar { display: none; }
+    .cat-pill { background: #fff; border: 1px solid #ddd; padding: 7px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; color: #444; }
+    .cat-pill.active { background: #d32f2f; color: #fff; border-color: #d32f2f; }
 
-    .cat-pill {
-      background: #fff;
-      border: 1px solid #ddd;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      white-space: nowrap;
-      color: #444;
-      cursor: pointer;
-    }
-
-    .cat-pill.active {
-      background: #d32f2f;
-      color: #fff;
-      border-color: #d32f2f;
-    }
-
-    /* Cartes des Annonces / Services */
-    .section-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    /* Cartes des Annonces */
+    .section-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 
     .service-card {
       background: #ffffff;
@@ -156,162 +188,83 @@
       overflow: hidden;
       border: 1px solid #e0e0e0;
       margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
-    .card-img-wrap {
-      position: relative;
-      height: 160px;
-      width: 100%;
-      background: #eee;
-    }
-
-    .card-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .badge-cat {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.7);
-      color: #fff;
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
+    .card-img-wrap { position: relative; height: 160px; width: 100%; background: #eee; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .badge-cat { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
 
     .fav-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #fff;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: absolute; top: 10px; right: 10px;
+      background: #fff; border: none; width: 32px; height: 32px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #888; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+    .fav-btn.active { color: #fbc02d; }
 
-    .fav-btn.active {
-      color: #fbc02d;
-    }
-
-    .card-body {
-      padding: 12px 15px;
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 4px;
-    }
-
-    .card-author {
-      font-size: 11px;
-      color: #666;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #f0f0f0;
-      padding-top: 10px;
-      margin-top: 5px;
-    }
-
-    .price-tag {
-      font-size: 14px;
-      font-weight: 800;
-      color: #d32f2f;
-    }
-
-    .btn-whatsapp {
-      background: #25D366;
-      color: #fff;
-      padding: 7px 14px;
-      border-radius: 18px;
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
+    .card-body { padding: 12px 15px; }
+    .card-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .card-author { font-size: 11px; color: #666; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0f0f0; padding-top: 10px; margin-top: 5px; }
+    .price-tag { font-size: 14px; font-weight: 800; color: #d32f2f; }
+    .btn-whatsapp { background: #25D366; color: #fff; padding: 7px 14px; border-radius: 18px; text-decoration: none; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
     /* Bottom Navigation */
     .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; width: 100%;
-      background: #ffffff;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      z-index: 1000;
-      height: 65px;
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #ffffff; border-top: 1px solid #eee;
+      display: flex; justify-content: space-around;
+      padding: 8px 0; z-index: 1000; height: 65px;
     }
 
-    .bottom-nav a {
-      text-align: center;
-      color: #666;
-      font-size: 11px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 25%;
-      text-decoration: none;
-    }
-
-    .bottom-nav a.active {
-      color: #d32f2f;
-    }
-
-    .bottom-nav i {
-      font-size: 19px;
-      margin-bottom: 3px;
-    }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Overlay / Voile sombre du menu -->
+  <div id="side-overlay" class="side-menu-overlay" onclick="toggleMenu()"></div>
+
+  <!-- Tiroir de Navigation Latéral -->
+  <aside id="side-menu" class="side-menu">
+    <div class="menu-header">
+      <h3>CAMU <span>SERVICES</span></h3>
+      <button class="close-menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul class="menu-links">
+      <li><a href="index.html"><i class="fa-solid fa-house"></i> Accueil</a></li>
+      <li><a href="favoris.html"><i class="fa-solid fa-star"></i> Mes Favoris</a></li>
+      <li><a href="publier.html"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a></li>
+      <li><a href="chat.html"><i class="fa-solid fa-comments"></i> Discussions</a></li>
+      <li><a href="profil.html"><i class="fa-solid fa-user"></i> Mon Profil</a></li>
+      <li><a href="admin.html"><i class="fa-solid fa-user-shield"></i> Administration</a></li>
+    </ul>
+  </aside>
+
+  <!-- En-tête -->
   <header class="top-header">
-    <button class="header-btn"><i class="fa-solid fa-bars"></i></button>
+    <button class="header-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
     <div class="brand-title">CAMU <span>SERVICES</span></div>
     <a href="favoris.html" class="header-btn" style="text-decoration:none;"><i class="fa-solid fa-star"></i></a>
   </header>
 
   <main class="container">
 
-    <!-- Banniere d'accueil -->
+    <!-- Bannière d'accueil -->
     <div class="hero-card">
       <h2>Trouvez, Achetez, Réservez</h2>
       <p>Bienvenue sur votre plateforme interactive dédiée aux entrepreneurs et clients.</p>
     </div>
 
-    <!-- Barre de Recherche -->
+    <!-- Recherche -->
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" placeholder="Rechercher un service, un produit...">
     </div>
 
-    <!-- Catégories de filtres -->
+    <!-- Catégories -->
     <div class="categories-scroll">
       <button class="cat-pill active">Tout</button>
       <button class="cat-pill">Électricité</button>
@@ -320,13 +273,12 @@
       <button class="cat-pill">Services Informatiques</button>
     </div>
 
-    <!-- Liste des Annonces -->
+    <!-- Annonces -->
     <div class="section-title">
       <span>Annonces Recentes</span>
       <span style="font-size: 11px; color:#d32f2f; font-weight:normal;">Voir tout</span>
     </div>
 
-    <!-- Carte Service 1 -->
     <div class="service-card">
       <div class="card-img-wrap">
         <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80" alt="Électricité">
@@ -345,28 +297,9 @@
       </div>
     </div>
 
-    <!-- Carte Service 2 -->
-    <div class="service-card">
-      <div class="card-img-wrap">
-        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" alt="Maintenance">
-        <span class="badge-cat">Maintenance</span>
-        <button class="fav-btn" onclick="toggleFav(this)"><i class="fa-solid fa-star"></i></button>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Maintenance Mécanique & Supervision</div>
-        <div class="card-author"><i class="fa-solid fa-circle-check" style="color:#25D366;"></i> Proposé par CAMU TEAM</div>
-        <div class="card-footer">
-          <div class="price-tag">Sur Devis</div>
-          <a href="https://wa.me/243976993469?text=Bonjour,%20je%20souhaite%20un%20devis%20maintenance." target="_blank" class="btn-whatsapp">
-            <i class="fa-brands fa-whatsapp"></i> Contacter
-          </a>
-        </div>
-      </div>
-    </div>
-
   </main>
 
-  <!-- Barre de Navigation du Bas -->
+  <!-- Navigation du Bas -->
   <nav class="bottom-nav">
     <a href="index.html" class="active">
       <i class="fa-solid fa-house"></i>
@@ -387,6 +320,12 @@
   </nav>
 
   <script>
+    // Ouverture / Fermeture du Menu Latéral
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('active');
+      document.getElementById('side-overlay').classList.toggle('active');
+    }
+
     function toggleFav(btn) {
       btn.classList.toggle('active');
     }
