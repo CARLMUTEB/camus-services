@@ -1,9 +1,188 @@
-<!-- Remplace ton ancien texte par celui-ci -->
-<div class="auth-box">
-  <i class="fa-solid fa-user-shield" style="font-size: 40px; color: #d32f2f; margin-bottom: 15px;"></i>
-  <h3>Accès Sécurisé</h3>
-  <p>Entrez votre mot de passe administrateur</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAMU SERVICES — Administration</title>
   
-  <input type="password" id="admin-pass" placeholder="Mot de passe">
-  <button onclick="checkPassword()">Se connecter</button>
-</div>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #111111;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    /* Carte de Connexion */
+    .auth-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .icon-shield {
+      font-size: 42px;
+      color: #d32f2f;
+      margin-bottom: 12px;
+    }
+
+    .auth-card h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .auth-card p {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      text-align: center;
+    }
+
+    .input-group input:focus {
+      border-color: #d32f2f;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #d32f2f;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-login:active {
+      background: #b71c1c;
+    }
+
+    .error-msg {
+      color: #d32f2f;
+      font-size: 12px;
+      margin-top: 12px;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* Espace Admin (masqué par défaut) */
+    .admin-dashboard {
+      display: none;
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+
+    .btn-logout {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Carte de connexion centrée -->
+  <div id="login-box" class="auth-card">
+    <i class="fa-solid fa-user-shield icon-shield"></i>
+    <h2>Accès Sécurisé</h2>
+    <p>Entrez le mot de passe administrateur</p>
+
+    <form onsubmit="verifyPassword(event)">
+      <div class="input-group">
+        <input type="password" id="password-input" placeholder="Mot de passe" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn-login">Se connecter</button>
+      <div id="error-message" class="error-msg">Mot de passe incorrect !</div>
+    </form>
+  </div>
+
+  <!-- Espace Tableau de Bord Administrateur -->
+  <div id="admin-panel" class="admin-dashboard">
+    <div class="admin-header">
+      <h3>Espace Administration</h3>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
+    <p style="font-size: 13px; color: #555;">Bienvenue dans le panneau de contrôle de <strong>CAMU SERVICES</strong>.</p>
+  </div>
+
+  <script>
+    // Empreinte chiffrée (SHA-256) du mot de passe
+    const SECRET_HASH = "ca291ee5bf0d22f982937748dc74828588506e12739504be042c13dce84249bf";
+
+    async function verifyPassword(event) {
+      event.preventDefault();
+      const input = document.getElementById('password-input').value;
+      const errorMsg = document.getElementById('error-message');
+
+      // Conversion du mot de passe saisi en HASH SHA-256
+      const msgBuffer = new TextEncoder().encode(input);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      if (inputHash === SECRET_HASH) {
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        errorMsg.style.display = 'none';
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      document.getElementById('password-input').value = '';
+      document.getElementById('login-box').style.display = 'block';
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
