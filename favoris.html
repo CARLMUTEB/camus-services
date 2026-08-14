@@ -2,61 +2,48 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Favoris - CAMUS SERVICES</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mes Favoris — CAMU SERVICES</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
+    .top-header { background: #ffffff; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; height: 60px; }
+    .brand-container h1 { font-size: 17px; font-weight: 800; color: #111; }
+    .brand-container h1 span { color: #d32f2f; }
+    .container { max-width: 600px; margin: 0 auto; padding: 30px 15px; }
+    .empty-state { background: #ffffff; border-radius: 12px; padding: 40px 20px; border: 1px solid #e0e0e0; text-align: center; }
+    .empty-state i { font-size: 50px; color: #fbc02d; margin-bottom: 15px; }
+    .empty-state h2 { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 8px; }
+    .empty-state p { font-size: 12px; color: #666; margin-bottom: 20px; }
+    .btn-explore { display: inline-block; background: #d32f2f; color: #ffffff; padding: 10px 22px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: bold; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+  </style>
 </head>
 <body>
-
-  <header class="top-bar">
-    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
-    <div class="brand-logo">
-      <img src="logo.png" alt="Logo CAMUS SERVICES">
-      <h2>CAMUS <span>SERVICES</span></h2>
+  <header class="top-header">
+    <a href="index.html" style="color:#333; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="brand-container">
+      <h1>CAMU <span>SERVICES</span></h1>
     </div>
-    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+    <div style="width: 18px;"></div>
   </header>
-
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
-      <span class="close-btn" id="closeMenu">&times;</span>
-    </div>
-    <ul class="sidebar-menu">
-      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
-    </ul>
-  </aside>
-
-  <main class="annonces-container" style="padding-top: 30px;">
-    <div class="card" style="text-align: center; padding: 40px 20px; max-width: 500px; margin: 0 auto;">
-      <i class="fa-solid fa-star" style="font-size: 50px; color: #FFC107; margin-bottom: 15px;"></i>
-      <h3 style="margin-bottom: 10px;">Aucun favori pour le moment</h3>
-      <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Cliquez sur l'étoile d'une annonce pour la retrouver facilement ici.</p>
-      <a href="index.html" class="btn-search" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 20px;">Parcourir les annonces</a>
+  <main class="container">
+    <div class="empty-state">
+      <i class="fa-solid fa-star"></i>
+      <h2>Aucun favori pour le moment</h2>
+      <p>Cliquez sur l'étoile d'une annonce pour la retrouver facilement ici.</p>
+      <a href="index.html" class="btn-explore">Parcourir les annonces</a>
     </div>
   </main>
-
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item active"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
-  <script src="app.js"></script>
-  <script>
-    const openBtn = document.getElementById('openMenu');
-    const closeBtn = document.getElementById('closeMenu');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
-    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-  </script>
 </body>
 </html>
