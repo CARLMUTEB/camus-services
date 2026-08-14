@@ -1,439 +1,429 @@
-/* --- REGLES GENERALES --- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMU SERVICES — Trouver. Acheter. Réserver.</title>
+  
+  <!-- FontAwesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-:root {
-  --primary-red: #d32f2f;
-  --dark-red: #b71c1c;
-  --bg-dark: #121212;
-  --text-dark: #222222;
-  --text-muted: #666666;
-  --bg-light: #f8f9fa;
-  --white: #ffffff;
-  --border-color: #eeeeee;
-}
+  <style>
+    /* Reset & Règles de base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-body {
-  background-color: var(--bg-light);
-  color: var(--text-dark);
-  line-height: 1.6;
-}
+    body {
+      background-color: #f8f9fa;
+      color: #222;
+      line-height: 1.5;
+      padding-bottom: 70px; /* Espace pour la navigation du bas */
+    }
 
-.container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 15px;
-}
+    /* Limiter la taille des images globales */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
 
-/* --- HEADER --- */
-.main-header {
-  background-color: #1a1a1a;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
+    /* En-tête / Header */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background: #ffffff;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.logo-text {
-  color: var(--white);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  text-decoration: none;
-  letter-spacing: 0.5px;
-}
+    .brand-logo {
+      text-align: center;
+    }
 
-.logo-text span {
-  color: var(--primary-red);
-}
+    /* FIX DU LOGO GÉANT */
+    .brand-logo img {
+      max-height: 40px !important;
+      width: auto !important;
+      display: block;
+      margin: 0 auto;
+    }
 
-.nav-links {
-  display: flex;
-  gap: 15px;
-}
+    .brand-logo h1 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-top: 2px;
+      color: #111;
+    }
 
-.nav-links a {
-  color: #ccc;
-  text-decoration: none;
-  font-size: 13px;
-  transition: color 0.2s;
-}
+    .brand-logo h1 span {
+      color: #d32f2f;
+    }
 
-.nav-links a:hover {
-  color: var(--white);
-}
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #333;
+      cursor: pointer;
+    }
 
-.header-btn-action {
-  background-color: var(--primary-red);
-  color: var(--white);
-  padding: 8px 14px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: bold;
-}
+    /* Bannière Sombre / Hero */
+    .hero-banner {
+      position: relative;
+      background: #111 url('hero-bg.jpg') center/cover no-repeat;
+      padding: 30px 15px;
+      color: #fff;
+      text-align: center;
+    }
 
-/* --- HERO SECTION --- */
-.hero-section {
-  position: relative;
-  background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-  padding: 60px 20px;
-  text-align: center;
-  color: var(--white);
-}
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1;
+    }
 
-.hero-overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-}
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+      margin: 0 auto;
+    }
 
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 650px;
-  margin: 0 auto;
-}
+    .slogan-tag {
+      color: #d32f2f;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
 
-.hero-content h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+    .hero-content h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
 
-.hero-slogan {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--white);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-top: 5px;
-  margin-bottom: 12px;
-}
+    .hero-content p {
+      font-size: 12px;
+      color: #ddd;
+      margin-bottom: 15px;
+    }
 
-.hero-welcome {
-  font-size: 13px;
-  color: #dddddd;
-  margin-bottom: 25px;
-  line-height: 1.5;
-}
+    /* Barre de recherche */
+    .search-bar {
+      display: flex;
+      background: #fff;
+      border-radius: 25px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
 
-.search-box {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-}
+    .search-bar input {
+      flex: 1;
+      border: none;
+      padding: 10px 15px;
+      outline: none;
+      font-size: 12px;
+      color: #333;
+    }
 
-.search-box input {
-  flex: 1;
-  padding: 12px 14px;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  outline: none;
-}
+    .search-bar button {
+      background: #d32f2f;
+      border: none;
+      color: #fff;
+      padding: 0 15px;
+      cursor: pointer;
+    }
 
-.search-box button {
-  background: var(--primary-red);
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-}
+    /* Badges */
+    .badges {
+      font-size: 11px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
 
-.hero-features {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  font-size: 12px;
-  color: #bbb;
-  margin-bottom: 25px;
-  flex-wrap: wrap;
-}
+    .btn-action-hero {
+      display: inline-block;
+      border: 1.5px solid #fff;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-.hero-btn-action {
-  display: inline-block;
-  background-color: var(--primary-red);
-  color: var(--white);
-  padding: 12px 24px;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
-}
+    /* Section Services */
+    .services-section {
+      padding: 20px 15px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-/* --- SECTION CARD STANDARD --- */
-.section-card {
-  background-color: var(--white);
-  border-radius: 10px;
-  padding: 25px 20px;
-  margin-bottom: 25px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
+    .services-section h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
 
-.section-title {
-  text-align: center;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #f5f5f5;
-  padding-bottom: 12px;
-}
+    /* Filtres */
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
 
-.section-title h2 {
-  color: var(--primary-red);
-  font-size: 18px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
+    .filter-tabs button {
+      background: #fff;
+      color: #444;
+      border: 1px solid #ddd;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
 
-.section-title p {
-  font-size: 12px;
-  color: var(--text-muted);
-}
+    .filter-tabs button.active {
+      background: #d32f2f;
+      color: #fff;
+      border-color: #d32f2f;
+    }
 
-.subtitle-red {
-  color: var(--primary-red) !important;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+    /* Message Aucun Service */
+    .empty-state {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 30px 15px;
+      text-align: center;
+      color: #777;
+      margin-bottom: 20px;
+    }
 
-/* --- COMMENT CA MARCHE --- */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-}
+    .empty-state i {
+      font-size: 35px;
+      color: #ccc;
+      margin-bottom: 8px;
+    }
 
-.step-card {
-  text-align: center;
-  padding: 15px;
-  background: #fafafa;
-  border-radius: 8px;
-}
+    /* Sections Complémentaires (En bas) */
+    .extra-sections {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 15px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-.step-icon {
-  font-size: 24px;
-  color: var(--primary-red);
-  margin-bottom: 8px;
-}
+    .card-box {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+    }
 
-.step-card h3 {
-  font-size: 14px;
-  margin-bottom: 6px;
-}
+    .card-box h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #d32f2f;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
 
-.step-card p {
-  font-size: 12px;
-  color: var(--text-muted);
-}
+    .card-box p, .card-box li {
+      font-size: 12px;
+      color: #444;
+      line-height: 1.5;
+    }
 
-/* --- A PROPOS --- */
-.about-content {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  font-size: 13px;
-}
+    .card-box ul {
+      padding-left: 15px;
+    }
 
-.about-block h3 {
-  font-size: 15px;
-  color: #111;
-  margin-bottom: 6px;
-}
+    details {
+      background: #fdfdfd;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 6px;
+      cursor: pointer;
+    }
 
-.commitments-box {
-  background: #fcfcfc;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #f0f0f0;
-}
+    summary {
+      font-weight: 700;
+      font-size: 12px;
+      color: #222;
+    }
 
-.commitments-box h3 {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 10px;
-}
+    /* Barre de Navigation du bas */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 0;
+      z-index: 1000;
+    }
 
-.commitments-box ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+    .bottom-nav a {
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      font-size: 10px;
+    }
 
-.commitments-box li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
+    .bottom-nav a.active {
+      color: #d32f2f;
+    }
 
-.icon-yellow { color: #fbc02d; margin-top: 3px; }
-.icon-green { color: #2e7d32; margin-top: 3px; }
-.icon-red { color: var(--primary-red); margin-top: 3px; }
+    .bottom-nav i {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
 
-.quote-text {
-  text-align: center;
-  font-style: italic;
-  color: var(--text-muted);
-  font-size: 12px;
-}
+  <!-- En-tête / Header -->
+  <header class="top-header">
+    <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+    
+    <div class="brand-logo">
+      <!-- Votre image de logo -->
+      <img src="logo.png" alt="CAMU SERVICES">
+      <h1>CAMU <span>SERVICES</span></h1>
+    </div>
 
-/* --- FAQ & ACCORDEONS --- */
-.faq-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+    <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+  </header>
 
-.faq-item {
-  background: #fdfdfd;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 12px 15px;
-  cursor: pointer;
-}
+  <main>
+    <!-- Bannière Sombre / Hero Section -->
+    <section class="hero-banner">
+      <div class="hero-overlay"></div>
+      
+      <div class="hero-content">
+        <p class="slogan-tag">TROUVEZ. ACHETEZ. RÉSERVEZ.</p>
+        <h2>Bienvenue sur CAMU SERVICES</h2>
+        <p>Découvrez des prestations qualifiées ou proposez vos services en tant qu'Entrepreneur.</p>
 
-.faq-item summary {
-  font-weight: 700;
-  font-size: 13px;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+        <!-- Recherche -->
+        <div class="search-bar">
+          <input type="text" placeholder="Quel service recherchez-vous ?">
+          <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
 
-.faq-answer {
-  font-size: 13px;
-  color: #555;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px dashed #eee;
-  line-height: 1.5;
-}
+        <!-- Badges -->
+        <div class="badges">
+          <div><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Entrepreneurs et prestataires vérifiés</div>
+          <div><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Mises en relation directes via WhatsApp</div>
+        </div>
 
-.support-banner {
-  background-color: #ffebee;
-  border: 1px solid #ffcdd2;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  margin-top: 15px;
-}
+        <a href="publier.html" class="btn-action-hero">+ Proposer un service</a>
+      </div>
+    </section>
 
-.support-banner h4 {
-  color: var(--dark-red);
-  font-size: 14px;
-}
+    <!-- Services Récents -->
+    <section class="services-section">
+      <h3>Services récents</h3>
+      
+      <!-- Filtres -->
+      <div class="filter-tabs">
+        <button class="active">Toutes</button>
+        <button>Services</button>
+        <button>Ventes</button>
+        <button>Emplois</button>
+      </div>
 
-.support-banner p {
-  font-size: 12px;
-  color: #555;
-  margin-bottom: 8px;
-}
+      <!-- État vide si aucune annonce -->
+      <div class="empty-state">
+        <i class="fa-solid fa-folder-open"></i>
+        <p style="font-size: 13px; font-weight: bold; color: #444;">Aucun service disponible pour le moment.</p>
+        <p style="font-size: 12px; color: #d32f2f; margin-top: 4px;">Soyez le premier à proposer un service !</p>
+      </div>
+    </section>
 
-.support-btn {
-  background: var(--primary-red);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  text-decoration: none;
-  font-weight: bold;
-  display: inline-block;
-}
+    <!-- SECTIONS DU BAS -->
+    <div class="extra-sections">
+      
+      <!-- À Propos -->
+      <div class="card-box">
+        <h4><i class="fa-solid fa-circle-info"></i> À Propos de CAMU SERVICES</h4>
+        <p><strong>CAMU SERVICES</strong> est une plateforme dédiée à la mise en relation directe entre Entrepreneurs et clients. Notre objectif est de faciliter les échanges en toute transparence.</p>
+      </div>
 
-/* --- CONFIDENTIALITE --- */
-.privacy-content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  font-size: 13px;
-}
+      <!-- Aide & FAQ -->
+      <div class="card-box">
+        <h4><i class="fa-solid fa-circle-question"></i> Aide & FAQ</h4>
+        <details>
+          <summary>Comment publier un service ?</summary>
+          <p style="margin-top: 5px;">Cliquez sur « + Proposer un service » ou sur « Publier » en bas pour remplir le formulaire.</p>
+        </details>
+        <details>
+          <summary>Comment contacter un Entrepreneur ?</summary>
+          <p style="margin-top: 5px;">Utilisez le bouton de contact sur la fiche du service pour lui écrire sur WhatsApp.</p>
+        </details>
+      </div>
 
-.privacy-item h3 {
-  font-size: 14px;
-  font-weight: 700;
-  color: #111;
-  margin-bottom: 4px;
-}
+      <!-- Conditionnalités -->
+      <div class="card-box">
+        <h4><i class="fa-solid fa-file-contract"></i> Conditionnalités</h4>
+        <ul>
+          <li>Chaque publication doit concerner une prestation réelle.</li>
+          <li>Les Entrepreneurs gèrent directement leurs prestations avec les clients.</li>
+        </ul>
+      </div>
 
-.privacy-contact {
-  background-color: #fafafa;
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 3px solid var(--primary-red);
-}
+      <!-- Confidentialité -->
+      <div class="card-box">
+        <h4><i class="fa-solid fa-shield-halved"></i> Confidentialité</h4>
+        <p>Vos informations servent uniquement à la mise en relation et à l'affichage de vos annonces sur la plateforme.</p>
+      </div>
 
-.privacy-contact h3 {
-  color: var(--primary-red);
-  font-size: 13px;
-}
+    </div>
+  </main>
 
-/* --- FOOTER --- */
-.main-footer {
-  background-color: #111111;
-  color: var(--white);
-  padding: 25px 20px 15px;
-  margin-top: 30px;
-}
+  <!-- Navigation du bas -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="active">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="espace.html">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Espace</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+  </nav>
 
-.footer-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  border-bottom: 1px solid #222;
-  padding-bottom: 15px;
-}
-
-.footer-brand h3 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  color: var(--white);
-}
-
-.footer-brand p {
-  font-size: 11px;
-  color: #888;
-}
-
-.footer-links {
-  display: flex;
-  gap: 15px;
-}
-
-.footer-links a {
-  color: #aaa;
-  text-decoration: none;
-  font-size: 12px;
-}
-
-.footer-bottom {
-  text-align: center;
-  padding-top: 12px;
-  font-size: 11px;
-  color: #666;
-}
-
-/* RESPONSIF MOBILE */
-@media (max-width: 600px) {
-  .nav-links { display: none; }
-  .hero-content h1 { font-size: 22px; }
-  .hero-slogan { font-size: 13px; }
-  .footer-container { flex-direction: column; text-align: center; }
-}
+</body>
+</html>
