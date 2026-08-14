@@ -1,0 +1,407 @@
+/* ==========================================
+   1. REINITIALISATION ET STYLES DE BASE
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f5f7;
+  padding-bottom: 70px; /* Espace pour la barre de navigation fixe */
+  color: #333333;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================
+   2. EN-TÊTE ET CENTRAGE DU LOGO
+   ========================================== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar .menu-icon, 
+.top-bar .user-icon {
+  width: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #222222;
+}
+
+.top-bar .user-icon {
+  text-align: right;
+}
+
+/* Centrage parfait du logo et du titre */
+.brand-logo, 
+.header, 
+div.logo {
+  flex: 1;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100%;
+}
+
+.brand-logo img, 
+.header img, 
+div.logo img {
+  display: block !important;
+  margin: 0 auto 6px auto !important;
+  max-height: 55px !important;
+  width: auto !important;
+  object-fit: contain;
+}
+
+.brand-logo h2, 
+.header h2, 
+div.logo h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111111;
+  margin: 0;
+}
+
+.brand-logo h2 span {
+  color: #d93025;
+}
+
+.brand-logo p, 
+.header p, 
+div.logo p {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 2px;
+}
+
+/* ==========================================
+   3. SECTION HERO (ACCEUIL)
+   ========================================== */
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+              url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+  padding: 35px 20px 40px 20px;
+  color: #ffffff;
+}
+
+.hero-content h1 {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-size: 13px;
+  color: #dddddd;
+  margin-bottom: 20px;
+}
+
+/* Barre de recherche Hero */
+.search-box {
+  display: flex;
+  background: #ffffff;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-box .btn-search {
+  background-color: #e53935;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.hero-bullets {
+  list-style: none;
+  margin-bottom: 25px;
+}
+
+.hero-bullets li {
+  font-size: 13px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-hero-action {
+  display: inline-block;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ==========================================
+   4. BLOCS SERVICES ET ANNONCES
+   ========================================== */
+.features-section {
+  padding: 15px;
+}
+
+.feature-item {
+  background: #3c3836;
+  color: #ffffff;
+  padding: 16px 20px;
+  border-bottom: 1px solid #4e4a47;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.feature-item:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.feature-item:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom: none;
+}
+
+.feature-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Conteneur des cartes d'annonces centrales */
+.annonces-container {
+  padding: 20px 15px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222222;
+  margin-bottom: 15px;
+}
+
+.annonces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.card-annonce, .card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eeeeee;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ==========================================
+   5. MENU LATÉRAL (SIDEBAR & OVERLAY)
+   ========================================== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background: #ffffff;
+  z-index: 1000;
+  transition: 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header .close-btn {
+  font-size: 28px;
+  cursor: pointer;
+  color: #888888;
+}
+
+.sidebar-header .login-link {
+  color: #e53935;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.sidebar-menu {
+  list-style: none;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  color: #333333;
+  text-decoration: none;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* ==========================================
+   6. PIED DE PAGE (STYLE MADE-IN-CHINA)
+   ========================================== */
+.footer-mic {
+  background-color: #f4f4f4;
+  padding: 20px 0 80px 0;
+}
+
+.mic-menu-group {
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.mic-menu-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #444444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+}
+
+.mic-menu-item:last-child {
+  border-bottom: none;
+}
+
+.mic-copyright {
+  padding: 15px 20px;
+  font-size: 12px;
+  color: #888888;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ==========================================
+   7. BARRE DE NAVIGATION FIXE DU BAS
+   ========================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #e0e0e0;
+  z-index: 900;
+}
+
+.bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #666666;
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.bottom-nav .nav-item i {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item.active {
+  color: #e53935;
+}
+/* Barre de filtres défilante */
+.category-bar {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  white-space: nowrap;
+}
+
+.category-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-btn {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cat-btn.active {
+  background-color: #e53935;
+  color: #ffffff;
+  border-color: #e53935;
+}
