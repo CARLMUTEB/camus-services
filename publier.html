@@ -3,220 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Publier une annonce - CAMU SERVICES</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Publier une annonce - CAMUS SERVICES</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* Styles spécifiques pour rendre le formulaire ultra-pro */
-    .form-container {
-      max-width: 500px;
-      margin: 20px auto 80px auto;
-      padding: 25px 20px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      border: 1px solid #eaeaea;
-    }
-
-    .form-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .form-header h2 {
-      font-size: 20px;
-      color: #111;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .form-header p {
-      font-size: 13px;
-      color: #666;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .form-group label i {
-      color: #e53935;
-      font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #cccccc;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      background-color: #fafafa;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: #e53935;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
-    }
-
-    /* Style du bouton d'importation de fichier */
-    .file-upload-wrapper {
-      border: 2px dashed #ddd;
-      padding: 20px;
-      text-align: center;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .file-upload-wrapper:hover {
-      background-color: #f0f0f0;
-    }
-
-    .file-upload-wrapper i {
-      font-size: 24px;
-      color: #888;
-      margin-bottom: 8px;
-    }
-
-    .file-upload-wrapper p {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .btn-submit-pro {
-      width: 100%;
-      padding: 14px;
-      background-color: #e53935;
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
-      transition: background 0.2s ease;
-      margin-top: 10px;
-    }
-
-    .btn-submit-pro:hover {
-      background-color: #d32f2f;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Menu Latéral (Sidebar) -->
-  <div id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-      <span class="close-btn" onclick="toggleMenu()">&times;</span>
-      <a href="#" class="login-link">Se connecter</a>
-    </div>
-    <ul class="sidebar-menu">
-      <li><a href="index.html"><i class="fa-solid fa-layer-group"></i> Toutes les catégories <i class="fa-solid fa-chevron-right arrow"></i></a></li>
-      <li><a href="publier.html"><i class="fa-solid fa-plus"></i> Publier une annonce <i class="fa-solid fa-chevron-right arrow"></i></a></li>
-      <li><a href="favoris.html"><i class="fa-solid fa-star"></i> Mes Favoris <i class="fa-solid fa-chevron-right arrow"></i></a></li>
-      <li><a href="chat.html"><i class="fa-solid fa-comments"></i> Centre de messagerie <i class="fa-solid fa-chevron-right arrow"></i></a></li>
-      <li><a href="confidentialite.html"><i class="fa-solid fa-shield-halved"></i> Support & Confidentialité <i class="fa-solid fa-chevron-right arrow"></i></a></li>
-    </ul>
-  </div>
-
-  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-  <!-- En-tête -->
   <header class="top-bar">
-    <div class="menu-icon" onclick="toggleMenu()">
-      <i class="fa-solid fa-bars"></i>
-    </div>
+    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
     <div class="brand-logo">
-      <img src="images/logo.png" alt="CAMU SERVICES" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <h2 style="display:none;">CAMU <span>SERVICES</span></h2>
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
     </div>
-    <div class="user-icon">
-      <i class="fa-regular fa-user"></i>
-    </div>
+    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
   </header>
 
-  <!-- FORMULAIRE PROFESSIONNEL -->
-  <main class="form-container">
-    <div class="form-header">
-      <h2>Publier une annonce</h2>
-      <p>Remplissez le formulaire ci-dessous pour rendre votre service visible auprès de nos clients.</p>
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
     </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
 
-    <form id="publishForm" onsubmit="saveAd(event)">
+  <main class="annonces-container" style="padding-top: 30px;">
+    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 25px;">
+      <h2 style="text-align: center; margin-bottom: 10px;">Publier une annonce</h2>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Remplissez le formulaire ci-dessous pour rendre votre service visible auprès de nos clients.</p>
       
-      <div class="form-group">
-        <label for="title"><i class="fa-solid fa-heading"></i> Titre de l'annonce</label>
-        <input type="text" id="title" required placeholder="Ex: Salon de Coiffure Pro, Vente de véhicule...">
-      </div>
-
-      <div class="form-group">
-        <label for="category"><i class="fa-solid fa-list"></i> Catégorie</label>
-        <select id="category">
-          <option value="Services">🛠️ Services</option>
-          <option value="Immobilier">🏠 Immobilier</option>
-          <option value="Véhicules">🚗 Véhicules</option>
-          <option value="Électronique">📱 Électronique</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="city"><i class="fa-solid fa-location-dot"></i> Ville / Emplacement</label>
-        <input type="text" id="city" required placeholder="Ex: Kolwezi, Lubumbashi, Centre-ville...">
-      </div>
-
-      <div class="form-group">
-        <label for="price"><i class="fa-solid fa-tag"></i> Prix ($)</label>
-        <input type="text" id="price" placeholder="Ex: 50 ou Sur devis">
-      </div>
-
-      <div class="form-group">
-        <label for="whatsapp"><i class="fa-brands fa-whatsapp"></i> Numéro WhatsApp (avec indicatif)</label>
-        <input type="text" id="whatsapp" required placeholder="Ex: 243818211981">
-      </div>
-
-      <div class="form-group">
-        <label><i class="fa-solid fa-image"></i> Photo de l'annonce</label>
-        <div class="file-upload-wrapper" onclick="document.getElementById('imageInput').click()">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <p>Cliquez pour choisir une photo</p>
-          <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+      <form id="publishForm">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-heading" style="color: #e53935;"></i> Titre de l'annonce</label>
+          <input type="text" id="title" placeholder="Ex: Salon de Coiffure Pro, Vente de véhicule..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
         </div>
-        <div id="imagePreviewContainer" style="margin-top: 10px; display: none; text-align: center;">
-          <img id="imagePreview" style="max-height: 160px; border-radius: 8px; margin: 0 auto; border: 1px solid #ddd;">
-        </div>
-      </div>
 
-      <button type="submit" class="btn-submit-pro"><i class="fa-solid fa-paper-plane"></i> Publier l'annonce</button>
-    </form>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-list" style="color: #e53935;"></i> Catégorie</label>
+          <select id="category" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff;">
+            <option value="Services">Services</option>
+            <option value="Ventes">Ventes</option>
+            <option value="Emplois">Emplois</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description</label>
+          <textarea id="description" rows="4" placeholder="Décrivez votre service ou produit..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; width: 100%;">Publier l'annonce</button>
+      </form>
+    </div>
   </main>
 
-  <!-- Navigation fixe du bas -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-star"></i><span>Favoris</span></a>
-    <a href="publier.html" class="nav-item active btn-add"><i class="fa-solid fa-plus"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Chat</span></a>
+    <a href="publier.html" class="nav-item active"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
   </nav>
 
-  <script src="js/app.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+  </script>
 </body>
 </html>
