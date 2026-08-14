@@ -3,183 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Espace Administration — CAMU SERVICES</title>
-  
-  <!-- FontAwesome -->
+  <title>Administration — CAMU SERVICES</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f4f6f8; color: #222; padding-bottom: 80px; }
 
-    body { background-color: #f4f6f8; color: #222; line-height: 1.5; padding-bottom: 80px; }
-
-    /* Modal de Connexion Mot de Passe Admin */
-    .login-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: #111;
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .login-box {
-      background: #fff;
-      width: 100%;
-      max-width: 360px;
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
-
-    .login-box i.lock-icon {
-      font-size: 40px;
-      color: #d32f2f;
-      margin-bottom: 15px;
-    }
-
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .login-box { background: #fff; width: 100%; max-width: 360px; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .login-box i.lock-icon { font-size: 40px; color: #d32f2f; margin-bottom: 15px; }
     .login-box h2 { font-size: 18px; color: #111; margin-bottom: 5px; }
     .login-box p { font-size: 12px; color: #666; margin-bottom: 20px; }
+    .login-box input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; margin-bottom: 15px; text-align: center; outline: none; }
+    .login-box button { width: 100%; background: #d32f2f; color: #fff; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; }
+    .error-msg { color: #d32f2f; font-size: 11px; font-weight: bold; margin-top: 10px; display: none; }
 
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 15px;
-      text-align: center;
-      outline: none;
-    }
-
-    .login-box button {
-      width: 100%;
-      background: #d32f2f;
-      color: #fff;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .error-msg {
-      color: #d32f2f;
-      font-size: 11px;
-      font-weight: bold;
-      margin-top: 10px;
-      display: none;
-    }
-
-    /* En-tête Admin Sombre */
-    .admin-header {
-      background: #111;
-      color: #fff;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0; z-index: 1000;
-      height: 60px;
-    }
-
+    .admin-header { background: #111; color: #fff; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; height: 60px; }
     .admin-header h1 { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
     .admin-header h1 span { color: #d32f2f; }
-    .admin-header a { color: #fff; font-size: 18px; }
+    .admin-header a { color: #fff; font-size: 18px; text-decoration: none; }
 
     .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+    .section-title { font-size: 14px; font-weight: 800; color: #111; margin: 15px 0 10px; text-transform: uppercase; }
+    .panel-box { background: #ffffff; border-radius: 10px; padding: 15px; border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    .panel-box h4 { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 10px; }
 
-    /* Cartes d'action rapides Admin */
-    .admin-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .admin-card {
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }
-
-    .admin-card i { font-size: 24px; color: #d32f2f; margin-bottom: 8px; }
-    .admin-card h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 4px; }
-    .admin-card span { font-size: 11px; color: #666; }
-
-    /* Titres de section */
-    .section-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #111;
-      margin: 15px 0 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Panneaux d'affichage des données */
-    .panel-box {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 15px;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 15px;
-    }
-
-    .panel-box h4 { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-
-    /* Formulaires d'administration */
-    .form-group { margin-bottom: 10px; }
-    .form-group label { display: block; font-size: 11px; font-weight: bold; color: #555; margin-bottom: 4px; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; outline: none; }
-
-    .btn-admin-submit {
-      background: #d32f2f;
-      color: #fff;
-      border: none;
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* Listes compactes des données */
-    .data-list { list-style: none; }
-    .data-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
-    .data-item:last-child { border-bottom: none; }
-
-    /* Badges d'état */
-    .badge-status { padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; }
-    .badge-active { background: #e8f5e9; color: #2e7d32; }
-    .badge-pending { background: #fff8e1; color: #f57f17; }
-    .badge-alert { background: #ffebee; color: #c62828; }
-
-    /* Navigation du bas */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; width: 100%;
-      background: #ffffff;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      z-index: 1000;
-      height: 65px;
-    }
-
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
     .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
@@ -187,13 +36,11 @@
 </head>
 <body>
 
-  <!-- Écran de vérification du mot de passe Administrateur -->
   <div id="admin-login-modal" class="login-overlay">
     <div class="login-box">
       <i class="fa-solid fa-user-shield lock-icon"></i>
       <h2>Accès Sécurisé</h2>
-      <p>Entrez le mot de passe administrateur pour déverrouiller le panneau.</p>
-      
+      <p>Entrez le mot de passe administrateur (Carl1800)</p>
       <form onsubmit="checkAdminPassword(event)">
         <input type="password" id="admin-pass-input" placeholder="Mot de passe" required>
         <button type="submit">Se connecter</button>
@@ -202,121 +49,35 @@
     </div>
   </div>
 
-  <!-- Contenu Administrateur (Caché par défaut jusqu'à la connexion) -->
   <div id="admin-content" style="display: none;">
-    <!-- En-tête Admin compact -->
     <header class="admin-header">
       <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h1>Panneau <span>Administrateur</span></h1>
-      <button onclick="logoutAdmin()" style="color:#fff; font-size:12px; font-weight:bold;"><i class="fa-solid fa-right-from-bracket"></i> Quitter</button>
+      <button onclick="logoutAdmin()" style="background:none; border:none; color:#fff; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Quitter</button>
     </header>
 
     <main class="container">
-
-      <!-- Statistiques d'Administration -->
-      <div class="admin-grid">
-        <div class="admin-card">
-          <i class="fa-solid fa-users"></i>
-          <h3>Profils Utilisateurs</h3>
-          <span>Clients & Entrepreneurs</span>
-        </div>
-        <div class="admin-card">
-          <i class="fa-solid fa-credit-card"></i>
-          <h3>Abonnements</h3>
-          <span>Gestion des forfaits</span>
-        </div>
-        <div class="admin-card">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          <h3>Signalements</h3>
-          <span>Modération du contenu</span>
-        </div>
-        <div class="admin-card">
-          <i class="fa-solid fa-bullhorn"></i>
-          <h3>Annonces Site</h3>
-          <span>Catalogues & Infos</span>
-        </div>
-      </div>
-
-      <!-- 1. Section : Comptes Utilisateurs & Profils -->
-      <div class="section-title">Gestion des Profils & Abonnements</div>
-      
+      <div class="section-title">Tableau de Bord</div>
       <div class="panel-box">
-        <h4><i class="fa-solid fa-id-card" style="color: #2e7d32;"></i> Profils Inscrits Récemment</h4>
-        <ul class="data-list">
-          <li class="data-item">
-            <div>
-              <strong>Jean Mukendi</strong> (Entrepreneur)<br>
-              <span style="color:#777; font-size:11px;">Services Électriques | +243 81...</span>
-            </div>
-            <span class="badge-status badge-active">Vérifié</span>
-          </li>
-          <li class="data-item">
-            <div>
-              <strong>Eunice K.</strong> (Client)<br>
-              <span style="color:#777; font-size:11px;">Client depuis Fév 2026</span>
-            </div>
-            <span class="badge-status badge-active">Actif</span>
-          </li>
-        </ul>
+        <h4>Gestion des profils et abonnements active</h4>
+        <p style="font-size: 12px; color: #666;">Bienvenue dans l'espace de gestion de CAMU SERVICES.</p>
       </div>
-
-      <!-- 2. Section : Publication d'Informations Officielles -->
-      <div class="section-title">Communication Officielles</div>
-
-      <div class="panel-box">
-        <h4><i class="fa-solid fa-pen-to-square" style="color: #d32f2f;"></i> Publier une Annonce Administrative</h4>
-        <form onsubmit="event.preventDefault(); alert('Communication publiée avec succès !');">
-          <div class="form-group">
-            <label>Type de publication</label>
-            <select>
-              <option>Information Officielle du Site</option>
-              <option>Catalogue de Services Vedettes</option>
-              <option>Nouveau Forfait Entrepreneur</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Titre</label>
-            <input type="text" placeholder="Titre de la communication" required>
-          </div>
-          <div class="form-group">
-            <label>Contenu du message</label>
-            <textarea rows="3" placeholder="Description complète..." required></textarea>
-          </div>
-          <button type="submit" class="btn-admin-submit">Publier officiellement</button>
-        </form>
-      </div>
-
     </main>
   </div>
 
-  <!-- Navigation du bas -->
   <nav class="bottom-nav">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="profil.html">
-      <i class="fa-solid fa-user"></i>
-      <span>Profil</span>
-    </a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
   <script>
-    // Vérification du mot de passe Administrateur
     function checkAdminPassword(event) {
       event.preventDefault();
       const inputPass = document.getElementById('admin-pass-input').value;
       const errorMsg = document.getElementById('login-error');
 
-      // Validation avec le mot de passe : Carl1800
       if (inputPass === 'Carl1800') {
         document.getElementById('admin-login-modal').style.display = 'none';
         document.getElementById('admin-content').style.display = 'block';
@@ -332,6 +93,5 @@
       document.getElementById('admin-pass-input').value = '';
     }
   </script>
-
 </body>
 </html>
