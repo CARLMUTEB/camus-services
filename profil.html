@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Inscription & Conditionnalités</title>
+  <title>CAMU SERVICES — Inscription Entrepreneur</title>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,6 @@
       padding-bottom: 80px;
     }
 
-    /* En-tête */
     .top-header {
       background: #111111;
       color: #ffffff;
@@ -57,7 +56,6 @@
       padding: 0 15px;
     }
 
-    /* Carte du Formulaire */
     .auth-card {
       background: #ffffff;
       border-radius: 12px;
@@ -66,7 +64,6 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
-    /* Onglets Connexion / Inscription */
     .tab-buttons {
       display: flex;
       background: #f1f1f1;
@@ -94,7 +91,6 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    /* Formulaires */
     .form-group {
       margin-bottom: 15px;
     }
@@ -120,7 +116,9 @@
       font-size: 14px;
     }
 
-    .input-wrapper input, .input-wrapper select {
+    .input-wrapper input, 
+    .input-wrapper select, 
+    .input-wrapper textarea {
       width: 100%;
       padding: 12px 12px 12px 38px;
       border: 1px solid #ddd;
@@ -130,11 +128,19 @@
       background: #fff;
     }
 
-    .input-wrapper input:focus, .input-wrapper select:focus {
+    .input-wrapper textarea {
+      height: 80px;
+      resize: none;
+      padding-top: 10px;
+    }
+
+    .input-wrapper input:focus, 
+    .input-wrapper select:focus, 
+    .input-wrapper textarea:focus {
       border-color: #d32f2f;
     }
 
-    /* Case à cocher des Conditionnalités */
+    /* Conditionnalités */
     .terms-group {
       display: flex;
       align-items: flex-start;
@@ -177,7 +183,21 @@
       cursor: not-allowed;
     }
 
-    /* Bottom Navigation */
+    /* Section spécifique entrepreneur */
+    .entrepreneur-fields {
+      border-top: 2px dashed #eee;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      font-weight: 800;
+      color: #d32f2f;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: #ffffff; border-top: 1px solid #eee;
@@ -236,35 +256,75 @@
         <button type="submit" class="btn-submit">Se Connecter</button>
       </form>
 
-      <!-- FORMULAIRE D'INSCRIPTION AVEC CONDITIONNALITÉS -->
+      <!-- FORMULAIRE D'INSCRIPTION DYNAMIQUE -->
       <form id="register-form" onsubmit="handleRegister(event)">
+        
         <div class="form-group">
-          <label>Nom complet</label>
+          <label>Type de Profil</label>
           <div class="input-wrapper">
-            <i class="fa-solid fa-id-card"></i>
-            <input type="text" id="reg-name" placeholder="Votre nom et prénom" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Profil d'utilisateur</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-briefcase"></i>
-            <select id="reg-role" required>
-              <option value="client">Client (Je cherche des services)</option>
-              <option value="entrepreneur">Entrepreneur (Je propose des services)</option>
+            <i class="fa-solid fa-user-gear"></i>
+            <select id="reg-role" onchange="toggleRoleFields()" required>
+              <option value="entrepreneur">Entrepreneur / Prestataire</option>
+              <option value="client">Client simple</option>
             </select>
           </div>
         </div>
 
+        <!-- Informations Générales -->
         <div class="form-group">
-          <label>Numéro WhatsApp (pour contact direct)</label>
+          <label>Nom complet / Raison Sociale</label>
           <div class="input-wrapper">
-            <i class="fa-brands fa-whatsapp"></i>
-            <input type="tel" id="reg-phone" placeholder="+243..." required>
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text" id="reg-name" placeholder="Ex: Carl Muteb ou CAMU Services" required>
           </div>
         </div>
 
+        <div class="form-group">
+          <label>Numéro WhatsApp (Contact principal)</label>
+          <div class="input-wrapper">
+            <i class="fa-brands fa-whatsapp"></i>
+            <input type="tel" id="reg-phone" placeholder="Ex: +243976993469" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Adresse Email</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="reg-email" placeholder="Ex: contact@camuservices.com" required>
+          </div>
+        </div>
+
+        <!-- CHAMPS SPÉCIFIQUES ENTREPRENEUR -->
+        <div id="entrepreneur-section" class="entrepreneur-fields">
+          <div class="section-subtitle"><i class="fa-solid fa-building"></i> Informations Professionnelles</div>
+
+          <div class="form-group">
+            <label>Adresse Physique (Ville, Commune, Avenue)</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-location-dot"></i>
+              <input type="text" id="reg-address" placeholder="Ex: Lubumbashi, Q. Gambela, Av. Kasai N°12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Photo de Profil / Logo</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-image"></i>
+              <input type="file" id="reg-photo" accept="image/*">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Petite Description de vos Services / Activités</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-pen" style="top: 20px;"></i>
+              <textarea id="reg-desc" placeholder="Présentez brièvement vos services, expertises et prestations..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
         <div class="form-group">
           <label>Créer un Mot de passe</label>
           <div class="input-wrapper">
@@ -273,15 +333,15 @@
           </div>
         </div>
 
-        <!-- CONDITIONNALITÉS D'INSCRIPTION -->
+        <!-- Conditionnalités -->
         <div class="terms-group">
           <input type="checkbox" id="accept-terms" onchange="toggleSubmitBtn()">
           <label for="accept-terms">
-            J'accepte les <a href="#" onclick="alert('Conditionnalités CAMU SERVICES :\n1. Véracité des informations fournies.\n2. Respect du professionnalisme et des engagements envers les clients.\n3. Interdiction de toute publication frauduleuse ou trompeuse.'); return false;">Conditionnalités & Règlements</a> de la plateforme CAMU SERVICES.
+            J'accepte les <a href="#" onclick="alert('CONDITIONNALITÉS ENTREPRENEUR :\n1. Fournir une adresse physique exacte et un numéro WhatsApp actif.\n2. Respecter la qualité des services promis aux clients.\n3. Toute fausse déclaration ou tentative de fraude entraînera la suspension définitive du compte.'); return false;">Conditionnalités & Engagements</a> de la plateforme CAMU SERVICES.
           </label>
         </div>
 
-        <button type="submit" id="btn-register-submit" class="btn-submit" disabled>Créer mon Compte</button>
+        <button type="submit" id="btn-register-submit" class="btn-submit" disabled>Créer mon Compte Entrepreneur</button>
       </form>
 
     </div>
@@ -327,7 +387,20 @@
       }
     }
 
-    // Activer / Désactiver le bouton selon la case à cocher
+    function toggleRoleFields() {
+      const role = document.getElementById('reg-role').value;
+      const entSection = document.getElementById('entrepreneur-section');
+      const submitBtn = document.getElementById('btn-register-submit');
+
+      if (role === 'entrepreneur') {
+        entSection.classList.remove('hidden');
+        submitBtn.textContent = 'Créer mon Compte Entrepreneur';
+      } else {
+        entSection.classList.add('hidden');
+        submitBtn.textContent = 'Créer mon Compte Client';
+      }
+    }
+
     function toggleSubmitBtn() {
       const checkbox = document.getElementById('accept-terms');
       const submitBtn = document.getElementById('btn-register-submit');
@@ -336,8 +409,7 @@
 
     function handleRegister(e) {
       e.preventDefault();
-      alert('Inscription réussie sous réserve de validation de vos informations !');
-      // Redirection ou enregistrement
+      alert('Demande d\'inscription envoyée avec succès ! Vos données entrepreneur sont enregistrées.');
     }
   </script>
 
