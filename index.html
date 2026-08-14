@@ -19,6 +19,7 @@
       background-color: #f4f4f9;
       color: #333;
       padding-top: 60px;
+      padding-bottom: 75px;
     }
 
     /* En-tête (Header Top) */
@@ -150,7 +151,7 @@
       color: #d32f2f;
     }
 
-    /* Zone de Contenu Exemple */
+    /* Zone de Contenu */
     .container {
       padding: 15px;
       max-width: 600px;
@@ -163,6 +164,7 @@
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       text-align: center;
+      margin-bottom: 20px;
     }
 
     .welcome-card h2 {
@@ -174,17 +176,123 @@
       font-size: 13px;
       color: #666;
     }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title span {
+      font-size: 12px;
+      color: #d32f2f;
+      cursor: pointer;
+    }
+
+    /* Grille des Annonces (2 Colonnes) */
+    .annonces-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .ad-card {
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      border: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ad-img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+
+    .ad-info {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .ad-info h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ad-info .category-tag {
+      font-size: 10px;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .ad-info .price {
+      color: #d32f2f;
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .btn-contact-sm {
+      background: #111111;
+      color: #ffffff;
+      border: none;
+      padding: 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+
+    .btn-contact-sm:active {
+      background: #d32f2f;
+    }
+
+    /* Navigation Inférieure */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #ffffff; border-top: 1px solid #eee;
+      display: flex; justify-content: space-around;
+      padding: 8px 0; z-index: 1000; height: 65px;
+    }
+
+    .bottom-nav a {
+      text-align: center; color: #666; font-size: 11px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 25%; text-decoration: none;
+    }
+
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
   <!-- En-tête -->
   <header class="header-bar">
-    <a href="#" class="brand-logo">CAMU <span>SERVICES</span></a>
+    <a href="index.html" class="brand-logo">CAMU <span>SERVICES</span></a>
     <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- Arrière-plan sombre quand le menu est ouvert -->
+  <!-- Arrière-plan sombre -->
   <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
   <!-- Menu Latéral -->
@@ -200,7 +308,7 @@
       <!-- Section Catégories avec accordéon -->
       <div class="menu-link category-toggle" onclick="toggleCategories()">
         <span><i class="fa-solid fa-layer-group"></i> Catégories</span>
-        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px; transition: transform 0.2s;"></i>
       </div>
 
       <!-- Sous-menu des Catégories -->
@@ -211,28 +319,105 @@
         <a href="#" class="category-item"><i class="fa-solid fa-car"></i> Véhicules & Pièces</a>
         <a href="#" class="category-item"><i class="fa-solid fa-house-chimney"></i> Vente de Maisons</a>
         <a href="#" class="category-item"><i class="fa-solid fa-key"></i> Maisons à Louer</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablette</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablettes</a>
         <a href="#" class="category-item"><i class="fa-solid fa-laptop"></i> Électronique & Informatique</a>
         <a href="#" class="category-item"><i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux, Électricité & BTP</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux & Électricité</a>
         <a href="#" class="category-item"><i class="fa-solid fa-handshake-angle"></i> Divers & Autres Services</a>
       </div>
 
       <a href="#" class="menu-link"><i class="fa-solid fa-star"></i> Mes Favoris</a>
-      <a href="#" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
-      <a href="#" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
-      <a href="#" class="menu-link"><i class="fa-solid fa-user"></i> Mon Profil</a>
+      <a href="publier.html" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
+      <a href="chat.html" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
+      <a href="profil.html" class="menu-link"><i class="fa-solid fa-user"></i> Mon Profil</a>
       <a href="admin.html" class="menu-link"><i class="fa-solid fa-user-shield"></i> Administration</a>
     </div>
   </nav>
 
   <!-- Contenu Principal -->
   <main class="container">
+    
     <div class="welcome-card">
       <h2>Bienvenue sur CAMU SERVICES</h2>
       <p>La plateforme dynamique dédiée aux entrepreneurs et professionnels.</p>
     </div>
+
+    <!-- Titre de section -->
+    <div class="section-title">
+      Services & Offres récentes
+      <span>Voir tout</span>
+    </div>
+
+    <!-- Grille des Annonces -->
+    <div class="annonces-grid">
+      
+      <!-- Carte 1 -->
+      <div class="ad-card">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400" class="ad-img" alt="Installation">
+        <div class="ad-info">
+          <h4>Installation Solaire</h4>
+          <span class="category-tag">Travaux & Électricité</span>
+          <div class="price">Sur Devis</div>
+          <a href="chat.html" class="btn-contact-sm">Contacter</a>
+        </div>
+      </div>
+
+      <!-- Carte 2 -->
+      <div class="ad-card">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" class="ad-img" alt="Maison">
+        <div class="ad-info">
+          <h4>Villa Moderne 3 Ch.</h4>
+          <span class="category-tag">Vente de Maisons</span>
+          <div class="price">45 000 $</div>
+          <a href="chat.html" class="btn-contact-sm">Contacter</a>
+        </div>
+      </div>
+
+      <!-- Carte 3 -->
+      <div class="ad-card">
+        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400" class="ad-img" alt="Véhicule">
+        <div class="ad-info">
+          <h4>Toyota Hilux 4x4</h4>
+          <span class="category-tag">Véhicules</span>
+          <div class="price">18 500 $</div>
+          <a href="chat.html" class="btn-contact-sm">Contacter</a>
+        </div>
+      </div>
+
+      <!-- Carte 4 -->
+      <div class="ad-card">
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" class="ad-img" alt="Smartphone">
+        <div class="ad-info">
+          <h4>iPhone 15 Pro Max</h4>
+          <span class="category-tag">Téléphones</span>
+          <div class="price">1 100 $</div>
+          <a href="chat.html" class="btn-contact-sm">Contacter</a>
+        </div>
+      </div>
+
+    </div>
+
   </main>
+
+  <!-- Navigation Inférieure -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="active">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="profil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
+  </nav>
 
   <script>
     function toggleMenu() {
