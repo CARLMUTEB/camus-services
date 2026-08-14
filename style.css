@@ -1,5 +1,5 @@
 /* =======================================================
-   CAMU SERVICES - STYLES GLOBAUX & FINITIONS
+   CAMU SERVICES - STYLES GLOBAUX & FINITIONS COMPLETES
    ======================================================= */
 
 :root {
@@ -179,11 +179,11 @@ body {
   background-color: #fde8e8;
 }
 
-/* SECTION HERO AVEC IMAGE D'ARRIÈRE-PLAN */
+/* SECTION HERO AVEC IMAGE D'ARRIÈRE-PLAN & FINITIONS COMPLÈTES */
 .hero-section {
   position: relative;
-  padding: 40px 16px;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+  padding: 35px 16px;
+  background: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)), 
               url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop') no-repeat center center/cover;
   color: #ffffff;
   margin-bottom: 20px;
@@ -199,8 +199,30 @@ body {
 .hero-section p {
   font-size: 13px;
   color: #e0e0e0;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   line-height: 1.4;
+}
+
+.hero-btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 15px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-btn-action:active {
+  background: #ffffff;
+  color: #111111;
 }
 
 .hero-features {
