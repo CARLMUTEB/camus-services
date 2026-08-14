@@ -32,21 +32,37 @@
       <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="conditions.html"><span>Conditionnalités</span> <i class="fa-solid fa-angle-right"></i></a></li>
     </ul>
   </aside>
 
   <main class="annonces-container" style="padding-top: 25px;">
     
-    <div class="card" style="margin-bottom: 20px; padding: 20px; border-radius: 10px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <span id="roleBadge" style="font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Compte Utilisateur</span>
-          <h2 id="entrepreneurName" style="margin-top: 5px; font-size: 18px;">---</h2>
-          <p id="entrepreneurPhone" style="font-size: 13px; color: #666;"></p>
+    <!-- Profil & Décompte -->
+    <div class="card" style="margin-bottom: 20px; padding: 20px; border-radius: 10px; background: #fff;">
+      <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
+        <div id="profileLogoBox" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: #ffebee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid #e53935;">
+          <i class="fa-solid fa-user-tie" style="font-size: 30px; color: #e53935;"></i>
         </div>
-        <button id="logoutBtn" style="background: #ffebee; color: #c62828; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer;">
-          <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+        <div style="flex: 1;">
+          <h2 id="entrepreneurName" style="margin: 0; font-size: 18px; color: #222;">---</h2>
+          <p id="entrepreneurLocation" style="font-size: 12px; color: #666; margin: 2px 0;"></p>
+          <span id="roleBadge" style="font-size: 10px; background: #e8f5e9; color: #2e7d32; padding: 2px 6px; border-radius: 10px; font-weight: bold;">Compte Entrepreneur</span>
+        </div>
+        <button id="logoutBtn" style="background: #ffebee; color: #c62828; border: none; padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">
+          <i class="fa-solid fa-right-from-bracket"></i>
         </button>
+      </div>
+
+      <!-- Bloc Décompte 2 mois -->
+      <div id="trialBox" style="background: #fff8e1; border: 1px solid #ffe082; padding: 12px; border-radius: 8px; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: bold; color: #b78103;"><i class="fa-solid fa-clock"></i> Période d'essai gratuite :</span>
+          <span id="trialCountdown" style="font-size: 13px; font-weight: bold; color: #d32f2f;">-- jours restants</span>
+        </div>
+        <div style="background: #e0e0e0; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden;">
+          <div id="trialProgressBar" style="background: #4caf50; height: 100%; width: 100%;"></div>
+        </div>
       </div>
     </div>
 
@@ -57,9 +73,7 @@
       </a>
     </div>
 
-    <div id="myServicesGrid" class="annonces-grid">
-      <!-- Généré dynamiquement -->
-    </div>
+    <div id="myServicesGrid" class="annonces-grid"></div>
 
   </main>
 
@@ -86,39 +100,53 @@
       window.location.href = 'inscription.html';
     } else {
       document.getElementById('entrepreneurName').textContent = currentUser.name;
-      document.getElementById('entrepreneurPhone').textContent = "Téléphone : " + currentUser.phone;
-      document.getElementById('roleBadge').textContent = currentUser.role === 'client' ? 'Compte Client' : 'Compte Entrepreneur';
+      document.getElementById('entrepreneurLocation').textContent = `${currentUser.city || 'RDC'} • ${currentUser.phone || ''}`;
+      
+      if (currentUser.logo) {
+        document.getElementById('profileLogoBox').innerHTML = `<img src="${currentUser.logo}" style="width:100%; height:100%; object-fit:cover;">`;
+      }
+
+      // Logique du décompte de 2 mois (60 jours)
+      const totalTrialDays = 60;
+      const createdTime = currentUser.createdAt || new Date().getTime();
+      const currentTime = new Date().getTime();
+      const elapsedDays = Math.floor((currentTime - createdTime) / (1000 * 60 * 60 * 24));
+      const remainingDays = Math.max(0, totalTrialDays - elapsedDays);
+
+      const countDisplay = document.getElementById('trialCountdown');
+      const progressBar = document.getElementById('trialProgressBar');
+
+      countDisplay.textContent = `${remainingDays} jours restants`;
+      const percentage = (remainingDays / totalTrialDays) * 100;
+      progressBar.style.width = `${percentage}%`;
+
+      if (remainingDays <= 10) {
+        progressBar.style.background = '#e53935';
+      }
     }
 
     function loadEntrepreneurServices() {
       const grid = document.getElementById('myServicesGrid');
       const allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
-      
       const myAds = allAds.filter(ad => ad.publisher === currentUser.name && ad.phone === currentUser.phone);
 
       if (myAds.length === 0) {
-        grid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
-            <p style="color: #666;">Vous n'avez publié aucune annonce pour le moment.</p>
-            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Publier une offre</a>
-          </div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;"><p style="color: #666;">Aucune annonce publiée.</p></div>`;
         return;
       }
 
       grid.innerHTML = myAds.map(ad => `
         <div class="card" style="margin-bottom: 15px; padding: 15px; background: #fff; border-radius: 8px;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
-              <small style="color: #888; font-size: 11px;">${ad.date || ''}</small>
-            </div>
-            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #222;">${ad.title}</h4>
-            <p style="font-size: 13px; color: #555; margin-bottom: 12px;">${ad.description}</p>
-            <div style="font-weight: bold; color: #2e7d32; font-size: 14px; margin-bottom: 10px;">${ad.price}</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
+            <small style="color: #888; font-size: 11px;">${ad.date || ''}</small>
           </div>
+          <h4 style="font-size: 15px; font-weight: bold; margin-bottom: 5px; color: #222;">${ad.title}</h4>
+          <p style="font-size: 12px; color: #555; margin-bottom: 10px;">${ad.description}</p>
+          <div style="font-weight: bold; color: #2e7d32; font-size: 13px; margin-bottom: 10px;">${ad.price}</div>
           
           <div style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: flex-end;">
-            <button onclick="deleteService(${ad.id})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
+            <button onclick="deleteService(${ad.id})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px;">
               <i class="fa-solid fa-trash"></i> Supprimer
             </button>
           </div>
