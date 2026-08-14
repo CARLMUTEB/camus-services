@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Trouvez, Achetez, Réservez</title>
-  
+  <title>CAMU SERVICES — Plateforme Entrepreneurs</title>
+
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -16,60 +16,51 @@
     }
 
     body {
-      background-color: #f8f9fa;
-      color: #222;
-      line-height: 1.5;
-      padding-bottom: 80px;
+      background-color: #f4f4f9;
+      color: #333;
+      padding-top: 60px;
     }
 
-    /* En-tête */
-    .top-header {
+    /* En-tête (Header Top) */
+    .header-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
       background: #111111;
-      color: #ffffff;
-      padding: 12px 15px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
+      padding: 0 15px;
       z-index: 1000;
-      height: 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
-    .brand-title {
+    .brand-logo {
       font-size: 18px;
       font-weight: 800;
-      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-decoration: none;
     }
 
-    .brand-title span {
+    .brand-logo span {
       color: #d32f2f;
     }
 
-    .header-btn {
-      color: #fff;
-      font-size: 20px;
+    .menu-trigger {
       background: none;
       border: none;
+      color: #ffffff;
+      font-size: 22px;
       cursor: pointer;
-      padding: 5px;
     }
 
-    /* --- MENU LATÉRAL (DRAWER) --- */
-    .side-menu-overlay {
+    /* Menu Latéral (Drawer) */
+    .overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .side-menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1001;
+      display: none;
     }
 
     .side-menu {
@@ -77,11 +68,11 @@
       top: 0; left: -280px;
       width: 280px; height: 100%;
       background: #ffffff;
-      z-index: 2001;
+      z-index: 1002;
       transition: left 0.3s ease;
       display: flex;
       flex-direction: column;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
     }
 
     .side-menu.active {
@@ -89,245 +80,184 @@
     }
 
     .menu-header {
-      background: #111;
-      color: #fff;
-      padding: 20px 15px;
+      background: #111111;
+      color: #ffffff;
+      padding: 18px 15px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-
-    .menu-header h3 {
-      font-size: 16px;
+      align-items: center;
       font-weight: 800;
+      font-size: 16px;
     }
 
-    .menu-header h3 span { color: #d32f2f; }
+    .menu-header span { color: #d32f2f; }
 
-    .close-menu-btn {
-      color: #fff;
+    .btn-close-menu {
       background: none;
       border: none;
+      color: #ffffff;
       font-size: 20px;
       cursor: pointer;
     }
 
-    .menu-links {
-      list-style: none;
-      padding: 15px 0;
+    .menu-body {
       flex: 1;
+      overflow-y: auto;
     }
 
-    .menu-links li a {
+    .menu-link {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
+      padding: 14px 18px;
       color: #333;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      border-bottom: 1px solid #f5f5f5;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      gap: 12px;
     }
 
-    .menu-links li a i {
-      font-size: 16px;
+    .menu-link i {
       width: 20px;
+      color: #d32f2f;
+      text-align: center;
+    }
+
+    /* Section Catégories Dépliable */
+    .category-toggle {
+      justify-content: space-between;
+    }
+
+    .category-list {
+      display: none;
+      background: #f9f9f9;
+      border-bottom: 1px solid #eee;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 18px 10px 45px;
+      color: #555;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      gap: 10px;
+    }
+
+    .category-item:hover {
       color: #d32f2f;
     }
 
-    .menu-links li a:active {
-      background: #f8f9fa;
-    }
-
+    /* Zone de Contenu Exemple */
     .container {
+      padding: 15px;
       max-width: 600px;
       margin: 0 auto;
-      padding: 15px;
     }
 
-    /* Hero Banner */
-    .hero-card {
+    .welcome-card {
       background: #ffffff;
+      padding: 20px;
       border-radius: 12px;
-      padding: 20px 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       text-align: center;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      margin-bottom: 15px;
     }
 
-    .hero-card h2 { font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px; }
-    .hero-card p { font-size: 12px; color: #666; }
+    .welcome-card h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
 
-    /* Barre de recherche */
-    .search-box { position: relative; margin-bottom: 15px; }
-    .search-box input {
-      width: 100%;
-      padding: 12px 15px 12px 40px;
-      border-radius: 25px;
-      border: 1px solid #ddd;
+    .welcome-card p {
       font-size: 13px;
-      outline: none;
-      background: #fff;
+      color: #666;
     }
-    .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; font-size: 14px; }
-
-    /* Filtres Catégories */
-    .categories-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-    .categories-scroll::-webkit-scrollbar { display: none; }
-    .cat-pill { background: #fff; border: 1px solid #ddd; padding: 7px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; color: #444; }
-    .cat-pill.active { background: #d32f2f; color: #fff; border-color: #d32f2f; }
-
-    /* Cartes des Annonces */
-    .section-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-
-    .service-card {
-      background: #ffffff;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 15px;
-    }
-
-    .card-img-wrap { position: relative; height: 160px; width: 100%; background: #eee; }
-    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .badge-cat { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
-
-    .fav-btn {
-      position: absolute; top: 10px; right: 10px;
-      background: #fff; border: none; width: 32px; height: 32px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      color: #888; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    .fav-btn.active { color: #fbc02d; }
-
-    .card-body { padding: 12px 15px; }
-    .card-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
-    .card-author { font-size: 11px; color: #666; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0f0f0; padding-top: 10px; margin-top: 5px; }
-    .price-tag { font-size: 14px; font-weight: 800; color: #d32f2f; }
-    .btn-whatsapp { background: #25D366; color: #fff; padding: 7px 14px; border-radius: 18px; text-decoration: none; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: #ffffff; border-top: 1px solid #eee;
-      display: flex; justify-content: space-around;
-      padding: 8px 0; z-index: 1000; height: 65px;
-    }
-
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- Overlay / Voile sombre du menu -->
-  <div id="side-overlay" class="side-menu-overlay" onclick="toggleMenu()"></div>
-
-  <!-- Tiroir de Navigation Latéral -->
-  <aside id="side-menu" class="side-menu">
-    <div class="menu-header">
-      <h3>CAMU <span>SERVICES</span></h3>
-      <button class="close-menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <ul class="menu-links">
-      <li><a href="index.html"><i class="fa-solid fa-house"></i> Accueil</a></li>
-      <li><a href="favoris.html"><i class="fa-solid fa-star"></i> Mes Favoris</a></li>
-      <li><a href="publier.html"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a></li>
-      <li><a href="chat.html"><i class="fa-solid fa-comments"></i> Discussions</a></li>
-      <li><a href="profil.html"><i class="fa-solid fa-user"></i> Mon Profil</a></li>
-      <li><a href="admin.html"><i class="fa-solid fa-user-shield"></i> Administration</a></li>
-    </ul>
-  </aside>
-
   <!-- En-tête -->
-  <header class="top-header">
-    <button class="header-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
-    <div class="brand-title">CAMU <span>SERVICES</span></div>
-    <a href="favoris.html" class="header-btn" style="text-decoration:none;"><i class="fa-solid fa-star"></i></a>
+  <header class="header-bar">
+    <a href="#" class="brand-logo">CAMU <span>SERVICES</span></a>
+    <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <main class="container">
+  <!-- Arrière-plan sombre quand le menu est ouvert -->
+  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-    <!-- Bannière d'accueil -->
-    <div class="hero-card">
-      <h2>Trouvez, Achetez, Réservez</h2>
-      <p>Bienvenue sur votre plateforme interactive dédiée aux entrepreneurs et clients.</p>
+  <!-- Menu Latéral -->
+  <nav id="sideMenu" class="side-menu">
+    <div class="menu-header">
+      CAMU <span>SERVICES</span>
+      <button class="btn-close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <!-- Recherche -->
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" placeholder="Rechercher un service, un produit...">
-    </div>
-
-    <!-- Catégories -->
-    <div class="categories-scroll">
-      <button class="cat-pill active">Tout</button>
-      <button class="cat-pill">Électricité</button>
-      <button class="cat-pill">BTP & Construction</button>
-      <button class="cat-pill">Transport</button>
-      <button class="cat-pill">Services Informatiques</button>
-    </div>
-
-    <!-- Annonces -->
-    <div class="section-title">
-      <span>Annonces Recentes</span>
-      <span style="font-size: 11px; color:#d32f2f; font-weight:normal;">Voir tout</span>
-    </div>
-
-    <div class="service-card">
-      <div class="card-img-wrap">
-        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80" alt="Électricité">
-        <span class="badge-cat">Électricité</span>
-        <button class="fav-btn" onclick="toggleFav(this)"><i class="fa-solid fa-star"></i></button>
+    <div class="menu-body">
+      <a href="index.html" class="menu-link"><i class="fa-solid fa-house"></i> Accueil</a>
+      
+      <!-- Section Catégories avec accordéon -->
+      <div class="menu-link category-toggle" onclick="toggleCategories()">
+        <span><i class="fa-solid fa-layer-group"></i> Catégories</span>
+        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
       </div>
-      <div class="card-body">
-        <div class="card-title">Installation & Dépannage Électrique Industrial</div>
-        <div class="card-author"><i class="fa-solid fa-circle-check" style="color:#25D366;"></i> Proposé par Carl Muteb</div>
-        <div class="card-footer">
-          <div class="price-tag">Sur Devis</div>
-          <a href="https://wa.me/243976993469?text=Bonjour,%20je%20suis%20intéressé%20par%20votre%20service%20d'électricité." target="_blank" class="btn-whatsapp">
-            <i class="fa-brands fa-whatsapp"></i> Contacter
-          </a>
-        </div>
+
+      <!-- Sous-menu des Catégories -->
+      <div id="categoryList" class="category-list">
+        <a href="#" class="category-item"><i class="fa-solid fa-martini-glass-citrus"></i> Bars & Lounges</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-utensils"></i> Restaurants</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-hotel"></i> Hôtels & Hébergements</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-car"></i> Véhicules & Pièces</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-house-chimney"></i> Vente de Maisons</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-key"></i> Maisons à Louer</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablette</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-laptop"></i> Électronique & Informatique</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux, Électricité & BTP</a>
+        <a href="#" class="category-item"><i class="fa-solid fa-handshake-angle"></i> Divers & Autres Services</a>
       </div>
+
+      <a href="#" class="menu-link"><i class="fa-solid fa-star"></i> Mes Favoris</a>
+      <a href="#" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
+      <a href="#" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
+      <a href="#" class="menu-link"><i class="fa-solid fa-user"></i> Mon Profil</a>
+      <a href="admin.html" class="menu-link"><i class="fa-solid fa-user-shield"></i> Administration</a>
     </div>
-
-  </main>
-
-  <!-- Navigation du Bas -->
-  <nav class="bottom-nav">
-    <a href="index.html" class="active">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="profil.html">
-      <i class="fa-solid fa-user"></i>
-      <span>Profil</span>
-    </a>
   </nav>
 
+  <!-- Contenu Principal -->
+  <main class="container">
+    <div class="welcome-card">
+      <h2>Bienvenue sur CAMU SERVICES</h2>
+      <p>La plateforme dynamique dédiée aux entrepreneurs et professionnels.</p>
+    </div>
+  </main>
+
   <script>
-    // Ouverture / Fermeture du Menu Latéral
     function toggleMenu() {
-      document.getElementById('side-menu').classList.toggle('active');
-      document.getElementById('side-overlay').classList.toggle('active');
+      const menu = document.getElementById('sideMenu');
+      const overlay = document.getElementById('overlay');
+      
+      menu.classList.toggle('active');
+      if (menu.classList.contains('active')) {
+        overlay.style.display = 'block';
+      } else {
+        overlay.style.display = 'none';
+      }
     }
 
-    function toggleFav(btn) {
-      btn.classList.toggle('active');
+    function toggleCategories() {
+      const catList = document.getElementById('categoryList');
+      const catArrow = document.getElementById('catArrow');
+
+      if (catList.style.display === 'block') {
+        catList.style.display = 'none';
+        catArrow.style.transform = 'rotate(0deg)';
+      } else {
+        catList.style.display = 'block';
+        catArrow.style.transform = 'rotate(180deg)';
+      }
     }
   </script>
 
