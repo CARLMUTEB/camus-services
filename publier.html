@@ -3,112 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Publier un service - CAMU SERVICES</title>
+  <title>CAMU SERVICES - Publier un service</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body style="background: #f9f9f9; padding-bottom: 70px;">
 
+  <!-- Header -->
   <header class="top-bar">
-    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
-    <div class="brand-logo">
-      <img src="logo.png" alt="Logo CAMU SERVICES">
-      <h2>CAMU <span>SERVICES</span></h2>
-    </div>
-    <div class="user-icon">
-      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2 style="font-size: 16px; margin: 0; color: white;">Proposer un Service</h2>
     </div>
   </header>
 
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="compte-entrepreneur.html" class="login-link" id="userAccountLink"><i class="fa-solid fa-user-tie"></i> Espace Entrepreneur</a>
-      <span class="close-btn" id="closeMenu">&times;</span>
-    </div>
-    <ul class="sidebar-menu">
-      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="conditions.html"><span>Conditionnalités</span> <i class="fa-solid fa-angle-right"></i></a></li>
-    </ul>
-  </aside>
-
-  <main class="annonces-container" style="padding-top: 30px;">
-    
-    <div id="authRequiredBox" class="card" style="max-width: 500px; margin: 0 auto; padding: 30px; text-align: center;">
-      <i class="fa-solid fa-user-tie" style="font-size: 50px; color: #e53935; margin-bottom: 15px;"></i>
-      <h2 style="margin-bottom: 10px;">Espace Entrepreneur</h2>
-      <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Créez ou connectez votre compte Entrepreneur pour publier vos prestations. Profitez de 2 mois d'essai gratuit !</p>
+  <main style="max-width: 600px; margin: 20px auto; padding: 0 15px;">
+    <form id="publishForm" onsubmit="handlePublish(event)" style="background: white; border-radius: 10px; padding: 20px; border: 1px solid #eee;">
       
-      <a href="inscription.html" class="btn-search" style="display: block; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 15px; margin-bottom: 10px;">
-        <i class="fa-solid fa-user-plus"></i> Créer mon compte Entrepreneur
-      </a>
-    </div>
+      <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #111;">Espace Entrepreneur</h3>
 
-    <div id="publishFormBox" class="card" style="max-width: 600px; margin: 0 auto; padding: 25px; display: none;">
-      
-      <div style="background: #f8f9fa; padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div id="publisherLogoDisplay" style="width: 35px; height: 35px; border-radius: 50%; overflow: hidden; background: #e53935; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-            <i class="fa-solid fa-user-tie"></i>
-          </div>
-          <div>
-            <small style="color: #888;">Entrepreneur connecté :</small>
-            <div id="publisherNameDisplay" style="font-weight: bold; color: #222;"></div>
-          </div>
-        </div>
-        <a href="compte-entrepreneur.html" style="color: #e53935; font-size: 12px; font-weight: bold; text-decoration: none;">Mon Espace <i class="fa-solid fa-chevron-right"></i></a>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Nom ou Enseigne de l'Entrepreneur *</label>
+        <input type="text" id="publisher" required placeholder="Ex: Carl Muteb / CAMU Enterprise" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
       </div>
 
-      <h2 style="text-align: center; margin-bottom: 10px;">Publier un service</h2>
-      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Mettez en avant vos compétences ou produits auprès des clients.</p>
-      
-      <form id="publishForm">
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-heading" style="color: #e53935;"></i> Intitulé de l'offre</label>
-          <input type="text" id="title" placeholder="Ex: Vente d'ordinateurs, Location terrasse..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
-        </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Titre de la prestation / service *</label>
+        <input type="text" id="title" required placeholder="Ex: Service de Dépannage Électrique" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+      </div>
 
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-list" style="color: #e53935;"></i> Catégorie</label>
-          <select id="category" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff;">
-            <option value="Vente">Vente</option>
-            <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
-            <option value="Établissement">Établissement</option>
-            <option value="Agence Immobilière">Agence Immobilière</option>
-            <option value="Mobilier">Mobilier</option>
-            <option value="Terrasses">Terrasses</option>
-            <option value="Services">Services</option>
-            <option value="Autres">Autres</option>
-          </select>
-        </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Catégorie *</label>
+        <select id="category" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: white;">
+          <option value="Services">Services</option>
+          <option value="Vente">Vente</option>
+          <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
+          <option value="Établissement">Établissement</option>
+          <option value="Agence Immobilière">Agence Immobilière</option>
+          <option value="Mobilier">Mobilier</option>
+          <option value="Terrasses">Terrasses</option>
+          <option value="Autres">Autres</option>
+        </select>
+      </div>
 
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-tag" style="color: #e53935;"></i> Tarif / Prix</label>
-          <input type="text" id="price" placeholder="Ex: 50$, Sur devis, 20$/jour..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
-        </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Tarif / Prix (ex: Sur devis, 50$, 20000 FC) *</label>
+        <input type="text" id="price" required placeholder="Ex: Sur devis" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+      </div>
 
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description complète</label>
-          <textarea id="description" rows="4" placeholder="Détaillez votre offre..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
-        </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Numéro WhatsApp (avec indicatif) *</label>
+        <input type="tel" id="phone" required placeholder="Ex: +243990000000" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
+      </div>
 
-        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-size: 13px;">
-          <input type="checkbox" id="acceptConditions" required style="width: 16px; height: 16px; cursor: pointer;">
-          <label for="acceptConditions" style="cursor: pointer; color: #444;">
-            J'accepte les <a href="conditions.html" target="_blank" style="color: #e53935; text-decoration: underline; font-weight: bold;">conditionnalités d'utilisation</a>.
-          </label>
-        </div>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Description détaillée *</label>
+        <textarea id="description" rows="4" required placeholder="Décrivez votre service, vos horaires, la localisation..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; font-family: inherit;"></textarea>
+      </div>
 
-        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">
-          <i class="fa-solid fa-paper-plane"></i> Publier l'offre
-        </button>
-      </form>
-    </div>
+      <button type="submit" style="width: 100%; background: #d32f2f; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer;">
+        <i class="fa-solid fa-paper-plane"></i> Publier le service
+      </button>
 
+    </form>
   </main>
 
   <nav class="bottom-nav">
@@ -120,58 +77,28 @@
 
   <script src="app.js"></script>
   <script>
-    const openBtn = document.getElementById('openMenu');
-    const closeBtn = document.getElementById('closeMenu');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
-    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-
-    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
-    const authBox = document.getElementById('authRequiredBox');
-    const formBox = document.getElementById('publishFormBox');
-    const publisherDisplay = document.getElementById('publisherNameDisplay');
-    const publisherLogoDisplay = document.getElementById('publisherLogoDisplay');
-
-    if (currentUser && currentUser.name && currentUser.role === 'entrepreneur') {
-      authBox.style.display = 'none';
-      formBox.style.display = 'block';
-      publisherDisplay.textContent = `${currentUser.name} (${currentUser.city || ''})`;
-      if(currentUser.logo) {
-        publisherLogoDisplay.innerHTML = `<img src="${currentUser.logo}" style="width: 100%; height: 100%; object-fit: cover;">`;
-      }
-    } else {
-      authBox.style.display = 'block';
-      formBox.style.display = 'none';
-    }
-
-    document.getElementById('publishForm')?.addEventListener('submit', function(e) {
+    function handlePublish(e) {
       e.preventDefault();
-
+      
       const newAd = {
         id: Date.now(),
-        title: document.getElementById('title').value,
+        publisher: document.getElementById('publisher').value.trim(),
+        title: document.getElementById('title').value.trim(),
         category: document.getElementById('category').value,
-        price: document.getElementById('price').value || 'Sur devis',
-        description: document.getElementById('description').value,
-        publisher: currentUser.name,
-        phone: currentUser.phone,
-        city: currentUser.city || 'Non spécifiée',
-        address: currentUser.address || 'Non spécifiée',
-        mobileMoney: currentUser.mobileMoney || 'Non spécifié',
-        logo: currentUser.logo || '',
-        date: new Date().toLocaleDateString('fr-FR'),
-        comments: []
+        price: document.getElementById('price').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        comments: [],
+        date: new Date().toLocaleDateString('fr-FR')
       };
 
       let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
       ads.unshift(newAd);
       localStorage.setItem('camus_ads', JSON.stringify(ads));
 
-      alert('Votre annonce a été publiée avec succès !');
-      window.location.href = 'index.html';
-    });
+      alert("Votre service a été publié avec succès !");
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
