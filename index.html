@@ -3,213 +3,247 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Accueil</title>
+  <title>CAMU SERVICES — Trouver. Acheter. Réserver.</title>
   
-  <link rel="icon" type="image/png" href="logo.png">
+  <!-- FontAwesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Polices Google Fonts (Roboto / Montserrat) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-  <!-- En-tête -->
-  <header class="top-bar">
-    <div class="menu-icon" onclick="openSidebar()">
-      <i class="fa-solid fa-bars"></i>
+  <!-- En-tête / Header -->
+  <header class="main-header">
+    <div class="logo-container">
+      <a href="index.html" class="logo-text">CAMU <span>SERVICES</span></a>
     </div>
-    <div class="brand-logo">
-      <img src="logo.png" alt="Logo CAMU SERVICES">
-      <h2>CAMU <span>SERVICES</span></h2>
-    </div>
-    <div class="user-icon">
-      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
-    </div>
+    <nav class="nav-links">
+      <a href="#about"><i class="fa-solid fa-circle-info"></i> À propos</a>
+      <a href="#faq"><i class="fa-solid fa-circle-question"></i> Aide</a>
+      <a href="#privacy"><i class="fa-solid fa-shield-halved"></i> Confidentialité</a>
+    </nav>
+    <a href="publier.html" class="header-btn-action">
+      <i class="fa-solid fa-plus"></i> Espace Entrepreneur
+    </a>
   </header>
 
-  <!-- Overlay & Menu Latéral -->
-  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-      <div class="user-title">
-        <i class="fa-solid fa-user-tie text-red"></i>
-        <h3>Espace Entrepreneur</h3>
-      </div>
-      <button class="close-btn" onclick="closeSidebar()">&times;</button>
-    </div>
-
-    <nav class="sidebar-content">
-      <ul class="sidebar-menu">
-        <li><a href="index.html"><span class="menu-label">Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="publier.html"><span class="menu-label">Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="compte-entrepreneur.html"><span class="menu-label">Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="chat.html"><span class="menu-label">Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        <li><a href="favoris.html"><span class="menu-label">Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
-        
-        <li class="admin-item">
-          <a href="admin.html">
-            <span class="menu-label text-red">Administration</span>
-            <i class="fa-solid fa-shield-halved text-red"></i>
-          </a>
-        </li>
-
-        <li><a href="conditionnalites.html"><span class="menu-label">Conditionnalités</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- Hero Section avec Arrière-plan ET Finitions complètes -->
+  <!-- 1. Hero Section -->
   <section class="hero-section">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1>Bienvenue sur CAMU SERVICES</h1>
-      <p>Découvrez des prestations qualifiées ou proposez vos services en tant qu'Entrepreneur.</p>
+      <h1>CAMU SERVICES</h1>
       
-      <!-- Barre de recherche -->
-      <div class="search-box" style="display: flex; gap: 8px;">
-        <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?" style="flex: 1; padding: 12px 14px; border: none; border-radius: 8px; font-size: 13px; outline: none;">
-        <button onclick="searchAds()" style="background: var(--primary-red); color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <!-- Slogan Officiel -->
+      <p class="hero-slogan">TROUVER. ACHETER. RÉSERVER.</p>
+
+      <!-- Message de Bienvenue -->
+      <p class="hero-welcome">
+        Soyez les bienvenus ! Découvrez des prestations qualifiées ou mettez en valeur votre savoir-faire en publiant vos services en tant qu'Entrepreneur.
+      </p>
+      
+      <!-- Barre de Recherche -->
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?">
+        <button onclick="searchAds()"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
 
-      <!-- Engagements & Bouton Proposer -->
+      <!-- Puces de Confiance -->
       <div class="hero-features">
-        <div><i class="fa-solid fa-circle-check" style="color: #4CAF50;"></i> Entrepreneurs et prestataires vérifiés</div>
-        <div><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Mises en relation directes via WhatsApp</div>
+        <div><i class="fa-solid fa-circle-check" style="color: #2e7d32;"></i> Entrepreneurs et prestataires vérifiés</div>
+        <div><i class="fa-solid fa-bolt" style="color: #fbc02d;"></i> Mises en relation directes via WhatsApp</div>
       </div>
 
+      <!-- Bouton d'Action Principal -->
       <a href="publier.html" class="hero-btn-action">
         <i class="fa-solid fa-plus"></i> Proposer un service
       </a>
     </div>
   </section>
 
-  <!-- Grille d'annonces -->
-  <main class="annonces-container" style="padding: 0 15px;">
-    <h3 class="section-title" style="font-size: 15px; font-weight: bold; margin-bottom: 12px;">Services récents</h3>
-    
-    <!-- Filtres -->
-    <div class="category-bar">
-      <button class="cat-btn active" onclick="filterCategory(this, 'Toutes')">Toutes</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Vente')">Vente</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Hôtel & Restaurant')">Hôtel & Restaurant</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Établissement')">Établissement</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Agence Immobilière')">Agence Immobilière</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Mobilier')">Mobilier</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Terrasses')">Terrasses</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Services')">Services</button>
-      <button class="cat-btn" onclick="filterCategory(this, 'Autres')">Autres</button>
-    </div>
+  <main class="container">
 
-    <div class="annonces-grid" id="adsContainer"></div>
+    <!-- 2. Section "Comment ça marche ?" -->
+    <section class="section-card">
+      <div class="section-title">
+        <h2>Comment ça marche ?</h2>
+        <p>3 étapes simples pour trouver ou proposer un service</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <h3>1. Cherchez</h3>
+          <p>Explorez les catégories ou recherchez directement la prestation dont vous avez besoin.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h3>2. Contactez</h3>
+          <p>Échangez immédiatement avec l'Entrepreneur qualifié via WhatsApp ou le chat.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon"><i class="fa-solid fa-calendar-check"></i></div>
+          <h3>3. Réservez</h3>
+          <p>Convenez des détails, des tarifs et validez votre service en toute confiance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Section "À Propos de Nous" -->
+    <section id="about" class="section-card">
+      <div class="section-title">
+        <h2>À Propos de CAMU SERVICES</h2>
+        <p class="subtitle-red">TROUVER. ACHETER. RÉSERVER.</p>
+      </div>
+      <div class="about-content">
+        <div class="about-block">
+          <h3><i class="fa-solid fa-bullseye"></i> Notre Vision</h3>
+          <p><strong>CAMU SERVICES</strong> est une plateforme moderne conçue pour dynamiser le commerce de proximité et propulser l'entrepreneuriat local. Notre ambition est simple : devenir le pont direct et incontournable entre les talents de nos entrepreneurs et les besoins du quotidien des clients.</p>
+        </div>
+
+        <div class="about-block">
+          <h3><i class="fa-solid fa-handshake"></i> Ce que nous proposons</h3>
+          <p>Nous croyons fermement que chaque savoir-faire mérite d'être mis en lumière. Que vous soyez un artisan, un professionnel indépendant ou une jeune entreprise, <strong>CAMU SERVICES</strong> vous offre une vitrine digitale puissante pour présenter vos offres, développer votre visibilité et échanger instantanément avec vos futurs clients.</p>
+        </div>
+
+        <div class="commitments-box">
+          <h3>Pourquoi faire confiance à CAMU SERVICES ?</h3>
+          <ul>
+            <li><i class="fa-solid fa-bolt icon-yellow"></i> <span><strong>Rapidité & Direct :</strong> Une mise en relation sans intermédiaire, principalement via WhatsApp, pour des réponses instantanées.</span></li>
+            <li><i class="fa-solid fa-shield-halved icon-green"></i> <span><strong>Confiance & Transparence :</strong> Valorisation d'entrepreneurs vérifiés et accès direct aux avis de la communauté.</span></li>
+            <li><i class="fa-solid fa-users icon-red"></i> <span><strong>Soutien à l'Entrepreneuriat :</strong> Un espace pensé sur-mesure pour accompagner la croissance de chaque prestataire.</span></li>
+          </ul>
+        </div>
+        <p class="quote-text">« Ensemble, simplifions la recherche de prestations et faisons grandir les talents de demain. »</p>
+      </div>
+    </section>
+
+    <!-- 4. Section "Aide & FAQ" -->
+    <section id="faq" class="section-card">
+      <div class="section-title">
+        <h2>Besoin d'Aide ? — FAQ</h2>
+        <p>Toutes les réponses pour bien utiliser CAMU SERVICES</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span><i class="fa-solid fa-circle-question"></i> Comment publier un service en tant qu'Entrepreneur ?</span>
+            <i class="fa-solid fa-chevron-down arrow"></i>
+          </summary>
+          <div class="faq-answer">
+            Cliquez sur le bouton rouge <strong>« Proposer un service »</strong> ou rendez-vous dans l'<strong>Espace Entrepreneur</strong>. Remplissez ensuite le formulaire avec le titre de votre prestation, votre catégorie, la description et votre numéro WhatsApp pour recevoir directement vos demandes de clients.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span><i class="fa-solid fa-circle-question"></i> Comment contacter un prestataire ou un entrepreneur ?</span>
+            <i class="fa-solid fa-chevron-down arrow"></i>
+          </summary>
+          <div class="faq-answer">
+            Sur chaque annonce de service, cliquez simplement sur le bouton vert <strong>« Contacter »</strong>. Cela vous redirigera directement vers la conversation WhatsApp de l'entrepreneur avec un message pré-rempli.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span><i class="fa-solid fa-circle-question"></i> Comment modifier ou supprimer mes annonces ?</span>
+            <i class="fa-solid fa-chevron-down arrow"></i>
+          </summary>
+          <div class="faq-answer">
+            Rendez-vous dans votre <strong>Espace Entrepreneur</strong>. Vous pourrez y consulter la liste de vos annonces actives et les gérer ou les mettre à jour facilement.
+          </div>
+        </details>
+      </div>
+
+      <div class="support-banner">
+        <h4>Vous ne trouvez pas réponse à votre question ?</h4>
+        <p>Notre équipe d'assistance reste à votre entière disposition.</p>
+        <a href="chat.html" class="support-btn"><i class="fa-solid fa-headset"></i> Contacter le Support</a>
+      </div>
+    </section>
+
+    <!-- 5. Section "Politique de Confidentialité" -->
+    <section id="privacy" class="section-card">
+      <div class="section-title">
+        <h2>Politique de Confidentialité</h2>
+        <p>Protection des données — CAMU SERVICES</p>
+      </div>
+
+      <div class="privacy-content">
+        <div class="privacy-item">
+          <h3>1. Collecte des données</h3>
+          <p>Sur <strong>CAMU SERVICES</strong>, les informations collectées auprès des Entrepreneurs (nom, téléphone, description des prestations) et des utilisateurs sont uniquement celles nécessaires à la publication, la visibilité des annonces et la mise en relation directes.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>2. Utilisation des données</h3>
+          <p>Les informations collectées sont utilisées exclusivement pour fournir, améliorer et sécuriser notre plateforme, faciliter le contact entre clients et prestataires, et communiquer avec vous concernant votre compte Entrepreneur.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>3. Protection des données</h3>
+          <p>Nous mettons en œuvre des mesures de sécurité rigoureuses et raisonnables pour protéger vos données personnelles contre tout accès, modification, divulgation ou destruction non autorisés.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>4. Partage des informations</h3>
+          <p><strong>CAMU SERVICES ne vend ni ne loue jamais vos données personnelles à des tiers.</strong> Les informations de contact que vous choisissez de rendre publiques sur vos annonces servent uniquement à la fourniture de nos services de mise en relation.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>5. Stockage et Cookies</h3>
+          <p>Notre application utilise le stockage local (LocalStorage) et/ou des cookies pour conserver vos préférences, gérer vos favoris et optimiser votre expérience de navigation sur le site.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>6. Droits de l’Entrepreneur</h3>
+          <p>À tout moment, vous pouvez accéder, modifier ou supprimer vos prestations et données personnelles directement depuis votre Espace Entrepreneur ou en contactant l'administration de <strong>CAMU SERVICES</strong>.</p>
+        </div>
+
+        <div class="privacy-item">
+          <h3>7. Mise à jour de la politique</h3>
+          <p>Cette politique de confidentialité peut être ajustée périodiquement pour refléter les évolutions de nos fonctionnalités ou les exigences légales en vigueur.</p>
+        </div>
+
+        <div class="privacy-contact">
+          <h3>8. Contact Support</h3>
+          <p>Pour toute question concernant cette politique ou pour la gestion de vos données, l'équipe d'administration <strong>CAMU SERVICES</strong> reste à votre entière disposition via la section Contact du site.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Pied de page -->
-  <footer style="text-align: center; padding: 25px 10px; margin-top: 30px; border-top: 1px solid #eee; color: #888; font-size: 12px;">
-    <p>© 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.</p>
-    <p style="margin-top: 5px;">Plateforme d'interconnexion pour Entrepreneurs.</p>
+  <!-- Pied de page / Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>CAMU SERVICES</h3>
+        <p>Trouver. Acheter. Réserver.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#about">À Propos</a>
+        <a href="#faq">Aide & FAQ</a>
+        <a href="#privacy">Confidentialité</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CAMU SERVICES. Tous droits réservés.</p>
+    </div>
   </footer>
 
-  <!-- Bouton Flottant (FAB) -->
-  <a href="publier.html" class="fab-btn" title="Proposer un service">
-    <i class="fa-solid fa-plus"></i>
-  </a>
-
-  <!-- Navigation fixe du bas -->
-  <nav class="bottom-nav">
-    <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
-  </nav>
-
-  <script src="app.js"></script>
   <script>
-    let currentCategory = 'Toutes';
-
-    function filterCategory(btn, cat) {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCategory = cat;
-      loadAnnonces();
-    }
-
     function searchAds() {
-      loadAnnonces();
-    }
-
-    function addComment(adId) {
-      const commentText = prompt("Écrivez votre avis sur ce service :");
-      if (!commentText || commentText.trim() === "") return;
-
-      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
-      const adIndex = ads.findIndex(a => a.id === adId);
-      
-      if (adIndex !== -1) {
-        if (!ads[adIndex].comments) ads[adIndex].comments = [];
-        ads[adIndex].comments.push({
-          user: "Client",
-          text: commentText.trim(),
-          date: new Date().toLocaleDateString('fr-FR')
-        });
-        localStorage.setItem('camus_ads', JSON.stringify(ads));
-        showToast("Avis ajouté avec succès !");
-        loadAnnonces();
+      const query = document.getElementById('searchInput').value;
+      if (query) {
+        alert('Recherche de service pour : ' + query);
       }
     }
-
-    function loadAnnonces() {
-      const container = document.getElementById('adsContainer');
-      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
-      const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-
-      if (currentCategory !== 'Toutes') {
-        ads = ads.filter(ad => ad.category === currentCategory);
-      }
-
-      if (searchVal !== '') {
-        ads = ads.filter(ad => ad.title.toLowerCase().includes(searchVal) || ad.description.toLowerCase().includes(searchVal));
-      }
-
-      if (ads.length === 0) {
-        container.innerHTML = `
-          <div style="text-align: center; padding: 40px 15px; background: #fff; border-radius: 10px; border: 1px dashed #ccc;">
-            <i class="fa-solid fa-folder-open" style="font-size: 32px; color: #ccc; margin-bottom: 10px;"></i>
-            <p style="color: #666; font-size: 13px;">Aucun service disponible pour le moment.</p>
-            <a href="publier.html" style="color: #d32f2f; font-weight: bold; text-decoration: none; font-size: 13px; display: inline-block; margin-top: 10px;">Soyez le premier à proposer un service !</a>
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = ads.map(ad => {
-        const commentsList = ad.comments || [];
-        return `
-        <div class="card" style="margin-bottom: 15px; border-radius: 10px; background: #fff; padding: 15px; border: 1px solid #eee;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 11px; background: #ffebee; color: #d32f2f; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
-              <button onclick="shareAd('${ad.title}', ${ad.id})" style="background: none; border: none; color: #888; cursor: pointer;"><i class="fa-solid fa-share-nodes"></i></button>
-            </div>
-            <h4 style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">${ad.title}</h4>
-            <p style="font-size: 13px; color: #555; margin-bottom: 10px; line-height: 1.4;">${ad.description}</p>
-            <div style="font-weight: bold; color: #2e7d32; font-size: 14px; margin-bottom: 10px;">${ad.price}</div>
-          </div>
-          
-          <div style="border-top: 1px solid #f0f0f0; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user-tie text-red"></i> ${ad.publisher || 'Entrepreneur'}</small>
-            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Bonjour, je vous contacte au sujet de votre annonce "' + ad.title + '" sur CAMU SERVICES.')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contacter</a>` : ''}
-          </div>
-
-          <div style="margin-top: 12px; border-top: 1px dashed #eee; padding-top: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 11px; font-weight: bold; color: #555;"><i class="fa-solid fa-comments"></i> Avis (${commentsList.length})</span>
-              <button onclick="addComment(${ad.id})" style="background: #f0f0f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Avis</button>
-            </div>
-          </div>
-        </div>
-      `;
-      }).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', loadAnnonces);
   </script>
 </body>
 </html>
