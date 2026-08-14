@@ -6,9 +6,75 @@
   <title>Administration - CAMU SERVICES</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Styles spécifiques au tableau de bord Admin */
+    .admin-nav-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    .admin-tab-btn {
+      background: #f0f0f0;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .admin-tab-btn.active {
+      background: #d32f2f;
+      color: white;
+    }
+    .admin-section {
+      display: none;
+    }
+    .admin-section.active {
+      display: block;
+    }
+    .admin-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+    }
+    .badge {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .badge-success { background: #e8f5e9; color: #2e7d32; }
+    .badge-warning { background: #fff8e1; color: #f57f17; }
+    .badge-danger { background: #ffebee; color: #c62828; }
+    .btn-action {
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-delete { background: #dc3545; color: white; }
+    .btn-approve { background: #2e7d32; color: white; }
+  </style>
 </head>
 <body>
 
+  <!-- En-tête -->
   <header class="top-bar">
     <div class="menu-icon" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></div>
     <div class="brand-logo">
@@ -20,6 +86,7 @@
     </div>
   </header>
 
+  <!-- Overlay & Sidebar -->
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
@@ -49,64 +116,207 @@
     </nav>
   </aside>
 
-  <main class="annonces-container" style="padding-top: 25px; max-width: 800px; margin: 0 auto;">
+  <!-- Contenu Principal Admin -->
+  <main class="annonces-container" style="padding-top: 20px; max-width: 900px; margin: 0 auto;">
     
-    <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #e53935; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-      <h2><i class="fa-solid fa-shield-halved" style="color: #e53935;"></i> Panneau d'Administration</h2>
-      <p style="color: #666; font-size: 13px;">Gérez l'ensemble des annonces et modérez les publications de la plateforme.</p>
+    <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #d32f2f; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 style="margin:0;"><i class="fa-solid fa-shield-halved" style="color: #d32f2f;"></i> Espace Super Admin</h2>
+          <p style="color: #666; font-size: 13px; margin-top: 5px;">Gestion globale de la plateforme CAMU SERVICES</p>
+        </div>
+        <button onclick="logoutAdmin()" class="btn-action btn-delete"><i class="fa-solid fa-lock"></i> Déconnexion</button>
+      </div>
     </div>
 
-    <h3 class="section-title">Toutes les publications de la plateforme</h3>
-    <div id="adminAdsGrid" class="annonces-grid"></div>
+    <!-- Onglets de Navigation -->
+    <div class="admin-nav-tabs">
+      <button class="admin-tab-btn active" onclick="switchTab('annonces')"><i class="fa-solid fa-list"></i> Annonces</button>
+      <button class="admin-tab-btn" onclick="switchTab('entrepreneurs')"><i class="fa-solid fa-user-gear"></i> Entrepreneurs</button>
+      <button class="admin-tab-btn" onclick="switchTab('clients')"><i class="fa-solid fa-users"></i> Clients</button>
+      <button class="admin-tab-btn" onclick="switchTab('signalements')"><i class="fa-solid fa-triangle-exclamation"></i> Signalements</button>
+      <button class="admin-tab-btn" onclick="switchTab('abonnements')"><i class="fa-solid fa-id-card"></i> Abonnements</button>
+    </div>
+
+    <!-- 1. GESTION DES ANNONCES -->
+    <section id="sec-annonces" class="admin-section active">
+      <h3 class="section-title">Annonces publiées</h3>
+      <div id="grid-annonces"></div>
+    </section>
+
+    <!-- 2. GESTION DES ENTREPRENEURS -->
+    <section id="sec-entrepreneurs" class="admin-section">
+      <h3 class="section-title">Liste des Entrepreneurs</h3>
+      <div id="grid-entrepreneurs"></div>
+    </section>
+
+    <!-- 3. GESTION DES CLIENTS -->
+    <section id="sec-clients" class="admin-section">
+      <h3 class="section-title">Liste des Clients & Utilisateurs</h3>
+      <div id="grid-clients"></div>
+    </section>
+
+    <!-- 4. GESTION DES SIGNALEMENTS -->
+    <section id="sec-signalements" class="admin-section">
+      <h3 class="section-title">Signalements & Litiges</h3>
+      <div id="grid-signalements"></div>
+    </section>
+
+    <!-- 5. GESTION DES ABONNEMENTS -->
+    <section id="sec-abonnements" class="admin-section">
+      <h3 class="section-title">Abonnements & Statuts Pro</h3>
+      <div id="grid-abonnements"></div>
+    </section>
 
   </main>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
-  </nav>
-
   <script src="app.js"></script>
   <script>
-    function loadAdminAds() {
-      const grid = document.getElementById('adminAdsGrid');
-      const allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
+    // CODE D'ACCÈS DE SÉCURITÉ
+    const SECRET_PIN = "1800CARL";
 
-      if (allAds.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;"><p style="color: #666;">Aucune annonce enregistrée.</p></div>`;
-        return;
+    function checkAdminAuth() {
+      let isAuth = sessionStorage.getItem('camus_admin_logged');
+
+      if (!isAuth) {
+        const input = prompt("SÉCURITÉ ADMIN\nVeuillez entrer votre code d'accès :");
+        
+        if (input === SECRET_PIN) {
+          sessionStorage.setItem('camus_admin_logged', 'true');
+          renderAllData();
+        } else {
+          alert("Accès refusé ! Code d'accès incorrect.");
+          window.location.href = "index.html";
+        }
+      } else {
+        renderAllData();
       }
+    }
 
-      grid.innerHTML = allAds.map(ad => `
-        <div class="card" style="margin-bottom: 15px; padding: 15px; background: #fff; border-radius: 8px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
-            <small style="color: #888; font-size: 11px;">Auteur: ${ad.publisher} (${ad.phone})</small>
+    function logoutAdmin() {
+      sessionStorage.removeItem('camus_admin_logged');
+      window.location.href = "index.html";
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+      
+      event.currentTarget.classList.add('active');
+      document.getElementById(`sec-${tabName}`).classList.add('active');
+    }
+
+    /* RENDER ENGINE */
+    function renderAllData() {
+      renderAnnonces();
+      renderEntrepreneurs();
+      renderClients();
+      renderSignalements();
+      renderAbonnements();
+    }
+
+    // 1. Annonces
+    function renderAnnonces() {
+      const container = document.getElementById('grid-annonces');
+      const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      if(!ads.length) { container.innerHTML = `<p style="color:#777;">Aucune annonce.</p>`; return; }
+
+      container.innerHTML = ads.map(ad => `
+        <div class="admin-card">
+          <div style="display:flex; justify-content:space-between;">
+            <span class="badge badge-success">${ad.category}</span>
+            <small style="color:#888;">ID: #${ad.id}</small>
           </div>
-          <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">${ad.title}</h4>
-          <p style="font-size: 13px; color: #555; margin-bottom: 12px;">${ad.description}</p>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px;">
-            <span style="font-weight: bold; color: #2e7d32;">${ad.price}</span>
-            <button onclick="deleteAdByAdmin(${ad.id})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
-              <i class="fa-solid fa-trash"></i> Supprimer (Admin)
-            </button>
+          <h4 style="margin: 8px 0;">${ad.title}</h4>
+          <p style="font-size:13px; color:#555;">${ad.description}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+            <strong>${ad.price}</strong>
+            <button onclick="deleteAd(${ad.id})" class="btn-action btn-delete"><i class="fa-solid fa-trash"></i> Supprimer</button>
           </div>
         </div>
       `).join('');
     }
 
-    function deleteAdByAdmin(id) {
-      if (confirm("Action Admin : Voulez-vous supprimer définitivement cette annonce ?")) {
-        let allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
-        allAds = allAds.filter(ad => ad.id !== id);
-        localStorage.setItem('camus_ads', JSON.stringify(allAds));
-        loadAdminAds();
+    function deleteAd(id) {
+      if(confirm("Supprimer définitivement cette annonce ?")) {
+        let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+        localStorage.setItem('camus_ads', JSON.stringify(ads.filter(a => a.id !== id)));
+        renderAnnonces();
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadAdminAds);
+    // 2. Entrepreneurs
+    function renderEntrepreneurs() {
+      const container = document.getElementById('grid-entrepreneurs');
+      const users = JSON.parse(localStorage.getItem('camus_users')) || [];
+      const entrepreneurs = users.filter(u => u.role === 'entrepreneur' || u.phone);
+
+      if(!entrepreneurs.length) { container.innerHTML = `<p style="color:#777;">Aucun entrepreneur inscrit.</p>`; return; }
+
+      container.innerHTML = entrepreneurs.map(e => `
+        <div class="admin-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong>${e.name || 'Entrepreneur'}</strong>
+              <div style="font-size:12px; color:#666;"><i class="fa-brands fa-whatsapp"></i> ${e.phone || 'N/A'}</div>
+            </div>
+            <button onclick="blockUser('${e.phone}')" class="btn-action btn-delete"><i class="fa-solid fa-ban"></i> Bloquer</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 3. Clients
+    function renderClients() {
+      const container = document.getElementById('grid-clients');
+      const users = JSON.parse(localStorage.getItem('camus_users')) || [];
+      const clients = users.filter(u => u.role !== 'entrepreneur');
+
+      if(!clients.length) { container.innerHTML = `<p style="color:#777;">Aucun client enregistré.</p>`; return; }
+
+      container.innerHTML = clients.map(c => `
+        <div class="admin-card">
+          <strong>${c.name || 'Client'}</strong>
+          <div style="font-size:12px; color:#666;">Inscrit le: ${c.date || 'Récemment'}</div>
+        </div>
+      `).join('');
+    }
+
+    // 4. Signalements
+    function renderSignalements() {
+      const container = document.getElementById('grid-signalements');
+      const reports = JSON.parse(localStorage.getItem('camus_reports')) || [];
+
+      if(!reports.length) { container.innerHTML = `<p style="color:#777;">Aucun signalement en attente.</p>`; return; }
+
+      container.innerHTML = reports.map(r => `
+        <div class="admin-card" style="border-left: 4px solid #dc3545;">
+          <span class="badge badge-danger">Signalement</span>
+          <p style="margin:5px 0; font-size:13px;"><strong>Motif :</strong> ${r.reason}</p>
+          <small style="color:#777;">Annonce visée : ID #${r.adId}</small>
+        </div>
+      `).join('');
+    }
+
+    // 5. Abonnements
+    function renderAbonnements() {
+      const container = document.getElementById('grid-abonnements');
+      const subs = JSON.parse(localStorage.getItem('camus_subscriptions')) || [];
+
+      if(!subs.length) { container.innerHTML = `<p style="color:#777;">Aucun abonnement actif.</p>`; return; }
+
+      container.innerHTML = subs.map(s => `
+        <div class="admin-card">
+          <div style="display:flex; justify-content:space-between;">
+            <strong>${s.userName}</strong>
+            <span class="badge badge-warning">${s.plan}</span>
+          </div>
+          <small style="color:#666;">Expire le : ${s.expireDate}</small>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', checkAdminAuth);
   </script>
 </body>
 </html>
