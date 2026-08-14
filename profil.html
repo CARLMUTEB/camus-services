@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mon Profil — CAMU SERVICES</title>
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body { background-color: #f8f9fa; color: #222; line-height: 1.5; padding-bottom: 80px; }
+
+    /* En-tête */
+    .top-header {
+      background: #ffffff;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0; z-index: 1000;
+      height: 60px;
+    }
+
+    .brand-container { display: flex; align-items: center; gap: 8px; }
+    .brand-container img { height: 32px; width: auto; object-fit: contain; }
+    .brand-container h1 { font-size: 17px; font-weight: 800; color: #111; }
+    .brand-container h1 span { color: #d32f2f; }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
+
+    /* Carte En-tête Profil */
+    .profile-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      margin-bottom: 20px;
+    }
+
+    .avatar-box {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 12px;
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #d32f2f;
+    }
+
+    .user-name { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 2px; }
+    .user-role {
+      display: inline-block;
+      background: #ffebee;
+      color: #d32f2f;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    /* Sélecteur de rôle pour Démo */
+    .role-switcher {
+      background: #f1f3f4;
+      padding: 6px;
+      border-radius: 20px;
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 15px;
+      border: none;
+      background: transparent;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .role-btn.active {
+      background: #ffffff;
+      color: #d32f2f;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Blocs d'informations Profil */
+    .info-group {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .info-group h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-item:last-child { border-bottom: none; }
+    .info-item span.label { color: #666; }
+    .info-item span.value { font-weight: bold; color: #222; }
+
+    .btn-edit-profile {
+      display: block;
+      width: 100%;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* Navigation du bas */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; width: 100%;
+      background: #ffffff;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 1000;
+      height: 65px;
+    }
+
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="top-header">
+    <a href="index.html" style="color:#333; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="brand-container">
+      <img src="logo.png" alt="CAMU SERVICES">
+      <h1>CAMU <span>SERVICES</span></h1>
+    </div>
+    <div style="width: 18px;"></div>
+  </header>
+
+  <main class="container">
+
+    <!-- Commutateur Démo Rôle (Entrepreneur / Client) -->
+    <div class="role-switcher">
+      <button class="role-btn active" onclick="switchRole('entrepreneur', this)">Profil Entrepreneur</button>
+      <button class="role-btn" onclick="switchRole('client', this)">Profil Client</button>
+    </div>
+
+    <!-- Carte Profil -->
+    <div class="profile-card">
+      <div class="avatar-box">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Photo Profil">
+      </div>
+      <h2 id="profile-name" class="user-name">Carl Muteb</h2>
+      <span id="profile-type" class="user-role"><i class="fa-solid fa-briefcase"></i> Entrepreneur Vérifié</span>
+      
+      <p style="font-size: 12px; color: #666;">Membre depuis Mars 2026</p>
+    </div>
+
+    <!-- Contenu Spécifique ENTREPRENEUR -->
+    <div id="section-entrepreneur">
+      <div class="info-group">
+        <h3><i class="fa-solid fa-chart-line" style="color:#d32f2f;"></i> Activité & Abonnements</h3>
+        <div class="info-item">
+          <span class="label">Forfait actuel</span>
+          <span class="value" style="color:#2e7d32;">Premium Mensuel</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Annonces actives</span>
+          <span class="value">3 Services en ligne</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Numéro WhatsApp pro</span>
+          <span class="value">+243 976 993 469</span>
+        </div>
+      </div>
+
+      <div class="info-group">
+        <h3><i class="fa-solid fa-layer-group" style="color:#d32f2f;"></i> Mes Services Publiés</h3>
+        <div class="info-item">
+          <span class="label">Installation Électrique</span>
+          <span class="value"><a href="index.html" style="color:#d32f2f;">Voir l'annonce</a></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu Spécifique CLIENT -->
+    <div id="section-client" style="display: none;">
+      <div class="info-group">
+        <h3><i class="fa-solid fa-user-gear" style="color:#d32f2f;"></i> Informations Personnelles</h3>
+        <div class="info-item">
+          <span class="label">Nom complet</span>
+          <span class="value">Carl Muteb</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Téléphone WhatsApp</span>
+          <span class="value">+243 976 993 469</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Ville principale</span>
+          <span class="value">Fungurume / Kolwezi</span>
+        </div>
+      </div>
+
+      <div class="info-group">
+        <h3><i class="fa-solid fa-heart" style="color:#d32f2f;"></i> Raccourcis Rapides</h3>
+        <div class="info-item">
+          <span class="label">Mes Favoris enregistrés</span>
+          <span class="value"><a href="favoris.html" style="color:#d32f2f;">Accéder aux favoris</a></span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-edit-profile" onclick="alert('Option de modification du profil disponible prochainement.')">
+      <i class="fa-solid fa-pen"></i> Modifier mon Profil
+    </button>
+
+  </main>
+
+  <!-- Navigation du bas -->
+  <nav class="bottom-nav">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="profil.html" class="active">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
+  </nav>
+
+  <script>
+    function switchRole(role, btnElement) {
+      const buttons = document.querySelectorAll('.role-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const secEntrepreneur = document.getElementById('section-entrepreneur');
+      const secClient = document.getElementById('section-client');
+      const profileType = document.getElementById('profile-type');
+
+      if (role === 'entrepreneur') {
+        secEntrepreneur.style.display = 'block';
+        secClient.style.display = 'none';
+        profileType.innerHTML = '<i class="fa-solid fa-briefcase"></i> Entrepreneur Vérifié';
+      } else {
+        secEntrepreneur.style.display = 'none';
+        secClient.style.display = 'block';
+        profileType.innerHTML = '<i class="fa-solid fa-user-check"></i> Compte Client';
+      }
+    }
+  </script>
+
+</body>
+</html>
