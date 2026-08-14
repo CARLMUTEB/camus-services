@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription / Connexion - CAMU SERVICES</title>
+  <title>Inscription - CAMU SERVICES</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -23,7 +23,7 @@
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="inscription.html" class="login-link"><i class="fa-solid fa-user"></i> Compte Utilisateur</a>
+      <a href="inscription.html" class="login-link"><i class="fa-solid fa-user"></i> Mon Compte</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
@@ -31,12 +31,13 @@
       <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="conditions.html"><span>Conditionnalités</span> <i class="fa-solid fa-angle-right"></i></a></li>
     </ul>
   </aside>
 
-  <main class="annonces-container" style="padding-top: 30px; max-width: 500px; margin: 0 auto;">
+  <main class="annonces-container" style="padding-top: 20px; max-width: 550px; margin: 0 auto;">
     
-    <!-- Choix entre Entrepreneur et Client -->
+    <!-- Choix d'onglet -->
     <div style="display: flex; background: #eee; border-radius: 8px; padding: 4px; margin-bottom: 20px;">
       <button id="tabEntrepreneur" onclick="switchAccountType('entrepreneur')" style="flex: 1; padding: 10px; border: none; border-radius: 6px; background: #e53935; color: white; font-weight: bold; cursor: pointer;">
         <i class="fa-solid fa-briefcase"></i> Entrepreneur
@@ -46,23 +47,45 @@
       </button>
     </div>
 
-    <!-- Formulaire Entrepreneur -->
+    <!-- Formulaire Entrepreneur Complet -->
     <div id="formEntrepreneur" class="card" style="padding: 25px;">
-      <h2 style="text-align: center; margin-bottom: 10px;">Compte Entrepreneur</h2>
-      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 20px;">Inscrivez-vous pour publier vos offres et gérer votre profil.</p>
+      <h2 style="text-align: center; margin-bottom: 5px;">Créer un compte Entrepreneur</h2>
+      <p style="text-align: center; color: #2e7d32; font-size: 13px; font-weight: bold; margin-bottom: 20px;"><i class="fa-solid fa-gift"></i> Essai gratuit pendant 2 mois !</p>
       
       <form id="registerFormEntrepreneur">
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nom de l'Entrepreneur / Entreprise</label>
-          <input type="text" id="regName" placeholder="Ex: Jean Dupont ou Auto Express" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Nom ou Raison Sociale *</label>
+          <input type="text" id="regName" placeholder="Ex: Jean Dupont / CAMU Store" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
         </div>
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Numéro WhatsApp / Tél</label>
-          <input type="tel" id="regPhone" placeholder="Ex: +243 ..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Ville *</label>
+          <input type="text" id="regCity" placeholder="Ex: Lubumbashi, Kinshasa..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
         </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Adresse physique *</label>
+          <input type="text" id="regAddress" placeholder="Ex: Av. Kilela Balanda, N° 45" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Numéro WhatsApp / Tél *</label>
+          <input type="tel" id="regPhone" placeholder="Ex: +243 ..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Adresse E-mail *</label>
+          <input type="email" id="regEmail" placeholder="exemple@gmail.com" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Compte Mobile Money (M-Pesa / Orange / Airtel) *</label>
+          <input type="text" id="regMobileMoney" placeholder="Ex: M-Pesa : 0812345678" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
+
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Domaine principal</label>
-          <select id="regCategory" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+          <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px;">Catégorie principale *</label>
+          <select id="regCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: #fff;">
             <option value="Vente">Vente</option>
             <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
             <option value="Établissement">Établissement</option>
@@ -73,25 +96,41 @@
             <option value="Autres">Autres</option>
           </select>
         </div>
-        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px;">Créer mon compte Entrepreneur</button>
+
+        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+          <input type="checkbox" id="acceptCondEnt" required style="width: 16px; height: 16px; cursor: pointer;">
+          <label for="acceptCondEnt" style="cursor: pointer; color: #444;">
+            J'accepte les <a href="conditions.html" target="_blank" style="color: #e53935; font-weight: bold; text-decoration: underline;">conditionnalités de CAMU SERVICES</a>.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px; font-weight: bold;">Valider l'inscription Entrepreneur</button>
       </form>
     </div>
 
     <!-- Formulaire Client -->
     <div id="formClient" class="card" style="padding: 25px; display: none;">
       <h2 style="text-align: center; margin-bottom: 10px;">Compte Client</h2>
-      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 20px;">Créez votre profil pour laisser des avis et enregistrer vos favoris.</p>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 20px;">Inscrivez-vous pour échanger avec les entrepreneurs et laisser des avis.</p>
       
       <form id="registerFormClient">
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Votre Nom complet</label>
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Nom complet *</label>
           <input type="text" id="clientName" placeholder="Ex: Paul Mukendi" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
         </div>
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Numéro de téléphone</label>
-          <input type="tel" id="clientPhone" placeholder="Ex: +243 ..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+          <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">Numéro de téléphone *</label>
+          <input type="tel" id="clientPhone" placeholder="+243 ..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
         </div>
-        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px; background: #222;">Créer mon compte Client</button>
+
+        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+          <input type="checkbox" id="acceptCondCli" required style="width: 16px; height: 16px; cursor: pointer;">
+          <label for="acceptCondCli" style="cursor: pointer; color: #444;">
+            J'accepte les <a href="conditions.html" target="_blank" style="color: #e53935; font-weight: bold; text-decoration: underline;">conditionnalités d'utilisation</a>.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-search" style="width: 100%; padding: 12px; border-radius: 8px; background: #222; font-weight: bold;">Créer mon compte Client</button>
       </form>
     </div>
 
@@ -133,15 +172,29 @@
 
     document.getElementById('registerFormEntrepreneur').addEventListener('submit', function(e) {
       e.preventDefault();
-      const user = { name: document.getElementById('regName').value, phone: document.getElementById('regPhone').value, role: 'entrepreneur' };
+      const user = { 
+        name: document.getElementById('regName').value, 
+        city: document.getElementById('regCity').value,
+        address: document.getElementById('regAddress').value,
+        phone: document.getElementById('regPhone').value, 
+        email: document.getElementById('regEmail').value,
+        mobileMoney: document.getElementById('regMobileMoney').value,
+        category: document.getElementById('regCategory').value,
+        role: 'entrepreneur',
+        trialStartDate: new Date().toISOString()
+      };
       localStorage.setItem('camus_user', JSON.stringify(user));
-      alert('Bienvenue ! Votre compte Entrepreneur est créé.');
+      alert('Félicitations ! Votre compte Entrepreneur est créé avec 2 mois d\'essai gratuit.');
       window.location.href = 'compte-entrepreneur.html';
     });
 
     document.getElementById('registerFormClient').addEventListener('submit', function(e) {
       e.preventDefault();
-      const user = { name: document.getElementById('clientName').value, phone: document.getElementById('clientPhone').value, role: 'client' };
+      const user = { 
+        name: document.getElementById('clientName').value, 
+        phone: document.getElementById('clientPhone').value, 
+        role: 'client' 
+      };
       localStorage.setItem('camus_user', JSON.stringify(user));
       alert('Bienvenue sur CAMU SERVICES !');
       window.location.href = 'index.html';
