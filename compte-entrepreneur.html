@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Entrepreneur - CAMUS SERVICES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="top-bar">
+    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
+    </div>
+    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+  </header>
+
+  <!-- Navigation Latérale -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="compte-entrepreneur.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-tie"></i> Mon Espace</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
+
+  <main class="annonces-container" style="padding-top: 25px;">
+    
+    <!-- Profil Entrepreneur -->
+    <div class="card" style="margin-bottom: 20px; padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span style="font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Compte Entrepreneur</span>
+          <h2 id="entrepreneurName" style="margin-top: 5px; font-size: 18px;">---</h2>
+          <p id="entrepreneurPhone" style="font-size: 13px; color: #666;"></p>
+        </div>
+        <button id="logoutBtn" style="background: #ffebee; color: #c62828; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer;">
+          <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+        </button>
+      </div>
+    </div>
+
+    <!-- Actions Rapides -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3 class="section-title" style="margin: 0;"><i class="fa-solid fa-briefcase" style="color: #e53935;"></i> Mes services publiés</h3>
+      <a href="publier.html" style="background: #e53935; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+        <i class="fa-solid fa-plus"></i> Nouveau service
+      </a>
+    </div>
+
+    <!-- Liste des services de l'entrepreneur -->
+    <div id="myServicesGrid" class="annonces-grid">
+      <!-- Généré dynamiquement -->
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="compte-entrepreneur.html" class="nav-item active"><i class="fa-solid fa-user-tie"></i><span>Espace</span></a>
+    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    // Menu latéral
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+
+    // Vérification Entrepreneur
+    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
+    if (!currentUser || !currentUser.name) {
+      alert("Veuillez vous connecter en tant qu'Entrepreneur pour accéder à cette page.");
+      window.location.href = 'inscription.html';
+    } else {
+      document.getElementById('entrepreneurName').textContent = currentUser.name;
+      document.getElementById('entrepreneurPhone').textContent = "WhatsApp / Tél : " + currentUser.phone;
+    }
+
+    // Charger uniquement les services de cet entrepreneur
+    function loadEntrepreneurServices() {
+      const grid = document.getElementById('myServicesGrid');
+      const allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      
+      // Filtrer par le nom/téléphone de l'entrepreneur
+      const myAds = allAds.filter(ad => ad.publisher === currentUser.name && ad.phone === currentUser.phone);
+
+      if (myAds.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
+            <p style="color: #666;">Vous n'avez publié aucun service pour le moment.</p>
+            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Proposer votre premier service</a>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = myAds.map(ad => `
+        <div class="card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
+              <small style="color: #888; font-size: 11px;">${ad.date || ''}</small>
+            </div>
+            <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #222;">${ad.title}</h4>
+            <p style="font-size: 13px; color: #555; margin-bottom: 12px;">${ad.description}</p>
+            <div style="font-weight: bold; color: #2e7d32; font-size: 14px; margin-bottom: 10px;">${ad.price}</div>
+          </div>
+          
+          <div style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: flex-end;">
+            <button onclick="deleteService(${ad.id})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
+              <i class="fa-solid fa-trash"></i> Supprimer
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Supprimer un service
+    function deleteService(id) {
+      if (confirm("Voulez-vous vraiment supprimer ce service ?")) {
+        let allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
+        allAds = allAds.filter(ad => ad.id !== id);
+        localStorage.setItem('camus_ads', JSON.stringify(allAds));
+        loadEntrepreneurServices();
+      }
+    }
+
+    // Déconnexion
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('camus_user');
+      window.location.href = 'index.html';
+    });
+
+    document.addEventListener('DOMContentLoaded', loadEntrepreneurServices);
+  </script>
+</body>
+</html>
