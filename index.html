@@ -162,21 +162,6 @@
 
     .category-item:hover { color: #d32f2f; }
 
-    .sub-menu-link {
-      padding: 12px 18px 12px 50px;
-      font-size: 13px;
-      color: #666;
-      text-decoration: none;
-      display: block;
-      border-bottom: 1px solid #f5f5f5;
-    }
-
-    .hr-menu {
-      border: none;
-      border-top: 1px solid #eee;
-      margin: 5px 0;
-    }
-
     /* Zone de Contenu */
     .container {
       padding: 15px;
@@ -211,6 +196,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
+      margin-bottom: 30px;
     }
 
     .ad-card {
@@ -267,6 +253,92 @@
       text-align: center;
       text-decoration: none;
       display: block;
+    }
+
+    /* Pied de Page (Footer en bas) */
+    .app-footer {
+      background: #ffffff;
+      border-top: 1px solid #eee;
+      padding: 20px 15px;
+      text-align: center;
+      margin-top: 20px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .footer-link {
+      color: #555;
+      font-size: 13px;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .footer-link i { color: #d32f2f; }
+
+    .copyright {
+      font-size: 11px;
+      color: #888;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 12px;
+    }
+
+    /* Fenêtre Modale (Popup) */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .modal-body {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .btn-close-modal {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-top: 15px;
+      width: 100%;
+      cursor: pointer;
     }
 
     /* Navigation Inférieure */
@@ -333,15 +405,6 @@
       <a href="publier.html" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
       <a href="chat.html" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
       <a href="profil.html" class="menu-link"><i class="fa-solid fa-user"></i> Mon Profil</a>
-
-      <hr class="hr-menu">
-      
-      <!-- Infos & Légal -->
-      <a href="#" class="sub-menu-link"><i class="fa-solid fa-circle-info" style="color:#777; margin-right:8px;"></i> À propos de nous</a>
-      <a href="#" class="sub-menu-link"><i class="fa-solid fa-file-contract" style="color:#777; margin-right:8px;"></i> Conditions d'utilisation</a>
-      <a href="#" class="sub-menu-link"><i class="fa-solid fa-envelope" style="color:#777; margin-right:8px;"></i> Nous contacter</a>
-
-      <hr class="hr-menu">
       <a href="admin.html" class="menu-link"><i class="fa-solid fa-user-shield"></i> Administration</a>
     </div>
   </nav>
@@ -381,8 +444,41 @@
           </div>
         </div>
       </div>
+
+      <!-- Footer en bas de l'interface -->
+      <footer class="app-footer">
+        <div class="footer-links">
+          <span class="footer-link" onclick="openInfoModal('À propos de nous', 'CAMU SERVICES est une plateforme interactive dédiée aux entrepreneurs et professionnels pour promouvoir leurs services et produits efficacement.')">
+            <i class="fa-solid fa-circle-info"></i> À propos de nous
+          </span>
+          <span class="footer-link" onclick="openInfoModal('Conditions d\'utilisation', 'En utilisant CAMU SERVICES, vous vous engagez à publier des annonces authentiques et à respecter la communauté des utilisateurs.')">
+            <i class="fa-solid fa-file-contract"></i> Conditions d'utilisation
+          </span>
+          <span class="footer-link" onclick="openInfoModal('Nous contacter', 'Pour toute question ou assistance, contactez le support de CAMU SERVICES via le bouton de discussion ou par e-mail.')">
+            <i class="fa-solid fa-envelope"></i> Nous contacter
+          </span>
+        </div>
+        <div class="copyright">
+          © 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.
+        </div>
+      </footer>
+
     </div>
   </main>
+
+  <!-- Structure Pop-up Modale -->
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modalTitle">Titre</span>
+        <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeInfoModal()"></i>
+      </div>
+      <div id="modalBody" class="modal-body">
+        Texte d'information...
+      </div>
+      <button class="btn-close-modal" onclick="closeInfoModal()">Fermer</button>
+    </div>
+  </div>
 
   <!-- Navigation Inférieure -->
   <nav class="bottom-nav">
@@ -428,6 +524,17 @@
         catList.style.display = 'block';
         catArrow.style.transform = 'rotate(180deg)';
       }
+    }
+
+    /* Gestion des popups au clic sur le footer */
+    function openInfoModal(title, text) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalBody').innerText = text;
+      document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    function closeInfoModal() {
+      document.getElementById('infoModal').style.display = 'none';
     }
   </script>
 
