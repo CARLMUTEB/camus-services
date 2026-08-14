@@ -1,44 +1,52 @@
-// Fonctions d'ouverture et fermeture du menu latéral (Sidebar)
+// Gestion de la barre latérale (Sidebar)
 function openSidebar() {
-  document.getElementById('sidebar').classList.add('active');
-  document.getElementById('sidebarOverlay').classList.add('active');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar && overlay) {
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+  }
 }
 
 function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('active');
-  document.getElementById('sidebarOverlay').classList.remove('active');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar && overlay) {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+  }
 }
 
-// Notification Toast basique
-function showToast(message) {
-  const toast = document.createElement('div');
-  toast.innerText = message;
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #323232;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 12px;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
-
-// Fonction de partage d'annonce
+// Fonction de partage
 function shareAd(title, id) {
   if (navigator.share) {
     navigator.share({
       title: title,
-      text: `Découvrez ce service sur CAMU SERVICES : ${title}`,
+      text: `Regardez cette offre sur CAMU SERVICES : ${title}`,
       url: window.location.href
     }).catch(() => {});
   } else {
-    showToast("Lien copié dans le presse-papier !");
+    alert("Lien de l'annonce copié !");
   }
+}
+
+// Message de notification Toast
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.innerText = message;
+  toast.style.position = 'fixed';
+  toast.style.bottom = '80px';
+  toast.style.left = '50%';
+  toast.style.transform = 'translateX(-50%)';
+  toast.style.background = '#333';
+  toast.style.color = '#fff';
+  toast.style.padding = '10px 20px';
+  toast.style.borderRadius = '20px';
+  toast.style.fontSize = '12px';
+  toast.style.zIndex = '1000';
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 2500);
 }
