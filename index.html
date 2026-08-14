@@ -6,13 +6,14 @@
   <title>CAMU SERVICES - Accueil</title>
   
   <link rel="icon" type="image/png" href="logo.png">
-  <link rel="stylesheet" href="style.css">
+  <!-- Force le rechargement du CSS en évitant le cache -->
+  <link rel="stylesheet" href="style.css?v=2">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-  <!-- En-tête -->
+  <!-- En-tête / Header -->
   <header class="top-bar">
     <div class="menu-icon" onclick="openSidebar()">
       <i class="fa-solid fa-bars"></i>
@@ -22,11 +23,13 @@
       <h2>CAMU <span>SERVICES</span></h2>
     </div>
     <div class="user-icon">
-      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
+      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;" title="Espace Entrepreneur">
+        <i class="fa-solid fa-user-tie"></i>
+      </a>
     </div>
   </header>
 
-  <!-- Overlay & Menu Latéral -->
+  <!-- Overlay & Menu Latéral (Sidebar) -->
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
   <aside id="sidebar" class="sidebar">
@@ -59,40 +62,48 @@
     </nav>
   </aside>
 
-  <!-- Hero Section -->
-  <section class="hero-section" style="padding: 20px 15px; background: #fff; margin-bottom: 15px; border-bottom: 1px solid #eee;">
+  <!-- Section Hero & Recherche -->
+  <section class="hero-section" style="padding: 20px 15px; background: #ffffff; margin-bottom: 15px; border-bottom: 1px solid var(--border-light, #e0e0e0);">
     <div class="hero-content">
-      <h1 style="font-size: 20px; font-weight: 800; margin-bottom: 5px;">Bienvenue sur CAMU SERVICES</h1>
-      <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Découvrez des prestations qualifiées ou proposez vos services en tant qu'Entrepreneur.</p>
+      <h1 style="font-size: 20px; font-weight: 800; margin-bottom: 6px; color: #111;">Bienvenue sur CAMU SERVICES</h1>
+      <p style="font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.4;">
+        Découvrez des prestations qualifiées ou proposez vos services en tant qu'Entrepreneur.
+      </p>
       
-      <div class="search-box" style="display: flex; gap: 8px; margin-bottom: 15px;">
-        <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?" style="flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px;">
-        <button onclick="searchAds()" style="background: var(--primary-red); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <div class="search-box" style="display: flex; gap: 8px;">
+        <input type="text" id="searchInput" placeholder="Quel service recherchez-vous ?" style="flex: 1; padding: 12px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none;">
+        <button onclick="searchAds()" style="background: var(--primary-red, #d32f2f); color: #fff; border: none; padding: 0 18px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Grille d'annonces -->
+  <!-- Main / Grille d'Annonces -->
   <main class="annonces-container" style="padding: 0 15px;">
-    <h3 class="section-title" style="font-size: 15px; font-weight: bold; margin-bottom: 12px;">Services récents</h3>
+    <h3 class="section-title" style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #222;">
+      Services récents
+    </h3>
     
-    <div class="category-bar" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px;">
-      <button class="cat-btn active" onclick="filterCategory('Toutes')">Toutes</button>
-      <button class="cat-btn" onclick="filterCategory('Vente')">Vente</button>
-      <button class="cat-btn" onclick="filterCategory('Hôtel & Restaurant')">Hôtel & Restaurant</button>
-      <button class="cat-btn" onclick="filterCategory('Établissement')">Établissement</button>
-      <button class="cat-btn" onclick="filterCategory('Agence Immobilière')">Agence Immobilière</button>
-      <button class="cat-btn" onclick="filterCategory('Mobilier')">Mobilier</button>
-      <button class="cat-btn" onclick="filterCategory('Terrasses')">Terrasses</button>
-      <button class="cat-btn" onclick="filterCategory('Services')">Services</button>
-      <button class="cat-btn" onclick="filterCategory('Autres')">Autres</button>
+    <!-- Barre de Filtres par Catégories -->
+    <div class="category-bar" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
+      <button class="cat-btn active" onclick="filterCategory('Toutes', this)">Toutes</button>
+      <button class="cat-btn" onclick="filterCategory('Vente', this)">Vente</button>
+      <button class="cat-btn" onclick="filterCategory('Hôtel & Restaurant', this)">Hôtel & Restaurant</button>
+      <button class="cat-btn" onclick="filterCategory('Établissement', this)">Établissement</button>
+      <button class="cat-btn" onclick="filterCategory('Agence Immobilière', this)">Agence Immobilière</button>
+      <button class="cat-btn" onclick="filterCategory('Mobilier', this)">Mobilier</button>
+      <button class="cat-btn" onclick="filterCategory('Terrasses', this)">Terrasses</button>
+      <button class="cat-btn" onclick="filterCategory('Services', this)">Services</button>
+      <button class="cat-btn" onclick="filterCategory('Autres', this)">Autres</button>
     </div>
 
+    <!-- Grille dynamique d'annonces -->
     <div class="annonces-grid" id="adsContainer"></div>
   </main>
 
-  <!-- Pied de page -->
-  <footer style="text-align: center; padding: 25px 10px; margin-top: 30px; border-top: 1px solid #eee; color: #888; font-size: 12px;">
+  <!-- Pied de page / Footer -->
+  <footer style="text-align: center; padding: 25px 15px; margin-top: 30px; border-top: 1px solid #eee; color: #888; font-size: 12px; background: #fff;">
     <p>© 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.</p>
     <p style="margin-top: 5px;">Plateforme d'interconnexion pour Entrepreneurs.</p>
   </footer>
@@ -102,26 +113,53 @@
     <i class="fa-solid fa-plus"></i>
   </a>
 
-  <!-- Navigation fixe du bas -->
+  <!-- Navigation fixe du bas / Bottom Nav -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+    <a href="index.html" class="nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html" class="nav-item">
+      <i class="fa-solid fa-plus-circle"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html" class="nav-item">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="favoris.html" class="nav-item">
+      <i class="fa-solid fa-heart"></i>
+      <span>Favoris</span>
+    </a>
   </nav>
 
+  <!-- Scripts -->
   <script src="app.js"></script>
   <script>
     let currentCategory = 'Toutes';
 
-    function filterCategory(cat) {
+    function filterCategory(cat, element) {
       currentCategory = cat;
+      
+      // Gestion visuelle du bouton actif
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      if (element) {
+        element.classList.add('active');
+      }
+
       loadAnnonces();
     }
 
     function searchAds() {
       loadAnnonces();
     }
+
+    // Recherche automatique en appuyant sur 'Entrée'
+    document.getElementById('searchInput').addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchAds();
+      }
+    });
 
     function addComment(adId) {
       const commentText = prompt("Écrivez votre avis sur ce service :");
@@ -138,7 +176,11 @@
           date: new Date().toLocaleDateString('fr-FR')
         });
         localStorage.setItem('camus_ads', JSON.stringify(ads));
-        showToast("Avis ajouté avec succès !");
+        if (typeof showToast === 'function') {
+          showToast("Avis ajouté avec succès !");
+        } else {
+          alert("Avis ajouté avec succès !");
+        }
         loadAnnonces();
       }
     }
@@ -148,49 +190,85 @@
       let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
       const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
 
+      // Filtre par catégorie
       if (currentCategory !== 'Toutes') {
         ads = ads.filter(ad => ad.category === currentCategory);
       }
 
+      // Filtre par mot-clé de recherche
       if (searchVal !== '') {
-        ads = ads.filter(ad => ad.title.toLowerCase().includes(searchVal) || ad.description.toLowerCase().includes(searchVal));
+        ads = ads.filter(ad => 
+          ad.title.toLowerCase().includes(searchVal) || 
+          ad.description.toLowerCase().includes(searchVal)
+        );
       }
 
+      // État vide
       if (ads.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 40px 15px; background: #fff; border-radius: 10px; border: 1px dashed #ccc;">
-            <i class="fa-solid fa-folder-open" style="font-size: 32px; color: #ccc; margin-bottom: 10px;"></i>
-            <p style="color: #666; font-size: 13px;">Aucun service disponible pour le moment.</p>
-            <a href="publier.html" style="color: #d32f2f; font-weight: bold; text-decoration: none; font-size: 13px; display: inline-block; margin-top: 10px;">Soyez le premier à proposer un service !</a>
+          <div style="text-align: center; padding: 40px 15px; background: #ffffff; border-radius: 12px; border: 1px dashed #ccc; margin-top: 10px;">
+            <i class="fa-solid fa-folder-open" style="font-size: 36px; color: #ccc; margin-bottom: 12px;"></i>
+            <p style="color: #666; font-size: 13px; margin-bottom: 8px;">Aucun service disponible pour le moment.</p>
+            <a href="publier.html" style="color: var(--primary-red, #d32f2f); font-weight: 700; text-decoration: none; font-size: 13px; display: inline-block;">
+              Soyez le premier à proposer un service !
+            </a>
           </div>`;
         return;
       }
 
+      // Rendu des cartes d'annonces
       container.innerHTML = ads.map(ad => {
         const commentsList = ad.comments || [];
+        const phoneClean = ad.phone ? ad.phone.replace(/[^0-9]/g, '') : '';
+        const whatsappMsg = encodeURIComponent(`Bonjour, je vous contacte au sujet de votre annonce "${ad.title}" sur CAMU SERVICES.`);
+
         return `
-        <div class="card" style="margin-bottom: 15px; border-radius: 10px; background: #fff; padding: 15px; border: 1px solid #eee;">
+        <div class="card" style="margin-bottom: 16px; border-radius: 12px; background: #ffffff; padding: 15px; border: 1px solid #e9e9e9; box-shadow: 0 2px 5px rgba(0,0,0,0.03);">
+          
+          ${ad.image ? `
+            <div style="width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 12px; background: #f0f0f0;">
+              <img src="${ad.image}" alt="${ad.title}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          ` : ''}
+
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 11px; background: #ffebee; color: #d32f2f; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
-              <button onclick="shareAd('${ad.title}', ${ad.id})" style="background: none; border: none; color: #888; cursor: pointer;"><i class="fa-solid fa-share-nodes"></i></button>
+              <span style="font-size: 11px; background: #ffebee; color: var(--primary-red, #d32f2f); padding: 4px 10px; border-radius: 12px; font-weight: 700;">
+                ${ad.category}
+              </span>
+              <button onclick="shareAd('${ad.title.replace(/'/g, "\\'")}', ${ad.id})" style="background: none; border: none; color: #888; cursor: pointer; font-size: 15px; padding: 4px;" title="Partager">
+                <i class="fa-solid fa-share-nodes"></i>
+              </button>
             </div>
-            <h4 style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">${ad.title}</h4>
+
+            <h4 style="font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px;">${ad.title}</h4>
             <p style="font-size: 13px; color: #555; margin-bottom: 10px; line-height: 1.4;">${ad.description}</p>
-            <div style="font-weight: bold; color: #2e7d32; font-size: 14px; margin-bottom: 10px;">${ad.price}</div>
+            <div style="font-weight: 700; color: #2e7d32; font-size: 15px; margin-bottom: 12px;">${ad.price}</div>
           </div>
           
           <div style="border-top: 1px solid #f0f0f0; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <small style="color: #666; font-size: 12px;"><i class="fa-solid fa-user-tie text-red"></i> ${ad.publisher || 'Entrepreneur'}</small>
-            ${ad.phone ? `<a href="https://wa.me/${ad.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Bonjour, je vous contacte au sujet de votre annonce "' + ad.title + '" sur CAMU SERVICES.')}" target="_blank" style="background: #25D366; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;"><i class="fa-brands fa-whatsapp"></i> Contacter</a>` : ''}
+            <small style="color: #666; font-size: 12px; font-weight: 500;">
+              <i class="fa-solid fa-user-tie text-red"></i> ${ad.publisher || 'Entrepreneur'}
+            </small>
+
+            ${phoneClean ? `
+              <a href="https://wa.me/${phoneClean}?text=${whatsappMsg}" target="_blank" style="background: #25D366; color: white; padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa-brands fa-whatsapp" style="font-size: 14px;"></i> Contacter
+              </a>
+            ` : ''}
           </div>
 
           <div style="margin-top: 12px; border-top: 1px dashed #eee; padding-top: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 11px; font-weight: bold; color: #555;"><i class="fa-solid fa-comments"></i> Avis (${commentsList.length})</span>
-              <button onclick="addComment(${ad.id})" style="background: #f0f0f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Avis</button>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; font-weight: 600; color: #666;">
+                <i class="fa-solid fa-comments"></i> Avis (${commentsList.length})
+              </span>
+              <button onclick="addComment(${ad.id})" style="background: #f0f0f0; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; color: #333;">
+                + Donner un avis
+              </button>
             </div>
           </div>
+
         </div>
       `;
       }).join('');
