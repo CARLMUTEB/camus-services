@@ -16,6 +16,68 @@
 
     body { background-color: #f4f6f8; color: #222; line-height: 1.5; padding-bottom: 80px; }
 
+    /* Modal de Connexion Mot de Passe Admin */
+    .login-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #111;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: #fff;
+      width: 100%;
+      max-width: 360px;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .login-box i.lock-icon {
+      font-size: 40px;
+      color: #d32f2f;
+      margin-bottom: 15px;
+    }
+
+    .login-box h2 { font-size: 18px; color: #111; margin-bottom: 5px; }
+    .login-box p { font-size: 12px; color: #666; margin-bottom: 20px; }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-align: center;
+      outline: none;
+    }
+
+    .login-box button {
+      width: 100%;
+      background: #d32f2f;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .error-msg {
+      color: #d32f2f;
+      font-size: 11px;
+      font-weight: bold;
+      margin-top: 10px;
+      display: none;
+    }
+
     /* En-tête Admin Sombre */
     .admin-header {
       background: #111;
@@ -105,7 +167,7 @@
     .badge-pending { background: #fff8e1; color: #f57f17; }
     .badge-alert { background: #ffebee; color: #c62828; }
 
-    /* Navigation du bas (Fix Favoris) */
+    /* Navigation du bas */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; width: 100%;
@@ -118,115 +180,116 @@
       height: 65px;
     }
 
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 20%; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
-  <!-- En-tête Admin compact -->
-  <header class="admin-header">
-    <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <h1>Panneau <span>Administrateur</span></h1>
-    <i class="fa-solid fa-user-shield"></i>
-  </header>
-
-  <main class="container">
-
-    <!-- Vue rapide / Statistiques d'Administration -->
-    <div class="admin-grid">
-      <div class="admin-card">
-        <i class="fa-solid fa-users"></i>
-        <h3>Comptes</h3>
-        <span>Entrepreneurs & Clients</span>
-      </div>
-      <div class="admin-card">
-        <i class="fa-solid fa-credit-card"></i>
-        <h3>Abonnements</h3>
-        <span>Gestion des forfaits</span>
-      </div>
-      <div class="admin-card">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <h3>Signalements</h3>
-        <span>Modération du contenu</span>
-      </div>
-      <div class="admin-card">
-        <i class="fa-solid fa-bullhorn"></i>
-        <h3>Annonces Site</h3>
-        <span>Catalogues & Infos</span>
-      </div>
-    </div>
-
-    <!-- 1. Section : Comptes & Abonnements -->
-    <div class="section-title">Gestion des Utilisateurs & Abonnements</div>
-    
-    <div class="panel-box">
-      <h4><i class="fa-solid fa-user-check" style="color: #2e7d32;"></i> Abonnements Entrepreneurs en attente</h4>
-      <ul class="data-list">
-        <li class="data-item">
-          <div>
-            <strong>Service Traiteur Kinshasa</strong><br>
-            <span style="color:#777; font-size:11px;">Validation compte Premium demandé</span>
-          </div>
-          <span class="badge-status badge-pending">En attente</span>
-        </li>
-        <li class="data-item">
-          <div>
-            <strong>Atelier Électricité Lubumbashi</strong><br>
-            <span style="color:#777; font-size:11px;">Abonnement Mensuel</span>
-          </div>
-          <span class="badge-status badge-active">Actif</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- 2. Section : Signalements & Modération -->
-    <div class="section-title">Modération du Contenu</div>
-
-    <div class="panel-box">
-      <h4><i class="fa-solid fa-flag" style="color: #c62828;"></i> Signalements récents</h4>
-      <ul class="data-list">
-        <li class="data-item">
-          <div>
-            <strong>Annonce Vente #2041</strong><br>
-            <span style="color:#777; font-size:11px;">Motif : Prix abusif</span>
-          </div>
-          <span class="badge-status badge-alert">À vérifier</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- 3. Section : Publication d'Informations Officielles (Catalogues, Infos site) -->
-    <div class="section-title">Publication Administrateur</div>
-
-    <div class="panel-box">
-      <h4><i class="fa-solid fa-pen-to-square" style="color: #d32f2f;"></i> Publier un Catalogue, une Offre ou une Info</h4>
-      <form onsubmit="event.preventDefault(); alert('Publication administrateur effectuée ! Elle s\'affichera sur l\'Accueil.');">
-        <div class="form-group">
-          <label>Type de publication</label>
-          <select>
-            <option>Information Officielle du Site</option>
-            <option>Catalogue de Services Vedettes (Mois)</option>
-            <option>Mise à jour importante de la plateforme</option>
-            <option>Offre Promotionnelle CAMU SERVICES</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Titre de la publication</label>
-          <input type="text" placeholder="Ex: Catalogue de services Traiteur du mois" required>
-        </div>
-        <div class="form-group">
-          <label>Message / Description complète</label>
-          <textarea rows="4" placeholder="Rédigez ici votre communication administrative..." required></textarea>
-        </div>
-        <button type="submit" class="btn-admin-submit">Publier officiellement sur la plateforme</button>
+  <!-- Écran de vérification du mot de passe Administrateur -->
+  <div id="admin-login-modal" class="login-overlay">
+    <div class="login-box">
+      <i class="fa-solid fa-user-shield lock-icon"></i>
+      <h2>Accès Sécurisé</h2>
+      <p>Entrez le mot de passe administrateur pour déverrouiller le panneau.</p>
+      
+      <form onsubmit="checkAdminPassword(event)">
+        <input type="password" id="admin-pass-input" placeholder="Mot de passe" required>
+        <button type="submit">Se connecter</button>
       </form>
+      <div id="login-error" class="error-msg">Mot de passe incorrect. Réessayez.</div>
     </div>
+  </div>
 
-  </main>
+  <!-- Contenu Administrateur (Caché par défaut jusqu'à la connexion) -->
+  <div id="admin-content" style="display: none;">
+    <!-- En-tête Admin compact -->
+    <header class="admin-header">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h1>Panneau <span>Administrateur</span></h1>
+      <button onclick="logoutAdmin()" style="color:#fff; font-size:12px; font-weight:bold;"><i class="fa-solid fa-right-from-bracket"></i> Quitter</button>
+    </header>
 
-  <!-- Navigation du bas (Fix Favoris) -->
+    <main class="container">
+
+      <!-- Statistiques d'Administration -->
+      <div class="admin-grid">
+        <div class="admin-card">
+          <i class="fa-solid fa-users"></i>
+          <h3>Profils Utilisateurs</h3>
+          <span>Clients & Entrepreneurs</span>
+        </div>
+        <div class="admin-card">
+          <i class="fa-solid fa-credit-card"></i>
+          <h3>Abonnements</h3>
+          <span>Gestion des forfaits</span>
+        </div>
+        <div class="admin-card">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <h3>Signalements</h3>
+          <span>Modération du contenu</span>
+        </div>
+        <div class="admin-card">
+          <i class="fa-solid fa-bullhorn"></i>
+          <h3>Annonces Site</h3>
+          <span>Catalogues & Infos</span>
+        </div>
+      </div>
+
+      <!-- 1. Section : Comptes Utilisateurs & Profils -->
+      <div class="section-title">Gestion des Profils & Abonnements</div>
+      
+      <div class="panel-box">
+        <h4><i class="fa-solid fa-id-card" style="color: #2e7d32;"></i> Profils Inscrits Récemment</h4>
+        <ul class="data-list">
+          <li class="data-item">
+            <div>
+              <strong>Jean Mukendi</strong> (Entrepreneur)<br>
+              <span style="color:#777; font-size:11px;">Services Électriques | +243 81...</span>
+            </div>
+            <span class="badge-status badge-active">Vérifié</span>
+          </li>
+          <li class="data-item">
+            <div>
+              <strong>Eunice K.</strong> (Client)<br>
+              <span style="color:#777; font-size:11px;">Client depuis Fév 2026</span>
+            </div>
+            <span class="badge-status badge-active">Actif</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 2. Section : Publication d'Informations Officielles -->
+      <div class="section-title">Communication Officielles</div>
+
+      <div class="panel-box">
+        <h4><i class="fa-solid fa-pen-to-square" style="color: #d32f2f;"></i> Publier une Annonce Administrative</h4>
+        <form onsubmit="event.preventDefault(); alert('Communication publiée avec succès !');">
+          <div class="form-group">
+            <label>Type de publication</label>
+            <select>
+              <option>Information Officielle du Site</option>
+              <option>Catalogue de Services Vedettes</option>
+              <option>Nouveau Forfait Entrepreneur</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Titre</label>
+            <input type="text" placeholder="Titre de la communication" required>
+          </div>
+          <div class="form-group">
+            <label>Contenu du message</label>
+            <textarea rows="3" placeholder="Description complète..." required></textarea>
+          </div>
+          <button type="submit" class="btn-admin-submit">Publier officiellement</button>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Navigation du bas -->
   <nav class="bottom-nav">
     <a href="index.html">
       <i class="fa-solid fa-house"></i>
@@ -240,11 +303,35 @@
       <i class="fa-solid fa-comments"></i>
       <span>Chat</span>
     </a>
-    <a href="favoris.html">
-      <i class="fa-solid fa-heart"></i>
-      <span>Favoris</span>
+    <a href="profil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
     </a>
   </nav>
+
+  <script>
+    // Vérification du mot de passe Administrateur
+    function checkAdminPassword(event) {
+      event.preventDefault();
+      const inputPass = document.getElementById('admin-pass-input').value;
+      const errorMsg = document.getElementById('login-error');
+
+      // Validation avec le mot de passe : Carl1800
+      if (inputPass === 'Carl1800') {
+        document.getElementById('admin-login-modal').style.display = 'none';
+        document.getElementById('admin-content').style.display = 'block';
+        errorMsg.style.display = 'none';
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('admin-login-modal').style.display = 'flex';
+      document.getElementById('admin-content').style.display = 'none';
+      document.getElementById('admin-pass-input').value = '';
+    }
+  </script>
 
 </body>
 </html>
