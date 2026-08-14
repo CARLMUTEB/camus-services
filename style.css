@@ -179,6 +179,34 @@ body {
   background-color: #fde8e8;
 }
 
+/* Style moderne pour la barre de catégories */
+.category-bar .cat-btn {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.category-bar .cat-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+.category-bar .cat-btn.active {
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border-color: var(--primary-red);
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(211, 47, 47, 0.2);
+}
+
 /* Finitions - Effets Cartes & Badges */
 .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
