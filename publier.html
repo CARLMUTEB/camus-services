@@ -2,103 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Publier un service</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Publier — CAMU SERVICES</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
+    .header { background: #111; color: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .header h1 { font-size: 16px; font-weight: 800; }
+    .container { padding: 20px 15px; max-width: 600px; margin: 0 auto; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+  </style>
 </head>
-<body style="background: #f9f9f9; padding-bottom: 70px;">
-
-  <!-- Header -->
-  <header class="top-bar">
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2 style="font-size: 16px; margin: 0; color: white;">Proposer un Service</h2>
-    </div>
+<body>
+  <header class="header">
+    <a href="index.html" style="color:#fff;"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Publier un service</h1>
+    <div style="width:18px;"></div>
   </header>
-
-  <main style="max-width: 600px; margin: 20px auto; padding: 0 15px;">
-    <form id="publishForm" onsubmit="handlePublish(event)" style="background: white; border-radius: 10px; padding: 20px; border: 1px solid #eee;">
-      
-      <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #111;">Espace Entrepreneur</h3>
-
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Nom ou Enseigne de l'Entrepreneur *</label>
-        <input type="text" id="publisher" required placeholder="Ex: Carl Muteb / CAMU Enterprise" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-      </div>
-
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Titre de la prestation / service *</label>
-        <input type="text" id="title" required placeholder="Ex: Service de Dépannage Électrique" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-      </div>
-
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Catégorie *</label>
-        <select id="category" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: white;">
-          <option value="Services">Services</option>
-          <option value="Vente">Vente</option>
-          <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
-          <option value="Établissement">Établissement</option>
-          <option value="Agence Immobilière">Agence Immobilière</option>
-          <option value="Mobilier">Mobilier</option>
-          <option value="Terrasses">Terrasses</option>
-          <option value="Autres">Autres</option>
-        </select>
-      </div>
-
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Tarif / Prix (ex: Sur devis, 50$, 20000 FC) *</label>
-        <input type="text" id="price" required placeholder="Ex: Sur devis" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-      </div>
-
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Numéro WhatsApp (avec indicatif) *</label>
-        <input type="tel" id="phone" required placeholder="Ex: +243990000000" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;">
-      </div>
-
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555;">Description détaillée *</label>
-        <textarea id="description" rows="4" required placeholder="Décrivez votre service, vos horaires, la localisation..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; font-family: inherit;"></textarea>
-      </div>
-
-      <button type="submit" style="width: 100%; background: #d32f2f; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer;">
-        <i class="fa-solid fa-paper-plane"></i> Publier le service
-      </button>
-
-    </form>
+  <main class="container">
+    <p style="font-size: 13px; color: #666; text-align:center;">Formulaire réservé aux entrepreneurs.</p>
   </main>
-
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item active"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="active"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
-  <script src="app.js"></script>
-  <script>
-    function handlePublish(e) {
-      e.preventDefault();
-      
-      const newAd = {
-        id: Date.now(),
-        publisher: document.getElementById('publisher').value.trim(),
-        title: document.getElementById('title').value.trim(),
-        category: document.getElementById('category').value,
-        price: document.getElementById('price').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        description: document.getElementById('description').value.trim(),
-        comments: [],
-        date: new Date().toLocaleDateString('fr-FR')
-      };
-
-      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
-      ads.unshift(newAd);
-      localStorage.setItem('camus_ads', JSON.stringify(ads));
-
-      alert("Votre service a été publié avec succès !");
-      window.location.href = "index.html";
-    }
-  </script>
 </body>
 </html>
