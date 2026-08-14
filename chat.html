@@ -3,73 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Messagerie - CAMUS SERVICES</title>
+  <title>Discussions - CAMU SERVICES</title>
+  
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
+  <!-- En-tête -->
   <header class="top-bar">
-    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
-    <div class="brand-logo">
-      <img src="logo.png" alt="Logo CAMUS SERVICES">
-      <h2>CAMUS <span>SERVICES</span></h2>
+    <div class="menu-icon" id="openMenu">
+      <i class="fa-solid fa-bars"></i>
     </div>
-    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMU SERVICES">
+      <h2>CAMU <span>SERVICES</span></h2>
+    </div>
+    <div class="user-icon">
+      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
+    </div>
   </header>
 
+  <!-- Overlay et Menu latéral -->
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <a href="compte-entrepreneur.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-tie"></i> Espace Entrepreneur</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
       <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
       <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
     </ul>
   </aside>
 
-  <main class="annonces-container" style="padding-top: 20px;">
-    <h3 class="section-title"><i class="fa-solid fa-comments" style="color: #e53935;"></i> Vos messages récents</h3>
+  <!-- Contenu Principal Chat -->
+  <main class="annonces-container" style="padding-top: 25px; max-width: 600px; margin: 0 auto;">
     
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <div class="card" style="flex-direction: row; align-items: center; gap: 15px; cursor: pointer;">
-        <i class="fa-solid fa-user-circle" style="font-size: 35px; color: #888;"></i>
-        <div>
-          <h4 style="font-size: 15px; margin-bottom: 3px;">Vendeur RAV4</h4>
-          <p style="font-size: 13px; color: #666;">Bonjour, le véhicule est-il toujours disponible ?</p>
-        </div>
-      </div>
-
-      <div class="card" style="flex-direction: row; align-items: center; gap: 15px; cursor: pointer;">
-        <i class="fa-solid fa-building" style="font-size: 30px; color: #888;"></i>
-        <div>
-          <h4 style="font-size: 15px; margin-bottom: 3px;">Agence Immo Golf</h4>
-          <p style="font-size: 13px; color: #666;">Visite programmée pour demain à 10h.</p>
-        </div>
-      </div>
+    <div style="margin-bottom: 20px; text-align: center;">
+      <h2 style="font-size: 20px; color: #222;"><i class="fa-solid fa-comments" style="color: #25D366;"></i> Centre de Discussion</h2>
+      <p style="font-size: 13px; color: #666; margin-top: 5px;">Contactez directement les entrepreneurs via WhatsApp en un seul clic.</p>
     </div>
+
+    <!-- Boîte d'informations WhatsApp -->
+    <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 12px 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+      <i class="fa-brands fa-whatsapp" style="font-size: 28px; color: #25D366;"></i>
+      <span style="font-size: 12px; color: #2e7d32; line-height: 1.4;">
+        Toutes vos discussions sont sécurisées et s'ouvrent directement dans votre application <strong>WhatsApp</strong>.
+      </span>
+    </div>
+
+    <!-- Liste des conversations / Entrepreneurs -->
+    <h3 class="section-title" style="font-size: 15px; margin-bottom: 12px;">Entrepreneurs à contacter</h3>
+    <div id="chatContactsList">
+      <!-- Généré dynamiquement -->
+    </div>
+
   </main>
 
+  <!-- Navigation fixe du bas -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html" class="nav-item">
+      <i class="fa-solid fa-plus-circle"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html" class="nav-item active">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="favoris.html" class="nav-item">
+      <i class="fa-solid fa-heart"></i>
+      <span>Favoris</span>
+    </a>
   </nav>
 
   <script src="app.js"></script>
   <script>
+    // Menu latéral
     const openBtn = document.getElementById('openMenu');
     const closeBtn = document.getElementById('closeMenu');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
+
     if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
     if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
     if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+
+    // Affichage utilisateur dans le menu
+    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    if (currentUser && currentUser.name && userMenuBtn) {
+      userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> Mon Espace (${currentUser.name})`;
+    }
+
+    // Chargement des contacts à partir des annonces disponibles
+    function loadChatContacts() {
+      const listContainer = document.getElementById('chatContactsList');
+      const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+
+      if (ads.length === 0) {
+        listContainer.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: #fff; border-radius: 8px; border: 1px solid #eee;">
+            <i class="fa-solid fa-comment-slash" style="font-size: 40px; color: #ccc; margin-bottom: 10px;"></i>
+            <p style="color: #666; font-size: 14px;">Aucun entrepreneur disponible pour le moment.</p>
+            <a href="index.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px; font-size: 13px;">Voir les offres sur l'accueil</a>
+          </div>`;
+        return;
+      }
+
+      listContainer.innerHTML = ads.map(ad => {
+        const cleanPhone = ad.phone ? ad.phone.replace(/[^0-9]/g, '') : '';
+        const defaultMsg = encodeURIComponent(`Bonjour ${ad.publisher || 'Entrepreneur'}, je vous contacte depuis CAMU SERVICES au sujet de votre offre "${ad.title}".`);
+        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${defaultMsg}` : '#';
+
+        return `
+          <div class="card" style="margin-bottom: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px; overflow: hidden;">
+              <div style="width: 45px; height: 45px; background: #ffebee; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="fa-solid fa-user-tie" style="color: #e53935; font-size: 20px;"></i>
+              </div>
+              <div style="overflow: hidden;">
+                <h4 style="font-size: 15px; font-weight: bold; color: #222; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${ad.publisher || 'Entrepreneur'}</h4>
+                <p style="font-size: 12px; color: #666; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="fa-solid fa-briefcase" style="font-size: 11px;"></i> ${ad.title}</p>
+                <span style="font-size: 11px; color: #888;">${ad.category}</span>
+              </div>
+            </div>
+
+            <div>
+              ${cleanPhone 
+                ? `<a href="${waLink}" target="_blank" style="background: #25D366; color: white; padding: 8px 14px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Discuter
+                   </a>`
+                : `<span style="font-size: 11px; color: #999;">Pas de num.</span>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadChatContacts);
   </script>
 </body>
 </html>
