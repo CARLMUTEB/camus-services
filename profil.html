@@ -3,105 +3,296 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mon Profil — CAMU SERVICES</title>
+  <title>CAMU SERVICES — Mon Profil / Inscription</title>
+  
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    .top-header { background: #ffffff; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; height: 60px; }
-    .brand-container { display: flex; align-items: center; gap: 8px; }
-    .brand-container h1 { font-size: 17px; font-weight: 800; color: #111; }
-    .brand-container h1 span { color: #d32f2f; }
+    body {
+      background-color: #f8f9fa;
+      color: #222;
+      padding-bottom: 80px;
+    }
 
-    .container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
+    /* En-tête */
+    .top-header {
+      background: #111111;
+      color: #ffffff;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 60px;
+    }
 
-    .profile-card { background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #e0e0e0; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 20px; }
-    .avatar-box { width: 80px; height: 80px; margin: 0 auto 12px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #555; border: 3px solid #d32f2f; }
-    .user-name { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 4px; }
-    .user-role { display: inline-block; background: #ffebee; color: #d32f2f; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 12px; margin-bottom: 15px; }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
 
-    .role-switcher { background: #f1f3f4; padding: 6px; border-radius: 20px; display: flex; gap: 5px; margin-bottom: 20px; }
-    .role-btn { flex: 1; padding: 8px; font-size: 11px; font-weight: bold; border-radius: 15px; border: none; background: transparent; color: #555; cursor: pointer; }
-    .role-btn.active { background: #ffffff; color: #d32f2f; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .brand-title span { color: #d32f2f; }
 
-    .info-group { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-    .info-group h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .info-item { display: flex; justify-content: space-between; font-size: 12px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
-    .info-item:last-child { border-bottom: none; }
-    .info-item span.label { color: #666; }
-    .info-item span.value { font-weight: bold; color: #222; }
+    .header-btn {
+      color: #fff;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
 
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .container {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    /* Carte du Formulaire */
+    .auth-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 25px 20px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* Onglets Connexion / Inscription */
+    .tab-buttons {
+      display: flex;
+      background: #f1f1f1;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: #666;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #111;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Formulaires */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 14px;
+    }
+
+    .input-wrapper input, .input-wrapper select {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+    }
+
+    .input-wrapper input:focus, .input-wrapper select:focus {
+      border-color: #d32f2f;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn-submit:active {
+      background: #b71c1c;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #ffffff; border-top: 1px solid #eee;
+      display: flex; justify-content: space-around;
+      padding: 8px 0; z-index: 1000; height: 65px;
+    }
+
+    .bottom-nav a {
+      text-align: center; color: #666; font-size: 11px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 25%; text-decoration: none;
+    }
+
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
+  <!-- En-tête -->
   <header class="top-header">
-    <a href="index.html" style="color:#333; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="brand-container">
-      <h1>CAMU <span>SERVICES</span></h1>
-    </div>
-    <div style="width: 18px;"></div>
+    <a href="index.html" class="header-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="brand-title">CAMU <span>SERVICES</span></div>
+    <div style="width: 20px;"></div>
   </header>
 
   <main class="container">
-    <div class="role-switcher">
-      <button class="role-btn active" onclick="switchRole('entrepreneur', this)">Profil Entrepreneur</button>
-      <button class="role-btn" onclick="switchRole('client', this)">Profil Client</button>
-    </div>
-
-    <div class="profile-card">
-      <div class="avatar-box"><i class="fa-solid fa-user"></i></div>
-      <h2 class="user-name">Carl Muteb</h2>
-      <span id="profile-type" class="user-role"><i class="fa-solid fa-briefcase"></i> Entrepreneur Vérifié</span>
-    </div>
-
-    <div id="section-entrepreneur">
-      <div class="info-group">
-        <h3><i class="fa-solid fa-chart-line" style="color:#d32f2f;"></i> Activité & Abonnements</h3>
-        <div class="info-item"><span class="label">Forfait actuel</span><span class="value" style="color:#2e7d32;">Premium Mensuel</span></div>
-        <div class="info-item"><span class="label">Annonces actives</span><span class="value">Services en ligne</span></div>
+    <div class="auth-card">
+      
+      <!-- Selecteur Onglet -->
+      <div class="tab-buttons">
+        <button id="btn-login-tab" class="tab-btn active" onclick="switchTab('login')">Se Connecter</button>
+        <button id="btn-register-tab" class="tab-btn" onclick="switchTab('register')">S'inscrire</button>
       </div>
-    </div>
 
-    <div id="section-client" style="display: none;">
-      <div class="info-group">
-        <h3><i class="fa-solid fa-user-gear" style="color:#d32f2f;"></i> Informations Personnelles</h3>
-        <div class="info-item"><span class="label">Type de compte</span><span class="value">Client Standard</span></div>
-        <div class="info-item"><span class="label">Favoris</span><span class="value"><a href="favoris.html" style="color:#d32f2f;">Voir mes favoris</a></span></div>
-      </div>
+      <!-- FORMULAIRE DE CONNEXION -->
+      <form id="login-form">
+        <div class="form-group">
+          <label>Numéro WhatsApp ou Email</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" placeholder="Ex: 0976993469" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Se Connecter</button>
+      </form>
+
+      <!-- FORMULAIRE D'INSCRIPTION -->
+      <form id="register-form" class="hidden">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text" placeholder="Votre nom et prénom" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Type de Compte</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-briefcase"></i>
+            <select required>
+              <option value="client">Client (Je cherche des services)</option>
+              <option value="entrepreneur">Entrepreneur (Je propose des services)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Numéro WhatsApp</label>
+          <div class="input-wrapper">
+            <i class="fa-brands fa-whatsapp"></i>
+            <input type="tel" placeholder="+243..." required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Créer un Mot de passe</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Créer mon Compte</button>
+      </form>
+
     </div>
   </main>
 
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="profil.html" class="active">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
   </nav>
 
   <script>
-    function switchRole(role, btnElement) {
-      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-      btnElement.classList.add('active');
-      const secEntrepreneur = document.getElementById('section-entrepreneur');
-      const secClient = document.getElementById('section-client');
-      const profileType = document.getElementById('profile-type');
+    function switchTab(tab) {
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const loginBtn = document.getElementById('btn-login-tab');
+      const registerBtn = document.getElementById('btn-register-tab');
 
-      if (role === 'entrepreneur') {
-        secEntrepreneur.style.display = 'block';
-        secClient.style.display = 'none';
-        profileType.innerHTML = '<i class="fa-solid fa-briefcase"></i> Entrepreneur Vérifié';
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        loginBtn.classList.add('active');
+        registerBtn.classList.remove('active');
       } else {
-        secEntrepreneur.style.display = 'none';
-        secClient.style.display = 'block';
-        profileType.innerHTML = '<i class="fa-solid fa-user-check"></i> Compte Client';
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        loginBtn.classList.remove('active');
+        registerBtn.classList.add('active');
       }
     }
   </script>
+
 </body>
 </html>
