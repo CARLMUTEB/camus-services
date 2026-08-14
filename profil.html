@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Mon Profil / Inscription</title>
+  <title>CAMU SERVICES — Inscription & Conditionnalités</title>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -134,6 +134,30 @@
       border-color: #d32f2f;
     }
 
+    /* Case à cocher des Conditionnalités */
+    .terms-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 15px 0;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .terms-group input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: #d32f2f;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .terms-group a {
+      color: #d32f2f;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
     .btn-submit {
       width: 100%;
       background: #d32f2f;
@@ -144,11 +168,13 @@
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 5px;
+      transition: background 0.2s;
     }
 
-    .btn-submit:active {
-      background: #b71c1c;
+    .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
 
     /* Bottom Navigation */
@@ -185,12 +211,12 @@
       
       <!-- Selecteur Onglet -->
       <div class="tab-buttons">
-        <button id="btn-login-tab" class="tab-btn active" onclick="switchTab('login')">Se Connecter</button>
-        <button id="btn-register-tab" class="tab-btn" onclick="switchTab('register')">S'inscrire</button>
+        <button id="btn-login-tab" class="tab-btn" onclick="switchTab('login')">Se Connecter</button>
+        <button id="btn-register-tab" class="tab-btn active" onclick="switchTab('register')">S'inscrire</button>
       </div>
 
       <!-- FORMULAIRE DE CONNEXION -->
-      <form id="login-form">
+      <form id="login-form" class="hidden">
         <div class="form-group">
           <label>Numéro WhatsApp ou Email</label>
           <div class="input-wrapper">
@@ -210,21 +236,21 @@
         <button type="submit" class="btn-submit">Se Connecter</button>
       </form>
 
-      <!-- FORMULAIRE D'INSCRIPTION -->
-      <form id="register-form" class="hidden">
+      <!-- FORMULAIRE D'INSCRIPTION AVEC CONDITIONNALITÉS -->
+      <form id="register-form" onsubmit="handleRegister(event)">
         <div class="form-group">
           <label>Nom complet</label>
           <div class="input-wrapper">
             <i class="fa-solid fa-id-card"></i>
-            <input type="text" placeholder="Votre nom et prénom" required>
+            <input type="text" id="reg-name" placeholder="Votre nom et prénom" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Type de Compte</label>
+          <label>Profil d'utilisateur</label>
           <div class="input-wrapper">
             <i class="fa-solid fa-briefcase"></i>
-            <select required>
+            <select id="reg-role" required>
               <option value="client">Client (Je cherche des services)</option>
               <option value="entrepreneur">Entrepreneur (Je propose des services)</option>
             </select>
@@ -232,10 +258,10 @@
         </div>
 
         <div class="form-group">
-          <label>Numéro WhatsApp</label>
+          <label>Numéro WhatsApp (pour contact direct)</label>
           <div class="input-wrapper">
             <i class="fa-brands fa-whatsapp"></i>
-            <input type="tel" placeholder="+243..." required>
+            <input type="tel" id="reg-phone" placeholder="+243..." required>
           </div>
         </div>
 
@@ -243,11 +269,19 @@
           <label>Créer un Mot de passe</label>
           <div class="input-wrapper">
             <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="••••••••" required>
+            <input type="password" id="reg-pass" placeholder="••••••••" required>
           </div>
         </div>
 
-        <button type="submit" class="btn-submit">Créer mon Compte</button>
+        <!-- CONDITIONNALITÉS D'INSCRIPTION -->
+        <div class="terms-group">
+          <input type="checkbox" id="accept-terms" onchange="toggleSubmitBtn()">
+          <label for="accept-terms">
+            J'accepte les <a href="#" onclick="alert('Conditionnalités CAMU SERVICES :\n1. Véracité des informations fournies.\n2. Respect du professionnalisme et des engagements envers les clients.\n3. Interdiction de toute publication frauduleuse ou trompeuse.'); return false;">Conditionnalités & Règlements</a> de la plateforme CAMU SERVICES.
+          </label>
+        </div>
+
+        <button type="submit" id="btn-register-submit" class="btn-submit" disabled>Créer mon Compte</button>
       </form>
 
     </div>
@@ -291,6 +325,19 @@
         loginBtn.classList.remove('active');
         registerBtn.classList.add('active');
       }
+    }
+
+    // Activer / Désactiver le bouton selon la case à cocher
+    function toggleSubmitBtn() {
+      const checkbox = document.getElementById('accept-terms');
+      const submitBtn = document.getElementById('btn-register-submit');
+      submitBtn.disabled = !checkbox.checked;
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      alert('Inscription réussie sous réserve de validation de vos informations !');
+      // Redirection ou enregistrement
     }
   </script>
 
