@@ -9,6 +9,7 @@
 </head>
 <body>
 
+  <!-- En-tête -->
   <header class="top-bar">
     <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
     <div class="brand-logo">
@@ -18,10 +19,11 @@
     <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
   </header>
 
+  <!-- Overlay & Sidebar -->
   <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <a href="inscription.html" class="login-link" id="userAccountLink"><i class="fa-solid fa-user-plus"></i> S'inscrire / Connexion</a>
       <span class="close-btn" id="closeMenu">&times;</span>
     </div>
     <ul class="sidebar-menu">
@@ -33,9 +35,32 @@
   </aside>
 
   <main class="annonces-container" style="padding-top: 30px;">
-    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 25px;">
-      <h2 style="text-align: center; margin-bottom: 10px;">Publier une annonce</h2>
-      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Remplissez le formulaire ci-dessous pour rendre votre service visible auprès de nos clients.</p>
+    
+    <!-- CAS 1 : L'utilisateur N'EST PAS inscrit / connecté -->
+    <div id="authRequiredBox" class="card" style="max-width: 500px; margin: 0 auto; padding: 30px; text-align: center;">
+      <i class="fa-solid fa-user-lock" style="font-size: 50px; color: #e53935; margin-bottom: 15px;"></i>
+      <h2 style="margin-bottom: 10px;">Espace Publicateur</h2>
+      <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Vous devez être inscrit en tant que publicateur pour pouvoir déposer une annonce sur la plateforme.</p>
+      
+      <a href="inscription.html" class="btn-search" style="display: block; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 15px; margin-bottom: 10px;">
+        <i class="fa-solid fa-user-plus"></i> S'inscrire comme publicateur
+      </a>
+    </div>
+
+    <!-- CAS 2 : L'utilisateur EST connecté -> Formulaire de publication -->
+    <div id="publishFormBox" class="card" style="max-width: 600px; margin: 0 auto; padding: 25px; display: none;">
+      
+      <!-- Badge profil publicateur -->
+      <div style="background: #f8f9fa; padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee;">
+        <div>
+          <small style="color: #888;">Publicateur connecté :</small>
+          <div id="publisherNameDisplay" style="font-weight: bold; color: #333;"></div>
+        </div>
+        <button id="logoutBtn" style="background: none; border: none; color: #e53935; font-size: 12px; cursor: pointer; text-decoration: underline;">Changer de compte</button>
+      </div>
+
+      <h2 style="text-align: center; margin-bottom: 10px;">Publier une nouvelle annonce</h2>
+      <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;">Remplissez les détails de votre service pour le rendre visible auprès des clients.</p>
       
       <form id="publishForm">
         <div style="margin-bottom: 15px;">
@@ -52,16 +77,25 @@
           </select>
         </div>
 
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-dollar-sign" style="color: #e53935;"></i> Prix ou Tarif (Optionnel)</label>
+          <input type="text" id="price" placeholder="Ex: 50$ / Sur devis" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+        </div>
+
         <div style="margin-bottom: 20px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description</label>
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description détaillée</label>
           <textarea id="description" rows="4" placeholder="Décrivez votre service ou produit..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
         </div>
 
-        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; width: 100%;">Publier l'annonce</button>
+        <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">
+          <i class="fa-solid fa-paper-plane"></i> Mettre l'annonce en ligne
+        </button>
       </form>
     </div>
+
   </main>
 
+  <!-- Navigation du bas -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html" class="nav-item active"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
@@ -71,6 +105,7 @@
 
   <script src="app.js"></script>
   <script>
+    // 1. Gestion du menu latéral
     const openBtn = document.getElementById('openMenu');
     const closeBtn = document.getElementById('closeMenu');
     const sidebar = document.getElementById('sidebar');
@@ -78,6 +113,58 @@
     if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
     if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
     if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+
+    // 2. Vérification de la connexion du publicateur
+    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
+    const authBox = document.getElementById('authRequiredBox');
+    const formBox = document.getElementById('publishFormBox');
+    const publisherDisplay = document.getElementById('publisherNameDisplay');
+    const userAccountLink = document.getElementById('userAccountLink');
+
+    if (currentUser && currentUser.name) {
+      // Connecté : afficher le formulaire
+      authBox.style.display = 'none';
+      formBox.style.display = 'block';
+      publisherDisplay.textContent = `${currentUser.name} (${currentUser.phone})`;
+      if(userAccountLink) {
+        userAccountLink.innerHTML = `<i class="fa-solid fa-user-check"></i> ${currentUser.name}`;
+        userAccountLink.href = "#";
+      }
+    } else {
+      // Non connecté : afficher l'invitation à s'inscrire
+      authBox.style.display = 'block';
+      formBox.style.display = 'none';
+    }
+
+    // Déconnexion / Changement de compte
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      localStorage.removeItem('camus_user');
+      window.location.reload();
+    });
+
+    // 3. Soumission et enregistrement de l'annonce avec les données du publicateur
+    document.getElementById('publishForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const newAd = {
+        id: Date.now(),
+        title: document.getElementById('title').value,
+        category: document.getElementById('category').value,
+        price: document.getElementById('price').value || 'Sur devis',
+        description: document.getElementById('description').value,
+        publisher: currentUser.name,
+        phone: currentUser.phone,
+        date: new Date().toLocaleDateString('fr-FR')
+      };
+
+      // Sauvegarde dans la liste des annonces globales
+      let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
+      ads.unshift(newAd);
+      localStorage.setItem('camus_ads', JSON.stringify(ads));
+
+      alert('Votre annonce a été publiée avec succès !');
+      window.location.href = 'index.html';
+    });
   </script>
 </body>
 </html>
