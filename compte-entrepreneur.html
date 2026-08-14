@@ -37,10 +37,10 @@
 
   <main class="annonces-container" style="padding-top: 25px;">
     
-    <div class="card" style="margin-bottom: 20px; padding: 20px;">
+    <div class="card" style="margin-bottom: 20px; padding: 20px; border-radius: 10px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <span style="font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Compte Entrepreneur</span>
+          <span id="roleBadge" style="font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 12px; font-weight: bold;">Compte Utilisateur</span>
           <h2 id="entrepreneurName" style="margin-top: 5px; font-size: 18px;">---</h2>
           <p id="entrepreneurPhone" style="font-size: 13px; color: #666;"></p>
         </div>
@@ -51,9 +51,9 @@
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <h3 class="section-title" style="margin: 0;"><i class="fa-solid fa-briefcase" style="color: #e53935;"></i> Mes services publiés</h3>
+      <h3 class="section-title" style="margin: 0;"><i class="fa-solid fa-briefcase" style="color: #e53935;"></i> Mes publications</h3>
       <a href="publier.html" style="background: #e53935; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold;">
-        <i class="fa-solid fa-plus"></i> Nouveau service
+        <i class="fa-solid fa-plus"></i> Nouvelle offre
       </a>
     </div>
 
@@ -82,11 +82,12 @@
 
     const currentUser = JSON.parse(localStorage.getItem('camus_user'));
     if (!currentUser || !currentUser.name) {
-      alert("Veuillez vous connecter en tant qu'Entrepreneur pour accéder à cette page.");
+      alert("Veuillez vous connecter pour accéder à votre espace.");
       window.location.href = 'inscription.html';
     } else {
       document.getElementById('entrepreneurName').textContent = currentUser.name;
-      document.getElementById('entrepreneurPhone').textContent = "WhatsApp / Tél : " + currentUser.phone;
+      document.getElementById('entrepreneurPhone').textContent = "Téléphone : " + currentUser.phone;
+      document.getElementById('roleBadge').textContent = currentUser.role === 'client' ? 'Compte Client' : 'Compte Entrepreneur';
     }
 
     function loadEntrepreneurServices() {
@@ -98,14 +99,14 @@
       if (myAds.length === 0) {
         grid.innerHTML = `
           <div style="grid-column: 1/-1; text-align: center; padding: 30px; background: #fff; border-radius: 8px;">
-            <p style="color: #666;">Vous n'avez publié aucun service pour le moment.</p>
-            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Proposer votre premier service</a>
+            <p style="color: #666;">Vous n'avez publié aucune annonce pour le moment.</p>
+            <a href="publier.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px;">Publier une offre</a>
           </div>`;
         return;
       }
 
       grid.innerHTML = myAds.map(ad => `
-        <div class="card">
+        <div class="card" style="margin-bottom: 15px; padding: 15px; background: #fff; border-radius: 8px;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <span style="font-size: 11px; background: #ffebee; color: #e53935; padding: 3px 8px; border-radius: 12px; font-weight: 600;">${ad.category}</span>
@@ -126,7 +127,7 @@
     }
 
     function deleteService(id) {
-      if (confirm("Voulez-vous vraiment supprimer ce service ?")) {
+      if (confirm("Voulez-vous vraiment supprimer cette publication ?")) {
         let allAds = JSON.parse(localStorage.getItem('camus_ads')) || [];
         allAds = allAds.filter(ad => ad.id !== id);
         localStorage.setItem('camus_ads', JSON.stringify(allAds));
