@@ -62,31 +62,36 @@
       
       <form id="publishForm">
         <div style="margin-bottom: 15px;">
-          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-heading" style="color: #e53935;"></i> Intitulé du service</label>
-          <input type="text" id="title" placeholder="Ex: Maintenance Électrique, Coiffure..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-heading" style="color: #e53935;"></i> Intitulé de l'offre</label>
+          <input type="text" id="title" placeholder="Ex: Vente d'ordinateurs, Location chambre..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
         </div>
 
         <div style="margin-bottom: 15px;">
           <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-list" style="color: #e53935;"></i> Catégorie</label>
           <select id="category" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff;">
+            <option value="Vente">Vente</option>
+            <option value="Hôtel & Restaurant">Hôtel & Restaurant</option>
+            <option value="Établissement">Établissement</option>
+            <option value="Agence Immobilière">Agence Immobilière</option>
+            <option value="Mobilier">Mobilier</option>
+            <option value="Terrasses">Terrasses</option>
             <option value="Services">Services</option>
-            <option value="Ventes">Ventes</option>
-            <option value="Emplois">Emplois</option>
+            <option value="Autres">Autres</option>
           </select>
         </div>
 
         <div style="margin-bottom: 15px;">
           <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-tag" style="color: #e53935;"></i> Tarif / Prix (Optionnel)</label>
-          <input type="text" id="price" placeholder="Ex: 20$/heure ou Sur devis" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+          <input type="text" id="price" placeholder="Ex: 50$, Sur devis, 20$/nuit..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
         </div>
 
         <div style="margin-bottom: 20px;">
           <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;"><i class="fa-solid fa-align-left" style="color: #e53935;"></i> Description complète</label>
-          <textarea id="description" rows="4" placeholder="Détaillez votre offre de service..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
+          <textarea id="description" rows="4" placeholder="Détaillez votre offre de service ou produit..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;"></textarea>
         </div>
 
         <button type="submit" class="btn-search" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px;">
-          <i class="fa-solid fa-paper-plane"></i> Publier le service
+          <i class="fa-solid fa-paper-plane"></i> Publier l'offre
         </button>
       </form>
     </div>
@@ -135,15 +140,16 @@
         description: document.getElementById('description').value,
         publisher: currentUser.name,
         phone: currentUser.phone,
-        date: new Date().toLocaleDateString('fr-FR')
+        date: new Date().toLocaleDateString('fr-FR'),
+        comments: []
       };
 
       let ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
       ads.unshift(newAd);
       localStorage.setItem('camus_ads', JSON.stringify(ads));
 
-      alert('Votre service a été publié avec succès !');
-      window.location.href = 'compte-entrepreneur.html';
+      alert('Votre annonce a été publiée avec succès !');
+      window.location.href = 'index.html';
     });
   </script>
 </body>
