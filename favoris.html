@@ -3,68 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Favoris - Camu Services</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .favoris-container {
-      max-width: 500px;
-      margin: 20px auto 90px auto;
-      padding: 0 15px;
-    }
-    .empty-state {
-      background: white;
-      border-radius: 12px;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .empty-state p {
-      color: #6c757d;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    .btn-explore {
-      display: inline-block;
-      margin-top: 15px;
-      background-color: #0d6efd;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-    }
-  </style>
+  <title>Mes Favoris - CAMUS SERVICES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- En-tête -->
-  <header class="header">
-    <div class="logo">
-      <img src="images/logo.png" alt="Logo Camu Services">
-      <h1>CAMU <span>SERVICES</span></h1>
-      <p>Vos annonces enregistrées</p>
+  <header class="top-bar">
+    <div class="menu-icon" id="openMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="brand-logo">
+      <img src="logo.png" alt="Logo CAMUS SERVICES">
+      <h2>CAMUS <span>SERVICES</span></h2>
     </div>
+    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
   </header>
 
-  <!-- Liste des favoris -->
-  <main class="favoris-container">
-    <div class="empty-state">
-      <span style="font-size: 40px;">⭐</span>
-      <h3 style="margin-top: 10px; color: #333;">Aucun favori pour le moment</h3>
-      <p>Cliquez sur l'étoile d'une annonce pour la retrouver facilement ici.</p>
-      <a href="index.html" class="btn-explore">Parcourir les annonces</a>
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="#" class="login-link"><i class="fa-solid fa-user-check"></i> Connexion</a>
+      <span class="close-btn" id="closeMenu">&times;</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="publier.html"><span>Publier une annonce</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
+      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
+    </ul>
+  </aside>
+
+  <main class="annonces-container" style="padding-top: 30px;">
+    <div class="card" style="text-align: center; padding: 40px 20px; max-width: 500px; margin: 0 auto;">
+      <i class="fa-solid fa-star" style="font-size: 50px; color: #FFC107; margin-bottom: 15px;"></i>
+      <h3 style="margin-bottom: 10px;">Aucun favori pour le moment</h3>
+      <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Cliquez sur l'étoile d'une annonce pour la retrouver facilement ici.</p>
+      <a href="index.html" class="btn-search" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 20px;">Parcourir les annonces</a>
     </div>
   </main>
 
-  <!-- Navigation fixe du bas -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item">🏠 Accueil</a>
-    <a href="favoris.html" class="nav-item active">⭐ Favoris</a>
-    <a href="publier.html" class="nav-item btn-add">+ Publier</a>
-    <a href="chat.html" class="nav-item">💬 Chat</a>
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="favoris.html" class="nav-item active"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
   </nav>
 
-  <script src="js/app.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const openBtn = document.getElementById('openMenu');
+    const closeBtn = document.getElementById('closeMenu');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
+    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+  </script>
 </body>
 </html>
