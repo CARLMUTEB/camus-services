@@ -2,179 +2,126 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Administration</title>
-  
-  <!-- FontAwesome Icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - CAMU SERVICES</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    /* Design global */
+    body { background: #f4f4f9; font-family: sans-serif; margin: 0; }
+    .hidden { display: none; }
+    
+    /* Navigation des onglets */
+    .nav-tabs { display: flex; overflow-x: auto; background: #111; padding: 10px; color: white; }
+    .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: none; color: #ccc; font-size: 14px; }
+    .tab-btn.active { color: #d32f2f; border-bottom: 2px solid #d32f2f; }
 
-    body {
-      background-color: #111111;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 15px;
-    }
-
-    /* Carte de Connexion */
-    .auth-card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 30px 20px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
-
-    .icon-shield {
-      font-size: 42px;
-      color: #d32f2f;
-      margin-bottom: 12px;
-    }
-
-    .auth-card h2 {
-      font-size: 18px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 6px;
-    }
-
-    .auth-card p {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      text-align: center;
-    }
-
-    .input-group input:focus {
-      border-color: #d32f2f;
-    }
-
-    .btn-login {
-      width: 100%;
-      background: #d32f2f;
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-login:active {
-      background: #b71c1c;
-    }
-
-    .error-msg {
-      color: #d32f2f;
-      font-size: 12px;
-      margin-top: 12px;
-      display: none;
-      font-weight: 600;
-    }
-
-    /* Espace Admin (masqué par défaut) */
-    .admin-dashboard {
-      display: none;
-      width: 100%;
-      max-width: 500px;
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 12px;
-      margin-bottom: 15px;
-    }
-
-    .btn-logout {
-      background: #111;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      cursor: pointer;
-    }
+    /* Contenu des pages */
+    .content-area { padding: 20px; }
+    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    
+    /* Formulaire de publication */
+    textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button.primary { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    
+    /* Styles pour listes */
+    .item-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   </style>
 </head>
 <body>
 
-  <!-- Carte de connexion centrée -->
-  <div id="login-box" class="auth-card">
-    <i class="fa-solid fa-user-shield icon-shield"></i>
-    <h2>Accès Sécurisé</h2>
-    <p>Entrez le mot de passe administrateur</p>
-
-    <form onsubmit="verifyPassword(event)">
-      <div class="input-group">
-        <input type="password" id="password-input" placeholder="Mot de passe" required autocomplete="off">
-      </div>
-      <button type="submit" class="btn-login">Se connecter</button>
-      <div id="error-message" class="error-msg">Mot de passe incorrect !</div>
-    </form>
+  <!-- Connexion (toujours sécurisée) -->
+  <div id="login-box" style="display:flex; justify-content:center; align-items:center; height:100vh;">
+    <div class="card" style="width:300px; text-align:center;">
+      <h2>Accès Admin</h2>
+      <input type="password" id="pass" placeholder="Mot de passe" style="width:100%; padding:10px; margin:10px 0;">
+      <button class="primary" onclick="check()">Connexion</button>
+      <p id="err" style="color:red; font-size:12px;"></p>
+    </div>
   </div>
 
-  <!-- Espace Tableau de Bord Administrateur -->
-  <div id="admin-panel" class="admin-dashboard">
-    <div class="admin-header">
-      <h3>Espace Administration</h3>
-      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+  <!-- Dashboard Admin -->
+  <div id="admin-panel" class="hidden">
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showTab('tab1')">Stats</button>
+      <button class="tab-btn" onclick="showTab('tab2')">Publier</button>
+      <button class="tab-btn" onclick="showTab('tab3')">Modération</button>
+      <button class="tab-btn" onclick="showTab('tab4')">Comptes</button>
     </div>
-    <p style="font-size: 13px; color: #555;">Bienvenue dans le panneau de contrôle de <strong>CAMU SERVICES</strong>.</p>
+
+    <div class="content-area">
+      <!-- Tab 1: Statistiques -->
+      <div id="tab1" class="tab-content">
+        <h3>Statistiques globales</h3>
+        <div class="stats">
+          <div class="card"><strong>150</strong><br>Annonces</div>
+          <div class="card"><strong>45</strong><br>Entrepreneurs</div>
+          <div class="card"><strong>12</strong><br>Signalements</div>
+          <div class="card"><strong>2.4k</strong><br>Vues</div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Publication officielle -->
+      <div id="tab2" class="tab-content hidden">
+        <h3>Publier une info officielle</h3>
+        <div class="card">
+          <input type="text" placeholder="Titre..." style="width:100%; padding:10px;">
+          <textarea placeholder="Contenu de l'annonce..."></textarea>
+          <input type="file" accept="image/*,video/*">
+          <button class="primary" style="margin-top:10px;" onclick="alert('Fonctionnalité prête pour connexion API')">Publier</button>
+        </div>
+      </div>
+
+      <!-- Tab 3: Modération (Annonces et Signalements) -->
+      <div id="tab3" class="tab-content hidden">
+        <h3>Modération & Signalements</h3>
+        <div class="card">
+          <div class="item-row">
+            <span>Annonce #402 (Signalée)</span>
+            <button onclick="alert('Annonce supprimée')">Supprimer</button>
+          </div>
+          <div class="item-row">
+            <span>Annonce #405 (En attente)</span>
+            <button>Valider</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Gestion des comptes -->
+      <div id="tab4" class="tab-content hidden">
+        <h3>Contrôle des comptes</h3>
+        <div class="card">
+          <div class="item-row">
+            <span>User: Jean_Entrepreneur</span>
+            <button style="background:orange;">Bannir</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    function verifyPassword(event) {
-      event.preventDefault();
-      const input = document.getElementById('password-input').value.trim();
-      const errorMsg = document.getElementById('error-message');
+    // Mot de passe hashé
+    const SECRET_HASH = "ca291ee5bf0d22f982937748dc74828588506e12739504be042c13dce84249bf";
 
-      // Vérification directe avec le mot de passe
-      if (input === "Carl1800") {
+    async function check() {
+      const p = document.getElementById('pass').value;
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
+      const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hash === SECRET_HASH) {
         document.getElementById('login-box').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
-        errorMsg.style.display = 'none';
       } else {
-        errorMsg.style.display = 'block';
+        document.getElementById('err').innerText = "Mot de passe incorrect";
       }
     }
 
-    function logout() {
-      document.getElementById('password-input').value = '';
-      document.getElementById('login-box').style.display = 'block';
-      document.getElementById('admin-panel').style.display = 'none';
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.remove('hidden');
+      event.currentTarget.classList.add('active');
     }
   </script>
-
 </body>
 </html>
