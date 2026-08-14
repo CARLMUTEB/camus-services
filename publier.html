@@ -3,34 +3,224 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Publier — CAMU SERVICES</title>
+  <title>CAMU SERVICES — Publier un service</title>
+  
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
-    .header { background: #111; color: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .header h1 { font-size: 16px; font-weight: 800; }
-    .container { padding: 20px 15px; max-width: 600px; margin: 0 auto; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: #222;
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    .top-header {
+      background: #111111;
+      color: #ffffff;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 60px;
+    }
+
+    .top-header h1 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .header-btn {
+      color: #fff;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 15px auto;
+      padding: 0 15px;
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      height: 90px;
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+      border-color: #d32f2f;
+    }
+
+    .image-upload-box {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      color: #777;
+      cursor: pointer;
+      background: #fafafa;
+    }
+
+    .image-upload-box i {
+      font-size: 24px;
+      color: #d32f2f;
+      margin-bottom: 5px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn-submit:active {
+      background: #b71c1c;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #ffffff; border-top: 1px solid #eee;
+      display: flex; justify-content: space-around;
+      padding: 8px 0; z-index: 1000; height: 65px;
+    }
+
+    .bottom-nav a {
+      text-align: center; color: #666; font-size: 11px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 25%; text-decoration: none;
+    }
+
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
-  <header class="header">
-    <a href="index.html" style="color:#fff;"><i class="fa-solid fa-arrow-left"></i></a>
+
+  <header class="top-header">
+    <a href="index.html" class="header-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <h1>Publier un service</h1>
-    <div style="width:18px;"></div>
+    <div style="width: 18px;"></div>
   </header>
+
   <main class="container">
-    <p style="font-size: 13px; color: #666; text-align:center;">Formulaire réservé aux entrepreneurs.</p>
+    <form class="form-card" onsubmit="event.preventDefault(); alert('Service publié avec succès !');">
+      
+      <div class="form-group">
+        <label>Photo du service / produit</label>
+        <div class="image-upload-box" onclick="document.getElementById('file-input').click()">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p style="font-size: 12px;">Appuyez pour ajouter une image</p>
+          <input type="file" id="file-input" style="display: none;" accept="image/*">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Titre de l'annonce</label>
+        <input type="text" placeholder="Ex: Maintenance Électrique Industrielle" required>
+      </div>
+
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select required>
+          <option value="">Sélectionnez une catégorie</option>
+          <option value="électricité">Électricité</option>
+          <option value="btp">BTP & Construction</option>
+          <option value="transport">Transport</option>
+          <option value="informatique">Services Informatiques</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Prix (ou préciser "Sur Devis")</label>
+        <input type="text" placeholder="Ex: 50$ ou Sur Devis" required>
+      </div>
+
+      <div class="form-group">
+        <label>Numéro WhatsApp de contact</label>
+        <input type="tel" placeholder="+243..." required>
+      </div>
+
+      <div class="form-group">
+        <label>Description du service</label>
+        <textarea placeholder="Décrivez clairement ce que vous proposez..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Publier l'annonce</button>
+    </form>
   </main>
+
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="active"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html" class="active">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="profil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
   </nav>
+
 </body>
 </html>
