@@ -3,147 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discussions - CAMU SERVICES</title>
-  
+  <title>CAMU SERVICES - Chat Support</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body style="background: #f9f9f9; padding-bottom: 70px;">
 
-  <!-- En-tête -->
   <header class="top-bar">
-    <div class="menu-icon" id="openMenu">
-      <i class="fa-solid fa-bars"></i>
-    </div>
-    <div class="brand-logo">
-      <img src="logo.png" alt="Logo CAMU SERVICES">
-      <h2>CAMU <span>SERVICES</span></h2>
-    </div>
-    <div class="user-icon">
-      <a href="compte-entrepreneur.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-user-tie"></i></a>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2 style="font-size: 16px; margin: 0; color: white;">Discussions & Support</h2>
     </div>
   </header>
 
-  <!-- Overlay et Menu latéral -->
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="compte-entrepreneur.html" class="login-link" id="userMenuBtn"><i class="fa-solid fa-user-tie"></i> Espace Entrepreneur</a>
-      <span class="close-btn" id="closeMenu">&times;</span>
-    </div>
-    <ul class="sidebar-menu">
-      <li><a href="index.html"><span>Accueil</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="publier.html"><span>Publier un service</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="compte-entrepreneur.html"><span>Gérer mes services</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="chat.html"><span>Discussions</span> <i class="fa-solid fa-angle-right"></i></a></li>
-      <li><a href="favoris.html"><span>Mes Favoris</span> <i class="fa-solid fa-angle-right"></i></a></li>
-    </ul>
-  </aside>
+  <main style="max-width: 600px; margin: 20px auto; padding: 0 15px;">
+    <div style="background: white; border-radius: 10px; padding: 15px; border: 1px solid #eee;">
+      <h3 style="font-size: 15px; font-weight: bold; margin-bottom: 10px; color: #111;">Support Direct CAMU SERVICES</h3>
+      <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Pour toute question, assistance technique ou réclamation, vous pouvez échanger directement avec l'administration.</p>
 
-  <!-- Contenu Principal Chat -->
-  <main class="annonces-container" style="padding-top: 25px; max-width: 600px; margin: 0 auto;">
-    
-    <div style="margin-bottom: 20px; text-align: center;">
-      <h2 style="font-size: 20px; color: #222;"><i class="fa-solid fa-comments" style="color: #25D366;"></i> Centre de Discussion</h2>
-      <p style="font-size: 13px; color: #666; margin-top: 5px;">Contactez directement les prestataires via WhatsApp en un clic.</p>
+      <a href="https://wa.me/243000000000?text=Bonjour%20Support%20CAMU%20SERVICES,%20j'ai%20une%20question." target="_blank" style="display: flex; align-items: center; gap: 12px; background: #e8f5e9; padding: 12px; border-radius: 8px; text-decoration: none; border: 1px solid #c8e6c9;">
+        <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #2e7d32;"></i>
+        <div>
+          <div style="font-size: 13px; font-weight: bold; color: #2e7d32;">Contacter le Support WhatsApp</div>
+          <div style="font-size: 11px; color: #555;">Réponse rapide et assistance personnalisée</div>
+        </div>
+      </a>
     </div>
-
-    <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 12px 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-      <i class="fa-brands fa-whatsapp" style="font-size: 28px; color: #25D366;"></i>
-      <span style="font-size: 12px; color: #2e7d32; line-height: 1.4;">
-        Vos échanges s'ouvrent directement et en toute sécurité dans votre application <strong>WhatsApp</strong>.
-      </span>
-    </div>
-
-    <h3 class="section-title" style="font-size: 15px; margin-bottom: 12px;">Prestataires & Offres récents</h3>
-    <div id="chatContactsList">
-      <!-- Généré dynamiquement -->
-    </div>
-
   </main>
 
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html" class="nav-item">
-      <i class="fa-solid fa-plus-circle"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html" class="nav-item active">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="favoris.html" class="nav-item">
-      <i class="fa-solid fa-heart"></i>
-      <span>Favoris</span>
-    </a>
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
   </nav>
 
-  <script src="app.js"></script>
-  <script>
-    const openBtn = document.getElementById('openMenu');
-    const closeBtn = document.getElementById('closeMenu');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-
-    if(openBtn) openBtn.addEventListener('click', () => { sidebar.classList.add('active'); overlay.classList.add('active'); });
-    if(closeBtn) closeBtn.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-    if(overlay) overlay.addEventListener('click', () => { sidebar.classList.remove('active'); overlay.classList.remove('active'); });
-
-    const currentUser = JSON.parse(localStorage.getItem('camus_user'));
-    const userMenuBtn = document.getElementById('userMenuBtn');
-    if (currentUser && currentUser.name && userMenuBtn) {
-      userMenuBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> Mon Espace (${currentUser.name})`;
-    }
-
-    function loadChatContacts() {
-      const listContainer = document.getElementById('chatContactsList');
-      const ads = JSON.parse(localStorage.getItem('camus_ads')) || [];
-
-      if (ads.length === 0) {
-        listContainer.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; background: #fff; border-radius: 8px; border: 1px solid #eee;">
-            <i class="fa-solid fa-comment-slash" style="font-size: 40px; color: #ccc; margin-bottom: 10px;"></i>
-            <p style="color: #666; font-size: 14px;">Aucun prestataire disponible pour le moment.</p>
-            <a href="index.html" style="color: #e53935; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px; font-size: 13px;">Voir les offres sur l'accueil</a>
-          </div>`;
-        return;
-      }
-
-      listContainer.innerHTML = ads.map(ad => {
-        const cleanPhone = ad.phone ? ad.phone.replace(/[^0-9]/g, '') : '';
-        const defaultMsg = encodeURIComponent(`Bonjour ${ad.publisher || 'Entrepreneur'}, je vous contacte depuis CAMU SERVICES au sujet de votre offre "${ad.title}".`);
-        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${defaultMsg}` : '#';
-
-        return `
-          <div class="card" style="margin-bottom: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; background: #fff;">
-            <div style="display: flex; align-items: center; gap: 12px; overflow: hidden;">
-              <div style="width: 45px; height: 45px; background: #ffebee; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <i class="fa-solid fa-user-tie" style="color: #e53935; font-size: 20px;"></i>
-              </div>
-              <div style="overflow: hidden;">
-                <h4 style="font-size: 15px; font-weight: bold; color: #222; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${ad.publisher || 'Entrepreneur'}</h4>
-                <p style="font-size: 12px; color: #666; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="fa-solid fa-briefcase" style="font-size: 11px;"></i> ${ad.title}</p>
-                <span style="font-size: 11px; color: #888;">${ad.category}</span>
-              </div>
-            </div>
-
-            <div>
-              ${cleanPhone 
-                ? `<a href="${waLink}" target="_blank" style="background: #25D366; color: white; padding: 8px 14px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; white-space: nowrap;">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Discuter
-                   </a>`
-                : `<span style="font-size: 11px; color: #999;">Sans num.</span>`
-              }
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', loadChatContacts);
-  </script>
 </body>
 </html>
