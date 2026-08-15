@@ -61,7 +61,7 @@
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: #fff; padding: 20px; border-radius: 12px; max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-    .modal-body { font-size: 13px; color: #444; line-height: 1.6; }
+    .modal-body { font-size: 13px; color: #444; line-height: 1.6; text-align: justify; }
     .btn-close-modal { background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 12px; margin-top: 15px; width: 100%; cursor: pointer; font-weight: bold; }
 
     /* Bottom Nav */
@@ -118,7 +118,6 @@
     </div>
 
     <div class="container">
-      <!-- Carte de bienvenue mise à jour -->
       <div class="welcome-card">
         <h2>Soyez les bienvenus</h2>
         <p class="slogan">TROUVER. ACHETER. RÉSERVER.</p>
@@ -193,11 +192,67 @@
       catArrow.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
+    /* Textes officiels très riches et détaillés */
     const siteInfos = {
-      apropos: { title: "À propos de CAMU SERVICES", html: "<p><strong>CAMU SERVICES</strong> interconnecte les entrepreneurs, prestataires et clients avec un slogan simple : <em>TROUVER. ACHETER. RÉSERVER.</em></p>" },
-      conditions: { title: "Conditions d'utilisation", html: "<p>1. Les publications doivent être véridiques.<br>2. Les transactions restent sous la responsabilité des parties concernées.</p>" },
-      confidentialite: { title: "Politique de confidentialité", html: "<p>Vos données personnelles ne sont ni partagées ni vendues à des tierces parties.</p>" },
-      contact: { title: "Nous contacter", html: "<p><i class='fa-brands fa-whatsapp'></i> WhatsApp: +243 976 993 469<br><i class='fa-solid fa-envelope'></i> Email: meschackmuteb@gmail.com</p>" }
+      apropos: {
+        title: "À propos de CAMU SERVICES",
+        html: `
+          <p style="margin-bottom: 12px;"><strong>Bienvenue sur CAMU SERVICES</strong>, la plateforme numérique incontournable conçue pour dynamiser l'écosystème entrepreneurial et simplifier les transactions quotidiennes. Notre devise résume notre ambition : <em style="color:#d32f2f;">TROUVER. ACHETER. RÉSERVER.</em></p>
+          <p style="margin-bottom: 12px;"><strong>Notre Vision et Mission :</strong><br>Dans un monde en constante évolution numérique, CAMU SERVICES se positionne comme le pont numérique direct entre les entrepreneurs, les prestataires indépendants, les commerçants et une clientèle exigeante en quête de fiabilité. Nous avons pour mission d'offrir une vitrine digitale de premier choix à tous les talents, en leur garantissant une visibilité maximale et des outils de gestion modernes.</p>
+          <p style="margin-bottom: 12px;"><strong>Pourquoi choisir CAMU SERVICES ?</strong></p>
+          <ul style="padding-left: 18px; margin-bottom: 12px;">
+            <li><strong>Accessibilité et Simplicité :</strong> Une interface fluide, épurée et adaptée aux mobiles pour naviguer sans effort à travers de multiples catégories professionnelles.</li>
+            <li><strong>Mise en relation directe :</strong> Suppression des intermédiaires superflus grâce à un système de contact instantané orienté vers la conversion rapide (appels, messagerie, WhatsApp).</li>
+            <li><strong>Sécurité et Confiance :</strong> Un contrôle rigoureux des annonces publiées et des profils vérifiés pour garantir des échanges professionnels transparents et sécurisés.</li>
+          </ul>
+          <p>Que vous soyez à la recherche d'un service spécialisé, d'un bien immobilier, d'un équipement technologique ou que vous souhaitiez exposer votre propre savoir-faire en tant qu'entrepreneur, CAMU SERVICES est votre partenaire de confiance vers la réussite.</p>
+        `
+      },
+      conditions: {
+        title: "Conditions Générales d'Utilisation (CGU)",
+        html: `
+          <p style="margin-bottom: 10px;">Les présentes Conditions Générales d'Utilisation régissent l'accès et l'utilisation de la plateforme <strong>CAMU SERVICES</strong>. Tout utilisateur reconnaît avoir pris connaissance de ces règles et s'engage à les respecter intégralement dès sa première connexion.</p>
+          
+          <p style="margin-bottom: 8px;"><strong>1. Objet de la Plateforme</strong></p>
+          <p style="margin-bottom: 10px;">CAMU SERVICES propose un service de mise en relation en ligne entre des offreurs (entrepreneurs, prestataires) et des demandeurs (clients). La plateforme ne se substitue en aucun cas aux parties et n'intervient pas dans la conclusion finale des transactions financières ou contractuelles.</p>
+
+          <p style="margin-bottom: 8px;"><strong>2. Engagements et Obligations des Utilisateurs</strong></p>
+          <p style="margin-bottom: 10px;">Tout annonceur garantit que les informations, descriptions, tarifs et visuels fournis lors de la publication sont rigoureusement exacts, conformes à la législation en vigueur et ne portent atteinte à aucun droit de tiers. Toute publication frauduleuse, mensongère ou illicite est strictement interdite.</p>
+
+          <p style="margin-bottom: 8px;"><strong>3. Responsabilité et Litiges</strong></p>
+          <p style="margin-bottom: 10px;">CAMU SERVICES agit en qualité d'hébergeur technique de contenu. Par conséquent, la responsabilité de la plateforme ne saurait être engagée en cas de litige, de non-conformité de service, de défaut de livraison ou de préjudice financier découlant des transactions conclues entre utilisateurs.</p>
+
+          <p style="margin-bottom: 8px;"><strong>4. Modifications et Sanctions</strong></p>
+          <p>L'administration se réserve le droit de modifier unilatéralement les présentes conditions à tout moment. Tout manquement grave aux règles d'utilisations entraînera la suspension immédiate ou la suppression définitive du compte concerné, sans préavis ni indemnité.</p>
+        `
+      },
+      confidentialite: {
+        title: "Politique de Confidentialité",
+        html: `
+          <p style="margin-bottom: 10px;">Chez <strong>CAMU SERVICES</strong>, la protection de votre vie privée et de vos données à caractère personnel est une priorité absolue. La présente politique détaille la nature des informations collectées, l'usage qui en est fait ainsi que les mesures de sécurité mises en œuvre.</p>
+
+          <p style="margin-bottom: 8px;"><strong>1. Collecte des Informations</strong></p>
+          <p style="margin-bottom: 10px;">Nous collectons uniquement les informations strictement nécessaires au bon fonctionnement de la plateforme : vos identifiants de profil, vos coordonnées professionnelles ou personnelles (numéro de téléphone, adresse e-mail) ainsi que le contenu rédactionnel et photographique de vos annonces.</p>
+
+          <p style="margin-bottom: 8px;"><strong>2. Utilisation et Traitement des Données</strong></p>
+          <p style="margin-bottom: 10px;">Vos données personnelles sont utilisées exclusivement pour faciliter la mise en relation commerciale, vous identifier au sein de votre espace entrepreneur, améliorer l'ergonomie de nos services et assurer le support technique. <strong>Vos données ne sont ni vendues, ni louées, ni cédées à des tiers à des fins publicitaires.</strong></p>
+
+          <p style="margin-bottom: 8px;"><strong>3. Sécurité et Intégrité</strong></p>
+          <p style="margin-bottom: 10px;">Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles robustes pour protéger vos informations contre tout accès non autorisé, modification, divulgation ou destruction accidentelle.</p>
+
+          <p style="margin-bottom: 8px;"><strong>4. Droits des Utilisateurs</strong></p>
+          <p>Conformément aux réglementations en vigueur, vous disposez d'un droit permanent d'accès, de rectification, de mise à jour et de suppression de vos données personnelles en contactant directement notre support technique.</p>
+        `
+      },
+      contact: {
+        title: "Nous contacter",
+        html: `
+          <p style="margin-bottom: 12px;">Une question, un besoin d'assistance technique ou un partenariat à proposer ? Notre équipe est à votre entière écoute pour vous accompagner.</p>
+          <p style="margin-bottom: 8px;"><i class='fa-brands fa-whatsapp' style='color:#25D366; margin-right:8px; font-size:16px;'></i> <strong>WhatsApp / Téléphone :</strong> +243 976 993 469</p>
+          <p style="margin-bottom: 8px;"><i class='fa-solid fa-envelope' style='color:#d32f2f; margin-right:8px; font-size:15px;'></i> <strong>Courrier Électronique :</strong> meschackmuteb@gmail.com</p>
+          <p><i class='fa-solid fa-clock' style='color:#555; margin-right:8px; font-size:15px;'></i> <strong>Disponibilité :</strong> Lundi au Samedi, de 08h00 à 18h00.</p>
+        `
+      }
     };
 
     function openInfoModal(key) {
