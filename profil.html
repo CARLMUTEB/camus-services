@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Mon Profil</title>
+  <title>CAMU SERVICES — Espace Utilisateur</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -13,24 +13,37 @@
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
     .header-bar a { color: #ffffff; text-decoration: none; font-size: 18px; margin-right: 15px; }
 
-    /* Profile Section */
-    .profile-header { background: #ffffff; padding: 30px 15px; text-align: center; border-bottom: 1px solid #eee; }
-    .avatar { width: 90px; height: 90px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; margin: 0 auto 15px; border: 4px solid #f4f4f9; }
-    .user-name { font-size: 18px; font-weight: 800; margin-bottom: 5px; }
+    /* Onglets Connexion / Inscription */
+    .auth-tabs { display: flex; background: #ffffff; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+    .auth-tab { flex: 1; padding: 14px; text-align: center; font-size: 13px; font-weight: 800; color: #666; cursor: pointer; border-bottom: 3px solid transparent; }
+    .auth-tab.active { color: #d32f2f; border-bottom-color: #d32f2f; }
+
+    /* Formulaires Auth */
+    .auth-container { max-width: 450px; margin: 0 auto; padding: 0 15px; }
+    .auth-card { background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #444; }
+    .form-control { width: 100%; padding: 11px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; }
+    .btn-auth { width: 100%; background: #d32f2f; color: #ffffff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; }
+    .btn-switch { background: none; border: none; color: #111; font-size: 12px; font-weight: 700; margin-top: 15px; width: 100%; text-align: center; cursor: pointer; text-decoration: underline; }
+
+    /* Profile Section (Une fois connecté) */
+    .profile-header { background: #ffffff; padding: 25px 15px; text-align: center; border-bottom: 1px solid #eee; }
+    .avatar { width: 80px; height: 80px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; margin: 0 auto 12px; border: 3px solid #f4f4f9; }
+    .user-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .user-status { font-size: 12px; color: #d32f2f; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
     /* Stats Grid */
-    .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); background: #ffffff; padding: 15px; border-bottom: 1px solid #eee; }
+    .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); background: #ffffff; padding: 12px; border-bottom: 1px solid #eee; }
     .stat-item { text-align: center; }
-    .stat-value { font-size: 16px; font-weight: 800; color: #111; display: block; }
+    .stat-value { font-size: 15px; font-weight: 800; color: #111; display: block; }
     .stat-label { font-size: 10px; color: #888; font-weight: 700; text-transform: uppercase; }
 
     /* Actions List */
     .action-container { max-width: 500px; margin: 15px auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-    .action-link { display: flex; align-items: center; padding: 16px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #333; font-size: 14px; font-weight: 600; transition: background 0.2s; }
+    .action-link { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #333; font-size: 13px; font-weight: 600; }
     .action-link:last-child { border-bottom: none; }
     .action-link i { width: 25px; color: #d32f2f; font-size: 16px; }
-    .action-link:active { background: #f9f9f9; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -43,50 +56,91 @@
 
   <header class="header-bar">
     <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <span>Mon Espace</span>
+    <span id="headerTitle">Mon Espace</span>
   </header>
 
   <main>
-    <!-- Header Profil -->
-    <div class="profile-header">
-      <div class="avatar">JM</div>
-      <div class="user-name">John Muteb</div>
-      <div class="user-status"><i class="fa-solid fa-circle-check"></i> Entrepreneur Vérifié</div>
+    <!-- BLOC AUTHENTIFICATION (Affiché par défaut) -->
+    <div id="authBlock">
+      <div class="auth-tabs">
+        <div id="tabRegister" class="auth-tab active" onclick="switchTab('register')">S'inscrire</div>
+        <div id="tabLogin" class="auth-tab" onclick="switchTab('login')">Se connecter</div>
+      </div>
+
+      <div class="auth-container">
+        <!-- Formulaire d'Inscription -->
+        <div id="formRegister" class="auth-card">
+          <form onsubmit="handleAuth(event, 'inscription')">
+            <div class="form-group">
+              <label>Nom complet / Entreprise</label>
+              <input type="text" class="form-control" placeholder="ex: Carl Muteb" required>
+            </div>
+            <div class="form-group">
+              <label>Numéro WhatsApp / Téléphone</label>
+              <input type="tel" class="form-control" placeholder="+243..." required>
+            </div>
+            <div class="form-group">
+              <label>Adresse e-mail</label>
+              <input type="email" class="form-control" placeholder="exemple@mail.com" required>
+            </div>
+            <div class="form-group">
+              <label>Créer un mot de passe</label>
+              <input type="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-auth">Créer mon compte</button>
+          </form>
+          <button class="btn-switch" onclick="switchTab('login')">Déjà un compte ? Se connecter</button>
+        </div>
+
+        <!-- Formulaire de Connexion -->
+        <div id="formLogin" class="auth-card" style="display: none;">
+          <form onsubmit="handleAuth(event, 'connexion')">
+            <div class="form-group">
+              <label>Adresse e-mail ou Téléphone</label>
+              <input type="text" class="form-control" placeholder="E-mail ou numéro" required>
+            </div>
+            <div class="form-group">
+              <label>Mot de passe</label>
+              <input type="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-auth">Connexion</button>
+          </form>
+          <button class="btn-switch" onclick="switchTab('register')">Pas encore de compte ? S'inscrire</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Stats -->
-    <div class="stats-container">
-      <div class="stat-item">
-        <span class="stat-value">12</span>
-        <span class="stat-label">Annonces</span>
+    <!-- BLOC PROFIL CONNECTÉ (Masqué par défaut) -->
+    <div id="profileBlock" style="display: none;">
+      <div class="profile-header">
+        <div class="avatar" id="userAvatar">CM</div>
+        <div class="user-name" id="userName">Carl Muteb</div>
+        <div class="user-status"><i class="fa-solid fa-circle-check"></i> Entrepreneur Vérifié</div>
       </div>
-      <div class="stat-item">
-        <span class="stat-value">48</span>
-        <span class="stat-label">Vues</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value">05</span>
-        <span class="stat-label">Favoris</span>
-      </div>
-    </div>
 
-    <!-- Menu d'actions -->
-    <div class="action-container">
-      <a href="publier.html" class="action-link">
-        <i class="fa-solid fa-circle-plus"></i> Mes Annonces
-      </a>
-      <a href="#" class="action-link">
-        <i class="fa-solid fa-heart"></i> Mes Favoris
-      </a>
-      <a href="chat.html" class="action-link">
-        <i class="fa-solid fa-message"></i> Mes Discussions
-      </a>
-      <a href="parametres.html" class="action-link">
-        <i class="fa-solid fa-gear"></i> Paramètres du compte
-      </a>
-      <a href="admin.html" class="action-link" style="color: #d32f2f;">
-        <i class="fa-solid fa-user-shield"></i> Panneau Administration
-      </a>
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Annonces</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Vues</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Favoris</span>
+        </div>
+      </div>
+
+      <div class="action-container">
+        <a href="publier.html" class="action-link"><i class="fa-solid fa-circle-plus"></i> Mes Annonces</a>
+        <a href="#" class="action-link"><i class="fa-solid fa-heart"></i> Mes Favoris</a>
+        <a href="chat.html" class="action-link"><i class="fa-solid fa-message"></i> Mes Discussions</a>
+        <a href="parametres.html" class="action-link"><i class="fa-solid fa-gear"></i> Paramètres du compte</a>
+        <a href="admin.html" class="action-link" style="color: #d32f2f;"><i class="fa-solid fa-user-shield"></i> Panneau Administration</a>
+        <a href="#" class="action-link" onclick="logout()" style="color: #666;"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+      </div>
     </div>
   </main>
 
@@ -97,5 +151,33 @@
     <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
+  <script>
+    function switchTab(tab) {
+      const isRegister = tab === 'register';
+      document.getElementById('formRegister').style.display = isRegister ? 'block' : 'none';
+      document.getElementById('formLogin').style.display = isRegister ? 'none' : 'block';
+      document.getElementById('tabRegister').className = 'auth-tab ' + (isRegister ? 'active' : '');
+      document.getElementById('tabLogin').className = 'auth-tab ' + (isRegister ? '' : 'active');
+    }
+
+    function handleAuth(event, type) {
+      event.preventDefault();
+      alert(type === 'inscription' ? "Compte créé avec succès !" : "Connexion réussie !");
+      
+      // Affiche la vue profil après connexion/inscription
+      document.getElementById('authBlock').style.display = 'none';
+      document.getElementById('profileBlock').style.display = 'block';
+      document.getElementById('headerTitle').innerText = "Mon Profil";
+    }
+
+    function logout() {
+      if (confirm("Se déconnecter de CAMU SERVICES ?")) {
+        document.getElementById('profileBlock').style.display = 'none';
+        document.getElementById('authBlock').style.display = 'block';
+        document.getElementById('headerTitle').innerText = "Mon Espace";
+      }
+    }
+  </script>
 </body>
-</html>
+  </html>
+  
