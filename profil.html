@@ -24,13 +24,27 @@
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #444; }
     .form-control { width: 100%; padding: 11px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; }
-    .btn-auth { width: 100%; background: #d32f2f; color: #ffffff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; }
+    
+    /* Upload Photo */
+    .photo-upload { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
+    .photo-preview { width: 80px; height: 80px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #888; margin-bottom: 8px; overflow: hidden; border: 2px dashed #bbb; cursor: pointer; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .photo-label { font-size: 11px; color: #d32f2f; font-weight: bold; cursor: pointer; }
+
+    /* Case à cocher des conditions */
+    .checkbox-group { display: flex; align-items: flex-start; gap: 8px; margin-top: 15px; font-size: 12px; color: #555; }
+    .checkbox-group input { margin-top: 2px; }
+    .checkbox-group a { color: #d32f2f; text-decoration: underline; cursor: pointer; }
+
+    .btn-auth { width: 100%; background: #d32f2f; color: #ffffff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 15px; }
     .btn-switch { background: none; border: none; color: #111; font-size: 12px; font-weight: 700; margin-top: 15px; width: 100%; text-align: center; cursor: pointer; text-decoration: underline; }
 
     /* Profile Section (Une fois connecté) */
     .profile-header { background: #ffffff; padding: 25px 15px; text-align: center; border-bottom: 1px solid #eee; }
-    .avatar { width: 80px; height: 80px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; margin: 0 auto 12px; border: 3px solid #f4f4f9; }
+    .avatar { width: 80px; height: 80px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; margin: 0 auto 12px; border: 3px solid #f4f4f9; overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .user-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .user-address { font-size: 12px; color: #666; margin-bottom: 6px; }
     .user-status { font-size: 12px; color: #d32f2f; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
     /* Stats Grid */
@@ -60,7 +74,7 @@
   </header>
 
   <main>
-    <!-- BLOC AUTHENTIFICATION (Affiché par défaut) -->
+    <!-- BLOC AUTHENTIFICATION -->
     <div id="authBlock">
       <div class="auth-tabs">
         <div id="tabRegister" class="auth-tab active" onclick="switchTab('register')">S'inscrire</div>
@@ -71,13 +85,28 @@
         <!-- Formulaire d'Inscription -->
         <div id="formRegister" class="auth-card">
           <form onsubmit="handleAuth(event, 'inscription')">
+            
+            <!-- Téléchargement Photo -->
+            <div class="photo-upload">
+              <label for="profilePhotoInput" class="photo-preview" id="photoPreview">
+                <i class="fa-solid fa-camera"></i>
+                <img id="imgPreview" src="" alt="Aperçu">
+              </label>
+              <label for="profilePhotoInput" class="photo-label">Ajouter une photo de profil</label>
+              <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+            </div>
+
             <div class="form-group">
-              <label>Nom complet / Entreprise</label>
-              <input type="text" class="form-control" placeholder="ex: Carl Muteb" required>
+              <label>Nom complet / Nom de l'entreprise</label>
+              <input type="text" id="regName" class="form-control" placeholder="ex: Carl Muteb" required>
             </div>
             <div class="form-group">
               <label>Numéro WhatsApp / Téléphone</label>
               <input type="tel" class="form-control" placeholder="+243..." required>
+            </div>
+            <div class="form-group">
+              <label>Adresse physique (Ville, Commune, Avenue)</label>
+              <input type="text" id="regAddress" class="form-control" placeholder="ex: Lubumbashi, Av. Kamanyola N°12" required>
             </div>
             <div class="form-group">
               <label>Adresse e-mail</label>
@@ -87,6 +116,13 @@
               <label>Créer un mot de passe</label>
               <input type="password" class="form-control" placeholder="••••••••" required>
             </div>
+
+            <!-- Case des Conditions -->
+            <div class="checkbox-group">
+              <input type="checkbox" id="acceptTerms" required>
+              <label for="acceptTerms">J'accepte les <a href="index.html">Conditions Générales d'Utilisation</a> et la <a href="index.html">Politique de Confidentialité</a> de CAMU SERVICES.</label>
+            </div>
+
             <button type="submit" class="btn-auth">Créer mon compte</button>
           </form>
           <button class="btn-switch" onclick="switchTab('login')">Déjà un compte ? Se connecter</button>
@@ -110,11 +146,12 @@
       </div>
     </div>
 
-    <!-- BLOC PROFIL CONNECTÉ (Masqué par défaut) -->
+    <!-- BLOC PROFIL CONNECTÉ -->
     <div id="profileBlock" style="display: none;">
       <div class="profile-header">
         <div class="avatar" id="userAvatar">CM</div>
         <div class="user-name" id="userName">Carl Muteb</div>
+        <div class="user-address" id="userAddress"><i class="fa-solid fa-location-dot"></i> Lubumbashi</div>
         <div class="user-status"><i class="fa-solid fa-circle-check"></i> Entrepreneur Vérifié</div>
       </div>
 
@@ -160,11 +197,35 @@
       document.getElementById('tabLogin').className = 'auth-tab ' + (isRegister ? '' : 'active');
     }
 
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('imgPreview');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.querySelector('#photoPreview i').style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
     function handleAuth(event, type) {
       event.preventDefault();
-      alert(type === 'inscription' ? "Compte créé avec succès !" : "Connexion réussie !");
       
-      // Affiche la vue profil après connexion/inscription
+      if (type === 'inscription') {
+        const name = document.getElementById('regName').value;
+        const address = document.getElementById('regAddress').value;
+        const imgSrc = document.getElementById('imgPreview').src;
+
+        if (name) document.getElementById('userName').innerText = name;
+        if (address) document.getElementById('userAddress').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${address}`;
+        if (imgSrc && imgSrc !== window.location.href) {
+          document.getElementById('userAvatar').innerHTML = `<img src="${imgSrc}" alt="Avatar">`;
+        }
+      }
+
       document.getElementById('authBlock').style.display = 'none';
       document.getElementById('profileBlock').style.display = 'block';
       document.getElementById('headerTitle').innerText = "Mon Profil";
@@ -180,4 +241,4 @@
   </script>
 </body>
   </html>
-  
+          
