@@ -3,415 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Inscription Entrepreneur</title>
-  
-  <!-- FontAwesome Icons -->
+  <title>CAMU SERVICES — Mon Profil</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
 
-    body {
-      background-color: #f8f9fa;
-      color: #222;
-      padding-bottom: 80px;
-    }
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .header-bar a { color: #ffffff; text-decoration: none; font-size: 18px; margin-right: 15px; }
 
-    .top-header {
-      background: #111111;
-      color: #ffffff;
-      padding: 12px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      height: 60px;
-    }
+    /* Profile Section */
+    .profile-header { background: #ffffff; padding: 30px 15px; text-align: center; border-bottom: 1px solid #eee; }
+    .avatar { width: 90px; height: 90px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; margin: 0 auto 15px; border: 4px solid #f4f4f9; }
+    .user-name { font-size: 18px; font-weight: 800; margin-bottom: 5px; }
+    .user-status { font-size: 12px; color: #d32f2f; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-    .brand-title {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
+    /* Stats Grid */
+    .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); background: #ffffff; padding: 15px; border-bottom: 1px solid #eee; }
+    .stat-item { text-align: center; }
+    .stat-value { font-size: 16px; font-weight: 800; color: #111; display: block; }
+    .stat-label { font-size: 10px; color: #888; font-weight: 700; text-transform: uppercase; }
 
-    .brand-title span { color: #d32f2f; }
+    /* Actions List */
+    .action-container { max-width: 500px; margin: 15px auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+    .action-link { display: flex; align-items: center; padding: 16px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #333; font-size: 14px; font-weight: 600; transition: background 0.2s; }
+    .action-link:last-child { border-bottom: none; }
+    .action-link i { width: 25px; color: #d32f2f; font-size: 16px; }
+    .action-link:active { background: #f9f9f9; }
 
-    .header-btn {
-      color: #fff;
-      font-size: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-
-    .auth-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 25px 20px;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .tab-buttons {
-      display: flex;
-      background: #f1f1f1;
-      border-radius: 8px;
-      padding: 4px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: none;
-      font-size: 13px;
-      font-weight: 700;
-      color: #666;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active {
-      background: #ffffff;
-      color: #111;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #444;
-      margin-bottom: 6px;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-wrapper i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 14px;
-    }
-
-    .input-wrapper input, 
-    .input-wrapper select, 
-    .input-wrapper textarea {
-      width: 100%;
-      padding: 12px 12px 12px 38px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 13px;
-      outline: none;
-      background: #fff;
-    }
-
-    .input-wrapper textarea {
-      height: 80px;
-      resize: none;
-      padding-top: 10px;
-    }
-
-    .input-wrapper input:focus, 
-    .input-wrapper select:focus, 
-    .input-wrapper textarea:focus {
-      border-color: #d32f2f;
-    }
-
-    /* Conditionnalités */
-    .terms-group {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 15px 0;
-      font-size: 12px;
-      color: #555;
-    }
-
-    .terms-group input[type="checkbox"] {
-      margin-top: 2px;
-      accent-color: #d32f2f;
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-
-    .terms-group a {
-      color: #d32f2f;
-      text-decoration: underline;
-      font-weight: 600;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: #d32f2f;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 5px;
-      transition: background 0.2s;
-    }
-
-    .btn-submit:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
-    /* Section spécifique entrepreneur */
-    .entrepreneur-fields {
-      border-top: 2px dashed #eee;
-      padding-top: 15px;
-      margin-top: 15px;
-    }
-
-    .section-subtitle {
-      font-size: 13px;
-      font-weight: 800;
-      color: #d32f2f;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-    }
-
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: #ffffff; border-top: 1px solid #eee;
-      display: flex; justify-content: space-around;
-      padding: 8px 0; z-index: 1000; height: 65px;
-    }
-
-    .bottom-nav a {
-      text-align: center; color: #666; font-size: 11px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: 25%; text-decoration: none;
-    }
-
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
-
-    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- En-tête -->
-  <header class="top-header">
-    <a href="index.html" class="header-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="brand-title">CAMU <span>SERVICES</span></div>
-    <div style="width: 20px;"></div>
+  <header class="header-bar">
+    <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <span>Mon Espace</span>
   </header>
 
-  <main class="container">
-    <div class="auth-card">
-      
-      <!-- Selecteur Onglet -->
-      <div class="tab-buttons">
-        <button id="btn-login-tab" class="tab-btn" onclick="switchTab('login')">Se Connecter</button>
-        <button id="btn-register-tab" class="tab-btn active" onclick="switchTab('register')">S'inscrire</button>
+  <main>
+    <!-- Header Profil -->
+    <div class="profile-header">
+      <div class="avatar">JM</div>
+      <div class="user-name">John Muteb</div>
+      <div class="user-status"><i class="fa-solid fa-circle-check"></i> Entrepreneur Vérifié</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-value">12</span>
+        <span class="stat-label">Annonces</span>
       </div>
+      <div class="stat-item">
+        <span class="stat-value">48</span>
+        <span class="stat-label">Vues</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">05</span>
+        <span class="stat-label">Favoris</span>
+      </div>
+    </div>
 
-      <!-- FORMULAIRE DE CONNEXION -->
-      <form id="login-form" class="hidden">
-        <div class="form-group">
-          <label>Numéro WhatsApp ou Email</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Ex: 0976993469" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Mot de passe</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="••••••••" required>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-submit">Se Connecter</button>
-      </form>
-
-      <!-- FORMULAIRE D'INSCRIPTION DYNAMIQUE -->
-      <form id="register-form" onsubmit="handleRegister(event)">
-        
-        <div class="form-group">
-          <label>Type de Profil</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-user-gear"></i>
-            <select id="reg-role" onchange="toggleRoleFields()" required>
-              <option value="entrepreneur">Entrepreneur / Prestataire</option>
-              <option value="client">Client simple</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Informations Générales -->
-        <div class="form-group">
-          <label>Nom complet / Raison Sociale</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-id-card"></i>
-            <input type="text" id="reg-name" placeholder="Ex: Carl Muteb ou CAMU Services" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Numéro WhatsApp (Contact principal)</label>
-          <div class="input-wrapper">
-            <i class="fa-brands fa-whatsapp"></i>
-            <input type="tel" id="reg-phone" placeholder="Ex: +243976993469" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Adresse Email</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="reg-email" placeholder="Ex: contact@camuservices.com" required>
-          </div>
-        </div>
-
-        <!-- CHAMPS SPÉCIFIQUES ENTREPRENEUR -->
-        <div id="entrepreneur-section" class="entrepreneur-fields">
-          <div class="section-subtitle"><i class="fa-solid fa-building"></i> Informations Professionnelles</div>
-
-          <div class="form-group">
-            <label>Adresse Physique (Ville, Commune, Avenue)</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-location-dot"></i>
-              <input type="text" id="reg-address" placeholder="Ex: Lubumbashi, Q. Gambela, Av. Kasai N°12">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Photo de Profil / Logo</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-image"></i>
-              <input type="file" id="reg-photo" accept="image/*">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Petite Description de vos Services / Activités</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-pen" style="top: 20px;"></i>
-              <textarea id="reg-desc" placeholder="Présentez brièvement vos services, expertises et prestations..."></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mot de passe -->
-        <div class="form-group">
-          <label>Créer un Mot de passe</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" id="reg-pass" placeholder="••••••••" required>
-          </div>
-        </div>
-
-        <!-- Conditionnalités -->
-        <div class="terms-group">
-          <input type="checkbox" id="accept-terms" onchange="toggleSubmitBtn()">
-          <label for="accept-terms">
-            J'accepte les <a href="#" onclick="alert('CONDITIONNALITÉS ENTREPRENEUR :\n1. Fournir une adresse physique exacte et un numéro WhatsApp actif.\n2. Respecter la qualité des services promis aux clients.\n3. Toute fausse déclaration ou tentative de fraude entraînera la suspension définitive du compte.'); return false;">Conditionnalités & Engagements</a> de la plateforme CAMU SERVICES.
-          </label>
-        </div>
-
-        <button type="submit" id="btn-register-submit" class="btn-submit" disabled>Créer mon Compte Entrepreneur</button>
-      </form>
-
+    <!-- Menu d'actions -->
+    <div class="action-container">
+      <a href="publier.html" class="action-link">
+        <i class="fa-solid fa-circle-plus"></i> Mes Annonces
+      </a>
+      <a href="#" class="action-link">
+        <i class="fa-solid fa-heart"></i> Mes Favoris
+      </a>
+      <a href="chat.html" class="action-link">
+        <i class="fa-solid fa-message"></i> Mes Discussions
+      </a>
+      <a href="parametres.html" class="action-link">
+        <i class="fa-solid fa-gear"></i> Paramètres du compte
+      </a>
+      <a href="admin.html" class="action-link" style="color: #d32f2f;">
+        <i class="fa-solid fa-user-shield"></i> Panneau Administration
+      </a>
     </div>
   </main>
 
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="profil.html" class="active">
-      <i class="fa-solid fa-user"></i>
-      <span>Profil</span>
-    </a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
-  <script>
-    function switchTab(tab) {
-      const loginForm = document.getElementById('login-form');
-      const registerForm = document.getElementById('register-form');
-      const loginBtn = document.getElementById('btn-login-tab');
-      const registerBtn = document.getElementById('btn-register-tab');
-
-      if (tab === 'login') {
-        loginForm.classList.remove('hidden');
-        registerForm.classList.add('hidden');
-        loginBtn.classList.add('active');
-        registerBtn.classList.remove('active');
-      } else {
-        loginForm.classList.add('hidden');
-        registerForm.classList.remove('hidden');
-        loginBtn.classList.remove('active');
-        registerBtn.classList.add('active');
-      }
-    }
-
-    function toggleRoleFields() {
-      const role = document.getElementById('reg-role').value;
-      const entSection = document.getElementById('entrepreneur-section');
-      const submitBtn = document.getElementById('btn-register-submit');
-
-      if (role === 'entrepreneur') {
-        entSection.classList.remove('hidden');
-        submitBtn.textContent = 'Créer mon Compte Entrepreneur';
-      } else {
-        entSection.classList.add('hidden');
-        submitBtn.textContent = 'Créer mon Compte Client';
-      }
-    }
-
-    function toggleSubmitBtn() {
-      const checkbox = document.getElementById('accept-terms');
-      const submitBtn = document.getElementById('btn-register-submit');
-      submitBtn.disabled = !checkbox.checked;
-    }
-
-    function handleRegister(e) {
-      e.preventDefault();
-      alert('Demande d\'inscription envoyée avec succès ! Vos données entrepreneur sont enregistrées.');
-    }
-  </script>
 
 </body>
 </html>
