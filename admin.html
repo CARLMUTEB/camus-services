@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 70px; display: none; } /* Masqué par défaut jusqu'à validation */
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 70px; display: none; } /* Masqué jusqu'à validation du mot de passe */
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
@@ -60,7 +60,9 @@
   <script>
     (function checkAdminAccess() {
       const authKey = "camu_admin_authorized";
-      // Vérifie si déjà authentifié dans la session
+      const SECRET_PASS = "Carl1800";
+
+      // Vérification de la session active
       if (sessionStorage.getItem(authKey) === "true") {
         document.addEventListener("DOMContentLoaded", () => {
           document.body.style.display = "block";
@@ -68,9 +70,9 @@
         return;
       }
 
-      // Demande le mot de passe
+      // Demande de mot de passe
       const pass = prompt("Accès Administrateur — Veuillez entrer le mot de passe :");
-      if (pass === "Carl1800") {
+      if (pass === SECRET_PASS) {
         sessionStorage.setItem(authKey, "true");
         document.addEventListener("DOMContentLoaded", () => {
           document.body.style.display = "block";
@@ -263,5 +265,5 @@
     };
   </script>
 </body>
-                             </html>
+</html>
 
