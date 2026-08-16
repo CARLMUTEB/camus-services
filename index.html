@@ -24,6 +24,13 @@
     .search-box input { border: none; outline: none; width: 100%; padding: 8px 10px; font-size: 13px; color: #333; }
     .search-box i { color: #666; font-size: 15px; }
 
+    /* Style des Communiqués Officiels de l'Administrateur */
+    .communique-box { max-width: 500px; margin: 0 auto 15px auto; padding: 0 15px; }
+    .communique-card { background: #fff3e0; border-left: 4px solid #f57c00; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 10px; }
+    .communique-header { font-size: 11px; font-weight: 800; color: #e65100; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .communique-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 4px; }
+    .communique-text { font-size: 12px; color: #443; line-height: 1.4; }
+
     /* Filtres Rapides */
     .quick-filters { display: flex; gap: 8px; overflow-x: auto; padding: 5px 15px 15px; scrollbar-width: none; -ms-overflow-style: none; }
     .quick-filters::-webkit-scrollbar { display: none; }
@@ -139,6 +146,9 @@
       </div>
     </section>
 
+    <!-- Conteneur des Communiqués Officiels -->
+    <div class="communique-box" id="communiquesContainer"></div>
+
     <!-- Filtres Rapides -->
     <div class="quick-filters">
       <div class="filter-chip active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Tout</div>
@@ -213,6 +223,35 @@
         }
     }
     compterVisiteSilencieuse();
+
+    // --- Fonction pour charger les communiqués officiels en temps réel ---
+    async function chargerCommuniquesAccueil() {
+      const container = document.getElementById('communiquesContainer');
+      if (!container) return;
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "communiques"));
+        let html = '';
+        let count = 0;
+
+        querySnapshot.forEach((docSnap) => {
+          count++;
+          const comm = docSnap.data();
+          html += `
+            <div class="communique-card">
+              <div class="communique-header">
+                <i class="fa-solid fa-bullhorn"></i> Communiqué Officiel de l'Administrateur
+              </div>
+              <div class="communique-title">${comm.titre || 'Annonce officielle'}</div>
+              <div class="communique-text">${comm.message || comm.description || ''}</div>
+            </div>`;
+        });
+
+        container.innerHTML = html;
+      } catch(e) {
+        console.error("Erreur de chargement des communiqués :", e);
+      }
+    }
 
     window.categoryIcons = {
       'bars-lounges': 'fa-martini-glass-citrus',
@@ -308,7 +347,10 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", loadAnnoncesFirebase);
+    document.addEventListener("DOMContentLoaded", () => {
+      chargerCommuniquesAccueil();
+      loadAnnoncesFirebase();
+    });
   </script>
 
   <script>
@@ -355,5 +397,5 @@
   </script>
 
 </body>
-</html>
-
+  </html>
+        
