@@ -56,12 +56,15 @@
     /* Cards d'Annonces */
     .container { max-width: 500px; margin: 0 auto; padding: 10px 15px; }
     .card { background: #ffffff; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .card-img { width: 100%; height: 180px; background: #222; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 32px; }
+    .card-img { width: 100%; height: 180px; background: #222; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 32px; background-size: cover; background-position: center; }
     .card-body { padding: 12px 15px; }
     .card-badge { display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; color: #d32f2f; background: #fff0f0; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; }
     .card-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
     .card-location { font-size: 12px; color: #666; margin-bottom: 8px; }
     .card-price { font-size: 14px; font-weight: 800; color: #111; }
+    
+    .no-annonces { text-align: center; padding: 40px 15px; color: #777; font-size: 14px; }
+    .no-annonces i { font-size: 36px; color: #ccc; margin-bottom: 10px; display: block; }
 
     /* Footer / Pied de page */
     .site-footer { background: #111111; color: #888888; padding: 25px 15px; text-align: center; margin-top: 20px; font-size: 12px; }
@@ -151,49 +154,9 @@
       <a href="index.html" class="btn-reset" id="btnReset">Voir tout</a>
     </div>
 
-    <!-- Grille d'Annonces -->
-    <div class="container">
-
-      <div class="card" data-category="bars-lounges">
-        <div class="card-img"><i class="fa-solid fa-martini-glass-citrus"></i></div>
-        <div class="card-body">
-          <span class="card-badge">Bars & Lounges</span>
-          <div class="card-title">VIP Lounge & Terrasse</div>
-          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Centre-Ville</div>
-          <div class="card-price">Réservation Table</div>
-        </div>
-      </div>
-
-      <div class="card" data-category="restaurants">
-        <div class="card-img"><i class="fa-solid fa-utensils"></i></div>
-        <div class="card-body">
-          <span class="card-badge">Restaurants</span>
-          <div class="card-title">Grillades & Gastronomie</div>
-          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Golf</div>
-          <div class="card-price">Menu dès 15 $</div>
-        </div>
-      </div>
-
-      <div class="card" data-category="vehicules">
-        <div class="card-img"><i class="fa-solid fa-car"></i></div>
-        <div class="card-body">
-          <span class="card-badge">Véhicules & Pièces</span>
-          <div class="card-title">Toyota TX-L Année 2020</div>
-          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Kolwezi</div>
-          <div class="card-price">45 000 $</div>
-        </div>
-      </div>
-
-      <div class="card" data-category="electricite">
-        <div class="card-img"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-        <div class="card-body">
-          <span class="card-badge">Travaux & Électricité</span>
-          <div class="card-title">Installation Solaire & Industrielle</div>
-          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi / Fungurume</div>
-          <div class="card-price">Sur Devis</div>
-        </div>
-      </div>
-
+    <!-- Grille d'Annonces Dynamique -->
+    <div class="container" id="annoncesContainer">
+      <!-- Les annonces publiées apparaîtront ici dynamiquement -->
     </div>
   </main>
 
@@ -231,6 +194,67 @@
       document.getElementById('subCategories').classList.toggle('open');
     }
 
+    const categoryIcons = {
+      'bars-lounges': 'fa-martini-glass-citrus',
+      'restaurants': 'fa-utensils',
+      'hotels': 'fa-hotel',
+      'vehicules': 'fa-car',
+      'vente-maisons': 'fa-house-chimney',
+      'maisons-louer': 'fa-key',
+      'telephones': 'fa-mobile-screen-button',
+      'electronique': 'fa-laptop',
+      'agriculture': 'fa-wheat-awn',
+      'electricite': 'fa-screwdriver-wrench',
+      'divers': 'fa-hands-holding-circle'
+    };
+
+    const categoryNames = {
+      'bars-lounges': 'Bars & Lounges',
+      'restaurants': 'Restaurants',
+      'hotels': 'Hôtels & Hébergements',
+      'vehicules': 'Véhicules & Pièces',
+      'vente-maisons': 'Vente de Maisons',
+      'maisons-louer': 'Maisons à Louer',
+      'telephones': 'Téléphones & Tablettes',
+      'electronique': 'Électronique & Informatique',
+      'agriculture': 'Agriculture & Élevage',
+      'electricite': 'Travaux & Électricité',
+      'divers': 'Divers & Services'
+    };
+
+    function loadAnnonces() {
+      const container = document.getElementById('annoncesContainer');
+      const annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
+
+      if (annonces.length === 0) {
+        container.innerHTML = `
+          <div class="no-annonces">
+            <i class="fa-solid fa-folder-open"></i>
+            <p>Aucune annonce publiée pour le moment.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = annonces.map(item => {
+        const icon = categoryIcons[item.category] || 'fa-tag';
+        const badge = categoryNames[item.category] || item.category;
+        const imgContent = item.image 
+          ? `<div class="card-img" style="background-image: url('${item.image}')"></div>`
+          : `<div class="card-img"><i class="fa-solid ${icon}"></i></div>`;
+
+        return `
+          <div class="card" data-category="${item.category}">
+            ${imgContent}
+            <div class="card-body">
+              <span class="card-badge">${badge}</span>
+              <div class="card-title">${item.title}</div>
+              <div class="card-location"><i class="fa-solid fa-location-dot"></i> ${item.location}</div>
+              <div class="card-price">${item.price}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
     function filterCategory(cat, element) {
       if (element) {
         document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
@@ -261,21 +285,9 @@
       });
     }
 
-    const categoryNames = {
-      'bars-lounges': 'Bars & Lounges',
-      'restaurants': 'Restaurants',
-      'hotels': 'Hôtels & Hébergements',
-      'vehicules': 'Véhicules & Pièces',
-      'vente-maisons': 'Vente de Maisons',
-      'maisons-louer': 'Maisons à Louer',
-      'telephones': 'Téléphones & Tablettes',
-      'electronique': 'Électronique & Informatique',
-      'agriculture': 'Agriculture & Élevage',
-      'electricite': 'Travaux & Électricité',
-      'divers': 'Divers & Services'
-    };
-
     document.addEventListener("DOMContentLoaded", function() {
+      loadAnnonces();
+
       const urlParams = new URLSearchParams(window.location.search);
       const selectedCategory = urlParams.get('cat');
 
@@ -288,4 +300,5 @@
   </script>
 
 </body>
-</html>
+        </html>
+  
