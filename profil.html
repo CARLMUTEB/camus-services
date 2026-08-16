@@ -2,38 +2,105 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Mon Profil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAMU SERVICES — Publication de Services & Annonces</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body style="background: #f9f9f9; padding-bottom: 70px;">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #d32f2f;
+      --dark: #111111;
+      --bg: #f9f9f9;
+      --card-bg: #ffffff;
+      --border: #eee;
+      --text: #333;
+      --text-light: #666;
+    }
+    body { background-color: var(--bg); color: var(--text); margin: 0; padding-top: 60px; padding-bottom: 75px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; color: #fff; }
+    .logo-text span { color: var(--primary); }
+    .back-btn { font-size: 18px; color: #fff; text-decoration: none; }
+    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+    
+    .section-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 8px; color: var(--dark); border-bottom: 2px solid var(--border); padding-bottom: 5px; }
+    
+    .card-box { background: var(--card-bg); border-radius: 10px; padding: 15px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 15px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; color: var(--text-light); text-transform: uppercase; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; box-sizing: border-box; background: #fff; }
+    .form-group textarea { resize: vertical; height: 80px; }
+    
+    .btn-submit { background: var(--primary); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: background 0.2s; }
+    .btn-submit:hover { opacity: 0.9; }
 
-  <header class="top-bar" style="background: #111; padding: 15px; color: white; display: flex; align-items: center; justify-content: space-between;">
-    <h2 style="font-size: 16px; margin: 0; color: white;">Mon Profil</h2>
-    <a href="admin.html" style="color: #d32f2f; font-size: 12px; font-weight: bold; text-decoration: none;"><i class="fa-solid fa-lock"></i> Admin</a>
+    .ad-card { background: white; padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    .badge-cat { font-size: 10px; background: #ffebee; color: var(--primary); padding: 2px 6px; border-radius: 10px; font-weight: bold; text-transform: uppercase; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; box-sizing: border-box; }
+    .bottom-nav a { text-align: center; color: var(--text-light); font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: var(--primary); }
+    .bottom-nav i { font-size: 18px; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <div style="width: 18px;"></div> <!-- Spacer align -->
   </header>
 
-  <main style="max-width: 500px; margin: 20px auto; padding: 0 15px;">
-    <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee; text-align: center;">
-      <div style="font-size: 50px; color: #d32f2f; margin-bottom: 10px;"><i class="fa-solid fa-circle-user"></i></div>
-      <h3 id="profileName" style="margin: 0; font-size: 16px; font-weight: bold;">Chargement...</h3>
-      <p id="profileEmail" style="color: #666; font-size: 12px; margin: 5px 0 15px 0;"></p>
-      <a href="compte-entrepreneur.html" style="display: block; background: #111; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 8px;">Gérer mes services publiés</a>
-      <a href="publier.html" style="display: block; background: #d32f2f; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">Publier un nouveau service</a>
+  <main class="container">
+    
+    <!-- FORMULAIRE DE PUBLICATION -->
+    <div class="section-title"><i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Publier un nouveau service</div>
+    <div class="card-box">
+      <form id="publierForm" onsubmit="publierService(event)">
+        <div class="form-group">
+          <label>Titre de l'offre / Service</label>
+          <input type="text" id="titreService" placeholder="ex: Maintenance informatique ou Plomberie" required>
+        </div>
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select id="categorieService" required>
+            <option value="Technique & Maintenance">Technique & Maintenance</option>
+            <option value="BTP & Construction">BTP & Construction</option>
+            <option value="Informatique & Numérique">Informatique & Numérique</option>
+            <option value="Transport & Logistique">Transport & Logistique</option>
+            <option value="Services Généraux">Services Généraux</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Prix ou Tarif</label>
+          <input type="text" id="prixService" placeholder="ex: 50 USD / Heure ou Sur devis" required>
+        </div>
+        <div class="form-group">
+          <label>Description détaillée</label>
+          <textarea id="descService" placeholder="Décrivez votre prestation en détail..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Mettre en ligne</button>
+      </form>
     </div>
+
+    <!-- LISTE DES SERVICES PUBLIÉS -->
+    <div class="section-title"><i class="fa-solid fa-list" style="color: var(--primary);"></i> Services & Annonces Disponibles</div>
+    <div id="publicAdsContainer">
+      <p style="text-align: center; font-size: 12px; color: var(--text-light); margin: 15px 0;">Chargement des offres...</p>
+    </div>
+
   </main>
 
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="publier.html" class="nav-item active"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
     <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="nav-item active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -47,28 +114,67 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    async function loadProfile() {
+    async function loadPublicAds() {
+      const container = document.getElementById('publicAdsContainer');
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        let found = false;
+        const querySnapshot = await getDocs(collection(db, "services"));
+        let html = '';
+        let count = 0;
+
         querySnapshot.forEach((d) => {
-          const data = d.data();
-          if(!found) {
-            document.getElementById("profileName").innerText = data.fullName || data.name || "Utilisateur CAMU";
-            document.getElementById("profileEmail").innerText = data.email || "";
-            found = true;
-          }
+          count++;
+          const ad = d.data();
+          html += `
+            <div class="ad-card">
+              <span class="badge-cat">${ad.categorie || ad.category || 'Général'}</span>
+              <h4 style="font-size: 15px; font-weight: bold; margin: 8px 0 4px 0; color: #111;">${ad.titre || ad.title}</h4>
+              <p style="font-size: 12px; color: #666; margin: 0 0 8px 0; line-height: 1.4;">${ad.description || 'Aucune description détaillée.'}</p>
+              <p style="font-size: 13px; font-weight: bold; color: #111; margin: 0;">Prix : ${ad.prix || ad.price}</p>
+            </div>`;
         });
-        if(!found) {
-          document.getElementById("profileName").innerText = "Aucun profil trouvé";
-          document.getElementById("profileEmail").innerText = "Veuillez vous inscrire";
+
+        if (count === 0) {
+          container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #666;">Aucune publication disponible pour le moment.</p>`;
+        } else {
+          container.innerHTML = html;
         }
       } catch(e) {
-        document.getElementById("profileName").innerText = "Erreur de chargement";
+        container.innerHTML = `<p style="text-align: center; color: red; font-size: 12px;">Erreur de chargement des services.</p>`;
       }
     }
 
-    loadProfile();
+    window.publierService = async function(event) {
+      event.preventDefault();
+      
+      const titre = document.getElementById('titreService').value.trim();
+      const categorie = document.getElementById('categorieService').value;
+      const prix = document.getElementById('prixService').value.trim();
+      const description = document.getElementById('descService').value.trim();
+
+      if (!titre || !prix || !description) {
+        alert("Veuillez remplir tous les champs obligatoires.");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "services"), {
+          titre: titre,
+          categorie: categorie,
+          prix: prix,
+          description: description,
+          date: new Date(),
+          valide: false
+        });
+
+        alert("Votre service a été publié avec succès ! Il sera affiché après validation.");
+        document.getElementById('publierForm').reset();
+        loadPublicAds();
+      } catch(e) {
+        alert("Erreur lors de la publication. Veuillez réessayer.");
+      }
+    }
+
+    loadPublicAds();
   </script>
 </body>
 </html>
