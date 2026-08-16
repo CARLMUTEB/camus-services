@@ -7,40 +7,47 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 65px; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 70px; display: none; } /* Masqué par défaut jusqu'à validation */
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text { font-size: 18px; font-weight: 900; }
     .logo-text span { color: #d32f2f; }
     .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
 
-    /* Container */
-    .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+    .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 
-    /* Card Admin */
-    .admin-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #eee; }
-    .admin-title { font-size: 16px; font-weight: 900; text-transform: uppercase; color: #111; margin-bottom: 10px; border-bottom: 2px solid #d32f2f; padding-bottom: 8px; }
-    
-    .counter-badge { font-size: 14px; font-weight: 700; color: #555; margin-bottom: 15px; }
-    .counter-badge span { color: #d32f2f; font-weight: 900; }
+    /* Cards & Blocks */
+    .admin-card { background: #ffffff; border-radius: 12px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; }
+    .admin-title { font-size: 15px; font-weight: 900; text-transform: uppercase; color: #111; margin-bottom: 12px; border-bottom: 2px solid #d32f2f; padding-bottom: 6px; display: flex; align-items: center; gap: 8px; }
 
-    /* User Item */
-    .user-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-    .user-item { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
-    .user-info { display: flex; flex-direction: column; gap: 3px; }
-    .user-name { font-size: 14px; font-weight: 800; color: #111; }
-    .user-email { font-size: 12px; color: #666; }
-    .user-status { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-top: 4px; width: fit-content; }
-    .status-actif { background: #e8f5e9; color: #2e7d32; }
-    .status-suspendu { background: #ffebee; color: #c62828; }
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+    .stat-box { background: #f9f9fb; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; }
+    .stat-num { font-size: 20px; font-weight: 900; color: #111; }
+    .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; margin-top: 2px; }
 
-    /* Action Buttons */
-    .btn-action { border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-suspend { background: #d32f2f; color: #fff; }
-    .btn-activate { background: #2e7d32; color: #fff; }
+    /* Form Annonces Officielles */
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #444; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
+    textarea.form-control { resize: vertical; min-height: 70px; }
+    .btn-publier { width: 100%; background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; }
 
-    .no-users { text-align: center; color: #777; font-size: 13px; padding: 20px 0; }
+    /* Liste des éléments */
+    .user-item, .report-item { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 12px; }
+    .user-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; margin-bottom: 4px; }
+    .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+    .badge-actif { background: #e8f5e9; color: #2e7d32; }
+    .badge-averti { background: #fff3e0; color: #ef6c00; }
+    .badge-suspendu { background: #ffebee; color: #c62828; }
+
+    /* Actions buttons */
+    .action-group { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-act { border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff; }
+    .btn-warn { background: #ef6c00; }
+    .btn-susp { background: #c62828; }
+    .btn-rest { background: #2e7d32; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -48,27 +55,81 @@
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
+
+  <!-- SCRIPT DE SÉCURITÉ MOT DE PASSE -->
+  <script>
+    (function checkAdminAccess() {
+      const authKey = "camu_admin_authorized";
+      // Vérifie si déjà authentifié dans la session
+      if (sessionStorage.getItem(authKey) === "true") {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.body.style.display = "block";
+        });
+        return;
+      }
+
+      // Demande le mot de passe
+      const pass = prompt("Accès Administrateur — Veuillez entrer le mot de passe :");
+      if (pass === "Carl1800") {
+        sessionStorage.setItem(authKey, "true");
+        document.addEventListener("DOMContentLoaded", () => {
+          document.body.style.display = "block";
+        });
+      } else {
+        alert("Mot de passe incorrect. Accès refusé.");
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
 </head>
 <body>
 
-  <!-- Header -->
   <header class="header-bar">
     <div class="logo-text">CAMU <span>SERVICES</span></div>
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
   </header>
 
   <main class="container">
+    
+    <!-- STATISTIQUES GLOBAL -->
     <div class="admin-card">
-      <h1 class="admin-title">GESTION DES COMPTES ENTREPRENEURS</h1>
-      <div class="counter-badge">Total comptes : <span id="totalCount">0</span></div>
-
-      <div class="user-list" id="userListContainer">
-        <div class="no-users">Chargement des utilisateurs...</div>
+      <div class="admin-title"><i class="fa-solid fa-chart-pie"></i> Statistiques du Site</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="statVisites">0</div><div class="stat-label">Visites</div></div>
+        <div class="stat-box"><div class="stat-num" id="statEntrepreneurs">0</div><div class="stat-label">Entrepreneurs</div></div>
+        <div class="stat-box"><div class="stat-num" id="statClients">0</div><div class="stat-label">Clients</div></div>
+        <div class="stat-box"><div class="stat-num" id="statSignalements">0</div><div class="stat-label">Signalements</div></div>
       </div>
     </div>
+
+    <!-- PUBLICATION OFFICIELLE -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-bullhorn"></i> Communiqué Officiel</div>
+      <div class="form-group">
+        <label>Titre de l'information</label>
+        <input type="text" id="infoTitre" class="form-control" placeholder="ex: Maintenance ou Nouvelle fonctionnalité">
+      </div>
+      <div class="form-group">
+        <label>Message aux utilisateurs</label>
+        <textarea id="infoMessage" class="form-control" placeholder="Écrivez votre communiqué ici..."></textarea>
+      </div>
+      <button class="btn-publier" onclick="publierInfoOfficielle()">Publier sur le site</button>
+    </div>
+
+    <!-- SIGNALEMENTS -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-triangle-exclamation"></i> Signalements Récents</div>
+      <div id="reportsListContainer">Chargement des signalements...</div>
+    </div>
+
+    <!-- GESTION DES COMPTES -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-users-gear"></i> Modération des Comptes</div>
+      <div id="usersListContainer">Chargement des comptes...</div>
+    </div>
+
   </main>
 
-  <!-- Navigation Basse Fixe -->
   <nav class="bottom-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
@@ -76,10 +137,9 @@
     <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <!-- Script Firebase Admin -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -93,60 +153,115 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Écoute en temps réel de la collection 'users'
-    onSnapshot(collection(db, "users"), (snapshot) => {
-      const container = document.getElementById("userListContainer");
-      const totalCount = document.getElementById("totalCount");
-      
-      totalCount.innerText = snapshot.size;
-
-      if (snapshot.empty) {
-        container.innerHTML = '<div class="no-users">Aucun utilisateur enregistré.</div>';
-        return;
+    // 1. Charger les Visites Totales
+    onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
+      if (docSnap.exists()) {
+        document.getElementById("statVisites").innerText = docSnap.data().total || 0;
       }
+    });
 
-      let html = '';
-      snapshot.forEach((userDoc) => {
-        const data = userDoc.data();
-        const userId = userDoc.id;
-        const status = data.status || 'actif';
-        const isSuspended = status === 'suspendu';
+    // 2. Charger Utilisateurs (Entrepreneurs vs Clients)
+    onSnapshot(collection(db, "users"), (snapshot) => {
+      let totalE = 0;
+      let totalC = 0;
+      let html = "";
+
+      snapshot.forEach((uDoc) => {
+        const u = uDoc.data();
+        const id = uDoc.id;
+        const role = u.role || "client";
+        const status = u.status || "actif";
+        const warnings = u.warningCount || 0;
+
+        if (role === "entrepreneur") totalE++;
+        else totalC++;
+
+        const risque = warnings >= 2 ? "ÉLEVÉE (Averti " + warnings + "x)" : (warnings === 1 ? "Moyenne" : "Faible");
 
         html += `
           <div class="user-item">
-            <div class="user-info">
-              <span class="user-name">${data.nom || data.displayName || 'Entrepreneur'}</span>
-              <span class="user-email">${data.email || 'Pas d\'email'}</span>
-              <span class="user-status ${isSuspended ? 'status-suspendu' : 'status-actif'}">
-                ${isSuspended ? 'Suspendu' : 'Actif'}
-              </span>
+            <div class="user-header">
+              <span>${u.nom || u.email || 'Utilisateur'} (${role})</span>
+              <span class="status-badge badge-${status}">${status.toUpperCase()}</span>
             </div>
-            <div>
-              <button class="btn-action ${isSuspended ? 'btn-activate' : 'btn-suspend'}" onclick="toggleUserStatus('${userId}', '${status}')">
-                ${isSuspended ? 'Réactiver' : 'Suspendre'}
-              </button>
+            <div>Avertissements : <b>${warnings}</b> | Risque de suspension : <b>${risque}</b></div>
+            <div class="action-group">
+              <button class="btn-act btn-warn" onclick="avertirCompte('${id}', ${warnings})">Avertir</button>
+              <button class="btn-act btn-susp" onclick="suspendreCompte('${id}')">Suspendre</button>
+              <button class="btn-act btn-rest" onclick="retablirCompte('${id}')">Rétablir</button>
             </div>
-          </div>
-        `;
+          </div>`;
       });
 
-      container.innerHTML = html;
-    }, (error) => {
-      console.error("Erreur de chargement des utilisateurs : ", error);
-      document.getElementById("userListContainer").innerHTML = '<div class="no-users">Erreur d\'accès à la base de données. Vérifiez les règles Firestore.</div>';
+      document.getElementById("statEntrepreneurs").innerText = totalE;
+      document.getElementById("statClients").innerText = totalC;
+      document.getElementById("usersListContainer").innerHTML = html || "Aucun compte disponible.";
     });
 
-    // Fonction globale pour changer le statut d'un compte
-    window.toggleUserStatus = async function(userId, currentStatus) {
-      const newStatus = currentStatus === 'suspendu' ? 'actif' : 'suspendu';
-      try {
-        await updateDoc(doc(db, "users", userId), {
-          status: newStatus
-        });
-      } catch (err) {
-        alert("Erreur lors de la modification : " + err.message);
+    // 3. Charger Signalements
+    onSnapshot(collection(db, "reports"), (snapshot) => {
+      document.getElementById("statSignalements").innerText = snapshot.size;
+      if (snapshot.empty) {
+        document.getElementById("reportsListContainer").innerHTML = "Aucun signalement.";
+        return;
       }
+      let html = "";
+      snapshot.forEach((rDoc) => {
+        const r = rDoc.data();
+        html += `
+          <div class="report-item">
+            <b>Cible :</b> ${r.targetTitle || 'Annonce/Utilisateur'}<br>
+            <b>Raison :</b> ${r.reason || 'Non précisée'}<br>
+            <small style="color:#777">Par: ${r.reporterEmail || 'Anonyme'}</small>
+          </div>`;
+      });
+      document.getElementById("reportsListContainer").innerHTML = html;
+    });
+
+    // Actions Modération
+    window.avertirCompte = async (uid, count) => {
+      const raison = prompt("Raison de l'avertissement :");
+      if (!raison) return;
+      await updateDoc(doc(db, "users", uid), {
+        status: "averti",
+        warningCount: count + 1,
+        lastWarningReason: raison
+      });
+      alert("Avertissement envoyé.");
+    };
+
+    window.suspendreCompte = async (uid) => {
+      if (!confirm("Confirmer la suspension de ce compte ?")) return;
+      await updateDoc(doc(db, "users", uid), { status: "suspendu" });
+      alert("Compte suspendu.");
+    };
+
+    window.retablirCompte = async (uid) => {
+      await updateDoc(doc(db, "users", uid), { status: "actif" });
+      alert("Compte rétabli.");
+    };
+
+    // Publication Officielle
+    window.publierInfoOfficielle = async () => {
+      const titre = document.getElementById("infoTitre").value;
+      const message = document.getElementById("infoMessage").value;
+
+      if (!titre || !message) {
+        alert("Veuillez remplir le titre et le message.");
+        return;
+      }
+
+      await addDoc(collection(db, "annonces_officielles"), {
+        titre: titre,
+        message: message,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById("infoTitre").value = "";
+      document.getElementById("infoMessage").value = "";
+      alert("Information officielle publiée avec succès.");
     };
   </script>
 </body>
 </html>
+
