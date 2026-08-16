@@ -1,64 +1,359 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAMU SERVICES — Trouver . Acheter . Réserver</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAMU SERVICES — TROUVER . ACHETER . RÉSERVER</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 65px; }
+
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text span { color: #d32f2f; }
+    .menu-btn { font-size: 22px; cursor: pointer; color: #fff; background: none; border: none; }
+
+    /* Hero Banner & Slogan */
+    .hero-banner { background: #111111; color: #ffffff; padding: 20px 15px 25px; text-align: center; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; margin-bottom: 15px; }
+    .hero-slogan { font-size: 13px; font-weight: 800; letter-spacing: 1.5px; color: #d32f2f; text-transform: uppercase; margin-bottom: 15px; }
+    
+    /* Barre de Recherche */
+    .search-box { display: flex; background: #ffffff; border-radius: 25px; padding: 6px 15px; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 450px; margin: 0 auto; }
+    .search-box input { border: none; outline: none; width: 100%; padding: 8px 10px; font-size: 13px; color: #333; }
+    .search-box i { color: #666; font-size: 15px; }
+
+    /* Filtres Rapides */
+    .quick-filters { display: flex; gap: 8px; overflow-x: auto; padding: 5px 15px 15px; scrollbar-width: none; -ms-overflow-style: none; }
+    .quick-filters::-webkit-scrollbar { display: none; }
+    .filter-chip { background: #ffffff; border: 1px solid #e0e0e0; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #555; white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+    .filter-chip.active { background: #d32f2f; color: #ffffff; border-color: #d32f2f; }
+
+    /* Overlay & Menu Latéral (Sidebar) */
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; z-index: 1001; }
+    .sidebar-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #ffffff; z-index: 1002; transition: left 0.3s ease; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+    .sidebar-menu.active { left: 0; }
+    .sidebar-header { background: #111; color: #fff; padding: 20px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+    .sidebar-header .close-btn { font-size: 20px; cursor: pointer; }
+
+    .menu-item { padding: 14px 15px; display: flex; align-items: center; gap: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+    .menu-item i { color: #d32f2f; width: 20px; text-align: center; }
+    .menu-item.bold { font-weight: 800; }
+    .menu-item.admin-link { color: #d32f2f; font-weight: 800; }
+
+    /* Sous-catégories */
+    .sub-categories { display: none; background: #fafafa; border-bottom: 1px solid #eee; }
+    .sub-categories.open { display: block; }
+    .sub-item { padding: 12px 15px 12px 40px; display: flex; align-items: center; gap: 10px; color: #555; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }
+    .sub-item i { width: 18px; color: #666; font-size: 14px; }
+
+    /* Section Titre */
+    .category-title { max-width: 500px; margin: 10px auto 5px; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; }
+    .category-title h2 { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-reset { font-size: 12px; color: #d32f2f; font-weight: 700; text-decoration: none; display: none; }
+
+    /* Cards d'Annonces */
+    .container { max-width: 500px; margin: 0 auto; padding: 10px 15px; }
+    .card { background: #ffffff; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .card-img { width: 100%; height: 180px; background: #222; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 32px; background-size: cover; background-position: center; }
+    .card-body { padding: 12px 15px; }
+    .card-badge { display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; color: #d32f2f; background: #fff0f0; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; }
+    .card-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .card-location { font-size: 12px; color: #666; margin-bottom: 8px; }
+    .card-price { font-size: 14px; font-weight: 800; color: #111; }
+    
+    .no-annonces { text-align: center; padding: 40px 15px; color: #777; font-size: 14px; }
+    .no-annonces i { font-size: 36px; color: #ccc; margin-bottom: 10px; display: block; }
+
+    /* Footer */
+    .site-footer { background: #111111; color: #888888; padding: 25px 15px; text-align: center; margin-top: 20px; font-size: 12px; }
+    .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+    .footer-links a { color: #cccccc; text-decoration: none; font-weight: 600; font-size: 12px; }
+    .footer-links a:hover { color: #d32f2f; }
+    .footer-copyright { border-top: 1px solid #222222; padding-top: 15px; font-weight: 500; color: #777777; }
+
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <!-- En-tête -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-black">CAMU <span style="color:#d32f2f;">SERVICES</span></h1>
-            <p class="text-sm text-gray-500 italic">TROUVER . ACHETER . RÉSERVER</p>
-        </div>
-    </header>
+  <!-- Header -->
+  <header class="header-bar">
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+  </header>
 
-    <!-- Contenu principal -->
-    <main class="max-w-7xl mx-auto px-4 py-12 text-center">
-        <h2 class="text-3xl font-extrabold mb-4">Bienvenue sur CAMU SERVICES</h2>
-        <p class="text-lg text-gray-600 mb-8">Votre plateforme de services de confiance.</p>
-        
-        <!-- Si vous aviez d'autres éléments sur votre page d'accueil (boutons, annonces, etc.), ils viendront se placer ici -->
-    </main>
+  <!-- Overlay & Menu Latéral -->
+  <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+  
+  <div class="sidebar-menu" id="sidebar">
+    <div class="sidebar-header">
+      <span>CAMU SERVICES</span>
+      <i class="fa-solid fa-xmark close-btn" onclick="toggleSidebar()"></i>
+    </div>
 
-    <!-- Script invisible pour incrémenter le compteur de visites en arrière-plan -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <a href="index.html" class="menu-item bold">
+      <i class="fa-solid fa-house"></i> Accueil
+    </a>
 
-        // Configuration Firebase officielle de votre projet
-        const firebaseConfig = {
-            apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-            authDomain: "camu-services.firebaseapp.com",
-            projectId: "camu-services",
-            storageBucket: "camu-services.firebasestorage.app",
-            messagingSenderId: "879100396449",
-            appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
-        };
+    <div class="menu-item bold" onclick="toggleSubCategories()">
+      <i class="fa-solid fa-layer-group"></i> Catégories 
+      <i class="fa-solid fa-chevron-down" style="margin-left: auto; font-size: 12px;"></i>
+    </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    <!-- Sous-menu des Catégories -->
+    <div class="sub-categories" id="subCategories">
+      <a href="index.html?cat=bars-lounges" class="sub-item"><i class="fa-solid fa-martini-glass-citrus"></i> Bars & Lounges</a>
+      <a href="index.html?cat=restaurants" class="sub-item"><i class="fa-solid fa-utensils"></i> Restaurants</a>
+      <a href="index.html?cat=hotels" class="sub-item"><i class="fa-solid fa-hotel"></i> Hôtels & Hébergements</a>
+      <a href="index.html?cat=vehicules" class="sub-item"><i class="fa-solid fa-car"></i> Véhicules & Pièces</a>
+      <a href="index.html?cat=vente-maisons" class="sub-item"><i class="fa-solid fa-house-chimney"></i> Vente de Maisons</a>
+      <a href="index.html?cat=maisons-louer" class="sub-item"><i class="fa-solid fa-key"></i> Maisons à Louer</a>
+      <a href="index.html?cat=telephones" class="sub-item"><i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablettes</a>
+      <a href="index.html?cat=electronique" class="sub-item"><i class="fa-solid fa-laptop"></i> Électronique & Informatique</a>
+      <a href="index.html?cat=agriculture" class="sub-item"><i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage</a>
+      <a href="index.html?cat=electricite" class="sub-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux & Électricité</a>
+      <a href="index.html?cat=divers" class="sub-item"><i class="fa-solid fa-hands-holding-circle"></i> Divers & Services</a>
+    </div>
 
-        // Fonction qui s'exécute en secret au chargement de la page
-        async function compterVisiteSilencieuse() {
-            const visiteRef = doc(db, "stats", "visites");
-            try {
-                // Ajoute +1 aux statistiques Firestore
-                await updateDoc(visiteRef, {
-                    total: increment(1)
-                });
-            } catch (e) {
-                // Si la base n'est pas encore prête, l'initialise à 1
-                await setDoc(visiteRef, { total: 1 }, { merge: true });
-            }
+    <a href="profil.html" class="menu-item"><i class="fa-solid fa-star"></i> Mes Favoris</a>
+    <a href="publier.html" class="menu-item"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
+    <a href="chat.html" class="menu-item"><i class="fa-solid fa-comments"></i> Discussions</a>
+
+    <!-- Section Administrateur -->
+    <a href="admin.html" class="menu-item admin-link"><i class="fa-solid fa-user-shield"></i> Administration</a>
+  </div>
+
+  <main>
+    <!-- Bannière Hero & Slogan -->
+    <section class="hero-banner">
+      <div class="hero-slogan">TROUVER . ACHETER . RÉSERVER</div>
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Que recherchez-vous ? (ex: voiture, maison...)" onkeyup="filterCards()">
+      </div>
+    </section>
+
+    <!-- Filtres Rapides -->
+    <div class="quick-filters">
+      <div class="filter-chip active" onclick="filterCategory('all', this)"><i class="fa-solid fa-border-all"></i> Tout</div>
+      <div class="filter-chip" onclick="filterCategory('bars-lounges', this)"><i class="fa-solid fa-martini-glass-citrus"></i> Bars</div>
+      <div class="filter-chip" onclick="filterCategory('restaurants', this)"><i class="fa-solid fa-utensils"></i> Restaurants</div>
+      <div class="filter-chip" onclick="filterCategory('vehicules', this)"><i class="fa-solid fa-car"></i> Véhicules</div>
+      <div class="filter-chip" onclick="filterCategory('electricite', this)"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux</div>
+    </div>
+
+    <!-- En-tête des Annonces -->
+    <div class="category-title">
+      <h2 id="currentCategoryText">Toutes les annonces</h2>
+      <a href="index.html" class="btn-reset" id="btnReset">Voir tout</a>
+    </div>
+
+    <!-- Grille d'Annonces Dynamique -->
+    <div class="container" id="annoncesContainer">
+      <!-- Annonces insérées dynamiquement depuis Firebase -->
+    </div>
+  </main>
+
+  <!-- Pied de Page (Footer) -->
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="a-propos.html">À propos</a>
+      <a href="politique.html">Politique de confidentialité</a>
+      <a href="conditions.html">Conditions d'utilisation</a>
+      <a href="contact.html">Contact & support</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 CAMU SERVICES. Tous droits réservés.
+    </div>
+  </footer>
+
+  <!-- Navigation Basse Fixe -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+  </nav>
+
+  <!-- Script de gestion d'authentification et suspension -->
+  <script type="module" src="auth-management.js"></script>
+
+  <!-- Script Firebase & Interactions Web -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+      authDomain: "camu-services.firebaseapp.com",
+      projectId: "camu-services",
+      storageBucket: "camu-services.firebasestorage.app",
+      messagingSenderId: "879100396449",
+      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // --- Script invisible pour incrémenter le compteur de visites en arrière-plan ---
+    async function compterVisiteSilencieuse() {
+        const visiteRef = doc(db, "stats", "visites");
+        try {
+            await updateDoc(visiteRef, {
+                total: increment(1)
+            });
+        } catch (e) {
+            await setDoc(visiteRef, { total: 1 }, { merge: true });
+        }
+    }
+    compterVisiteSilencieuse();
+
+    window.categoryIcons = {
+      'bars-lounges': 'fa-martini-glass-citrus',
+      'restaurants': 'fa-utensils',
+      'hotels': 'fa-hotel',
+      'vehicules': 'fa-car',
+      'vente-maisons': 'fa-house-chimney',
+      'maisons-louer': 'fa-key',
+      'telephones': 'fa-mobile-screen-button',
+      'electronique': 'fa-laptop',
+      'agriculture': 'fa-wheat-awn',
+      'electricite': 'fa-screwdriver-wrench',
+      'divers': 'fa-hands-holding-circle'
+    };
+
+    window.categoryNames = {
+      'bars-lounges': 'Bars & Lounges',
+      'restaurants': 'Restaurants',
+      'hotels': 'Hôtels & Hébergements',
+      'vehicules': 'Véhicules & Pièces',
+      'vente-maisons': 'Vente de Maisons',
+      'maisons-louer': 'Maisons à Louer',
+      'telephones': 'Téléphones & Tablettes',
+      'electronique': 'Électronique & Informatique',
+      'agriculture': 'Agriculture & Élevage',
+      'electricite': 'Travaux & Électricité',
+      'divers': 'Divers & Services'
+    };
+
+    async function loadAnnoncesFirebase() {
+      const container = document.getElementById('annoncesContainer');
+      try {
+        // Charger la liste des utilisateurs pour vérifier les suspendus
+        const usersSnap = await getDocs(collection(db, "users"));
+        const suspendedUserIds = new Set();
+        usersSnap.forEach((uDoc) => {
+          if (uDoc.data().status === 'suspendu') {
+            suspendedUserIds.add(uDoc.id);
+          }
+        });
+
+        const querySnapshot = await getDocs(collection(db, "annonces"));
+        let visibleCount = 0;
+        let html = '';
+
+        querySnapshot.forEach((docSnap) => {
+          const item = docSnap.data();
+          // Ignorer les annonces des utilisateurs suspendus
+          if (item.userId && suspendedUserIds.has(item.userId)) {
+            return;
+          }
+
+          visibleCount++;
+          const icon = window.categoryIcons[item.category] || 'fa-tag';
+          const badge = window.categoryNames[item.category] || item.category;
+          const imgContent = item.image 
+            ? `<div class="card-img" style="background-image: url('${item.image}')"></div>`
+            : `<div class="card-img"><i class="fa-solid ${icon}"></i></div>`;
+
+          html += `
+            <div class="card" data-category="${item.category}">
+              ${imgContent}
+              <div class="card-body">
+                <span class="card-badge">${badge}</span>
+                <div class="card-title">${item.title}</div>
+                <div class="card-location"><i class="fa-solid fa-location-dot"></i> ${item.location || ''}</div>
+                <div class="card-price">${item.price}</div>
+              </div>
+            </div>`;
+        });
+
+        if (visibleCount === 0) {
+          container.innerHTML = `
+            <div class="no-annonces">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>Aucune annonce publiée pour le moment.</p>
+            </div>`;
+          return;
         }
 
-        compterVisiteSilencieuse();
-    </script>
+        container.innerHTML = html;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCategory = urlParams.get('cat');
+
+        if (selectedCategory && window.categoryNames[selectedCategory]) {
+          document.getElementById('currentCategoryText').innerText = window.categoryNames[selectedCategory];
+          document.getElementById('btnReset').style.display = 'inline';
+          window.filterCategory(selectedCategory);
+        }
+      } catch (e) {
+        console.error("Erreur de chargement des annonces : ", e);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAnnoncesFirebase);
+  </script>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('active');
+      overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+    }
+
+    function toggleSubCategories() {
+      document.getElementById('subCategories').classList.toggle('open');
+    }
+
+    function filterCategory(cat, element) {
+      if (element) {
+        document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+        element.classList.add('active');
+      }
+      
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.getAttribute('data-category') === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title').innerText.toLowerCase();
+        const badge = card.querySelector('.card-badge').innerText.toLowerCase();
+        if (title.includes(query) || badge.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
 </body>
 </html>
 
