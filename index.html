@@ -28,6 +28,7 @@
     .menu-item { padding: 14px 15px; display: flex; align-items: center; gap: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
     .menu-item i { color: #d32f2f; width: 20px; text-align: center; }
     .menu-item.bold { font-weight: 800; }
+    .menu-item.admin-link { color: #d32f2f; font-weight: 800; }
 
     /* Sous-catégories */
     .sub-categories { display: none; background: #fafafa; border-bottom: 1px solid #eee; }
@@ -131,6 +132,11 @@
     <a href="chat.html" class="menu-item">
       <i class="fa-solid fa-comments"></i> Discussions
     </a>
+
+    <!-- Lien Administration Réintégré -->
+    <a href="admin.html" class="menu-item admin-link">
+      <i class="fa-solid fa-user-shield"></i> Administration
+    </a>
   </div>
 
   <!-- Contenu Principal -->
@@ -149,7 +155,7 @@
         </div>
         <div class="card-body">
           <span class="card-badge">Bars & Lounges</span>
-          <div class="card-title"> VIP Lounge & Terrasse</div>
+          <div class="card-title">VIP Lounge & Terrasse</div>
           <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Centre-Ville</div>
           <div class="card-price">Réservation Table</div>
         </div>
@@ -162,7 +168,7 @@
         </div>
         <div class="card-body">
           <span class="card-badge">Restaurants</span>
-          <div class="card-title"> Grillades & Gastronomie</div>
+          <div class="card-title">Grillades & Gastronomie</div>
           <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Golf</div>
           <div class="card-price">Menu dès 15 $</div>
         </div>
@@ -207,7 +213,6 @@
 
   <!-- Scripts JavaScript -->
   <script>
-    // Ouvrir / Fermer le menu latéral
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('overlay');
@@ -215,13 +220,11 @@
       overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
     }
 
-    // Dérouler / Replier les sous-catégories
     function toggleSubCategories() {
       const subCat = document.getElementById('subCategories');
       subCat.classList.toggle('open');
     }
 
-    // Dictionnaire des noms d'affichage des catégories
     const categoryNames = {
       'bars-lounges': 'Bars & Lounges',
       'restaurants': 'Restaurants',
@@ -236,17 +239,14 @@
       'divers': 'Divers & Services'
     };
 
-    // Filtrage automatique lors du chargement de la page
     document.addEventListener("DOMContentLoaded", function() {
       const urlParams = new URLSearchParams(window.location.search);
       const selectedCategory = urlParams.get('cat');
 
       if (selectedCategory && categoryNames[selectedCategory]) {
-        // Mettre à jour le titre
         document.getElementById('currentCategoryText').innerText = categoryNames[selectedCategory];
         document.getElementById('btnReset').style.display = 'inline';
 
-        // Filtrer les cartes
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
           if (card.getAttribute('data-category') === selectedCategory) {
@@ -261,4 +261,4 @@
 
 </body>
         </html>
-                                                                       
+            
