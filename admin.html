@@ -21,40 +21,23 @@
     .logo-text span { color: var(--primary); }
     .back-btn { font-size: 20px; cursor: pointer; color: #fff; text-decoration: none; }
     .container { max-width: 650px; margin: 0 auto; padding: 15px; }
-    
     .section-title { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 22px 0 10px 0; display: flex; align-items: center; gap: 8px; color: var(--dark); border-bottom: 2px solid var(--border); padding-bottom: 5px; }
-    
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
     .stat-card { background: var(--card-bg); border-radius: 10px; padding: 10px 5px; text-align: center; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
     .stat-number { font-size: 18px; font-weight: 900; color: var(--dark); margin-bottom: 2px; }
     .stat-label { font-size: 9px; font-weight: 800; color: var(--text-light); text-transform: uppercase; line-height: 1.2; }
-
-    .admin-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-    .admin-nav-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 5px; border-radius: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-    .admin-nav-btn i { font-size: 16px; color: var(--primary); }
-
     .card-box { background: var(--card-bg); border-radius: 10px; padding: 15px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 15px; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; color: var(--text-light); text-transform: uppercase; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; box-sizing: border-box; background: #fff; }
-    .form-group textarea { resize: vertical; height: 75px; }
-    .btn-submit { background: var(--dark); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-    
     .item-row { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
     .item-info strong { display: block; color: var(--dark); font-size: 13px; }
     .item-info span { color: var(--text-light); font-size: 11px; }
     .item-actions { display: flex; gap: 5px; }
-    
     .badge { padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; }
     .badge-success { background: #e1f5fe; color: #0288d1; }
     .badge-danger { background: #ffebee; color: #d32f2f; }
-
     .btn-action { border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; color: #fff; }
     .btn-validate { background: #27ae60; }
-    .btn-warn { background: #f39c12; }
     .btn-block { background: var(--primary); }
     .btn-unblock { background: #2980b9; }
-
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; box-sizing: border-box; }
     .bottom-nav a { text-align: center; color: var(--text-light); font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: var(--primary); }
@@ -62,20 +45,14 @@
   </style>
 </head>
 <body>
-
   <header class="header-bar">
     <div class="logo-text">CAMU <span>SERVICES</span></div>
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
   </header>
 
   <main class="container">
-    
-    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> 1. Vue Générale & Statistiques</div>
+    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> Statistiques Globales</div>
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number" id="statVisites">0</div>
-        <div class="stat-label">Visites</div>
-      </div>
       <div class="stat-card">
         <div class="stat-number" id="statEntrepreneurs">0</div>
         <div class="stat-label">Entrepreneurs</div>
@@ -88,87 +65,17 @@
         <div class="stat-number" id="statClients">0</div>
         <div class="stat-label">Clients</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statDemandes">0</div>
-        <div class="stat-label">Demandes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="statSignalements">0</div>
-        <div class="stat-label">Signalements</div>
-      </div>
     </div>
 
-    <div class="section-title"><i class="fa-solid fa-folder-tree" style="color: var(--primary);"></i> Modules de Gestion Avancés</div>
-    <div class="admin-nav-grid">
-      <a href="#sec-entrepreneurs" class="admin-nav-btn"><i class="fa-solid fa-user-tie"></i><span>Entrepreneurs</span></a>
-      <a href="#sec-services" class="admin-nav-btn"><i class="fa-solid fa-screwdriver-wrench"></i><span>Services & Offres</span></a>
-      <a href="#sec-clients" class="admin-nav-btn"><i class="fa-solid fa-users"></i><span>Clients</span></a>
-      <a href="#sec-moderation" class="admin-nav-btn"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></a>
-      <a href="#sec-pubs" class="admin-nav-btn"><i class="fa-solid fa-bullhorn"></i><span>Pubs & Annonces</span></a>
-      <a href="#sec-parametres" class="admin-nav-btn"><i class="fa-solid fa-gears"></i><span>Paramètres</span></a>
-    </div>
-
-    <div class="section-title" id="sec-entrepreneurs"><i class="fa-solid fa-store" style="color: var(--primary);"></i> 2 & 3. Entrepreneurs & Boutiques</div>
+    <div class="section-title"><i class="fa-solid fa-store" style="color: var(--primary);"></i> Gestion des Utilisateurs / Entrepreneurs</div>
     <div id="entrepreneursListContainer" class="card-box" style="padding: 10px;">
       <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Chargement...</p>
     </div>
 
-    <div class="section-title" id="sec-services"><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> 4. Validation des Services & Offres</div>
+    <div class="section-title"><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Validation des Services Publiés</div>
     <div id="servicesListContainer" class="card-box" style="padding: 10px;">
       <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Chargement...</p>
     </div>
-
-    <div class="section-title" id="sec-clients"><i class="fa-solid fa-users" style="color: var(--primary);"></i> 5. Clients & Utilisateurs</div>
-    <div id="clientsListContainer" class="card-box" style="padding: 10px;">
-      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Chargement...</p>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i> 7. Analyse par Localisation</div>
-    <div class="card-box">
-      <div class="form-group" style="margin-bottom: 0;">
-        <label>Filtrer l'activité par zone géographique</label>
-        <select id="filtreVille" onchange="filtrerParVille()">
-          <option value="lubumbashi">Lubumbashi (Tous les quartiers)</option>
-          <option value="katuba">Katuba</option>
-          <option value="kampemba">Kampemba</option>
-          <option value="kenya">Kenya</option>
-          <option value="kamalondo">Kamalondo</option>
-          <option value="rwashi">Rwashi</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="section-title" id="sec-moderation"><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary);"></i> 11. Modération & Contenus Signalés</div>
-    <div id="signalementsContainer" class="card-box" style="padding: 10px;">
-      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun signalement.</p>
-    </div>
-
-    <div class="section-title" id="sec-pubs"><i class="fa-solid fa-bullhorn" style="color: var(--primary);"></i> 9. Communications Officielles & Promos</div>
-    <div class="card-box">
-      <div class="form-group">
-        <label>Titre de l'information / Promo</label>
-        <input type="text" id="commTitre" placeholder="ex: Offre spéciale entrepreneurs ou Maintenance">
-      </div>
-      <div class="form-group">
-        <label>Message détaillé</label>
-        <textarea id="commMessage" placeholder="Écrivez votre message publicitaire ou d'information..."></textarea>
-      </div>
-      <button class="btn-submit" onclick="publierCommunique()">Diffuser sur la plateforme</button>
-    </div>
-
-    <div class="section-title" id="sec-parametres"><i class="fa-solid fa-gears" style="color: var(--primary);"></i> 12. Paramètres & Identité CAMU</div>
-    <div class="card-box">
-      <div class="form-group">
-        <label>Nom de la plateforme</label>
-        <input type="text" id="paramNom" value="CAMU SERVICES">
-      </div>
-      <div class="form-group">
-        <label>Slogan officiel</label>
-        <input type="text" id="paramSlogan" value="TROUVER . ACHETER . RÉSERVER">
-      </div>
-      <button class="btn-submit" onclick="sauvegarderParametres()" style="background: #27ae60;">Enregistrer les modifications</button>
-    </div>
-
   </main>
 
   <nav class="bottom-nav">
@@ -180,7 +87,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -196,221 +103,88 @@
 
     function verifierAcces() {
       const mdp = prompt("Veuillez entrer le mot de passe administrateur :");
-      const mdpPropre = mdp ? mdp.trim() : "";
-      
-      if (mdpPropre !== "Carl1800") {
+      if (mdp !== "Carl1800") {
         alert("Mot de passe incorrect !");
         window.location.href = "index.html";
       } else {
         document.body.style.display = "block";
-        initialiserAdmin();
+        chargerDonneesAdmin();
       }
     }
 
-    function initialiserAdmin() {
-      onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
-        if (docSnap.exists()) {
-          document.getElementById("statVisites").innerText = docSnap.data().total || 0;
-        }
-      });
-      chargerToutesDonnees();
-    }
+    async function chargerDonneesAdmin() {
+      let usersHtml = '';
+      let servicesHtml = '';
+      let userCount = 0;
+      let serviceCount = 0;
 
-    async function chargerToutesDonnees() {
-      let countEnt = 0;
-      let countCli = 0;
-      let countServ = 0;
-      let entHtml = '';
-      let cliHtml = '';
-      let servHtml = '';
-      let sigHtml = '';
-
-      // Lecture multi-collections pour ne rien rater (entrepreneurs, users, clients)
-      const collectionsCiblesEnt = ["entrepreneurs"];
-      const collectionsCiblesCli = ["clients", "users", "utilisateurs"];
-
-      for (const collName of collectionsCiblesEnt) {
-        try {
-          const snap = await getDocs(collection(db, collName));
-          snap.forEach((uDoc) => {
-            countEnt++;
-            const data = uDoc.data();
-            const id = uDoc.id;
-            const statut = data.status || 'actif';
-            entHtml += `
-              <div class="item-row">
-                <div class="item-info">
-                  <strong>${data.name || data.nom || 'Entreprise #' + id.substring(0,4)}</strong>
-                  <span>Cat: ${data.category || data.activite || 'Général'} | Ville: ${data.ville || 'Lubumbashi'}</span>
-                </div>
-                <div class="item-actions">
-                  <button class="btn-action btn-warn" onclick="avertirUtilisateur('${data.name || id}')">Avertir</button>
-                  <button class="btn-action ${statut === 'suspendu' ? 'btn-unblock' : 'btn-block'}" onclick="changerStatut('${collName}', '${id}', '${statut === 'suspendu' ? 'actif' : 'suspendu'}')">${statut === 'suspendu' ? 'Activer' : 'Bloquer'}</button>
-                </div>
-              </div>`;
-          });
-        } catch(e) {}
-      }
-
-      for (const collName of collectionsCiblesCli) {
-        try {
-          const snap = await getDocs(collection(db, collName));
-          snap.forEach((uDoc) => {
-            countCli++;
-            const data = uDoc.data();
-            const id = uDoc.id;
-            const statut = data.status || 'actif';
-            cliHtml += `
-              <div class="item-row">
-                <div class="item-info">
-                  <strong>${data.name || data.nom || data.email || 'Client #' + id.substring(0,4)}</strong>
-                  <span>Statut: <span class="badge ${statut === 'actif' ? 'badge-success' : 'badge-danger'}">${statut}</span></span>
-                </div>
-                <div class="item-actions">
-                  <button class="btn-action ${statut === 'suspendu' ? 'btn-unblock' : 'btn-block'}" onclick="changerStatut('${collName}', '${id}', '${statut === 'suspendu' ? 'actif' : 'suspendu'}')">${statut === 'suspendu' ? 'Activer' : 'Bloquer'}</button>
-                </div>
-              </div>`;
-          });
-        } catch(e) {}
-      }
-
+      // Charger utilisateurs
       try {
-        const snapServ = await getDocs(collection(db, "services"));
-        snapServ.forEach((sDoc) => {
-          countServ++;
-          const data = sDoc.data();
-          const id = sDoc.id;
-          servHtml += `
+        const userSnap = await getDocs(collection(db, "users"));
+        userSnap.forEach((d) => {
+          userCount++;
+          const data = d.data();
+          const statut = data.status || 'actif';
+          usersHtml += `
             <div class="item-row">
               <div class="item-info">
-                <strong>${data.titre || data.title || 'Service'} (${data.prix || data.price || '0 USD'})</strong>
-                <span>Catégorie: ${data.categorie || data.category || 'Divers'}</span>
+                <strong>${data.name || data.fullName || data.email || 'Utilisateur'}</strong>
+                <span>Rôle: ${data.role || 'Client'} | Statut: <span class="badge ${statut === 'actif' ? 'badge-success' : 'badge-danger'}">${statut}</span></span>
               </div>
               <div class="item-actions">
-                <button class="btn-action btn-validate" onclick="validerService('${id}')">Valider</button>
-                <button class="btn-action btn-block" onclick="supprimerService('${id}')">Supprimer</button>
+                <button class="btn-action ${statut === 'suspendu' ? 'btn-unblock' : 'btn-block'}" onclick="changerStatutUser('${d.id}', '${statut === 'suspendu' ? 'actif' : 'suspendu'}')">${statut === 'suspendu' ? 'Activer' : 'Bloquer'}</button>
               </div>
             </div>`;
         });
       } catch(e) {}
 
+      // Charger services
       try {
-        const snapSig = await getDocs(collection(db, "signalements"));
-        let countSig = 0;
-        snapSig.forEach((sigDoc) => {
-          countSig++;
-          const data = sigDoc.data();
-          sigHtml += `
+        const servSnap = await getDocs(collection(db, "services"));
+        servSnap.forEach((d) => {
+          serviceCount++;
+          const data = d.data();
+          servicesHtml += `
             <div class="item-row">
               <div class="item-info">
-                <strong>Raison : ${data.raison || 'Contenu inapproprié'}</strong>
-                <span>Cible ID : ${data.targetId || 'N/C'}</span>
+                <strong>${data.titre || data.title} (${data.prix || data.price})</strong>
+                <span>Catégorie: ${data.categorie || data.category || 'Général'}</span>
               </div>
-              <button class="btn-action btn-block" onclick="supprimerSignalement('${sigDoc.id}')">Résoudre</button>
+              <div class="item-actions">
+                <button class="btn-action btn-block" onclick="supprimerServiceAdmin('${d.id}')">Supprimer</button>
+              </div>
             </div>`;
         });
-        document.getElementById("statSignalements").innerText = countSig;
-        if(sigHtml) document.getElementById("signalementsContainer").innerHTML = sigHtml;
-      } catch(e) {
-        document.getElementById("statSignalements").innerText = 0;
-      }
+      } catch(e) {}
 
-      try {
-        const snapDem = await getDocs(collection(db, "demandes"));
-        document.getElementById("statDemandes").innerText = snapDem.size;
-      } catch(e) {
-        document.getElementById("statDemandes").innerText = 0;
-      }
+      document.getElementById("statEntrepreneurs").innerText = userCount;
+      document.getElementById("statClients").innerText = userCount;
+      document.getElementById("statServices").innerText = serviceCount;
 
-      document.getElementById("statEntrepreneurs").innerText = countEnt;
-      document.getElementById("statClients").innerText = countCli;
-      document.getElementById("statServices").innerText = countServ;
-
-      if(entHtml) document.getElementById("entrepreneursListContainer").innerHTML = entHtml;
-      else document.getElementById("entrepreneursListContainer").innerHTML = '<p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun entrepreneur enregistré.</p>';
-
-      if(cliHtml) document.getElementById("clientsListContainer").innerHTML = cliHtml;
-      else document.getElementById("clientsListContainer").innerHTML = '<p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun client enregistré.</p>';
-
-      if(servHtml) document.getElementById("servicesListContainer").innerHTML = servHtml;
-      else document.getElementById("servicesListContainer").innerHTML = '<p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun service en attente.</p>';
+      document.getElementById("entrepreneursListContainer").innerHTML = usersHtml || '<p style="font-size: 12px; color: #666; text-align: center;">Aucun utilisateur.</p>';
+      document.getElementById("servicesListContainer").innerHTML = servicesHtml || '<p style="font-size: 12px; color: #666; text-align: center;">Aucun service publié.</p>';
     }
 
-    window.changerStatut = async function(coll, id, nouveauStatut) {
+    window.changerStatutUser = async function(id, nouveauStatut) {
       try {
-        await updateDoc(doc(db, coll, id), { status: nouveauStatut });
-        alert("Statut mis à jour avec succès.");
-        chargerToutesDonnees();
-      } catch(e) {
-        alert("Erreur lors de la mise à jour.");
-      }
+        await updateDoc(doc(db, "users", id), { status: nouveauStatut });
+        alert("Statut mis à jour.");
+        chargerDonneesAdmin();
+      } catch(e) { alert("Erreur de mise à jour."); }
     };
 
-    window.validerService = async function(id) {
-      try {
-        await updateDoc(doc(db, "services", id), { valide: true });
-        alert("Service validé et mis en ligne.");
-        chargerToutesDonnees();
-      } catch(e) {
-        alert("Erreur de validation.");
-      }
-    };
-
-    window.supprimerService = async function(id) {
-      if(confirm("Voulez-vous vraiment supprimer ce service ?")) {
+    window.supprimerServiceAdmin = async function(id) {
+      if (confirm("Supprimer ce service ?")) {
         try {
           await deleteDoc(doc(db, "services", id));
           alert("Service supprimé.");
-          chargerToutesDonnees();
-        } catch(e) {
-          alert("Erreur lors de la suppression.");
-        }
+          chargerDonneesAdmin();
+        } catch(e) { alert("Erreur lors de la suppression."); }
       }
-    };
-
-    window.supprimerSignalement = async function(id) {
-      try {
-        await deleteDoc(doc(db, "signalements", id));
-        alert("Signalement traité et effacé.");
-        chargerToutesDonnees();
-      } catch(e) {}
-    };
-
-    window.avertirUtilisateur = function(nom) {
-      const motif = prompt(`Entrez l'avertissement pour ${nom} :`);
-      if(motif) alert(`Avertissement envoyé à ${nom}.`);
-    };
-
-    window.publierCommunique = async function() {
-      const titre = document.getElementById("commTitre").value;
-      const message = document.getElementById("commMessage").value;
-      if(!titre || !message) {
-        alert("Remplissez tous les champs.");
-        return;
-      }
-      try {
-        await addDoc(collection(db, "communiques"), { titre, message, date: new Date() });
-        alert("Communiqué publié avec succès !");
-        document.getElementById("commTitre").value = "";
-        document.getElementById("commMessage").value = "";
-      } catch(e) {
-        alert("Erreur de publication.");
-      }
-    };
-
-    window.sauvegarderParametres = function() {
-      const nom = document.getElementById("paramNom").value;
-      const slogan = document.getElementById("paramSlogan").value;
-      alert(`Paramètres enregistrés !\nPlateforme : ${nom}\nSlogan : ${slogan}`);
-    };
-
-    window.filtrerParVille = function() {
-      const ville = document.getElementById("filtreVille").value;
-      alert(`Filtrage actif sur la zone : ${ville.toUpperCase()}`);
     };
 
     verifierAcces();
   </script>
 </body>
-      </html>
-  
+</html>
+
