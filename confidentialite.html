@@ -2,42 +2,79 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Confidentialité</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body style="background: #f9f9f9; padding-bottom: 70px;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Politique de Confidentialité — CAMU SERVICES</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
 
-  <header class="top-bar">
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2 style="font-size: 16px; margin: 0; color: white;">Politique de Confidentialité</h2>
-    </div>
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text span { color: #d32f2f; }
+    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
+
+    /* Conteneur principal */
+    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+    .card-page { background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+    .page-title { font-size: 18px; font-weight: 900; color: #111; margin-bottom: 5px; }
+    .page-subtitle { font-size: 11px; color: #777; margin-bottom: 20px; border-bottom: 2px solid #d32f2f; padding-bottom: 8px; }
+
+    .section-title { font-size: 14px; font-weight: 800; color: #d32f2f; margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    p, li { font-size: 13px; color: #444; line-height: 1.5; margin-bottom: 8px; }
+    ul { margin-left: 18px; margin-bottom: 12px; }
+
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header-bar">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <div style="width: 18px;"></div>
   </header>
 
-  <main style="max-width: 600px; margin: 20px auto; padding: 0 15px;">
-    <div style="background: white; border-radius: 10px; padding: 20px; border: 1px solid #eee; font-size: 13px; color: #444; line-height: 1.6;">
-      <h3 style="font-size: 15px; font-weight: bold; color: #111; margin-bottom: 10px;">Protection de vos données</h3>
-      <p style="margin-bottom: 12px;">Chez <strong>CAMU SERVICES</strong>, la confidentialité de nos utilisateurs et entrepreneurs est essentielle.</p>
+  <main class="container">
+    <div class="card-page">
+      <h1 class="page-title">Politique de Confidentialité</h1>
+      <div class="page-subtitle">Protection des données — CAMU SERVICES</div>
 
-      <h4 style="font-size: 13px; font-weight: bold; color: #d32f2f; margin-top: 10px;">1. Données collectées</h4>
-      <p>Les informations collectées (titre d'annonce, description, numéro de téléphone WhatsApp) sont uniquement transmises par l'Entrepreneur au moment de la publication.</p>
+      <div class="section-title"><i class="fa-solid fa-shield-halved"></i> 1. Collecte des Données</div>
+      <p>Nous collectons uniquement les informations strictement nécessaires à la mise en relation et à l'affichage de vos annonces :</p>
+      <ul>
+        <li>Nom, prénom ou nom de l'entreprise.</li>
+        <li>Numéro de téléphone / WhatsApp.</li>
+        <li>Ville et quartier d'activité.</li>
+        <li>Photos et descriptions des services publiés.</li>
+      </ul>
 
-      <h4 style="font-size: 13px; font-weight: bold; color: #d32f2f; margin-top: 10px;">2. Utilisation des données</h4>
-      <p>Ces données servent uniquement à assurer la visibilité des prestations et la prise de contact directe avec les clients.</p>
+      <div class="section-title"><i class="fa-solid fa-database"></i> 2. Stockage Local (localStorage)</div>
+      <p>Vos préférences, favoris et identifiants de session sont conservés localement sur votre téléphone ou ordinateur dans la mémoire de votre navigateur (localStorage). Cela vous garantit une rapidité d'accès sans traitement abusif sur serveur distant.</p>
 
-      <h4 style="font-size: 13px; font-weight: bold; color: #d32f2f; margin-top: 10px;">3. Partage</h4>
-      <p>CAMU SERVICES ne vend et ne cède aucune donnée personnelle à des tiers à des fins publicitaires.</p>
+      <div class="section-title"><i class="fa-solid fa-lock"></i> 3. Partage des Informations</div>
+      <p>Vos coordonnées publiques (numéro WhatsApp, ville) ne sont partagées que dans le but de permettre aux acheteurs et clients de vous contacter. Aucune donnée personnelle n'est vendue à des tiers.</p>
+
+      <div class="section-title"><i class="fa-solid fa-user-pen"></i> 4. Droit de Modification</div>
+      <p>Vous pouvez à tout moment modifier ou supprimer vos annonces et informations de profil directement depuis votre espace utilisateur.</p>
     </div>
   </main>
 
+  <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
 </body>
 </html>
+
