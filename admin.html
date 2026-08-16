@@ -15,7 +15,7 @@
     .logo-text span { color: #d32f2f; }
     .btn-logout { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
 
-    /* Login Overlay */
+    /* Login Modal */
     .login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111111; display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
     .login-card { background: #ffffff; border-radius: 12px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
     .login-card h2 { font-size: 18px; font-weight: 900; margin-bottom: 15px; color: #111; }
@@ -23,27 +23,26 @@
     .login-card button { width: 100%; padding: 12px; background: #111; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
     .login-error { color: #d32f2f; font-size: 12px; margin-top: 10px; display: none; font-weight: 700; }
 
-    /* Tabs Navigation */
+    /* Tabs Nav */
     .admin-tabs { display: flex; background: #111111; border-top: 1px solid #222; }
     .tab-btn { flex: 1; padding: 12px 5px; text-align: center; color: #888; font-size: 12px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
     .tab-btn.active { color: #ffffff; border-bottom-color: #d32f2f; }
     .tab-btn i { display: block; font-size: 15px; margin-bottom: 3px; }
 
-    /* Conteneur Principal */
+    /* Container */
     .container { max-width: 500px; margin: 15px auto; padding: 0 15px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Grille de Stats */
+    /* Stats Grid */
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
     .stat-number { font-size: 26px; font-weight: 900; color: #d32f2f; margin-bottom: 2px; }
     .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
 
-    /* Bouton Retour */
     .btn-back { display: block; width: 100%; padding: 12px; background: #111111; color: #ffffff; text-align: center; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 13px; margin-top: 15px; }
 
-    /* Formulaires & Listes Admin */
+    /* Forms & Lists */
     .admin-panel { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 15px; }
     .panel-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; text-transform: uppercase; color: #111; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
 
@@ -52,7 +51,6 @@
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
     .btn-submit { width: 100%; padding: 12px; background: #d32f2f; color: #fff; border: none; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; }
 
-    /* Liste de Modération */
     .item-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
     .item-info { font-size: 12px; }
     .item-info strong { display: block; font-size: 13px; color: #111; }
@@ -63,7 +61,7 @@
 </head>
 <body>
 
-  <!-- Connexion Sécurisée Admin -->
+  <!-- Connexion Admin -->
   <div class="login-modal" id="loginModal">
     <div class="login-card">
       <h2>Espace Admin</h2>
@@ -97,7 +95,7 @@
 
   <main class="container">
     
-    <!-- Onglet 1 : Statistiques Réelles -->
+    <!-- Onglet 1 : Stats -->
     <div class="tab-content active" id="tab-stats">
       <div class="stats-grid">
         <div class="stat-card">
@@ -121,7 +119,7 @@
       <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
     </div>
 
-    <!-- Onglet 2 : Publier une annonce -->
+    <!-- Onglet 2 : Publier -->
     <div class="tab-content" id="tab-publier">
       <div class="admin-panel">
         <div class="panel-title">Publier une annonce officielle</div>
@@ -163,7 +161,7 @@
       </div>
     </div>
 
-    <!-- Onglet 3 : Modération des annonces -->
+    <!-- Onglet 3 : Modération -->
     <div class="tab-content" id="tab-moderation">
       <div class="admin-panel">
         <div class="panel-title">Gestion & Modération des annonces</div>
@@ -173,7 +171,7 @@
       </div>
     </div>
 
-    <!-- Onglet 4 : Gestion des Comptes -->
+    <!-- Onglet 4 : Comptes -->
     <div class="tab-content" id="tab-comptes">
       <div class="admin-panel">
         <div class="panel-title">Utilisateurs enregistrés</div>
@@ -213,9 +211,9 @@
     }
 
     function initAdminData() {
-      // Nettoyage automatique des anciens résidus textuels (ex: 1.2k)
+      // Nettoyage forcé si la valeur contient 'k' ou est égale à '1.2k'
       let rawVisites = localStorage.getItem('camu_visites');
-      if (!rawVisites || rawVisites.includes('k') || isNaN(rawVisites)) {
+      if (!rawVisites || rawVisites === '1.2k' || rawVisites.includes('k') || isNaN(rawVisites)) {
         localStorage.setItem('camu_visites', '0');
         rawVisites = '0';
       }
