@@ -2,33 +2,84 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration — CAMU SERVICES</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CAMU SERVICES — Administration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    h1 { font-size: 18px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 2px solid #d32f2f; padding-bottom: 5px; }
-    .item-row { border-bottom: 1px solid #eee; padding: 12px 0; display: flex; flex-direction: column; gap: 8px; }
-    .item-info { font-size: 13px; }
-    .item-info strong { display: block; font-size: 14px; }
-    .actions { display: flex; gap: 6px; width: 100%; }
-    .btn { flex: 1; border: none; padding: 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
-    .btn-warn { background: #fff3e0; color: #e65100; }
-    .btn-suspend { background: #ffebee; color: #c62828; }
-    .btn-restore { background: #e8f5e9; color: #2e7d32; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 65px; }
+
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text span { color: #d32f2f; }
+    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
+
+    /* Container */
+    .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+
+    /* Card Admin */
+    .admin-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #eee; }
+    .admin-title { font-size: 16px; font-weight: 900; text-transform: uppercase; color: #111; margin-bottom: 10px; border-bottom: 2px solid #d32f2f; padding-bottom: 8px; }
+    
+    .counter-badge { font-size: 14px; font-weight: 700; color: #555; margin-bottom: 15px; }
+    .counter-badge span { color: #d32f2f; font-weight: 900; }
+
+    /* User Item */
+    .user-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+    .user-item { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+    .user-info { display: flex; flex-direction: column; gap: 3px; }
+    .user-name { font-size: 14px; font-weight: 800; color: #111; }
+    .user-email { font-size: 12px; color: #666; }
+    .user-status { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-top: 4px; width: fit-content; }
+    .status-actif { background: #e8f5e9; color: #2e7d32; }
+    .status-suspendu { background: #ffebee; color: #c62828; }
+
+    /* Action Buttons */
+    .btn-action { border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-suspend { background: #d32f2f; color: #fff; }
+    .btn-activate { background: #2e7d32; color: #fff; }
+
+    .no-users { text-align: center; color: #777; font-size: 13px; padding: 20px 0; }
+
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Gestion des comptes entrepreneurs</h1>
-    <div>Total comptes : <b id="statComptes">0</b></div>
-    <div id="comptesList" style="margin-top: 15px;">Chargement...</div>
-  </div>
+  <!-- Header -->
+  <header class="header-bar">
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+  </header>
 
+  <main class="container">
+    <div class="admin-card">
+      <h1 class="admin-title">GESTION DES COMPTES ENTREPRENEURS</h1>
+      <div class="counter-badge">Total comptes : <span id="totalCount">0</span></div>
+
+      <div class="user-list" id="userListContainer">
+        <div class="no-users">Chargement des utilisateurs...</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Navigation Basse Fixe -->
+  <nav class="bottom-nav">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+  </nav>
+
+  <!-- Script Firebase Admin -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -42,67 +93,60 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    async function loadAdminStats() {
+    // Écoute en temps réel de la collection 'users'
+    onSnapshot(collection(db, "users"), (snapshot) => {
+      const container = document.getElementById("userListContainer");
+      const totalCount = document.getElementById("totalCount");
+      
+      totalCount.innerText = snapshot.size;
+
+      if (snapshot.empty) {
+        container.innerHTML = '<div class="no-users">Aucun utilisateur enregistré.</div>';
+        return;
+      }
+
+      let html = '';
+      snapshot.forEach((userDoc) => {
+        const data = userDoc.data();
+        const userId = userDoc.id;
+        const status = data.status || 'actif';
+        const isSuspended = status === 'suspendu';
+
+        html += `
+          <div class="user-item">
+            <div class="user-info">
+              <span class="user-name">${data.nom || data.displayName || 'Entrepreneur'}</span>
+              <span class="user-email">${data.email || 'Pas d\'email'}</span>
+              <span class="user-status ${isSuspended ? 'status-suspendu' : 'status-actif'}">
+                ${isSuspended ? 'Suspendu' : 'Actif'}
+              </span>
+            </div>
+            <div>
+              <button class="btn-action ${isSuspended ? 'btn-activate' : 'btn-suspend'}" onclick="toggleUserStatus('${userId}', '${status}')">
+                ${isSuspended ? 'Réactiver' : 'Suspendre'}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }, (error) => {
+      console.error("Erreur de chargement des utilisateurs : ", error);
+      document.getElementById("userListContainer").innerHTML = '<div class="no-users">Erreur d\'accès à la base de données. Vérifiez les règles Firestore.</div>';
+    });
+
+    // Fonction globale pour changer le statut d'un compte
+    window.toggleUserStatus = async function(userId, currentStatus) {
+      const newStatus = currentStatus === 'suspendu' ? 'actif' : 'suspendu';
       try {
-        const usersSnap = await getDocs(collection(db, "users"));
-        document.getElementById('statComptes').innerText = usersSnap.size;
-
-        let comptesHtml = '';
-        usersSnap.forEach((docSnap) => {
-          const user = docSnap.data();
-          const userId = docSnap.id;
-          const status = user.status || 'actif';
-          const warnings = user.warnings || 0;
-          const isSuspended = status === 'suspendu';
-
-          comptesHtml += `
-            <div class="item-row">
-              <div class="item-info">
-                <strong>${user.name || 'Entrepreneur'}</strong>
-                <span>${user.email || 'Pas d\'email'} | Statut: <b style="color:${isSuspended ? '#c62828' : '#2e7d32'}">${status.toUpperCase()}</b> | Avertissements: ${warnings}/3</span>
-              </div>
-              <div class="actions">
-                <button onclick="window.warnUser('${userId}', ${warnings})" class="btn btn-warn">⚠️ Avertir</button>
-                ${isSuspended ? 
-                  `<button onclick="window.restoreUser('${userId}')" class="btn btn-restore">✅ Rétablir</button>` : 
-                  `<button onclick="window.suspendUser('${userId}')" class="btn btn-suspend">🚫 Suspendre</button>`
-                }
-              </div>
-            </div>`;
+        await updateDoc(doc(db, "users", userId), {
+          status: newStatus
         });
-        document.getElementById('comptesList').innerHTML = comptesHtml || 'Aucun utilisateur.';
-      } catch (e) { console.error("Erreur admin:", e); }
-    }
-
-    window.warnUser = async function(id, currentWarnings) {
-      const newWarnings = currentWarnings + 1;
-      const updateData = { warnings: newWarnings };
-      if (newWarnings >= 3) {
-        updateData.status = "suspendu";
-        alert("3 avertissements atteints : le compte a été suspendu.");
-      } else {
-        alert(`Avertissement envoyé (${newWarnings}/3).`);
-      }
-      await updateDoc(doc(db, "users", id), updateData);
-      loadAdminStats();
-    };
-
-    window.suspendUser = async function(id) {
-      if (confirm("Suspendre ce compte ?")) {
-        await updateDoc(doc(db, "users", id), { status: "suspendu" });
-        loadAdminStats();
+      } catch (err) {
+        alert("Erreur lors de la modification : " + err.message);
       }
     };
-
-    window.restoreUser = async function(id) {
-      if (confirm("Rétablir ce compte ?")) {
-        await updateDoc(doc(db, "users", id), { status: "actif", warnings: 0 });
-        loadAdminStats();
-      }
-    };
-
-    document.addEventListener("DOMContentLoaded", loadAdminStats);
   </script>
 </body>
 </html>
-
