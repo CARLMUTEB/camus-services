@@ -3,66 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Accueil</title>
+  <title>CAMU SERVICES — TROUVER . ACHETER . RÉSERVER</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
 
-    /* Header Top */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .brand-logo { font-size: 18px; font-weight: 800; color: #ffffff; text-decoration: none; }
-    .brand-logo span { color: #d32f2f; }
-    .menu-trigger { background: none; border: none; color: #ffffff; font-size: 22px; cursor: pointer; }
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text span { color: #d32f2f; }
+    .menu-btn { font-size: 22px; cursor: pointer; color: #fff; background: none; border: none; }
 
-    /* Barre de recherche */
-    .search-box { padding: 12px 15px; background: #ffffff; border-bottom: 1px solid #eee; }
-    .search-input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #ddd; outline: none; background: #f9f9f9; font-size: 13px; }
+    /* Overlay Sidebar */
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; z-index: 1001; }
+    
+    /* Menu Latéral (Sidebar) */
+    .sidebar-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #ffffff; z-index: 1002; transition: left 0.3s ease; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+    .sidebar-menu.active { left: 0; }
+    
+    .sidebar-header { background: #111; color: #fff; padding: 20px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+    .sidebar-header .close-btn { font-size: 20px; cursor: pointer; }
 
-    /* Menu Drawer */
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1001; display: none; }
-    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #ffffff; z-index: 1002; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
-    .side-menu.active { left: 0; }
-    .menu-header { background: #111111; color: #ffffff; padding: 18px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 16px; }
-    .menu-header span { color: #d32f2f; }
-    .btn-close-menu { background: none; border: none; color: #ffffff; font-size: 20px; cursor: pointer; }
-    .menu-body { flex: 1; overflow-y: auto; }
-    .menu-link { display: flex; align-items: center; padding: 14px 18px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f0f0f0; gap: 12px; }
-    .menu-link i { width: 20px; color: #d32f2f; text-align: center; }
+    .menu-item { padding: 14px 15px; display: flex; align-items: center; gap: 12px; color: #333; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+    .menu-item i { color: #d32f2f; width: 20px; text-align: center; }
+    .menu-item.bold { font-weight: 800; }
 
-    /* Sous-menu Catégories */
-    .category-toggle { justify-content: space-between; cursor: pointer; }
-    .category-list { display: none; background: #f9f9f9; border-bottom: 1px solid #eee; }
-    .category-item { display: flex; align-items: center; padding: 10px 18px 10px 45px; color: #555; text-decoration: none; font-size: 13px; font-weight: 500; gap: 10px; }
+    /* Sous-catégories */
+    .sub-categories { display: none; background: #fafafa; border-bottom: 1px solid #eee; }
+    .sub-categories.open { display: block; }
+    .sub-item { padding: 12px 15px 12px 40px; display: flex; align-items: center; gap: 10px; color: #555; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }
+    .sub-item i { width: 18px; color: #666; font-size: 14px; }
+    .sub-item:active { background: #fff0f0; color: #d32f2f; }
+    .sub-item:active i { color: #d32f2f; }
 
-    /* Contenu */
-    .container { padding: 15px; max-width: 600px; margin: 0 auto; }
-    .welcome-card { background: linear-gradient(135deg, #111111 0%, #222222 100%); padding: 22px 15px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-align: center; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-    .welcome-card h2 { font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 6px; }
-    .welcome-card .slogan { font-size: 12px; color: #d32f2f; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    /* Titre Catégorie Active */
+    .category-title { max-width: 500px; margin: 15px auto 5px; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; }
+    .category-title h2 { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-reset { font-size: 12px; color: #d32f2f; font-weight: 700; text-decoration: none; display: none; }
 
-    .section-title { font-size: 15px; font-weight: 800; color: #111; margin-bottom: 12px; }
-    .annonces-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-    .ad-card { background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #eee; display: flex; flex-direction: column; }
-    .ad-img { width: 100%; height: 110px; object-fit: cover; background: #eee; }
-    .ad-info { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-    .ad-info h4 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 4px; }
-    .price { color: #d32f2f; font-weight: 800; font-size: 13px; margin-bottom: 8px; }
-    .btn-contact-sm { background: #111111; color: #ffffff; border: none; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none; display: block; }
-
-    /* Footer */
-    .app-footer { background: #ffffff; border-top: 1px solid #eee; padding: 20px 15px; text-align: center; margin-top: 20px; border-radius: 12px 12px 0 0; }
-    .footer-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
-    .footer-link { color: #555; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .footer-link i { color: #d32f2f; }
-    .copyright { font-size: 11px; color: #888; border-top: 1px solid #f0f0f0; padding-top: 12px; }
-
-    /* Modal Infos */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-    .modal-content { background: #fff; padding: 20px; border-radius: 12px; max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-    .modal-body { font-size: 13px; color: #444; line-height: 1.6; text-align: justify; }
-    .btn-close-modal { background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 12px; margin-top: 15px; width: 100%; cursor: pointer; font-weight: bold; }
+    /* Grille d'Annonces */
+    .container { max-width: 500px; margin: 0 auto; padding: 10px 15px; }
+    .card { background: #ffffff; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .card-img { width: 100%; height: 180px; background: #ddd; object-fit: cover; }
+    .card-body { padding: 12px 15px; }
+    .card-badge { display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; color: #d32f2f; background: #fff0f0; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; }
+    .card-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .card-location { font-size: 12px; color: #666; margin-bottom: 8px; }
+    .card-price { font-size: 14px; font-weight: 800; color: #111; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -73,102 +61,143 @@
 </head>
 <body>
 
+  <!-- Header -->
   <header class="header-bar">
-    <a href="index.html" class="brand-logo">CAMU <span>SERVICES</span></a>
-    <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-  <nav id="sideMenu" class="side-menu">
-    <div class="menu-header">
-      CAMU <span>SERVICES</span>
-      <button class="btn-close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+  <!-- Overlay & Menu Latéral -->
+  <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+  
+  <div class="sidebar-menu" id="sidebar">
+    <div class="sidebar-header">
+      <span>CAMU SERVICES</span>
+      <i class="fa-solid fa-xmark close-btn" onclick="toggleSidebar()"></i>
     </div>
-    <div class="menu-body">
-      <a href="index.html" class="menu-link"><i class="fa-solid fa-house"></i> Accueil</a>
-      <div class="menu-link category-toggle" onclick="toggleCategories()">
-        <span><i class="fa-solid fa-layer-group"></i> Catégories</span>
-        <i id="catArrow" class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
-      </div>
-      <div id="categoryList" class="category-list">
-        <a href="#" class="category-item"><i class="fa-solid fa-martini-glass-citrus"></i> Bars & Lounges</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-utensils"></i> Restaurants</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-hotel"></i> Hôtels & Hébergements</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-car"></i> Véhicules & Pièces</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-house-chimney"></i> Vente de Maisons</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-key"></i> Maisons à Louer</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablettes</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-laptop"></i> Électronique & Informatique</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-screwdriver-wrench"></i> Travaux & Électricité</a>
-        <a href="#" class="category-item"><i class="fa-solid fa-handshake-angle"></i> Divers & Services</a>
-      </div>
-      <a href="#" class="menu-link"><i class="fa-solid fa-star"></i> Mes Favoris</a>
-      <a href="publier.html" class="menu-link"><i class="fa-solid fa-circle-plus"></i> Publier une annonce</a>
-      <a href="chat.html" class="menu-link"><i class="fa-solid fa-comments"></i> Discussions</a>
-      <a href="profil.html" class="menu-link"><i class="fa-solid fa-user"></i> Mon Profil</a>
-      <a href="admin.html" class="menu-link"><i class="fa-solid fa-user-shield"></i> Administration</a>
-    </div>
-  </nav>
 
+    <a href="index.html" class="menu-item bold">
+      <i class="fa-solid fa-house"></i> Accueil
+    </a>
+
+    <div class="menu-item bold" onclick="toggleSubCategories()">
+      <i class="fa-solid fa-layer-group"></i> Catégories 
+      <i class="fa-solid fa-chevron-down" id="catChevron" style="margin-left: auto; font-size: 12px;"></i>
+    </div>
+
+    <!-- Sous-menu des Catégories -->
+    <div class="sub-categories" id="subCategories">
+      <a href="index.html?cat=bars-lounges" class="sub-item">
+        <i class="fa-solid fa-martini-glass-citrus"></i> Bars & Lounges
+      </a>
+      <a href="index.html?cat=restaurants" class="sub-item">
+        <i class="fa-solid fa-utensils"></i> Restaurants
+      </a>
+      <a href="index.html?cat=hotels" class="sub-item">
+        <i class="fa-solid fa-hotel"></i> Hôtels & Hébergements
+      </a>
+      <a href="index.html?cat=vehicules" class="sub-item">
+        <i class="fa-solid fa-car"></i> Véhicules & Pièces
+      </a>
+      <a href="index.html?cat=vente-maisons" class="sub-item">
+        <i class="fa-solid fa-house-chimney"></i> Vente de Maisons
+      </a>
+      <a href="index.html?cat=maisons-louer" class="sub-item">
+        <i class="fa-solid fa-key"></i> Maisons à Louer
+      </a>
+      <a href="index.html?cat=telephones" class="sub-item">
+        <i class="fa-solid fa-mobile-screen-button"></i> Téléphones & Tablettes
+      </a>
+      <a href="index.html?cat=electronique" class="sub-item">
+        <i class="fa-solid fa-laptop"></i> Électronique & Informatique
+      </a>
+      <a href="index.html?cat=agriculture" class="sub-item">
+        <i class="fa-solid fa-wheat-awn"></i> Agriculture & Élevage
+      </a>
+      <a href="index.html?cat=electricite" class="sub-item">
+        <i class="fa-solid fa-screwdriver-wrench"></i> Travaux & Électricité
+      </a>
+      <a href="index.html?cat=divers" class="sub-item">
+        <i class="fa-solid fa-hands-holding-circle"></i> Divers & Services
+      </a>
+    </div>
+
+    <a href="profil.html" class="menu-item">
+      <i class="fa-solid fa-star"></i> Mes Favoris
+    </a>
+    <a href="publier.html" class="menu-item">
+      <i class="fa-solid fa-circle-plus"></i> Publier une annonce
+    </a>
+    <a href="chat.html" class="menu-item">
+      <i class="fa-solid fa-comments"></i> Discussions
+    </a>
+  </div>
+
+  <!-- Contenu Principal -->
   <main>
-    <div class="search-box">
-      <input type="text" class="search-input" placeholder="Que recherchez-vous aujourd'hui ?">
+    <div class="category-title">
+      <h2 id="currentCategoryText">Toutes les annonces</h2>
+      <a href="index.html" class="btn-reset" id="btnReset">Voir tout</a>
     </div>
 
     <div class="container">
-      <div class="welcome-card">
-        <h2>Soyez les bienvenus</h2>
-        <p class="slogan">TROUVER. ACHETER. RÉSERVER.</p>
-      </div>
 
-      <div class="section-title">Services récents</div>
-
-      <div class="annonces-grid">
-        <div class="ad-card">
-          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400" class="ad-img" alt="Panneau Solaire">
-          <div class="ad-info">
-            <h4>Installation Solaire</h4>
-            <div class="price">Sur Devis</div>
-            <a href="chat.html" class="btn-contact-sm">Contacter</a>
-          </div>
+      <!-- Carte 1 : Bars & Lounges -->
+      <div class="card" data-category="bars-lounges">
+        <div class="card-img" style="background: #222; display:flex; align-items:center; justify-content:center; color:#fff;">
+          <i class="fa-solid fa-martini-glass-citrus fa-2x"></i>
         </div>
-        <div class="ad-card">
-          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" class="ad-img" alt="Maison">
-          <div class="ad-info">
-            <h4>Villa Moderne</h4>
-            <div class="price">45 000 $</div>
-            <a href="chat.html" class="btn-contact-sm">Contacter</a>
-          </div>
+        <div class="card-body">
+          <span class="card-badge">Bars & Lounges</span>
+          <div class="card-title"> VIP Lounge & Terrasse</div>
+          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Centre-Ville</div>
+          <div class="card-price">Réservation Table</div>
         </div>
       </div>
 
-      <footer class="app-footer">
-        <div class="footer-links">
-          <span class="footer-link" onclick="openInfoModal('apropos')"><i class="fa-solid fa-circle-info"></i> À propos de nous</span>
-          <span class="footer-link" onclick="openInfoModal('conditions')"><i class="fa-solid fa-file-contract"></i> Conditions d'utilisation</span>
-          <span class="footer-link" onclick="openInfoModal('confidentialite')"><i class="fa-solid fa-user-shield"></i> Politique de confidentialité</span>
-          <span class="footer-link" onclick="openInfoModal('contact')"><i class="fa-solid fa-envelope"></i> Nous contacter</span>
+      <!-- Carte 2 : Restaurants -->
+      <div class="card" data-category="restaurants">
+        <div class="card-img" style="background: #333; display:flex; align-items:center; justify-content:center; color:#fff;">
+          <i class="fa-solid fa-utensils fa-2x"></i>
         </div>
-        <div class="copyright">
-          © 2026 <strong>CAMU SERVICES</strong> — Tous droits réservés.
+        <div class="card-body">
+          <span class="card-badge">Restaurants</span>
+          <div class="card-title"> Grillades & Gastronomie</div>
+          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi, Golf</div>
+          <div class="card-price">Menu dès 15 $</div>
         </div>
-      </footer>
+      </div>
+
+      <!-- Carte 3 : Véhicules -->
+      <div class="card" data-category="vehicules">
+        <div class="card-img" style="background: #444; display:flex; align-items:center; justify-content:center; color:#fff;">
+          <i class="fa-solid fa-car fa-2x"></i>
+        </div>
+        <div class="card-body">
+          <span class="card-badge">Véhicules & Pièces</span>
+          <div class="card-title">Toyota TX-L Année 2020</div>
+          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Kolwezi</div>
+          <div class="card-price">45 000 $</div>
+        </div>
+      </div>
+
+      <!-- Carte 4 : Travaux & Électricité -->
+      <div class="card" data-category="electricite">
+        <div class="card-img" style="background: #555; display:flex; align-items:center; justify-content:center; color:#fff;">
+          <i class="fa-solid fa-screwdriver-wrench fa-2x"></i>
+        </div>
+        <div class="card-body">
+          <span class="card-badge">Travaux & Électricité</span>
+          <div class="card-title">Installation Solaire & Industrielle</div>
+          <div class="card-location"><i class="fa-solid fa-location-dot"></i> Lubumbashi / Fungurume</div>
+          <div class="card-price">Sur Devis</div>
+        </div>
+      </div>
+
     </div>
   </main>
 
-  <div id="infoModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span id="modalTitle"></span>
-        <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeInfoModal()"></i>
-      </div>
-      <div id="modalBody" class="modal-body"></div>
-      <button class="btn-close-modal" onclick="closeInfoModal()">Fermer</button>
-    </div>
-  </div>
-
+  <!-- Bottom Nav -->
   <nav class="bottom-nav">
     <a href="index.html" class="active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
@@ -176,94 +205,60 @@
     <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
+  <!-- Scripts JavaScript -->
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('sideMenu');
+    // Ouvrir / Fermer le menu latéral
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('overlay');
-      menu.classList.toggle('active');
-      overlay.style.display = menu.classList.contains('active') ? 'block' : 'none';
+      sidebar.classList.toggle('active');
+      overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
     }
 
-    function toggleCategories() {
-      const catList = document.getElementById('categoryList');
-      const catArrow = document.getElementById('catArrow');
-      const isVisible = catList.style.display === 'block';
-      catList.style.display = isVisible ? 'none' : 'block';
-      catArrow.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+    // Dérouler / Replier les sous-catégories
+    function toggleSubCategories() {
+      const subCat = document.getElementById('subCategories');
+      subCat.classList.toggle('open');
     }
 
-    /* Textes officiels très riches et détaillés */
-    const siteInfos = {
-      apropos: {
-        title: "À propos de CAMU SERVICES",
-        html: `
-          <p style="margin-bottom: 12px;"><strong>Bienvenue sur CAMU SERVICES</strong>, la plateforme numérique incontournable conçue pour dynamiser l'écosystème entrepreneurial et simplifier les transactions quotidiennes. Notre devise résume notre ambition : <em style="color:#d32f2f;">TROUVER. ACHETER. RÉSERVER.</em></p>
-          <p style="margin-bottom: 12px;"><strong>Notre Vision et Mission :</strong><br>Dans un monde en constante évolution numérique, CAMU SERVICES se positionne comme le pont numérique direct entre les entrepreneurs, les prestataires indépendants, les commerçants et une clientèle exigeante en quête de fiabilité. Nous avons pour mission d'offrir une vitrine digitale de premier choix à tous les talents, en leur garantissant une visibilité maximale et des outils de gestion modernes.</p>
-          <p style="margin-bottom: 12px;"><strong>Pourquoi choisir CAMU SERVICES ?</strong></p>
-          <ul style="padding-left: 18px; margin-bottom: 12px;">
-            <li><strong>Accessibilité et Simplicité :</strong> Une interface fluide, épurée et adaptée aux mobiles pour naviguer sans effort à travers de multiples catégories professionnelles.</li>
-            <li><strong>Mise en relation directe :</strong> Suppression des intermédiaires superflus grâce à un système de contact instantané orienté vers la conversion rapide (appels, messagerie, WhatsApp).</li>
-            <li><strong>Sécurité et Confiance :</strong> Un contrôle rigoureux des annonces publiées et des profils vérifiés pour garantir des échanges professionnels transparents et sécurisés.</li>
-          </ul>
-          <p>Que vous soyez à la recherche d'un service spécialisé, d'un bien immobilier, d'un équipement technologique ou que vous souhaitiez exposer votre propre savoir-faire en tant qu'entrepreneur, CAMU SERVICES est votre partenaire de confiance vers la réussite.</p>
-        `
-      },
-      conditions: {
-        title: "Conditions Générales d'Utilisation (CGU)",
-        html: `
-          <p style="margin-bottom: 10px;">Les présentes Conditions Générales d'Utilisation régissent l'accès et l'utilisation de la plateforme <strong>CAMU SERVICES</strong>. Tout utilisateur reconnaît avoir pris connaissance de ces règles et s'engage à les respecter intégralement dès sa première connexion.</p>
-          
-          <p style="margin-bottom: 8px;"><strong>1. Objet de la Plateforme</strong></p>
-          <p style="margin-bottom: 10px;">CAMU SERVICES propose un service de mise en relation en ligne entre des offreurs (entrepreneurs, prestataires) et des demandeurs (clients). La plateforme ne se substitue en aucun cas aux parties et n'intervient pas dans la conclusion finale des transactions financières ou contractuelles.</p>
-
-          <p style="margin-bottom: 8px;"><strong>2. Engagements et Obligations des Utilisateurs</strong></p>
-          <p style="margin-bottom: 10px;">Tout annonceur garantit que les informations, descriptions, tarifs et visuels fournis lors de la publication sont rigoureusement exacts, conformes à la législation en vigueur et ne portent atteinte à aucun droit de tiers. Toute publication frauduleuse, mensongère ou illicite est strictement interdite.</p>
-
-          <p style="margin-bottom: 8px;"><strong>3. Responsabilité et Litiges</strong></p>
-          <p style="margin-bottom: 10px;">CAMU SERVICES agit en qualité d'hébergeur technique de contenu. Par conséquent, la responsabilité de la plateforme ne saurait être engagée en cas de litige, de non-conformité de service, de défaut de livraison ou de préjudice financier découlant des transactions conclues entre utilisateurs.</p>
-
-          <p style="margin-bottom: 8px;"><strong>4. Modifications et Sanctions</strong></p>
-          <p>L'administration se réserve le droit de modifier unilatéralement les présentes conditions à tout moment. Tout manquement grave aux règles d'utilisations entraînera la suspension immédiate ou la suppression définitive du compte concerné, sans préavis ni indemnité.</p>
-        `
-      },
-      confidentialite: {
-        title: "Politique de Confidentialité",
-        html: `
-          <p style="margin-bottom: 10px;">Chez <strong>CAMU SERVICES</strong>, la protection de votre vie privée et de vos données à caractère personnel est une priorité absolue. La présente politique détaille la nature des informations collectées, l'usage qui en est fait ainsi que les mesures de sécurité mises en œuvre.</p>
-
-          <p style="margin-bottom: 8px;"><strong>1. Collecte des Informations</strong></p>
-          <p style="margin-bottom: 10px;">Nous collectons uniquement les informations strictement nécessaires au bon fonctionnement de la plateforme : vos identifiants de profil, vos coordonnées professionnelles ou personnelles (numéro de téléphone, adresse e-mail) ainsi que le contenu rédactionnel et photographique de vos annonces.</p>
-
-          <p style="margin-bottom: 8px;"><strong>2. Utilisation et Traitement des Données</strong></p>
-          <p style="margin-bottom: 10px;">Vos données personnelles sont utilisées exclusivement pour faciliter la mise en relation commerciale, vous identifier au sein de votre espace entrepreneur, améliorer l'ergonomie de nos services et assurer le support technique. <strong>Vos données ne sont ni vendues, ni louées, ni cédées à des tiers à des fins publicitaires.</strong></p>
-
-          <p style="margin-bottom: 8px;"><strong>3. Sécurité et Intégrité</strong></p>
-          <p style="margin-bottom: 10px;">Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles robustes pour protéger vos informations contre tout accès non autorisé, modification, divulgation ou destruction accidentelle.</p>
-
-          <p style="margin-bottom: 8px;"><strong>4. Droits des Utilisateurs</strong></p>
-          <p>Conformément aux réglementations en vigueur, vous disposez d'un droit permanent d'accès, de rectification, de mise à jour et de suppression de vos données personnelles en contactant directement notre support technique.</p>
-        `
-      },
-      contact: {
-        title: "Nous contacter",
-        html: `
-          <p style="margin-bottom: 12px;">Une question, un besoin d'assistance technique ou un partenariat à proposer ? Notre équipe est à votre entière écoute pour vous accompagner.</p>
-          <p style="margin-bottom: 8px;"><i class='fa-brands fa-whatsapp' style='color:#25D366; margin-right:8px; font-size:16px;'></i> <strong>WhatsApp / Téléphone :</strong> +243 976 993 469</p>
-          <p style="margin-bottom: 8px;"><i class='fa-solid fa-envelope' style='color:#d32f2f; margin-right:8px; font-size:15px;'></i> <strong>Courrier Électronique :</strong> meschackmuteb@gmail.com</p>
-          <p><i class='fa-solid fa-clock' style='color:#555; margin-right:8px; font-size:15px;'></i> <strong>Disponibilité :</strong> Lundi au Samedi, de 08h00 à 18h00.</p>
-        `
-      }
+    // Dictionnaire des noms d'affichage des catégories
+    const categoryNames = {
+      'bars-lounges': 'Bars & Lounges',
+      'restaurants': 'Restaurants',
+      'hotels': 'Hôtels & Hébergements',
+      'vehicules': 'Véhicules & Pièces',
+      'vente-maisons': 'Vente de Maisons',
+      'maisons-louer': 'Maisons à Louer',
+      'telephones': 'Téléphones & Tablettes',
+      'electronique': 'Électronique & Informatique',
+      'agriculture': 'Agriculture & Élevage',
+      'electricite': 'Travaux & Électricité',
+      'divers': 'Divers & Services'
     };
 
-    function openInfoModal(key) {
-      if (siteInfos[key]) {
-        document.getElementById('modalTitle').innerText = siteInfos[key].title;
-        document.getElementById('modalBody').innerHTML = siteInfos[key].html;
-        document.getElementById('infoModal').style.display = 'flex';
-      }
-    }
+    // Filtrage automatique lors du chargement de la page
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectedCategory = urlParams.get('cat');
 
-    function closeInfoModal() { document.getElementById('infoModal').style.display = 'none'; }
+      if (selectedCategory && categoryNames[selectedCategory]) {
+        // Mettre à jour le titre
+        document.getElementById('currentCategoryText').innerText = categoryNames[selectedCategory];
+        document.getElementById('btnReset').style.display = 'inline';
+
+        // Filtrer les cartes
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+          if (card.getAttribute('data-category') === selectedCategory) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+    });
   </script>
+
 </body>
-</html>
+        </html>
+                                                                       
