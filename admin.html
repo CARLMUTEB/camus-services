@@ -109,7 +109,10 @@
 
     function verifierAcces() {
       const mdp = prompt("Veuillez entrer le mot de passe administrateur :");
-      if (mdp !== "Carl1800") {
+      // Nettoyage des espaces accidentels au début ou à la fin
+      const mdpPropre = mdp ? mdp.trim() : "";
+      
+      if (mdpPropre !== "Carl1800") {
         alert("Mot de passe incorrect !");
         window.location.href = "index.html";
       } else {
@@ -133,7 +136,6 @@
       let clientsCount = 0;
       let usersHtml = '';
 
-      // Fonction utilitaire pour traiter une collection d'utilisateurs
       async function traiterCollection(nomCollection, typeDefaut) {
         try {
           const snap = await getDocs(collection(db, nomCollection));
@@ -166,12 +168,9 @@
                 </div>
               </div>`;
           });
-        } catch (e) {
-          // Collection inexistante pour l'instant, on ignore silencieusement
-        }
+        } catch (e) {}
       }
 
-      // Vérifie les différentes collections possibles
       await traiterCollection("entrepreneurs", "entrepreneur");
       await traiterCollection("clients", "client");
       await traiterCollection("users", "client");
@@ -235,5 +234,5 @@
     verifierAcces();
   </script>
 </body>
-  </html>
+</html>
 
