@@ -20,35 +20,44 @@
     .login-card button:active { background: #b71c1c; }
     .error-msg { color: #d32f2f; font-size: 12px; font-weight: 800; margin-top: 10px; display: none; }
 
-    /* Conteneur principal Administrateur */
+    /* Conteneur principal */
     #adminMainContent { display: none; }
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; }
     .brand-title { font-size: 18px; font-weight: 800; }
     .brand-title span { color: #d32f2f; }
-    .btn-logout-top { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .btn-logout-top { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; }
 
     /* Navigation Onglets */
     .admin-nav { position: fixed; top: 60px; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; border-top: 1px solid #222; z-index: 999; }
-    .nav-item { flex: 1; text-align: center; padding: 10px 0; color: #888; text-decoration: none; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; border-bottom: 3px solid transparent; }
+    .nav-item { flex: 1; text-align: center; padding: 10px 0; color: #888; text-decoration: none; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; border-bottom: 3px solid transparent; cursor: pointer; }
     .nav-item i { font-size: 16px; }
     .nav-item.active { color: #ffffff; border-bottom: 3px solid #d32f2f; }
 
-    /* Dashboard Grid Stats */
+    /* Sections */
     .dashboard-container { max-width: 600px; margin: 130px auto 20px auto; padding: 0 15px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Dashboard Grid Stats */
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
     .stat-card { background: #ffffff; padding: 25px 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
     .stat-number { font-size: 32px; font-weight: 900; color: #d32f2f; margin-bottom: 5px; }
     .stat-label { font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
 
+    /* Cards d'onglets */
+    .section-card { background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; }
+    .section-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 10px; color: #111; }
+    .section-card p { font-size: 13px; color: #666; line-height: 1.4; }
+
     /* Bouton retour */
-    .btn-back-site { display: block; width: 100%; background: #111111; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .btn-back-site { display: block; width: 100%; background: #111111; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-top: 20px; }
   </style>
 </head>
 <body>
 
-  <!-- Overlay d'authentification -->
+  <!-- Overlay Mot de passe -->
   <div id="loginOverlay">
     <div class="login-card">
       <i class="fa-solid fa-user-shield"></i>
@@ -60,7 +69,7 @@
     </div>
   </div>
 
-  <!-- Contenu complet de votre interface -->
+  <!-- Contenu Principal -->
   <div id="adminMainContent">
     
     <!-- Header -->
@@ -71,30 +80,58 @@
 
     <!-- Navigation Bar -->
     <nav class="admin-nav">
-      <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i><span>Stats</span></a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Publier</span></a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>Comptes</span></a>
+      <div class="nav-item active" onclick="switchTab('stats', this)"><i class="fa-solid fa-chart-pie"></i><span>Stats</span></div>
+      <div class="nav-item" onclick="switchTab('publier', this)"><i class="fa-solid fa-bullhorn"></i><span>Publier</span></div>
+      <div class="nav-item" onclick="switchTab('moderation', this)"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></div>
+      <div class="nav-item" onclick="switchTab('comptes', this)"><i class="fa-solid fa-users"></i><span>Comptes</span></div>
     </nav>
 
-    <!-- Contenu des Stats -->
+    <!-- Conteneur des Sections -->
     <main class="dashboard-container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Annonces Actives</div>
+      
+      <!-- Onglet Stats -->
+      <div id="tab-stats" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Annonces Actives</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Entrepreneurs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Signalements</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Visites Totales</div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Entrepreneurs</div>
+      </div>
+
+      <!-- Onglet Publier -->
+      <div id="tab-publier" class="tab-content">
+        <div class="section-card">
+          <h3>Publier une annonce officielle</h3>
+          <p>Espace de publication rapide pour les offres et services officiels de la plateforme CAMU SERVICES.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Signalements</div>
+      </div>
+
+      <!-- Onglet Modération -->
+      <div id="tab-moderation" class="tab-content">
+        <div class="section-card">
+          <h3>Centre de Modération</h3>
+          <p>Aucun signalement ou contenu inapproprié à réviser pour le moment.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Visites Totales</div>
+      </div>
+
+      <!-- Onglet Comptes -->
+      <div id="tab-comptes" class="tab-content">
+        <div class="section-card">
+          <h3>Gestion des Utilisateurs</h3>
+          <p>Liste et gestion des privilèges des entrepreneurs et clients inscrits.</p>
         </div>
       </div>
 
@@ -133,6 +170,14 @@
     function logoutAdmin() {
       sessionStorage.removeItem("camu_admin_logged");
       location.reload();
+    }
+
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabName).classList.add('active');
+      element.classList.add('active');
     }
   </script>
 
