@@ -3,17 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Administration</title>
+  <title>CAMU ADMIN</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-bottom: 30px; }
+    body { background-color: #f4f5f8; color: #333; padding-bottom: 30px; }
 
-    /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
-
-    /* Ecran de verrouillage (Login Admin) */
+    /* Overlay Mot de passe */
     #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #111111; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .login-card { background: #ffffff; width: 100%; max-width: 380px; padding: 30px 20px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     .login-card i { font-size: 45px; color: #d32f2f; margin-bottom: 15px; }
@@ -24,50 +20,92 @@
     .login-card button:active { background: #b71c1c; }
     .error-msg { color: #d32f2f; font-size: 12px; font-weight: 800; margin-top: 10px; display: none; }
 
-    /* Contenu Admin */
-    .admin-container { max-width: 800px; margin: 80px auto 20px auto; padding: 0 15px; display: none; }
-    .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-    .card-title { font-size: 16px; font-weight: 800; margin-bottom: 15px; color: #111; display: flex; justify-content: space-between; align-items: center; }
-    
-    .btn-logout { background: #333; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; }
+    /* Conteneur principal Administrateur */
+    #adminMainContent { display: none; }
+
+    /* Header Bar */
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; }
+    .brand-title { font-size: 18px; font-weight: 800; }
+    .brand-title span { color: #d32f2f; }
+    .btn-logout-top { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: none; }
+
+    /* Navigation Onglets */
+    .admin-nav { position: fixed; top: 60px; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; border-top: 1px solid #222; z-index: 999; }
+    .nav-item { flex: 1; text-align: center; padding: 10px 0; color: #888; text-decoration: none; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; border-bottom: 3px solid transparent; }
+    .nav-item i { font-size: 16px; }
+    .nav-item.active { color: #ffffff; border-bottom: 3px solid #d32f2f; }
+
+    /* Dashboard Grid Stats */
+    .dashboard-container { max-width: 600px; margin: 130px auto 20px auto; padding: 0 15px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .stat-card { background: #ffffff; padding: 25px 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-number { font-size: 32px; font-weight: 900; color: #d32f2f; margin-bottom: 5px; }
+    .stat-label { font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Bouton retour */
+    .btn-back-site { display: block; width: 100%; background: #111111; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 
-  <!-- Overlay d'authentification Administrateur -->
+  <!-- Overlay d'authentification -->
   <div id="loginOverlay">
     <div class="login-card">
       <i class="fa-solid fa-user-shield"></i>
       <h2>Accès Administrateur</h2>
-      <p>Entrez le mot de passe secret pour accéder au panneau d'administration de CAMU SERVICES.</p>
+      <p>Entrez le mot de passe secret pour accéder au panneau CAMU ADMIN.</p>
       <input type="password" id="adminPassInput" placeholder="Mot de passe">
       <button onclick="checkAdminPassword()">Se connecter</button>
       <div id="errorMsg" class="error-msg">Mot de passe incorrect !</div>
     </div>
   </div>
 
-  <!-- Header -->
-  <header class="header-bar">
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <div>Panneau Admin</div>
-    <button class="btn-logout" onclick="logoutAdmin()"><i class="fa-solid fa-lock"></i></button>
-  </header>
+  <!-- Contenu complet de votre interface -->
+  <div id="adminMainContent">
+    
+    <!-- Header -->
+    <header class="header-bar">
+      <div class="brand-title">CAMU <span>ADMIN</span></div>
+      <button class="btn-logout-top" onclick="logoutAdmin()">Déconnexion</button>
+    </header>
 
-  <!-- Contenu du panneau d'administration -->
-  <main class="admin-container" id="adminContent">
-    <div class="card">
-      <div class="card-title">
-        <span>Gestion de la plateforme</span>
+    <!-- Navigation Bar -->
+    <nav class="admin-nav">
+      <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i><span>Stats</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-bullhorn"></i><span>Publier</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>Comptes</span></a>
+    </nav>
+
+    <!-- Contenu des Stats -->
+    <main class="dashboard-container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Annonces Actives</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Entrepreneurs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Signalements</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Visites Totales</div>
+        </div>
       </div>
-      <p>Bienvenue dans l'espace d'administration. Vous avez un accès complet aux fonctionnalités de gestion.</p>
-    </div>
-  </main>
+
+      <a href="index.html" class="btn-back-site"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
+    </main>
+
+  </div>
 
   <script>
-    // Mot de passe personnalisé configuré ici
     const ADMIN_PASSWORD = "Carl1800";
 
-    // Vérification de la session au chargement
     window.onload = function() {
       if (sessionStorage.getItem("camu_admin_logged") === "true") {
         grantAccess();
@@ -89,7 +127,7 @@
 
     function grantAccess() {
       document.getElementById("loginOverlay").style.display = "none";
-      document.getElementById("adminContent").style.display = "block";
+      document.getElementById("adminMainContent").style.display = "block";
     }
 
     function logoutAdmin() {
