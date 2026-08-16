@@ -3,38 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Administration</title>
+  <title>CAMU SERVICES — Administration Générale</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { display: none; background-color: #f4f4f9; color: #333; margin: 0; padding-top: 60px; padding-bottom: 65px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    :root {
+      --primary: #d32f2f;
+      --dark: #111111;
+      --bg: #f4f4f9;
+      --card-bg: #ffffff;
+      --border: #eee;
+      --text: #333;
+      --text-light: #666;
+    }
+    body { display: none; background-color: var(--bg); color: var(--text); margin: 0; padding-top: 60px; padding-bottom: 75px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
     .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
-    .logo-text span { color: #d32f2f; }
+    .logo-text span { color: var(--primary); }
     .back-btn { font-size: 20px; cursor: pointer; color: #fff; text-decoration: none; }
-    .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-    .section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
-    .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .stat-number { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 4px; }
-    .stat-label { font-size: 11px; font-weight: 800; color: #666; text-transform: uppercase; }
-    .card-form { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .container { max-width: 650px; margin: 0 auto; padding: 15px; }
+    
+    .section-title { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 22px 0 10px 0; display: flex; align-items: center; gap: 8px; color: var(--dark); border-bottom: 2px solid var(--border); padding-bottom: 5px; }
+    
+    /* Grille de statistiques globale */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+    .stat-card { background: var(--card-bg); border-radius: 10px; padding: 10px 5px; text-align: center; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .stat-number { font-size: 18px; font-weight: 900; color: var(--dark); margin-bottom: 2px; }
+    .stat-label { font-size: 9px; font-weight: 800; color: var(--text-light); text-transform: uppercase; line-height: 1.2; }
+
+    /* Grille des modules admin */
+    .admin-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+    .admin-nav-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 5px; border-radius: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.2s; }
+    .admin-nav-btn:active { background: #f0f0f0; }
+    .admin-nav-btn i { font-size: 16px; color: var(--primary); }
+
+    /* Conteneurs et cartes de données */
+    .card-box { background: var(--card-bg); border-radius: 10px; padding: 15px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); margin-bottom: 15px; }
     .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
-    .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; }
-    .form-group textarea { resize: vertical; height: 90px; }
-    .btn-submit { background: #111; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-    .user-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
-    .user-info { font-size: 13px; }
-    .user-info strong { display: block; font-size: 14px; color: #111; }
-    .user-info span { color: #666; font-size: 11px; }
-    .user-actions { display: flex; gap: 6px; }
-    .btn-warn { background: #f39c12; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .btn-block { background: #d32f2f; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .btn-unblock { background: #27ae60; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; color: var(--text-light); text-transform: uppercase; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; box-sizing: border-box; background: #fff; }
+    .form-group textarea { resize: vertical; height: 75px; }
+    .btn-submit { background: var(--dark); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+    
+    .item-row { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+    .item-info strong { display: block; color: var(--dark); font-size: 13px; }
+    .item-info span { color: var(--text-light); font-size: 11px; }
+    .item-actions { display: flex; gap: 5px; }
+    
+    .badge { padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+    .badge-success { background: #e1f5fe; color: #0288d1; }
+    .badge-warning { background: #fff3e0; color: #f57c00; }
+    .badge-danger { background: #ffebee; color: #d32f2f; }
+
+    .btn-action { border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; color: #fff; }
+    .btn-validate { background: #27ae60; }
+    .btn-warn { background: #f39c12; }
+    .btn-block { background: var(--primary); }
+    .btn-unblock { background: #2980b9; }
+
+    /* Navigation basse mobile */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; box-sizing: border-box; }
+    .bottom-nav a { text-align: center; color: var(--text-light); font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: var(--primary); }
+    .bottom-nav i { font-size: 18px; margin-bottom: 3px; }
   </style>
 </head>
 <body>
@@ -45,7 +75,9 @@
   </header>
 
   <main class="container">
-    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: #d32f2f;"></i> Statistiques du site</div>
+    
+    <!-- 1. VUE GÉNÉRALE & STATISTIQUES (Modules 1 & 10) -->
+    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> 1. Vue Générale & Statistiques</div>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number" id="statVisites">0</div>
@@ -56,8 +88,16 @@
         <div class="stat-label">Entrepreneurs</div>
       </div>
       <div class="stat-card">
+        <div class="stat-number" id="statServices">0</div>
+        <div class="stat-label">Services</div>
+      </div>
+      <div class="stat-card">
         <div class="stat-number" id="statClients">0</div>
         <div class="stat-label">Clients</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statDemandes">0</div>
+        <div class="stat-label">Demandes</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" id="statSignalements">0</div>
@@ -65,23 +105,85 @@
       </div>
     </div>
 
-    <div class="section-title"><i class="fa-solid fa-users-gear" style="color: #d32f2f;"></i> Gestion des comptes</div>
-    <div id="usersListContainer" style="margin-bottom: 25px;">
-      <p style="font-size: 12px; color: #777; text-align: center; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #eee;">Aucun utilisateur inscrit pour le moment.</p>
+    <!-- ACCÈS RAPIDE AUX MODULES DU CAHIER DES CHARGES -->
+    <div class="section-title"><i class="fa-solid fa-folder-tree" style="color: var(--primary);"></i> Modules de Gestion Avancés</div>
+    <div class="admin-nav-grid">
+      <a href="#sec-entrepreneurs" class="admin-nav-btn"><i class="fa-solid fa-user-tie"></i><span>Entrepreneurs</span></a>
+      <a href="#sec-services" class="admin-nav-btn"><i class="fa-solid fa-screwdriver-wrench"></i><span>Services & Offres</span></a>
+      <a href="#sec-clients" class="admin-nav-btn"><i class="fa-solid fa-users"></i><span>Clients</span></a>
+      <a href="#sec-moderation" class="admin-nav-btn"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></a>
+      <a href="#sec-pubs" class="admin-nav-btn"><i class="fa-solid fa-bullhorn"></i><span>Pubs & Annonces</span></a>
+      <a href="#sec-parametres" class="admin-nav-btn"><i class="fa-solid fa-gears"></i><span>Paramètres</span></a>
     </div>
 
-    <div class="card-form">
-      <div class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-bullhorn" style="color: #d32f2f;"></i> Communiqué officiel</div>
-      <div class="form-group">
-        <label>Titre de l'information</label>
-        <input type="text" id="commTitre" placeholder="ex: Maintenance ou Nouvelle fonctionnalité">
-      </div>
-      <div class="form-group">
-        <label>Message aux utilisateurs</label>
-        <textarea id="commMessage" placeholder="Écrivez votre communiqué ici..."></textarea>
-      </div>
-      <button class="btn-submit" onclick="publierCommunique()">Publier sur le site</button>
+    <!-- 2 & 3. GESTION DES ENTREPRENEURS & BOUTIQUES -->
+    <div class="section-title" id="sec-entrepreneurs"><i class="fa-solid fa-store" style="color: var(--primary);"></i> 2 & 3. Entrepreneurs & Boutiques</div>
+    <div id="entrepreneursListContainer" class="card-box" style="padding: 10px;">
+      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun entrepreneur enregistré.</p>
     </div>
+
+    <!-- 4. SERVICES & OFFRES (À valider / Gérer) -->
+    <div class="section-title" id="sec-services"><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> 4. Validation des Services & Offres</div>
+    <div id="servicesListContainer" class="card-box" style="padding: 10px;">
+      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun service en attente.</p>
+    </div>
+
+    <!-- 5. CLIENTS & UTILISATEURS -->
+    <div class="section-title" id="sec-clients"><i class="fa-solid fa-users" style="color: var(--primary);"></i> 5. Clients & Interactions</div>
+    <div id="clientsListContainer" class="card-box" style="padding: 10px;">
+      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun client enregistré.</p>
+    </div>
+
+    <!-- 7. LOCALISATION & PROXIMITÉ (Lubumbashi / Quartiers) -->
+    <div class="section-title"><i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i> 7. Analyse par Localisation</div>
+    <div class="card-box">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label>Filtrer l'activité par zone géographique</label>
+        <select id="filtreVille" onchange="filtrerParVille()">
+          <option value="lubumbashi">Lubumbashi (Tous les quartiers)</option>
+          <option value="katuba">Katuba</option>
+          <option value="kampemba">Kampemba</option>
+          <option value="kenya">Kenya</option>
+          <option value="kamalondo">Kamalondo</option>
+          <option value="lwambo">Rwashi</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 11. MODÉRATION & SIGNALEMENTS -->
+    <div class="section-title" id="sec-moderation"><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary);"></i> 11. Modération & Contenus Signalés</div>
+    <div id="signalementsContainer" class="card-box" style="padding: 10px;">
+      <p style="font-size: 12px; color: var(--text-light); text-align: center; margin: 10px 0;">Aucun signalement en cours.</p>
+    </div>
+
+    <!-- 9. PUBLICITÉS, PROMOTIONS & COMMUNIQUÉS -->
+    <div class="section-title" id="sec-pubs"><i class="fa-solid id-card" style="color: var(--primary);"></i> 9. Communications Officielles & Promos</div>
+    <div class="card-box">
+      <div class="form-group">
+        <label>Titre de l'information / Promo</label>
+        <input type="text" id="commTitre" placeholder="ex: Offre spéciale entrepreneurs ou Maintenance">
+      </div>
+      <div class="form-group">
+        <label>Message détaillé</label>
+        <textarea id="commMessage" placeholder="Écrivez votre message publicitaire ou d'information..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="publierCommunique()">Diffuser sur la plateforme</button>
+    </div>
+
+    <!-- 12. PARAMÈTRES & CONFIGURATION GLOBALE -->
+    <div class="section-title" id="sec-parametres"><i class="fa-solid fa-gears" style="color: var(--primary);"></i> 12. Paramètres & Identité CAMU</div>
+    <div class="card-box">
+      <div class="form-group">
+        <label>Nom de la plateforme</label>
+        <input type="text" id="paramNom" value="CAMU SERVICES">
+      </div>
+      <div class="form-group">
+        <label>Slogan officiel</label>
+        <input type="text" id="paramSlogan" value="TROUVER . ACHETER . RÉSERVER">
+      </div>
+      <button class="btn-submit" onclick="sauvegarderParametres()" style="background: #27ae60;">Enregistrer les modifications</button>
+    </div>
+
   </main>
 
   <nav class="bottom-nav">
@@ -93,7 +195,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -109,7 +211,6 @@
 
     function verifierAcces() {
       const mdp = prompt("Veuillez entrer le mot de passe administrateur :");
-      // Nettoyage des espaces accidentels au début ou à la fin
       const mdpPropre = mdp ? mdp.trim() : "";
       
       if (mdpPropre !== "Carl1800") {
@@ -122,117 +223,202 @@
     }
 
     function initialiserAdmin() {
+      // Suivi en temps réel des visites
       onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
         if (docSnap.exists()) {
           document.getElementById("statVisites").innerText = docSnap.data().total || 0;
         }
       });
 
-      chargerDonneesUtilisateursEtSignalements();
+      chargerToutesDonnees();
     }
 
-    async function chargerDonneesUtilisateursEtSignalements() {
-      let entrepreneursCount = 0;
-      let clientsCount = 0;
-      let usersHtml = '';
+    async function chargerToutesDonnees() {
+      let countEnt = 0;
+      let countCli = 0;
+      let countServ = 0;
+      let entHtml = '';
+      let cliHtml = '';
+      let servHtml = '';
+      let sigHtml = '';
 
-      async function traiterCollection(nomCollection, typeDefaut) {
-        try {
-          const snap = await getDocs(collection(db, nomCollection));
-          snap.forEach((uDoc) => {
-            const data = uDoc.data();
-            const userId = uDoc.id;
-            const role = data.role || typeDefaut;
-            const statut = data.status || 'actif';
-            const nom = data.name || data.email || nomCollection + ' #' + userId.substring(0,4);
-
-            if (role === 'entrepreneur' || nomCollection === 'entrepreneurs') {
-              entrepreneursCount++;
-            } else {
-              clientsCount++;
-            }
-
-            let actionBtn = statut === 'suspendu' 
-              ? `<button class="btn-unblock" onclick="changerStatutUser('${nomCollection}', '${userId}', 'actif')">Activer</button>`
-              : `<button class="btn-block" onclick="changerStatutUser('${nomCollection}', '${userId}', 'suspendu')">Bloquer</button>`;
-
-            usersHtml += `
-              <div class="user-card">
-                <div class="user-info">
-                  <strong>${nom}</strong>
-                  <span>Rôle: ${role} | Statut: <b>${statut}</b></span>
-                </div>
-                <div class="user-actions">
-                  <button class="btn-warn" onclick="avertirUtilisateur('${nom}')">Avertir</button>
-                  ${actionBtn}
-                </div>
-              </div>`;
-          });
-        } catch (e) {}
-      }
-
-      await traiterCollection("entrepreneurs", "entrepreneur");
-      await traiterCollection("clients", "client");
-      await traiterCollection("users", "client");
-
-      document.getElementById("statEntrepreneurs").innerText = entrepreneursCount;
-      document.getElementById("statClients").innerText = clientsCount;
-      
-      if (usersHtml !== '') {
-        document.getElementById("usersListContainer").innerHTML = usersHtml;
-      }
-
+      // 1. Charger les Entrepreneurs / Boutiques
       try {
-        const sigSnap = await getDocs(collection(db, "signalements"));
-        document.getElementById("statSignalements").innerText = sigSnap.size;
-      } catch (e) {
+        const snapEnt = await getDocs(collection(db, "entrepreneurs"));
+        snapEnt.forEach((uDoc) => {
+          countEnt++;
+          const data = uDoc.data();
+          const id = uDoc.id;
+          const statut = data.status || 'actif';
+          entHtml += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${data.name || 'Boutique #' + id.substring(0,4)}</strong>
+                <span>${data.category || 'Général'} | Localisation: ${data.ville || 'Lubumbashi'}</span>
+              </div>
+              <div class="item-actions">
+                <button class="btn-action btn-warn" onclick="avertirUtilisateur('${data.name || id}')">Avertir</button>
+                <button class="btn-action ${statut === 'suspendu' ? 'btn-unblock' : 'btn-block'}" onclick="changerStatut('entrepreneurs', '${id}', '${statut === 'suspendu' ? 'actif' : 'suspendu'}')">${statut === 'suspendu' ? 'Activer' : 'Bloquer'}</button>
+              </div>
+            </div>`;
+        });
+        if(entHtml) document.getElementById("entrepreneursListContainer").innerHTML = entHtml;
+      } catch(e) {}
+
+      // 2. Charger les Clients
+      try {
+        const snapCli = await getDocs(collection(db, "clients"));
+        snapCli.forEach((uDoc) => {
+          countCli++;
+          const data = uDoc.data();
+          const id = uDoc.id;
+          const statut = data.status || 'actif';
+          cliHtml += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${data.name || data.email || 'Client #' + id.substring(0,4)}</strong>
+                <span>Statut: <span class="badge ${statut === 'actif' ? 'badge-success' : 'badge-danger'}">${statut}</span></span>
+              </div>
+              <div class="item-actions">
+                <button class="btn-action ${statut === 'suspendu' ? 'btn-unblock' : 'btn-block'}" onclick="changerStatut('clients', '${id}', '${statut === 'suspendu' ? 'actif' : 'suspendu'}')">${statut === 'suspendu' ? 'Activer' : 'Bloquer'}</button>
+              </div>
+            </div>`;
+        });
+        if(cliHtml) document.getElementById("clientsListContainer").innerHTML = cliHtml;
+      } catch(e) {}
+
+      // 3. Charger les Services à valider
+      try {
+        const snapServ = await getDocs(collection(db, "services"));
+        snapServ.forEach((sDoc) => {
+          countServ++;
+          const data = sDoc.data();
+          const id = sDoc.id;
+          const valide = data.valide !== false; // par défaut validé ou non
+          servHtml += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${data.titre || 'Service sans titre'} (${data.prix || '0 USD'})</strong>
+                <span>Catégorie: ${data.categorie || 'Divers'}</span>
+              </div>
+              <div class="item-actions">
+                <button class="btn-action btn-validate" onclick="validerService('${id}')">Valider</button>
+                <button class="btn-action btn-block" onclick="supprimerService('${id}')">Supprimer</button>
+              </div>
+            </div>`;
+        });
+        if(servHtml) document.getElementById("servicesListContainer").innerHTML = servHtml;
+      } catch(e) {}
+
+      // 4. Charger les Signalements
+      try {
+        const snapSig = await getDocs(collection(db, "signalements"));
+        let countSig = 0;
+        snapSig.forEach((sigDoc) => {
+          countSig++;
+          const data = sigDoc.data();
+          sigHtml += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>Raison : ${data.raison || 'Contenu inapproprié'}</strong>
+                <span>Cible ID : ${data.targetId || 'N/C'}</span>
+              </div>
+              <button class="btn-action btn-block" onclick="supprimerSignalement('${sigDoc.id}')">Résoudre</button>
+            </div>`;
+        });
+        document.getElementById("statSignalements").innerText = countSig;
+        if(sigHtml) document.getElementById("signalementsContainer").innerHTML = sigHtml;
+      } catch(e) {
         document.getElementById("statSignalements").innerText = 0;
       }
+
+      // Demandes de contact
+      try {
+        const snapDem = await getDocs(collection(db, "demandes"));
+        document.getElementById("statDemandes").innerText = snapDem.size;
+      } catch(e) {
+        document.getElementById("statDemandes").innerText = 0;
+      }
+
+      document.getElementById("statEntrepreneurs").innerText = countEnt;
+      document.getElementById("statClients").innerText = countCli;
+      document.getElementById("statServices").innerText = countServ;
     }
 
-    window.changerStatutUser = async function(collectionName, userId, nouveauStatut) {
+    window.changerStatut = async function(coll, id, nouveauStatut) {
       try {
-        const userRef = doc(db, collectionName, userId);
-        await updateDoc(userRef, { status: nouveauStatut });
-        alert("Le statut de l'utilisateur a été mis à jour.");
-        chargerDonneesUtilisateursEtSignalements();
-      } catch (e) {
-        alert("Erreur lors de la modification du statut.");
+        await updateDoc(doc(db, coll, id), { status: nouveauStatut });
+        alert("Statut mis à jour avec succès.");
+        chargerToutesDonnees();
+      } catch(e) {
+        alert("Erreur lors de la mise à jour.");
       }
     };
 
-    window.avertirUtilisateur = function(nom) {
-      const raison = prompt(`Entrez le motif de l'avertissement pour ${nom} :`);
-      if (raison) {
-        alert(`Avertissement envoyé à ${nom} avec succès.`);
+    window.validerService = async function(id) {
+      try {
+        await updateDoc(doc(db, "services", id), { valide: true });
+        alert("Service validé et mis en ligne.");
+        chargerToutesDonnees();
+      } catch(e) {
+        alert("Erreur de validation.");
       }
+    };
+
+    window.supprimerService = async function(id) {
+      if(confirm("Voulez-vous vraiment supprimer ce service ?")) {
+        try {
+          await deleteDoc(doc(db, "services", id));
+          alert("Service supprimé.");
+          chargerToutesDonnees();
+        } catch(e) {
+          alert("Erreur lors de la suppression.");
+        }
+      }
+    };
+
+    window.supprimerSignalement = async function(id) {
+      try {
+        await deleteDoc(doc(db, "signalements", id));
+        alert("Signalement traité et effacé.");
+        chargerToutesDonnees();
+      } catch(e) {}
+    };
+
+    window.avertirUtilisateur = function(nom) {
+      const motif = prompt(`Entrez l'avertissement pour ${nom} :`);
+      if(motif) alert(`Avertissement envoyé à ${nom}.`);
     };
 
     window.publierCommunique = async function() {
       const titre = document.getElementById("commTitre").value;
       const message = document.getElementById("commMessage").value;
-
-      if (!titre || !message) {
-        alert("Veuillez remplir tous les champs du communiqué.");
+      if(!titre || !message) {
+        alert("Remplissez tous les champs.");
         return;
       }
-
       try {
-        await addDoc(collection(db, "communiques"), {
-          titre: titre,
-          message: message,
-          date: new Date()
-        });
+        await addDoc(collection(db, "communiques"), { titre, message, date: new Date() });
         alert("Communiqué publié avec succès !");
         document.getElementById("commTitre").value = "";
         document.getElementById("commMessage").value = "";
-      } catch (e) {
-        alert("Erreur lors de la publication.");
+      } catch(e) {
+        alert("Erreur de publication.");
       }
+    };
+
+    window.sauvegarderParametres = function() {
+      const nom = document.getElementById("paramNom").value;
+      const slogan = document.getElementById("paramSlogan").value;
+      alert(`Paramètres enregistrés !\nPlateforme : ${nom}\nSlogan : ${slogan}`);
+    };
+
+    window.filtrerParVille = function() {
+      const ville = document.getElementById("filtreVille").value;
+      alert(`Filtrage actif sur la zone : ${ville.toUpperCase()}`);
     };
 
     verifierAcces();
   </script>
 </body>
 </html>
-
