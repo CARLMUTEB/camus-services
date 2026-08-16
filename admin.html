@@ -6,34 +6,23 @@
   <title>CAMU SERVICES — Administration</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Masquer le contenu tant que le mot de passe n'est pas validé */
     body { display: none; background-color: #f4f4f9; color: #333; margin: 0; padding-top: 60px; padding-bottom: 65px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-
-    /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
     .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
     .logo-text span { color: #d32f2f; }
     .back-btn { font-size: 20px; cursor: pointer; color: #fff; text-decoration: none; }
-
-    /* Container */
     .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-
-    /* Section Statistiques */
     .section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
     .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .stat-number { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 4px; }
     .stat-label { font-size: 11px; font-weight: 800; color: #666; text-transform: uppercase; }
-
-    /* Formulaire Communiqué */
     .card-form { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
     .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; }
     .form-group textarea { resize: vertical; height: 90px; }
     .btn-submit { background: #111; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-
-    /* Liste de gestion des utilisateurs */
     .user-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
     .user-info { font-size: 13px; }
     .user-info strong { display: block; font-size: 14px; color: #111; }
@@ -42,8 +31,6 @@
     .btn-warn { background: #f39c12; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
     .btn-block { background: #d32f2f; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
     .btn-unblock { background: #27ae60; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-
-    /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
     .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
@@ -52,14 +39,12 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header class="header-bar">
     <div class="logo-text">CAMU <span>SERVICES</span></div>
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
   </header>
 
   <main class="container">
-    <!-- Statistiques du site -->
     <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: #d32f2f;"></i> Statistiques du site</div>
     <div class="stats-grid">
       <div class="stat-card">
@@ -80,13 +65,11 @@
       </div>
     </div>
 
-    <!-- Gestion des utilisateurs -->
     <div class="section-title"><i class="fa-solid fa-users-gear" style="color: #d32f2f;"></i> Gestion des comptes</div>
     <div id="usersListContainer" style="margin-bottom: 25px;">
-      <!-- Liste chargée dynamiquement -->
+      <p style="font-size: 12px; color: #777; text-align: center; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #eee;">Aucun utilisateur inscrit pour le moment.</p>
     </div>
 
-    <!-- Communiqué Officiel -->
     <div class="card-form">
       <div class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-bullhorn" style="color: #d32f2f;"></i> Communiqué officiel</div>
       <div class="form-group">
@@ -101,7 +84,6 @@
     </div>
   </main>
 
-  <!-- Navigation Basse Fixe -->
   <nav class="bottom-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
@@ -109,7 +91,6 @@
     <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <!-- Script de sécurité et gestion Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -126,7 +107,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Vérification du mot de passe administrateur à l'ouverture
     function verifierAcces() {
       const mdp = prompt("Veuillez entrer le mot de passe administrateur :");
       if (mdp !== "Carl1800") {
@@ -139,7 +119,6 @@
     }
 
     function initialiserAdmin() {
-      // 1. Écouter les Visites en temps réel
       onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
         if (docSnap.exists()) {
           document.getElementById("statVisites").innerText = docSnap.data().total || 0;
@@ -149,53 +128,61 @@
       chargerDonneesUtilisateursEtSignalements();
     }
 
-    // 2. Charger les utilisateurs, les statistiques et générer la liste de gestion
     async function chargerDonneesUtilisateursEtSignalements() {
-      try {
-        const usersSnap = await getDocs(collection(db, "users"));
-        let entrepreneursCount = 0;
-        let clientsCount = 0;
-        let usersHtml = '';
+      let entrepreneursCount = 0;
+      let clientsCount = 0;
+      let usersHtml = '';
 
-        usersSnap.forEach((uDoc) => {
-          const data = uDoc.data();
-          const userId = uDoc.id;
-          const role = data.role || data.type || 'client';
-          const statut = data.status || 'actif';
-          const nom = data.name || data.email || 'Utilisateur';
+      // Fonction utilitaire pour traiter une collection d'utilisateurs
+      async function traiterCollection(nomCollection, typeDefaut) {
+        try {
+          const snap = await getDocs(collection(db, nomCollection));
+          snap.forEach((uDoc) => {
+            const data = uDoc.data();
+            const userId = uDoc.id;
+            const role = data.role || typeDefaut;
+            const statut = data.status || 'actif';
+            const nom = data.name || data.email || nomCollection + ' #' + userId.substring(0,4);
 
-          if (role === 'entrepreneur') {
-            entrepreneursCount++;
-          } else {
-            clientsCount++;
-          }
+            if (role === 'entrepreneur' || nomCollection === 'entrepreneurs') {
+              entrepreneursCount++;
+            } else {
+              clientsCount++;
+            }
 
-          let actionBtn = statut === 'suspendu' 
-            ? `<button class="btn-unblock" onclick="changerStatutUser('${userId}', 'actif')">Activer</button>`
-            : `<button class="btn-block" onclick="changerStatutUser('${userId}', 'suspendu')">Bloquer</button>`;
+            let actionBtn = statut === 'suspendu' 
+              ? `<button class="btn-unblock" onclick="changerStatutUser('${nomCollection}', '${userId}', 'actif')">Activer</button>`
+              : `<button class="btn-block" onclick="changerStatutUser('${nomCollection}', '${userId}', 'suspendu')">Bloquer</button>`;
 
-          usersHtml += `
-            <div class="user-card">
-              <div class="user-info">
-                <strong>${nom}</strong>
-                <span>Rôle: ${role} | Statut: <b>${statut}</b></span>
-              </div>
-              <div class="user-actions">
-                <button class="btn-warn" onclick="avertirUtilisateur('${nom}')">Avertir</button>
-                ${actionBtn}
-              </div>
-            </div>`;
-        });
-
-        document.getElementById("statEntrepreneurs").innerText = entrepreneursCount;
-        document.getElementById("statClients").innerText = clientsCount;
-        document.getElementById("usersListContainer").innerHTML = usersHtml || '<p style="font-size:12px; color:#777;">Aucun utilisateur trouvé.</p>';
-
-      } catch (e) {
-        console.error("Erreur chargement utilisateurs", e);
+            usersHtml += `
+              <div class="user-card">
+                <div class="user-info">
+                  <strong>${nom}</strong>
+                  <span>Rôle: ${role} | Statut: <b>${statut}</b></span>
+                </div>
+                <div class="user-actions">
+                  <button class="btn-warn" onclick="avertirUtilisateur('${nom}')">Avertir</button>
+                  ${actionBtn}
+                </div>
+              </div>`;
+          });
+        } catch (e) {
+          // Collection inexistante pour l'instant, on ignore silencieusement
+        }
       }
 
-      // 3. Compter les signalements
+      // Vérifie les différentes collections possibles
+      await traiterCollection("entrepreneurs", "entrepreneur");
+      await traiterCollection("clients", "client");
+      await traiterCollection("users", "client");
+
+      document.getElementById("statEntrepreneurs").innerText = entrepreneursCount;
+      document.getElementById("statClients").innerText = clientsCount;
+      
+      if (usersHtml !== '') {
+        document.getElementById("usersListContainer").innerHTML = usersHtml;
+      }
+
       try {
         const sigSnap = await getDocs(collection(db, "signalements"));
         document.getElementById("statSignalements").innerText = sigSnap.size;
@@ -204,10 +191,9 @@
       }
     }
 
-    // Actions d'administration globales attachées à window
-    window.changerStatutUser = async function(userId, nouveauStatut) {
+    window.changerStatutUser = async function(collectionName, userId, nouveauStatut) {
       try {
-        const userRef = doc(db, "users", userId);
+        const userRef = doc(db, collectionName, userId);
         await updateDoc(userRef, { status: nouveauStatut });
         alert("Le statut de l'utilisateur a été mis à jour.");
         chargerDonneesUtilisateursEtSignalements();
@@ -246,10 +232,8 @@
       }
     };
 
-    // Lancer la vérification de sécurité au chargement
     verifierAcces();
   </script>
-
 </body>
-</html>
+  </html>
 
