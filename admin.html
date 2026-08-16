@@ -213,19 +213,23 @@
     }
 
     function initAdminData() {
-      // Visites réelles
-      let visites = parseInt(localStorage.getItem('camu_visites') || '0');
+      // Nettoyage automatique des anciens résidus textuels (ex: 1.2k)
+      let rawVisites = localStorage.getItem('camu_visites');
+      if (!rawVisites || rawVisites.includes('k') || isNaN(rawVisites)) {
+        localStorage.setItem('camu_visites', '0');
+        rawVisites = '0';
+      }
+
+      let visites = parseInt(rawVisites);
       document.getElementById('statVisites').innerText = visites >= 1000 ? (visites / 1000).toFixed(1) + 'k' : visites;
 
-      // Annonces actives
+      // Récupération des autres compteurs
       const annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
       document.getElementById('statAnnonces').innerText = annonces.length;
 
-      // Entrepreneurs enregistrés
       const comptes = JSON.parse(localStorage.getItem('camu_users') || '[]');
       document.getElementById('statComptes').innerText = comptes.length;
 
-      // Signalements
       const signalements = JSON.parse(localStorage.getItem('camu_reports') || '[]');
       document.getElementById('statSignalements').innerText = signalements.length;
 
@@ -306,5 +310,5 @@
   </script>
 
 </body>
-          </html>
-      
+</html>
+
