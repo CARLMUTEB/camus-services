@@ -3,184 +3,265 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU ADMIN</title>
+  <title>CAMU SERVICES — Administration</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f5f8; color: #333; padding-bottom: 30px; }
-
-    /* Overlay Mot de passe */
-    #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #111111; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .login-card { background: #ffffff; width: 100%; max-width: 380px; padding: 30px 20px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    .login-card i { font-size: 45px; color: #d32f2f; margin-bottom: 15px; }
-    .login-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: #111; }
-    .login-card p { font-size: 13px; color: #666; margin-bottom: 20px; }
-    .login-card input { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; margin-bottom: 15px; text-align: center; outline: none; }
-    .login-card button { width: 100%; background: #d32f2f; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 15px; cursor: pointer; }
-    .login-card button:active { background: #b71c1c; }
-    .error-msg { color: #d32f2f; font-size: 12px; font-weight: 800; margin-top: 10px; display: none; }
-
-    /* Conteneur principal */
-    #adminMainContent { display: none; }
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 70px; display: none; } /* Masqué par défaut jusqu'à validation */
 
     /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; }
-    .brand-title { font-size: 18px; font-weight: 800; }
-    .brand-title span { color: #d32f2f; }
-    .btn-logout-top { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; }
+    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; }
+    .logo-text span { color: #d32f2f; }
+    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
 
-    /* Navigation Onglets */
-    .admin-nav { position: fixed; top: 60px; left: 0; right: 0; background: #111111; display: flex; justify-content: space-around; border-top: 1px solid #222; z-index: 999; }
-    .nav-item { flex: 1; text-align: center; padding: 10px 0; color: #888; text-decoration: none; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; border-bottom: 3px solid transparent; cursor: pointer; }
-    .nav-item i { font-size: 16px; }
-    .nav-item.active { color: #ffffff; border-bottom: 3px solid #d32f2f; }
+    .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 
-    /* Sections */
-    .dashboard-container { max-width: 600px; margin: 130px auto 20px auto; padding: 0 15px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    /* Cards & Blocks */
+    .admin-card { background: #ffffff; border-radius: 12px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; }
+    .admin-title { font-size: 15px; font-weight: 900; text-transform: uppercase; color: #111; margin-bottom: 12px; border-bottom: 2px solid #d32f2f; padding-bottom: 6px; display: flex; align-items: center; gap: 8px; }
 
-    /* Dashboard Grid Stats */
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    .stat-card { background: #ffffff; padding: 25px 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-    .stat-number { font-size: 32px; font-weight: 900; color: #d32f2f; margin-bottom: 5px; }
-    .stat-label { font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+    .stat-box { background: #f9f9fb; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; }
+    .stat-num { font-size: 20px; font-weight: 900; color: #111; }
+    .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; margin-top: 2px; }
 
-    /* Cards d'onglets */
-    .section-card { background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; }
-    .section-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 10px; color: #111; }
-    .section-card p { font-size: 13px; color: #666; line-height: 1.4; }
+    /* Form Annonces Officielles */
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #444; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
+    textarea.form-control { resize: vertical; min-height: 70px; }
+    .btn-publier { width: 100%; background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; }
 
-    /* Bouton retour */
-    .btn-back-site { display: block; width: 100%; background: #111111; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-top: 20px; }
+    /* Liste des éléments */
+    .user-item, .report-item { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 12px; }
+    .user-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; margin-bottom: 4px; }
+    .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+    .badge-actif { background: #e8f5e9; color: #2e7d32; }
+    .badge-averti { background: #fff3e0; color: #ef6c00; }
+    .badge-suspendu { background: #ffebee; color: #c62828; }
+
+    /* Actions buttons */
+    .action-group { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-act { border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff; }
+    .btn-warn { background: #ef6c00; }
+    .btn-susp { background: #c62828; }
+    .btn-rest { background: #2e7d32; }
+
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
+    .bottom-nav a.active { color: #d32f2f; }
+    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
+
+  <!-- SCRIPT DE SÉCURITÉ MOT DE PASSE -->
+  <script>
+    (function checkAdminAccess() {
+      const authKey = "camu_admin_authorized";
+      // Vérifie si déjà authentifié dans la session
+      if (sessionStorage.getItem(authKey) === "true") {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.body.style.display = "block";
+        });
+        return;
+      }
+
+      // Demande le mot de passe
+      const pass = prompt("Accès Administrateur — Veuillez entrer le mot de passe :");
+      if (pass === "Carl1800") {
+        sessionStorage.setItem(authKey, "true");
+        document.addEventListener("DOMContentLoaded", () => {
+          document.body.style.display = "block";
+        });
+      } else {
+        alert("Mot de passe incorrect. Accès refusé.");
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
 </head>
 <body>
 
-  <!-- Overlay Mot de passe -->
-  <div id="loginOverlay">
-    <div class="login-card">
-      <i class="fa-solid fa-user-shield"></i>
-      <h2>Accès Administrateur</h2>
-      <p>Entrez le mot de passe secret pour accéder au panneau CAMU ADMIN.</p>
-      <input type="password" id="adminPassInput" placeholder="Mot de passe">
-      <button onclick="checkAdminPassword()">Se connecter</button>
-      <div id="errorMsg" class="error-msg">Mot de passe incorrect !</div>
-    </div>
-  </div>
+  <header class="header-bar">
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+  </header>
 
-  <!-- Contenu Principal -->
-  <div id="adminMainContent">
+  <main class="container">
     
-    <!-- Header -->
-    <header class="header-bar">
-      <div class="brand-title">CAMU <span>ADMIN</span></div>
-      <button class="btn-logout-top" onclick="logoutAdmin()">Déconnexion</button>
-    </header>
-
-    <!-- Navigation Bar -->
-    <nav class="admin-nav">
-      <div class="nav-item active" onclick="switchTab('stats', this)"><i class="fa-solid fa-chart-pie"></i><span>Stats</span></div>
-      <div class="nav-item" onclick="switchTab('publier', this)"><i class="fa-solid fa-bullhorn"></i><span>Publier</span></div>
-      <div class="nav-item" onclick="switchTab('moderation', this)"><i class="fa-solid fa-shield-halved"></i><span>Modération</span></div>
-      <div class="nav-item" onclick="switchTab('comptes', this)"><i class="fa-solid fa-users"></i><span>Comptes</span></div>
-    </nav>
-
-    <!-- Conteneur des Sections -->
-    <main class="dashboard-container">
-      
-      <!-- Onglet Stats -->
-      <div id="tab-stats" class="tab-content active">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Annonces Actives</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Entrepreneurs</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Signalements</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Visites Totales</div>
-          </div>
-        </div>
+    <!-- STATISTIQUES GLOBAL -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-chart-pie"></i> Statistiques du Site</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="statVisites">0</div><div class="stat-label">Visites</div></div>
+        <div class="stat-box"><div class="stat-num" id="statEntrepreneurs">0</div><div class="stat-label">Entrepreneurs</div></div>
+        <div class="stat-box"><div class="stat-num" id="statClients">0</div><div class="stat-label">Clients</div></div>
+        <div class="stat-box"><div class="stat-num" id="statSignalements">0</div><div class="stat-label">Signalements</div></div>
       </div>
+    </div>
 
-      <!-- Onglet Publier -->
-      <div id="tab-publier" class="tab-content">
-        <div class="section-card">
-          <h3>Publier une annonce officielle</h3>
-          <p>Espace de publication rapide pour les offres et services officiels de la plateforme CAMU SERVICES.</p>
-        </div>
+    <!-- PUBLICATION OFFICIELLE -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-bullhorn"></i> Communiqué Officiel</div>
+      <div class="form-group">
+        <label>Titre de l'information</label>
+        <input type="text" id="infoTitre" class="form-control" placeholder="ex: Maintenance ou Nouvelle fonctionnalité">
       </div>
-
-      <!-- Onglet Modération -->
-      <div id="tab-moderation" class="tab-content">
-        <div class="section-card">
-          <h3>Centre de Modération</h3>
-          <p>Aucun signalement ou contenu inapproprié à réviser pour le moment.</p>
-        </div>
+      <div class="form-group">
+        <label>Message aux utilisateurs</label>
+        <textarea id="infoMessage" class="form-control" placeholder="Écrivez votre communiqué ici..."></textarea>
       </div>
+      <button class="btn-publier" onclick="publierInfoOfficielle()">Publier sur le site</button>
+    </div>
 
-      <!-- Onglet Comptes -->
-      <div id="tab-comptes" class="tab-content">
-        <div class="section-card">
-          <h3>Gestion des Utilisateurs</h3>
-          <p>Liste et gestion des privilèges des entrepreneurs et clients inscrits.</p>
-        </div>
-      </div>
+    <!-- SIGNALEMENTS -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-triangle-exclamation"></i> Signalements Récents</div>
+      <div id="reportsListContainer">Chargement des signalements...</div>
+    </div>
 
-      <a href="index.html" class="btn-back-site"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
-    </main>
+    <!-- GESTION DES COMPTES -->
+    <div class="admin-card">
+      <div class="admin-title"><i class="fa-solid fa-users-gear"></i> Modération des Comptes</div>
+      <div id="usersListContainer">Chargement des comptes...</div>
+    </div>
 
-  </div>
+  </main>
 
-  <script>
-    const ADMIN_PASSWORD = "Carl1800";
+  <nav class="bottom-nav">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+  </nav>
 
-    window.onload = function() {
-      if (sessionStorage.getItem("camu_admin_logged") === "true") {
-        grantAccess();
-      }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+      authDomain: "camu-services.firebaseapp.com",
+      projectId: "camu-services",
+      storageBucket: "camu-services.firebasestorage.app",
+      messagingSenderId: "879100396449",
+      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
     };
 
-    function checkAdminPassword() {
-      const inputPass = document.getElementById("adminPassInput").value;
-      const errorMsg = document.getElementById("errorMsg");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-      if (inputPass === ADMIN_PASSWORD) {
-        sessionStorage.setItem("camu_admin_logged", "true");
-        grantAccess();
-      } else {
-        errorMsg.style.display = "block";
-        document.getElementById("adminPassInput").value = "";
+    // 1. Charger les Visites Totales
+    onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
+      if (docSnap.exists()) {
+        document.getElementById("statVisites").innerText = docSnap.data().total || 0;
       }
-    }
+    });
 
-    function grantAccess() {
-      document.getElementById("loginOverlay").style.display = "none";
-      document.getElementById("adminMainContent").style.display = "block";
-    }
+    // 2. Charger Utilisateurs (Entrepreneurs vs Clients)
+    onSnapshot(collection(db, "users"), (snapshot) => {
+      let totalE = 0;
+      let totalC = 0;
+      let html = "";
 
-    function logoutAdmin() {
-      sessionStorage.removeItem("camu_admin_logged");
-      location.reload();
-    }
+      snapshot.forEach((uDoc) => {
+        const u = uDoc.data();
+        const id = uDoc.id;
+        const role = u.role || "client";
+        const status = u.status || "actif";
+        const warnings = u.warningCount || 0;
 
-    function switchTab(tabName, element) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      
-      document.getElementById('tab-' + tabName).classList.add('active');
-      element.classList.add('active');
-    }
+        if (role === "entrepreneur") totalE++;
+        else totalC++;
+
+        const risque = warnings >= 2 ? "ÉLEVÉE (Averti " + warnings + "x)" : (warnings === 1 ? "Moyenne" : "Faible");
+
+        html += `
+          <div class="user-item">
+            <div class="user-header">
+              <span>${u.nom || u.email || 'Utilisateur'} (${role})</span>
+              <span class="status-badge badge-${status}">${status.toUpperCase()}</span>
+            </div>
+            <div>Avertissements : <b>${warnings}</b> | Risque de suspension : <b>${risque}</b></div>
+            <div class="action-group">
+              <button class="btn-act btn-warn" onclick="avertirCompte('${id}', ${warnings})">Avertir</button>
+              <button class="btn-act btn-susp" onclick="suspendreCompte('${id}')">Suspendre</button>
+              <button class="btn-act btn-rest" onclick="retablirCompte('${id}')">Rétablir</button>
+            </div>
+          </div>`;
+      });
+
+      document.getElementById("statEntrepreneurs").innerText = totalE;
+      document.getElementById("statClients").innerText = totalC;
+      document.getElementById("usersListContainer").innerHTML = html || "Aucun compte disponible.";
+    });
+
+    // 3. Charger Signalements
+    onSnapshot(collection(db, "reports"), (snapshot) => {
+      document.getElementById("statSignalements").innerText = snapshot.size;
+      if (snapshot.empty) {
+        document.getElementById("reportsListContainer").innerHTML = "Aucun signalement.";
+        return;
+      }
+      let html = "";
+      snapshot.forEach((rDoc) => {
+        const r = rDoc.data();
+        html += `
+          <div class="report-item">
+            <b>Cible :</b> ${r.targetTitle || 'Annonce/Utilisateur'}<br>
+            <b>Raison :</b> ${r.reason || 'Non précisée'}<br>
+            <small style="color:#777">Par: ${r.reporterEmail || 'Anonyme'}</small>
+          </div>`;
+      });
+      document.getElementById("reportsListContainer").innerHTML = html;
+    });
+
+    // Actions Modération
+    window.avertirCompte = async (uid, count) => {
+      const raison = prompt("Raison de l'avertissement :");
+      if (!raison) return;
+      await updateDoc(doc(db, "users", uid), {
+        status: "averti",
+        warningCount: count + 1,
+        lastWarningReason: raison
+      });
+      alert("Avertissement envoyé.");
+    };
+
+    window.suspendreCompte = async (uid) => {
+      if (!confirm("Confirmer la suspension de ce compte ?")) return;
+      await updateDoc(doc(db, "users", uid), { status: "suspendu" });
+      alert("Compte suspendu.");
+    };
+
+    window.retablirCompte = async (uid) => {
+      await updateDoc(doc(db, "users", uid), { status: "actif" });
+      alert("Compte rétabli.");
+    };
+
+    // Publication Officielle
+    window.publierInfoOfficielle = async () => {
+      const titre = document.getElementById("infoTitre").value;
+      const message = document.getElementById("infoMessage").value;
+
+      if (!titre || !message) {
+        alert("Veuillez remplir le titre et le message.");
+        return;
+      }
+
+      await addDoc(collection(db, "annonces_officielles"), {
+        titre: titre,
+        message: message,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById("infoTitre").value = "";
+      document.getElementById("infoMessage").value = "";
+      alert("Information officielle publiée avec succès.");
+    };
   </script>
-
 </body>
-</html>
+                             </html>
 
