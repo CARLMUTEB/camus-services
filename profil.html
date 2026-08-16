@@ -2,287 +2,74 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Espace Utilisateur</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
-
-    /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .header-bar a { color: #ffffff; text-decoration: none; font-size: 18px; margin-right: 15px; }
-
-    /* Onglets Connexion / Inscription */
-    .auth-tabs { display: flex; background: #ffffff; border-bottom: 1px solid #eee; margin-bottom: 20px; }
-    .auth-tab { flex: 1; padding: 14px; text-align: center; font-size: 13px; font-weight: 800; color: #666; cursor: pointer; border-bottom: 3px solid transparent; }
-    .auth-tab.active { color: #d32f2f; border-bottom-color: #d32f2f; }
-
-    /* Formulaires Auth */
-    .auth-container { max-width: 450px; margin: 0 auto; padding: 0 15px; }
-    .auth-card { background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #444; }
-    .form-control { width: 100%; padding: 11px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
-
-    /* Choix du Type de Compte */
-    .role-selector { display: flex; gap: 10px; margin-bottom: 15px; }
-    .role-option { flex: 1; padding: 10px; border: 2px solid #eee; border-radius: 8px; text-align: center; font-size: 12px; font-weight: 700; cursor: pointer; background: #fafafa; }
-    .role-option.selected { border-color: #d32f2f; color: #d32f2f; background: #fff0f0; }
-
-    /* Upload Photo */
-    .photo-upload { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
-    .photo-preview { width: 80px; height: 80px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #888; margin-bottom: 8px; overflow: hidden; border: 2px dashed #bbb; cursor: pointer; }
-    .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
-    .photo-label { font-size: 11px; color: #d32f2f; font-weight: bold; cursor: pointer; }
-
-    /* Conditions */
-    .checkbox-group { display: flex; align-items: flex-start; gap: 8px; margin-top: 15px; font-size: 12px; color: #555; }
-    .checkbox-group input { margin-top: 2px; }
-    .checkbox-group a { color: #d32f2f; text-decoration: underline; }
-
-    .btn-auth { width: 100%; background: #d32f2f; color: #ffffff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 15px; }
-    .btn-switch { background: none; border: none; color: #111; font-size: 12px; font-weight: 700; margin-top: 15px; width: 100%; text-align: center; cursor: pointer; text-decoration: underline; }
-
-    /* Profile Section (Une fois connecté) */
-    .profile-header { background: #ffffff; padding: 25px 15px; text-align: center; border-bottom: 1px solid #eee; }
-    .avatar { width: 80px; height: 80px; background: #111111; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; margin: 0 auto 12px; border: 3px solid #f4f4f9; overflow: hidden; }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .user-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-    .user-address { font-size: 12px; color: #666; margin-bottom: 6px; }
-    .user-badge { display: inline-block; font-size: 11px; color: #d32f2f; font-weight: 800; text-transform: uppercase; background: #fff0f0; padding: 4px 10px; border-radius: 20px; }
-
-    /* Stats Grid */
-    .stats-container { display: grid; grid-template-columns: repeat(3, 1fr); background: #ffffff; padding: 12px; border-bottom: 1px solid #eee; }
-    .stat-item { text-align: center; }
-    .stat-value { font-size: 15px; font-weight: 800; color: #111; display: block; }
-    .stat-label { font-size: 10px; color: #888; font-weight: 700; text-transform: uppercase; }
-
-    /* Actions List */
-    .action-container { max-width: 500px; margin: 15px auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-    .action-link { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #333; font-size: 13px; font-weight: 600; }
-    .action-link:last-child { border-bottom: none; }
-    .action-link i { width: 25px; color: #d32f2f; font-size: 16px; }
-
-    /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMU SERVICES - Mon Profil</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body style="background: #f9f9f9; padding-bottom: 70px;">
 
-  <header class="header-bar">
-    <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <span id="headerTitle">Mon Espace</span>
+  <header class="top-bar" style="background: #111; padding: 15px; color: white; display: flex; align-items: center; justify-content: space-between;">
+    <h2 style="font-size: 16px; margin: 0; color: white;">Mon Profil</h2>
+    <a href="admin.html" style="color: #d32f2f; font-size: 12px; font-weight: bold; text-decoration: none;"><i class="fa-solid fa-lock"></i> Admin</a>
   </header>
 
-  <main>
-    <!-- BLOC AUTHENTIFICATION -->
-    <div id="authBlock">
-      <div class="auth-tabs">
-        <div id="tabRegister" class="auth-tab active" onclick="switchTab('register')">S'inscrire</div>
-        <div id="tabLogin" class="auth-tab" onclick="switchTab('login')">Se connecter</div>
-      </div>
-
-      <div class="auth-container">
-        <!-- Formulaire d'Inscription -->
-        <div id="formRegister" class="auth-card">
-          <form onsubmit="handleAuth(event, 'inscription')">
-            
-            <!-- Type de compte -->
-            <label style="font-size: 12px; font-weight: 700; color: #444; margin-bottom: 6px; display: block;">Vous êtes ?</label>
-            <div class="role-selector">
-              <div class="role-option selected" id="roleClient" onclick="selectRole('Client')">
-                <i class="fa-solid fa-user"></i> Client
-              </div>
-              <div class="role-option" id="roleEntrepreneur" onclick="selectRole('Entrepreneur')">
-                <i class="fa-solid fa-briefcase"></i> Entrepreneur
-              </div>
-            </div>
-
-            <!-- Upload Photo -->
-            <div class="photo-upload">
-              <label for="profilePhotoInput" class="photo-preview" id="photoPreview">
-                <i class="fa-solid fa-camera"></i>
-                <img id="imgPreview" src="" alt="Aperçu">
-              </label>
-              <label for="profilePhotoInput" class="photo-label">Photo de profil / Logo</label>
-              <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
-            </div>
-
-            <div class="form-group">
-              <label id="labelName">Nom complet</label>
-              <input type="text" id="regName" class="form-control" placeholder="ex: Jean Dupont" required>
-            </div>
-
-            <!-- Champ spécifique Entrepreneur -->
-            <div class="form-group" id="groupService" style="display: none;">
-              <label>Secteur d'activité / Service proposé</label>
-              <input type="text" id="regService" class="form-control" placeholder="ex: Électricité, Coiffure, Plomberie...">
-            </div>
-
-            <div class="form-group">
-              <label>Numéro WhatsApp / Téléphone</label>
-              <input type="tel" class="form-control" placeholder="+243..." required>
-            </div>
-            <div class="form-group">
-              <label>Adresse physique (Ville, Commune, Avenue)</label>
-              <input type="text" id="regAddress" class="form-control" placeholder="ex: Lubumbashi, Av. Kamanyola N°12" required>
-            </div>
-            <div class="form-group">
-              <label>Adresse e-mail</label>
-              <input type="email" class="form-control" placeholder="exemple@mail.com" required>
-            </div>
-            <div class="form-group">
-              <label>Créer un mot de passe</label>
-              <input type="password" class="form-control" placeholder="••••••••" required>
-            </div>
-
-            <div class="checkbox-group">
-              <input type="checkbox" id="acceptTerms" required>
-              <label for="acceptTerms">J'accepte les <a href="index.html">Conditions d'Utilisation</a> et la <a href="index.html">Politique de Confidentialité</a>.</label>
-            </div>
-
-            <button type="submit" class="btn-auth">Créer mon compte</button>
-          </form>
-          <button class="btn-switch" onclick="switchTab('login')">Déjà un compte ? Se connecter</button>
-        </div>
-
-        <!-- Formulaire de Connexion -->
-        <div id="formLogin" class="auth-card" style="display: none;">
-          <form onsubmit="handleAuth(event, 'connexion')">
-            <div class="form-group">
-              <label>Adresse e-mail ou Téléphone</label>
-              <input type="text" class="form-control" placeholder="E-mail ou numéro" required>
-            </div>
-            <div class="form-group">
-              <label>Mot de passe</label>
-              <input type="password" class="form-control" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn-auth">Connexion</button>
-          </form>
-          <button class="btn-switch" onclick="switchTab('register')">Pas encore de compte ? S'inscrire</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BLOC PROFIL CONNECTÉ -->
-    <div id="profileBlock" style="display: none;">
-      <div class="profile-header">
-        <div class="avatar" id="userAvatar">U</div>
-        <div class="user-name" id="userName">Utilisateur</div>
-        <div class="user-address" id="userAddress"><i class="fa-solid fa-location-dot"></i> Adresse non spécifiée</div>
-        <div class="user-badge" id="userBadge">Client</div>
-      </div>
-
-      <div class="stats-container">
-        <div class="stat-item">
-          <span class="stat-value" id="statAnnonces">0</span>
-          <span class="stat-label">Annonces</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">0</span>
-          <span class="stat-label">Vues</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">0</span>
-          <span class="stat-label">Favoris</span>
-        </div>
-      </div>
-
-      <div class="action-container">
-        <a href="publier.html" class="action-link" id="linkPublier"><i class="fa-solid fa-circle-plus"></i> Mes Annonces</a>
-        <a href="#" class="action-link"><i class="fa-solid fa-heart"></i> Mes Favoris</a>
-        <a href="chat.html" class="action-link"><i class="fa-solid fa-message"></i> Mes Discussions</a>
-        <a href="parametres.html" class="action-link"><i class="fa-solid fa-gear"></i> Paramètres du compte</a>
-        <a href="admin.html" class="action-link" style="color: #d32f2f;"><i class="fa-solid fa-user-shield"></i> Panneau Administration</a>
-        <a href="#" class="action-link" onclick="logout()" style="color: #666;"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-      </div>
+  <main style="max-width: 500px; margin: 20px auto; padding: 0 15px;">
+    <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee; text-align: center;">
+      <div style="font-size: 50px; color: #d32f2f; margin-bottom: 10px;"><i class="fa-solid fa-circle-user"></i></div>
+      <h3 id="profileName" style="margin: 0; font-size: 16px; font-weight: bold;">Chargement...</h3>
+      <p id="profileEmail" style="color: #666; font-size: 12px; margin: 5px 0 15px 0;"></p>
+      <a href="compte-entrepreneur.html" style="display: block; background: #111; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 8px;">Gérer mes services publiés</a>
+      <a href="publier.html" style="display: block; background: #d32f2f; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">Publier un nouveau service</a>
     </div>
   </main>
 
   <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
+    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="nav-item active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <script>
-    let selectedRole = 'Client';
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    function selectRole(role) {
-      selectedRole = role;
-      document.getElementById('roleClient').className = 'role-option ' + (role === 'Client' ? 'selected' : '');
-      document.getElementById('roleEntrepreneur').className = 'role-option ' + (role === 'Entrepreneur' ? 'selected' : '');
-      
-      const isEntrepreneur = role === 'Entrepreneur';
-      document.getElementById('groupService').style.display = isEntrepreneur ? 'block' : 'none';
-      document.getElementById('labelName').innerText = isEntrepreneur ? "Nom complet / Nom de l'entreprise" : "Nom complet";
-    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+      authDomain: "camu-services.firebaseapp.com",
+      projectId: "camu-services",
+      storageBucket: "camu-services.firebasestorage.app",
+      messagingSenderId: "879100396449",
+      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
+    };
 
-    function switchTab(tab) {
-      const isRegister = tab === 'register';
-      document.getElementById('formRegister').style.display = isRegister ? 'block' : 'none';
-      document.getElementById('formLogin').style.display = isRegister ? 'none' : 'block';
-      document.getElementById('tabRegister').className = 'auth-tab ' + (isRegister ? 'active' : '');
-      document.getElementById('tabLogin').className = 'auth-tab ' + (isRegister ? '' : 'active');
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    function previewImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.getElementById('imgPreview');
-          img.src = e.target.result;
-          img.style.display = 'block';
-          document.querySelector('#photoPreview i').style.display = 'none';
+    async function loadProfile() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        let found = false;
+        querySnapshot.forEach((d) => {
+          const data = d.data();
+          if(!found) {
+            document.getElementById("profileName").innerText = data.fullName || data.name || "Utilisateur CAMU";
+            document.getElementById("profileEmail").innerText = data.email || "";
+            found = true;
+          }
+        });
+        if(!found) {
+          document.getElementById("profileName").innerText = "Aucun profil trouvé";
+          document.getElementById("profileEmail").innerText = "Veuillez vous inscrire";
         }
-        reader.readAsDataURL(file);
+      } catch(e) {
+        document.getElementById("profileName").innerText = "Erreur de chargement";
       }
     }
 
-    function handleAuth(event, type) {
-      event.preventDefault();
-      
-      if (type === 'inscription') {
-        const name = document.getElementById('regName').value;
-        const address = document.getElementById('regAddress').value;
-        const imgSrc = document.getElementById('imgPreview').src;
-
-        if (name) document.getElementById('userName').innerText = name;
-        if (address) document.getElementById('userAddress').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${address}`;
-        if (imgSrc && imgSrc !== window.location.href) {
-          document.getElementById('userAvatar').innerHTML = `<img src="${imgSrc}" alt="Avatar">`;
-        }
-        
-        document.getElementById('userBadge').innerText = selectedRole === 'Entrepreneur' ? 'Entrepreneur Vérifié' : 'Client';
-        
-        // Adapter la vue selon le rôle
-        if (selectedRole === 'Client') {
-          document.getElementById('linkPublier').style.display = 'none';
-          document.getElementById('statAnnonces').innerText = '-';
-        } else {
-          document.getElementById('linkPublier').style.display = 'flex';
-          document.getElementById('statAnnonces').innerText = '0';
-        }
-      }
-
-      document.getElementById('authBlock').style.display = 'none';
-      document.getElementById('profileBlock').style.display = 'block';
-      document.getElementById('headerTitle').innerText = "Mon Profil";
-    }
-
-    function logout() {
-      if (confirm("Se déconnecter de CAMU SERVICES ?")) {
-        document.getElementById('profileBlock').style.display = 'none';
-        document.getElementById('authBlock').style.display = 'block';
-        document.getElementById('headerTitle').innerText = "Mon Espace";
-      }
-    }
+    loadProfile();
   </script>
 </body>
 </html>
+
