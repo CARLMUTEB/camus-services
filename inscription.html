@@ -2,33 +2,50 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CAMU SERVICES — Inscription</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary: #d32f2f; --dark: #111111; --bg: #f9f9f9; --card-bg: #ffffff; --border: #eee; --text: #333; --text-light: #666; }
+    body { background-color: var(--bg); color: var(--text); margin: 0; padding-top: 60px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; }
+    .container { max-width: 450px; margin: 30px auto; padding: 15px; }
+    .card-box { background: var(--card-bg); border-radius: 10px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 5px; color: var(--text-light); text-transform: uppercase; }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; box-sizing: border-box; }
+    .btn-submit { background: var(--primary); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+  </style>
 </head>
-<body style="background: #f9f9f9; padding: 20px;">
+<body>
 
-  <div style="max-width: 400px; margin: 40px auto; background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee;">
-    <h2 style="text-align: center; font-size: 18px; color: #111; margin-bottom: 5px;">CAMU <span style="color: #d32f2f;">SERVICES</span></h2>
-    <p style="text-align: center; font-size: 11px; color: #666; margin-bottom: 20px;">TROUVER . ACHETER . RÉSERVER</p>
-    
-    <form id="signupForm">
-      <div style="margin-bottom: 12px;">
-        <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;">Nom complet</label>
-        <input type="text" id="fullName" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-      </div>
-      <div style="margin-bottom: 12px;">
-        <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;">Email</label>
-        <input type="email" id="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;">Mot de passe</label>
-        <input type="password" id="password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-      </div>
-      <button type="submit" style="width: 100%; background: #111; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">S'inscrire</button>
-    </form>
-  </div>
+  <header class="top-bar">
+    <a href="index.html" style="color: white; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i></a>
+    <div style="font-size: 16px; font-weight: 900;">CAMU <span style="color: var(--primary);">SERVICES</span></div>
+    <div style="width: 18px;"></div>
+  </header>
+
+  <main class="container">
+    <div class="card-box">
+      <h2 style="font-size: 16px; margin-top: 0; margin-bottom: 15px; text-align: center; color: var(--dark);">Créer un compte</h2>
+      <form id="inscriptionForm" onsubmit="inscrireUtilisateur(event)">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" id="nomInsc" placeholder="ex: Carl Muteb" required>
+        </div>
+        <div class="form-group">
+          <label>Adresse Email</label>
+          <input type="email" id="emailInsc" placeholder="ex: nom@domaine.com" required>
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="mdpInsc" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-submit">S'inscrire</button>
+      </form>
+    </div>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -46,27 +63,20 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    document.getElementById("signupForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const fullName = document.getElementById("fullName").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    window.inscrireUtilisateur = async function(event) {
+      event.preventDefault();
+      const name = document.getElementById('nomInsc').value.trim();
+      const email = document.getElementById('emailInsc').value.trim();
+      const status = 'actif';
 
       try {
-        await addDoc(collection(db, "users"), {
-          fullName,
-          email,
-          password,
-          role: "entrepreneur",
-          status: "actif",
-          createdAt: new Date()
-        });
-        alert("Compte créé avec succès !");
-        window.location.href = "profil.html";
-      } catch (err) {
-        alert("Erreur lors de l'inscription : " + err.message);
+        await addDoc(collection(db, "users"), { name, email, status, date: new Date() });
+        alert("Inscription réussie !");
+        window.location.href = "index.html";
+      } catch(e) {
+        alert("Erreur lors de l'inscription.");
       }
-    });
+    }
   </script>
 </body>
 </html>
