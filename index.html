@@ -74,7 +74,7 @@
     .footer-copyright { border-top: 1px solid #222222; padding-top: 15px; font-weight: 500; color: #777777; }
 
     /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-around: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
     .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
@@ -183,15 +183,15 @@
 
   <!-- JavaScript -->
   <script>
-    // COMPTEUR DE VISITES AUTOMATIQUE
+    // COMPTEUR DE VISITES AUTOMATIQUE (Mis à jour sur la v2)
     (function trackVisits() {
-      let raw = localStorage.getItem('camu_visites');
-      if (!raw || raw.includes('k') || isNaN(raw)) {
+      let raw = localStorage.getItem('camu_visites_v2');
+      if (!raw || isNaN(raw)) {
         raw = '0';
       }
       let count = parseInt(raw);
       count++;
-      localStorage.setItem('camu_visites', count.toString());
+      localStorage.setItem('camu_visites_v2', count.toString());
     })();
 
     function toggleSidebar() {
@@ -311,5 +311,5 @@
   </script>
 
 </body>
-</html>
-
+  </html>
+  
