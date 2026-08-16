@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Conditionnalités & Conditions d'Utilisation — CAMU SERVICES</title>
+  <title>CAMU SERVICES — Conditionnalités & Règles</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -11,20 +11,24 @@
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text { font-size: 18px; font-weight: 900; }
     .logo-text span { color: #d32f2f; }
     .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
 
-    /* Conteneur principal */
-    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
-    .card-page { background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    /* Container */
+    .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 
-    .page-title { font-size: 18px; font-weight: 900; color: #111; margin-bottom: 5px; }
-    .page-subtitle { font-size: 11px; color: #777; margin-bottom: 20px; border-bottom: 2px solid #d32f2f; padding-bottom: 8px; }
+    /* Header Card */
+    .page-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 15px; }
+    .page-title { font-size: 20px; font-weight: 900; color: #111; margin-bottom: 5px; }
+    .page-subtitle { font-size: 12px; color: #666; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; margin-bottom: 15px; }
 
-    .section-title { font-size: 14px; font-weight: 800; color: #d32f2f; margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    p, li { font-size: 13px; color: #444; line-height: 1.5; margin-bottom: 8px; }
-    ul { margin-left: 18px; margin-bottom: 12px; }
+    /* Rules Sections */
+    .rules-section { margin-bottom: 20px; }
+    .section-title { font-size: 15px; font-weight: 800; color: #d32f2f; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .rules-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .rules-list li { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px 15px; font-size: 13px; line-height: 1.5; color: #444; }
+    .rules-list li strong { color: #111; font-weight: 700; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -35,46 +39,71 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Fixe -->
   <header class="header-bar">
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="logo-text">CAMU <span>SERVICES</span></div>
-    <div style="width: 18px;"></div>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
   </header>
 
   <main class="container">
-    <div class="card-page">
+    <div class="page-card">
       <h1 class="page-title">Conditionnalités & Règles</h1>
-      <div class="page-subtitle">Dernière mise à jour : Août 2026 — Plateforme CAMU SERVICES</div>
+      <p class="page-subtitle">Dernière mise à jour : Août 2026 — Plateforme CAMU SERVICES</p>
 
-      <div class="section-title"><i class="fa-solid fa-laptop-code"></i> 1. Conditionnalités Techniques</div>
-      <ul>
-        <li><strong>Navigateur web moderne :</strong> L'utilisateur doit utiliser Google Chrome, Safari, Opera Mini ou Mozilla avec JavaScript activé.</li>
-        <li><strong>Support du localStorage :</strong> Le navigateur doit autoriser la mémoire locale pour enregistrer les sessions, favoris et annonces.</li>
-        <li><strong>Application WhatsApp :</strong> Requise pour la mise en relation directe via le bouton de contact.</li>
-      </ul>
+      <!-- 1. Conditionnalités Techniques (MIS À JOUR) -->
+      <div class="rules-section">
+        <h2 class="section-title"><i class="fa-solid fa-code"></i> 1. Conditionnalités Techniques</h2>
+        <ul class="rules-list">
+          <li>
+            <strong>Navigateur web moderne :</strong> L'utilisateur doit utiliser Google Chrome, Safari, Opera Mini ou Mozilla avec JavaScript activé.
+          </li>
+          <li>
+            <strong>Base de données Firebase :</strong> Le navigateur doit autoriser l'accès à Firebase Firestore et Firebase Auth pour la gestion des sessions, la publication des annonces et la synchronisation des favoris en temps réel.
+          </li>
+          <li>
+            <strong>Application WhatsApp & Connexion Internet :</strong> Une connexion Internet active et l'application WhatsApp sont requises pour la mise en relation directe via le bouton de contact.
+          </li>
+        </ul>
+      </div>
 
-      <div class="section-title"><i class="fa-solid fa-user-tie"></i> 2. Conditionnalités pour Prestataires</div>
-      <ul>
-        <li><strong>Informations exactes :</strong> Obligation de fournir un nom valide, une ville, une adresse et un numéro WhatsApp joignable.</li>
-        <li><strong>Authenticité des services :</strong> Proposer uniquement des produits et prestations réels et vérifiables.</li>
-        <li><strong>Responsabilité :</strong> Le prestataire est seul responsable de ses tarifs, de la qualité de ses services et de la réalisation des transactions.</li>
-      </ul>
+      <!-- 2. Conditionnalités pour Prestataires -->
+      <div class="rules-section">
+        <h2 class="section-title"><i class="fa-solid fa-user-tie"></i> 2. Conditionnalités pour Prestataires</h2>
+        <ul class="rules-list">
+          <li>
+            <strong>Informations exactes :</strong> Obligation de fournir un nom valide, une ville, une adresse et un numéro WhatsApp joignable.
+          </li>
+          <li>
+            <strong>Authenticité des services :</strong> Proposer uniquement des produits et prestations réels et vérifiables.
+          </li>
+          <li>
+            <strong>Responsabilité :</strong> Le prestataire est seul responsable de ses tarifs, de la qualité de ses services et de la réalisation des transactions.
+          </li>
+        </ul>
+      </div>
 
-      <div class="section-title"><i class="fa-solid fa-users"></i> 3. Conditionnalités pour les Clients</div>
-      <ul>
-        <li><strong>Contact direct :</strong> CAMU SERVICES sert d'intermédiaire d'affichage (vitrine). Les échanges et paiements s'effectuent directement avec le prestataire.</li>
-        <li><strong>Avis et évaluations :</strong> Les avis publiés doivent refléter une expérience réelle et respecter la courtoisie.</li>
-      </ul>
+      <!-- 3. Conditionnalités pour les Clients -->
+      <div class="rules-section">
+        <h2 class="section-title"><i class="fa-solid fa-users"></i> 3. Conditionnalités pour les Clients</h2>
+        <ul class="rules-list">
+          <li>
+            <strong>Utilisation conforme :</strong> Interdiction d'émettre de faux signalements ou de contacter les prestataires à des fins frauduleuses.
+          </li>
+          <li>
+            <strong>Négociation directe :</strong> Les échanges commerciaux s'effectuent directement entre le client et le prestataire via WhatsApp.
+          </li>
+        </ul>
+      </div>
+
     </div>
   </main>
 
-  <!-- Bottom Nav -->
+  <!-- Navigation Basse Fixe -->
   <nav class="bottom-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
     <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
 </body>
