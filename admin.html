@@ -7,47 +7,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 70px; display: none; } /* Masqué jusqu'à validation du mot de passe */
+    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 65px; }
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 18px; font-weight: 900; }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
     .logo-text span { color: #d32f2f; }
-    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
+    .back-btn { font-size: 20px; cursor: pointer; color: #fff; text-decoration: none; }
 
-    .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
+    /* Container */
+    .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
-    /* Cards & Blocks */
-    .admin-card { background: #ffffff; border-radius: 12px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; }
-    .admin-title { font-size: 15px; font-weight: 900; text-transform: uppercase; color: #111; margin-bottom: 12px; border-bottom: 2px solid #d32f2f; padding-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    /* Section Statistiques */
+    .section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
+    .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .stat-number { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; font-weight: 800; color: #666; text-transform: uppercase; }
 
-    /* Stats Grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
-    .stat-box { background: #f9f9fb; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; }
-    .stat-num { font-size: 20px; font-weight: 900; color: #111; }
-    .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; margin-top: 2px; }
-
-    /* Form Annonces Officielles */
-    .form-group { margin-bottom: 10px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #444; }
-    .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
-    textarea.form-control { resize: vertical; min-height: 70px; }
-    .btn-publier { width: 100%; background: #111; color: #fff; border: none; padding: 10px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; }
-
-    /* Liste des éléments */
-    .user-item, .report-item { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 12px; }
-    .user-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; margin-bottom: 4px; }
-    .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
-    .badge-actif { background: #e8f5e9; color: #2e7d32; }
-    .badge-averti { background: #fff3e0; color: #ef6c00; }
-    .badge-suspendu { background: #ffebee; color: #c62828; }
-
-    /* Actions buttons */
-    .action-group { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-    .btn-act { border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff; }
-    .btn-warn { background: #ef6c00; }
-    .btn-susp { background: #c62828; }
-    .btn-rest { background: #2e7d32; }
+    /* Formulaire Communiqué */
+    .card-form { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; }
+    .form-group textarea { resize: vertical; height: 90px; }
+    .btn-submit { background: #111; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -55,83 +39,53 @@
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
   </style>
-
-  <!-- SCRIPT DE SÉCURITÉ MOT DE PASSE -->
-  <script>
-    (function checkAdminAccess() {
-      const authKey = "camu_admin_authorized";
-      const SECRET_PASS = "Carl1800";
-
-      // Vérification de la session active
-      if (sessionStorage.getItem(authKey) === "true") {
-        document.addEventListener("DOMContentLoaded", () => {
-          document.body.style.display = "block";
-        });
-        return;
-      }
-
-      // Demande de mot de passe
-      const pass = prompt("Accès Administrateur — Veuillez entrer le mot de passe :");
-      if (pass === SECRET_PASS) {
-        sessionStorage.setItem(authKey, "true");
-        document.addEventListener("DOMContentLoaded", () => {
-          document.body.style.display = "block";
-        });
-      } else {
-        alert("Mot de passe incorrect. Accès refusé.");
-        window.location.href = "index.html";
-      }
-    })();
-  </script>
 </head>
 <body>
 
+  <!-- Header -->
   <header class="header-bar">
     <div class="logo-text">CAMU <span>SERVICES</span></div>
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
   </header>
 
   <main class="container">
-    
-    <!-- STATISTIQUES GLOBAL -->
-    <div class="admin-card">
-      <div class="admin-title"><i class="fa-solid fa-chart-pie"></i> Statistiques du Site</div>
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-num" id="statVisites">0</div><div class="stat-label">Visites</div></div>
-        <div class="stat-box"><div class="stat-num" id="statEntrepreneurs">0</div><div class="stat-label">Entrepreneurs</div></div>
-        <div class="stat-box"><div class="stat-num" id="statClients">0</div><div class="stat-label">Clients</div></div>
-        <div class="stat-box"><div class="stat-num" id="statSignalements">0</div><div class="stat-label">Signalements</div></div>
+    <!-- Statistiques du site -->
+    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color: #d32f2f;"></i> Statistiques du site</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="statVisites">0</div>
+        <div class="stat-label">Visites</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statEntrepreneurs">0</div>
+        <div class="stat-label">Entrepreneurs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statClients">0</div>
+        <div class="stat-label">Clients</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statSignalements">0</div>
+        <div class="stat-label">Signalements</div>
       </div>
     </div>
 
-    <!-- PUBLICATION OFFICIELLE -->
-    <div class="admin-card">
-      <div class="admin-title"><i class="fa-solid fa-bullhorn"></i> Communiqué Officiel</div>
+    <!-- Communiqué Officiel -->
+    <div class="card-form">
+      <div class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-bullhorn" style="color: #d32f2f;"></i> Communiqué officiel</div>
       <div class="form-group">
         <label>Titre de l'information</label>
-        <input type="text" id="infoTitre" class="form-control" placeholder="ex: Maintenance ou Nouvelle fonctionnalité">
+        <input type="text" id="commTitre" placeholder="ex: Maintenance ou Nouvelle fonctionnalité">
       </div>
       <div class="form-group">
         <label>Message aux utilisateurs</label>
-        <textarea id="infoMessage" class="form-control" placeholder="Écrivez votre communiqué ici..."></textarea>
+        <textarea id="commMessage" placeholder="Écrivez votre communiqué ici..."></textarea>
       </div>
-      <button class="btn-publier" onclick="publierInfoOfficielle()">Publier sur le site</button>
+      <button class="btn-submit" onclick="publierCommunique()">Publier sur le site</button>
     </div>
-
-    <!-- SIGNALEMENTS -->
-    <div class="admin-card">
-      <div class="admin-title"><i class="fa-solid fa-triangle-exclamation"></i> Signalements Récents</div>
-      <div id="reportsListContainer">Chargement des signalements...</div>
-    </div>
-
-    <!-- GESTION DES COMPTES -->
-    <div class="admin-card">
-      <div class="admin-title"><i class="fa-solid fa-users-gear"></i> Modération des Comptes</div>
-      <div id="usersListContainer">Chargement des comptes...</div>
-    </div>
-
   </main>
 
+  <!-- Navigation Basse Fixe -->
   <nav class="bottom-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
@@ -139,9 +93,10 @@
     <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
+  <!-- Script Firebase pour alimenter les statistiques -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -155,115 +110,76 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 1. Charger les Visites Totales
+    // 1. Écouter les Visites en temps réel
     onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
       if (docSnap.exists()) {
         document.getElementById("statVisites").innerText = docSnap.data().total || 0;
       }
     });
 
-    // 2. Charger Utilisateurs (Entrepreneurs vs Clients)
-    onSnapshot(collection(db, "users"), (snapshot) => {
-      let totalE = 0;
-      let totalC = 0;
-      let html = "";
+    // 2. Compter les utilisateurs (Entrepreneurs / Clients selon leur rôle dans la base)
+    async function chargerStatistiquesUtilisateurs() {
+      try {
+        const usersSnap = await getDocs(collection(db, "users"));
+        let entrepreneursCount = 0;
+        let clientsCount = 0;
 
-      snapshot.forEach((uDoc) => {
-        const u = uDoc.data();
-        const id = uDoc.id;
-        const role = u.role || "client";
-        const status = u.status || "actif";
-        const warnings = u.warningCount || 0;
+        usersSnap.forEach((uDoc) => {
+          const data = uDoc.data();
+          // Ajustez le filtre selon le champ stocké dans votre collection 'users' (ex: role, type, etc.)
+          if (data.role === 'entrepreneur' || data.type === 'entrepreneur') {
+            entrepreneursCount++;
+          } else {
+            clientsCount++;
+          }
+        });
 
-        if (role === "entrepreneur") totalE++;
-        else totalC++;
-
-        const risque = warnings >= 2 ? "ÉLEVÉE (Averti " + warnings + "x)" : (warnings === 1 ? "Moyenne" : "Faible");
-
-        html += `
-          <div class="user-item">
-            <div class="user-header">
-              <span>${u.nom || u.email || 'Utilisateur'} (${role})</span>
-              <span class="status-badge badge-${status}">${status.toUpperCase()}</span>
-            </div>
-            <div>Avertissements : <b>${warnings}</b> | Risque de suspension : <b>${risque}</b></div>
-            <div class="action-group">
-              <button class="btn-act btn-warn" onclick="avertirCompte('${id}', ${warnings})">Avertir</button>
-              <button class="btn-act btn-susp" onclick="suspendreCompte('${id}')">Suspendre</button>
-              <button class="btn-act btn-rest" onclick="retablirCompte('${id}')">Rétablir</button>
-            </div>
-          </div>`;
-      });
-
-      document.getElementById("statEntrepreneurs").innerText = totalE;
-      document.getElementById("statClients").innerText = totalC;
-      document.getElementById("usersListContainer").innerHTML = html || "Aucun compte disponible.";
-    });
-
-    // 3. Charger Signalements
-    onSnapshot(collection(db, "reports"), (snapshot) => {
-      document.getElementById("statSignalements").innerText = snapshot.size;
-      if (snapshot.empty) {
-        document.getElementById("reportsListContainer").innerHTML = "Aucun signalement.";
-        return;
+        document.getElementById("statEntrepreneurs").innerText = entrepreneursCount;
+        document.getElementById("statClients").innerText = clientsCount;
+      } catch (e) {
+        console.error("Erreur de comptage utilisateurs", e);
       }
-      let html = "";
-      snapshot.forEach((rDoc) => {
-        const r = rDoc.data();
-        html += `
-          <div class="report-item">
-            <b>Cible :</b> ${r.targetTitle || 'Annonce/Utilisateur'}<br>
-            <b>Raison :</b> ${r.reason || 'Non précisée'}<br>
-            <small style="color:#777">Par: ${r.reporterEmail || 'Anonyme'}</small>
-          </div>`;
-      });
-      document.getElementById("reportsListContainer").innerHTML = html;
-    });
+    }
 
-    // Actions Modération
-    window.avertirCompte = async (uid, count) => {
-      const raison = prompt("Raison de l'avertissement :");
-      if (!raison) return;
-      await updateDoc(doc(db, "users", uid), {
-        status: "averti",
-        warningCount: count + 1,
-        lastWarningReason: raison
-      });
-      alert("Avertissement envoyé.");
-    };
+    // 3. Compter les signalements
+    async function chargerSignalements() {
+      try {
+        const sigSnap = await getDocs(collection(db, "signalements"));
+        document.getElementById("statSignalements").innerText = sigSnap.size;
+      } catch (e) {
+        // Si la collection n'existe pas encore, affiche 0
+        document.getElementById("statSignalements").innerText = 0;
+      }
+    }
 
-    window.suspendreCompte = async (uid) => {
-      if (!confirm("Confirmer la suspension de ce compte ?")) return;
-      await updateDoc(doc(db, "users", uid), { status: "suspendu" });
-      alert("Compte suspendu.");
-    };
+    chargerStatistiquesUtilisateurs();
+    chargerSignalements();
 
-    window.retablirCompte = async (uid) => {
-      await updateDoc(doc(db, "users", uid), { status: "actif" });
-      alert("Compte rétabli.");
-    };
-
-    // Publication Officielle
-    window.publierInfoOfficielle = async () => {
-      const titre = document.getElementById("infoTitre").value;
-      const message = document.getElementById("infoMessage").value;
+    // Fonction de publication de communiqué
+    window.publierCommunique = async function() {
+      const titre = document.getElementById("commTitre").value;
+      const message = document.getElementById("commMessage").value;
 
       if (!titre || !message) {
-        alert("Veuillez remplir le titre et le message.");
+        alert("Veuillez remplir tous les champs du communiqué.");
         return;
       }
 
-      await addDoc(collection(db, "annonces_officielles"), {
-        titre: titre,
-        message: message,
-        createdAt: serverTimestamp()
-      });
-
-      document.getElementById("infoTitre").value = "";
-      document.getElementById("infoMessage").value = "";
-      alert("Information officielle publiée avec succès.");
+      try {
+        await addDoc(collection(db, "communiques"), {
+          titre: titre,
+          message: message,
+          date: new Date()
+        });
+        alert("Communiqué publié avec succès !");
+        document.getElementById("commTitre").value = "";
+        document.getElementById("commMessage").value = "";
+      } catch (e) {
+        alert("Erreur lors de la publication.");
+      }
     };
   </script>
+
 </body>
 </html>
 
