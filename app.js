@@ -1,52 +1,20 @@
-// Gestion de la barre latérale (Sidebar)
-function openSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  if (sidebar && overlay) {
-    sidebar.classList.add('active');
-    overlay.classList.add('active');
-  }
-}
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-function closeSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  if (sidebar && overlay) {
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-  }
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+  authDomain: "camu-services.firebaseapp.com",
+  projectId: "camu-services",
+  storageBucket: "camu-services.firebasestorage.app",
+  messagingSenderId: "879100396449",
+  appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
+};
 
-// Fonction de partage
-function shareAd(title, id) {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: `Regardez cette offre sur CAMU SERVICES : ${title}`,
-      url: window.location.href
-    }).catch(() => {});
-  } else {
-    alert("Lien de l'annonce copié !");
-  }
-}
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
-// Message de notification Toast
-function showToast(message) {
-  const toast = document.createElement('div');
-  toast.innerText = message;
-  toast.style.position = 'fixed';
-  toast.style.bottom = '80px';
-  toast.style.left = '50%';
-  toast.style.transform = 'translateX(-50%)';
-  toast.style.background = '#333';
-  toast.style.color = '#fff';
-  toast.style.padding = '10px 20px';
-  toast.style.borderRadius = '20px';
-  toast.style.fontSize = '12px';
-  toast.style.zIndex = '1000';
-  document.body.appendChild(toast);
+// Enregistrement d'une visite globale (optionnel pour les stats)
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("CAMU SERVICES - Application initialisée avec succès.");
+});
 
-  setTimeout(() => {
-    toast.remove();
-  }, 2500);
-}
