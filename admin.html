@@ -211,10 +211,13 @@
     }
 
     function initAdminData() {
-      // Nettoyage forcé si la valeur contient 'k' ou est égale à '1.2k'
-      let rawVisites = localStorage.getItem('camu_visites');
-      if (!rawVisites || rawVisites === '1.2k' || rawVisites.includes('k') || isNaN(rawVisites)) {
-        localStorage.setItem('camu_visites', '0');
+      // Nettoyage complet des anciennes clés
+      localStorage.removeItem('camu_visites');
+      
+      // Nouvelle variable de comptage propre
+      let rawVisites = localStorage.getItem('camu_visites_v2');
+      if (!rawVisites || isNaN(rawVisites)) {
+        localStorage.setItem('camu_visites_v2', '0');
         rawVisites = '0';
       }
 
@@ -308,5 +311,5 @@
   </script>
 
 </body>
-</html>
-
+          </html>
+  
