@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camu Services - Trouver . Acheter . Réserver</title>
+    <title>CAMU SERVICES — Trouver . Acheter . Réserver</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -12,55 +12,51 @@
     <!-- En-tête -->
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-blue-600">CAMU SERVICES</h1>
+            <h1 class="text-xl font-bold text-black">CAMU <span style="color:#d32f2f;">SERVICES</span></h1>
             <p class="text-sm text-gray-500 italic">TROUVER . ACHETER . RÉSERVER</p>
         </div>
     </header>
 
     <!-- Contenu principal -->
     <main class="max-w-7xl mx-auto px-4 py-12 text-center">
-        <h2 class="text-3xl font-extrabold mb-4">Bienvenue sur Camu Services</h2>
+        <h2 class="text-3xl font-extrabold mb-4">Bienvenue sur CAMU SERVICES</h2>
         <p class="text-lg text-gray-600 mb-8">Votre plateforme de services de confiance.</p>
-        <div class="p-6 bg-white rounded-lg shadow inline-block">
-            <p class="text-gray-500 text-sm">Visiteurs sur la plateforme :</p>
-            <span id="compteur-visites" class="text-2xl font-bold text-blue-600">Chargement...</span>
+        <div class="p-6 bg-white rounded-lg shadow inline-block border border-gray-100">
+            <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Visiteurs sur la plateforme :</p>
+            <span id="compteur-visites" class="text-3xl font-black text-red-600 mt-2 block">Chargement...</span>
         </div>
     </main>
 
     <!-- Script Firebase & Incrémentation -->
     <script type="module">
-        // Importez les fonctions Firebase nécessaires
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, updateDoc, increment, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // CONFIGURATION FIREBASE (Remplacez ces valeurs par vos propres clés de votre projet Firebase)
+        // Configuration Firebase identique à votre page d'administration
         const firebaseConfig = {
-            apiKey: "VOTRE_API_KEY",
-            authDomain: "VOTRE_AUTH_DOMAIN",
-            projectId: "VOTRE_PROJECT_ID",
-            storageBucket: "VOTRE_STORAGE_BUCKET",
-            messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-            appId: "VOTRE_APP_ID"
+            apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+            authDomain: "camu-services.firebaseapp.com",
+            projectId: "camu-services",
+            storageBucket: "camu-services.firebasestorage.app",
+            messagingSenderId: "879100396449",
+            appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
         };
 
-        // Initialisation
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Fonction pour enregistrer la visite et mettre à jour l'affichage
         async function gererVisites() {
             const visiteRef = doc(db, "stats", "visites");
             try {
-                // Incrémente de 1 dans Firestore
+                // Incrémente de 1 à chaque chargement de la page d'accueil
                 await updateDoc(visiteRef, {
                     total: increment(1)
                 });
             } catch (e) {
-                // Si le document n'existe pas encore, on l'initialise à 1
                 await setDoc(visiteRef, { total: 1 }, { merge: true });
             }
 
-            // Récupère la valeur actualisée pour l'afficher sur la page d'accueil si besoin
+            // Récupère et affiche la valeur mise à jour
             const docSnap = await getDoc(visiteRef);
             if (docSnap.exists()) {
                 const compteurElement = document.getElementById("compteur-visites");
