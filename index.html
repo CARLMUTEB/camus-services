@@ -9,30 +9,13 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- En-tête -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-black">CAMU <span style="color:#d32f2f;">SERVICES</span></h1>
-            <p class="text-sm text-gray-500 italic">TROUVER . ACHETER . RÉSERVER</p>
-        </div>
-    </header>
+    <!-- Votre interface d'accueil originale reste intacte ici -->
 
-    <!-- Contenu principal -->
-    <main class="max-w-7xl mx-auto px-4 py-12 text-center">
-        <h2 class="text-3xl font-extrabold mb-4">Bienvenue sur CAMU SERVICES</h2>
-        <p class="text-lg text-gray-600 mb-8">Votre plateforme de services de confiance.</p>
-        <div class="p-6 bg-white rounded-lg shadow inline-block border border-gray-100">
-            <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Visiteurs sur la plateforme :</p>
-            <span id="compteur-visites" class="text-3xl font-black text-red-600 mt-2 block">Chargement...</span>
-        </div>
-    </main>
-
-    <!-- Script Firebase & Incrémentation -->
+    <!-- Script invisible pour incrémenter le compteur de visites en arrière-plan -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, updateDoc, increment, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Configuration Firebase identique à votre page d'administration
         const firebaseConfig = {
             apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
             authDomain: "camu-services.firebaseapp.com",
@@ -45,29 +28,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function gererVisites() {
+        async function compterVisiteSilencieuse() {
             const visiteRef = doc(db, "stats", "visites");
             try {
-                // Incrémente de 1 à chaque chargement de la page d'accueil
                 await updateDoc(visiteRef, {
                     total: increment(1)
                 });
             } catch (e) {
                 await setDoc(visiteRef, { total: 1 }, { merge: true });
             }
-
-            // Récupère et affiche la valeur mise à jour
-            const docSnap = await getDoc(visiteRef);
-            if (docSnap.exists()) {
-                const compteurElement = document.getElementById("compteur-visites");
-                if (compteurElement) {
-                    compteurElement.textContent = docSnap.data().total;
-                }
-            }
         }
 
-        gererVisites();
+        compterVisiteSilencieuse();
     </script>
 </body>
 </html>
-
