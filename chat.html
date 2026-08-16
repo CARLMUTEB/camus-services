@@ -33,8 +33,9 @@
     /* Badge Unread */
     .unread-badge { background: #d32f2f; color: #fff; font-size: 11px; font-weight: 800; border-radius: 10px; padding: 2px 7px; margin-left: 8px; }
 
-    /* Empty state */
-    .empty-chat { text-align: center; padding: 40px 20px; color: #777; font-size: 14px; }
+    /* Login Banner */
+    .login-banner { background: #fff8f8; border: 1px solid #ffebeb; padding: 15px; text-align: center; font-size: 13px; color: #666; }
+    .login-link { color: #d32f2f; font-weight: 800; text-decoration: underline; margin-left: 5px; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -52,9 +53,9 @@
     <div style="width: 18px;"></div>
   </header>
 
-  <!-- Liste des discussions -->
-  <main class="chat-list" id="discussionsContainer">
-    <div class="empty-chat"><i class="fa-solid fa-spinner fa-spin"></i> Chargement des discussions...</div>
+  <!-- Container -->
+  <main id="mainContainer">
+    <div id="discussionsContainer" class="chat-list"></div>
   </main>
 
   <!-- Navigation Basse -->
@@ -86,12 +87,19 @@
     const container = document.getElementById("discussionsContainer");
 
     onAuthStateChanged(auth, (user) => {
+      // 1. Utilisateur NON connecté : Affiche le Support + bannière d'invitation
       if (!user) {
-        container.innerHTML = `<div class="empty-chat">Veuillez vous connecter pour voir vos messages.<br><br><a href="profil.html" style="color:#d32f2f; font-weight:bold;">Se connecter</a></div>`;
+        container.innerHTML = `
+          <div class="login-banner">
+            Connectez-vous pour échanger avec les entrepreneurs et retrouver vos conversations.
+            <a href="profil.html" class="login-link">Se connecter</a>
+          </div>
+          ${renderSupportItem()}
+        `;
         return;
       }
 
-      // Écoute des conversations où l'utilisateur est participant
+      // 2. Utilisateur Connecté : Charge les conversations réelles
       const q = query(
         collection(db, "chats"),
         where("participants", "array-contains", user.uid),
@@ -99,30 +107,18 @@
       );
 
       onSnapshot(q, (snapshot) => {
-        if (snapshot.empty) {
-          // Affichage par défaut du Support CAMU SERVICES si aucune discussion
-          renderDefaultSupport();
-          return;
-        }
-
         let html = "";
 
         snapshot.forEach((docSnap) => {
           const chat = docSnap.data();
           const chatId = docSnap.id;
 
-          // Récupération de l'interlocuteur (différent de soi-même)
           const partnerId = chat.participants.find(id => id !== user.uid);
           const partnerName = chat.participantNames?.[partnerId] || "Utilisateur";
-          
-          // Initiales pour l'avatar
           const initials = partnerName.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase() || "U";
-          
-          // Nombre de messages non lus
           const unreadCount = chat.unreadCount?.[user.uid] || 0;
           const badgeHtml = unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : "";
 
-          // Formattage heure
           let timeStr = "";
           if (chat.lastMessageTime) {
             const date = chat.lastMessageTime.toDate();
@@ -144,7 +140,7 @@
           `;
         });
 
-        // Ajout du Support en bas de liste
+        // Toujours ajouter le Support en bas
         html += renderSupportItem();
         container.innerHTML = html;
       });
@@ -163,10 +159,6 @@
           </div>
         </a>
       `;
-    }
-
-    function renderDefaultSupport() {
-      container.innerHTML = renderSupportItem();
     }
   </script>
 </body>
