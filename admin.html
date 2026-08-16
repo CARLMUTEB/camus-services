@@ -3,445 +3,310 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Administration</title>
-  
-  <!-- FontAwesome Icons -->
+  <title>CAMU ADMIN — Panneau de Contrôle</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f4f4f9; color: #333; padding-bottom: 30px; }
 
-    body {
-      background-color: #111111;
-      color: #333;
-      min-height: 100vh;
-    }
+    /* Header Admin */
+    .admin-header { position: sticky; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .logo-text span { color: #d32f2f; }
+    .btn-logout { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
 
-    .hidden { display: none !important; }
+    /* Login Overlay */
+    .login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111111; display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+    .login-card { background: #ffffff; border-radius: 12px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .login-card h2 { font-size: 18px; font-weight: 900; margin-bottom: 15px; color: #111; }
+    .login-card input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 16px; outline: none; }
+    .login-card button { width: 100%; padding: 12px; background: #111; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+    .login-error { color: #d32f2f; font-size: 12px; margin-top: 10px; display: none; font-weight: 700; }
 
-    /* Page de Connexion */
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 15px;
-    }
+    /* Tabs Navigation */
+    .admin-tabs { display: flex; background: #111111; border-top: 1px solid #222; }
+    .tab-btn { flex: 1; padding: 12px 5px; text-align: center; color: #888; font-size: 12px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
+    .tab-btn.active { color: #ffffff; border-bottom-color: #d32f2f; }
+    .tab-btn i { display: block; font-size: 15px; margin-bottom: 3px; }
 
-    .auth-card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 30px 20px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
+    /* Conteneur Principal */
+    .container { max-width: 500px; margin: 15px auto; padding: 0 15px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .icon-shield {
-      font-size: 42px;
-      color: #d32f2f;
-      margin-bottom: 12px;
-    }
+    /* Grille de Stats */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+    .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .stat-number { font-size: 26px; font-weight: 900; color: #d32f2f; margin-bottom: 2px; }
+    .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
 
-    .auth-card h2 {
-      font-size: 18px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 6px;
-    }
+    /* Bouton Retour */
+    .btn-back { display: block; width: 100%; padding: 12px; background: #111111; color: #ffffff; text-align: center; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 13px; margin-top: 15px; }
 
-    .auth-card p {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 20px;
-    }
+    /* Formulaires & Listes Admin */
+    .admin-panel { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 15px; }
+    .panel-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; text-transform: uppercase; color: #111; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
 
-    .input-group {
-      margin-bottom: 15px;
-    }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
+    .btn-submit { width: 100%; padding: 12px; background: #d32f2f; color: #fff; border: none; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; }
 
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      text-align: center;
-    }
+    /* Liste de Modération */
+    .item-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .item-info { font-size: 12px; }
+    .item-info strong { display: block; font-size: 13px; color: #111; }
+    .btn-delete { background: #ffebee; color: #c62828; border: none; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
-    .input-group input:focus {
-      border-color: #d32f2f;
-    }
-
-    .btn-login {
-      width: 100%;
-      background: #d32f2f;
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-login:active {
-      background: #b71c1c;
-    }
-
-    .error-msg {
-      color: #d32f2f;
-      font-size: 12px;
-      margin-top: 12px;
-      display: none;
-      font-weight: 600;
-    }
-
-    /* Dashboard Admin */
-    .admin-dashboard {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #f4f4f9;
-      min-height: 100vh;
-      padding-bottom: 30px;
-    }
-
-    .top-bar {
-      background: #111;
-      color: #fff;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .top-bar h3 { font-size: 16px; font-weight: 800; }
-    .top-bar h3 span { color: #d32f2f; }
-
-    .btn-logout {
-      background: #d32f2f;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* Tabs Bar */
-    .nav-tabs {
-      display: flex;
-      background: #222;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 12px 10px;
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      text-align: center;
-    }
-
-    .tab-btn.active {
-      color: #fff;
-      border-bottom-color: #d32f2f;
-      background: #1a1a1a;
-    }
-
-    .content-area {
-      padding: 15px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      border: 1px solid #e0e0e0;
-    }
-
-    .card h4 {
-      font-size: 14px;
-      margin-bottom: 10px;
-      color: #111;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Formulaires */
-    .form-control {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-bottom: 10px;
-      outline: none;
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      height: 80px;
-    }
-
-    .btn-primary {
-      background: #d32f2f;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .stat-box {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      border: 1px solid #e0e0e0;
-    }
-
-    .stat-box .num {
-      font-size: 22px;
-      font-weight: 800;
-      color: #d32f2f;
-    }
-
-    .stat-box .label {
-      font-size: 11px;
-      color: #666;
-    }
-
-    /* Lists */
-    .item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .item-row:last-child { border-bottom: none; }
-
-    .item-info h5 { font-size: 12px; font-weight: 700; color: #111; }
-    .item-info p { font-size: 10px; color: #777; }
-
-    .actions { display: flex; gap: 5px; }
-
-    .btn-sm {
-      padding: 5px 8px;
-      border-radius: 4px;
-      border: none;
-      font-size: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      color: #fff;
-    }
-
-    .btn-green { background: #25D366; }
-    .btn-red { background: #d32f2f; }
-    .btn-orange { background: #ff9800; }
-
-    .btn-back-site {
-      display: block;
-      text-align: center;
-      background: #111;
-      color: #fff;
-      padding: 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 15px;
-    }
+    .empty-msg { text-align: center; color: #888; font-size: 12px; padding: 20px 0; }
   </style>
 </head>
 <body>
 
-  <!-- Écran de connexion -->
-  <div id="login-box" class="login-container">
-    <div class="auth-card">
-      <i class="fa-solid fa-user-shield icon-shield"></i>
-      <h2>Accès Sécurisé</h2>
-      <p>Entrez le mot de passe administrateur</p>
-
-      <form onsubmit="verifyAdminPassword(event)">
-        <div class="input-group">
-          <input type="password" id="admin-pass-input" placeholder="Mot de passe" required autocomplete="off">
-        </div>
-        <button type="submit" class="btn-login">Se connecter</button>
-        <div id="error-msg" class="error-msg">Mot de passe incorrect !</div>
-      </form>
+  <!-- Connexion Sécurisée Admin -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-card">
+      <h2>Espace Admin</h2>
+      <input type="password" id="adminPassword" placeholder="Mot de passe admin">
+      <button onclick="checkPassword()">Connexion</button>
+      <div class="login-error" id="loginError">Mot de passe incorrect !</div>
     </div>
   </div>
 
-  <!-- Dashboard Admin -->
-  <div id="admin-panel" class="admin-dashboard hidden">
+  <!-- Header Admin -->
+  <header class="admin-header">
+    <div class="logo-text">CAMU <span>ADMIN</span></div>
+    <button class="btn-logout" onclick="logout()">Déconnexion</button>
+  </header>
+
+  <!-- Onglets Nav -->
+  <nav class="admin-tabs">
+    <div class="tab-btn active" onclick="switchTab('stats', this)">
+      <i class="fa-solid fa-chart-pie"></i> Stats
+    </div>
+    <div class="tab-btn" onclick="switchTab('publier', this)">
+      <i class="fa-solid fa-bullhorn"></i> Publier
+    </div>
+    <div class="tab-btn" onclick="switchTab('moderation', this)">
+      <i class="fa-solid fa-shield-halved"></i> Modération
+    </div>
+    <div class="tab-btn" onclick="switchTab('comptes', this)">
+      <i class="fa-solid fa-users"></i> Comptes
+    </div>
+  </nav>
+
+  <main class="container">
     
-    <div class="top-bar">
-      <h3>CAMU <span>ADMIN</span></h3>
-      <button class="btn-logout" onclick="logoutAdmin()">Déconnexion</button>
+    <!-- Onglet 1 : Statistiques -->
+    <div class="tab-content active" id="tab-stats">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="statAnnonces">0</div>
+          <div class="stat-label">Annonces Actives</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statComptes">0</div>
+          <div class="stat-label">Entrepreneurs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statSignalements">0</div>
+          <div class="stat-label">Signalements</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statVisites">0</div>
+          <div class="stat-label">Visites Totales</div>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
     </div>
 
-    <!-- Menu des Onglets -->
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchAdminTab('tab-stats', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
-      <button class="tab-btn" onclick="switchAdminTab('tab-publish', this)"><i class="fa-solid fa-bullhorn"></i> Publier</button>
-      <button class="tab-btn" onclick="switchAdminTab('tab-moderation', this)"><i class="fa-solid fa-shield-halved"></i> Modération</button>
-      <button class="tab-btn" onclick="switchAdminTab('tab-users', this)"><i class="fa-solid fa-users-gear"></i> Comptes</button>
+    <!-- Onglet 2 : Publier une annonce -->
+    <div class="tab-content" id="tab-publier">
+      <div class="admin-panel">
+        <div class="panel-title">Publier une annonce officielle</div>
+        <form id="adminPublishForm" onsubmit="adminPublish(event)">
+          <div class="form-group">
+            <label>Titre de l'annonce</label>
+            <input type="text" id="pubTitle" placeholder="Ex: VIP Lounge & Terrasse" required>
+          </div>
+          <div class="form-group">
+            <label>Catégorie</label>
+            <select id="pubCategory" required>
+              <option value="bars-lounges">Bars & Lounges</option>
+              <option value="restaurants">Restaurants</option>
+              <option value="hotels">Hôtels & Hébergements</option>
+              <option value="vehicules">Véhicules & Pièces</option>
+              <option value="vente-maisons">Vente de Maisons</option>
+              <option value="maisons-louer">Maisons à Louer</option>
+              <option value="telephones">Téléphones & Tablettes</option>
+              <option value="electronique">Électronique & Informatique</option>
+              <option value="agriculture">Agriculture & Élevage</option>
+              <option value="electricite">Travaux & Électricité</option>
+              <option value="divers">Divers & Services</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Localisation</label>
+            <input type="text" id="pubLocation" placeholder="Ex: Lubumbashi, Centre-Ville" required>
+          </div>
+          <div class="form-group">
+            <label>Prix / Tarif</label>
+            <input type="text" id="pubPrice" placeholder="Ex: Réservation Table / $50" required>
+          </div>
+          <div class="form-group">
+            <label>URL de l'image (Optionnel)</label>
+            <input type="url" id="pubImage" placeholder="https://...">
+          </div>
+          <button type="submit" class="btn-submit">Publier sur le site</button>
+        </form>
+      </div>
     </div>
 
-    <div class="content-area">
-
-      <!-- TAB 1: STATISTIQUES -->
-      <div id="tab-stats" class="tab-content">
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="num">18</div>
-            <div class="label">Annonces Actives</div>
-          </div>
-          <div class="stat-box">
-            <div class="num">7</div>
-            <div class="label">Entrepreneurs</div>
-          </div>
-          <div class="stat-box">
-            <div class="num">2</div>
-            <div class="label">Signalements</div>
-          </div>
-          <div class="stat-box">
-            <div class="num">1.2k</div>
-            <div class="label">Visites totales</div>
-          </div>
+    <!-- Onglet 3 : Modération des annonces -->
+    <div class="tab-content" id="tab-moderation">
+      <div class="admin-panel">
+        <div class="panel-title">Gestion & Modération des annonces</div>
+        <div id="moderationList">
+          <!-- Chargé dynamiquement -->
         </div>
       </div>
-
-      <!-- TAB 2: PUBLICATION OFFICIELLE -->
-      <div id="tab-publish" class="tab-content hidden">
-        <div class="card">
-          <h4><i class="fa-solid fa-upload" style="color:#d32f2f;"></i> Diffuser une annonce / vidéo / photo</h4>
-          <input type="text" class="form-control" placeholder="Titre de la publication officielle...">
-          <textarea class="form-control" placeholder="Message ou détails de l'annonce officielle..."></textarea>
-          <label style="font-size: 11px; font-weight: bold; margin-bottom: 5px; display: block;">Ajouter Photo ou Vidéo</label>
-          <input type="file" class="form-control" accept="image/*,video/*">
-          <button class="btn-primary" onclick="alert('Publication officielle diffusée sur le site !')">Publier officiellement</button>
-        </div>
-      </div>
-
-      <!-- TAB 3: MODÉRATION & SIGNALEMENTS -->
-      <div id="tab-moderation" class="tab-content hidden">
-        <div class="card">
-          <h4><i class="fa-solid fa-triangle-exclamation" style="color:#ff9800;"></i> Gestion des Signalements</h4>
-          <div class="item-row" id="rep-1">
-            <div class="item-info">
-              <h5>Service Maintenance Groupe</h5>
-              <p>Signalé pour : Numéro erroné</p>
-            </div>
-            <div class="actions">
-              <button class="btn-sm btn-red" onclick="removeItem('rep-1')">Supprimer</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h4><i class="fa-solid fa-clock" style="color:#d32f2f;"></i> Annonces en attente</h4>
-          <div class="item-row" id="pending-1">
-            <div class="item-info">
-              <h5>Installation Solaire 5KW</h5>
-              <p>Par: Carl Muteb • Sur Devis</p>
-            </div>
-            <div class="actions">
-              <button class="btn-sm btn-green" onclick="removeItem('pending-1')">Valider</button>
-              <button class="btn-sm btn-red" onclick="removeItem('pending-1')">Refuser</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 4: GESTION DES COMPTES -->
-      <div id="tab-users" class="tab-content hidden">
-        <div class="card">
-          <h4><i class="fa-solid fa-user-check" style="color:#d32f2f;"></i> Liste des Entrepreneurs</h4>
-          
-          <div class="item-row" id="usr-1">
-            <div class="item-info">
-              <h5>Carl Muteb</h5>
-              <p>Électricité Industrial • +243...</p>
-            </div>
-            <div class="actions">
-              <button class="btn-sm btn-orange" onclick="alert('Compte suspendu.')">Suspendre</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <a href="index.html" class="btn-back-site"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
-
     </div>
 
-  </div>
+    <!-- Onglet 4 : Gestion des Comptes -->
+    <div class="tab-content" id="tab-comptes">
+      <div class="admin-panel">
+        <div class="panel-title">Utilisateurs enregistrés</div>
+        <div id="comptesList">
+          <!-- Chargé dynamiquement -->
+        </div>
+      </div>
+    </div>
+
+  </main>
 
   <script>
-    function verifyAdminPassword(event) {
-      event.preventDefault();
-      const pwd = document.getElementById('admin-pass-input').value.trim();
-      const errorMsg = document.getElementById('error-msg');
+    // Mot de passe par défaut pour la démo
+    const ADMIN_PASS = "1234";
 
-      // Vérification directe (Sensible à la casse)
-      if (pwd === "Carl1800") {
-        document.getElementById('login-box').classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
-        errorMsg.style.display = 'none';
+    function checkPassword() {
+      const pass = document.getElementById('adminPassword').value;
+      if (pass === ADMIN_PASS) {
+        document.getElementById('loginModal').style.display = 'none';
+        sessionStorage.setItem('camu_admin_logged', 'true');
+        initAdminData();
       } else {
-        errorMsg.style.display = 'block';
+        document.getElementById('loginError').style.display = 'block';
       }
     }
 
-    function logoutAdmin() {
-      document.getElementById('admin-pass-input').value = '';
-      document.getElementById('login-box').classList.remove('hidden');
-      document.getElementById('admin-panel').classList.add('hidden');
+    function logout() {
+      sessionStorage.removeItem('camu_admin_logged');
+      location.reload();
     }
 
-    function switchAdminTab(tabId, btnElement) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-      document.getElementById(tabId).classList.remove('hidden');
-      btnElement.classList.add('active');
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      element.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
     }
 
-    function removeItem(elementId) {
-      const el = document.getElementById(elementId);
-      if (el) el.remove();
+    function initAdminData() {
+      // 1. Visites
+      let visites = parseInt(localStorage.getItem('camu_visites') || '1200');
+      visites++;
+      localStorage.setItem('camu_visites', visites);
+      document.getElementById('statVisites').innerText = visites >= 1000 ? (visites / 1000).toFixed(1) + 'k' : visites;
+
+      // 2. Annonces
+      const annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
+      document.getElementById('statAnnonces').innerText = annonces.length;
+
+      // 3. Comptes Utilisateurs
+      const comptes = JSON.parse(localStorage.getItem('camu_users') || '[]');
+      document.getElementById('statComptes').innerText = comptes.length || 1;
+
+      // 4. Signalements
+      document.getElementById('statSignalements').innerText = '0';
+
+      loadModerationList(annonces);
+      loadComptesList(comptes);
     }
+
+    function loadModerationList(annonces) {
+      const container = document.getElementById('moderationList');
+      if (annonces.length === 0) {
+        container.innerHTML = '<div class="empty-msg">Aucune annonce publiée.</div>';
+        return;
+      }
+
+      container.innerHTML = annonces.map((item, index) => `
+        <div class="item-row">
+          <div class="item-info">
+            <strong>${item.title}</strong>
+            <span>${item.location} • ${item.price}</span>
+          </div>
+          <button class="btn-delete" onclick="deleteAnnonce(${index})"><i class="fa-solid fa-trash"></i> Supprimer</button>
+        </div>
+      `).join('');
+    }
+
+    function loadComptesList(comptes) {
+      const container = document.getElementById('comptesList');
+      if (comptes.length === 0) {
+        container.innerHTML = '<div class="empty-msg">Aucun utilisateur enregistré pour le moment.</div>';
+        return;
+      }
+
+      container.innerHTML = comptes.map((user, index) => `
+        <div class="item-row">
+          <div class="item-info">
+            <strong>${user.name || 'Utilisateur #' + (index + 1)}</strong>
+            <span>${user.phone || 'Pas de numéro'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function deleteAnnonce(index) {
+      if (confirm("Voulez-vous vraiment supprimer cette annonce ?")) {
+        let annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
+        annonces.splice(index, 1);
+        localStorage.setItem('camu_annonces', JSON.stringify(annonces));
+        initAdminData();
+      }
+    }
+
+    function adminPublish(e) {
+      e.preventDefault();
+      const newAnnonce = {
+        title: document.getElementById('pubTitle').value,
+        category: document.getElementById('pubCategory').value,
+        location: document.getElementById('pubLocation').value,
+        price: document.getElementById('pubPrice').value,
+        image: document.getElementById('pubImage').value || ''
+      };
+
+      let annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
+      annonces.unshift(newAnnonce);
+      localStorage.setItem('camu_annonces', JSON.stringify(annonces));
+
+      alert("Annonce publiée avec succès !");
+      document.getElementById('adminPublishForm').reset();
+      initAdminData();
+      switchTab('stats', document.querySelectorAll('.tab-btn')[0]);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      if (sessionStorage.getItem('camu_admin_logged') === 'true') {
+        document.getElementById('loginModal').style.display = 'none';
+        initAdminData();
+      }
+    });
   </script>
 
 </body>
 </html>
+
