@@ -66,7 +66,7 @@
     .no-annonces { text-align: center; padding: 40px 15px; color: #777; font-size: 14px; }
     .no-annonces i { font-size: 36px; color: #ccc; margin-bottom: 10px; display: block; }
 
-    /* Footer / Pied de page */
+    /* Footer */
     .site-footer { background: #111111; color: #888888; padding: 25px 15px; text-align: center; margin-top: 20px; font-size: 12px; }
     .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
     .footer-links a { color: #cccccc; text-decoration: none; font-weight: 600; font-size: 12px; }
@@ -156,7 +156,7 @@
 
     <!-- Grille d'Annonces Dynamique -->
     <div class="container" id="annoncesContainer">
-      <!-- Les annonces publiées apparaîtront ici dynamiquement -->
+      <!-- Annonces insérées dynamiquement -->
     </div>
   </main>
 
@@ -183,9 +183,16 @@
 
   <!-- JavaScript -->
   <script>
-    // Enregistrement d'une visite réelle dans la mémoire locale
-    let visitesActuelles = parseInt(localStorage.getItem('camu_visites') || '0');
-    localStorage.setItem('camu_visites', visitesActuelles + 1);
+    // COMPTEUR DE VISITES AUTOMATIQUE
+    (function trackVisits() {
+      let raw = localStorage.getItem('camu_visites');
+      if (!raw || raw.includes('k') || isNaN(raw)) {
+        raw = '0';
+      }
+      let count = parseInt(raw);
+      count++;
+      localStorage.setItem('camu_visites', count.toString());
+    })();
 
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
@@ -304,5 +311,5 @@
   </script>
 
 </body>
-  </html>
-  
+</html>
+
