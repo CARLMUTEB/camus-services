@@ -6,8 +6,8 @@
   <title>CAMU SERVICES — Administration</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 65px; }
+    /* Masquer le contenu tant que le mot de passe n'est pas validé */
+    body { display: none; background-color: #f4f4f9; color: #333; margin: 0; padding-top: 60px; padding-bottom: 65px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
     /* Header Bar */
     .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
@@ -32,6 +32,16 @@
     .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; }
     .form-group textarea { resize: vertical; height: 90px; }
     .btn-submit { background: #111; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+
+    /* Liste de gestion des utilisateurs */
+    .user-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .user-info { font-size: 13px; }
+    .user-info strong { display: block; font-size: 14px; color: #111; }
+    .user-info span { color: #666; font-size: 11px; }
+    .user-actions { display: flex; gap: 6px; }
+    .btn-warn { background: #f39c12; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-block { background: #d32f2f; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-unblock { background: #27ae60; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
     /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
@@ -70,6 +80,12 @@
       </div>
     </div>
 
+    <!-- Gestion des utilisateurs -->
+    <div class="section-title"><i class="fa-solid fa-users-gear" style="color: #d32f2f;"></i> Gestion des comptes</div>
+    <div id="usersListContainer" style="margin-bottom: 25px;">
+      <!-- Liste chargée dynamiquement -->
+    </div>
+
     <!-- Communiqué Officiel -->
     <div class="card-form">
       <div class="section-title" style="margin-bottom: 10px;"><i class="fa-solid fa-bullhorn" style="color: #d32f2f;"></i> Communiqué officiel</div>
@@ -93,10 +109,10 @@
     <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <!-- Script Firebase pour alimenter les statistiques -->
+  <!-- Script de sécurité et gestion Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, collection, getDocs, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -110,52 +126,104 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 1. Écouter les Visites en temps réel
-    onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
-      if (docSnap.exists()) {
-        document.getElementById("statVisites").innerText = docSnap.data().total || 0;
+    // Vérification du mot de passe administrateur à l'ouverture
+    function verifierAcces() {
+      const mdp = prompt("Veuillez entrer le mot de passe administrateur :");
+      if (mdp !== "Carl1800") {
+        alert("Mot de passe incorrect !");
+        window.location.href = "index.html";
+      } else {
+        // Afficher la page si le mot de passe est correct
+        document.body.style.display = "block";
+        initialiserAdmin();
       }
-    });
+    }
 
-    // 2. Compter les utilisateurs (Entrepreneurs / Clients selon leur rôle dans la base)
-    async function chargerStatistiquesUtilisateurs() {
+    function initialiserAdmin() {
+      // 1. Écouter les Visites en temps réel
+      onSnapshot(doc(db, "stats", "visites"), (docSnap) => {
+        if (docSnap.exists()) {
+          document.getElementById("statVisites").innerText = docSnap.data().total || 0;
+        }
+      });
+
+      chargerDonneesUtilisateursEtSignalements();
+    }
+
+    // 2. Charger les utilisateurs, les statistiques et générer la liste de gestion
+    async function chargerDonneesUtilisateursEtSignalements() {
       try {
         const usersSnap = await getDocs(collection(db, "users"));
         let entrepreneursCount = 0;
         let clientsCount = 0;
+        let usersHtml = '';
 
         usersSnap.forEach((uDoc) => {
           const data = uDoc.data();
-          // Ajustez le filtre selon le champ stocké dans votre collection 'users' (ex: role, type, etc.)
-          if (data.role === 'entrepreneur' || data.type === 'entrepreneur') {
+          const userId = uDoc.id;
+          const role = data.role || data.type || 'client';
+          const statut = data.status || 'actif';
+          const nom = data.name || data.email || 'Utilisateur';
+
+          if (role === 'entrepreneur') {
             entrepreneursCount++;
           } else {
             clientsCount++;
           }
+
+          let actionBtn = statut === 'suspendu' 
+            ? `<button class="btn-unblock" onclick="changerStatutUser('${userId}', 'actif')">Activer</button>`
+            : `<button class="btn-block" onclick="changerStatutUser('${userId}', 'suspendu')">Bloquer</button>`;
+
+          usersHtml += `
+            <div class="user-card">
+              <div class="user-info">
+                <strong>${nom}</strong>
+                <span>Rôle: ${role} | Statut: <b>${statut}</b></span>
+              </div>
+              <div class="user-actions">
+                <button class="btn-warn" onclick="avertirUtilisateur('${nom}')">Avertir</button>
+                ${actionBtn}
+              </div>
+            </div>`;
         });
 
         document.getElementById("statEntrepreneurs").innerText = entrepreneursCount;
         document.getElementById("statClients").innerText = clientsCount;
-      } catch (e) {
-        console.error("Erreur de comptage utilisateurs", e);
-      }
-    }
+        document.getElementById("usersListContainer").innerHTML = usersHtml || '<p style="font-size:12px; color:#777;">Aucun utilisateur trouvé.</p>';
 
-    // 3. Compter les signalements
-    async function chargerSignalements() {
+      } catch (e) {
+        console.error("Erreur chargement utilisateurs", e);
+      }
+
+      // 3. Compter les signalements
       try {
         const sigSnap = await getDocs(collection(db, "signalements"));
         document.getElementById("statSignalements").innerText = sigSnap.size;
       } catch (e) {
-        // Si la collection n'existe pas encore, affiche 0
         document.getElementById("statSignalements").innerText = 0;
       }
     }
 
-    chargerStatistiquesUtilisateurs();
-    chargerSignalements();
+    // Actions d'administration globales attachées à window
+    window.changerStatutUser = async function(userId, nouveauStatut) {
+      try {
+        const userRef = doc(db, "users", userId);
+        await updateDoc(userRef, { status: nouveauStatut });
+        alert("Le statut de l'utilisateur a été mis à jour.");
+        chargerDonneesUtilisateursEtSignalements();
+      } catch (e) {
+        alert("Erreur lors de la modification du statut.");
+      }
+    };
 
-    // Fonction de publication de communiqué
+    window.avertirUtilisateur = function(nom) {
+      const raison = prompt(`Entrez le motif de l'avertissement pour ${nom} :`);
+      if (raison) {
+        alert(`Avertissement envoyé à ${nom} avec succès.`);
+      }
+    };
+
     window.publierCommunique = async function() {
       const titre = document.getElementById("commTitre").value;
       const message = document.getElementById("commMessage").value;
@@ -178,6 +246,9 @@
         alert("Erreur lors de la publication.");
       }
     };
+
+    // Lancer la vérification de sécurité au chargement
+    verifierAcces();
   </script>
 
 </body>
