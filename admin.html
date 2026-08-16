@@ -2,314 +2,107 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU ADMIN — Panneau de Contrôle</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration — CAMU SERVICES</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-bottom: 30px; }
-
-    /* Header Admin */
-    .admin-header { position: sticky; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
-    .logo-text span { color: #d32f2f; }
-    .btn-logout { background: #d32f2f; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
-
-    /* Login Modal */
-    .login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111111; display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-    .login-card { background: #ffffff; border-radius: 12px; padding: 25px 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-    .login-card h2 { font-size: 18px; font-weight: 900; margin-bottom: 15px; color: #111; }
-    .login-card input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 16px; outline: none; }
-    .login-card button { width: 100%; padding: 12px; background: #111; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
-    .login-error { color: #d32f2f; font-size: 12px; margin-top: 10px; display: none; font-weight: 700; }
-
-    /* Tabs Nav */
-    .admin-tabs { display: flex; background: #111111; border-top: 1px solid #222; }
-    .tab-btn { flex: 1; padding: 12px 5px; text-align: center; color: #888; font-size: 12px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
-    .tab-btn.active { color: #ffffff; border-bottom-color: #d32f2f; }
-    .tab-btn i { display: block; font-size: 15px; margin-bottom: 3px; }
-
-    /* Container */
-    .container { max-width: 500px; margin: 15px auto; padding: 0 15px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* Stats Grid */
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .stat-card { background: #ffffff; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-    .stat-number { font-size: 26px; font-weight: 900; color: #d32f2f; margin-bottom: 2px; }
-    .stat-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
-
-    .btn-back { display: block; width: 100%; padding: 12px; background: #111111; color: #ffffff; text-align: center; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 13px; margin-top: 15px; }
-
-    /* Forms & Lists */
-    .admin-panel { background: #ffffff; border-radius: 12px; padding: 15px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 15px; }
-    .panel-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; text-transform: uppercase; color: #111; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
-
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; outline: none; }
-    .btn-submit { width: 100%; padding: 12px; background: #d32f2f; color: #fff; border: none; border-radius: 6px; font-weight: 800; font-size: 13px; cursor: pointer; }
-
-    .item-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-    .item-info { font-size: 12px; }
-    .item-info strong { display: block; font-size: 13px; color: #111; }
-    .btn-delete { background: #ffebee; color: #c62828; border: none; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; cursor: pointer; }
-
-    .empty-msg { text-align: center; color: #888; font-size: 12px; padding: 20px 0; }
+    body { font-family: sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h1 { font-size: 18px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 2px solid #d32f2f; padding-bottom: 5px; }
+    .item-row { border-bottom: 1px solid #eee; padding: 12px 0; display: flex; flex-direction: column; gap: 8px; }
+    .item-info { font-size: 13px; }
+    .item-info strong { display: block; font-size: 14px; }
+    .actions { display: flex; gap: 6px; width: 100%; }
+    .btn { flex: 1; border: none; padding: 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .btn-warn { background: #fff3e0; color: #e65100; }
+    .btn-suspend { background: #ffebee; color: #c62828; }
+    .btn-restore { background: #e8f5e9; color: #2e7d32; }
   </style>
 </head>
 <body>
 
-  <!-- Connexion Admin -->
-  <div class="login-modal" id="loginModal">
-    <div class="login-card">
-      <h2>Espace Admin</h2>
-      <input type="password" id="adminPassword" placeholder="Mot de passe admin">
-      <button onclick="checkPassword()">Connexion</button>
-      <div class="login-error" id="loginError">Mot de passe incorrect !</div>
-    </div>
+  <div class="container">
+    <h1>Gestion des comptes entrepreneurs</h1>
+    <div>Total comptes : <b id="statComptes">0</b></div>
+    <div id="comptesList" style="margin-top: 15px;">Chargement...</div>
   </div>
 
-  <!-- Header Admin -->
-  <header class="admin-header">
-    <div class="logo-text">CAMU <span>ADMIN</span></div>
-    <button class="btn-logout" onclick="logout()">Déconnexion</button>
-  </header>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  <!-- Onglets Nav -->
-  <nav class="admin-tabs">
-    <div class="tab-btn active" onclick="switchTab('stats', this)">
-      <i class="fa-solid fa-chart-pie"></i> Stats
-    </div>
-    <div class="tab-btn" onclick="switchTab('publier', this)">
-      <i class="fa-solid fa-bullhorn"></i> Publier
-    </div>
-    <div class="tab-btn" onclick="switchTab('moderation', this)">
-      <i class="fa-solid fa-shield-halved"></i> Modération
-    </div>
-    <div class="tab-btn" onclick="switchTab('comptes', this)">
-      <i class="fa-solid fa-users"></i> Comptes
-    </div>
-  </nav>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+      authDomain: "camu-services.firebaseapp.com",
+      projectId: "camu-services",
+      storageBucket: "camu-services.firebasestorage.app",
+      messagingSenderId: "879100396449",
+      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
+    };
 
-  <main class="container">
-    
-    <!-- Onglet 1 : Stats -->
-    <div class="tab-content active" id="tab-stats">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number" id="statAnnonces">0</div>
-          <div class="stat-label">Annonces Actives</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="statComptes">0</div>
-          <div class="stat-label">Entrepreneurs</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="statSignalements">0</div>
-          <div class="stat-label">Signalements</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="statVisites">0</div>
-          <div class="stat-label">Visites Totales</div>
-        </div>
-      </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-      <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Retour au site web</a>
-    </div>
+    async function loadAdminStats() {
+      try {
+        const usersSnap = await getDocs(collection(db, "users"));
+        document.getElementById('statComptes').innerText = usersSnap.size;
 
-    <!-- Onglet 2 : Publier -->
-    <div class="tab-content" id="tab-publier">
-      <div class="admin-panel">
-        <div class="panel-title">Publier une annonce officielle</div>
-        <form id="adminPublishForm" onsubmit="adminPublish(event)">
-          <div class="form-group">
-            <label>Titre de l'annonce</label>
-            <input type="text" id="pubTitle" placeholder="Ex: VIP Lounge & Terrasse" required>
-          </div>
-          <div class="form-group">
-            <label>Catégorie</label>
-            <select id="pubCategory" required>
-              <option value="bars-lounges">Bars & Lounges</option>
-              <option value="restaurants">Restaurants</option>
-              <option value="hotels">Hôtels & Hébergements</option>
-              <option value="vehicules">Véhicules & Pièces</option>
-              <option value="vente-maisons">Vente de Maisons</option>
-              <option value="maisons-louer">Maisons à Louer</option>
-              <option value="telephones">Téléphones & Tablettes</option>
-              <option value="electronique">Électronique & Informatique</option>
-              <option value="agriculture">Agriculture & Élevage</option>
-              <option value="electricite">Travaux & Électricité</option>
-              <option value="divers">Divers & Services</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Localisation</label>
-            <input type="text" id="pubLocation" placeholder="Ex: Lubumbashi, Centre-Ville" required>
-          </div>
-          <div class="form-group">
-            <label>Prix / Tarif</label>
-            <input type="text" id="pubPrice" placeholder="Ex: Réservation Table / $50" required>
-          </div>
-          <div class="form-group">
-            <label>URL de l'image (Optionnel)</label>
-            <input type="url" id="pubImage" placeholder="https://...">
-          </div>
-          <button type="submit" class="btn-submit">Publier sur le site</button>
-        </form>
-      </div>
-    </div>
+        let comptesHtml = '';
+        usersSnap.forEach((docSnap) => {
+          const user = docSnap.data();
+          const userId = docSnap.id;
+          const status = user.status || 'actif';
+          const warnings = user.warnings || 0;
+          const isSuspended = status === 'suspendu';
 
-    <!-- Onglet 3 : Modération -->
-    <div class="tab-content" id="tab-moderation">
-      <div class="admin-panel">
-        <div class="panel-title">Gestion & Modération des annonces</div>
-        <div id="moderationList">
-          <!-- Chargé dynamiquement -->
-        </div>
-      </div>
-    </div>
+          comptesHtml += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${user.name || 'Entrepreneur'}</strong>
+                <span>${user.email || 'Pas d\'email'} | Statut: <b style="color:${isSuspended ? '#c62828' : '#2e7d32'}">${status.toUpperCase()}</b> | Avertissements: ${warnings}/3</span>
+              </div>
+              <div class="actions">
+                <button onclick="window.warnUser('${userId}', ${warnings})" class="btn btn-warn">⚠️ Avertir</button>
+                ${isSuspended ? 
+                  `<button onclick="window.restoreUser('${userId}')" class="btn btn-restore">✅ Rétablir</button>` : 
+                  `<button onclick="window.suspendUser('${userId}')" class="btn btn-suspend">🚫 Suspendre</button>`
+                }
+              </div>
+            </div>`;
+        });
+        document.getElementById('comptesList').innerHTML = comptesHtml || 'Aucun utilisateur.';
+      } catch (e) { console.error("Erreur admin:", e); }
+    }
 
-    <!-- Onglet 4 : Comptes -->
-    <div class="tab-content" id="tab-comptes">
-      <div class="admin-panel">
-        <div class="panel-title">Utilisateurs enregistrés</div>
-        <div id="comptesList">
-          <!-- Chargé dynamiquement -->
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <script>
-    const ADMIN_PASS = "Carl1800";
-
-    function checkPassword() {
-      const pass = document.getElementById('adminPassword').value;
-      if (pass === ADMIN_PASS) {
-        document.getElementById('loginModal').style.display = 'none';
-        sessionStorage.setItem('camu_admin_logged', 'true');
-        initAdminData();
+    window.warnUser = async function(id, currentWarnings) {
+      const newWarnings = currentWarnings + 1;
+      const updateData = { warnings: newWarnings };
+      if (newWarnings >= 3) {
+        updateData.status = "suspendu";
+        alert("3 avertissements atteints : le compte a été suspendu.");
       } else {
-        document.getElementById('loginError').style.display = 'block';
+        alert(`Avertissement envoyé (${newWarnings}/3).`);
       }
-    }
+      await updateDoc(doc(db, "users", id), updateData);
+      loadAdminStats();
+    };
 
-    function logout() {
-      sessionStorage.removeItem('camu_admin_logged');
-      location.reload();
-    }
-
-    function switchTab(tabName, element) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      
-      element.classList.add('active');
-      document.getElementById('tab-' + tabName).classList.add('active');
-    }
-
-    function initAdminData() {
-      // Nettoyage complet des anciennes clés
-      localStorage.removeItem('camu_visites');
-      
-      // Nouvelle variable de comptage propre
-      let rawVisites = localStorage.getItem('camu_visites_v2');
-      if (!rawVisites || isNaN(rawVisites)) {
-        localStorage.setItem('camu_visites_v2', '0');
-        rawVisites = '0';
+    window.suspendUser = async function(id) {
+      if (confirm("Suspendre ce compte ?")) {
+        await updateDoc(doc(db, "users", id), { status: "suspendu" });
+        loadAdminStats();
       }
+    };
 
-      let visites = parseInt(rawVisites);
-      document.getElementById('statVisites').innerText = visites >= 1000 ? (visites / 1000).toFixed(1) + 'k' : visites;
-
-      // Récupération des autres compteurs
-      const annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
-      document.getElementById('statAnnonces').innerText = annonces.length;
-
-      const comptes = JSON.parse(localStorage.getItem('camu_users') || '[]');
-      document.getElementById('statComptes').innerText = comptes.length;
-
-      const signalements = JSON.parse(localStorage.getItem('camu_reports') || '[]');
-      document.getElementById('statSignalements').innerText = signalements.length;
-
-      loadModerationList(annonces);
-      loadComptesList(comptes);
-    }
-
-    function loadModerationList(annonces) {
-      const container = document.getElementById('moderationList');
-      if (annonces.length === 0) {
-        container.innerHTML = '<div class="empty-msg">Aucune annonce publiée.</div>';
-        return;
+    window.restoreUser = async function(id) {
+      if (confirm("Rétablir ce compte ?")) {
+        await updateDoc(doc(db, "users", id), { status: "actif", warnings: 0 });
+        loadAdminStats();
       }
+    };
 
-      container.innerHTML = annonces.map((item, index) => `
-        <div class="item-row">
-          <div class="item-info">
-            <strong>${item.title}</strong>
-            <span>${item.location} • ${item.price}</span>
-          </div>
-          <button class="btn-delete" onclick="deleteAnnonce(${index})"><i class="fa-solid fa-trash"></i> Supprimer</button>
-        </div>
-      `).join('');
-    }
-
-    function loadComptesList(comptes) {
-      const container = document.getElementById('comptesList');
-      if (comptes.length === 0) {
-        container.innerHTML = '<div class="empty-msg">Aucun utilisateur enregistré pour le moment.</div>';
-        return;
-      }
-
-      container.innerHTML = comptes.map((user, index) => `
-        <div class="item-row">
-          <div class="item-info">
-            <strong>${user.name || 'Utilisateur #' + (index + 1)}</strong>
-            <span>${user.phone || 'Pas de numéro'}</span>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function deleteAnnonce(index) {
-      if (confirm("Voulez-vous vraiment supprimer cette annonce ?")) {
-        let annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
-        annonces.splice(index, 1);
-        localStorage.setItem('camu_annonces', JSON.stringify(annonces));
-        initAdminData();
-      }
-    }
-
-    function adminPublish(e) {
-      e.preventDefault();
-      const newAnnonce = {
-        title: document.getElementById('pubTitle').value,
-        category: document.getElementById('pubCategory').value,
-        location: document.getElementById('pubLocation').value,
-        price: document.getElementById('pubPrice').value,
-        image: document.getElementById('pubImage').value || ''
-      };
-
-      let annonces = JSON.parse(localStorage.getItem('camu_annonces') || '[]');
-      annonces.unshift(newAnnonce);
-      localStorage.setItem('camu_annonces', JSON.stringify(annonces));
-
-      alert("Annonce publiée avec succès !");
-      document.getElementById('adminPublishForm').reset();
-      initAdminData();
-      switchTab('stats', document.querySelectorAll('.tab-btn')[0]);
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      if (sessionStorage.getItem('camu_admin_logged') === 'true') {
-        document.getElementById('loginModal').style.display = 'none';
-        initAdminData();
-      }
-    });
+    document.addEventListener("DOMContentLoaded", loadAdminStats);
   </script>
-
 </body>
-          </html>
-  
+</html>
+
