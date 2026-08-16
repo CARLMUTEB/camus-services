@@ -38,7 +38,7 @@
     .login-link { color: #d32f2f; font-weight: 800; text-decoration: underline; margin-left: 5px; }
 
     /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-space-around; padding: 8px 0; z-index: 1000; height: 65px; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
     .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
     .bottom-nav a.active { color: #d32f2f; }
     .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
@@ -87,7 +87,6 @@
     const container = document.getElementById("discussionsContainer");
 
     onAuthStateChanged(auth, (user) => {
-      // Si l'utilisateur n'est PAS connecté
       if (!user) {
         container.innerHTML = `
           <div class="login-banner">
@@ -99,7 +98,6 @@
         return;
       }
 
-      // Si l'utilisateur EST connecté
       const q = query(
         collection(db, "chats"),
         where("participants", "array-contains", user.uid),
@@ -140,7 +138,6 @@
           `;
         });
 
-        // Ajout systématique du Support en bas de la liste
         html += renderSupportItem();
         container.innerHTML = html;
       });
