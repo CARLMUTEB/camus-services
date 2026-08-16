@@ -34,7 +34,7 @@
     .btn-submit { background: #111; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
     /* Liste de gestion des utilisateurs */
-    .user-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .user-card { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
     .user-info { font-size: 13px; }
     .user-info strong { display: block; font-size: 14px; color: #111; }
     .user-info span { color: #666; font-size: 11px; }
@@ -133,7 +133,6 @@
         alert("Mot de passe incorrect !");
         window.location.href = "index.html";
       } else {
-        // Afficher la page si le mot de passe est correct
         document.body.style.display = "block";
         initialiserAdmin();
       }
