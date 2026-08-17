@@ -1,162 +1,32 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CAMU SERVICES — Discussions</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - CAMU</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #ffffff; color: #333; padding-top: 60px; padding-bottom: 70px; }
-
-    /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .header-title { font-size: 18px; font-weight: 800; }
-    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
-
-    /* List Discussions */
-    .chat-list { display: flex; flex-direction: column; }
-    .chat-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: inherit; position: relative; transition: background 0.2s; }
-    .chat-item:active { background: #f9f9f9; }
-
-    /* Avatar Circle */
-    .avatar { width: 50px; height: 50px; border-radius: 50%; background: #d32f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin-right: 15px; flex-shrink: 0; }
-    .avatar.support { background: #111111; }
-
-    /* Content */
-    .chat-info { flex: 1; overflow: hidden; }
-    .chat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    .chat-name { font-size: 15px; font-weight: 800; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .chat-time { font-size: 11px; color: #999; }
-    .chat-preview { font-size: 13px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* Badge Unread */
-    .unread-badge { background: #d32f2f; color: #fff; font-size: 11px; font-weight: 800; border-radius: 10px; padding: 2px 7px; margin-left: 8px; }
-
-    /* Login Banner */
-    .login-banner { background: #fff8f8; border: 1px solid #ffebeb; padding: 15px; text-align: center; font-size: 13px; color: #666; }
-    .login-link { color: #d32f2f; font-weight: 800; text-decoration: underline; margin-left: 5px; }
-
-    /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
-  </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header class="header-bar">
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="header-title">Discussions</div>
-    <div style="width: 18px;"></div>
+  <header class="top-bar">
+    <div class="logo-text">CAMU <span>CHAT</span></div><div></div>
   </header>
 
-  <!-- Container -->
-  <main id="mainContainer">
-    <div id="discussionsContainer" class="chat-list"></div>
+  <main class="container">
+    <div class="section-title">Mes Messages</div>
+    <div id="chatList">
+      <div class="annonce-card">
+        <h3><i class="fa-solid fa-user"></i> Support CAMU</h3>
+        <p style="font-size:12px;">Bienvenue sur CAMU SERVICES</p>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#666;">Le vrai chat Firebase arrive à l'étape 2</p>
+    </div>
   </main>
 
-  <!-- Navigation Basse -->
   <nav class="bottom-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
     <a href="chat.html" class="active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
     <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-      authDomain: "camu-services.firebaseapp.com",
-      projectId: "camu-services",
-      storageBucket: "camu-services.firebasestorage.app",
-      messagingSenderId: "879100396449",
-      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const container = document.getElementById("discussionsContainer");
-
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        container.innerHTML = `
-          <div class="login-banner">
-            Connectez-vous pour échanger avec les entrepreneurs et retrouver vos conversations.
-            <a href="profil.html" class="login-link">Se connecter</a>
-          </div>
-          ${renderSupportItem()}
-        `;
-        return;
-      }
-
-      const q = query(
-        collection(db, "chats"),
-        where("participants", "array-contains", user.uid),
-        orderBy("lastMessageTime", "desc")
-      );
-
-      onSnapshot(q, (snapshot) => {
-        let html = "";
-
-        snapshot.forEach((docSnap) => {
-          const chat = docSnap.data();
-          const chatId = docSnap.id;
-
-          const partnerId = chat.participants.find(id => id !== user.uid);
-          const partnerName = chat.participantNames?.[partnerId] || "Utilisateur";
-          const initials = partnerName.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase() || "U";
-          const unreadCount = chat.unreadCount?.[user.uid] || 0;
-          const badgeHtml = unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : "";
-
-          let timeStr = "";
-          if (chat.lastMessageTime) {
-            const date = chat.lastMessageTime.toDate();
-            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          }
-
-          html += `
-            <a href="conversation.html?id=${chatId}" class="chat-item">
-              <div class="avatar">${initials}</div>
-              <div class="chat-info">
-                <div class="chat-header">
-                  <span class="chat-name">${partnerName}</span>
-                  <span class="chat-time">${timeStr}</span>
-                </div>
-                <div class="chat-preview">${chat.lastMessage || 'Nouvelle discussion'}</div>
-              </div>
-              ${badgeHtml}
-            </a>
-          `;
-        });
-
-        html += renderSupportItem();
-        container.innerHTML = html;
-      });
-    });
-
-    function renderSupportItem() {
-      return `
-        <a href="conversation.html?id=support" class="chat-item">
-          <div class="avatar support">CS</div>
-          <div class="chat-info">
-            <div class="chat-header">
-              <span class="chat-name">Support CAMU SERVICES</span>
-              <span class="chat-time">24h/7</span>
-            </div>
-            <div class="chat-preview">Bienvenue sur CAMU SERVICES ! N'hésitez pas si vous avez des questions.</div>
-          </div>
-        </a>
-      `;
-    }
-  </script>
 </body>
 </html>
