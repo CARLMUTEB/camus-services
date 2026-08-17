@@ -1,61 +1,152 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  signOut 
+/**
+ * CAMU SERVICES
+ * Gestion centralisée de l'authentification
+ */
+
+import {
+  auth,
+  db
+} from "./app.js";
+
+import {
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-  getFirestore, 
-  doc, 
-  getDoc, 
-  setDoc, 
-  serverTimestamp 
+
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Configuration Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-  authDomain: "camu-services.firebaseapp.com",
-  projectId: "camu-services",
-  storageBucket: "camu-services.firebasestorage.app",
-  messagingSenderId: "879100396449",
-  appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
-};
 
-// Initialisation
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// =====================================================
+// UTILISATEUR ACTUEL
+// =====================================================
 
-// Surveillance de l'état de connexion & Vérification du statut
+let currentUser = null;
+
+let currentUserData = null;
+
+
+// =====================================================
+// SURVEILLANCE AUTHENTIFICATION
+// =====================================================
+
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
+  currentUser = user;
 
-      // Vérification si le compte est suspendu par l'admin
-      if (userData.status === "suspendu") {
-        alert("Votre compte a été suspendu par l'administrateur. Accès refusé.");
-        await signOut(auth);
-        window.location.href = "login.html";
-        return;
-      }
-    } else {
-      // Création automatique du document utilisateur dans Firestore s'il n'existe pas
-      await setDoc(userRef, {
-        uid: user.uid,
-        nom: user.displayName || "Entrepreneur",
-        email: user.email || "",
-        status: "actif",
-        createdAt: serverTimestamp()
-      });
-    }
+  if (!user) {
+
+    currentUserData = null;
+
+    return;
+
   }
+
+
+  try {
+
+    const userRef =
+      doc(db, "users", user.uid);
+
+    const userSnap =
+      await getDoc(userRef);
+
+
+    // -------------------------------------------------
+    // CRÉATION DU PROFIL FIRESTORE
+    // -------------------------------------------------
+
+    if (!userSnap.exists()) {
+
+      const newUser = {
+
+        uid: user.uid,
+
+        nom:
+          user.displayName ||
+          "Utilisateur",
+
+        email:
+          user.email ||
+          "",
+
+        role: "client",
+
+        status: "actif",
+
+        createdAt:
+          serverTimestamp()
+
+      };
+
+
+      await setDoc(
+        userRef,
+        newUser
+      );
+
+      currentUserData = newUser;
+
+    }
+
+    else {
+
+      currentUserData =
+        userSnap.data();
+
+    }
+
+
+    // -------------------------------------------------
+    // COMPTE SUSPENDU
+    // -------------------------------------------------
+
+    if (
+      currentUserData.status ===
+      "suspendu"
+    ) {
+
+      alert(
+        "Votre compte a été suspendu par l'administrateur."
+      );
+
+      await signOut(auth);
+
+      window.location.href =
+        "connexion.html";
+
+      return;
+
+    }
+
+
+    console.log(
+      "Utilisateur connecté :",
+      user.uid
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Erreur vérification utilisateur :",
+      error
+    );
+
+  }
+
 });
 
-// Exportation des instances pour réutilisation dans d'autres modules
-export { auth, db };
 
+// =====================================================
+// EXPORTS
+// =====================================================
+
+export {
+  currentUser,
+  currentUserData
+};
