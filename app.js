@@ -1,6 +1,25 @@
+/**
+ * CAMU SERVICES
+ * Application : Marketplace de services locaux
+ * Version : 1.0
+ *
+ * Fichier central Firebase
+ */
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+import {
+  getAuth
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+import {
+  getFirestore
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+// =====================================================
+// CONFIGURATION FIREBASE
+// =====================================================
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -11,18 +30,77 @@ const firebaseConfig = {
   appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
 };
 
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
 
-export async function inscriptionClient(email, password, nom) {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
-  await setDoc(doc(db, "users", cred.user.uid), { 
-    uid: cred.user.uid, 
-    nom, 
-    email, 
-    role: "client", 
-    status: "actif", 
-    createdAt: serverTimestamp() 
+// =====================================================
+// INITIALISATION
+// =====================================================
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+
+function setupNavigation() {
+
+  const currentPage =
+    window.location.pathname.split("/").pop() || "index.html";
+
+  const navLinks =
+    document.querySelectorAll(".nav-item");
+
+  navLinks.forEach((link) => {
+
+    const href = link.getAttribute("href");
+
+    if (
+      href === currentPage ||
+      (currentPage === "" && href === "index.html")
+    ) {
+
+      link.classList.add("active");
+
+    }
+
   });
+
 }
+
+
+// =====================================================
+// INITIALISATION APPLICATION
+// =====================================================
+
+function initApp() {
+
+  console.log("CAMU SERVICES — Application initialisée");
+
+  setupNavigation();
+
+}
+
+
+// =====================================================
+// DOM READY
+// =====================================================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  initApp
+);
+
+
+// =====================================================
+// EXPORTS
+// =====================================================
+
+export {
+  app,
+  auth,
+  db
+};
