@@ -1,75 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAMU SERVICES - Mon Profil</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background: #f9f9f9; padding-bottom: 70px;">
-
-  <header class="top-bar" style="background: #111; padding: 15px; color: white; display: flex; align-items: center; justify-content: space-between;">
-    <h2 style="font-size: 16px; margin: 0; color: white;">Mon Profil</h2>
-    <a href="admin.html" style="color: #d32f2f; font-size: 12px; font-weight: bold; text-decoration: none;"><i class="fa-solid fa-lock"></i> Admin</a>
-  </header>
-
-  <main style="max-width: 500px; margin: 20px auto; padding: 0 15px;">
-    <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee; text-align: center;">
-      <div style="font-size: 50px; color: #d32f2f; margin-bottom: 10px;"><i class="fa-solid fa-circle-user"></i></div>
-      <h3 id="profileName" style="margin: 0; font-size: 16px; font-weight: bold;">Chargement...</h3>
-      <p id="profileEmail" style="color: #666; font-size: 12px; margin: 5px 0 15px 0;"></p>
-      <a href="compte-entrepreneur.html" style="display: block; background: #111; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 8px;">Gérer mes services publiés</a>
-      <a href="publier.html" style="display: block; background: #d32f2f; color: white; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">Publier un nouveau service</a>
+<body>
+  <header class="top-bar"><h2>Mon Profil</h2><a href="admin.html" style="color: #d32f2f;"><i class="fa-solid fa-lock"></i> Admin</a></header>
+  <main class="container">
+    <div class="profile-card">
+      <div class="avatar-box"><i class="fa-solid fa-circle-user"></i></div>
+      <h3 id="profileName" class="user-name">Chargement...</h3>
+      <p id="profileEmail" class="user-role"></p>
+      <a href="compte-entrepreneur.html" class="btn-submit" style="background: #111; margin-bottom: 8px; display: block;">Gérer mes services</a>
+      <a href="publier.html" class="btn-submit" style="display: block;">Publier un service</a>
+      <button class="btn-logout" onclick="deconnexion()" style="margin-top: 15px;">Se déconnecter</button>
     </div>
   </main>
-
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="nav-item active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
   </nav>
-
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-      authDomain: "camu-services.firebaseapp.com",
-      projectId: "camu-services",
-      storageBucket: "camu-services.firebasestorage.app",
-      messagingSenderId: "879100396449",
-      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function loadProfile() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        let found = false;
-        querySnapshot.forEach((d) => {
-          const data = d.data();
-          if(!found) {
-            document.getElementById("profileName").innerText = data.fullName || data.name || "Utilisateur CAMU";
-            document.getElementById("profileEmail").innerText = data.email || "";
-            found = true;
-          }
-        });
-        if(!found) {
-          document.getElementById("profileName").innerText = "Aucun profil trouvé";
-          document.getElementById("profileEmail").innerText = "Veuillez vous inscrire";
-        }
-      } catch(e) {
-        document.getElementById("profileName").innerText = "Erreur de chargement";
-      }
-    }
-
-    loadProfile();
+    import { db, auth, signOut } from './app.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) { const data = snap.data(); document.getElementById("profileName").innerText = data.nom; document.getElementById("profileEmail").innerText = data.email; }
+      } else { window.location.href = "inscription.html"; }
+    });
+    window.deconnexion = async () => { await signOut(auth); window.location.href = "index.html"; }
   </script>
 </body>
 </html>
-
