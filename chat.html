@@ -5,28 +5,62 @@
   <title>Chat - CAMU</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .chat-box{height:70vh;overflow-y:auto;background:white;border-radius:10px;padding:10px;margin-bottom:10px}
+    .msg{padding:8px 12px;border-radius:15px;margin:5px 0;max-width:70%}
+    .moi{background:#d32f2f;color:white;margin-left:auto}
+    .lui{background:#eee;margin-right:auto}
+    .chat-input{display:flex;gap:5px}
+    .chat-input input{flex:1;border:1px solid #ddd;border-radius:20px;padding:10px}
+  </style>
 </head>
 <body>
-  <header class="top-bar">
-    <div class="logo-text">CAMU <span>CHAT</span></div><div></div>
-  </header>
+  <header class="top-bar"><a href="index.html"><i class="fa-solid fa-arrow-left"></i></a><div>Conversation</div><div></div></header>
 
   <main class="container">
-    <div class="section-title">Mes Messages</div>
-    <div id="chatList">
-      <div class="annonce-card">
-        <h3><i class="fa-solid fa-user"></i> Support CAMU</h3>
-        <p style="font-size:12px;">Bienvenue sur CAMU SERVICES</p>
-      </div>
-      <p style="text-align:center;font-size:12px;color:#666;">Le vrai chat Firebase arrive à l'étape 2</p>
-    </div>
+    <div id="chatBox" class="chat-box"></div>
+    <form class="chat-input" onsubmit="envoyerMsg(event)">
+      <input type="text" id="msgInput" placeholder="Ecrire un message..." required>
+      <button type="submit" style="background:#d32f2f;color:white;border:none;border-radius:50%;width:40px"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
   </main>
 
-  <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html" class="active"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
-  </nav>
+  <script type="module">
+    import { db, auth } from './app.js';
+    import { collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to'); const service = params.get('service');
+    let myId = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if(user){ myId = user.uid; loadChat(); } 
+      else { window.location.href = "inscription.html"; }
+    });
+
+    const chatId = [myId, to].sort().join("_"); // ID unique pour la conv
+
+    function loadChat(){
+      const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt"));
+      onSnapshot(q, (snap) => {
+        let html = '';
+        snap.forEach(d => {
+          const m = d.data();
+          const classe = m.from === myId ? 'moi' : 'lui';
+          html += `<div class="msg ${classe}">${m.text}</div>`;
+        });
+        document.getElementById('chatBox').innerHTML = html;
+      });
+    }
+
+    window.envoyerMsg = async (e) => {
+      e.preventDefault();
+      const text = document.getElementById('msgInput').value;
+      await addDoc(collection(db, "chats", chatId, "messages"), {
+        from: myId, to, serviceId: service, text, createdAt: serverTimestamp()
+      });
+      document.getElementById('msgInput').value = '';
+    }
+  </script>
 </body>
 </html>
