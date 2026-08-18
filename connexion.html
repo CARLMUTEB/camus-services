@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CAMU SERVICES — Connexion</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <a href="index.html"
+       style="color:white;text-decoration:none;font-size:18px;">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h1>
+      CAMU <span>SERVICES</span>
+    </h1>
+
+    <div></div>
+
+  </header>
+
+
+  <!-- CONTENU -->
+  <main class="container">
+
+    <div class="card-box">
+
+      <div style="text-align:center;margin-bottom:20px;">
+
+        <i class="fa-solid fa-user-circle"
+           style="font-size:55px;color:#d32f2f;">
+        </i>
+
+        <h2 style="margin-top:10px;">
+          Connexion
+        </h2>
+
+        <p style="font-size:12px;color:#666;">
+          Connectez-vous à votre compte CAMU SERVICES
+        </p>
+
+      </div>
+
+
+      <!-- FORMULAIRE -->
+
+      <form id="connexionForm">
+
+        <div class="form-group">
+
+          <label>Adresse Email</label>
+
+          <input
+            type="email"
+            id="emailConnexion"
+            placeholder="exemple@email.com"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>Mot de passe</label>
+
+          <input
+            type="password"
+            id="motDePasseConnexion"
+            placeholder="Votre mot de passe"
+            required
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn-submit"
+          id="btnConnexion">
+
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Se connecter
+
+        </button>
+
+      </form>
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="messageConnexion"
+        style="
+          display:none;
+          margin-top:15px;
+          padding:10px;
+          border-radius:8px;
+          font-size:12px;
+          text-align:center;
+        ">
+      </div>
+
+
+      <!-- INSCRIPTION -->
+
+      <div style="
+        text-align:center;
+        margin-top:20px;
+        font-size:12px;
+        color:#666;
+      ">
+
+        Vous n'avez pas encore de compte ?
+
+        <a
+          href="inscription.html"
+          style="
+            color:#d32f2f;
+            font-weight:bold;
+            text-decoration:none;
+          ">
+
+          Créer un compte
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="bottom-nav">
+
+    <a href="index.html">
+
+      <i class="fa-solid fa-house"></i>
+
+      <span>Accueil</span>
+
+    </a>
+
+
+    <a href="publier.html">
+
+      <i class="fa-solid fa-circle-plus"></i>
+
+      <span>Publier</span>
+
+    </a>
+
+
+    <a href="chat.html">
+
+      <i class="fa-solid fa-comments"></i>
+
+      <span>Chat</span>
+
+    </a>
+
+
+    <a href="profil.html">
+
+      <i class="fa-solid fa-user"></i>
+
+      <span>Profil</span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- FIREBASE -->
+
+  <script type="module">
+
+    import { auth } from "./app.js";
+
+    import {
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+    const form =
+      document.getElementById("connexionForm");
+
+    const message =
+      document.getElementById("messageConnexion");
+
+    const button =
+      document.getElementById("btnConnexion");
+
+
+    function afficherMessage(
+      texte,
+      erreur = false
+    ) {
+
+      message.style.display = "block";
+
+      message.textContent = texte;
+
+      if (erreur) {
+
+        message.style.background = "#ffebee";
+
+        message.style.color = "#d32f2f";
+
+      } else {
+
+        message.style.background = "#e8f5e9";
+
+        message.style.color = "#2e7d32";
+
+      }
+
+    }
+
+
+    form.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const email =
+          document
+            .getElementById("emailConnexion")
+            .value
+            .trim();
+
+
+        const password =
+          document
+            .getElementById("motDePasseConnexion")
+            .value;
+
+
+        button.disabled = true;
+
+        button.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+
+        try {
+
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+          afficherMessage(
+            "Connexion réussie. Bienvenue sur CAMU SERVICES !"
+          );
+
+
+          setTimeout(() => {
+
+            window.location.href =
+              "index.html";
+
+          }, 800);
+
+
+        } catch (error) {
+
+          console.error(
+            "Erreur connexion :",
+            error
+          );
+
+
+          let texte =
+            "Impossible de se connecter.";
+
+
+          if (
+            error.code ===
+            "auth/invalid-credential"
+          ) {
+
+            texte =
+              "Email ou mot de passe incorrect.";
+
+          }
+
+          else if (
+            error.code ===
+            "auth/user-not-found"
+          ) {
+
+            texte =
+              "Aucun compte trouvé avec cet email.";
+
+          }
+
+          else if (
+            error.code ===
+            "auth/wrong-password"
+          ) {
+
+            texte =
+              "Mot de passe incorrect.";
+
+          }
+
+          else if (
+            error.code ===
+            "auth/invalid-email"
+          ) {
+
+            texte =
+              "Adresse email invalide.";
+
+          }
+
+          else if (
+            error.code ===
+            "auth/too-many-requests"
+          ) {
+
+            texte =
+              "Trop de tentatives. Réessayez plus tard.";
+
+          }
+
+
+          afficherMessage(
+            texte,
+            true
+          );
+
+
+          button.disabled = false;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
