@@ -7,30 +7,35 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { padding-bottom: 70px; background: #f4f4f4; }
-    .chat-container { max-width: 600px; margin: auto; height: 80vh; display: flex; flex-direction: column; }
-    .messages-list { flex: 1; overflow-y: auto; padding: 15px; }
-    .message { background: white; padding: 10px; border-radius: 10px; margin-bottom: 10px; max-width: 80%; }
-    .my-message { background: #d32f2f; color: white; align-self: flex-end; margin-left: auto; }
-    .chat-input { position: fixed; bottom: 65px; left: 0; right: 0; padding: 10px; background: white; display: flex; gap: 10px; }
-    input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    body { padding-bottom: 70px; background: #111; color: white; font-family: sans-serif; margin: 0; }
+    .top-bar { background: #000; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; height: 60px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+    .chat-container { max-width: 600px; margin: 80px auto 70px; height: calc(100vh - 150px); display: flex; flex-direction: column; padding: 15px; }
+    .messages-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+    .message { background: #222; border: 1px solid #333; padding: 10px 12px; border-radius: 10px; max-width: 80%; word-break: break-word; }
+    .my-message { background: #d32f2f; color: white; align-self: flex-end; border: none; }
+    .chat-input { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px; background: #000; display: flex; gap: 10px; border-top: 1px solid #222; }
+    input { flex: 1; padding: 12px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
   </style>
 </head>
 <body>
 
   <header class="top-bar">
-    <div class="logo-text">CHAT</div>
-    <a href="index.html" style="color:white"><i class="fa-solid fa-xmark"></i></a>
+    <div class="logo-text" style="font-size:16px; font-weight:900;">DISCUSSION <span style="color:#d32f2f">SERVICE</span></div>
+    <a href="index.html" style="color:white; font-size:18px; text-decoration:none;"><i class="fa-solid fa-xmark"></i></a>
   </header>
 
   <main class="container chat-container">
+    <div id="serviceInfoBox" style="background:#222; padding:10px; border-radius:8px; margin-bottom:10px; font-size:13px; border-left:4px solid #d32f2f;">
+      Chargement des détails du service...
+    </div>
+
     <div id="messagesList" class="messages-list">
       <!-- Les messages s'afficheront ici -->
     </div>
 
     <form id="chatForm" class="chat-input">
-      <input type="text" id="messageInput" placeholder="Votre message..." required>
-      <button type="submit" style="background:#d32f2f; color:white; border:none; padding:10px 15px; border-radius:5px;">
+      <input type="text" id="messageInput" placeholder="Écrivez votre message..." required autocomplete="off">
+      <button type="submit" style="background:#d32f2f; color:white; border:none; padding:0 18px; border-radius:5px; cursor:pointer;">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
     </form>
@@ -38,51 +43,96 @@
 
   <script type="module">
     import { db, auth } from './app.js';
-    import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     let currentUser = null;
 
+    // Récupérer le serviceId dans l'URL (ex: chat.html?serviceId=XYZ)
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceId = urlParams.get('serviceId');
+
+    if (!serviceId) {
+      alert("Aucun service spécifié.");
+      window.location.href = "index.html";
+    }
+
+    // Charger les infos du service pour afficher le titre en haut
+    async function loadServiceInfo() {
+      try {
+        const docRef = doc(db, "services", serviceId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById('serviceInfoBox').innerHTML = `
+            <b>Service :</b> ${data.titre || 'Annonce'}<br>
+            <span style="color:#aaa; font-size:11px;">Prix : ${data.prix || 'Sur devis'}</span>
+          `;
+        } else {
+          document.getElementById('serviceInfoBox').innerHTML = `<span style="color:#d32f2f;">Service introuvable.</span>`;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     onAuthStateChanged(auth, (user) => {
-      if (!user) { window.location.href = "connexion.html"; return; }
+      if (!user) {
+        window.location.href = "connexion.html";
+        return;
+      }
       currentUser = user;
+      loadServiceInfo();
       loadMessages();
     });
 
-    // Charger les messages en temps réel
+    // Charger les messages en temps réel filtrés par ce serviceId
     function loadMessages() {
-      const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
+      const q = query(
+        collection(db, "messages"), 
+        where("serviceId", "==", serviceId),
+        orderBy("createdAt", "asc")
+      );
+
       onSnapshot(q, (snapshot) => {
         let html = '';
-        snapshot.forEach((doc) => {
-          const m = doc.data();
+        snapshot.forEach((docSnap) => {
+          const m = docSnap.data();
           const isMe = m.senderId === currentUser.uid;
           html += `
             <div class="message ${isMe ? 'my-message' : ''}">
-              <p style="font-size:12px; font-weight:bold;">${isMe ? 'Moi' : m.senderName}</p>
-              <p>${m.text}</p>
+              <p style="font-size:10px; opacity:0.7; margin:0 0 4px 0; font-weight:bold;">${isMe ? 'Moi' : (m.senderName || 'Utilisateur')}</p>
+              <p style="margin:0;">${m.text}</p>
             </div>
           `;
         });
-        document.getElementById('messagesList').innerHTML = html;
-        document.getElementById('messagesList').scrollTop = document.getElementById('messagesList').scrollHeight;
+        const msgList = document.getElementById('messagesList');
+        msgList.innerHTML = html || `<p style="text-align:center; color:#666; font-size:12px; margin-top:20px;">Aucun message pour l'instant. Démarrez la conversation !</p>`;
+        msgList.scrollTop = msgList.scrollHeight;
+      }, (error) => {
+        console.error("Erreur écoute messages (Index Firestore peut-être requis) :", error);
       });
     }
 
-    // Envoyer un message
+    // Envoyer un message rattaché au service
     document.getElementById('chatForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const text = document.getElementById('messageInput').value.trim();
+      const text = document.getElementById('messageInput'].value.trim();
       if (!text) return;
 
-      await addDoc(collection(db, "messages"), {
-        text: text,
-        senderId: currentUser.uid,
-        senderName: currentUser.displayName || "Utilisateur",
-        createdAt: serverTimestamp()
-      });
-
-      document.getElementById('messageInput').value = '';
+      try {
+        await addDoc(collection(db, "messages"), {
+          text: text,
+          senderId: currentUser.uid,
+          senderName: currentUser.displayName || currentUser.email.split('@')[0],
+          serviceId: serviceId,
+          createdAt: serverTimestamp()
+        });
+        document.getElementById('messageInput').value = '';
+      } catch (err) {
+        console.error("Erreur d'envoi :", err);
+        alert("Impossible d'envoyer le message.");
+      }
     });
   </script>
 </body>
