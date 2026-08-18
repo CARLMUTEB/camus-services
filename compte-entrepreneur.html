@@ -1,61 +1,313 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Services - CAMU</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Mes Services — CAMU SERVICES</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
+
 <body>
-  <header class="top-bar">
-    <a href="profil.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="logo-text">Mes <span>Services</span></div><div></div>
-  </header>
 
-  <main class="container">
-    <div id="mesServicesContainer"><p>Chargement...</p></div>
-  </main>
+<header class="top-bar">
 
-  <script type="module">
-    import { db, auth } from './app.js';
-    import { collection, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+<a href="profil.html"
+class="back-btn">
 
-    onAuthStateChanged(auth, (user) => {
-      if(user){ chargerMesServices(user.uid); } 
-      else { window.location.href = "inscription.html"; }
-    });
+<i class="fa-solid fa-arrow-left"></i>
 
-    async function chargerMesServices(uid) {
-      const container = document.getElementById('mesServicesContainer');
-      const q = query(collection(db, "services"), where("ownerId", "==", uid));
-      const snap = await getDocs(q);
-      
-      if (snap.empty) { container.innerHTML = `<p>Vous n'avez publié aucun service.</p>`; return; }
+</a>
 
-      let html = '';
-      snap.forEach((d) => {
-        const s = d.data();
-        const statut = s.valide ? `<span style="color:green;">Validé</span>` : `<span style="color:orange;">En attente</span>`;
-        html += `
-          <div class="annonce-card">
-            <span class="badge-cat">${s.categorie}</span> ${statut}
-            <h3>${s.titre}</h3>
-            <p>${s.description}</p>
-            <p class="prix">${s.prix}</p>
-            <button onclick="supprimer('${d.id}')" style="background:#d32f2f;color:white;border:none;padding:5px 10px;border-radius:5px;font-size:11px;">Supprimer</button>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
+<div class="logo-text">
+Mes <span>Services</span>
+</div>
 
-    window.supprimer = async (id) => {
-      if(confirm("Supprimer ce service ?")){
-        await deleteDoc(doc(db, "services", id));
-        location.reload();
-      }
-    }
-  </script>
+<div></div>
+
+</header>
+
+
+<main class="container">
+
+<div class="section-title">
+
+<i class="fa-solid fa-briefcase"></i>
+
+Mes services
+
+</div>
+
+
+<div id="mesServicesContainer">
+
+<p class="loading">
+Chargement...
+</p>
+
+</div>
+
+</main>
+
+
+<script type="module">
+
+import {
+db,
+auth
+} from "./app.js";
+
+
+import {
+onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+import {
+collection,
+query,
+where,
+getDocs,
+deleteDoc,
+doc
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+const container =
+document.getElementById(
+"mesServicesContainer"
+);
+
+
+function escapeHTML(value){
+
+return String(value || "")
+.replace(/[&<>"']/g,char=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[char]));
+
+}
+
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+window.location.href=
+"connexion.html";
+
+return;
+
+}
+
+
+chargerServices(user.uid);
+
+});
+
+
+async function chargerServices(uid){
+
+try{
+
+const q =
+query(
+collection(db,"services"),
+where("ownerId","==",uid)
+);
+
+
+const snapshot =
+await getDocs(q);
+
+
+if(snapshot.empty){
+
+container.innerHTML=`
+
+<div class="empty-state">
+
+<i class="fa-solid fa-briefcase"></i>
+
+<h2>Aucun service</h2>
+
+<p>
+Vous n'avez encore publié aucun service.
+</p>
+
+<a
+href="publier.html"
+class="btn-explore">
+
+Publier un service
+
+</a>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML="";
+
+
+snapshot.forEach(document=>{
+
+const service =
+document.data();
+
+
+const card =
+document.createElement("div");
+
+
+card.className=
+"annonce-card";
+
+
+card.innerHTML=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<span class="badge-cat">
+
+${escapeHTML(
+service.categorie ||
+"Général"
+)}
+
+</span>
+
+<span style="
+font-size:10px;
+font-weight:bold;
+color:${
+service.valide
+?"#2e7d32"
+:"#ef6c00"
+};
+">
+
+${
+service.valide
+?"✓ Validé"
+:"⏳ En attente"
+}
+
+</span>
+
+</div>
+
+
+<h3>
+${escapeHTML(service.titre)}
+</h3>
+
+
+<p class="description">
+
+${escapeHTML(
+service.description
+)}
+
+</p>
+
+
+<p class="prix">
+
+${escapeHTML(
+service.prix ||
+"Sur devis"
+)}
+
+</p>
+
+
+<button
+class="btn-small danger"
+data-id="${document.id}">
+
+Supprimer
+
+</button>
+
+`;
+
+
+card
+.querySelector("button")
+.addEventListener(
+"click",
+async()=>{
+
+if(!confirm(
+"Supprimer ce service ?"
+)){
+
+return;
+
+}
+
+
+await deleteDoc(
+doc(
+db,
+"services",
+document.id
+)
+);
+
+
+chargerServices(uid);
+
+});
+
+
+container.appendChild(card);
+
+});
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+'<p class="error-text">Erreur de chargement.</p>';
+
+}
+
+}
+
+</script>
+
 </body>
+
 </html>
