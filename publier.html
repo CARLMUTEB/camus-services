@@ -1,66 +1,633 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>CAMU SERVICES — Publier</title>
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-  <header class="top-bar">
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="logo-text">CAMU <span>SERVICES</span></div><div></div>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <a href="index.html"
+       style="color:white;text-decoration:none;font-size:20px;">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h1>
+      CAMU <span>SERVICES</span>
+    </h1>
+
+    <div style="width:20px;"></div>
+
   </header>
+
+
+  <!-- CONTENU -->
   <main class="container">
-    <div class="section-title"><i class="fa-solid fa-circle-plus" style="color: #d32f2f;"></i> Publier un nouveau service</div>
-    <div class="card-box">
-      <form id="publierForm" onsubmit="publierService(event)">
-        <div class="form-group"><label>Titre</label><input type="text" id="titreService" required></div>
-        <div class="form-group"><label>Catégorie</label>
-          <select id="categorieService" required>
-            <option>Technique & Maintenance</option><option>BTP & Construction</option><option>Informatique & Numérique</option>
-          </select>
+
+    <!-- FORMULAIRE -->
+    <div class="panel-box">
+
+      <div style="margin-bottom:20px;">
+
+        <h2 style="font-size:18px;color:#111;margin-bottom:5px;">
+          <i class="fa-solid fa-circle-plus"
+             style="color:#d32f2f;"></i>
+
+          Publier un service
+        </h2>
+
+        <p style="font-size:12px;color:#666;">
+          Votre publication sera vérifiée par l'administration
+          avant d'être visible publiquement.
+        </p>
+
+      </div>
+
+
+      <form id="publierForm">
+
+        <!-- TITRE -->
+        <div class="form-group">
+
+          <label for="titreService">
+            Titre du service
+          </label>
+
+          <input
+            type="text"
+            id="titreService"
+            placeholder="Ex : Installation électrique"
+            maxlength="100"
+            required
+          >
+
         </div>
-        <div class="form-group"><label>Prix</label><input type="text" id="prixService" required></div>
-        <div class="form-group"><label>Description</label><textarea id="descService" required></textarea></div>
-        <button type="submit" class="btn-submit">Mettre en ligne</button>
+
+
+        <!-- CATÉGORIE -->
+        <div class="form-group">
+
+          <label for="categorieService">
+            Catégorie
+          </label>
+
+          <select
+            id="categorieService"
+            required>
+
+            <option value="">
+              Sélectionner une catégorie
+            </option>
+
+            <option value="Technique & Maintenance">
+              Technique & Maintenance
+            </option>
+
+            <option value="BTP & Construction">
+              BTP & Construction
+            </option>
+
+            <option value="Informatique & Numérique">
+              Informatique & Numérique
+            </option>
+
+            <option value="Électricité">
+              Électricité
+            </option>
+
+            <option value="Transport">
+              Transport
+            </option>
+
+            <option value="Agriculture & Élevage">
+              Agriculture & Élevage
+            </option>
+
+            <option value="Divers & Services">
+              Divers & Services
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- PRIX -->
+        <div class="form-group">
+
+          <label for="prixService">
+            Prix
+          </label>
+
+          <input
+            type="text"
+            id="prixService"
+            placeholder="Ex : 50 $ ou Sur devis"
+            maxlength="50"
+            required
+          >
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+
+          <label for="descService">
+            Description
+          </label>
+
+          <textarea
+            id="descService"
+            placeholder="Décrivez votre service..."
+            maxlength="1000"
+            required
+            style="
+              width:100%;
+              min-height:120px;
+              padding:12px;
+              border:1px solid #e0e0e0;
+              border-radius:8px;
+              resize:vertical;
+              font-size:13px;
+              outline:none;
+            "></textarea>
+
+        </div>
+
+
+        <!-- BOUTON -->
+        <button
+          type="submit"
+          class="btn-submit"
+          id="btnPublier">
+
+          <i class="fa-solid fa-paper-plane"></i>
+          Envoyer pour validation
+
+        </button>
+
       </form>
+
+
+      <!-- MESSAGE -->
+      <p
+        id="messagePublication"
+        style="
+          display:none;
+          text-align:center;
+          font-size:12px;
+          font-weight:bold;
+          margin-top:15px;
+        ">
+      </p>
+
     </div>
-    <div class="section-title"><i class="fa-solid fa-list" style="color: #d32f2f;"></i> Services Disponibles</div>
-    <div id="publicAdsContainer"><p style="text-align: center;">Chargement...</p></div>
+
+
+    <!-- SERVICES PUBLICS -->
+    <div style="margin-top:25px;margin-bottom:10px;">
+
+      <h2 style="font-size:15px;font-weight:800;">
+
+        <i class="fa-solid fa-list"
+           style="color:#d32f2f;"></i>
+
+        Services disponibles
+
+      </h2>
+
+    </div>
+
+
+    <div id="publicAdsContainer">
+
+      <p style="text-align:center;color:#777;font-size:12px;">
+        Chargement...
+      </p>
+
+    </div>
+
   </main>
+
+
+  <!-- NAVIGATION -->
   <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="active"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+
+    <a href="publier.html" class="active">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+
+    <a href="profil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
+
   </nav>
+
+
+  <!-- FIREBASE -->
   <script type="module">
-    import { db, auth } from './app.js';
-    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    let currentUserId = null;
-    onAuthStateChanged(auth, (user) => { if(user){ currentUserId = user.uid; loadPublicAds(); } else { window.location.href = "inscription.html"; } });
+
+    import {
+      db,
+      auth
+    } from "./app.js";
+
+
+    import {
+      collection,
+      getDocs,
+      addDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+    let currentUser = null;
+
+
+    const form =
+      document.getElementById("publierForm");
+
+    const button =
+      document.getElementById("btnPublier");
+
+    const message =
+      document.getElementById("messagePublication");
+
+    const container =
+      document.getElementById("publicAdsContainer");
+
+
+    // ==========================================
+    // AUTHENTIFICATION
+    // ==========================================
+
+    onAuthStateChanged(auth, async (user) => {
+
+      if (!user) {
+
+        window.location.href =
+          "connexion.html";
+
+        return;
+
+      }
+
+
+      currentUser = user;
+
+      await loadPublicAds();
+
+    });
+
+
+    // ==========================================
+    // CHARGER LES SERVICES VALIDÉS
+    // ==========================================
+
     async function loadPublicAds() {
-      const container = document.getElementById('publicAdsContainer');
-      const snap = await getDocs(collection(db, "services"));
-      let html = ''; let count = 0;
-      snap.forEach((d) => { const ad = d.data(); if(ad.valide !== false){ count++; html += `<div class="ad-card"><span class="badge-cat">${ad.categorie}</span><h4>${ad.titre}</h4><p>${ad.description}</p><p class="prix">${ad.prix}</p></div>`; } });
-      container.innerHTML = count === 0 ? `<p>Aucun service validé.</p>` : html;
+
+      try {
+
+        const snap =
+          await getDocs(
+            collection(db, "services")
+          );
+
+
+        let html = "";
+
+        let count = 0;
+
+
+        snap.forEach((docSnap) => {
+
+          const service =
+            docSnap.data();
+
+
+          // Seulement les services validés
+          if (service.valide === true) {
+
+            count++;
+
+
+            html += `
+
+              <div class="panel-box"
+                   style="margin-bottom:12px;">
+
+                <span
+                  style="
+                    display:inline-block;
+                    background:#ffebee;
+                    color:#d32f2f;
+                    padding:4px 8px;
+                    border-radius:5px;
+                    font-size:10px;
+                    font-weight:bold;
+                  ">
+
+                  ${escapeHTML(service.categorie || "Service")}
+
+                </span>
+
+
+                <h3
+                  style="
+                    font-size:15px;
+                    margin-top:8px;
+                    margin-bottom:5px;
+                  ">
+
+                  ${escapeHTML(service.titre || "")}
+
+                </h3>
+
+
+                <p
+                  style="
+                    font-size:12px;
+                    color:#666;
+                    line-height:1.5;
+                    margin-bottom:8px;
+                  ">
+
+                  ${escapeHTML(service.description || "")}
+
+                </p>
+
+
+                <strong
+                  style="
+                    font-size:13px;
+                    color:#111;
+                  ">
+
+                  ${escapeHTML(service.prix || "")}
+
+                </strong>
+
+              </div>
+
+            `;
+
+          }
+
+        });
+
+
+        if (count === 0) {
+
+          container.innerHTML = `
+
+            <div class="empty-state">
+
+              <i class="fa-solid fa-folder-open"></i>
+
+              <h2>
+                Aucun service disponible
+              </h2>
+
+              <p>
+                Aucun service n'a encore été validé.
+              </p>
+
+            </div>
+
+          `;
+
+        } else {
+
+          container.innerHTML = html;
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur chargement services :",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div class="empty-state">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <p>
+              Impossible de charger les services.
+            </p>
+
+          </div>
+
+        `;
+
+      }
+
     }
-    window.publierService = async function(event) {
+
+
+    // ==========================================
+    // PUBLICATION
+    // ==========================================
+
+    form.addEventListener("submit", async (event) => {
+
       event.preventDefault();
-      await addDoc(collection(db, "services"), {
-        titre: document.getElementById('titreService').value.trim(),
-        categorie: document.getElementById('categorieService').value,
-        prix: document.getElementById('prixService').value.trim(),
-        description: document.getElementById('descService').value.trim(),
-        ownerId: currentUserId, valide: false, createdAt: serverTimestamp()
-      });
-      alert("Service envoyé ! En attente de validation admin.");
-      document.getElementById('publierForm').reset();
+
+
+      if (!currentUser) {
+
+        window.location.href =
+          "connexion.html";
+
+        return;
+
+      }
+
+
+      const titre =
+        document.getElementById("titreService")
+        .value
+        .trim();
+
+      const categorie =
+        document.getElementById("categorieService")
+        .value;
+
+      const prix =
+        document.getElementById("prixService")
+        .value
+        .trim();
+
+      const description =
+        document.getElementById("descService")
+        .value
+        .trim();
+
+
+      if (!titre ||
+          !categorie ||
+          !prix ||
+          !description) {
+
+        afficherMessage(
+          "Veuillez remplir tous les champs.",
+          false
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        button.disabled = true;
+
+        button.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+
+
+        // ======================================
+        // CRÉATION DU SERVICE
+        // ======================================
+
+        await addDoc(
+          collection(db, "services"),
+          {
+
+            titre: titre,
+
+            categorie: categorie,
+
+            prix: prix,
+
+            description: description,
+
+            // UID Firebase Authentication
+            ownerId: currentUser.uid,
+
+            // Email du propriétaire
+            ownerEmail:
+              currentUser.email || "",
+
+            // Publication non visible
+            // avant validation admin
+            valide: false,
+
+            // Date serveur Firebase
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        afficherMessage(
+          "Votre service a été envoyé. Il sera visible après validation par l'administration.",
+          true
+        );
+
+
+        form.reset();
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur publication :",
+          error
+        );
+
+
+        afficherMessage(
+          "Erreur lors de la publication. Veuillez réessayer.",
+          false
+        );
+
+      }
+
+
+      button.disabled = false;
+
+      button.innerHTML =
+        '<i class="fa-solid fa-paper-plane"></i> Envoyer pour validation';
+
+    });
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function afficherMessage(
+      texte,
+      succes
+    ) {
+
+      message.style.display =
+        "block";
+
+      message.style.color =
+        succes
+          ? "#2e7d32"
+          : "#d32f2f";
+
+      message.textContent =
+        texte;
+
     }
+
+
+    // ==========================================
+    // PROTECTION CONTRE HTML
+    // ==========================================
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
   </script>
+
 </body>
 </html>
