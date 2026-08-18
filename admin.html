@@ -7,96 +7,185 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { background: #111; color: white; padding-bottom: 80px; }
-    .admin-card { background: #222; border: 1px solid #333; }
+    body { background: #111; color: white; padding-bottom: 80px; font-family: sans-serif; }
+    .admin-card { background: #222; border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+    .section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; margin: 25px 0 10px; color: #fff; border-left: 4px solid #d32f2f; padding-left: 8px; }
+    .btn-action { border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
+    .btn-green { background: #2e7d32; color: white; }
+    .btn-red { background: #d32f2f; color: white; }
+    .btn-dark { background: #444; color: white; }
+    input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 5px; outline: none; }
   </style>
 </head>
 <body>
-  <header class="top-bar" style="background:#000">
-    <div class="logo-text">ADMIN <span style="color:#d32f2f">CAMU</span></div>
-    <a href="index.html" style="color:white"><i class="fa-solid fa-xmark"></i></a>
+  <header class="top-bar" style="background:#000; display:flex; justify-content:space-between; align-items:center; padding: 0 15px; height:60px; position:fixed; top:0; left:0; right:0; z-index:1000;">
+    <div class="logo-text" style="font-size:16px; font-weight:900;">ADMIN <span style="color:#d32f2f">CAMU</span></div>
+    <a href="index.html" style="color:white; font-size:18px; text-decoration:none;"><i class="fa-solid fa-xmark"></i></a>
   </header>
 
-  <main class="container">
-    <div class="section-title" style="color:white">Services en attente</div>
-    <div id="adminServicesContainer"><p>Chargement...</p></div>
+  <main class="container" style="max-width:600px; margin:80px auto 20px; padding:15px;">
 
-    <div class="section-title" style="color:white;margin-top:20px">Stats</div>
-    <div id="statsContainer" class="admin-card" style="padding:15px;border-radius:10px"></div>
+    <!-- STATISTIQUES -->
+    <div class="section-title">Tableau de bord & Stats</div>
+    <div id="statsContainer" class="admin-card">
+      <p style="color:#aaa; font-size:12px;">Chargement des statistiques...</p>
+    </div>
+
+    <!-- COMMUNIQUÉ OFFICIEL -->
+    <div class="section-title">Publier un communiqué officiel</div>
+    <div class="admin-card">
+      <form id="communiqueForm">
+        <label style="font-size:12px; color:#ccc;">Titre du communiqué</label>
+        <input type="text" id="titreCom" placeholder="Ex: Maintenance de la plateforme" required>
+        
+        <label style="font-size:12px; color:#ccc;">Message</label>
+        <textarea id="descCom" placeholder="Contenu du communiqué..." rows="3" required></textarea>
+        
+        <button type="submit" class="btn-action btn-green" id="btnCom">
+          <i class="fa-solid fa-bullhorn"></i> Diffuser le communiqué
+        </button>
+      </form>
+    </div>
+
+    <!-- SERVICES EN ATTENTE -->
+    <div class="section-title">Services en attente de validation</div>
+    <div id="adminServicesContainer">
+      <p style="color:#aaa; font-size:12px;">Chargement...</p>
+    </div>
+
+    <!-- GESTION DES UTILISATEURS -->
+    <div class="section-title">Gestion des utilisateurs</div>
+    <div id="adminUsersContainer">
+      <p style="color:#aaa; font-size:12px;">Chargement...</p>
+    </div>
+
   </main>
 
   <script type="module">
     import { db } from './app.js';
-    import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    async function loadAdmin() {
+    async function loadAdminData() {
       try {
-        const snap = await getDocs(collection(db, "services"));
+        const servicesSnap = await getDocs(collection(db, "services"));
         const usersSnap = await getDocs(collection(db, "users"));
         
-        let html = ''; 
+        let servicesHtml = ''; 
+        let usersHtml = '';
         let countAttente = 0;
 
-        snap.forEach((d) => {
+        // 1. Traitement des services
+        servicesSnap.forEach((d) => {
           const s = d.data();
           if (s.valide !== true) {
             countAttente++;
-            html += `
-              <div class="annonce-card admin-card" style="margin-bottom:12px;padding:15px;border-radius:8px;">
-                <span class="badge-cat">${s.categorie || 'Général'}</span>
-                <h3 style="color:white;margin:8px 0;">${s.titre || ''}</h3>
-                <p style="color:#ccc;font-size:12px;margin-bottom:8px;">${s.description || ''}</p>
-                <p class="prix" style="margin-bottom:10px;">${s.prix || ''}</p>
-                <button onclick="validerService('${d.id}')" style="background:#2e7d32;color:white;border:none;padding:8px 12px;border-radius:5px;margin-right:5px;cursor:pointer;"><i class="fa-solid fa-check"></i> Valider</button>
-                <button onclick="refuserService('${d.id}')" style="background:#d32f2f;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;"><i class="fa-solid fa-trash"></i> Refuser / Supprimer</button>
+            servicesHtml += `
+              <div class="admin-card">
+                <span style="font-size:10px; background:#ffebee; color:#d32f2f; padding:3px 6px; border-radius:4px; font-weight:bold;">${s.categorie || 'Général'}</span>
+                <h3 style="color:white; margin:8px 0; font-size:15px;">${s.titre || ''}</h3>
+                <p style="color:#ccc; font-size:12px; margin-bottom:8px;">${s.description || ''}</p>
+                <p style="color:#d32f2f; font-weight:bold; font-size:13px; margin-bottom:10px;">${s.prix || ''}</p>
+                <button onclick="validerService('${d.id}')" class="btn-action btn-green" style="margin-right:5px;"><i class="fa-solid fa-check"></i> Valider</button>
+                <button onclick="refuserService('${d.id}')" class="btn-action btn-red"><i class="fa-solid fa-trash"></i> Refuser</button>
               </div>
             `;
           }
         });
 
-        document.getElementById('adminServicesContainer').innerHTML = html || `<p style="color:#aaa;font-size:12px;">Aucun service en attente de validation.</p>`;
-        
+        document.getElementById('adminServicesContainer').innerHTML = servicesHtml || `<p style="color:#aaa; font-size:12px;">Aucun service en attente.</p>`;
+
+        // 2. Traitement des utilisateurs
+        usersSnap.forEach((d) => {
+          const u = d.data();
+          const statut = u.status || 'actif';
+          const isSuspendu = statut === 'suspendu';
+
+          usersHtml += `
+            <div class="admin-card" style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <p style="font-weight:bold; font-size:13px; margin-bottom:2px;">${u.nom || u.name || 'Utilisateur'}</p>
+                <p style="color:#aaa; font-size:11px; margin-bottom:4px;">${u.email || ''}</p>
+                <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:${isSuspendu ? '#ffebee' : '#e8f5e9'}; color:${isSuspendu ? '#c62828' : '#2e7d32'};">
+                  ${isSuspendu ? 'Suspendu' : 'Actif'}
+                </span>
+              </div>
+              <button onclick="toggleUserStatus('${d.id}', '${statut}')" class="btn-action ${isSuspendu ? 'btn-green' : 'btn-red'}">
+                ${isSuspendu ? 'Activer' : 'Suspendre'}
+              </button>
+            </div>
+          `;
+        });
+
+        document.getElementById('adminUsersContainer').innerHTML = usersHtml || `<p style="color:#aaa; font-size:12px;">Aucun utilisateur trouvé.</p>`;
+
+        // 3. Affichage des Stats
         document.getElementById('statsContainer').innerHTML = `
-          <p style="margin-bottom:5px;font-size:13px;"><b>Utilisateurs inscrits :</b> ${usersSnap.size}</p>
-          <p style="margin-bottom:5px;font-size:13px;"><b>Services totaux :</b> ${snap.size}</p>
-          <p style="font-size:13px;"><b>En attente de validation :</b> ${countAttente}</p>
+          <p style="margin-bottom:5px; font-size:13px;"><b>Total Utilisateurs :</b> ${usersSnap.size}</p>
+          <p style="margin-bottom:5px; font-size:13px;"><b>Total Services :</b> ${servicesSnap.size}</p>
+          <p style="font-size:13px;"><b>Services en attente :</b> ${countAttente}</p>
         `;
 
       } catch (error) {
         console.error("Erreur chargement admin :", error);
-        document.getElementById('adminServicesContainer').innerHTML = `<p style="color:#d32f2f;">Erreur de chargement des données admin.</p>`;
       }
     }
 
-    // Actions globales rattachées à window pour les boutons HTML
+    // Actions globales rattachées à window
     window.validerService = async function(id) {
       try {
-        await updateDoc(doc(db, "services", id), {
-          valide: true
-        });
-        alert("Service validé avec succès !");
-        loadAdmin();
-      } catch (error) {
-        console.error("Erreur validation :", error);
-        alert("Impossible de valider ce service.");
-      }
+        await updateDoc(doc(db, "services", id), { valide: true });
+        loadAdminData();
+      } catch (e) { alert("Erreur lors de la validation."); }
     };
 
     window.refuserService = async function(id) {
-      if (confirm("Voulez-vous vraiment supprimer ce service ?")) {
+      if (confirm("Supprimer ce service ?")) {
         try {
           await deleteDoc(doc(db, "services", id));
-          alert("Service supprimé.");
-          loadAdmin();
-        } catch (error) {
-          console.error("Erreur suppression :", error);
-          alert("Impossible de supprimer ce service.");
-        }
+          loadAdminData();
+        } catch (e) { alert("Erreur lors de la suppression."); }
       }
     };
 
-    // Lancer au chargement
-    loadAdmin();
+    window.toggleUserStatus = async function(userId, currentStatus) {
+      const nouveauStatut = currentStatus === 'suspendu' ? 'actif' : 'suspendu';
+      try {
+        await updateDoc(doc(db, "users", userId), { status: nouveauStatut });
+        loadAdminData();
+      } catch (e) { alert("Erreur lors de la modification du statut utilisateur."); }
+    };
+
+    // Gestion du formulaire de communiqué
+    document.getElementById("communiqueForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const titre = document.getElementById("titreCom").value.trim();
+      const description = document.getElementById("descCom").value.trim();
+      const btn = document.getElementById("btnCom");
+
+      if (!titre || !description) return;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = "Publication en cours...";
+
+        await addDoc(collection(db, "communiques"), {
+          titre: titre,
+          description: description,
+          createdAt: serverTimestamp()
+        });
+
+        alert("Communiqué publié avec succès !");
+        document.getElementById("communiqueForm").reset();
+      } catch (err) {
+        console.error(err);
+        alert("Erreur lors de la publication du communiqué.");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-bullhorn"></i> Diffuser le communiqué';
+      }
+    });
+
+    loadAdminData();
   </script>
 </body>
 </html>
