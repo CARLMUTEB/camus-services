@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - CAMU SERVICES</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>body{background:#111;color:white;padding-bottom:80px}.admin-card{background:#222;border:1px solid #333}</style>
+  <style>
+    body { background: #111; color: white; padding-bottom: 80px; }
+    .admin-card { background: #222; border: 1px solid #333; }
+  </style>
 </head>
 <body>
   <header class="top-bar" style="background:#000">
@@ -26,28 +30,73 @@
     import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     async function loadAdmin() {
-      const snap = await getDocs(collection(db, "services"));
-      const usersSnap = await getDocs(collection(db, "users"));
-      
-      let html = ''; let countAttente = 0;
-      snap.forEach((d) => {
-        const s = d.data();
-        if(s.valide !== true){
-          countAttente++;
-          html += `
-            <div class="annonce-card admin-card">
-              <span class="badge-cat">${s.categorie}</span>
-              <h3 style="color:white">${s.titre}</h3>
-              <p style="color:#ccc">${s.description}</p>
-              <p class="prix">${s.prix}</p>
-              <button onclick="valider('${d.id}')" style="background:green;color:white;border:none;padding:8px 12px;border-radius:5px;margin-right:5px">Valider</button>
-              <button onclick="refuser('${d.id}')" style="background:#d32f2f;color:white;border:none;padding:8px 12px;border-radius:5px">Refuser</button>
-            </div>
-          `;
+      try {
+        const snap = await getDocs(collection(db, "services"));
+        const usersSnap = await getDocs(collection(db, "users"));
+        
+        let html = ''; 
+        let countAttente = 0;
+
+        snap.forEach((d) => {
+          const s = d.data();
+          if (s.valide !== true) {
+            countAttente++;
+            html += `
+              <div class="annonce-card admin-card" style="margin-bottom:12px;padding:15px;border-radius:8px;">
+                <span class="badge-cat">${s.categorie || 'Général'}</span>
+                <h3 style="color:white;margin:8px 0;">${s.titre || ''}</h3>
+                <p style="color:#ccc;font-size:12px;margin-bottom:8px;">${s.description || ''}</p>
+                <p class="prix" style="margin-bottom:10px;">${s.prix || ''}</p>
+                <button onclick="validerService('${d.id}')" style="background:#2e7d32;color:white;border:none;padding:8px 12px;border-radius:5px;margin-right:5px;cursor:pointer;"><i class="fa-solid fa-check"></i> Valider</button>
+                <button onclick="refuserService('${d.id}')" style="background:#d32f2f;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;"><i class="fa-solid fa-trash"></i> Refuser / Supprimer</button>
+              </div>
+            `;
+          }
+        });
+
+        document.getElementById('adminServicesContainer').innerHTML = html || `<p style="color:#aaa;font-size:12px;">Aucun service en attente de validation.</p>`;
+        
+        document.getElementById('statsContainer').innerHTML = `
+          <p style="margin-bottom:5px;font-size:13px;"><b>Utilisateurs inscrits :</b> ${usersSnap.size}</p>
+          <p style="margin-bottom:5px;font-size:13px;"><b>Services totaux :</b> ${snap.size}</p>
+          <p style="font-size:13px;"><b>En attente de validation :</b> ${countAttente}</p>
+        `;
+
+      } catch (error) {
+        console.error("Erreur chargement admin :", error);
+        document.getElementById('adminServicesContainer').innerHTML = `<p style="color:#d32f2f;">Erreur de chargement des données admin.</p>`;
+      }
+    }
+
+    // Actions globales rattachées à window pour les boutons HTML
+    window.validerService = async function(id) {
+      try {
+        await updateDoc(doc(db, "services", id), {
+          valide: true
+        });
+        alert("Service validé avec succès !");
+        loadAdmin();
+      } catch (error) {
+        console.error("Erreur validation :", error);
+        alert("Impossible de valider ce service.");
+      }
+    };
+
+    window.refuserService = async function(id) {
+      if (confirm("Voulez-vous vraiment supprimer ce service ?")) {
+        try {
+          await deleteDoc(doc(db, "services", id));
+          alert("Service supprimé.");
+          loadAdmin();
+        } catch (error) {
+          console.error("Erreur suppression :", error);
+          alert("Impossible de supprimer ce service.");
         }
-      });
-      document.getElementById('adminServicesContainer').innerHTML = html || `<p>Aucun service en attente</p>`;
-      document.getElementById('statsContainer').innerHTML = `
-        <p><b>Utilisateurs:</b> ${usersSnap.size}</p>
-        <p><b>Services Total:</b> ${snap.size}</p>
-        <p><b>En attente:</b> ${count
+      }
+    };
+
+    // Lancer au chargement
+    loadAdmin();
+  </script>
+</body>
+</html>
