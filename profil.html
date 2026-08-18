@@ -1,40 +1,375 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Mon Profil</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CAMU SERVICES — Mon Profil</title>
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-  <header class="top-bar"><h2>Mon Profil</h2><a href="admin.html" style="color: #d32f2f;"><i class="fa-solid fa-lock"></i> Admin</a></header>
+
+  <!-- HEADER -->
+  <header class="top-header">
+
+    <a href="index.html">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h1>
+      CAMU <span>SERVICES</span>
+    </h1>
+
+    <a href="admin.html"
+       style="color:#d32f2f;text-decoration:none;font-size:16px;">
+      <i class="fa-solid fa-lock"></i>
+    </a>
+
+  </header>
+
+
+  <!-- CONTENU -->
   <main class="container">
+
     <div class="profile-card">
-      <div class="avatar-box"><i class="fa-solid fa-circle-user"></i></div>
-      <h3 id="profileName" class="user-name">Chargement...</h3>
-      <p id="profileEmail" class="user-role"></p>
-      <a href="compte-entrepreneur.html" class="btn-submit" style="background: #111; margin-bottom: 8px; display: block;">Gérer mes services</a>
-      <a href="publier.html" class="btn-submit" style="display: block;">Publier un service</a>
-      <button class="btn-logout" onclick="deconnexion()" style="margin-top: 15px;">Se déconnecter</button>
+
+      <!-- AVATAR -->
+      <div class="avatar-box">
+        <i class="fa-solid fa-circle-user"></i>
+      </div>
+
+
+      <!-- NOM -->
+      <h3 id="profileName" class="user-name">
+        Chargement...
+      </h3>
+
+
+      <!-- EMAIL -->
+      <p id="profileEmail" class="user-role">
+        Chargement...
+      </p>
+
+
+      <!-- STATUT -->
+      <div style="margin-bottom:20px;">
+
+        <span
+          id="profileStatus"
+          style="
+            display:inline-block;
+            padding:5px 12px;
+            border-radius:15px;
+            background:#e8f5e9;
+            color:#2e7d32;
+            font-size:11px;
+            font-weight:bold;
+          ">
+          Vérification...
+        </span>
+
+      </div>
+
+
+      <!-- GÉRER SERVICES -->
+      <a
+        href="compte-entrepreneur.html"
+        class="btn-submit"
+        style="
+          background:#111;
+          margin-bottom:8px;
+          display:block;
+          text-decoration:none;
+          text-align:center;
+        ">
+
+        <i class="fa-solid fa-briefcase"></i>
+        Gérer mes services
+
+      </a>
+
+
+      <!-- PUBLIER -->
+      <a
+        href="publier.html"
+        class="btn-submit"
+        style="
+          display:block;
+          text-decoration:none;
+          text-align:center;
+        ">
+
+        <i class="fa-solid fa-circle-plus"></i>
+        Publier un service
+
+      </a>
+
+
+      <!-- FAVORIS -->
+      <a
+        href="favoris.html"
+        class="btn-submit"
+        style="
+          display:block;
+          margin-top:8px;
+          background:#fbc02d;
+          text-decoration:none;
+          text-align:center;
+        ">
+
+        <i class="fa-solid fa-star"></i>
+        Mes favoris
+
+      </a>
+
+
+      <!-- DÉCONNEXION -->
+      <button
+        id="logoutButton"
+        class="btn-logout"
+        onclick="deconnexion()"
+        style="
+          margin-top:15px;
+          width:100%;
+          padding:12px;
+          border:none;
+          border-radius:8px;
+          background:#d32f2f;
+          color:white;
+          font-weight:bold;
+          cursor:pointer;
+        ">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Se déconnecter
+
+      </button>
+
     </div>
+
   </main>
+
+
+  <!-- NAVIGATION BASSE -->
   <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+
+    <a href="profil.html" class="active">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
+
   </nav>
+
+
+  <!-- FIREBASE -->
   <script type="module">
-    import { db, auth, signOut } from './app.js';
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    import {
+      db,
+      auth
+    } from "./app.js";
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+    const profileName =
+      document.getElementById("profileName");
+
+    const profileEmail =
+      document.getElementById("profileEmail");
+
+    const profileStatus =
+      document.getElementById("profileStatus");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+
+    // ==========================================
+    // VÉRIFICATION UTILISATEUR
+    // ==========================================
+
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists()) { const data = snap.data(); document.getElementById("profileName").innerText = data.nom; document.getElementById("profileEmail").innerText = data.email; }
-      } else { window.location.href = "inscription.html"; }
+
+      if (!user) {
+
+        window.location.href = "connexion.html";
+
+        return;
+
+      }
+
+
+      try {
+
+        // Récupération du profil Firestore
+        const userRef =
+          doc(db, "users", user.uid);
+
+        const userSnap =
+          await getDoc(userRef);
+
+
+        if (userSnap.exists()) {
+
+          const data =
+            userSnap.data();
+
+
+          // NOM
+          profileName.textContent =
+            data.nom ||
+            data.name ||
+            user.displayName ||
+            "Utilisateur";
+
+
+          // EMAIL
+          profileEmail.textContent =
+            data.email ||
+            user.email ||
+            "";
+
+
+          // STATUT
+          const status =
+            data.status || "actif";
+
+
+          profileStatus.textContent =
+            status === "suspendu"
+              ? "Compte suspendu"
+              : "Compte actif";
+
+
+          if (status === "suspendu") {
+
+            profileStatus.style.background =
+              "#ffebee";
+
+            profileStatus.style.color =
+              "#c62828";
+
+
+            alert(
+              "Votre compte est actuellement suspendu."
+            );
+
+          }
+
+
+        } else {
+
+          // Le compte Auth existe mais
+          // le profil Firestore n'existe pas encore
+
+          profileName.textContent =
+            user.displayName || "Utilisateur";
+
+          profileEmail.textContent =
+            user.email || "";
+
+          profileStatus.textContent =
+            "Profil en cours de configuration";
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur lors du chargement du profil :",
+          error
+        );
+
+
+        profileName.textContent =
+          "Utilisateur";
+
+        profileEmail.textContent =
+          user.email || "";
+
+        profileStatus.textContent =
+          "Erreur de chargement";
+
+      }
+
     });
-    window.deconnexion = async () => { await signOut(auth); window.location.href = "index.html"; }
+
+
+    // ==========================================
+    // DÉCONNEXION
+    // ==========================================
+
+    window.deconnexion = async function () {
+
+      try {
+
+        logoutButton.disabled = true;
+
+        logoutButton.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Déconnexion...';
+
+
+        await signOut(auth);
+
+
+        window.location.href =
+          "index.html";
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur de déconnexion :",
+          error
+        );
+
+
+        alert(
+          "Impossible de se déconnecter. Veuillez réessayer."
+        );
+
+
+        logoutButton.disabled = false;
+
+        logoutButton.innerHTML =
+          '<i class="fa-solid fa-right-from-bracket"></i> Se déconnecter';
+
+      }
+
+    };
+
   </script>
+
 </body>
 </html>
