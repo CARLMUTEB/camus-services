@@ -6,10 +6,17 @@
  * Fichier central Firebase
  */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+// =====================================================
+// IMPORTS FIREBASE
+// =====================================================
 
 import {
-  getAuth
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 import {
@@ -32,7 +39,7 @@ const firebaseConfig = {
 
 
 // =====================================================
-// INITIALISATION
+// INITIALISATION FIREBASE
 // =====================================================
 
 const app = initializeApp(firebaseConfig);
@@ -40,6 +47,34 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+
+
+// =====================================================
+// UTILISATEUR CONNECTÉ
+// =====================================================
+
+let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+
+  currentUser = user;
+
+  if (user) {
+
+    console.log(
+      "Utilisateur connecté :",
+      user.uid
+    );
+
+  } else {
+
+    console.log(
+      "Aucun utilisateur connecté."
+    );
+
+  }
+
+});
 
 
 // =====================================================
@@ -52,16 +87,18 @@ function setupNavigation() {
     window.location.pathname.split("/").pop() || "index.html";
 
   const navLinks =
-    document.querySelectorAll(".nav-item");
+    document.querySelectorAll(".bottom-nav a");
 
   navLinks.forEach((link) => {
 
     const href = link.getAttribute("href");
 
-    if (
-      href === currentPage ||
-      (currentPage === "" && href === "index.html")
-    ) {
+    if (!href) return;
+
+    const cleanHref =
+      href.split("?")[0];
+
+    if (cleanHref === currentPage) {
 
       link.classList.add("active");
 
@@ -78,7 +115,9 @@ function setupNavigation() {
 
 function initApp() {
 
-  console.log("CAMU SERVICES — Application initialisée");
+  console.log(
+    "CAMU SERVICES — Application initialisée"
+  );
 
   setupNavigation();
 
@@ -89,10 +128,18 @@ function initApp() {
 // DOM READY
 // =====================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  initApp
-);
+if (document.readyState === "loading") {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initApp
+  );
+
+} else {
+
+  initApp();
+
+}
 
 
 // =====================================================
@@ -102,5 +149,6 @@ document.addEventListener(
 export {
   app,
   auth,
-  db
+  db,
+  currentUser
 };
