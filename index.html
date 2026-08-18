@@ -6,29 +6,24 @@
 
   <title>CAMU SERVICES — Accueil</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    :root {
-      --primary: #d32f2f;
-      --dark: #111111;
-      --bg: #f9f9f9;
-      --card-bg: #ffffff;
-      --border: #eeeeee;
-      --text: #222222;
-      --muted: #777777;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: #f7f7f7;
+      color: #111;
       padding-top: 60px;
       padding-bottom: 75px;
     }
 
-    /* HEADER */
+    /* ================= HEADER ================= */
 
     .top-bar {
       position: fixed;
@@ -36,754 +31,567 @@
       left: 0;
       right: 0;
       height: 60px;
-      background: var(--dark);
+      background: #111;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 15px;
-      color: white;
+      padding: 0 18px;
       z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
     }
 
     .logo-text {
-      font-size: 16px;
+      color: white;
+      font-size: 17px;
       font-weight: 900;
     }
 
     .logo-text span {
-      color: var(--primary);
+      color: #d32f2f;
     }
 
-    .profile-link {
+    .profile-icon {
       color: white;
-      font-size: 19px;
+      font-size: 20px;
       text-decoration: none;
     }
 
-    /* CONTENEUR */
+    /* ================= CONTAINER ================= */
 
     .container {
-      max-width: 600px;
+      width: 100%;
+      max-width: 650px;
       margin: auto;
-      padding: 15px;
+      padding: 18px 15px;
     }
 
-    /* RECHERCHE */
+    /* ================= SEARCH ================= */
 
     .search-bar {
       background: white;
-      padding: 11px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+      border: 1px solid #e4e4e4;
+      border-radius: 14px;
+      height: 52px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
+      padding: 0 15px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 5px rgba(0,0,0,.03);
     }
 
     .search-bar i {
-      color: #888;
+      color: #777;
+      font-size: 19px;
     }
 
     .search-bar input {
       border: none;
       outline: none;
       width: 100%;
-      font-size: 13px;
+      font-size: 15px;
       background: transparent;
     }
 
-    /* TITRE */
+    /* ================= TITRE ================= */
 
     .section-title {
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 900;
       text-transform: uppercase;
-      margin: 15px 0 10px;
-      color: var(--dark);
+      margin-bottom: 12px;
     }
 
-    /* CARTE */
+    /* ================= SERVICES ================= */
+
+    #servicesContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
     .annonce-card {
       background: white;
-      border-radius: 12px;
-      padding: 15px;
-      border: 1px solid var(--border);
-      margin-bottom: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
-
-    .annonce-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
+      border: 1px solid #e4e4e4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
     }
 
     .badge-cat {
       display: inline-block;
-      font-size: 10px;
       background: #ffebee;
-      color: var(--primary);
-      padding: 4px 8px;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-
-    .favorite-btn {
-      border: none;
-      background: transparent;
-      font-size: 20px;
-      color: #bbb;
-      cursor: pointer;
-    }
-
-    .favorite-btn.active {
-      color: #fbc02d;
+      color: #d32f2f;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 9px;
     }
 
     .annonce-card h3 {
-      font-size: 15px;
-      font-weight: 800;
-      margin: 8px 0 5px;
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 6px;
     }
 
     .description {
-      font-size: 12px;
       color: #666;
+      font-size: 13px;
       line-height: 1.5;
-      margin: 5px 0;
+      margin-bottom: 10px;
     }
 
     .prix {
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 15px;
-      margin: 10px 0;
-    }
-
-    .meta {
-      font-size: 10px;
-      color: #888;
+      color: #d32f2f;
+      font-size: 16px;
+      font-weight: 900;
       margin-bottom: 12px;
     }
 
-    /* BOUTON WHATSAPP */
-
-    .whatsapp-btn {
+    .service-actions {
       display: flex;
-      align-items: center;
-      justify-content: center;
       gap: 8px;
-      width: 100%;
-      background: #25D366;
+    }
+
+    .btn-contact {
+      flex: 1;
+      background: #d32f2f;
       color: white;
-      text-decoration: none;
-      padding: 10px;
+      border: none;
       border-radius: 8px;
+      padding: 11px;
+      text-align: center;
+      text-decoration: none;
       font-size: 12px;
       font-weight: 800;
     }
 
-    /* NAVIGATION BAS */
+    .btn-favori {
+      width: 45px;
+      background: white;
+      color: #777;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 17px;
+    }
+
+    /* ================= CHARGEMENT ================= */
+
+    .loading-box,
+    .empty-state,
+    .error-state {
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    .loading-box i {
+      font-size: 25px;
+      color: #d32f2f;
+      margin-bottom: 10px;
+    }
+
+    .empty-state i {
+      font-size: 40px;
+      color: #aaa;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h2,
+    .error-state h2 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .empty-state p,
+    .error-state p {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .error-state i {
+      color: #d32f2f;
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .retry-btn {
+      margin-top: 15px;
+      background: #111;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    /* ================= NAVIGATION ================= */
 
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
-      width: 100%;
+      right: 0;
+      height: 70px;
       background: white;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid #ddd;
       display: flex;
       justify-content: space-around;
-      padding: 8px 0;
       z-index: 1000;
-      height: 65px;
     }
 
     .bottom-nav a {
-      text-align: center;
-      color: #666;
-      font-size: 11px;
+      width: 25%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 25%;
       text-decoration: none;
+      color: #666;
+      font-size: 11px;
     }
 
     .bottom-nav a.active {
-      color: var(--primary);
+      color: #d32f2f;
     }
 
     .bottom-nav i {
-      font-size: 19px;
-      margin-bottom: 3px;
+      font-size: 20px;
+      margin-bottom: 4px;
     }
-
-    /* CHARGEMENT */
-
-    .loading {
-      text-align: center;
-      padding: 30px;
-      color: #777;
-      font-size: 12px;
-    }
-
-    .loading i {
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
-
-    /* VIDE */
-
-    .no-result {
-      background: white;
-      border-radius: 12px;
-      padding: 30px 20px;
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-
-    .no-result i {
-      font-size: 40px;
-      color: #bbb;
-      margin-bottom: 12px;
-    }
-
-    .no-result h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
-
-    .no-result p {
-      font-size: 12px;
-      color: #777;
-    }
-
   </style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+<header class="top-bar">
 
-  <header class="top-bar">
+  <div class="logo-text">
+    CAMU <span>SERVICES</span>
+  </div>
 
-    <div class="logo-text">
-      CAMU <span>SERVICES</span>
+  <a href="profil.html" class="profile-icon">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+</header>
+
+
+<main class="container">
+
+  <!-- RECHERCHE -->
+
+  <div class="search-bar">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Rechercher un service..."
+      autocomplete="off"
+    >
+
+  </div>
+
+
+  <div class="section-title">
+    Services disponibles
+  </div>
+
+
+  <div id="servicesContainer">
+
+    <div class="loading-box">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <p>Chargement des services...</p>
+
     </div>
 
-    <a href="profil.html" class="profile-link">
-      <i class="fa-solid fa-user"></i>
-    </a>
+  </div>
 
-  </header>
+</main>
 
 
-  <!-- CONTENU -->
+<!-- NAVIGATION -->
 
-  <main class="container">
+<nav class="bottom-nav">
 
-    <!-- RECHERCHE -->
+  <a href="index.html" class="active">
+    <i class="fa-solid fa-house"></i>
+    <span>Accueil</span>
+  </a>
 
-    <div class="search-bar">
+  <a href="publier.html">
+    <i class="fa-solid fa-circle-plus"></i>
+    <span>Publier</span>
+  </a>
 
-      <i class="fa-solid fa-magnifying-glass"></i>
+  <a href="chat.html">
+    <i class="fa-solid fa-comments"></i>
+    <span>Chat</span>
+  </a>
 
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Rechercher un service..."
-        autocomplete="off"
-      >
+  <a href="profil.html">
+    <i class="fa-solid fa-user"></i>
+    <span>Profil</span>
+  </a>
 
-    </div>
-
-
-    <div class="section-title">
-      Services disponibles
-    </div>
+</nav>
 
 
-    <!-- SERVICES -->
+<script type="module">
 
-    <div id="servicesContainer">
+  import { db } from "./app.js";
 
-      <div class="loading">
+  import {
+    collection,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+
+  const container =
+    document.getElementById("servicesContainer");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+
+  let tousLesServices = [];
+
+
+  /* =====================================================
+     PROTECTION CONTRE HTML INJECTÉ
+  ===================================================== */
+
+  function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =====================================================
+     CHARGER LES SERVICES
+     
+     IMPORTANT :
+     On ne fait PAS orderBy ici.
+     Cela évite le problème d'index Firestore.
+  ===================================================== */
+
+  async function chargerServices() {
+
+    container.innerHTML = `
+      <div class="loading-box">
         <i class="fa-solid fa-spinner fa-spin"></i>
-
-        <br>
-
-        Chargement des services...
-
+        <p>Chargement des services...</p>
       </div>
+    `;
 
-    </div>
+    try {
 
-  </main>
-
-
-  <!-- NAVIGATION -->
-
-  <nav class="bottom-nav">
-
-    <a href="index.html" class="active">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-
-    <a href="profil.html">
-      <i class="fa-solid fa-user"></i>
-      <span>Profil</span>
-    </a>
-
-  </nav>
+      const snapshot =
+        await getDocs(collection(db, "services"));
 
 
-  <!-- FIREBASE -->
-
-  <script type="module">
-
-    import { db, auth } from "./app.js";
-
-    import {
-      collection,
-      getDocs,
-      query,
-      where,
-      orderBy,
-      doc,
-      setDoc,
-      deleteDoc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    import {
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+      tousLesServices = [];
 
 
-    let currentUser = null;
+      snapshot.forEach((docSnap) => {
 
-    let allServices = [];
-
-    let favorites = new Set();
+        const service = docSnap.data();
 
 
-    /* ==========================================
-       UTILITAIRE POUR ÉVITER LES PROBLÈMES HTML
-       ========================================== */
+        /* Seulement les services validés */
 
-    function escapeHTML(value) {
+        if (service.valide === true) {
 
-      if (!value) return "";
+          tousLesServices.push({
 
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+            id: docSnap.id,
 
-    }
-
-
-    /* ==========================================
-       UTILISATEUR CONNECTÉ
-       ========================================== */
-
-    onAuthStateChanged(auth, async (user) => {
-
-      currentUser = user;
-
-      if (user) {
-
-        await chargerFavoris();
-
-      }
-
-      await chargerServices();
-
-    });
-
-
-    /* ==========================================
-       CHARGER LES FAVORIS
-       ========================================== */
-
-    async function chargerFavoris() {
-
-      if (!currentUser) return;
-
-      try {
-
-        const favorisRef = collection(
-          db,
-          "users",
-          currentUser.uid,
-          "favoris"
-        );
-
-        const snapshot = await getDocs(favorisRef);
-
-        favorites.clear();
-
-        snapshot.forEach((document) => {
-
-          favorites.add(document.id);
-
-        });
-
-      } catch (error) {
-
-        console.error(
-          "Erreur favoris :",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* ==========================================
-       CHARGER SERVICES
-       ========================================== */
-
-    async function chargerServices() {
-
-      const container =
-        document.getElementById("servicesContainer");
-
-      try {
-
-        const q = query(
-          collection(db, "services"),
-          where("valide", "==", true),
-          orderBy("createdAt", "desc")
-        );
-
-        const snapshot =
-          await getDocs(q);
-
-        allServices = [];
-
-        snapshot.forEach((document) => {
-
-          allServices.push({
-
-            id: document.id,
-
-            ...document.data()
+            ...service
 
           });
 
-        });
-
-        afficherServices(allServices);
-
-      } catch (error) {
-
-        console.error(error);
-
-        container.innerHTML = `
-
-          <div class="no-result">
-
-            <i class="fa-solid fa-triangle-exclamation"></i>
-
-            <h3>Impossible de charger les services</h3>
-
-            <p>
-              Vérifiez votre connexion Internet
-              et réessayez.
-            </p>
-
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    /* ==========================================
-       AFFICHER SERVICES
-       ========================================== */
-
-    function afficherServices(services) {
-
-      const container =
-        document.getElementById("servicesContainer");
-
-      if (services.length === 0) {
-
-        container.innerHTML = `
-
-          <div class="no-result">
-
-            <i class="fa-solid fa-inbox"></i>
-
-            <h3>Aucun service trouvé</h3>
-
-            <p>
-              Aucun service correspondant
-              à votre recherche.
-            </p>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      let html = "";
-
-
-      services.forEach((service) => {
-
-        const id = service.id;
-
-        const titre =
-          escapeHTML(service.titre);
-
-        const categorie =
-          escapeHTML(
-            service.categorie || "Général"
-          );
-
-        const description =
-          escapeHTML(
-            service.description || ""
-          );
-
-        const prix =
-          escapeHTML(
-            service.prix || "Prix à discuter"
-          );
-
-
-        const isFavorite =
-          favorites.has(id);
-
-
-        /*
-          Pour le moment nous utilisons
-          le numéro WhatsApp du prestataire
-          s'il existe dans le document service.
-        */
-
-        const whatsapp =
-          service.whatsapp ||
-          service.telephone ||
-          "";
-
-
-        let whatsappButton = "";
-
-
-        if (whatsapp) {
-
-          const numero =
-            String(whatsapp)
-              .replace(/\D/g, "");
-
-
-          whatsappButton = `
-
-            <a
-              href="https://wa.me/${numero}?text=Bonjour%2C%20je%20suis%20intéressé%20par%20votre%20service%20%3A%20${encodeURIComponent(service.titre || "")}"
-              target="_blank"
-              class="whatsapp-btn"
-            >
-
-              <i class="fa-brands fa-whatsapp"></i>
-
-              Contacter sur WhatsApp
-
-            </a>
-
-          `;
-
         }
-
-
-        html += `
-
-          <div
-            class="annonce-card"
-            data-id="${id}"
-          >
-
-            <div class="annonce-header">
-
-              <span class="badge-cat">
-                ${categorie}
-              </span>
-
-              <button
-                class="favorite-btn ${isFavorite ? "active" : ""}"
-                onclick="toggleFavori('${id}')"
-                title="Ajouter aux favoris"
-              >
-
-                <i class="fa-solid fa-star"></i>
-
-              </button>
-
-            </div>
-
-
-            <h3>
-              ${titre}
-            </h3>
-
-
-            <p class="description">
-              ${description.length > 120
-                ? description.substring(0, 120) + "..."
-                : description}
-            </p>
-
-
-            <p class="prix">
-              ${prix}
-            </p>
-
-
-            <div class="meta">
-
-              <i class="fa-solid fa-circle-check"></i>
-
-              Service vérifié
-
-            </div>
-
-
-            ${whatsappButton}
-
-          </div>
-
-        `;
 
       });
 
 
-      container.innerHTML = html;
+      /* Tri côté navigateur */
+
+      tousLesServices.sort((a, b) => {
+
+        const dateA =
+          a.createdAt?.seconds || 0;
+
+        const dateB =
+          b.createdAt?.seconds || 0;
+
+        return dateB - dateA;
+
+      });
+
+
+      afficherServices(tousLesServices);
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur Firebase :",
+        error
+      );
+
+
+      container.innerHTML = `
+
+        <div class="error-state">
+
+          <i class="fa-solid fa-triangle-exclamation"></i>
+
+          <h2>Impossible de charger les services</h2>
+
+          <p>
+            Une erreur s'est produite lors du chargement.
+          </p>
+
+          <button
+            class="retry-btn"
+            onclick="location.reload()"
+          >
+            Réessayer
+          </button>
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     AFFICHER LES SERVICES
+  ===================================================== */
+
+  function afficherServices(services) {
+
+    if (services.length === 0) {
+
+      container.innerHTML = `
+
+        <div class="empty-state">
+
+          <i class="fa-solid fa-inbox"></i>
+
+          <h2>Aucun service disponible</h2>
+
+          <p>
+            Aucun service n'a encore été validé.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
 
     }
 
 
-    /* ==========================================
-       FAVORIS
-       ========================================== */
-
-    window.toggleFavori = async function(serviceId) {
-
-      if (!currentUser) {
-
-        alert(
-          "Vous devez être connecté pour utiliser les favoris."
-        );
-
-        window.location.href =
-          "inscription.html";
-
-        return;
-
-      }
+    let html = "";
 
 
-      try {
+    services.forEach((service) => {
 
-        const favoriRef = doc(
-          db,
-          "users",
-          currentUser.uid,
-          "favoris",
-          serviceId
-        );
+      const titre =
+        escapeHTML(service.titre || "Service");
 
+      const categorie =
+        escapeHTML(service.categorie || "Divers & Services");
 
-        if (favorites.has(serviceId)) {
+      const description =
+        escapeHTML(service.description || "Aucune description disponible.");
 
-          await deleteDoc(favoriRef);
-
-          favorites.delete(serviceId);
-
-        } else {
-
-          await setDoc(favoriRef, {
-
-            serviceId: serviceId,
-
-            createdAt: new Date()
-
-          });
-
-          favorites.add(serviceId);
-
-        }
+      const prix =
+        escapeHTML(service.prix || "Sur devis");
 
 
-        afficherServices(
-          getServicesFiltres()
-        );
+      html += `
+
+        <div class="annonce-card">
+
+          <span class="badge-cat">
+            ${categorie}
+          </span>
+
+          <h3>
+            ${titre}
+          </h3>
+
+          <p class="description">
+            ${description}
+          </p>
+
+          <p class="prix">
+            ${prix}
+          </p>
+
+          <div class="service-actions">
+
+            <a
+              href="chat.html?serviceId=${encodeURIComponent(service.id)}"
+              class="btn-contact"
+            >
+              <i class="fa-solid fa-comments"></i>
+              Contacter
+            </a>
+
+            <button
+              class="btn-favori"
+              title="Ajouter aux favoris"
+            >
+              <i class="fa-regular fa-star"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    });
 
 
-      } catch (error) {
+    container.innerHTML = html;
 
-        console.error(error);
-
-        alert(
-          "Impossible de modifier les favoris."
-        );
-
-      }
-
-    };
+  }
 
 
-    /* ==========================================
-       RECHERCHE
-       ========================================== */
+  /* =====================================================
+     RECHERCHE
+  ===================================================== */
 
-    const searchInput =
-      document.getElementById("searchInput");
-
-
-    searchInput.addEventListener(
-      "input",
-      () => {
-
-        afficherServices(
-          getServicesFiltres()
-        );
-
-      }
-    );
-
-
-    function getServicesFiltres() {
+  searchInput.addEventListener(
+    "input",
+    () => {
 
       const recherche =
         searchInput.value
@@ -793,46 +601,53 @@
 
       if (!recherche) {
 
-        return allServices;
+        afficherServices(
+          tousLesServices
+        );
+
+        return;
 
       }
 
 
-      return allServices.filter(
-        (service) => {
+      const resultats =
+        tousLesServices.filter((service) => {
 
           const titre =
-            String(
-              service.titre || ""
-            ).toLowerCase();
+            String(service.titre || "")
+              .toLowerCase();
 
           const categorie =
-            String(
-              service.categorie || ""
-            ).toLowerCase();
+            String(service.categorie || "")
+              .toLowerCase();
 
           const description =
-            String(
-              service.description || ""
-            ).toLowerCase();
+            String(service.description || "")
+              .toLowerCase();
 
 
           return (
-
             titre.includes(recherche) ||
-
             categorie.includes(recherche) ||
-
             description.includes(recherche)
-
           );
 
-        }
-      );
+        });
+
+
+      afficherServices(resultats);
 
     }
+  );
 
-  </script>
+
+  /* =====================================================
+     DÉMARRAGE
+  ===================================================== */
+
+  chargerServices();
+
+</script>
 
 </body>
 </html>
