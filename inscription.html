@@ -1,56 +1,76 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <title>CAMU SERVICES — Inscription</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  >
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+    :root {
+      --primary: #d32f2f;
+      --dark: #111111;
+      --bg: #f9f9f9;
+      --card-bg: #ffffff;
+      --border: #eeeeee;
+      --text: #333333;
+      --text-light: #666666;
+      --success: #2e7d32;
+    }
 
-    .auth-container {
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding-top: 60px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      color: #ffffff;
+      z-index: 1000;
+    }
+
+    .container {
       max-width: 450px;
       margin: 30px auto;
       padding: 15px;
     }
 
-    .auth-card {
-      background: #ffffff;
+    .card-box {
+      background: var(--card-bg);
       border-radius: 12px;
-      padding: 25px;
-      border: 1px solid #eeeeee;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .auth-title {
+    .form-title {
       text-align: center;
+      margin-bottom: 5px;
+      color: var(--dark);
       font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: #111111;
+      font-weight: 900;
     }
 
-    .auth-subtitle {
+    .form-subtitle {
       text-align: center;
+      color: var(--text-light);
       font-size: 12px;
-      color: #666666;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
     }
 
     .form-group {
@@ -60,35 +80,59 @@
     .form-group label {
       display: block;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 6px;
-      color: #555555;
+      color: var(--text-light);
       text-transform: uppercase;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 14px;
     }
 
     .form-group input {
       width: 100%;
-      padding: 13px;
-      border: 1px solid #dddddd;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
+      box-sizing: border-box;
+      background: #fff;
     }
 
     .form-group input:focus {
-      border-color: #d32f2f;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(211,47,47,0.08);
+    }
+
+    .password-help {
+      font-size: 10px;
+      color: #777;
+      margin-top: 5px;
     }
 
     .btn-submit {
-      width: 100%;
-      background: #d32f2f;
-      color: #ffffff;
+      background: var(--primary);
+      color: #fff;
       border: none;
+      width: 100%;
       padding: 13px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
+      text-transform: uppercase;
+      transition: 0.2s;
     }
 
     .btn-submit:disabled {
@@ -96,155 +140,202 @@
       cursor: not-allowed;
     }
 
-    .auth-message {
-      margin-top: 15px;
-      text-align: center;
+    .message {
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
       font-size: 12px;
-      font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .message.error {
+      display: block;
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+
+    .message.success {
+      display: block;
+      background: #e8f5e9;
+      color: var(--success);
+      border: 1px solid #c8e6c9;
     }
 
     .login-link {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 12px;
-      color: #666666;
+      color: #666;
     }
 
     .login-link a {
-      color: #d32f2f;
+      color: var(--primary);
       font-weight: 800;
       text-decoration: none;
     }
-
   </style>
-
 </head>
-
 
 <body>
 
-  <header class="header">
+  <!-- HEADER -->
+  <header class="top-bar">
 
-    <a
-      href="index.html"
-      style="color:white;text-decoration:none;font-size:18px;"
-    >
-
+    <a href="index.html"
+       style="color:white; text-decoration:none; font-size:18px;">
       <i class="fa-solid fa-arrow-left"></i>
-
     </a>
 
-    <h1>
-      CAMU <span>SERVICES</span>
-    </h1>
+    <div style="font-size:16px; font-weight:900;">
+      CAMU
+      <span style="color:var(--primary);">SERVICES</span>
+    </div>
 
     <div style="width:18px;"></div>
 
   </header>
 
 
-  <main class="auth-container">
+  <!-- CONTENU -->
+  <main class="container">
 
-    <div class="auth-card">
+    <div class="card-box">
 
-      <h2 class="auth-title">
+      <h1 class="form-title">
         Créer un compte
-      </h2>
+      </h1>
 
-      <p class="auth-subtitle">
-        Rejoignez CAMU SERVICES
+      <p class="form-subtitle">
+        Rejoignez CAMU SERVICES gratuitement
       </p>
 
 
+      <!-- MESSAGE -->
+      <div id="messageBox" class="message"></div>
+
+
+      <!-- FORMULAIRE -->
       <form id="inscriptionForm">
 
+        <!-- NOM -->
         <div class="form-group">
 
-          <label for="nom">
+          <label for="nomInsc">
             Nom complet
           </label>
 
-          <input
-            type="text"
-            id="nom"
-            placeholder="Ex : Carl Muteb"
-            required
-            minlength="2"
-          >
+          <div class="input-wrapper">
+
+            <i class="fa-solid fa-user"></i>
+
+            <input
+              type="text"
+              id="nomInsc"
+              placeholder="Ex : Carl Muteb"
+              autocomplete="name"
+              required
+            >
+
+          </div>
 
         </div>
 
 
+        <!-- EMAIL -->
         <div class="form-group">
 
-          <label for="email">
-            Adresse email
+          <label for="emailInsc">
+            Adresse Email
           </label>
 
-          <input
-            type="email"
-            id="email"
-            placeholder="nom@exemple.com"
-            required
-          >
+          <div class="input-wrapper">
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <input
+              type="email"
+              id="emailInsc"
+              placeholder="Ex : nom@domaine.com"
+              autocomplete="email"
+              required
+            >
+
+          </div>
 
         </div>
 
 
+        <!-- MOT DE PASSE -->
         <div class="form-group">
 
-          <label for="password">
+          <label for="mdpInsc">
             Mot de passe
           </label>
 
-          <input
-            type="password"
-            id="password"
-            placeholder="Minimum 6 caractères"
-            required
-            minlength="6"
-          >
+          <div class="input-wrapper">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              type="password"
+              id="mdpInsc"
+              placeholder="Minimum 6 caractères"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+          </div>
+
+          <div class="password-help">
+            Le mot de passe doit contenir au minimum 6 caractères.
+          </div>
 
         </div>
 
 
+        <!-- CONFIRMATION -->
         <div class="form-group">
 
-          <label for="passwordConfirm">
+          <label for="confirmMdp">
             Confirmer le mot de passe
           </label>
 
-          <input
-            type="password"
-            id="passwordConfirm"
-            placeholder="Répétez votre mot de passe"
-            required
-            minlength="6"
-          >
+          <div class="input-wrapper">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              type="password"
+              id="confirmMdp"
+              placeholder="Confirmez votre mot de passe"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+          </div>
 
         </div>
 
 
+        <!-- BOUTON -->
         <button
           type="submit"
           class="btn-submit"
-          id="submitBtn"
+          id="btnInscription"
         >
-
+          <i class="fa-solid fa-user-plus"></i>
           Créer mon compte
-
         </button>
-
-
-        <div
-          id="message"
-          class="auth-message"
-        ></div>
-
 
       </form>
 
 
+      <!-- CONNEXION -->
       <div class="login-link">
 
         Vous avez déjà un compte ?
@@ -260,258 +351,320 @@
   </main>
 
 
+  <!-- FIREBASE -->
   <script type="module">
 
     import {
-      auth,
-      db
-    } from "./app.js";
-
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
     import {
+      getAuth,
       createUserWithEmailAndPassword,
       updateProfile
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-
     import {
+      getFirestore,
       doc,
       setDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
-    const form =
-      document.getElementById(
-        "inscriptionForm"
-      );
+    // ==========================================
+    // CONFIGURATION FIREBASE
+    // ==========================================
 
+    const firebaseConfig = {
 
-    const button =
-      document.getElementById(
-        "submitBtn"
-      );
+      apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
 
+      authDomain: "camu-services.firebaseapp.com",
 
-    const message =
-      document.getElementById(
-        "message"
-      );
+      projectId: "camu-services",
 
+      storageBucket: "camu-services.firebasestorage.app",
 
-    form.addEventListener(
-      "submit",
-      async (event) => {
+      messagingSenderId: "879100396449",
 
-        event.preventDefault();
+      appId: "1:879100396449:web:9d7ffe441a3df2daf841e0"
 
+    };
 
-        const nom =
-          document
-            .getElementById("nom")
-            .value
-            .trim();
 
+    // ==========================================
+    // INITIALISATION
+    // ==========================================
 
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
+    const app = initializeApp(firebaseConfig);
 
+    const auth = getAuth(app);
 
-        const password =
-          document
-            .getElementById("password")
-            .value;
+    const db = getFirestore(app);
 
 
-        const passwordConfirm =
-          document
-            .getElementById("passwordConfirm")
-            .value;
+    // ==========================================
+    // ELEMENTS HTML
+    // ==========================================
 
+    const form = document.getElementById("inscriptionForm");
 
-        // ---------------------------------------------
-        // VALIDATION
-        // ---------------------------------------------
+    const messageBox = document.getElementById("messageBox");
 
-        if (
-          password !==
-          passwordConfirm
-        ) {
+    const button = document.getElementById("btnInscription");
 
-          message.style.color =
-            "#d32f2f";
 
-          message.textContent =
-            "Les mots de passe ne correspondent pas.";
+    // ==========================================
+    // AFFICHER UN MESSAGE
+    // ==========================================
 
-          return;
+    function afficherMessage(message, type) {
 
-        }
+      messageBox.textContent = message;
 
+      messageBox.className = "message " + type;
 
-        if (password.length < 6) {
+    }
 
-          message.style.color =
-            "#d32f2f";
 
-          message.textContent =
-            "Le mot de passe doit contenir au moins 6 caractères.";
+    // ==========================================
+    // INSCRIPTION
+    // ==========================================
 
-          return;
+    form.addEventListener("submit", async (event) => {
 
-        }
+      event.preventDefault();
 
 
-        button.disabled = true;
+      const name =
+        document.getElementById("nomInsc")
+        .value
+        .trim();
 
-        button.textContent =
-          "Création du compte...";
+      const email =
+        document.getElementById("emailInsc")
+        .value
+        .trim()
+        .toLowerCase();
 
-        message.textContent = "";
+      const password =
+        document.getElementById("mdpInsc")
+        .value;
 
+      const confirmPassword =
+        document.getElementById("confirmMdp")
+        .value;
 
-        try {
 
-          // -------------------------------------------
-          // CRÉATION FIREBASE AUTH
-          // -------------------------------------------
+      // Vérification du nom
 
-          const credential =
-            await createUserWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
+      if (name.length < 2) {
 
+        afficherMessage(
+          "Veuillez entrer votre nom complet.",
+          "error"
+        );
 
-          const user =
-            credential.user;
-
-
-          // -------------------------------------------
-          // NOM DE L'UTILISATEUR
-          // -------------------------------------------
-
-          await updateProfile(
-            user,
-            {
-              displayName: nom
-            }
-          );
-
-
-          // -------------------------------------------
-          // PROFIL FIRESTORE
-          // -------------------------------------------
-
-          await setDoc(
-            doc(
-              db,
-              "users",
-              user.uid
-            ),
-            {
-
-              uid: user.uid,
-
-              nom: nom,
-
-              email: email,
-
-              role: "client",
-
-              status: "actif",
-
-              createdAt:
-                serverTimestamp()
-
-            }
-          );
-
-
-          message.style.color =
-            "#2e7d32";
-
-          message.textContent =
-            "Compte créé avec succès !";
-
-
-          setTimeout(
-            () => {
-
-              window.location.href =
-                "index.html";
-
-            },
-            1000
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "Erreur inscription :",
-            error
-          );
-
-
-          message.style.color =
-            "#d32f2f";
-
-
-          if (
-            error.code ===
-            "auth/email-already-in-use"
-          ) {
-
-            message.textContent =
-              "Cette adresse email est déjà utilisée.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/invalid-email"
-          ) {
-
-            message.textContent =
-              "Adresse email invalide.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/weak-password"
-          ) {
-
-            message.textContent =
-              "Le mot de passe est trop faible.";
-
-          }
-
-          else {
-
-            message.textContent =
-              "Impossible de créer le compte. Vérifiez votre connexion et réessayez.";
-
-          }
-
-
-          button.disabled = false;
-
-          button.textContent =
-            "Créer mon compte";
-
-        }
+        return;
 
       }
-    );
+
+
+      // Vérification du mot de passe
+
+      if (password.length < 6) {
+
+        afficherMessage(
+          "Le mot de passe doit contenir au moins 6 caractères.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      // Vérification de confirmation
+
+      if (password !== confirmPassword) {
+
+        afficherMessage(
+          "Les deux mots de passe ne correspondent pas.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      // Désactiver le bouton
+
+      button.disabled = true;
+
+      button.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
+
+
+      try {
+
+        // ==========================================
+        // 1. CREATION DU COMPTE AUTHENTICATION
+        // ==========================================
+
+        const userCredential =
+          await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        const user = userCredential.user;
+
+
+        // ==========================================
+        // 2. ENREGISTRER LE NOM DANS AUTH
+        // ==========================================
+
+        await updateProfile(user, {
+
+          displayName: name
+
+        });
+
+
+        // ==========================================
+        // 3. CREER users/{UID} DANS FIRESTORE
+        // ==========================================
+
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+
+            name: name,
+
+            email: email,
+
+            status: "actif",
+
+            role: "user",
+
+            date: serverTimestamp(),
+
+            createdAt: serverTimestamp()
+
+          }
+        );
+
+
+        // ==========================================
+        // 4. SUCCES
+        // ==========================================
+
+        afficherMessage(
+          "Compte créé avec succès ! Redirection...",
+          "success"
+        );
+
+
+        form.reset();
+
+
+        // Redirection
+
+        setTimeout(() => {
+
+          window.location.href = "index.html";
+
+        }, 1500);
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur inscription :",
+          error
+        );
+
+
+        let message =
+          "Une erreur est survenue lors de l'inscription.";
+
+
+        // EMAIL DEJA UTILISE
+
+        if (
+          error.code ===
+          "auth/email-already-in-use"
+        ) {
+
+          message =
+            "Cette adresse email est déjà utilisée.";
+
+        }
+
+
+        // EMAIL INVALIDE
+
+        else if (
+          error.code ===
+          "auth/invalid-email"
+        ) {
+
+          message =
+            "L'adresse email n'est pas valide.";
+
+        }
+
+
+        // MOT DE PASSE FAIBLE
+
+        else if (
+          error.code ===
+          "auth/weak-password"
+        ) {
+
+          message =
+            "Le mot de passe est trop faible.";
+
+        }
+
+
+        // ERREUR RESEAU
+
+        else if (
+          error.code ===
+          "auth/network-request-failed"
+        ) {
+
+          message =
+            "Problème de connexion Internet.";
+
+        }
+
+
+        // AFFICHAGE
+
+        afficherMessage(
+          message,
+          "error"
+        );
+
+
+        // Réactiver bouton
+
+        button.disabled = false;
+
+        button.innerHTML =
+          '<i class="fa-solid fa-user-plus"></i> Créer mon compte';
+
+      }
+
+    });
 
   </script>
 
 </body>
-
 </html>
