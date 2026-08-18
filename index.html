@@ -3,95 +3,836 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>CAMU SERVICES — Accueil</title>
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    :root { --primary: #d32f2f; --dark: #111111; --bg: #f9f9f9; --card-bg: #ffffff; --border: #eee; }
-    body { background-color: var(--bg); padding-top: 60px; padding-bottom: 75px; }
-    .top-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 16px; font-weight: 900; } .logo-text span { color: var(--primary); }
-    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
-    .search-bar { background: var(--card-bg); padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-    .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; background: transparent; }
-    .section-title { font-size: 13px; font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; color: var(--dark); }
-    .annonce-card { background: var(--card-bg); border-radius: 10px; padding: 15px; border: 1px solid var(--border); margin-bottom: 12px; }
-    .annonce-card h3 { font-size: 15px; font-weight: 800; margin: 0 0 5px 0; }
-    .badge-cat { font-size: 10px; background: #ffebee; color: var(--primary); padding: 3px 8px; border-radius: 10px; font-weight: bold; }
-    .annonce-card .prix { color: var(--primary); font-weight: 800; font-size: 15px; margin: 8px 0 0 0; }
-    .annonce-card .meta { font-size: 11px; color: #888; margin-top: 8px; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: var(--primary); }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+    :root {
+      --primary: #d32f2f;
+      --dark: #111111;
+      --bg: #f9f9f9;
+      --card-bg: #ffffff;
+      --border: #eeeeee;
+      --text: #222222;
+      --muted: #777777;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding-top: 60px;
+      padding-bottom: 75px;
+    }
+
+    /* HEADER */
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .logo-text {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .logo-text span {
+      color: var(--primary);
+    }
+
+    .profile-link {
+      color: white;
+      font-size: 19px;
+      text-decoration: none;
+    }
+
+    /* CONTENEUR */
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    /* RECHERCHE */
+
+    .search-bar {
+      background: white;
+      padding: 11px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .search-bar i {
+      color: #888;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 13px;
+      background: transparent;
+    }
+
+    /* TITRE */
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 15px 0 10px;
+      color: var(--dark);
+    }
+
+    /* CARTE */
+
+    .annonce-card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .annonce-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      font-size: 10px;
+      background: #ffebee;
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .favorite-btn {
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      color: #bbb;
+      cursor: pointer;
+    }
+
+    .favorite-btn.active {
+      color: #fbc02d;
+    }
+
+    .annonce-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 8px 0 5px;
+    }
+
+    .description {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+      margin: 5px 0;
+    }
+
+    .prix {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 15px;
+      margin: 10px 0;
+    }
+
+    .meta {
+      font-size: 10px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    /* BOUTON WHATSAPP */
+
+    .whatsapp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* NAVIGATION BAS */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 1000;
+      height: 65px;
+    }
+
+    .bottom-nav a {
+      text-align: center;
+      color: #666;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 25%;
+      text-decoration: none;
+    }
+
+    .bottom-nav a.active {
+      color: var(--primary);
+    }
+
+    .bottom-nav i {
+      font-size: 19px;
+      margin-bottom: 3px;
+    }
+
+    /* CHARGEMENT */
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+      font-size: 12px;
+    }
+
+    .loading i {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    /* VIDE */
+
+    .no-result {
+      background: white;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .no-result i {
+      font-size: 40px;
+      color: #bbb;
+      margin-bottom: 12px;
+    }
+
+    .no-result h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .no-result p {
+      font-size: 12px;
+      color: #777;
+    }
+
   </style>
 </head>
+
 <body>
 
-  <header class="top-bar">
-    <div class="logo-text">CAMU <span>SERVICES</span></div>
-    <a href="profil.html" style="color: white; font-size: 18px;"><i class="fa-solid fa-user"></i></a>
-  </header>
+  <!-- HEADER -->
 
-  <main class="container">
-    
-    <div class="search-bar">
-      <i class="fa-solid fa-magnifying-glass" style="color: #888;"></i>
-      <input type="text" placeholder="Recher un service, ex: Plomberie">
+  <header class="top-bar">
+
+    <div class="logo-text">
+      CAMU <span>SERVICES</span>
     </div>
 
-    <div class="section-title">Services Disponibles</div>
+    <a href="profil.html" class="profile-link">
+      <i class="fa-solid fa-user"></i>
+    </a>
+
+  </header>
+
+
+  <!-- CONTENU -->
+
+  <main class="container">
+
+    <!-- RECHERCHE -->
+
+    <div class="search-bar">
+
+      <i class="fa-solid fa-magnifying-glass"></i>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Rechercher un service..."
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <div class="section-title">
+      Services disponibles
+    </div>
+
+
+    <!-- SERVICES -->
+
     <div id="servicesContainer">
-      <p style="text-align: center; font-size: 12px; color: #666;">Chargement des services...</p>
+
+      <div class="loading">
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <br>
+
+        Chargement des services...
+
+      </div>
+
     </div>
 
   </main>
 
+
+  <!-- NAVIGATION -->
+
   <nav class="bottom-nav">
-    <a href="index.html" class="active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+
+    <a href="index.html" class="active">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+
+    <a href="profil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </a>
+
   </nav>
 
+
+  <!-- FIREBASE -->
+
   <script type="module">
-    import { db } from './app.js';
-    import { collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    async function chargerServices() {
-      const container = document.getElementById('servicesContainer');
-      try {
-        // On ne charge que les services validés par l'admin
-        const q = query(collection(db, "services"), where("valide", "==", true), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        
-        if (querySnapshot.empty) {
-          container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><h2>Aucun service</h2><p>Soyez le premier à publier un service.</p></div>`;
-          return;
-        }
+    import { db, auth } from "./app.js";
 
-        let html = '';
-        querySnapshot.forEach((doc) => {
-          const s = doc.data();
-          html += `
-            <div class="annonce-card">
-              <span class="badge-cat">${s.categorie || 'Général'}</span>
-              <h3>${s.titre}</h3>
-              <p style="font-size: 12px; color: #666; margin: 5px 0;">${s.description.substring(0, 100)}...</p>
-              <p class="prix">${s.prix}</p>
-              <div class="meta"><i class="fa-solid fa-calendar"></i> Publié récemment</div>
-            </div>
-          `;
-        });
-        container.innerHTML = html;
+    import {
+      collection,
+      getDocs,
+      query,
+      where,
+      orderBy,
+      doc,
+      setDoc,
+      deleteDoc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-      } catch(e) {
-        console.error(e);
-        container.innerHTML = `<p style="text-align: center; color: red; font-size: 12px;">Erreur de chargement: ${e.message}</p>`;
-      }
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+    let currentUser = null;
+
+    let allServices = [];
+
+    let favorites = new Set();
+
+
+    /* ==========================================
+       UTILITAIRE POUR ÉVITER LES PROBLÈMES HTML
+       ========================================== */
+
+    function escapeHTML(value) {
+
+      if (!value) return "";
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
     }
 
-    chargerServices();
+
+    /* ==========================================
+       UTILISATEUR CONNECTÉ
+       ========================================== */
+
+    onAuthStateChanged(auth, async (user) => {
+
+      currentUser = user;
+
+      if (user) {
+
+        await chargerFavoris();
+
+      }
+
+      await chargerServices();
+
+    });
+
+
+    /* ==========================================
+       CHARGER LES FAVORIS
+       ========================================== */
+
+    async function chargerFavoris() {
+
+      if (!currentUser) return;
+
+      try {
+
+        const favorisRef = collection(
+          db,
+          "users",
+          currentUser.uid,
+          "favoris"
+        );
+
+        const snapshot = await getDocs(favorisRef);
+
+        favorites.clear();
+
+        snapshot.forEach((document) => {
+
+          favorites.add(document.id);
+
+        });
+
+      } catch (error) {
+
+        console.error(
+          "Erreur favoris :",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       CHARGER SERVICES
+       ========================================== */
+
+    async function chargerServices() {
+
+      const container =
+        document.getElementById("servicesContainer");
+
+      try {
+
+        const q = query(
+          collection(db, "services"),
+          where("valide", "==", true),
+          orderBy("createdAt", "desc")
+        );
+
+        const snapshot =
+          await getDocs(q);
+
+        allServices = [];
+
+        snapshot.forEach((document) => {
+
+          allServices.push({
+
+            id: document.id,
+
+            ...document.data()
+
+          });
+
+        });
+
+        afficherServices(allServices);
+
+      } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+
+          <div class="no-result">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <h3>Impossible de charger les services</h3>
+
+            <p>
+              Vérifiez votre connexion Internet
+              et réessayez.
+            </p>
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       AFFICHER SERVICES
+       ========================================== */
+
+    function afficherServices(services) {
+
+      const container =
+        document.getElementById("servicesContainer");
+
+      if (services.length === 0) {
+
+        container.innerHTML = `
+
+          <div class="no-result">
+
+            <i class="fa-solid fa-inbox"></i>
+
+            <h3>Aucun service trouvé</h3>
+
+            <p>
+              Aucun service correspondant
+              à votre recherche.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      let html = "";
+
+
+      services.forEach((service) => {
+
+        const id = service.id;
+
+        const titre =
+          escapeHTML(service.titre);
+
+        const categorie =
+          escapeHTML(
+            service.categorie || "Général"
+          );
+
+        const description =
+          escapeHTML(
+            service.description || ""
+          );
+
+        const prix =
+          escapeHTML(
+            service.prix || "Prix à discuter"
+          );
+
+
+        const isFavorite =
+          favorites.has(id);
+
+
+        /*
+          Pour le moment nous utilisons
+          le numéro WhatsApp du prestataire
+          s'il existe dans le document service.
+        */
+
+        const whatsapp =
+          service.whatsapp ||
+          service.telephone ||
+          "";
+
+
+        let whatsappButton = "";
+
+
+        if (whatsapp) {
+
+          const numero =
+            String(whatsapp)
+              .replace(/\D/g, "");
+
+
+          whatsappButton = `
+
+            <a
+              href="https://wa.me/${numero}?text=Bonjour%2C%20je%20suis%20intéressé%20par%20votre%20service%20%3A%20${encodeURIComponent(service.titre || "")}"
+              target="_blank"
+              class="whatsapp-btn"
+            >
+
+              <i class="fa-brands fa-whatsapp"></i>
+
+              Contacter sur WhatsApp
+
+            </a>
+
+          `;
+
+        }
+
+
+        html += `
+
+          <div
+            class="annonce-card"
+            data-id="${id}"
+          >
+
+            <div class="annonce-header">
+
+              <span class="badge-cat">
+                ${categorie}
+              </span>
+
+              <button
+                class="favorite-btn ${isFavorite ? "active" : ""}"
+                onclick="toggleFavori('${id}')"
+                title="Ajouter aux favoris"
+              >
+
+                <i class="fa-solid fa-star"></i>
+
+              </button>
+
+            </div>
+
+
+            <h3>
+              ${titre}
+            </h3>
+
+
+            <p class="description">
+              ${description.length > 120
+                ? description.substring(0, 120) + "..."
+                : description}
+            </p>
+
+
+            <p class="prix">
+              ${prix}
+            </p>
+
+
+            <div class="meta">
+
+              <i class="fa-solid fa-circle-check"></i>
+
+              Service vérifié
+
+            </div>
+
+
+            ${whatsappButton}
+
+          </div>
+
+        `;
+
+      });
+
+
+      container.innerHTML = html;
+
+    }
+
+
+    /* ==========================================
+       FAVORIS
+       ========================================== */
+
+    window.toggleFavori = async function(serviceId) {
+
+      if (!currentUser) {
+
+        alert(
+          "Vous devez être connecté pour utiliser les favoris."
+        );
+
+        window.location.href =
+          "inscription.html";
+
+        return;
+
+      }
+
+
+      try {
+
+        const favoriRef = doc(
+          db,
+          "users",
+          currentUser.uid,
+          "favoris",
+          serviceId
+        );
+
+
+        if (favorites.has(serviceId)) {
+
+          await deleteDoc(favoriRef);
+
+          favorites.delete(serviceId);
+
+        } else {
+
+          await setDoc(favoriRef, {
+
+            serviceId: serviceId,
+
+            createdAt: new Date()
+
+          });
+
+          favorites.add(serviceId);
+
+        }
+
+
+        afficherServices(
+          getServicesFiltres()
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Impossible de modifier les favoris."
+        );
+
+      }
+
+    };
+
+
+    /* ==========================================
+       RECHERCHE
+       ========================================== */
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        afficherServices(
+          getServicesFiltres()
+        );
+
+      }
+    );
+
+
+    function getServicesFiltres() {
+
+      const recherche =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      if (!recherche) {
+
+        return allServices;
+
+      }
+
+
+      return allServices.filter(
+        (service) => {
+
+          const titre =
+            String(
+              service.titre || ""
+            ).toLowerCase();
+
+          const categorie =
+            String(
+              service.categorie || ""
+            ).toLowerCase();
+
+          const description =
+            String(
+              service.description || ""
+            ).toLowerCase();
+
+
+          return (
+
+            titre.includes(recherche) ||
+
+            categorie.includes(recherche) ||
+
+            description.includes(recherche)
+
+          );
+
+        }
+      );
+
+    }
+
   </script>
+
 </body>
 </html>
