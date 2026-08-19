@@ -422,9 +422,9 @@ afficherUsers(usersSnapshot);
 
 }catch(error){
 
-console.error(error);
+console.error("Détail de l'erreur :", error);
 
-alert("Erreur de chargement.");
+alert("Erreur précise : " + error.message);
 
 }
 
