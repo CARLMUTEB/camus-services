@@ -387,14 +387,14 @@ await getDocs(collection(db,"users"));
 
 let pending = [];
 
-servicesSnapshot.forEach((document)=>{
+servicesSnapshot.forEach((docItem)=>{
 
-const service=document.data();
+const service=docItem.data();
 
 if(service.valide !== true){
 
 pending.push({
-id:document.id,
+id:docItem.id,
 ...service
 });
 
@@ -547,9 +547,9 @@ return;
 container.innerHTML="";
 
 
-snapshot.forEach(document=>{
+snapshot.forEach(docSnap=>{
 
-const user=document.data();
+const user=docSnap.data();
 
 const status =
 user.status || "actif";
@@ -617,7 +617,7 @@ card.querySelector("button")
 .addEventListener("click",async()=>{
 
 await updateDoc(
-doc(db,"users",document.id),
+doc(db,"users",docSnap.id),
 {
 status:suspended
 ?"actif"
