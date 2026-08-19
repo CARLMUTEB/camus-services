@@ -1,10 +1,130 @@
-<!doctype html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAMU SERVICES — Accueil</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></head><body>
-<header class="top-bar"><div class="logo-text">CAMU <span>SERVICES</span></div><a href="profil.html"><i class="fa-solid fa-user"></i></a></header><main class="container">
-<section class="hero"><h1>Trouvez le service qu'il vous faut <span>près de chez vous.</span></h1><p>Découvrez des prestataires locaux et contactez-les directement.</p></section>
-<div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input id="search" placeholder="Rechercher un service..."></div>
-<div class="section-title">Catégories</div><div class="categories"><button class="cat-btn" data-cat="">Tout</button><button class="cat-btn" data-cat="BTP & Construction">BTP</button><button class="cat-btn" data-cat="Technique & Maintenance">Technique</button><button class="cat-btn" data-cat="Informatique & Numérique">Informatique</button><button class="cat-btn" data-cat="Maison & Immobilier">Maison</button><button class="cat-btn" data-cat="Transport & Livraison">Transport</button><button class="cat-btn" data-cat="Divers & Services">Divers</button></div>
-  <div id="communiquesContainer"></div>
-<div class="section-title">Services disponibles</div><div id="services"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Chargement...</p></div></div>
-<footer class="footer"><h3>CAMU SERVICES</h3><p>Votre marketplace locale de services.</p><div class="footer-links"><a href="a-propos.html">À propos</a><a href="conditions.html">Conditions</a><a href="contact.html">Contact</a><a href="politique.html">Politique d'utilisation</a><a href="manifestations.html">Manifestations</a></div><p>© 2026 CAMU SERVICES</p></footer></main>
-<nav class="bottom-nav"><a class="active" href="index.html"><i class="fa-solid fa-house"></i>Accueil</a><a href="publier.html"><i class="fa-solid fa-circle-plus"></i>Publier</a><a href="chat.html"><i class="fa-solid fa-comments"></i>Chat</a><a href="profil.html"><i class="fa-solid fa-user"></i>Profil</a></nav>
-<script type="module">import{db}from'./app.js';import{collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";let all=[],cat='';const e=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));async function load(){try{let s=await getDocs(query(collection(db,'services'),where('valide','==',true)));all=s.docs.map(d=>({id:d.id,...d.data()}));render()}catch(x){document.getElementById('services').innerHTML='<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h2>Impossible de charger les services</h2><p>Vérifiez Internet et réessayez.</p></div>'}}function render(){let q=document.getElementById('search').value.toLowerCase();let a=all.filter(s=>(!cat||s.categorie==cat)&&(!q||`${s.titre} ${s.description} ${s.ville} ${s.categorie}`.toLowerCase().includes(q)));document.getElementById('services').innerHTML=a.length?a.map(s=>`<article class="annonce-card"><span class="badge-cat">${e(s.categorie||'Général')}</span><h3>${e(s.titre)}</h3><div class="location"><i class="fa-solid fa-location-dot"></i> ${e(s.ville||'RDC')}</div><p style="font-size:13px;color:#666">${e((s.description||'').slice(0,130))}${(s.description||'').length>130?'…':''}</p><p class="prix">${e(s.prix||'Sur devis')}</p><div class="card-actions"><a class="btn-submit" style="flex:1;text-align:center" href="chat.html?serviceId=${s.id}"><i class="fa-solid fa-comments"></i> Contacter</a><button class="favorite-btn">☆</button></div></article>`).join(''):'<div class="empty-state"><i class="fa-solid fa-inbox"></i><h2>Aucun service trouvé</h2><p>Essayez une autre recherche.</p></div>'}document.getElementById('search').oninput=render;document.querySelectorAll('.cat-btn').forEach(b=>b.onclick=()=>{cat=b.dataset.cat;render()});load();</script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAMU SERVICES — Accueil</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo-text">CAMU <span>SERVICES</span></div>
+    <a href="profil.html"><i class="fa-solid fa-user"></i></a>
+</header>
+<main class="container">
+    <section class="hero">
+        <h1>Trouvez le service qu'il vous faut <span>près de chez vous.</span></h1>
+        <p>Découvrez des prestataires locaux et contactez-les directement.</p>
+    </section>
+    <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search" placeholder="Rechercher un service...">
+    </div>
+    <div class="section-title">Catégories</div>
+    <div class="categories">
+        <button class="cat-btn" data-cat="">Tout</button>
+        <button class="cat-btn" data-cat="BTP & Construction">BTP</button>
+        <button class="cat-btn" data-cat="Technique & Maintenance">Technique</button>
+        <button class="cat-btn" data-cat="Informatique & Numérique">Informatique</button>
+        <button class="cat-btn" data-cat="Maison & Immobilier">Maison</button>
+        <button class="cat-btn" data-cat="Transport & Livraison">Transport</button>
+        <button class="cat-btn" data-cat="Divers & Services">Divers</button>
+    </div>
+
+    <!-- Conteneur des communiqués -->
+    <div id="communiquesContainer"></div>
+
+    <div class="section-title">Services disponibles</div>
+    <div id="services">
+        <div class="empty-state">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Chargement...</p>
+        </div>
+    </div>
+    <footer class="footer">
+        <h3>CAMU SERVICES</h3>
+        <p>Votre marketplace locale de services.</p>
+        <div class="footer-links">
+            <a href="a-propos.html">À propos</a>
+            <a href="conditions.html">Conditions</a>
+            <a href="contact.html">Contact</a>
+            <a href="politique.html">Politique d'utilisation</a>
+            <a href="manifestations.html">Manifestations</a>
+        </div>
+        <p>© 2026 CAMU SERVICES</p>
+    </footer>
+</main>
+<nav class="bottom-nav">
+    <a class="active" href="index.html"><i class="fa-solid fa-house"></i>Accueil</a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i>Publier</a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i>Chat</a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i>Profil</a>
+</nav>
+
+<script type="module">
+import { db } from './app.js';
+import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+let all = [], cat = '';
+const e = x => String(x ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+async function load(){
+    try {
+        let s = await getDocs(query(collection(db,'services'), where('valide','==',true)));
+        all = s.docs.map(d => ({id:d.id, ...d.data()}));
+        render();
+        chargerCommuniquesAccueil(); // On lance aussi le chargement des communiqués ici
+    } catch(x) {
+        document.getElementById('services').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h2>Impossible de charger les services</h2><p>Vérifiez Internet et réessayez.</p></div>';
+    }
+}
+
+function render(){
+    let q = document.getElementById('search').value.toLowerCase();
+    let a = all.filter(s => (!cat || s.categorie == cat) && (!q || `${s.titre} ${s.description} ${s.ville} ${s.categorie}`.toLowerCase().includes(q)));
+    document.getElementById('services').innerHTML = a.length ? a.map(s => `<article class="annonce-card"><span class="badge-cat">${e(s.categorie||'Général')}</span><h3>${e(s.titre)}</h3><div class="location"><i class="fa-solid fa-location-dot"></i> ${e(s.ville||'RDC')}</div><p style="font-size:13px;color:#666">${e((s.description||'').slice(0,130))}${(s.description||'').length>130?'…':''}</p><p class="prix">${e(s.prix||'Sur devis')}</p><div class="card-actions"><a class="btn-submit" style="flex:1;text-align:center" href="chat.html?serviceId=${s.id}"><i class="fa-solid fa-comments"></i> Contacter</a><button class="favorite-btn">☆</button></div></article>`).join('') : '<div class="empty-state"><i class="fa-solid fa-inbox"></i><h2>Aucun service trouvé</h2><p>Essayez une autre recherche.</p></div>';
+}
+
+async function chargerCommuniquesAccueil() {
+    const container = document.getElementById("communiquesContainer");
+    if (!container) return;
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "communiques"));
+        
+        if (querySnapshot.empty) {
+            container.innerHTML = ""; 
+            return;
+        }
+
+        let htmlContent = "";
+        querySnapshot.forEach((doc) => {
+            const com = doc.data();
+            if (com.published) {
+                htmlContent += `
+                    <div style="background: #222; border-left: 4px solid #2e7d32; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; color: white;">
+                        <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #4caf50;">
+                            <i class="fa-solid fa-bullhorn"></i> ${e(com.titre)}
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #ccc; line-height: 1.4;">
+                            ${e(com.description)}
+                        </p>
+                    </div>
+                `;
+            }
+        });
+
+        container.innerHTML = htmlContent;
+    } catch (error) {
+        console.error("Erreur lors du chargement des communiqués :", error);
+    }
+}
+
+document.getElementById('search').oninput = render;
+document.querySelectorAll('.cat-btn').forEach(b => b.onclick = () => { cat = b.dataset.cat; render(); });
+
+load();
+</script>
+</body>
+</html>
