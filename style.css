@@ -1,6 +1,6 @@
 /* =========================================================
-   CAMU SERVICES
-   STYLE GLOBAL — RESPONSIVE MOBILE + ORDINATEUR
+   CAMU SERVICES — STYLE GLOBAL
+   Responsive : téléphone / tablette / ordinateur
    ========================================================= */
 
 :root {
@@ -16,18 +16,16 @@
 
   --text: #171717;
   --muted: #70757a;
-  --border: #e5e7eb;
 
-  --green: #2e7d32;
-  --orange: #f57c00;
+  --border: #e5e7eb;
 
   --shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 
-  --header-height: 62px;
-  --bottom-height: 70px;
-
   --radius: 14px;
+
+  --nav-height: 70px;
 }
+
 
 /* =========================================================
    RESET
@@ -42,8 +40,8 @@
 html {
   width: 100%;
   min-height: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -62,13 +60,12 @@ body {
   background: var(--bg);
   color: var(--text);
 
-  padding-top: var(--header-height);
-  padding-bottom: calc(var(--bottom-height) + 10px);
+  padding-top: 64px;
+  padding-bottom: calc(var(--nav-height) + 12px);
 
   overflow-x: hidden;
 
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 img {
@@ -89,17 +86,16 @@ button {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 
+
 /* =========================================================
-   HEADER
+   BARRE SUPÉRIEURE
    ========================================================= */
 
-.top-bar,
-.header-bar,
-.top-header {
+.top-bar {
   position: fixed;
 
   top: 0;
@@ -107,42 +103,39 @@ a {
   right: 0;
 
   width: 100%;
-  height: var(--header-height);
+  height: 64px;
 
   background: var(--dark);
-  color: #fff;
+  color: #ffffff;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 16px;
+  padding: 0 18px;
 
-  z-index: 2000;
+  z-index: 1000;
 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.18);
 }
 
 .logo-text {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 900;
   letter-spacing: -0.3px;
-  white-space: nowrap;
 }
 
 .logo-text span {
   color: var(--red);
 }
 
-.top-bar a,
-.header-bar a,
-.top-header a {
-  color: inherit;
-}
+.top-bar > a {
+  color: #ffffff;
+  font-size: 19px;
 
-.back-btn {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
 
   display: flex;
   align-items: center;
@@ -151,18 +144,24 @@ a {
   border-radius: 50%;
 }
 
+.top-bar > a:active {
+  background: rgba(255,255,255,0.1);
+}
+
+
 /* =========================================================
-   CONTENEUR
+   CONTENEUR PRINCIPAL
    ========================================================= */
 
 .container {
-  width: min(94%, 720px);
-  max-width: 720px;
+  width: min(92%, 720px);
 
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 
   padding: 18px 0;
 }
+
 
 /* =========================================================
    HERO ACCUEIL
@@ -178,22 +177,29 @@ a {
       #242424 100%
     );
 
-  color: #fff;
+  color: #ffffff;
 
   border-radius: 18px;
 
-  padding: 24px 20px;
+  padding: 25px 22px;
 
-  margin-bottom: 16px;
+  margin-bottom: 17px;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.12);
 
   overflow: hidden;
 }
 
 .hero h1 {
-  font-size: 25px;
-  line-height: 1.2;
-  margin-bottom: 9px;
+  font-size: 26px;
+  line-height: 1.18;
+
   font-weight: 900;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -0.5px;
 }
 
 .hero h1 span {
@@ -201,10 +207,14 @@ a {
 }
 
 .hero p {
+  color: #dddddd;
+
   font-size: 13px;
   line-height: 1.55;
-  color: #dddddd;
+
+  max-width: 560px;
 }
+
 
 /* =========================================================
    BARRE DE RECHERCHE
@@ -213,15 +223,15 @@ a {
 .search-bar {
   width: 100%;
 
-  min-height: 48px;
-
   background: var(--card);
 
   border: 1px solid var(--border);
 
   border-radius: 14px;
 
-  padding: 10px 13px;
+  padding: 0 14px;
+
+  height: 52px;
 
   display: flex;
   align-items: center;
@@ -230,30 +240,36 @@ a {
 
   box-shadow: var(--shadow);
 
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .search-bar i {
-  flex-shrink: 0;
   color: #888;
+  font-size: 15px;
+
+  flex-shrink: 0;
 }
 
 .search-bar input {
   width: 100%;
-  min-width: 0;
+  height: 100%;
 
-  border: 0;
-  outline: 0;
+  border: none;
+  outline: none;
 
   background: transparent;
 
   font-size: 14px;
+
   color: var(--text);
+
+  min-width: 0;
 }
 
 .search-bar input::placeholder {
   color: #999;
 }
+
 
 /* =========================================================
    TITRES DE SECTION
@@ -266,12 +282,13 @@ a {
 
   text-transform: uppercase;
 
-  margin: 18px 0 10px;
+  margin: 20px 0 11px;
 
-  color: var(--dark);
+  color: var(--text);
 
-  line-height: 1.3;
+  letter-spacing: 0.2px;
 }
+
 
 /* =========================================================
    CATÉGORIES
@@ -285,8 +302,11 @@ a {
   gap: 8px;
 
   overflow-x: auto;
+  overflow-y: hidden;
 
-  padding-bottom: 6px;
+  padding: 2px 2px 9px;
+
+  margin-bottom: 3px;
 
   scrollbar-width: none;
 
@@ -310,7 +330,9 @@ a {
 
   padding: 9px 13px;
 
-  border-radius: 20px;
+  min-height: 38px;
+
+  border-radius: 22px;
 
   font-size: 12px;
 
@@ -319,19 +341,23 @@ a {
   transition: 0.2s ease;
 }
 
-.cat-btn:active {
-  transform: scale(0.97);
+.cat-btn:hover {
+  background: var(--red);
+  color: #ffffff;
 }
 
+.cat-btn:active {
+  transform: scale(0.96);
+}
+
+
 /* =========================================================
-   CARTES
+   CARTES SERVICES
    ========================================================= */
 
 .annonce-card,
 .card-box,
 .page-card,
-.profile-card,
-.info-group,
 .admin-card {
   width: 100%;
 
@@ -350,14 +376,10 @@ a {
   overflow: hidden;
 }
 
-/* =========================================================
-   ANNONCES
-   ========================================================= */
-
 .annonce-card h3 {
   font-size: 17px;
 
-  line-height: 1.35;
+  line-height: 1.3;
 
   margin: 9px 0 5px;
 
@@ -367,17 +389,11 @@ a {
 }
 
 .annonce-card p {
-  font-size: 12px;
-
-  line-height: 1.5;
-
   overflow-wrap: anywhere;
 }
 
 .badge-cat {
   display: inline-block;
-
-  max-width: 100%;
 
   background: var(--red-light);
 
@@ -389,20 +405,26 @@ a {
 
   font-size: 10px;
 
-  font-weight: 700;
+  font-weight: 800;
+
+  max-width: 100%;
 
   overflow-wrap: anywhere;
 }
 
 .meta,
 .location {
-  font-size: 11px;
+  font-size: 12px;
 
   color: var(--muted);
 
   margin: 6px 0;
 
   line-height: 1.4;
+}
+
+.location i {
+  color: var(--red);
 }
 
 .prix {
@@ -415,23 +437,24 @@ a {
   margin: 9px 0;
 }
 
+
 /* =========================================================
    ACTIONS DES CARTES
    ========================================================= */
 
 .card-actions {
-  width: 100%;
-
   display: flex;
 
   align-items: stretch;
 
   gap: 8px;
 
-  margin-top: 12px;
+  width: 100%;
+
+  margin-top: 13px;
 }
 
-.card-actions > * {
+.card-actions > a {
   min-width: 0;
 }
 
@@ -442,23 +465,21 @@ a {
   align-items: center;
   justify-content: center;
 
-  min-height: 42px;
-
   background: var(--red);
 
-  color: #fff;
+  color: #ffffff;
 
-  border: 0;
+  border: none;
 
   border-radius: 10px;
 
   padding: 11px 15px;
 
+  min-height: 44px;
+
   font-size: 13px;
 
-  font-weight: 700;
-
-  text-align: center;
+  font-weight: 800;
 
   transition: 0.2s ease;
 }
@@ -479,9 +500,7 @@ a {
   align-items: center;
   justify-content: center;
 
-  min-height: 42px;
-
-  background: #fff;
+  background: #ffffff;
 
   color: var(--text);
 
@@ -491,38 +510,41 @@ a {
 
   padding: 10px 14px;
 
-  font-size: 13px;
+  min-height: 44px;
 
   font-weight: 700;
-
-  text-align: center;
 }
 
 .favorite-btn {
-  flex: 0 0 46px;
+  flex: 0 0 48px;
 
-  width: 46px;
-  height: 42px;
+  width: 48px;
+  min-width: 48px;
 
-  background: #fff;
+  height: 44px;
+
+  background: #ffffff;
 
   border: 1px solid var(--border);
 
   border-radius: 10px;
 
-  font-size: 20px;
+  font-size: 21px;
 
-  color: #777;
+  color: #555;
 }
+
+.favorite-btn:active {
+  transform: scale(0.95);
+}
+
 
 /* =========================================================
    FORMULAIRES
    ========================================================= */
 
 .form-group {
-  width: 100%;
-
-  margin-bottom: 14px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
@@ -530,11 +552,9 @@ a {
 
   font-size: 12px;
 
-  font-weight: 700;
+  font-weight: 800;
 
   margin-bottom: 6px;
-
-  color: var(--text);
 }
 
 .form-group input,
@@ -543,9 +563,8 @@ a {
 input,
 select,
 textarea {
-  display: block;
-
   width: 100%;
+
   max-width: 100%;
 
   padding: 12px;
@@ -554,7 +573,7 @@ textarea {
 
   border-radius: 10px;
 
-  background: #fff;
+  background: #ffffff;
 
   color: var(--text);
 
@@ -575,7 +594,7 @@ textarea:focus {
   border-color: var(--red);
 
   box-shadow:
-    0 0 0 3px rgba(211, 47, 47, 0.08);
+    0 0 0 3px rgba(211,47,47,0.08);
 }
 
 .form-group textarea,
@@ -583,8 +602,6 @@ textarea {
   min-height: 120px;
 
   resize: vertical;
-
-  line-height: 1.5;
 }
 
 .help {
@@ -595,79 +612,9 @@ textarea {
   line-height: 1.5;
 }
 
-/* =========================================================
-   PROFIL
-   ========================================================= */
-
-.profile-card {
-  text-align: center;
-}
-
-.avatar-box {
-  width: 82px;
-  height: 82px;
-
-  margin: 0 auto 12px;
-
-  border-radius: 50%;
-
-  background: #eeeeee;
-
-  border: 3px solid var(--red);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #777;
-
-  font-size: 34px;
-}
-
-.user-name {
-  font-size: 18px;
-
-  font-weight: 900;
-
-  margin-bottom: 5px;
-}
-
-.user-role {
-  display: inline-block;
-
-  background: var(--red-light);
-
-  color: var(--red);
-
-  border-radius: 20px;
-
-  padding: 5px 10px;
-
-  font-size: 11px;
-
-  font-weight: 700;
-}
-
-.btn-logout {
-  width: 100%;
-
-  min-height: 42px;
-
-  border: 1px solid #ddd;
-
-  border-radius: 10px;
-
-  background: #fff;
-
-  color: var(--red);
-
-  font-weight: 700;
-
-  cursor: pointer;
-}
 
 /* =========================================================
-   ÉTAT VIDE
+   EMPTY STATE
    ========================================================= */
 
 .empty-state {
@@ -675,15 +622,17 @@ textarea {
 
   text-align: center;
 
-  background: #fff;
+  background: #ffffff;
 
   border: 1px solid var(--border);
 
   border-radius: 16px;
 
-  padding: 35px 18px;
+  padding: 38px 18px;
 
   color: var(--muted);
+
+  box-shadow: var(--shadow);
 }
 
 .empty-state i {
@@ -691,7 +640,7 @@ textarea {
 
   font-size: 40px;
 
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 
   color: #aaa;
 }
@@ -708,9 +657,8 @@ textarea {
   font-size: 12px;
 
   line-height: 1.5;
-
-  margin-bottom: 15px;
 }
+
 
 /* =========================================================
    FOOTER
@@ -719,23 +667,23 @@ textarea {
 .footer {
   width: 100%;
 
-  background: #111;
+  background: #111111;
 
-  color: #ddd;
+  color: #dddddd;
 
   border-radius: 16px;
 
-  margin-top: 24px;
+  margin-top: 25px;
 
-  padding: 22px 15px;
+  padding: 23px 16px;
 
   text-align: center;
 }
 
 .footer h3 {
-  color: #fff;
+  color: #ffffff;
 
-  font-size: 16px;
+  font-size: 17px;
 
   margin-bottom: 8px;
 }
@@ -743,9 +691,9 @@ textarea {
 .footer p {
   font-size: 12px;
 
-  color: #aaa;
+  color: #aaaaaa;
 
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .footer-links {
@@ -755,28 +703,95 @@ textarea {
 
   justify-content: center;
 
-  gap: 10px 17px;
+  gap: 12px 18px;
 
-  margin: 15px 0;
+  margin: 16px 0;
 }
 
 .footer-links a {
   font-size: 12px;
 
-  color: #fff;
+  color: #ffffff;
 }
 
 .footer-links a:hover {
   color: #ef5350;
 }
 
+
 /* =========================================================
-   TEXTE / CONDITIONS
+   NAVIGATION MOBILE
    ========================================================= */
 
-.prose {
+.bottom-nav {
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
   width: 100%;
+
+  height: var(--nav-height);
+
+  background: rgba(255,255,255,0.98);
+
+  border-top: 1px solid var(--border);
+
+  display: flex;
+
+  z-index: 1000;
+
+  padding:
+    6px
+    max(6px, env(safe-area-inset-right))
+    calc(6px + env(safe-area-inset-bottom))
+    max(6px, env(safe-area-inset-left));
+
+  box-shadow:
+    0 -4px 15px rgba(0,0,0,0.04);
 }
+
+.bottom-nav a {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #666;
+
+  font-size: 11px;
+
+  gap: 4px;
+
+  border-radius: 10px;
+
+  text-align: center;
+}
+
+.bottom-nav a.active {
+  color: var(--red);
+}
+
+.bottom-nav i {
+  font-size: 20px;
+}
+
+.bottom-nav span {
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TEXTE / CONDITIONS / PAGES
+   ========================================================= */
 
 .prose h1 {
   font-size: 24px;
@@ -807,8 +822,9 @@ textarea {
   padding-left: 20px;
 }
 
+
 /* =========================================================
-   STATUT
+   STATUTS
    ========================================================= */
 
 .status {
@@ -816,7 +832,7 @@ textarea {
 
   font-size: 10px;
 
-  font-weight: 700;
+  font-weight: 800;
 
   padding: 4px 8px;
 
@@ -826,7 +842,7 @@ textarea {
 .status.ok {
   background: #e8f5e9;
 
-  color: var(--green);
+  color: #2e7d32;
 }
 
 .status.wait {
@@ -835,22 +851,23 @@ textarea {
   color: #9a6200;
 }
 
+
 /* =========================================================
-   ADMINISTRATION
+   ADMIN
    ========================================================= */
 
 .admin-body {
-  background: #111;
+  background: #111111;
 
-  color: #fff;
+  color: #ffffff;
 }
 
 .admin-card {
   background: #202020;
 
-  border-color: #333;
+  border-color: #333333;
 
-  color: #fff;
+  color: #ffffff;
 }
 
 .admin-card input,
@@ -858,9 +875,9 @@ textarea {
 .admin-card select {
   background: #171717;
 
-  color: #fff;
+  color: #ffffff;
 
-  border-color: #444;
+  border-color: #444444;
 }
 
 .admin-title {
@@ -876,7 +893,8 @@ textarea {
 .stat-grid {
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:
+    repeat(3, 1fr);
 
   gap: 8px;
 }
@@ -919,17 +937,10 @@ textarea {
   color: #ffbcbc;
 }
 
+
 /* =========================================================
    CHAT
    ========================================================= */
-
-.chat-container {
-  position: relative;
-
-  width: min(94%, 720px);
-
-  margin: 0 auto;
-}
 
 .messages-list {
   display: flex;
@@ -940,7 +951,8 @@ textarea {
 
   min-height: 55vh;
 
-  max-height: calc(100vh - 220px);
+  max-height:
+    calc(100vh - 220px);
 
   overflow-y: auto;
 
@@ -956,13 +968,11 @@ textarea {
 
   border-radius: 14px;
 
-  background: #fff;
+  background: #ffffff;
 
   border: 1px solid var(--border);
 
   align-self: flex-start;
-
-  word-break: break-word;
 
   overflow-wrap: anywhere;
 }
@@ -970,7 +980,7 @@ textarea {
 .my-message {
   background: var(--red);
 
-  color: #fff;
+  color: #ffffff;
 
   border-color: var(--red);
 
@@ -980,22 +990,22 @@ textarea {
 .chat-input {
   position: fixed;
 
-  bottom: var(--bottom-height);
+  bottom: var(--nav-height);
 
   left: 0;
   right: 0;
 
-  background: #fff;
+  background: #ffffff;
 
   border-top: 1px solid var(--border);
 
-  padding: 10px;
+  padding: 9px;
 
   display: flex;
 
   gap: 8px;
 
-  z-index: 1900;
+  z-index: 900;
 }
 
 .chat-input input {
@@ -1004,142 +1014,104 @@ textarea {
   min-width: 0;
 }
 
-.chat-input button {
-  flex: 0 0 auto;
-}
 
 /* =========================================================
-   NAVIGATION BASSE
+   TABLETTE
    ========================================================= */
 
-.bottom-nav {
-  position: fixed;
+@media (max-width: 768px) {
 
-  bottom: 0;
+  .container {
+    width: calc(100% - 28px);
 
-  left: 0;
-  right: 0;
+    padding-top: 15px;
+  }
 
-  width: 100%;
+  .hero {
+    padding: 22px 18px;
 
-  height: var(--bottom-height);
+    border-radius: 16px;
+  }
 
-  background: #fff;
+  .hero h1 {
+    font-size: 23px;
+  }
 
-  border-top: 1px solid var(--border);
-
-  display: flex;
-
-  z-index: 3000;
-
-  padding:
-    5px
-    max(5px, env(safe-area-inset-left))
-    calc(5px + env(safe-area-inset-right))
-    5px;
+  .annonce-card {
+    padding: 15px;
+  }
 }
 
-.bottom-nav a {
-  flex: 1;
-
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  color: #666;
-
-  font-size: 10px;
-
-  gap: 4px;
-
-  text-decoration: none;
-
-  -webkit-tap-highlight-color: transparent;
-}
-
-.bottom-nav a.active {
-  color: var(--red);
-}
-
-.bottom-nav i {
-  font-size: 19px;
-
-  line-height: 1;
-}
 
 /* =========================================================
-   RESPONSIVE MOBILE
+   TÉLÉPHONES
    ========================================================= */
 
 @media (max-width: 600px) {
 
-  :root {
-    --header-height: 58px;
-    --bottom-height: 66px;
-  }
-
   body {
-    padding-top: 58px;
+    padding-top: 60px;
 
-    padding-bottom: 76px;
-
-    width: 100%;
-
-    overflow-x: hidden;
+    padding-bottom:
+      calc(var(--nav-height) + 10px);
   }
 
-  .top-bar,
-  .header-bar,
-  .top-header {
-    height: 58px;
+  .top-bar {
+    height: 60px;
 
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 0 13px;
   }
 
   .logo-text {
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  .top-bar > a {
+    width: 38px;
+    height: 38px;
+
+    font-size: 18px;
   }
 
   .container {
     width: 100%;
 
-    max-width: none;
-
     padding:
-      13px
-      11px
-      20px;
+      14px
+      12px
+      16px;
   }
 
   .hero {
     border-radius: 15px;
 
-    padding: 19px 15px;
+    padding: 20px 17px;
+
+    margin-bottom: 14px;
   }
 
   .hero h1 {
     font-size: 21px;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.3px;
   }
 
   .hero p {
     font-size: 12px;
+
+    line-height: 1.55;
   }
 
   .search-bar {
-    min-height: 46px;
-
-    padding: 9px 11px;
+    height: 49px;
 
     border-radius: 12px;
 
-    margin-bottom: 14px;
+    padding: 0 12px;
+
+    margin-bottom: 16px;
   }
 
   .search-bar input {
@@ -1147,319 +1119,238 @@ textarea {
   }
 
   .section-title {
-    font-size: 12px;
+    font-size: 13px;
 
-    margin: 15px 0 9px;
+    margin: 16px 0 9px;
+  }
+
+  .categories {
+    margin-left: -2px;
+
+    margin-right: -2px;
+
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .cat-btn {
+    min-height: 37px;
+
+    padding: 8px 11px;
+
+    font-size: 11px;
   }
 
   .annonce-card,
   .card-box,
-  .page-card,
-  .profile-card,
-  .info-group,
-  .admin-card {
-    border-radius: 13px;
+  .page-card {
+    padding: 14px;
 
-    padding: 13px;
-
-    margin-bottom: 10px;
+    border-radius: 14px;
   }
 
   .annonce-card h3 {
-    font-size: 15px;
+    font-size: 16px;
+
+    line-height: 1.3;
   }
 
   .annonce-card p {
-    font-size: 11.5px;
-  }
-
-  .badge-cat {
-    font-size: 9px;
-
-    padding: 4px 8px;
+    font-size: 12px;
   }
 
   .prix {
-    font-size: 15px;
-  }
-
-  .meta,
-  .location {
-    font-size: 10px;
+    font-size: 16px;
   }
 
   .card-actions {
-    gap: 6px;
-
-    flex-wrap: wrap;
+    gap: 7px;
   }
 
   .btn-submit,
-  .btn-primary,
-  .btn-secondary {
-    min-height: 40px;
+  .btn-primary {
+    min-height: 44px;
 
-    padding: 10px 11px;
+    padding: 10px 12px;
 
     font-size: 12px;
   }
 
   .favorite-btn {
-    flex-basis: 43px;
+    flex-basis: 45px;
 
-    width: 43px;
+    width: 45px;
+    min-width: 45px;
 
-    height: 40px;
-  }
-
-  .form-group {
-    margin-bottom: 12px;
-  }
-
-  .form-group label {
-    font-size: 11px;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea,
-  input,
-  select,
-  textarea {
-    font-size: 13px;
-
-    padding: 11px;
-
-    border-radius: 9px;
-  }
-
-  .form-group textarea,
-  textarea {
-    min-height: 105px;
-  }
-
-  .empty-state {
-    padding: 30px 14px;
-
-    border-radius: 13px;
-  }
-
-  .empty-state i {
-    font-size: 36px;
-  }
-
-  .empty-state h2 {
-    font-size: 15px;
-  }
-
-  .empty-state p {
-    font-size: 11px;
+    height: 44px;
   }
 
   .footer {
-    border-radius: 13px;
+    border-radius: 14px;
 
-    padding: 20px 12px;
+    padding: 20px 13px;
 
-    margin-top: 18px;
-  }
-
-  .footer h3 {
-    font-size: 15px;
-  }
-
-  .footer p {
-    font-size: 11px;
+    margin-top: 20px;
   }
 
   .footer-links {
-    gap: 9px 13px;
+    gap: 10px 14px;
   }
 
   .footer-links a {
     font-size: 11px;
   }
 
-  .prose h1 {
-    font-size: 21px;
-  }
-
-  .prose h2 {
-    font-size: 15px;
-  }
-
-  .prose p,
-  .prose li {
-    font-size: 12px;
-
-    line-height: 1.65;
-  }
-
-  .stat-grid {
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 5px;
-  }
-
-  .stat {
-    padding: 9px 4px;
-  }
-
-  .stat strong {
-    font-size: 16px;
-  }
-
-  .stat span {
-    font-size: 8px;
-  }
-
-  .messages-list {
-    min-height: 0;
-
-    max-height: calc(100vh - 190px);
-
-    padding: 3px 1px;
-  }
-
-  .message {
-    max-width: 87%;
-
-    padding: 9px 10px;
-
-    font-size: 12px;
-  }
-
-  .chat-input {
-    bottom: var(--bottom-height);
-
-    padding: 7px 8px;
-  }
-
-  .chat-input input {
-    font-size: 12px;
-
-    padding: 10px;
-  }
-
-  .chat-input button {
-    min-width: 43px;
-  }
-
   .bottom-nav {
-    height: var(--bottom-height);
-
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-
-  .bottom-nav a {
-    font-size: 9px;
-
-    gap: 3px;
+    height: 68px;
   }
 
   .bottom-nav i {
     font-size: 18px;
   }
+
+  .bottom-nav a {
+    font-size: 10px;
+
+    gap: 3px;
+  }
+
+  .empty-state {
+    padding: 32px 15px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .message {
+    max-width: 88%;
+  }
+
 }
 
+
 /* =========================================================
-   TRÈS PETITS ÉCRANS
+   PETITS TÉLÉPHONES
    ========================================================= */
 
 @media (max-width: 380px) {
 
   .container {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-
-  .hero {
-    padding: 17px 13px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .hero h1 {
     font-size: 19px;
   }
 
-  .hero p {
+  .hero {
+    padding: 18px 15px;
+  }
+
+  .annonce-card {
+    padding: 13px;
+  }
+
+  .annonce-card h3 {
+    font-size: 15px;
+  }
+
+  .btn-submit,
+  .btn-primary {
+    padding-left: 9px;
+    padding-right: 9px;
+
     font-size: 11px;
   }
 
-  .annonce-card,
-  .card-box,
-  .page-card,
-  .profile-card {
-    padding: 11px;
-  }
-
-  .bottom-nav a {
-    font-size: 8px;
+  .favorite-btn {
+    width: 43px;
+    min-width: 43px;
   }
 
   .bottom-nav i {
     font-size: 17px;
   }
 
-  .stat strong {
-    font-size: 14px;
-  }
-
-  .stat span {
-    font-size: 7px;
+  .bottom-nav a {
+    font-size: 9px;
   }
 }
+
 
 /* =========================================================
-   TABLETTE
+   ÉCRANS TRÈS LARGES
    ========================================================= */
 
-@media (min-width: 601px) and (max-width: 900px) {
+@media (min-width: 1000px) {
 
   .container {
-    width: min(92%, 700px);
+    width: min(90%, 760px);
+  }
+
+  .hero {
+    padding: 30px 27px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
   }
 }
 
-/* =========================================================
-   ORDINATEUR
-   ========================================================= */
-
-@media (min-width: 901px) {
-
-  .container {
-    width: min(90%, 720px);
-  }
-
-  .bottom-nav {
-    max-width: 720px;
-
-    left: 50%;
-
-    right: auto;
-
-    transform: translateX(-50%);
-
-    border-left: 1px solid var(--border);
-
-    border-right: 1px solid var(--border);
-
-    border-radius: 14px 14px 0 0;
-  }
-}
 
 /* =========================================================
    ACCESSIBILITÉ
    ========================================================= */
 
-button:disabled {
-  opacity: 0.6;
+@media (prefers-reduced-motion: reduce) {
 
-  cursor: not-allowed;
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-::selection {
-  background: rgba(211, 47, 47, 0.18);
 
-  color: #111;
+/* =========================================================
+   ÉVITER LE DÉBORDEMENT DES LONGS TEXTES
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+a,
+button,
+label {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+
+/* =========================================================
+   SAFE AREA IPHONE
+   ========================================================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+  body {
+    padding-bottom:
+      calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px);
+  }
+
+  .bottom-nav {
+    padding-bottom:
+      calc(6px + env(safe-area-inset-bottom));
+  }
 }
