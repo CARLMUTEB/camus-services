@@ -1354,20 +1354,6 @@ label {
       calc(6px + env(safe-area-inset-bottom));
   }
 }
-/* =========================================================
-   CORRECTIF POUR ORDINATEUR (PC) : Centrer l'interface application
-   ========================================================= */
-@media (min-width: 768px) {
-  /* On applique une largeur maximale au corps ou à un conteneur global, 
-     ou on restreint la top-bar et la bottom-nav pour qu'elles ne prennent pas toute la largeur du grand écran */
-  
-  body {
-    max-width: 480px; /* Largeur type "grand smartphone" sur PC */
-    margin: 0 auto;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
-  }
 
   .top-bar,
   .bottom-nav,
