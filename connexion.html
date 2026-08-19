@@ -14,128 +14,138 @@
 
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-
-    <a href="index.html"
-       style="color:white;text-decoration:none;font-size:18px;">
+  <!-- HEADER (Aligné avec le reste de l'application) -->
+  <header class="top-bar">
+    <a href="index.html">
       <i class="fa-solid fa-arrow-left"></i>
     </a>
 
-    <h1>
+    <div class="logo-text">
       CAMU <span>SERVICES</span>
-    </h1>
+    </div>
 
-    <div></div>
-
+    <div style="width: 40px;"></div> <!-- Espaceur pour centrer le logo -->
   </header>
 
 
-  <!-- CONTENU -->
+  <!-- CONTENU PRINCIPAL -->
   <main class="container">
 
-    <div class="card-box">
+    <div class="card-box" style="animation: fadeIn 0.4s ease;">
 
-      <div style="text-align:center;margin-bottom:20px;">
+      <!-- EN-TÊTE DU FORMULAIRE -->
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="
+          width: 70px;
+          height: 70px;
+          background: var(--red-light);
+          color: var(--red);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 14px;
+          font-size: 28px;
+          box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+        ">
+          <i class="fa-solid fa-user"></i>
+        </div>
 
-        <i class="fa-solid fa-user-circle"
-           style="font-size:55px;color:#d32f2f;">
-        </i>
-
-        <h2 style="margin-top:10px;">
-          Connexion
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px;">
+          Bon retour !
         </h2>
 
-        <p style="font-size:12px;color:#666;">
-          Connectez-vous à votre compte CAMU SERVICES
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.4;">
+          Connectez-vous pour accéder à votre espace CAMU SERVICES
         </p>
-
       </div>
 
 
       <!-- FORMULAIRE -->
-
       <form id="connexionForm">
 
         <div class="form-group">
-
           <label>Adresse Email</label>
-
-          <input
-            type="email"
-            id="emailConnexion"
-            placeholder="exemple@email.com"
-            required
-          >
-
+          <div style="position: relative;">
+            <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted);">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <input
+              type="email"
+              id="emailConnexion"
+              placeholder="exemple@email.com"
+              style="padding-left: 40px;"
+              required
+            >
+          </div>
         </div>
 
 
         <div class="form-group">
-
           <label>Mot de passe</label>
-
-          <input
-            type="password"
-            id="motDePasseConnexion"
-            placeholder="Votre mot de passe"
-            required
-          >
-
+          <div style="position: relative;">
+            <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted);">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input
+              type="password"
+              id="motDePasseConnexion"
+              placeholder="Votre mot de passe"
+              style="padding-left: 40px;"
+              required
+            >
+          </div>
         </div>
 
 
         <button
           type="submit"
           class="btn-submit"
-          id="btnConnexion">
-
+          id="btnConnexion"
+          style="width: 100%; margin-top: 5px; font-size: 14px; gap: 8px;"
+        >
           <i class="fa-solid fa-right-to-bracket"></i>
           Se connecter
-
         </button>
 
       </form>
 
 
-      <!-- MESSAGE -->
-
+      <!-- MESSAGE DE RETOUR -->
       <div
         id="messageConnexion"
         style="
-          display:none;
-          margin-top:15px;
-          padding:10px;
-          border-radius:8px;
-          font-size:12px;
-          text-align:center;
+          display: none;
+          margin-top: 15px;
+          padding: 12px;
+          border-radius: 10px;
+          font-size: 12px;
+          text-align: center;
+          font-weight: 600;
         ">
       </div>
 
 
-      <!-- INSCRIPTION -->
-
+      <!-- LIEN INSCRIPTION -->
       <div style="
-        text-align:center;
-        margin-top:20px;
-        font-size:12px;
-        color:#666;
+        text-align: center;
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        color: var(--muted);
       ">
-
         Vous n'avez pas encore de compte ?
-
         <a
           href="inscription.html"
           style="
-            color:#d32f2f;
-            font-weight:bold;
-            text-decoration:none;
+            color: var(--red);
+            font-weight: 800;
+            text-decoration: none;
+            margin-left: 4px;
           ">
-
           Créer un compte
-
         </a>
-
       </div>
 
     </div>
@@ -143,50 +153,31 @@
   </main>
 
 
-  <!-- NAVIGATION -->
-
+  <!-- NAVIGATION DU BAS -->
   <nav class="bottom-nav">
-
     <a href="index.html">
-
       <i class="fa-solid fa-house"></i>
-
       <span>Accueil</span>
-
     </a>
-
 
     <a href="publier.html">
-
       <i class="fa-solid fa-circle-plus"></i>
-
       <span>Publier</span>
-
     </a>
-
 
     <a href="chat.html">
-
       <i class="fa-solid fa-comments"></i>
-
       <span>Chat</span>
-
     </a>
-
 
     <a href="profil.html">
-
       <i class="fa-solid fa-user"></i>
-
       <span>Profil</span>
-
     </a>
-
   </nav>
 
 
-  <!-- FIREBASE -->
-
+  <!-- LOGIQUE FIREBASE -->
   <script type="module">
 
     import { auth } from "./app.js";
@@ -196,168 +187,62 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
-    const form =
-      document.getElementById("connexionForm");
-
-    const message =
-      document.getElementById("messageConnexion");
-
-    const button =
-      document.getElementById("btnConnexion");
+    const form = document.getElementById("connexionForm");
+    const message = document.getElementById("messageConnexion");
+    const button = document.getElementById("btnConnexion");
 
 
-    function afficherMessage(
-      texte,
-      erreur = false
-    ) {
-
+    function afficherMessage(texte, erreur = false) {
       message.style.display = "block";
-
       message.textContent = texte;
 
       if (erreur) {
-
-        message.style.background = "#ffebee";
-
-        message.style.color = "#d32f2f";
-
+        message.style.background = "var(--red-light)";
+        message.style.color = "var(--red)";
       } else {
-
         message.style.background = "#e8f5e9";
-
         message.style.color = "#2e7d32";
-
       }
-
     }
 
 
-    form.addEventListener(
-      "submit",
-      async (event) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-        event.preventDefault();
+      const email = document.getElementById("emailConnexion").value.trim();
+      const password = document.getElementById("motDePasseConnexion").value;
 
+      button.disabled = true;
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion en cours...';
 
-        const email =
-          document
-            .getElementById("emailConnexion")
-            .value
-            .trim();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
 
+        afficherMessage("Connexion réussie. Bienvenue sur CAMU SERVICES !");
 
-        const password =
-          document
-            .getElementById("motDePasseConnexion")
-            .value;
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 800);
 
+      } catch (error) {
+        console.error("Erreur connexion :", error);
 
-        button.disabled = true;
+        let texte = "Impossible de se connecter.";
 
-        button.innerHTML =
-          '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-
-        try {
-
-          await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-
-
-          afficherMessage(
-            "Connexion réussie. Bienvenue sur CAMU SERVICES !"
-          );
-
-
-          setTimeout(() => {
-
-            window.location.href =
-              "index.html";
-
-          }, 800);
-
-
-        } catch (error) {
-
-          console.error(
-            "Erreur connexion :",
-            error
-          );
-
-
-          let texte =
-            "Impossible de se connecter.";
-
-
-          if (
-            error.code ===
-            "auth/invalid-credential"
-          ) {
-
-            texte =
-              "Email ou mot de passe incorrect.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/user-not-found"
-          ) {
-
-            texte =
-              "Aucun compte trouvé avec cet email.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/wrong-password"
-          ) {
-
-            texte =
-              "Mot de passe incorrect.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/invalid-email"
-          ) {
-
-            texte =
-              "Adresse email invalide.";
-
-          }
-
-          else if (
-            error.code ===
-            "auth/too-many-requests"
-          ) {
-
-            texte =
-              "Trop de tentatives. Réessayez plus tard.";
-
-          }
-
-
-          afficherMessage(
-            texte,
-            true
-          );
-
-
-          button.disabled = false;
-
-          button.innerHTML =
-            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
+        if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+          texte = "Email ou mot de passe incorrect.";
+        } else if (error.code === "auth/invalid-email") {
+          texte = "Adresse email invalide.";
+        } else if (error.code === "auth/too-many-requests") {
+          texte = "Trop de tentatives échouées. Réessayez plus tard.";
         }
 
+        afficherMessage(texte, true);
+
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
       }
-    );
+    });
 
   </script>
 
