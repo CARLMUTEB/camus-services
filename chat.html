@@ -3,383 +3,174 @@
 
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
-
-  <title>Chat — CAMU SERVICES</title>
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  >
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-    }
-
-
-    body {
-      background: #111;
-      color: white;
-      padding-top: 60px;
-      padding-bottom: 75px;
-    }
-
-
-    /* ================= HEADER ================= */
-
-    .top-bar {
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-      right: 0;
-
-      height: 60px;
-
-      background: #111;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding: 0 15px;
-
-      z-index: 1000;
-
-      border-bottom: 1px solid #333;
-
-    }
-
-
-    .logo-text {
-
-      color: white;
-
-      font-size: 16px;
-
-      font-weight: 900;
-
-    }
-
-
-    .logo-text span {
-
-      color: #d32f2f;
-
-    }
-
-
-    .back-btn {
-
-      color: white;
-
-      font-size: 20px;
-
-      text-decoration: none;
-
-    }
-
-
-    /* ================= CONTAINER ================= */
-
-    .chat-container {
-
-      width: 100%;
-
-      max-width: 650px;
-
-      height: calc(100vh - 135px);
-
-      margin: auto;
-
-      display: flex;
-
-      flex-direction: column;
-
-      padding: 12px;
-
-    }
-
-
-    /* ================= SERVICE ================= */
-
-    .service-info {
-
-      background: #222;
-
-      border-left: 4px solid #d32f2f;
-
-      border-radius: 10px;
-
-      padding: 12px;
-
-      margin-bottom: 10px;
-
-      flex-shrink: 0;
-
-    }
-
-
-    .service-title {
-
-      font-size: 14px;
-
-      font-weight: 800;
-
-      margin-bottom: 5px;
-
-    }
-
-
-    .service-price {
-
-      color: #aaa;
-
-      font-size: 11px;
-
-    }
-
-
-    /* ================= MESSAGES ================= */
-
-    .messages-list {
-
-      flex: 1;
-
-      overflow-y: auto;
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 9px;
-
-      padding: 10px 3px;
-
-    }
-
-
-    .message {
-
-      background: #222;
-
-      border: 1px solid #333;
-
-      padding: 9px 12px;
-
-      border-radius: 12px;
-
-      max-width: 82%;
-
-      word-break: break-word;
-
-    }
-
-
-    .my-message {
-
-      align-self: flex-end;
-
-      background: #d32f2f;
-
-      border: none;
-
-      color: white;
-
-    }
-
-
-    .other-message {
-
-      align-self: flex-start;
-
-    }
-
-
-    .sender {
-
-      font-size: 10px;
-
-      opacity: .65;
-
-      margin-bottom: 4px;
-
-      font-weight: 700;
-
-    }
-
-
-    .message-text {
-
-      font-size: 13px;
-
-      line-height: 1.4;
-
-    }
-
-
-    .empty-chat {
-
-      text-align: center;
-
-      color: #777;
-
-      font-size: 12px;
-
-      margin-top: 25px;
-
-    }
-
-
-    /* ================= INPUT ================= */
-
-    .chat-input {
-
-      background: #000;
-
-      border-top: 1px solid #333;
-
-      padding: 10px;
-
-      display: flex;
-
-      gap: 8px;
-
-      flex-shrink: 0;
-
-    }
-
-
-    .chat-input input {
-
-      flex: 1;
-
-      min-width: 0;
-
-      background: #222;
-
-      border: 1px solid #444;
-
-      color: white;
-
-      border-radius: 8px;
-
-      padding: 11px;
-
-      outline: none;
-
-      font-size: 13px;
-
-    }
-
-
-    .chat-input input:focus {
-
-      border-color: #d32f2f;
-
-    }
-
-
-    .send-btn {
-
-      width: 45px;
-
-      background: #d32f2f;
-
-      color: white;
-
-      border: none;
-
-      border-radius: 8px;
-
-      font-size: 16px;
-
-    }
-
-
-    /* ================= NAVIGATION ================= */
-
-    .bottom-nav {
-
-      position: fixed;
-
-      bottom: 0;
-
-      left: 0;
-
-      right: 0;
-
-      height: 70px;
-
-      background: #111;
-
-      border-top: 1px solid #333;
-
-      display: flex;
-
-      justify-content: space-around;
-
-      z-index: 1000;
-
-    }
-
-
-    .bottom-nav a {
-
-      width: 25%;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      color: #777;
-
-      text-decoration: none;
-
-      font-size: 11px;
-
-    }
-
-
-    .bottom-nav a.active {
-
-      color: #d32f2f;
-
-    }
-
-
-    .bottom-nav i {
-
-      font-size: 19px;
-
-      margin-bottom: 4px;
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>CAMU SERVICES — Chat</title>
+
+<link rel="stylesheet"
+      href="style.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+.chat-page {
+  padding-bottom: 150px;
+}
+
+.chat-wrapper {
+  width: min(100%, 720px);
+  margin: auto;
+}
+
+.chat-header-card {
+  background:#111;
+  color:#fff;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:12px;
+}
+
+.chat-header-card h2 {
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.chat-header-card p {
+  color:#aaa;
+  font-size:12px;
+}
+
+.chat-service {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:var(--shadow);
+}
+
+.chat-service-title {
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.chat-service-price {
+  font-size:12px;
+  color:var(--red);
+  font-weight:bold;
+}
+
+.messages-list {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:15px;
+  min-height:420px;
+  max-height:calc(100vh - 350px);
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  box-shadow:var(--shadow);
+}
+
+.message {
+  max-width:82%;
+  padding:10px 13px;
+  border-radius:15px;
+  background:#f1f3f5;
+  color:#222;
+  align-self:flex-start;
+  word-break:break-word;
+}
+
+.my-message {
+  background:var(--red);
+  color:#fff;
+  align-self:flex-end;
+}
+
+.sender {
+  font-size:10px;
+  font-weight:bold;
+  opacity:.65;
+  margin-bottom:4px;
+}
+
+.message-text {
+  font-size:13px;
+  line-height:1.5;
+}
+
+.empty-chat {
+  margin:auto;
+  text-align:center;
+  color:#999;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.chat-composer {
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:72px;
+  background:#fff;
+  border-top:1px solid var(--border);
+  padding:10px;
+  z-index:900;
+}
+
+.chat-form {
+  width:min(100%,720px);
+  margin:auto;
+  display:flex;
+  gap:8px;
+}
+
+.chat-form input {
+  flex:1;
+  min-width:0;
+}
+
+.send-btn {
+  width:48px;
+  border:0;
+  border-radius:10px;
+  background:var(--red);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.send-btn:disabled {
+  opacity:.6;
+}
+
+@media(max-width:480px) {
+
+  .container {
+    width:94%;
+  }
+
+  .messages-list {
+    min-height:380px;
+    max-height:calc(100vh - 335px);
+  }
+
+  .message {
+    max-width:88%;
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -389,7 +180,8 @@
 
 <header class="top-bar">
 
-  <a href="index.html" class="back-btn">
+  <a href="index.html"
+     style="color:#fff;font-size:19px;">
 
     <i class="fa-solid fa-arrow-left"></i>
 
@@ -403,23 +195,51 @@
   </div>
 
 
-  <div style="width:20px;"></div>
+  <a href="profil.html"
+     style="color:#fff;font-size:18px;">
+
+    <i class="fa-solid fa-user"></i>
+
+  </a>
 
 </header>
 
 
-<main class="chat-container">
+<main class="container chat-page">
+
+<div class="chat-wrapper">
+
+
+  <!-- TITRE -->
+
+  <section class="chat-header-card">
+
+    <h2>
+
+      <i class="fa-solid fa-comments"
+         style="color:#ef5350;"></i>
+
+      Messagerie
+
+    </h2>
+
+    <p>
+      Discutez directement avec le prestataire.
+    </p>
+
+  </section>
 
 
   <!-- SERVICE -->
 
   <div
     id="serviceInfoBox"
-    class="service-info"
-  >
+    class="chat-service">
 
-    <div class="service-title">
+    <div class="chat-service-title">
+
       Chargement du service...
+
     </div>
 
   </div>
@@ -429,22 +249,33 @@
 
   <div
     id="messagesList"
-    class="messages-list"
-  >
+    class="messages-list">
 
     <p class="empty-chat">
+
+      <i class="fa-solid fa-spinner fa-spin"
+         style="font-size:25px;"></i>
+
+      <br><br>
+
       Chargement des messages...
+
     </p>
 
   </div>
 
+</div>
 
-  <!-- FORMULAIRE -->
+</main>
+
+
+<!-- COMPOSER -->
+
+<div class="chat-composer">
 
   <form
     id="chatForm"
-    class="chat-input"
-  >
+    class="chat-form">
 
     <input
       type="text"
@@ -452,13 +283,11 @@
       placeholder="Écrivez votre message..."
       autocomplete="off"
       maxlength="1000"
-      required
-    >
+      required>
 
     <button
       type="submit"
-      class="send-btn"
-    >
+      class="send-btn">
 
       <i class="fa-solid fa-paper-plane"></i>
 
@@ -466,8 +295,7 @@
 
   </form>
 
-
-</main>
+</div>
 
 
 <!-- NAVIGATION -->
@@ -492,7 +320,8 @@
   </a>
 
 
-  <a href="chat.html" class="active">
+  <a href="chat.html"
+     class="active">
 
     <i class="fa-solid fa-comments"></i>
 
@@ -514,72 +343,81 @@
 
 <script type="module">
 
-  import {
-    db,
-    auth
-  } from "./app.js";
+import {
+  db,
+  auth
+} from "./app.js";
 
 
-  import {
-
-    collection,
-    addDoc,
-    query,
-    where,
-    onSnapshot,
-    serverTimestamp,
-    doc,
-    getDoc
-
-  } from
-  "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp,
+  doc,
+  getDoc
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
-  import {
-    onAuthStateChanged
-  } from
-  "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {
+  onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
-  /* =====================================================
-     UTILISATEUR
-  ===================================================== */
-
-  let currentUser = null;
+let currentUser = null;
 
 
-  /* =====================================================
-     SERVICE ID
-  ===================================================== */
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
 
 
-  const serviceId =
-    params.get("serviceId");
+const serviceId =
+  params.get("serviceId");
 
 
-  /* =====================================================
-     VÉRIFICATION
-  ===================================================== */
+const serviceBox =
+  document.getElementById(
+    "serviceInfoBox"
+  );
+
+
+const messagesList =
+  document.getElementById(
+    "messagesList"
+  );
+
+
+/* SECURITY */
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* SERVICE */
+
+async function chargerService() {
 
   if (!serviceId) {
 
-    document.getElementById(
-      "serviceInfoBox"
-    ).innerHTML = `
+    serviceBox.innerHTML = `
 
-      <div style="
-        color:#fff;
-        font-size:13px;
-      ">
+      <div style="color:#c62828;font-size:13px;">
 
-        <i class="fa-solid fa-circle-exclamation"
-           style="color:#d32f2f;">
-        </i>
+        <i class="fa-solid fa-circle-exclamation"></i>
 
         Aucun service sélectionné.
 
@@ -587,87 +425,153 @@
 
     `;
 
-
-    document.getElementById(
-      "messagesList"
-    ).innerHTML = `
-
-      <p class="empty-chat">
-
-        Retournez à l'accueil
-        et sélectionnez un service.
-
-      </p>
-
-    `;
-
+    return;
 
   }
 
 
-  /* =====================================================
-     ESCAPE HTML
-  ===================================================== */
+  try {
 
-  function escapeHTML(value) {
-
-    if (
-      value === null ||
-      value === undefined
-    ) {
-      return "";
-    }
-
-    return String(value)
-
-      .replace(/&/g, "&amp;")
-
-      .replace(/</g, "&lt;")
-
-      .replace(/>/g, "&gt;")
-
-      .replace(/"/g, "&quot;")
-
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-  /* =====================================================
-     CHARGER LE SERVICE
-  ===================================================== */
-
-  async function chargerService() {
-
-    if (!serviceId) return;
-
-
-    try {
-
-      const serviceRef =
+    const snap =
+      await getDoc(
         doc(
           db,
           "services",
           serviceId
-        );
+        )
+      );
 
 
-      const snap =
-        await getDoc(serviceRef);
+    if (!snap.exists()) {
+
+      serviceBox.innerHTML = `
+
+        <div class="chat-service-title"
+             style="color:#c62828;">
+
+          Service introuvable.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
 
 
-      if (!snap.exists()) {
+    const service =
+      snap.data();
 
-        document.getElementById(
-          "serviceInfoBox"
-        ).innerHTML = `
 
-          <div class="service-title"
-               style="color:#d32f2f;">
+    serviceBox.innerHTML = `
 
-            Service introuvable.
+      <div class="chat-service-title">
 
-          </div>
+        <i class="fa-solid fa-briefcase"
+           style="color:var(--red);"></i>
+
+        ${escapeHTML(
+          service.titre || "Service"
+        )}
+
+      </div>
+
+      <div class="chat-service-price">
+
+        ${escapeHTML(
+          service.prix || "Sur devis"
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* MESSAGES */
+
+function chargerMessages() {
+
+  if (!serviceId ||
+      !currentUser) return;
+
+
+  const q =
+    query(
+      collection(
+        db,
+        "messages"
+      ),
+      where(
+        "serviceId",
+        "==",
+        serviceId
+      )
+    );
+
+
+  onSnapshot(
+    q,
+    (snapshot) => {
+
+      const messages = [];
+
+
+      snapshot.forEach(
+        (messageDoc) => {
+
+          messages.push({
+            id:messageDoc.id,
+            ...messageDoc.data()
+          });
+
+        }
+      );
+
+
+      messages.sort(
+        (a,b) => {
+
+          const A =
+            a.createdAt?.seconds || 0;
+
+          const B =
+            b.createdAt?.seconds || 0;
+
+          return A-B;
+
+        }
+      );
+
+
+      if (!messages.length) {
+
+        messagesList.innerHTML = `
+
+          <p class="empty-chat">
+
+            <i class="fa-regular fa-comment-dots"
+               style="font-size:35px;"></i>
+
+            <br><br>
+
+            Aucun message pour le moment.
+
+            <br>
+
+            Commencez la conversation.
+
+          </p>
 
         `;
 
@@ -676,177 +580,36 @@
       }
 
 
-      const service =
-        snap.data();
-
-
-      document.getElementById(
-        "serviceInfoBox"
-      ).innerHTML = `
-
-        <div class="service-title">
-
-          <i class="fa-solid fa-briefcase"
-             style="color:#d32f2f;">
-          </i>
-
-          ${escapeHTML(
-            service.titre || "Service"
-          )}
-
-        </div>
-
-
-        <div class="service-price">
-
-          Prix :
-          ${escapeHTML(
-            service.prix || "Sur devis"
-          )}
-
-        </div>
-
-      `;
-
-
-    } catch (error) {
-
-      console.error(
-        "Erreur service :",
-        error
-      );
-
-    }
-
-  }
-
-
-  /* =====================================================
-     CHARGER MESSAGES
-     
-     IMPORTANT :
-     Pas de orderBy() ici.
-     Cela évite également les problèmes d'index.
-  ===================================================== */
-
-  function chargerMessages() {
-
-    if (!serviceId || !currentUser) {
-      return;
-    }
-
-
-    const q =
-      query(
-        collection(db, "messages"),
-        where(
-          "serviceId",
-          "==",
-          serviceId
-        )
-      );
-
-
-    onSnapshot(
-      q,
-
-      (snapshot) => {
-
-        const messages = [];
-
-
-        snapshot.forEach(
-          (messageDoc) => {
-
-            messages.push({
-
-              id: messageDoc.id,
-
-              ...messageDoc.data()
-
-            });
-
-          }
-        );
-
-
-        /* Tri côté navigateur */
-
-        messages.sort(
-          (a, b) => {
-
-            const dateA =
-              a.createdAt?.seconds || 0;
-
-            const dateB =
-              b.createdAt?.seconds || 0;
-
-            return dateA - dateB;
-
-          }
-        );
-
-
-        const list =
-          document.getElementById(
-            "messagesList"
-          );
-
-
-        if (messages.length === 0) {
-
-          list.innerHTML = `
-
-            <p class="empty-chat">
-
-              Aucun message pour le moment.<br>
-
-              Commencez la conversation.
-
-            </p>
-
-          `;
-
-          return;
-
-        }
-
-
-        let html = "";
-
-
-        messages.forEach(
-          (message) => {
+      messagesList.innerHTML =
+        messages.map(
+          message => {
 
             const isMe =
               message.senderId ===
               currentUser.uid;
 
 
-            const sender =
-              isMe
-                ? "Moi"
-                : (
-                    message.senderName ||
-                    "Utilisateur"
-                  );
-
-
-            html += `
+            return `
 
               <div class="
                 message
                 ${isMe
                   ? "my-message"
-                  : "other-message"}
+                  : ""}
               ">
 
                 <div class="sender">
 
-                  ${escapeHTML(sender)}
+                  ${escapeHTML(
+                    isMe
+                      ? "Moi"
+                      : (
+                        message.senderName ||
+                        "Utilisateur"
+                      )
+                  )}
 
                 </div>
-
 
                 <div class="message-text">
 
@@ -861,188 +624,151 @@
             `;
 
           }
-        );
+        ).join("");
 
 
-        list.innerHTML = html;
+      messagesList.scrollTop =
+        messagesList.scrollHeight;
+
+    },
+
+    (error) => {
+
+      console.error(error);
+
+      messagesList.innerHTML = `
+
+        <p class="empty-chat"
+           style="color:#c62828;">
+
+          Impossible de charger les messages.
+
+        </p>
+
+      `;
+
+    }
+
+  );
+
+}
 
 
-        list.scrollTop =
-          list.scrollHeight;
+/* AUTH */
 
-      },
+onAuthStateChanged(
+  auth,
+  (user) => {
+
+    if (!user) {
+
+      window.location.href =
+        "connexion.html";
+
+      return;
+
+    }
 
 
-      (error) => {
+    currentUser = user;
 
-        console.error(
-          "Erreur messages :",
-          error
-        );
+    chargerService();
 
-
-        document.getElementById(
-          "messagesList"
-        ).innerHTML = `
-
-          <p class="empty-chat"
-             style="color:#d32f2f;">
-
-            Impossible de charger
-            les messages.
-
-          </p>
-
-        `;
-
-      }
-
-    );
+    chargerMessages();
 
   }
+);
 
 
-  /* =====================================================
-     AUTHENTIFICATION
-  ===================================================== */
+/* ENVOI */
 
-  onAuthStateChanged(
-    auth,
-    (user) => {
+document
+  .getElementById("chatForm")
+  .addEventListener(
+    "submit",
+    async (event) => {
 
-      if (!user) {
+      event.preventDefault();
 
-        window.location.href =
-          "connexion.html";
 
-        return;
+      if (!currentUser ||
+          !serviceId) return;
+
+
+      const input =
+        document.getElementById(
+          "messageInput"
+        );
+
+
+      const text =
+        input.value.trim();
+
+
+      if (!text) return;
+
+
+      const button =
+        event.target.querySelector(
+          "button"
+        );
+
+
+      try {
+
+        button.disabled = true;
+
+
+        await addDoc(
+          collection(
+            db,
+            "messages"
+          ),
+          {
+
+            text,
+
+            senderId:
+              currentUser.uid,
+
+            senderName:
+              currentUser.displayName ||
+              currentUser.email
+                ?.split("@")[0] ||
+              "Utilisateur",
+
+            serviceId,
+
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        input.value = "";
+
+        input.focus();
+
+      }
+
+      catch(error) {
+
+        console.error(error);
+
+        alert(
+          "Impossible d'envoyer le message."
+        );
 
       }
 
 
-      currentUser = user;
-
-
-      chargerService();
-
-      chargerMessages();
+      button.disabled = false;
 
     }
   );
 
-
-  /* =====================================================
-     ENVOYER MESSAGE
-  ===================================================== */
-
-  document
-    .getElementById("chatForm")
-    .addEventListener(
-      "submit",
-      async (event) => {
-
-        event.preventDefault();
-
-
-        if (!currentUser) {
-
-          alert(
-            "Vous devez être connecté."
-          );
-
-          return;
-
-        }
-
-
-        if (!serviceId) {
-
-          alert(
-            "Aucun service sélectionné."
-          );
-
-          return;
-
-        }
-
-
-        const input =
-          document.getElementById(
-            "messageInput"
-          );
-
-
-        /* CORRECTION DE TON ERREUR :
-           
-           AVANT :
-           document.getElementById('messageInput'].value
-
-           MAINTENANT :
-           document.getElementById('messageInput').value
-        */
-
-        const text =
-          input.value.trim();
-
-
-        if (!text) {
-          return;
-        }
-
-
-        try {
-
-          await addDoc(
-            collection(
-              db,
-              "messages"
-            ),
-            {
-
-              text: text,
-
-              senderId:
-                currentUser.uid,
-
-              senderName:
-                currentUser.displayName ||
-                currentUser.email?.split("@")[0] ||
-                "Utilisateur",
-
-              serviceId:
-                serviceId,
-
-              createdAt:
-                serverTimestamp()
-
-            }
-          );
-
-
-          input.value = "";
-
-          input.focus();
-
-
-        } catch (error) {
-
-          console.error(
-            "Erreur envoi message :",
-            error
-          );
-
-
-          alert(
-            "Impossible d'envoyer le message."
-          );
-
-        }
-
-      }
-    );
-
 </script>
-
 
 </body>
 </html>
