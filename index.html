@@ -1,237 +1,1020 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
 <title>CAMU SERVICES — Accueil</title>
+
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Appliquer le thème avant affichage -->
+<script>
+(function () {
+
+    const theme = localStorage.getItem("camu_theme");
+
+    if (theme === "dark") {
+        document.documentElement.classList.add("dark-mode");
+    }
+
+    const language = localStorage.getItem("camu_language");
+
+    if (language) {
+        document.documentElement.lang = language;
+    }
+
+})();
+</script>
+
 </head>
+
+
 <body>
 
+
+<!-- =====================================================
+     BARRE SUPÉRIEURE
+     ===================================================== -->
+
 <header class="top-bar">
-    <!-- Bouton Menu Hamburger à gauche -->
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Menu">
+
         <i class="fa-solid fa-bars"></i>
+
     </button>
-    <div class="logo-text">CAMU <span>SERVICES</span></div>
-    <a href="profil.html" class="profile-btn"><i class="fa-solid fa-user"></i></a>
+
+
+    <div class="logo-text">
+
+        CAMU <span>SERVICES</span>
+
+    </div>
+
+
+    <a
+        href="profil.html"
+        class="profile-btn"
+        aria-label="Profil">
+
+        <i class="fa-solid fa-user"></i>
+
+    </a>
+
 </header>
 
-<!-- MENU LATÉRAL / HAMBURGER (Escamotable) -->
+
+
+<!-- =====================================================
+     MENU LATÉRAL
+     ===================================================== -->
+
 <aside class="sidebar-vertical">
-  <div class="sidebar-header">
-    <span>Navigation</span>
-  </div>
-  <ul>
-    <li>
-      <a href="index.html" class="active-link">
-        <i class="fa-solid fa-house"></i> Accueil
-      </a>
-    </li>
-    <li>
-      <a href="publier.html">
-        <i class="fa-solid fa-circle-plus"></i> Publier
-      </a>
-    </li>
-    <li>
-      <a href="chat.html">
-        <i class="fa-solid fa-comments"></i> Chat
-      </a>
-    </li>
 
-    <!-- === AJOUT : Paramètres avec sous-menu === -->
-    <li class="has-submenu" id="paramMenuToggle">
-      <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fa-solid fa-gear"></i> Paramètres</span>
-        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s;"></i>
-      </a>
-    </li>
-    
-    <ul class="submenu-container" id="paramSubmenu">
-      <li>
-        <a href="#notifications">
-          <i class="fa-solid fa-bell"></i> Notifications
-        </a>
-      </li>
-      <li>
-        <a href="#langue">
-          <i class="fa-solid fa-globe"></i> Langue
-        </a>
-      </li>
-      <li>
-        <a href="#theme">
-          <i class="fa-solid fa-moon"></i> Mode sombre
-        </a>
-      </li>
+    <div class="sidebar-header">
+
+        <span data-i18n="navigation">
+            Navigation
+        </span>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+
+            <a
+                href="index.html"
+                class="active-link">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span data-i18n="accueil">
+                    Accueil
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="publier.html">
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+                <span data-i18n="publier">
+                    Publier
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="chat.html">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <span data-i18n="chat">
+                    Chat
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- PARAMÈTRES -->
+
+        <li
+            class="has-submenu"
+            id="paramMenuToggle">
+
+            <a
+                href="javascript:void(0);"
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
+
+                <span>
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span data-i18n="parametres">
+                        Paramètres
+                    </span>
+
+                </span>
+
+
+                <i
+                    class="fa-solid fa-chevron-down"
+                    id="arrowParam"
+                    style="
+                        font-size:11px;
+                        transition:transform .3s;
+                    ">
+                </i>
+
+            </a>
+
+        </li>
+
+
+        <ul
+            class="submenu-container"
+            id="paramSubmenu">
+
+            <li>
+
+                <a href="parametres.html#notifications">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span data-i18n="notifications">
+                        Notifications
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="parametres.html#langue">
+
+                    <i class="fa-solid fa-globe"></i>
+
+                    <span data-i18n="langue">
+                        Langue
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="parametres.html#theme">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                    <span data-i18n="modeSombre">
+                        Mode sombre
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <li>
+
+            <a href="conditions.html">
+
+                <i class="fa-solid fa-file-contract"></i>
+
+                <span data-i18n="conditions">
+                    Conditions
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="profil.html">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span data-i18n="monProfil">
+                    Mon Profil
+                </span>
+
+            </a>
+
+        </li>
+
     </ul>
-    <!-- === FIN AJOUT === -->
 
-    <li>
-      <a href="conditions.html">
-        <i class="fa-solid fa-file-contract"></i> Conditions
-      </a>
-    </li>
-    <li>
-      <a href="profil.html">
-        <i class="fa-solid fa-user"></i> Mon Profil
-      </a>
-    </li>
-  </ul>
 </aside>
 
+
+
+<!-- =====================================================
+     CONTENU
+     ===================================================== -->
+
 <main class="container">
+
+
     <section class="hero">
-        <h1>Trouvez le service qu'il vous faut <span>près de chez vous.</span></h1>
-        <p>Découvrez des prestataires locaux et contactez-les directement.</p>
+
+        <h1>
+
+            <span data-i18n="heroTitre">
+                Trouvez le service qu'il vous faut
+            </span>
+
+            <span>
+                <span data-i18n="heroSousTitre">
+                    près de chez vous.
+                </span>
+            </span>
+
+        </h1>
+
+
+        <p data-i18n="heroDescription">
+
+            Découvrez des prestataires locaux et contactez-les directement.
+
+        </p>
+
     </section>
+
+
+
+    <!-- RECHERCHE -->
+
     <div class="search-bar">
+
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="search" placeholder="Rechercher un service...">
-    </div>
-    <div class="section-title">Catégories</div>
-    <div class="categories">
-        <button class="cat-btn" data-cat="">Tout</button>
-        <button class="cat-btn" data-cat="BTP & Construction">BTP</button>
-        <button class="cat-btn" data-cat="Technique & Maintenance">Technique</button>
-        <button class="cat-btn" data-cat="Informatique & Numérique">Informatique</button>
-        <button class="cat-btn" data-cat="Maison & Immobilier">Maison</button>
-        <button class="cat-btn" data-cat="Transport & Livraison">Transport</button>
-        <button class="cat-btn" data-cat="Divers & Services">Divers</button>
+
+        <input
+            id="search"
+            data-i18n-placeholder="rechercher"
+            placeholder="Rechercher un service...">
+
     </div>
 
-    <!-- Conteneur des communiqués -->
+
+
+    <!-- CATÉGORIES -->
+
+    <div
+        class="section-title"
+        data-i18n="categories">
+
+        Catégories
+
+    </div>
+
+
+    <div class="categories">
+
+        <button
+            class="cat-btn"
+            data-cat=""
+            data-i18n="tout">
+
+            Tout
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="BTP & Construction">
+
+            BTP
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Technique & Maintenance">
+
+            Technique
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Informatique & Numérique">
+
+            Informatique
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Maison & Immobilier">
+
+            Maison
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Transport & Livraison">
+
+            Transport
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Divers & Services">
+
+            Divers
+
+        </button>
+
+    </div>
+
+
+
+    <!-- COMMUNIQUÉS -->
+
     <div id="communiquesContainer"></div>
 
-    <div class="section-title">Services disponibles</div>
-    <div id="services">
-        <div class="empty-state">
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            <p>Chargement...</p>
-        </div>
+
+
+    <!-- SERVICES -->
+
+    <div
+        class="section-title"
+        data-i18n="servicesDisponibles">
+
+        Services disponibles
+
     </div>
-    <footer class="footer">
-        <h3>CAMU SERVICES</h3>
-        <p>Votre marketplace locale de services.</p>
-        <div class="footer-links">
-            <a href="a-propos.html">À propos</a>
-            <a href="conditions.html">Conditions</a>
-            <a href="contact.html">Contact</a>
-            <a href="politique.html">Politique d'utilisation</a>
-            <a href="manifestations.html">Manifestations</a>
+
+
+    <div id="services">
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <p data-i18n="chargement">
+                Chargement...
+            </p>
+
         </div>
-        <p>© 2026 CAMU SERVICES</p>
+
+    </div>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <h3>
+            CAMU SERVICES
+        </h3>
+
+
+        <p data-i18n="marketplace">
+            Votre marketplace locale de services.
+        </p>
+
+
+        <div class="footer-links">
+
+            <a href="a-propos.html">
+                À propos
+            </a>
+
+            <a href="conditions.html">
+                Conditions
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="politique.html">
+                Politique d'utilisation
+            </a>
+
+            <a href="manifestations.html">
+                Manifestations
+            </a>
+
+        </div>
+
+
+        <p>
+            © 2026 CAMU SERVICES
+        </p>
+
     </footer>
+
 </main>
 
+
+
+<!-- =====================================================
+     NAVIGATION MOBILE
+     ===================================================== -->
+
 <nav class="bottom-nav">
-    <a class="active" href="index.html"><i class="fa-solid fa-house"></i>Accueil</a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i>Publier</a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i>Chat</a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i>Profil</a>
+
+    <a
+        class="active"
+        href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span data-i18n="accueil">
+            Accueil
+        </span>
+
+    </a>
+
+
+    <a href="publier.html">
+
+        <i class="fa-solid fa-circle-plus"></i>
+
+        <span data-i18n="publier">
+            Publier
+        </span>
+
+    </a>
+
+
+    <a href="chat.html">
+
+        <i class="fa-solid fa-comments"></i>
+
+        <span data-i18n="chat">
+            Chat
+        </span>
+
+    </a>
+
+
+    <a href="profil.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span data-i18n="profil">
+            Profil
+        </span>
+
+    </a>
+
 </nav>
 
+
+
+<!-- =====================================================
+     FIREBASE + LOGIQUE
+     ===================================================== -->
+
 <script type="module">
-import { db } from './app.js';
-import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-let all = [], cat = '';
-const e = x => String(x ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+import { db } from "./app.js";
 
-async function load(){
+import {
+
+    collection,
+    getDocs,
+    query,
+    where
+
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+
+/* =====================================================
+   VARIABLES
+   ===================================================== */
+
+let all = [];
+
+let cat = "";
+
+
+
+/* =====================================================
+   PROTECTION HTML
+   ===================================================== */
+
+const e = x => String(x ?? "")
+    .replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    }[c]));
+
+
+
+/* =====================================================
+   CHARGEMENT DES SERVICES
+   ===================================================== */
+
+async function load() {
+
     try {
-        let s = await getDocs(query(collection(db,'services'), where('valide','==',true)));
-        all = s.docs.map(d => ({id:d.id, ...d.data()}));
+
+        const snapshot = await getDocs(
+
+            query(
+                collection(db, "services"),
+                where("valide", "==", true)
+            )
+
+        );
+
+
+        all = snapshot.docs.map(doc => ({
+
+            id: doc.id,
+
+            ...doc.data()
+
+        }));
+
+
         render();
+
         chargerCommuniquesAccueil();
-    } catch(x) {
-        document.getElementById('services').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h2>Impossible de charger les services</h2><p>Vérifiez Internet et réessayez.</p></div>';
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById("services").innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <h2>
+                    Impossible de charger les services
+                </h2>
+
+                <p>
+                    Vérifiez Internet et réessayez.
+                </p>
+
+            </div>
+
+        `;
+
     }
+
 }
 
-function render(){
-    let q = document.getElementById('search').value.toLowerCase();
-    let a = all.filter(s => (!cat || s.categorie == cat) && (!q || `${s.titre} ${s.description} ${s.ville} ${s.categorie}`.toLowerCase().includes(q)));
-    document.getElementById('services').innerHTML = a.length ? a.map(s => `<article class="annonce-card"><span class="badge-cat">${e(s.categorie||'Général')}</span><h3>${e(s.titre)}</h3><div class="location"><i class="fa-solid fa-location-dot"></i> ${e(s.ville||'RDC')}</div><p style="font-size:13px;color:#666">${e((s.description||'').slice(0,130))}${(s.description||'').length>130?'…':''}</p><p class="prix">${e(s.prix||'Sur devis')}</p><div class="card-actions"><a class="btn-submit" style="flex:1;text-align:center" href="chat.html?serviceId=${s.id}"><i class="fa-solid fa-comments"></i> Contacter</a><button class="favorite-btn">☆</button></div></article>`).join('') : '<div class="empty-state"><i class="fa-solid fa-inbox"></i><h2>Aucun service trouvé</h2><p>Essayez une autre recherche.</p></div>';
+
+
+/* =====================================================
+   AFFICHAGE SERVICES
+   ===================================================== */
+
+function render() {
+
+    const searchValue =
+        document
+            .getElementById("search")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const filtered = all.filter(service => {
+
+        const texte = `
+
+            ${service.titre || ""}
+            ${service.description || ""}
+            ${service.ville || ""}
+            ${service.categorie || ""}
+
+        `.toLowerCase();
+
+
+        return (
+
+            (!cat || service.categorie === cat)
+
+            &&
+
+            (!searchValue || texte.includes(searchValue))
+
+        );
+
+    });
+
+
+    document.getElementById("services").innerHTML =
+
+        filtered.length
+
+        ?
+
+        filtered.map(service => `
+
+            <article class="annonce-card">
+
+                <span class="badge-cat">
+
+                    ${e(service.categorie || "Général")}
+
+                </span>
+
+
+                <h3>
+                    ${e(service.titre || "Service")}
+                </h3>
+
+
+                <div class="location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    ${e(service.ville || "RDC")}
+
+                </div>
+
+
+                <p style="font-size:13px;color:#666">
+
+                    ${e(
+                        (service.description || "").slice(0,130)
+                    )}
+
+                    ${
+                        (service.description || "").length > 130
+                        ? "…"
+                        : ""
+                    }
+
+                </p>
+
+
+                <p class="prix">
+
+                    ${e(service.prix || "Sur devis")}
+
+                </p>
+
+
+                <div class="card-actions">
+
+                    <a
+                        class="btn-submit"
+                        style="flex:1;text-align:center"
+                        href="chat.html?serviceId=${encodeURIComponent(service.id)}">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Contacter
+
+                    </a>
+
+
+                    <button
+                        class="favorite-btn"
+                        type="button"
+                        aria-label="Ajouter aux favoris">
+
+                        ☆
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        `).join("")
+
+        :
+
+        `
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-inbox"></i>
+
+            <h2>
+                Aucun service trouvé
+            </h2>
+
+            <p>
+                Essayez une autre recherche.
+            </p>
+
+        </div>
+
+        `;
+
 }
+
+
+
+/* =====================================================
+   COMMUNIQUÉS FIRESTORE
+   ===================================================== */
 
 async function chargerCommuniquesAccueil() {
-    const container = document.getElementById("communiquesContainer");
+
+    const container =
+        document.getElementById("communiquesContainer");
+
+
     if (!container) return;
 
-    try {
-        const querySnapshot = await getDocs(collection(db, "communiques"));
-        
-        if (querySnapshot.empty) {
-            container.innerHTML = ""; 
-            return;
-        }
 
-        let htmlContent = "";
-        querySnapshot.forEach((doc) => {
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "communiques")
+            );
+
+
+        let html = "";
+
+
+        snapshot.forEach(doc => {
+
             const com = doc.data();
-            if (com.published) {
-                htmlContent += `
-                    <div style="background: #222; border-left: 4px solid #2e7d32; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; color: white;">
-                        <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #4caf50;">
-                            <i class="fa-solid fa-bullhorn"></i> ${e(com.titre)}
+
+
+            if (com.published === true) {
+
+                html += `
+
+                    <div style="
+                        background:#222;
+                        border-left:4px solid #2e7d32;
+                        padding:12px 15px;
+                        border-radius:8px;
+                        margin-bottom:10px;
+                        color:white;
+                    ">
+
+                        <h4 style="
+                            margin:0 0 5px 0;
+                            font-size:14px;
+                            color:#4caf50;
+                        ">
+
+                            <i class="fa-solid fa-bullhorn"></i>
+
+                            ${e(com.titre)}
+
                         </h4>
-                        <p style="margin: 0; font-size: 12px; color: #ccc; line-height: 1.4;">
+
+
+                        <p style="
+                            margin:0;
+                            font-size:12px;
+                            color:#ccc;
+                            line-height:1.4;
+                        ">
+
                             ${e(com.description)}
+
                         </p>
+
                     </div>
+
                 `;
+
             }
+
         });
 
-        container.innerHTML = htmlContent;
+
+        container.innerHTML = html;
+
+
     } catch (error) {
-        console.error("Erreur lors du chargement des communiqués :", error);
+
+        console.error(
+            "Erreur communiqués :",
+            error
+        );
+
     }
+
 }
 
-document.getElementById('search').oninput = render;
-document.querySelectorAll('.cat-btn').forEach(b => b.onclick = () => { cat = b.dataset.cat; render(); });
 
-// Gestion de l'ouverture/fermeture du menu latéral au clic sur le bouton hamburger
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.querySelector('.sidebar-vertical');
-const paramMenuToggle = document.getElementById('paramMenuToggle');
-const paramSubmenu = document.getElementById('paramSubmenu');
-const arrowParam = document.getElementById('arrowParam');
+
+/* =====================================================
+   RECHERCHE
+   ===================================================== */
+
+document
+    .getElementById("search")
+    .addEventListener("input", render);
+
+
+
+/* =====================================================
+   CATÉGORIES
+   ===================================================== */
+
+document
+    .querySelectorAll(".cat-btn")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            cat = button.dataset.cat || "";
+
+            render();
+
+        });
+
+    });
+
+
+
+/* =====================================================
+   MENU HAMBURGER
+   ===================================================== */
+
+const menuToggle =
+    document.getElementById("menuToggle");
+
+const sidebar =
+    document.querySelector(".sidebar-vertical");
+
+const paramMenuToggle =
+    document.getElementById("paramMenuToggle");
+
+const paramSubmenu =
+    document.getElementById("paramSubmenu");
+
+const arrowParam =
+    document.getElementById("arrowParam");
+
+
 
 if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
+
+    menuToggle.addEventListener("click", event => {
+
+        event.stopPropagation();
+
+        sidebar.classList.toggle("open");
+
     });
 
-    // Fermer le menu si on clique en dehors
-    document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-            sidebar.classList.remove('open');
+
+    document.addEventListener("click", event => {
+
+        if (
+            !sidebar.contains(event.target)
+            &&
+            !menuToggle.contains(event.target)
+        ) {
+
+            sidebar.classList.remove("open");
+
             if (paramSubmenu) {
-                paramSubmenu.classList.remove('open-submenu');
-                if (arrowParam) arrowParam.style.transform = 'rotate(0deg)';
+
+                paramSubmenu.classList.remove(
+                    "open-submenu"
+                );
+
             }
+
+            if (arrowParam) {
+
+                arrowParam.style.transform =
+                    "rotate(0deg)";
+
+            }
+
         }
+
     });
+
 }
 
-// Gestion du sous-menu Paramètres
+
+
+/* =====================================================
+   SOUS-MENU PARAMÈTRES
+   ===================================================== */
+
 if (paramMenuToggle && paramSubmenu) {
-    paramMenuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        paramSubmenu.classList.toggle('open-submenu');
-        if (paramSubmenu.classList.contains('open-submenu')) {
-            arrowParam.style.transform = 'rotate(180deg)';
-        } else {
-            arrowParam.style.transform = 'rotate(0deg)';
+
+    paramMenuToggle.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+            paramSubmenu.classList.toggle(
+                "open-submenu"
+            );
+
+
+            if (
+                paramSubmenu.classList.contains(
+                    "open-submenu"
+                )
+            ) {
+
+                arrowParam.style.transform =
+                    "rotate(180deg)";
+
+            } else {
+
+                arrowParam.style.transform =
+                    "rotate(0deg)";
+
+            }
+
         }
-    });
+    );
+
 }
+
+
+
+/* =====================================================
+   CHARGEMENT
+   ===================================================== */
 
 load();
+
 </script>
+
+
 </body>
 </html>
