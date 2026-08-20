@@ -1510,11 +1510,6 @@ textarea {
 
 @media (min-width: 1000px) {
 
-  /*
-   * IMPORTANT :
-   * On ne décale PLUS la page vers la droite.
-   */
-
   body {
     padding-right: 0;
 
@@ -1533,21 +1528,14 @@ textarea {
   }
 
 
-  /*
-   * Navigation du bas cachée sur ordinateur
-   */
+  /* Navigation du bas cachée sur ordinateur */
 
   .bottom-nav {
     display: none;
   }
 
 
-  /*
-   * MENU ORDINATEUR
-   *
-   * Il est caché par défaut.
-   * Le JavaScript ajoute .open au clic.
-   */
+  /* MENU ORDINATEUR */
 
   .sidebar-vertical {
     display: block;
@@ -1579,10 +1567,6 @@ textarea {
 
     z-index: 1200;
 
-    /*
-     * CACHÉ AU DÉPART
-     */
-
     transform: translateX(-120%);
 
     transition:
@@ -1590,18 +1574,14 @@ textarea {
   }
 
 
-  /*
-   * MENU OUVERT
-   */
+  /* MENU OUVERT */
 
   .sidebar-vertical.open {
     transform: translateX(0);
   }
 
 
-  /*
-   * Titre NAVIGATION
-   */
+  /* Titre NAVIGATION */
 
   .sidebar-header {
     font-size: 11px;
@@ -1620,9 +1600,7 @@ textarea {
   }
 
 
-  /*
-   * Liste verticale
-   */
+  /* Liste verticale */
 
   .sidebar-vertical ul {
     display: flex;
@@ -1635,9 +1613,7 @@ textarea {
   }
 
 
-  /*
-   * Liens ordinateur
-   */
+  /* Liens ordinateur */
 
   .sidebar-vertical a {
     display: flex;
@@ -1660,9 +1636,7 @@ textarea {
   }
 
 
-  /*
-   * Icônes
-   */
+  /* Icônes */
 
   .sidebar-vertical a i {
     font-size: 16px;
@@ -1677,9 +1651,7 @@ textarea {
   }
 
 
-  /*
-   * Hover et actif
-   */
+  /* Hover et actif */
 
   .sidebar-vertical a:hover,
   .sidebar-vertical a.active-link {
@@ -1711,13 +1683,6 @@ textarea {
 /* =========================================================
    MODE SOMBRE
    ========================================================= */
-
-/*
- * Compatible avec :
- *
- * html.dark-mode
- * body.dark-mode
- */
 
 html.dark-mode,
 body.dark-mode {
@@ -1772,15 +1737,21 @@ body.dark-mode .search-bar {
 }
 
 
-/* Inputs */
+/* Inputs & Formulaires (Profil & Admin) */
 
 html.dark-mode input,
 html.dark-mode select,
 html.dark-mode textarea,
+html.dark-mode .form-group input,
+html.dark-mode .form-group select,
+html.dark-mode .form-group textarea,
 
 body.dark-mode input,
 body.dark-mode select,
-body.dark-mode textarea {
+body.dark-mode textarea,
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
 
   background: #171717;
 
@@ -1864,11 +1835,17 @@ body.dark-mode .footer {
 html.dark-mode .btn-secondary,
 body.dark-mode .btn-secondary {
 
-  background: #1c1c1c;
+  background: #202020;
 
-  color: #eeeeee;
+  color: #f3f3f3;
 
   border-color: #444444;
+}
+
+html.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-secondary:hover {
+
+  background: #2a2a2a;
 }
 
 
@@ -1890,7 +1867,7 @@ body.dark-mode .annonce-card p {
 }
 
 
-/* Messages */
+/* Messages & Barre de Chat */
 
 html.dark-mode .message,
 body.dark-mode .message {
@@ -1900,6 +1877,14 @@ body.dark-mode .message {
   border-color: #333333;
 
   color: #eeeeee;
+}
+
+html.dark-mode .chat-input,
+body.dark-mode .chat-input {
+
+  background: #1c1c1c;
+
+  border-color: #333333;
 }
 
 
