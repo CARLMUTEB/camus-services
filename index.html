@@ -39,6 +39,34 @@
         <i class="fa-solid fa-comments"></i> Chat
       </a>
     </li>
+
+    <!-- === AJOUT : Paramètres avec sous-menu === -->
+    <li class="has-submenu" id="paramMenuToggle">
+      <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;">
+        <span><i class="fa-solid fa-gear"></i> Paramètres</span>
+        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s;"></i>
+      </a>
+    </li>
+    
+    <ul class="submenu-container" id="paramSubmenu">
+      <li>
+        <a href="#notifications">
+          <i class="fa-solid fa-bell"></i> Notifications
+        </a>
+      </li>
+      <li>
+        <a href="#langue">
+          <i class="fa-solid fa-globe"></i> Langue
+        </a>
+      </li>
+      <li>
+        <a href="#theme">
+          <i class="fa-solid fa-moon"></i> Mode sombre
+        </a>
+      </li>
+    </ul>
+    <!-- === FIN AJOUT === -->
+
     <li>
       <a href="conditions.html">
         <i class="fa-solid fa-file-contract"></i> Conditions
@@ -168,6 +196,9 @@ document.querySelectorAll('.cat-btn').forEach(b => b.onclick = () => { cat = b.d
 // Gestion de l'ouverture/fermeture du menu latéral au clic sur le bouton hamburger
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.querySelector('.sidebar-vertical');
+const paramMenuToggle = document.getElementById('paramMenuToggle');
+const paramSubmenu = document.getElementById('paramSubmenu');
+const arrowParam = document.getElementById('arrowParam');
 
 if (menuToggle && sidebar) {
     menuToggle.addEventListener('click', (e) => {
@@ -179,6 +210,23 @@ if (menuToggle && sidebar) {
     document.addEventListener('click', (e) => {
         if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
             sidebar.classList.remove('open');
+            if (paramSubmenu) {
+                paramSubmenu.classList.remove('open-submenu');
+                if (arrowParam) arrowParam.style.transform = 'rotate(0deg)';
+            }
+        }
+    });
+}
+
+// Gestion du sous-menu Paramètres
+if (paramMenuToggle && paramSubmenu) {
+    paramMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        paramSubmenu.classList.toggle('open-submenu');
+        if (paramSubmenu.classList.contains('open-submenu')) {
+            arrowParam.style.transform = 'rotate(180deg)';
+        } else {
+            arrowParam.style.transform = 'rotate(0deg)';
         }
     });
 }
