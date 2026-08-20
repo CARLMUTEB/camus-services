@@ -1,168 +1,202 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>CAMU SERVICES — Paramètres</title>
+
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
-
-    /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .header-bar a { color: #ffffff; text-decoration: none; font-size: 18px; margin-right: 15px; }
-    .header-bar span { color: #d32f2f; }
-
-    /* Conteneur principal */
-    .container { max-width: 500px; margin: 15px auto; padding: 0 15px; }
-
-    /* Groupes de réglages */
-    .settings-group { background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee; }
-    .group-title { font-size: 12px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; padding: 14px 15px 6px; }
-
-    .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px; border-bottom: 1px solid #f0f0f0; text-decoration: none; color: #333; font-size: 13px; font-weight: 600; }
-    .setting-item:last-child { border-bottom: none; }
-    .setting-info { display: flex; align-items: center; gap: 12px; }
-    .setting-info i { width: 20px; color: #d32f2f; text-align: center; font-size: 16px; }
-
-    /* Commutateurs (Switches) */
-    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 24px; }
-    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-    input:checked + .slider { background-color: #d32f2f; }
-    input:checked + .slider:before { transform: translateX(20px); }
-
-    /* Bouton Déconnexion */
-    .btn-logout { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #ffffff; color: #d32f2f; border: 1px solid #d32f2f; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; }
-    .btn-logout:hover { background: #d32f2f; color: #ffffff; }
-
-    /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+    /* Style spécifique pour le sous-menu déroulant dans la sidebar */
+    .has-submenu {
+      cursor: pointer;
+    }
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: rgba(0, 0, 0, 0.03);
+      padding-left: 15px;
+    }
+    .submenu.open-submenu {
+      max-height: 200px; /* Hauteur suffisante pour afficher les options */
+    }
+    .submenu li a {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
   </style>
 </head>
+
 <body>
 
-  <header class="header-bar">
-    <a href="profil.html"><i class="fa-solid fa-arrow-left"></i></a>
-    <span>Paramètres</span>
-  </header>
+<header class="top-bar">
+  <!-- Bouton Menu Hamburger -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu" style="background:transparent; border:none; color:#fff; font-size:20px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
-  <div class="container">
-
-    <!-- Compte et Sécurité -->
-    <div class="settings-group">
-      <div class="group-title">Mon Compte & Sécurité</div>
-      <a href="#" class="setting-item" onclick="alert('Modifier les informations du profil')">
-        <div class="setting-info">
-          <i class="fa-solid fa-user-pen"></i>
-          <span>Modifier le profil</span>
-        </div>
-        <i class="fa-solid fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
-      </a>
-      <a href="#" class="setting-item" onclick="alert('Changer le mot de passe')">
-        <div class="setting-info">
-          <i class="fa-solid fa-lock"></i>
-          <span>Changer le mot de passe</span>
-        </div>
-        <i class="fa-solid fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
-      </a>
-      <a href="#" class="setting-item" onclick="alert('Numéro WhatsApp de contact')">
-        <div class="setting-info">
-          <i class="fa-brands fa-whatsapp"></i>
-          <span>Numéro WhatsApp lié</span>
-        </div>
-        <i class="fa-solid fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
-      </a>
-    </div>
-
-    <!-- Preferences & Notifications -->
-    <div class="settings-group">
-      <div class="group-title">Préférences</div>
-      <div class="setting-item">
-        <div class="setting-info">
-          <i class="fa-solid fa-bell"></i>
-          <span>Notifications PUSH</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="setting-item">
-        <div class="setting-info">
-          <i class="fa-solid fa-envelope"></i>
-          <span>Alertes par e-mail</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="setting-item">
-        <div class="setting-info">
-          <i class="fa-solid fa-moon"></i>
-          <span>Mode Sombre</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Application & Infos -->
-    <div class="settings-group">
-      <div class="group-title">Assistance & Informations</div>
-      <a href="index.html" class="setting-item">
-        <div class="setting-info">
-          <i class="fa-solid fa-circle-info"></i>
-          <span>À propos de CAMU SERVICES</span>
-        </div>
-        <i class="fa-solid fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
-      </a>
-      <div class="setting-item">
-        <div class="setting-info">
-          <i class="fa-solid fa-code-version"></i>
-          <span>Version de l'application</span>
-        </div>
-        <span style="color: #888; font-size: 12px;">v1.0.26</span>
-      </div>
-    </div>
-
-    <!-- Bouton de Déconnexion -->
-    <button class="btn-logout" onclick="confirmLogout()">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      Se déconnecter
-    </button>
-
+  <div class="logo-text">
+    CAMU <span>SERVICES</span>
   </div>
 
-  <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
-  </nav>
+  <a href="profil.html" style="color:#fff; font-size:18px; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">
+    <i class="fa-solid fa-user"></i>
+  </a>
+</header>
 
-  <script>
-    function toggleDarkMode() {
-      const isChecked = document.getElementById('darkModeToggle').checked;
-      if (isChecked) {
-        alert("Le mode sombre sera activé dans la prochaine mise à jour.");
-      }
-    }
-
-    function confirmLogout() {
-      if (confirm("Voulez-vous vraiment vous déconnecter de CAMU SERVICES ?")) {
-        window.location.href = "index.html";
-      }
-    }
-  </script>
-</body>
-        </html>
+<!-- MENU LATÉRAL / HAMBURGER AVEC SOUS-MENU PARAMÈTRES -->
+<aside class="sidebar-vertical">
+  <div class="sidebar-header">
+    <span>Navigation</span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">
+        <i class="fa-solid fa-house"></i> Accueil
+      </a>
+    </li>
+    <li>
+      <a href="publier.html">
+        <i class="fa-solid fa-circle-plus"></i> Publier
+      </a>
+    </li>
+    <li>
+      <a href="chat.html">
+        <i class="fa-solid fa-comments"></i> Chat
+      </a>
+    </li>
+    <li>
+      <a href="categories.html">
+        <i class="fa-solid fa-list"></i> Catégories
+      </a>
+    </li>
     
+    <!-- Paramètres avec sous-menu déroulant à l'intérieur -->
+    <li class="has-submenu" id="paramMenuToggle">
+      <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;" class="active-link">
+        <span><i class="fa-solid fa-gear"></i> Paramètres généraux</span>
+        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s;"></i>
+      </a>
+    </li>
+    <!-- Les options qui s'ouvrent à l'intérieur -->
+    <div class="submenu" id="paramSubmenu">
+      <ul>
+        <li><a href="#notifications"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="#langue"><i class="fa-solid fa-globe"></i> Langue (Fr / Sw)</a></li>
+        <li><a href="#theme"><i class="fa-solid fa-moon"></i> Mode sombre</a></li>
+      </ul>
+    </div>
+
+    <li>
+      <a href="conditions.html">
+        <i class="fa-solid fa-file-contract"></i> Conditions
+      </a>
+    </li>
+    <li>
+      <a href="profil.html">
+        <i class="fa-solid fa-user"></i> Mon Profil
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<main class="container">
+
+  <!-- INTRODUCTION -->
+  <section class="hero">
+    <h1>
+      Paramètres <span>généraux.</span>
+    </h1>
+    <p>
+      Sélectionnez une option dans le menu latéral ou gérez vos préférences ici.
+    </p>
+  </section>
+
+  <!-- CONTENU PRINCIPAL -->
+  <div class="card-box" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
+    <h2 style="font-size: 18px; margin-bottom: 10px; font-weight: 800;">
+      <i class="fa-solid fa-gear" style="color: var(--red);"></i> Panneau des paramètres
+    </h2>
+    <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+      Cliquez sur <strong>"Paramètres généraux"</strong> dans le menu latéral (en haut à gauche) pour voir les options se dérouler directement à l'intérieur du menu !
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <h3>CAMU SERVICES</h3>
+    <p>Votre marketplace locale de services.</p>
+    <div class="footer-links">
+      <a href="a-propos.html">À propos</a>
+      <a href="conditions.html">Conditions</a>
+      <a href="contact.html">Contact</a>
+      <a href="politique.html">Politique d'utilisation</a>
+    </div>
+    <p>© 2026 CAMU SERVICES</p>
+  </footer>
+
+</main>
+
+<!-- NAVIGATION DU BAS -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <i class="fa-solid fa-house"></i>
+    <span>Accueil</span>
+  </a>
+  <a href="publier.html">
+    <i class="fa-solid fa-circle-plus"></i>
+    <span>Publier</span>
+  </a>
+  <a href="chat.html">
+    <i class="fa-solid fa-comments"></i>
+    <span>Chat</span>
+  </a>
+  <a href="profil.html">
+    <i class="fa-solid fa-user"></i>
+    <span>Profil</span>
+  </a>
+</nav>
+
+<script>
+// Gestion du menu latéral hamburger
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.querySelector('.sidebar-vertical');
+
+if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+}
+
+// Gestion du sous-menu déroulant des paramètres à l'intérieur du menu latéral
+const paramMenuToggle = document.getElementById('paramMenuToggle');
+const paramSubmenu = document.getElementById('paramSubmenu');
+const arrowParam = document.getElementById('arrowParam');
+
+if (paramMenuToggle && paramSubmenu) {
+    paramMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        paramSubmenu.classList.toggle('open-submenu');
+        // Rotation de la petite flèche
+        if (paramSubmenu.classList.contains('open-submenu')) {
+            arrowParam.style.transform = 'rotate(180deg)';
+        } else {
+            arrowParam.style.transform = 'rotate(0deg)';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
