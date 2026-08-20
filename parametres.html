@@ -2,219 +2,1156 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES — Paramètres</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>CAMU SERVICES — Paramètres</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+<script>
+
+(function () {
+
+    const theme =
+        localStorage.getItem("camu_theme");
+
+    if (theme === "dark") {
+
+        document.documentElement
+            .classList.add("dark-mode");
+
+    }
+
+    const language =
+        localStorage.getItem("camu_language");
+
+    if (language) {
+
+        document.documentElement.lang =
+            language;
+
+    }
+
+})();
+
+</script>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <header class="top-bar">
-  <!-- Bouton Menu Hamburger -->
-  <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-    <i class="fa-solid fa-bars"></i>
-  </button>
 
-  <div class="logo-text">
-    CAMU <span>SERVICES</span>
-  </div>
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Menu">
 
-  <a href="profil.html" class="profile-btn">
-    <i class="fa-solid fa-user"></i>
-  </a>
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <div class="logo-text">
+
+        CAMU <span>SERVICES</span>
+
+    </div>
+
+
+    <a
+        href="profil.html"
+        class="profile-btn">
+
+        <i class="fa-solid fa-user"></i>
+
+    </a>
+
 </header>
 
-<!-- MENU LATÉRAL / HAMBURGER -->
-<aside class="sidebar-vertical">
-  <div class="sidebar-header">
-    <span>Navigation</span>
-  </div>
-  <ul>
-    <li>
-      <a href="index.html">
-        <i class="fa-solid fa-house"></i> Accueil
-      </a>
-    </li>
-    <li>
-      <a href="publier.html">
-        <i class="fa-solid fa-circle-plus"></i> Publier
-      </a>
-    </li>
-    <li>
-      <a href="chat.html">
-        <i class="fa-solid fa-comments"></i> Chat
-      </a>
-    </li>
-    <li>
-      <a href="categories.html">
-        <i class="fa-solid fa-list"></i> Catégories
-      </a>
-    </li>
-    
-    <!-- Paramètres avec sous-menu intégré -->
-    <li class="has-submenu" id="paramMenuToggle">
-      <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;" class="active-link">
-        <span><i class="fa-solid fa-gear"></i> Paramètres généraux</span>
-        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s; transform: rotate(180deg);"></i>
-      </a>
-      
-      <!-- Sous-menu fonctionnel -->
-      <ul class="submenu-container open-submenu" id="paramSubmenu">
-        <li>
-          <a href="javascript:void(0);" id="btnNotifications">
-            <i class="fa-solid fa-bell"></i> Notifications
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" id="btnLangue">
-            <i class="fa-solid fa-globe"></i> Langue
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0);" id="btnTheme">
-            <i class="fa-solid fa-moon"></i> Mode sombre
-          </a>
-        </li>
-      </ul>
-    </li>
 
-    <li>
-      <a href="conditions.html">
-        <i class="fa-solid fa-file-contract"></i> Conditions
-      </a>
-    </li>
-    <li>
-      <a href="profil.html">
-        <i class="fa-solid fa-user"></i> Mon Profil
-      </a>
-    </li>
-  </ul>
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside class="sidebar-vertical">
+
+    <div class="sidebar-header">
+
+        <span data-i18n="navigation">
+            Navigation
+        </span>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+
+            <a href="index.html">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span data-i18n="accueil">
+                    Accueil
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="publier.html">
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+                <span data-i18n="publier">
+                    Publier
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="chat.html">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <span data-i18n="chat">
+                    Chat
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="categories.html">
+
+                <i class="fa-solid fa-list"></i>
+
+                <span data-i18n="categories">
+                    Catégories
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <!-- PARAMÈTRES -->
+
+        <li
+            class="has-submenu"
+            id="paramMenuToggle">
+
+            <a
+                href="javascript:void(0);"
+                class="active-link"
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
+
+                <span>
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span data-i18n="parametres">
+                        Paramètres
+                    </span>
+
+                </span>
+
+
+                <i
+                    class="fa-solid fa-chevron-down"
+                    id="arrowParam"
+                    style="
+                        font-size:11px;
+                        transition:transform .3s;
+                    ">
+                </i>
+
+            </a>
+
+
+            <ul
+                class="submenu-container open-submenu"
+                id="paramSubmenu">
+
+                <li>
+
+                    <a
+                        href="#notifications"
+                        id="btnNotifications">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                        <span data-i18n="notifications">
+                            Notifications
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="#langue"
+                        id="btnLangue">
+
+                        <i class="fa-solid fa-globe"></i>
+
+                        <span data-i18n="langue">
+                            Langue
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="#theme"
+                        id="btnTheme">
+
+                        <i class="fa-solid fa-moon"></i>
+
+                        <span data-i18n="modeSombre">
+                            Mode sombre
+                        </span>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <li>
+
+            <a href="conditions.html">
+
+                <i class="fa-solid fa-file-contract"></i>
+
+                <span data-i18n="conditions">
+                    Conditions
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="profil.html">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span data-i18n="monProfil">
+                    Mon Profil
+                </span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
 </aside>
+
+
+
+<!-- =====================================================
+     CONTENU
+     ===================================================== -->
 
 <main class="container">
 
-  <!-- INTRODUCTION -->
-  <section class="hero">
-    <h1>
-      Paramètres <span>généraux.</span>
-    </h1>
-    <p>
-      Gérez vos préférences ci-dessous. Le mode sombre et les options fonctionnent désormais directement.
-    </p>
-  </section>
 
-  <!-- CONTENU -->
-  <div class="card-box" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
-    <h2 style="font-size: 18px; margin-bottom: 10px; font-weight: 800;">
-      <i class="fa-solid fa-sliders" style="color: var(--red);"></i> État des options
-    </h2>
-    <p id="statusText" style="font-size: 13px; color: var(--muted); line-height: 1.5;">
-      Cliquez sur les options du menu latéral pour interagir (Activer le mode sombre, configurer la langue, etc.).
-    </p>
-  </div>
+    <section class="hero">
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <h3>CAMU SERVICES</h3>
-    <p>Votre marketplace locale de services.</p>
-    <div class="footer-links">
-      <a href="a-propos.html">À propos</a>
-      <a href="conditions.html">Conditions</a>
-      <a href="contact.html">Contact</a>
-      <a href="politique.html">Politique d'utilisation</a>
+        <h1>
+
+            <span data-i18n="parametres">
+                Paramètres
+            </span>
+
+            <span>
+                <span data-i18n="generaux">
+                    généraux.
+                </span>
+            </span>
+
+        </h1>
+
+
+        <p data-i18n="descriptionParametres">
+
+            Gérez vos préférences ci-dessous.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ÉTAT
+         ================================================= -->
+
+    <div
+        class="card-box"
+        style="
+            background:var(--card);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:var(--shadow);
+        ">
+
+
+        <h2 style="
+            font-size:18px;
+            margin-bottom:10px;
+            font-weight:800;
+        ">
+
+            <i
+                class="fa-solid fa-sliders"
+                style="color:var(--red);">
+            </i>
+
+            <span data-i18n="etatOptions">
+                État des options
+            </span>
+
+        </h2>
+
+
+        <p
+            id="statusText"
+            style="
+                font-size:13px;
+                color:var(--muted);
+                line-height:1.5;
+            ">
+
+            Sélectionnez une option.
+
+        </p>
+
     </div>
-    <p>© 2026 CAMU SERVICES</p>
-  </footer>
+
+
+
+    <!-- =================================================
+         LANGUE
+         ================================================= -->
+
+    <div
+        id="langue"
+        class="card-box"
+        style="
+            background:var(--card);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:var(--shadow);
+        ">
+
+        <h2 style="
+            font-size:17px;
+            margin-bottom:10px;
+        ">
+
+            <i
+                class="fa-solid fa-globe"
+                style="color:var(--red);">
+            </i>
+
+            <span data-i18n="choisirLangue">
+                Choisir la langue
+            </span>
+
+        </h2>
+
+
+        <select
+            id="languageSelect"
+            style="width:100%;">
+
+            <option value="fr">
+                Français
+            </option>
+
+            <option value="en">
+                English
+            </option>
+
+            <option value="sw">
+                Kiswahili
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NOTIFICATIONS
+         ================================================= -->
+
+    <div
+        id="notifications"
+        class="card-box"
+        style="
+            background:var(--card);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:var(--shadow);
+        ">
+
+        <h2 style="
+            font-size:17px;
+            margin-bottom:10px;
+        ">
+
+            <i
+                class="fa-solid fa-bell"
+                style="color:var(--red);">
+            </i>
+
+            <span data-i18n="notifications">
+                Notifications
+            </span>
+
+        </h2>
+
+
+        <p
+            id="notificationStatus"
+            class="help"
+            style="margin-bottom:12px;">
+
+            Vérification...
+
+        </p>
+
+
+        <button
+            id="notificationButton"
+            class="btn-primary"
+            type="button">
+
+            <i class="fa-solid fa-bell"></i>
+
+            <span data-i18n="activerNotifications">
+                Activer les notifications
+            </span>
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="footer">
+
+        <h3>
+            CAMU SERVICES
+        </h3>
+
+
+        <p data-i18n="marketplace">
+            Votre marketplace locale de services.
+        </p>
+
+
+        <div class="footer-links">
+
+            <a href="a-propos.html">
+                À propos
+            </a>
+
+            <a href="conditions.html">
+                Conditions
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="politique.html">
+                Politique d'utilisation
+            </a>
+
+        </div>
+
+
+        <p>
+            © 2026 CAMU SERVICES
+        </p>
+
+    </footer>
 
 </main>
 
-<!-- NAVIGATION DU BAS -->
+
+
+<!-- =====================================================
+     NAVIGATION BAS
+     ===================================================== -->
+
 <nav class="bottom-nav">
-  <a href="index.html">
-    <i class="fa-solid fa-house"></i>
-    <span>Accueil</span>
-  </a>
-  <a href="publier.html">
-    <i class="fa-solid fa-circle-plus"></i>
-    <span>Publier</span>
-  </a>
-  <a href="chat.html">
-    <i class="fa-solid fa-comments"></i>
-    <span>Chat</span>
-  </a>
-  <a href="profil.html">
-    <i class="fa-solid fa-user"></i>
-    <span>Profil</span>
-  </a>
+
+    <a href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span data-i18n="accueil">
+            Accueil
+        </span>
+
+    </a>
+
+
+    <a href="publier.html">
+
+        <i class="fa-solid fa-circle-plus"></i>
+
+        <span data-i18n="publier">
+            Publier
+        </span>
+
+    </a>
+
+
+    <a href="chat.html">
+
+        <i class="fa-solid fa-comments"></i>
+
+        <span data-i18n="chat">
+            Chat
+        </span>
+
+    </a>
+
+
+    <a href="profil.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span data-i18n="profil">
+            Profil
+        </span>
+
+    </a>
+
 </nav>
 
+
+
 <script>
-// 1. Gestion de l'ouverture/fermeture du menu latéral hamburger
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.querySelector('.sidebar-vertical');
+
+/* =====================================================
+   TRADUCTIONS
+   ===================================================== */
+
+const translations = {
+
+    fr: {
+
+        navigation: "Navigation",
+        accueil: "Accueil",
+        publier: "Publier",
+        chat: "Chat",
+        profil: "Profil",
+        parametres: "Paramètres",
+        notifications: "Notifications",
+        langue: "Langue",
+        modeSombre: "Mode sombre",
+        conditions: "Conditions",
+        monProfil: "Mon Profil",
+        generaux: "généraux.",
+        descriptionParametres:
+            "Gérez vos préférences ci-dessous.",
+        etatOptions:
+            "État des options",
+        choisirLangue:
+            "Choisir la langue",
+        activerNotifications:
+            "Activer les notifications",
+        notificationsActivees:
+            "Les notifications sont autorisées.",
+        notificationsBloquees:
+            "Les notifications sont bloquées dans votre navigateur.",
+        notificationsNonDefinies:
+            "Les notifications ne sont pas encore configurées.",
+        langueChangee:
+            "Langue modifiée avec succès.",
+        themeActive:
+            "Mode sombre : Activé.",
+        themeDesactive:
+            "Mode sombre : Désactivé."
+    },
+
+
+    en: {
+
+        navigation: "Navigation",
+        accueil: "Home",
+        publier: "Publish",
+        chat: "Chat",
+        profil: "Profile",
+        parametres: "Settings",
+        notifications: "Notifications",
+        langue: "Language",
+        modeSombre: "Dark mode",
+        conditions: "Terms",
+        monProfil: "My Profile",
+        generaux: "general.",
+        descriptionParametres:
+            "Manage your preferences below.",
+        etatOptions:
+            "Options status",
+        choisirLangue:
+            "Choose language",
+        activerNotifications:
+            "Enable notifications",
+        notificationsActivees:
+            "Notifications are allowed.",
+        notificationsBloquees:
+            "Notifications are blocked by your browser.",
+        notificationsNonDefinies:
+            "Notifications are not configured yet.",
+        langueChangee:
+            "Language changed successfully.",
+        themeActive:
+            "Dark mode: Enabled.",
+        themeDesactive:
+            "Dark mode: Disabled."
+    },
+
+
+    sw: {
+
+        navigation: "Menyu",
+        accueil: "Mwanzo",
+        publier: "Chapisha",
+        chat: "Mazungumzo",
+        profil: "Wasifu",
+        parametres: "Mipangilio",
+        notifications: "Arifa",
+        langue: "Lugha",
+        modeSombre: "Hali ya giza",
+        conditions: "Masharti",
+        monProfil: "Wasifu wangu",
+        generaux: "jumla.",
+        descriptionParametres:
+            "Dhibiti mapendeleo yako hapa chini.",
+        etatOptions:
+            "Hali ya chaguo",
+        choisirLangue:
+            "Chagua lugha",
+        activerNotifications:
+            "Washa arifa",
+        notificationsActivees:
+            "Arifa zimeruhusiwa.",
+        notificationsBloquees:
+            "Arifa zimezuiwa na kivinjari chako.",
+        notificationsNonDefinies:
+            "Arifa bado hazijawekwa.",
+        langueChangee:
+            "Lugha imebadilishwa.",
+        themeActive:
+            "Hali ya giza: Imewashwa.",
+        themeDesactive:
+            "Hali ya giza: Imezimwa."
+    }
+
+};
+
+
+
+/* =====================================================
+   APPLIQUER LANGUE
+   ===================================================== */
+
+function applyLanguage(language) {
+
+    const dictionary =
+        translations[language] ||
+        translations.fr;
+
+
+    document.documentElement.lang =
+        language;
+
+
+    document
+        .querySelectorAll("[data-i18n]")
+        .forEach(element => {
+
+            const key =
+                element.dataset.i18n;
+
+
+            if (dictionary[key]) {
+
+                element.textContent =
+                    dictionary[key];
+
+            }
+
+        });
+
+
+    localStorage.setItem(
+        "camu_language",
+        language
+    );
+
+
+    document.getElementById(
+        "statusText"
+    ).textContent =
+        dictionary.langueChangee;
+
+}
+
+
+
+/* =====================================================
+   LANGUE SELECT
+   ===================================================== */
+
+const languageSelect =
+    document.getElementById(
+        "languageSelect"
+    );
+
+
+const savedLanguage =
+    localStorage.getItem(
+        "camu_language"
+    ) || "fr";
+
+
+languageSelect.value =
+    savedLanguage;
+
+
+languageSelect.addEventListener(
+    "change",
+    () => {
+
+        applyLanguage(
+            languageSelect.value
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   NOTIFICATIONS
+   ===================================================== */
+
+const notificationStatus =
+    document.getElementById(
+        "notificationStatus"
+    );
+
+
+const notificationButton =
+    document.getElementById(
+        "notificationButton"
+    );
+
+
+function updateNotificationStatus() {
+
+    if (!("Notification" in window)) {
+
+        notificationStatus.textContent =
+            "Votre navigateur ne prend pas en charge les notifications.";
+
+        notificationButton.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    if (Notification.permission === "granted") {
+
+        notificationStatus.textContent =
+            translations[
+                savedLanguage
+            ].notificationsActivees;
+
+        notificationButton.innerHTML =
+            '<i class="fa-solid fa-check"></i> Notifications activées';
+
+        return;
+
+    }
+
+
+    if (Notification.permission === "denied") {
+
+        notificationStatus.textContent =
+            translations[
+                savedLanguage
+            ].notificationsBloquees;
+
+        notificationButton.innerHTML =
+            '<i class="fa-solid fa-ban"></i> Notifications bloquées';
+
+        return;
+
+    }
+
+
+    notificationStatus.textContent =
+        translations[
+            savedLanguage
+        ].notificationsNonDefinies;
+
+}
+
+
+updateNotificationStatus();
+
+
+
+notificationButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!("Notification" in window)) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const permission =
+                await Notification.requestPermission();
+
+
+            updateNotificationStatus();
+
+
+            if (permission === "granted") {
+
+                new Notification(
+                    "CAMU SERVICES",
+                    {
+                        body:
+                            "Les notifications CAMU SERVICES sont maintenant activées.",
+                        icon:
+                            "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                    }
+                );
+
+                document.getElementById(
+                    "statusText"
+                ).textContent =
+                    "Notifications activées avec succès.";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erreur notification :",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   MODE SOMBRE
+   ===================================================== */
+
+const themeButton =
+    document.getElementById(
+        "btnTheme"
+    );
+
+
+function updateThemeStatus() {
+
+    const dictionary =
+        translations[
+            localStorage.getItem(
+                "camu_language"
+            ) || "fr"
+        ];
+
+
+    const isDark =
+        document.documentElement
+            .classList.contains(
+                "dark-mode"
+            );
+
+
+    document.getElementById(
+        "statusText"
+    ).textContent =
+        isDark
+        ? dictionary.themeActive
+        : dictionary.themeDesactive;
+
+}
+
+
+
+themeButton.addEventListener(
+    "click",
+    event => {
+
+        event.preventDefault();
+
+
+        document.documentElement
+            .classList.toggle(
+                "dark-mode"
+            );
+
+
+        const isDark =
+            document.documentElement
+                .classList.contains(
+                    "dark-mode"
+                );
+
+
+        localStorage.setItem(
+            "camu_theme",
+            isDark ? "dark" : "light"
+        );
+
+
+        updateThemeStatus();
+
+    }
+);
+
+
+
+/* =====================================================
+   MENU HAMBURGER
+   ===================================================== */
+
+const menuToggle =
+    document.getElementById(
+        "menuToggle"
+    );
+
+
+const sidebar =
+    document.querySelector(
+        ".sidebar-vertical"
+    );
+
 
 if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
-    });
 
-    document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-            sidebar.classList.remove('open');
+    menuToggle.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
         }
-    });
+    );
+
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            if (
+                !sidebar.contains(
+                    event.target
+                )
+                &&
+                !menuToggle.contains(
+                    event.target
+                )
+            ) {
+
+                sidebar.classList.remove(
+                    "open"
+                );
+
+            }
+
+        }
+    );
+
 }
 
-// 2. Gestion de l'ouverture/fermeture du sous-menu des paramètres
-const paramMenuToggle = document.getElementById('paramMenuToggle');
-const paramSubmenu = document.getElementById('paramSubmenu');
-const arrowParam = document.getElementById('arrowParam');
 
-if (paramMenuToggle && paramSubmenu) {
-    paramMenuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        paramSubmenu.classList.toggle('open-submenu');
-        if (paramSubmenu.classList.contains('open-submenu')) {
-            arrowParam.style.transform = 'rotate(180deg)';
-        } else {
-            arrowParam.style.transform = 'rotate(0deg)';
+
+/* =====================================================
+   SOUS-MENU
+   ===================================================== */
+
+const paramMenuToggle =
+    document.getElementById(
+        "paramMenuToggle"
+    );
+
+
+const paramSubmenu =
+    document.getElementById(
+        "paramSubmenu"
+    );
+
+
+const arrowParam =
+    document.getElementById(
+        "arrowParam"
+    );
+
+
+if (
+    paramMenuToggle
+    &&
+    paramSubmenu
+) {
+
+    paramMenuToggle.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+
+            paramSubmenu.classList.toggle(
+                "open-submenu"
+            );
+
+
+            const open =
+                paramSubmenu.classList.contains(
+                    "open-submenu"
+                );
+
+
+            arrowParam.style.transform =
+                open
+                ? "rotate(180deg)"
+                : "rotate(0deg)";
+
         }
-    });
+    );
+
 }
 
-// 3. Actions réelles sur les boutons du sous-menu
-const statusText = document.getElementById('statusText');
 
-// Notifications
-document.getElementById('btnNotifications').addEventListener('click', () => {
-    statusText.innerHTML = "📢 Paramètres de notifications : Vos alertes sont actuellement <b>activées</b>.";
-    alert("Gestion des notifications : Tout est à jour !");
-    sidebar.classList.remove('open');
-});
 
-// Langue
-document.getElementById('btnLangue').addEventListener('click', () => {
-    statusText.innerHTML = "🌍 Langue actuelle : <b>Français (FR)</b>.";
-    alert("Langue sélectionnée : Français.");
-    sidebar.classList.remove('open');
-});
+/* =====================================================
+   OUVRIR AUTOMATIQUEMENT UNE OPTION VIA #HASH
+   ===================================================== */
 
-// Mode Sombre (Fonctionnel avec sauvegarde)
-document.getElementById('btnTheme').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    
-    if(isDark) {
-        statusText.innerHTML = "🌙 Mode sombre : <b>Activé</b>.";
-    } else {
-        statusText.innerHTML = "☀️ Mode sombre : <b>Désactivé</b>.";
-    }
-    sidebar.classList.remove('open');
-});
+const hash =
+    window.location.hash;
+
+
+if (hash === "#notifications") {
+
+    setTimeout(() => {
+
+        notificationButton.focus();
+
+    }, 300);
+
+}
+
+
+if (hash === "#langue") {
+
+    setTimeout(() => {
+
+        languageSelect.focus();
+
+    }, 300);
+
+}
+
+
+if (hash === "#theme") {
+
+    setTimeout(() => {
+
+        themeButton.focus();
+
+    }, 300);
+
+}
+
 </script>
+
 
 </body>
 </html>
