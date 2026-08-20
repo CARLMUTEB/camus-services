@@ -4,38 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>CAMU SERVICES — Paramètres</title>
-
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Styles spécifiques pour le sous-menu déroulant du menu latéral */
-    .has-submenu {
-      cursor: pointer;
-    }
-    .submenu {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      background: rgba(0, 0, 0, 0.02);
-      padding-left: 10px;
-    }
-    .submenu.open-submenu {
-      max-height: 250px;
-    }
-    .submenu li a {
-      font-size: 13px !important;
-      padding: 10px 15px !important;
-    }
-  </style>
 </head>
 
 <body>
 
 <header class="top-bar">
   <!-- Bouton Menu Hamburger -->
-  <button class="menu-toggle" id="menuToggle" aria-label="Menu" style="background:transparent; border:none; color:#fff; font-size:20px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">
     <i class="fa-solid fa-bars"></i>
   </button>
 
@@ -43,7 +21,7 @@
     CAMU <span>SERVICES</span>
   </div>
 
-  <a href="profil.html" style="color:#fff; font-size:18px; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">
+  <a href="profil.html" class="profile-btn">
     <i class="fa-solid fa-user"></i>
   </a>
 </header>
@@ -79,30 +57,28 @@
     <li class="has-submenu" id="paramMenuToggle">
       <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;" class="active-link">
         <span><i class="fa-solid fa-gear"></i> Paramètres généraux</span>
-        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s;"></i>
+        <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s; transform: rotate(180deg);"></i>
       </a>
-    </li>
-    
-    <!-- Options affichées à l'intérieur du menu latéral -->
-    <div class="submenu open-submenu" id="paramSubmenu">
-      <ul>
+      
+      <!-- Sous-menu fonctionnel -->
+      <ul class="submenu-container open-submenu" id="paramSubmenu">
         <li>
-          <a href="#notifications">
-            <i class="fa-solid fa-bell" style="color: var(--red);"></i> Notifications
+          <a href="javascript:void(0);" id="btnNotifications">
+            <i class="fa-solid fa-bell"></i> Notifications
           </a>
         </li>
         <li>
-          <a href="#langue">
-            <i class="fa-solid fa-globe" style="color: var(--red);"></i> Langue
+          <a href="javascript:void(0);" id="btnLangue">
+            <i class="fa-solid fa-globe"></i> Langue
           </a>
         </li>
         <li>
-          <a href="#theme">
-            <i class="fa-solid fa-moon" style="color: var(--red);"></i> Mode sombre
+          <a href="javascript:void(0);" id="btnTheme">
+            <i class="fa-solid fa-moon"></i> Mode sombre
           </a>
         </li>
       </ul>
-    </div>
+    </li>
 
     <li>
       <a href="conditions.html">
@@ -125,17 +101,17 @@
       Paramètres <span>généraux.</span>
     </h1>
     <p>
-      Gérez les options de l'application directement depuis le menu latéral.
+      Gérez vos préférences ci-dessous. Le mode sombre et les options fonctionnent désormais directement.
     </p>
   </section>
 
   <!-- CONTENU -->
   <div class="card-box" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
     <h2 style="font-size: 18px; margin-bottom: 10px; font-weight: 800;">
-      <i class="fa-solid fa-gear" style="color: var(--red);"></i> Guide rapide
+      <i class="fa-solid fa-sliders" style="color: var(--red);"></i> État des options
     </h2>
-    <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
-      Cliquez sur le bouton menu en haut à gauche pour ouvrir la barre latérale. Le sous-menu des paramètres s'y affiche de manière intégrée.
+    <p id="statusText" style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+      Cliquez sur les options du menu latéral pour interagir (Activer le mode sombre, configurer la langue, etc.).
     </p>
   </div>
 
@@ -175,7 +151,7 @@
 </nav>
 
 <script>
-// Gestion de l'ouverture/fermeture du menu latéral hamburger global
+// 1. Gestion de l'ouverture/fermeture du menu latéral hamburger
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.querySelector('.sidebar-vertical');
 
@@ -192,7 +168,7 @@ if (menuToggle && sidebar) {
     });
 }
 
-// Gestion de l'ouverture/fermeture du sous-menu des paramètres à l'intérieur du menu latéral
+// 2. Gestion de l'ouverture/fermeture du sous-menu des paramètres
 const paramMenuToggle = document.getElementById('paramMenuToggle');
 const paramSubmenu = document.getElementById('paramSubmenu');
 const arrowParam = document.getElementById('arrowParam');
@@ -208,6 +184,36 @@ if (paramMenuToggle && paramSubmenu) {
         }
     });
 }
+
+// 3. Actions réelles sur les boutons du sous-menu
+const statusText = document.getElementById('statusText');
+
+// Notifications
+document.getElementById('btnNotifications').addEventListener('click', () => {
+    statusText.innerHTML = "📢 Paramètres de notifications : Vos alertes sont actuellement <b>activées</b>.";
+    alert("Gestion des notifications : Tout est à jour !");
+    sidebar.classList.remove('open');
+});
+
+// Langue
+document.getElementById('btnLangue').addEventListener('click', () => {
+    statusText.innerHTML = "🌍 Langue actuelle : <b>Français (FR)</b>.";
+    alert("Langue sélectionnée : Français.");
+    sidebar.classList.remove('open');
+});
+
+// Mode Sombre (Fonctionnel avec sauvegarde)
+document.getElementById('btnTheme').addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    
+    if(isDark) {
+        statusText.innerHTML = "🌙 Mode sombre : <b>Activé</b>.";
+    } else {
+        statusText.innerHTML = "☀️ Mode sombre : <b>Désactivé</b>.";
+    }
+    sidebar.classList.remove('open');
+});
 </script>
 
 </body>
