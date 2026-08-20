@@ -8,10 +8,46 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
 <header class="top-bar">
     <div class="logo-text">CAMU <span>SERVICES</span></div>
     <a href="profil.html"><i class="fa-solid fa-user"></i></a>
 </header>
+
+<!-- MENU VERTICAL LATÉRAL (VISIBLE SUR PC À DROITE) -->
+<aside class="sidebar-vertical">
+  <div class="sidebar-header">
+    <span>Navigation</span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html" class="active-link">
+        <i class="fa-solid fa-house"></i> Accueil
+      </a>
+    </li>
+    <li>
+      <a href="publier.html">
+        <i class="fa-solid fa-circle-plus"></i> Publier
+      </a>
+    </li>
+    <li>
+      <a href="chat.html">
+        <i class="fa-solid fa-comments"></i> Chat
+      </a>
+    </li>
+    <li>
+      <a href="conditions.html">
+        <i class="fa-solid fa-file-contract"></i> Conditions
+      </a>
+    </li>
+    <li>
+      <a href="profil.html">
+        <i class="fa-solid fa-user"></i> Mon Profil
+      </a>
+    </li>
+  </ul>
+</aside>
+
 <main class="container">
     <section class="hero">
         <h1>Trouvez le service qu'il vous faut <span>près de chez vous.</span></h1>
@@ -55,6 +91,7 @@
         <p>© 2026 CAMU SERVICES</p>
     </footer>
 </main>
+
 <nav class="bottom-nav">
     <a class="active" href="index.html"><i class="fa-solid fa-house"></i>Accueil</a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i>Publier</a>
@@ -74,7 +111,7 @@ async function load(){
         let s = await getDocs(query(collection(db,'services'), where('valide','==',true)));
         all = s.docs.map(d => ({id:d.id, ...d.data()}));
         render();
-        chargerCommuniquesAccueil(); // On lance aussi le chargement des communiqués ici
+        chargerCommuniquesAccueil();
     } catch(x) {
         document.getElementById('services').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h2>Impossible de charger les services</h2><p>Vérifiez Internet et réessayez.</p></div>';
     }
