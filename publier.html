@@ -17,21 +17,55 @@
 
 <header class="top-bar">
 
-  <a href="index.html"
-     style="color:#fff;font-size:19px;">
-    <i class="fa-solid fa-arrow-left"></i>
-  </a>
+  <!-- Bouton Menu Hamburger -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu" style="background:transparent; border:none; color:#fff; font-size:20px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
   <div class="logo-text">
     CAMU <span>SERVICES</span>
   </div>
 
   <a href="profil.html"
-     style="color:#fff;font-size:18px;">
+     style="color:#fff;font-size:18px; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">
     <i class="fa-solid fa-user"></i>
   </a>
 
 </header>
+
+<!-- MENU LATÉRAL / HAMBURGER (Escamotable) -->
+<aside class="sidebar-vertical">
+  <div class="sidebar-header">
+    <span>Navigation</span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">
+        <i class="fa-solid fa-house"></i> Accueil
+      </a>
+    </li>
+    <li>
+      <a href="publier.html" class="active-link">
+        <i class="fa-solid fa-circle-plus"></i> Publier
+      </a>
+    </li>
+    <li>
+      <a href="chat.html">
+        <i class="fa-solid fa-comments"></i> Chat
+      </a>
+    </li>
+    <li>
+      <a href="conditions.html">
+        <i class="fa-solid fa-file-contract"></i> Conditions
+      </a>
+    </li>
+    <li>
+      <a href="profil.html">
+        <i class="fa-solid fa-user"></i> Mon Profil
+      </a>
+    </li>
+  </ul>
+</aside>
 
 
 <main class="container">
@@ -54,11 +88,11 @@
 
   <!-- FORMULAIRE -->
 
-  <div class="card-box">
+  <div class="card-box" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; box-shadow: var(--shadow);">
 
     <div style="margin-bottom:20px;">
 
-      <h2 style="font-size:18px;margin-bottom:6px;">
+      <h2 style="font-size:18px;margin-bottom:6px; font-weight:800;">
 
         <i class="fa-solid fa-circle-plus"
            style="color:var(--red);"></i>
@@ -67,7 +101,7 @@
 
       </h2>
 
-      <p class="help">
+      <p class="help" style="font-size:12px; color:var(--muted);">
         Votre publication sera vérifiée par l'administration
         avant d'être visible publiquement.
       </p>
@@ -79,9 +113,9 @@
 
       <!-- TITRE -->
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 15px;">
 
-        <label for="titreService">
+        <label for="titreService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
           Titre du service
         </label>
 
@@ -90,6 +124,7 @@
           id="titreService"
           placeholder="Ex : Installation électrique"
           maxlength="100"
+          style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none;"
           required>
 
       </div>
@@ -97,14 +132,15 @@
 
       <!-- CATEGORIE -->
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 15px;">
 
-        <label for="categorieService">
+        <label for="categorieService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
           Catégorie
         </label>
 
         <select
           id="categorieService"
+          style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; background:#fff;"
           required>
 
           <option value="">
@@ -150,9 +186,9 @@
 
       <!-- VILLE -->
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 15px;">
 
-        <label for="villeService">
+        <label for="villeService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
           Ville / Localisation
         </label>
 
@@ -161,6 +197,7 @@
           id="villeService"
           placeholder="Ex : Lubumbashi"
           maxlength="100"
+          style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none;"
           required>
 
       </div>
@@ -168,9 +205,9 @@
 
       <!-- PRIX -->
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 15px;">
 
-        <label for="prixService">
+        <label for="prixService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
           Prix
         </label>
 
@@ -179,6 +216,7 @@
           id="prixService"
           placeholder="Ex : 50 $ ou Sur devis"
           maxlength="50"
+          style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none;"
           required>
 
       </div>
@@ -186,9 +224,9 @@
 
       <!-- DESCRIPTION -->
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 20px;">
 
-        <label for="descService">
+        <label for="descService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
           Description
         </label>
 
@@ -196,10 +234,11 @@
           id="descService"
           placeholder="Décrivez clairement votre service..."
           maxlength="1000"
+          style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none; height:100px; resize:vertical;"
           required></textarea>
 
         <div class="help"
-             style="margin-top:5px;">
+             style="margin-top:5px; font-size:11px; color:var(--muted);">
           Décrivez ce que vous proposez, vos compétences
           et ce que le client doit savoir.
         </div>
@@ -213,7 +252,7 @@
         type="submit"
         class="btn-submit"
         id="btnPublier"
-        style="width:100%;cursor:pointer;">
+        style="width:100%; cursor:pointer;">
 
         <i class="fa-solid fa-paper-plane"></i>
 
@@ -341,6 +380,26 @@
   </a>
 
 </nav>
+
+
+<script>
+// Gestion de l'ouverture/fermeture du menu latéral au clic sur le bouton hamburger
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.querySelector('.sidebar-vertical');
+
+if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+}
+</script>
 
 
 <script type="module">
