@@ -1354,3 +1354,86 @@ label {
       calc(6px + env(safe-area-inset-bottom));
   }
 }
+
+
+/* =========================================================
+   CORRECTION DU MENU VERTICAL (Masqué sur mobile, visible sur PC)
+   ========================================================= */
+
+.sidebar-vertical {
+  display: none; /* Masqué par défaut sur téléphone */
+}
+
+@media (min-width: 1000px) {
+  body {
+    padding-right: 250px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 720px;
+  }
+
+  .bottom-nav {
+    display: none; /* Masque la barre du bas sur PC puisque le menu vertical est là */
+  }
+
+  .sidebar-vertical {
+    display: block;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 220px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    z-index: 900;
+  }
+
+  .sidebar-header {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 800;
+    padding-left: 8px;
+  }
+
+  .sidebar-vertical ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-vertical a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    transition: 0.2s ease;
+  }
+
+  .sidebar-vertical a i {
+    font-size: 16px;
+    color: var(--red);
+    width: 20px;
+    text-align: center;
+  }
+
+  .sidebar-vertical a:hover,
+  .sidebar-vertical a.active-link {
+    background: var(--red-light);
+    color: var(--red);
+  }
+}
