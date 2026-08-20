@@ -2,822 +2,401 @@
 <html lang="fr">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CAMU SERVICES — Mon Profil</title>
-
-<link rel="stylesheet"
-      href="style.css">
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-
+/* Style spécifique propre au profil (les couleurs s'adaptent automatiquement au mode sombre via style.css) */
 .profile-hero {
-  background:linear-gradient(
-    135deg,
-    #111,
-    #292929
-  );
-
-  color:#fff;
-
-  border-radius:18px;
-
-  padding:25px 18px;
-
-  text-align:center;
-
-  margin-bottom:15px;
+  background: linear-gradient(135deg, #111, #292929);
+  color: #fff;
+  border-radius: 18px;
+  padding: 25px 18px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .avatar-box {
-  width:78px;
-  height:78px;
-  border-radius:50%;
-  background:#fff;
-  color:var(--red);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 12px;
-  font-size:42px;
-  box-shadow:0 8px 20px #0003;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 42px;
+  box-shadow: 0 8px 20px #0003;
 }
 
 .user-name {
-  font-size:19px;
-  font-weight:900;
-  margin-bottom:5px;
+  font-size: 19px;
+  font-weight: 900;
+  margin-bottom: 5px;
 }
 
 .user-email {
-  color:#bbb;
-  font-size:12px;
+  color: #bbb;
+  font-size: 12px;
 }
 
 .profile-status {
-  display:inline-block;
-  margin-top:12px;
-  padding:6px 12px;
-  border-radius:20px;
-  background:#e8f5e9;
-  color:#2e7d32;
-  font-size:11px;
-  font-weight:bold;
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 .profile-menu {
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .profile-action {
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  box-shadow:var(--shadow);
-  transition:.2s;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  box-shadow: var(--shadow);
+  transition: .2s;
+  text-decoration: none;
+  color: var(--text);
 }
 
 .profile-action:active {
-  transform:scale(.98);
+  transform: scale(.98);
 }
 
 .profile-icon {
-  width:42px;
-  height:42px;
-  border-radius:11px;
-  background:#ffebee;
-  color:var(--red);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  flex-shrink:0;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: #ffebee;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
 .profile-action-content {
-  flex:1;
+  flex: 1;
 }
 
 .profile-action-content strong {
-  display:block;
-  font-size:14px;
-  margin-bottom:3px;
+  display: block;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
 
 .profile-action-content span {
-  display:block;
-  color:#777;
-  font-size:11px;
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
 }
 
 .profile-arrow {
-  color:#aaa;
+  color: var(--muted);
 }
 
 .logout-card {
-  margin-top:15px;
+  margin-top: 15px;
 }
 
 .logout-button {
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:12px;
-  background:#111;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:13px;
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #111;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
 }
 
 .logout-button i {
-  margin-right:6px;
+  margin-right: 6px;
 }
 
 .account-info {
-  margin-top:15px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:15px;
+  margin-top: 15px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px;
 }
 
 .account-info h3 {
-  font-size:14px;
-  margin-bottom:10px;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .account-row {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:8px 0;
-  border-bottom:1px solid #eee;
-  font-size:12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
 }
 
 .account-row:last-child {
-  border-bottom:0;
+  border-bottom: 0;
 }
 
 .account-row span:first-child {
-  color:#777;
+  color: var(--muted);
 }
 
 .account-row span:last-child {
-  font-weight:bold;
-  text-align:right;
+  font-weight: bold;
+  text-align: right;
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <!-- HEADER -->
-
 <header class="top-bar">
-
-  <a href="index.html"
-     style="color:#fff;font-size:19px;">
-
+  <a href="index.html">
     <i class="fa-solid fa-arrow-left"></i>
-
   </a>
-
-
   <div class="logo-text">
-
     CAMU <span>SERVICES</span>
-
   </div>
-
-
-  <a href="admin.html"
-     style="color:#d32f2f;font-size:17px;">
-
+  <a href="admin.html" style="color:#d32f2f;">
     <i class="fa-solid fa-lock"></i>
-
   </a>
-
 </header>
-
 
 <main class="container">
 
-
   <!-- PROFIL -->
-
   <section class="profile-hero">
-
     <div class="avatar-box">
-
       <i class="fa-solid fa-user"></i>
-
     </div>
-
-
-    <h1
-      id="profileName"
-      class="user-name">
-
-      Chargement...
-
-    </h1>
-
-
-    <p
-      id="profileEmail"
-      class="user-email">
-
-      Chargement...
-
-    </p>
-
-
-    <span
-      id="profileStatus"
-      class="profile-status">
-
-      Vérification...
-
-    </span>
-
+    <h1 id="profileName" class="user-name">Chargement...</h1>
+    <p id="profileEmail" class="user-email">Chargement...</p>
+    <span id="profileStatus" class="profile-status">Vérification...</span>
   </section>
 
-
   <!-- MENU -->
-
   <div class="section-title">
-
     <i class="fa-solid fa-grid-2"></i>
-
     Mon espace
-
   </div>
-
 
   <div class="profile-menu">
 
-
     <!-- SERVICES -->
-
-    <a
-      href="compte-entrepreneur.html"
-      class="profile-action">
-
+    <a href="compte-entrepreneur.html" class="profile-action">
       <div class="profile-icon">
-
         <i class="fa-solid fa-briefcase"></i>
-
       </div>
-
       <div class="profile-action-content">
-
-        <strong>
-          Gérer mes services
-        </strong>
-
-        <span>
-          Consultez et gérez vos publications
-        </span>
-
+        <strong>Gérer mes services</strong>
+        <span>Consultez et gérez vos publications</span>
       </div>
-
       <i class="fa-solid fa-chevron-right profile-arrow"></i>
-
     </a>
-
 
     <!-- PUBLIER -->
-
-    <a
-      href="publier.html"
-      class="profile-action">
-
+    <a href="publier.html" class="profile-action">
       <div class="profile-icon">
-
         <i class="fa-solid fa-circle-plus"></i>
-
       </div>
-
       <div class="profile-action-content">
-
-        <strong>
-          Publier un service
-        </strong>
-
-        <span>
-          Présentez votre activité
-        </span>
-
+        <strong>Publier un service</strong>
+        <span>Présentez votre activité</span>
       </div>
-
       <i class="fa-solid fa-chevron-right profile-arrow"></i>
-
     </a>
-
 
     <!-- FAVORIS -->
-
-    <a
-      href="favoris.html"
-      class="profile-action">
-
-      <div
-        class="profile-icon"
-        style="
-          background:#fff8e1;
-          color:#f9a825;
-        ">
-
+    <a href="favoris.html" class="profile-action">
+      <div class="profile-icon" style="background:#fff8e1; color:#f9a825;">
         <i class="fa-solid fa-star"></i>
-
       </div>
-
       <div class="profile-action-content">
-
-        <strong>
-          Mes favoris
-        </strong>
-
-        <span>
-          Retrouvez vos services enregistrés
-        </span>
-
+        <strong>Mes favoris</strong>
+        <span>Retrouvez vos services enregistrés</span>
       </div>
-
       <i class="fa-solid fa-chevron-right profile-arrow"></i>
-
     </a>
-
 
     <!-- CHAT -->
-
-    <a
-      href="chat.html"
-      class="profile-action">
-
+    <a href="chat.html" class="profile-action">
       <div class="profile-icon">
-
         <i class="fa-solid fa-comments"></i>
-
       </div>
-
       <div class="profile-action-content">
-
-        <strong>
-          Mes conversations
-        </strong>
-
-        <span>
-          Discutez avec les prestataires
-        </span>
-
+        <strong>Mes conversations</strong>
+        <span>Discutez avec les prestataires</span>
       </div>
-
       <i class="fa-solid fa-chevron-right profile-arrow"></i>
-
     </a>
 
   </div>
 
-
   <!-- INFORMATIONS -->
-
   <div class="account-info">
-
     <h3>
-
-      <i class="fa-solid fa-circle-info"
-         style="color:var(--red);"></i>
-
+      <i class="fa-solid fa-circle-info" style="color:var(--red);"></i>
       Informations du compte
-
     </h3>
-
-
     <div class="account-row">
-
       <span>Nom</span>
-
-      <span id="infoName">
-        —
-      </span>
-
+      <span id="infoName">—</span>
     </div>
-
-
     <div class="account-row">
-
       <span>Email</span>
-
-      <span id="infoEmail">
-        —
-      </span>
-
+      <span id="infoEmail">—</span>
     </div>
-
-
     <div class="account-row">
-
       <span>Statut</span>
-
-      <span id="infoStatus">
-        —
-      </span>
-
+      <span id="infoStatus">—</span>
     </div>
-
   </div>
-
 
   <!-- DECONNEXION -->
-
   <div class="logout-card">
-
-    <button
-      id="logoutButton"
-      class="logout-button">
-
+    <button id="logoutButton" class="logout-button">
       <i class="fa-solid fa-right-from-bracket"></i>
-
       Se déconnecter
-
     </button>
-
   </div>
 
-
   <!-- FOOTER -->
-
   <footer class="footer">
-
-    <h3>
-      CAMU SERVICES
-    </h3>
-
-    <p>
-      Votre marketplace locale de services.
-    </p>
-
-
+    <h3>CAMU SERVICES</h3>
+    <p>Votre marketplace locale de services.</p>
     <div class="footer-links">
-
-      <a href="a-propos.html">
-        À propos
-      </a>
-
-      <a href="conditions.html">
-        Conditions
-      </a>
-
-      <a href="contact.html">
-        Contact
-      </a>
-
-      <a href="politique.html">
-        Politique d'utilisation
-      </a>
-
+      <a href="a-propos.html">À propos</a>
+      <a href="conditions.html">Conditions</a>
+      <a href="contact.html">Contact</a>
+      <a href="politique.html">Politique d'utilisation</a>
     </div>
-
-
-    <p>
-      © 2026 CAMU SERVICES
-    </p>
-
+    <p>© 2026 CAMU SERVICES</p>
   </footer>
 
 </main>
 
-
 <!-- NAVIGATION -->
-
 <nav class="bottom-nav">
-
   <a href="index.html">
-
     <i class="fa-solid fa-house"></i>
-
     <span>Accueil</span>
-
   </a>
-
-
   <a href="publier.html">
-
     <i class="fa-solid fa-circle-plus"></i>
-
     <span>Publier</span>
-
   </a>
-
-
   <a href="chat.html">
-
     <i class="fa-solid fa-comments"></i>
-
     <span>Chat</span>
-
   </a>
-
-
-  <a href="profil.html"
-     class="active">
-
+  <a href="profil.html" class="active">
     <i class="fa-solid fa-user"></i>
-
     <span>Profil</span>
-
   </a>
-
 </nav>
 
-
 <script type="module">
+import { db, auth } from "./app.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-import {
-  db,
-  auth
-} from "./app.js";
+const profileName = document.getElementById("profileName");
+const profileEmail = document.getElementById("profileEmail");
+const profileStatus = document.getElementById("profileStatus");
+const infoName = document.getElementById("infoName");
+const infoEmail = document.getElementById("infoEmail");
+const infoStatus = document.getElementById("infoStatus");
+const logoutButton = document.getElementById("logoutButton");
 
-
-import {
-  doc,
-  getDoc
-} from
-"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-
-import {
-  onAuthStateChanged,
-  signOut
-} from
-"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-const profileName =
-  document.getElementById(
-    "profileName"
-  );
-
-
-const profileEmail =
-  document.getElementById(
-    "profileEmail"
-  );
-
-
-const profileStatus =
-  document.getElementById(
-    "profileStatus"
-  );
-
-
-const infoName =
-  document.getElementById(
-    "infoName"
-  );
-
-
-const infoEmail =
-  document.getElementById(
-    "infoEmail"
-  );
-
-
-const infoStatus =
-  document.getElementById(
-    "infoStatus"
-  );
-
-
-const logoutButton =
-  document.getElementById(
-    "logoutButton"
-  );
-
+/* VÉRIFICATION DU MODE SOMBRE GLOBAL */
+if (localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark-mode");
+  document.body.classList.add("dark-mode");
+}
 
 /* AUTH */
-
-onAuthStateChanged(
-  auth,
-  async (user) => {
-
-    if (!user) {
-
-      window.location.href =
-        "connexion.html";
-
-      return;
-
-    }
-
-
-    try {
-
-      const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
-
-
-      const userSnap =
-        await getDoc(
-          userRef
-        );
-
-
-      let name =
-        user.displayName ||
-        "Utilisateur";
-
-
-      let email =
-        user.email || "";
-
-
-      let status =
-        "actif";
-
-
-      if (userSnap.exists()) {
-
-        const data =
-          userSnap.data();
-
-
-        name =
-          data.nom ||
-          data.name ||
-          user.displayName ||
-          "Utilisateur";
-
-
-        email =
-          data.email ||
-          user.email ||
-          "";
-
-
-        status =
-          data.status ||
-          "actif";
-
-      }
-
-
-      /* AFFICHAGE */
-
-      profileName.textContent =
-        name;
-
-
-      profileEmail.textContent =
-        email;
-
-
-      infoName.textContent =
-        name;
-
-
-      infoEmail.textContent =
-        email;
-
-
-      if (status === "suspendu") {
-
-        profileStatus.textContent =
-          "Compte suspendu";
-
-        profileStatus.style.background =
-          "#ffebee";
-
-        profileStatus.style.color =
-          "#c62828";
-
-        infoStatus.textContent =
-          "Suspendu";
-
-      }
-
-      else {
-
-        profileStatus.textContent =
-          "Compte actif";
-
-        infoStatus.textContent =
-          "Actif";
-
-      }
-
-    }
-
-    catch(error) {
-
-      console.error(
-        "Erreur profil :",
-        error
-      );
-
-
-      profileName.textContent =
-        user.displayName ||
-        "Utilisateur";
-
-
-      profileEmail.textContent =
-        user.email || "";
-
-
-      infoName.textContent =
-        user.displayName ||
-        "Utilisateur";
-
-
-      infoEmail.textContent =
-        user.email || "";
-
-
-      profileStatus.textContent =
-        "Compte actif";
-
-
-      infoStatus.textContent =
-        "Actif";
-
-    }
-
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "connexion.html";
+    return;
   }
-);
 
+  try {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    let name = user.displayName || "Utilisateur";
+    let email = user.email || "";
+    let status = "actif";
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      name = data.nom || data.name || user.displayName || "Utilisateur";
+      email = data.email || user.email || "";
+      status = data.status || "actif";
+    }
+
+    profileName.textContent = name;
+    profileEmail.textContent = email;
+    infoName.textContent = name;
+    infoEmail.textContent = email;
+
+    if (status === "suspendu") {
+      profileStatus.textContent = "Compte suspendu";
+      profileStatus.style.background = "#ffebee";
+      profileStatus.style.color = "#c62828";
+      infoStatus.textContent = "Suspendu";
+    } else {
+      profileStatus.textContent = "Compte actif";
+      infoStatus.textContent = "Actif";
+    }
+  } catch (error) {
+    console.error("Erreur profil :", error);
+    profileName.textContent = user.displayName || "Utilisateur";
+    profileEmail.textContent = user.email || "";
+    infoName.textContent = user.displayName || "Utilisateur";
+    infoEmail.textContent = user.email || "";
+    profileStatus.textContent = "Compte actif";
+    infoStatus.textContent = "Actif";
+  }
+});
 
 /* DECONNEXION */
-
-logoutButton.addEventListener(
-  "click",
-  async () => {
-
-    try {
-
-      logoutButton.disabled =
-        true;
-
-
-      logoutButton.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Déconnexion...';
-
-
-      await signOut(auth);
-
-
-      window.location.href =
-        "index.html";
-
-    }
-
-    catch(error) {
-
-      console.error(error);
-
-      alert(
-        "Impossible de se déconnecter. Veuillez réessayer."
-      );
-
-
-      logoutButton.disabled =
-        false;
-
-
-      logoutButton.innerHTML =
-        '<i class="fa-solid fa-right-from-bracket"></i> Se déconnecter';
-
-    }
-
+logoutButton.addEventListener("click", async () => {
+  try {
+    logoutButton.disabled = true;
+    logoutButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Déconnexion...';
+    await signOut(auth);
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error(error);
+    alert("Impossible de se déconnecter. Veuillez réessayer.");
+    logoutButton.disabled = false;
+    logoutButton.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Se déconnecter';
   }
-);
-
+});
 </script>
-
 
 </body>
 </html>
