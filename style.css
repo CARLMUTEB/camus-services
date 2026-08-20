@@ -1,11 +1,11 @@
 /* =========================================================
-   CAMU SERVICES — FONCTIONNEMENT MENU + MODE SOMBRE
-   Ne change pas le design original
+   CAMU SERVICES — MENU + SOUS-MENU + MODE SOMBRE
+   Fonctionnel sans modifier le design
    ========================================================= */
 
 
 /* =========================================================
-   MENU LATÉRAL
+   SOUS-MENU PARAMÈTRES
    ========================================================= */
 
 .submenu-container {
@@ -34,19 +34,21 @@
 
 
 /* =========================================================
-   MENU SUR TÉLÉPHONE / TABLETTE
+   MENU LATÉRAL — TÉLÉPHONE / TABLETTE
    ========================================================= */
 
 @media (max-width: 999px) {
 
   .sidebar-vertical {
     display: block;
+
     position: fixed;
 
     top: 64px;
     left: 0;
 
     width: min(280px, 86vw);
+
     max-height: calc(100vh - 80px);
 
     overflow-y: auto;
@@ -67,30 +69,26 @@
 
     transform: translateX(-110%);
 
-    transition:
-      transform .25s ease;
+    transition: transform .25s ease;
   }
-
 
   .sidebar-vertical.open {
     transform: translateX(0);
   }
 
-
-  .sidebar-vertical ul {
+  .sidebar-vertical > ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-
   .sidebar-vertical li {
     list-style: none;
   }
 
-
   .sidebar-vertical a {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -106,26 +104,25 @@
     color: var(--text);
   }
 
-
   .sidebar-vertical a:hover,
   .sidebar-vertical a.active-link {
     background: var(--red-light);
     color: var(--red);
   }
 
-
   .sidebar-vertical a i {
     color: var(--red);
   }
-
 }
 
 
 /* =========================================================
    MODE SOMBRE
+   IMPORTANT :
+   Le JavaScript ajoute dark-mode au BODY.
    ========================================================= */
 
-html.dark-mode {
+body.dark-mode {
 
   --bg: #101010;
   --card: #1c1c1c;
@@ -139,139 +136,173 @@ html.dark-mode {
   --shadow:
     0 6px 20px rgba(0,0,0,.30);
 
-}
-
-
-html.dark-mode body {
   background: var(--bg);
+
   color: var(--text);
 }
 
 
-html.dark-mode .card-box,
-html.dark-mode .page-card,
-html.dark-mode .annonce-card,
-html.dark-mode .admin-card,
-html.dark-mode .empty-state,
-html.dark-mode .search-bar {
+/* =========================================================
+   CARTES
+   ========================================================= */
+
+body.dark-mode .card-box,
+body.dark-mode .page-card,
+body.dark-mode .annonce-card,
+body.dark-mode .admin-card,
+body.dark-mode .empty-state,
+body.dark-mode .search-bar {
 
   background: var(--card);
-  border-color: var(--border);
-  color: var(--text);
 
+  border-color: var(--border);
+
+  color: var(--text);
 }
 
 
-html.dark-mode input,
-html.dark-mode select,
-html.dark-mode textarea {
+/* =========================================================
+   FORMULAIRES
+   ========================================================= */
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
 
   background: #171717;
+
   color: #ffffff;
 
   border-color: #444444;
-
 }
 
-
-html.dark-mode input::placeholder {
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
 
   color: #888888;
-
 }
 
 
-html.dark-mode .bottom-nav {
+/* =========================================================
+   NAVIGATION BASSE
+   ========================================================= */
+
+body.dark-mode .bottom-nav {
 
   background: rgba(25,25,25,.98);
 
   border-color: #333333;
-
 }
 
-
-html.dark-mode .bottom-nav a {
+body.dark-mode .bottom-nav a {
 
   color: #aaaaaa;
-
 }
 
-
-html.dark-mode .bottom-nav a.active {
+body.dark-mode .bottom-nav a.active {
 
   color: var(--red);
-
 }
 
 
-html.dark-mode .sidebar-vertical {
+/* =========================================================
+   MENU LATÉRAL
+   ========================================================= */
+
+body.dark-mode .sidebar-vertical {
 
   background: #1c1c1c;
 
   border-color: #333333;
-
 }
 
-
-html.dark-mode .sidebar-vertical a {
+body.dark-mode .sidebar-vertical a {
 
   color: #eeeeee;
+}
 
+body.dark-mode .sidebar-vertical a:hover,
+body.dark-mode .sidebar-vertical a.active-link {
+
+  background: #35191b;
+
+  color: #ff5252;
 }
 
 
-html.dark-mode .footer {
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+body.dark-mode .footer {
 
   background: #080808;
-
 }
 
 
-html.dark-mode .btn-secondary {
+/* =========================================================
+   BOUTONS SECONDAIRES
+   ========================================================= */
+
+body.dark-mode .btn-secondary {
 
   background: #1c1c1c;
 
   color: #eeeeee;
 
   border-color: #444444;
-
 }
 
 
-html.dark-mode .empty-state h2 {
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+body.dark-mode .empty-state h2 {
 
   color: #eeeeee;
-
 }
 
 
-html.dark-mode .annonce-card p {
+/* =========================================================
+   SERVICES
+   ========================================================= */
+
+body.dark-mode .annonce-card p {
 
   color: #bbbbbb !important;
-
 }
 
 
-html.dark-mode .message {
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+body.dark-mode .message {
 
   background: #1c1c1c;
 
   border-color: #333333;
 
   color: #eeeeee;
-
 }
 
 
-html.dark-mode .search-bar input {
+/* =========================================================
+   RECHERCHE
+   ========================================================= */
+
+body.dark-mode .search-bar input {
 
   color: #ffffff;
-
 }
 
 
-html.dark-mode .section-title {
+/* =========================================================
+   TITRES
+   ========================================================= */
+
+body.dark-mode .section-title {
 
   color: #eeeeee;
-
 }
