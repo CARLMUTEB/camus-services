@@ -92,7 +92,7 @@ a {
 
 
 /* =========================================================
-   BARRE SUPÉRIEURE
+   BARRE SUPÉRIEURE (EN-TÊTE)
    ========================================================= */
 
 .top-bar {
@@ -112,27 +112,50 @@ a {
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 18px;
+  padding: 0 15px;
 
   z-index: 1000;
 
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 
-.logo-text {
+/* Bouton Menu Hamburger à gauche */
+.menu-toggle {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.menu-toggle:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Le Logo */
+.top-bar .logo-text {
   font-size: 18px;
   font-weight: 900;
   letter-spacing: -0.3px;
+  flex: 1;
+  margin-left: 10px;
 }
 
 .logo-text span {
   color: var(--red);
 }
 
+/* Bouton Profil à droite (Remplace l'ancien sélecteur .top-bar > a) */
+.profile-btn,
 .top-bar > a {
   color: #ffffff;
-  font-size: 19px;
+  font-size: 18px;
 
   width: 40px;
   height: 40px;
@@ -144,8 +167,9 @@ a {
   border-radius: 50%;
 }
 
+.profile-btn:active,
 .top-bar > a:active {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -1066,6 +1090,7 @@ textarea {
     font-size: 16px;
   }
 
+  .profile-btn,
   .top-bar > a {
     width: 38px;
     height: 38px;
@@ -1357,7 +1382,7 @@ label {
 
 
 /* =========================================================
-   CORRECTION DU MENU VERTICAL (Masqué sur mobile, visible sur PC)
+   CORRECTION DU MENU VERTICAL & DISPOSITION PC
    ========================================================= */
 
 .sidebar-vertical {
