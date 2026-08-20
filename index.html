@@ -18,7 +18,7 @@
     <a href="profil.html" class="profile-btn"><i class="fa-solid fa-user"></i></a>
 </header>
 
-<!-- MENU VERTICAL LATÉRAL (VISIBLE SUR PC À DROITE) -->
+<!-- MENU LATÉRAL / HAMBURGER (Escamotable) -->
 <aside class="sidebar-vertical">
   <div class="sidebar-header">
     <span>Navigation</span>
@@ -164,6 +164,24 @@ async function chargerCommuniquesAccueil() {
 
 document.getElementById('search').oninput = render;
 document.querySelectorAll('.cat-btn').forEach(b => b.onclick = () => { cat = b.dataset.cat; render(); });
+
+// Gestion de l'ouverture/fermeture du menu latéral au clic sur le bouton hamburger
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.querySelector('.sidebar-vertical');
+
+if (menuToggle && sidebar) {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+    });
+
+    // Fermer le menu si on clique en dehors
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+}
 
 load();
 </script>
