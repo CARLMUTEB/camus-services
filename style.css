@@ -1907,6 +1907,51 @@ body.dark-mode .section-title {
 
 
 /* =========================================================
+   MODE SOMBRE — EXTENSIONS GLOBALES (Profil, Chat, Publier, Admin)
+   ========================================================= */
+
+/* Profil & Blocs d'informations */
+body.dark-mode .profile-action,
+body.dark-mode .account-info {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark-mode .profile-action-content strong,
+body.dark-mode .account-row span:last-child {
+  color: var(--text) !important;
+}
+
+body.dark-mode .profile-action-content span,
+body.dark-mode .account-row span:first-child {
+  color: var(--muted) !important;
+}
+
+/* Chat & Messages */
+body.dark-mode .messages-list {
+  background-color: var(--bg);
+}
+
+body.dark-mode .my-message {
+  background-color: var(--red) !important;
+  color: #ffffff !important;
+  border-color: var(--red) !important;
+}
+
+/* Formulaires (Publier & Admin) */
+body.dark-mode label,
+body.dark-mode .form-group label {
+  color: var(--text);
+}
+
+body.dark-mode .admin-body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+
+/* =========================================================
    ACCESSIBILITÉ
    ========================================================= */
 
