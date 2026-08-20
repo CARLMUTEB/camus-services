@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Style spécifique pour le sous-menu déroulant dans la sidebar */
+    /* Styles spécifiques pour le sous-menu déroulant du menu latéral */
     .has-submenu {
       cursor: pointer;
     }
@@ -18,15 +18,15 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease-out;
-      background: rgba(0, 0, 0, 0.03);
-      padding-left: 15px;
+      background: rgba(0, 0, 0, 0.02);
+      padding-left: 10px;
     }
     .submenu.open-submenu {
-      max-height: 200px; /* Hauteur suffisante pour afficher les options */
+      max-height: 250px;
     }
     .submenu li a {
-      font-size: 13px;
-      padding: 8px 12px;
+      font-size: 13px !important;
+      padding: 10px 15px !important;
     }
   </style>
 </head>
@@ -48,7 +48,7 @@
   </a>
 </header>
 
-<!-- MENU LATÉRAL / HAMBURGER AVEC SOUS-MENU PARAMÈTRES -->
+<!-- MENU LATÉRAL / HAMBURGER -->
 <aside class="sidebar-vertical">
   <div class="sidebar-header">
     <span>Navigation</span>
@@ -75,19 +75,32 @@
       </a>
     </li>
     
-    <!-- Paramètres avec sous-menu déroulant à l'intérieur -->
+    <!-- Paramètres avec sous-menu intégré -->
     <li class="has-submenu" id="paramMenuToggle">
       <a href="javascript:void(0);" style="display: flex; justify-content: space-between; align-items: center;" class="active-link">
         <span><i class="fa-solid fa-gear"></i> Paramètres généraux</span>
         <i class="fa-solid fa-chevron-down" id="arrowParam" style="font-size: 11px; transition: transform 0.3s;"></i>
       </a>
     </li>
-    <!-- Les options qui s'ouvrent à l'intérieur -->
-    <div class="submenu" id="paramSubmenu">
+    
+    <!-- Options affichées à l'intérieur du menu latéral -->
+    <div class="submenu open-submenu" id="paramSubmenu">
       <ul>
-        <li><a href="#notifications"><i class="fa-solid fa-bell"></i> Notifications</a></li>
-        <li><a href="#langue"><i class="fa-solid fa-globe"></i> Langue (Fr / Sw)</a></li>
-        <li><a href="#theme"><i class="fa-solid fa-moon"></i> Mode sombre</a></li>
+        <li>
+          <a href="#notifications">
+            <i class="fa-solid fa-bell" style="color: var(--red);"></i> Notifications
+          </a>
+        </li>
+        <li>
+          <a href="#langue">
+            <i class="fa-solid fa-globe" style="color: var(--red);"></i> Langue
+          </a>
+        </li>
+        <li>
+          <a href="#theme">
+            <i class="fa-solid fa-moon" style="color: var(--red);"></i> Mode sombre
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -112,17 +125,17 @@
       Paramètres <span>généraux.</span>
     </h1>
     <p>
-      Sélectionnez une option dans le menu latéral ou gérez vos préférences ici.
+      Gérez les options de l'application directement depuis le menu latéral.
     </p>
   </section>
 
-  <!-- CONTENU PRINCIPAL -->
+  <!-- CONTENU -->
   <div class="card-box" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
     <h2 style="font-size: 18px; margin-bottom: 10px; font-weight: 800;">
-      <i class="fa-solid fa-gear" style="color: var(--red);"></i> Panneau des paramètres
+      <i class="fa-solid fa-gear" style="color: var(--red);"></i> Guide rapide
     </h2>
     <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
-      Cliquez sur <strong>"Paramètres généraux"</strong> dans le menu latéral (en haut à gauche) pour voir les options se dérouler directement à l'intérieur du menu !
+      Cliquez sur le bouton menu en haut à gauche pour ouvrir la barre latérale. Le sous-menu des paramètres s'y affiche de manière intégrée.
     </p>
   </div>
 
@@ -162,7 +175,7 @@
 </nav>
 
 <script>
-// Gestion du menu latéral hamburger
+// Gestion de l'ouverture/fermeture du menu latéral hamburger global
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.querySelector('.sidebar-vertical');
 
@@ -179,7 +192,7 @@ if (menuToggle && sidebar) {
     });
 }
 
-// Gestion du sous-menu déroulant des paramètres à l'intérieur du menu latéral
+// Gestion de l'ouverture/fermeture du sous-menu des paramètres à l'intérieur du menu latéral
 const paramMenuToggle = document.getElementById('paramMenuToggle');
 const paramSubmenu = document.getElementById('paramSubmenu');
 const arrowParam = document.getElementById('arrowParam');
@@ -188,7 +201,6 @@ if (paramMenuToggle && paramSubmenu) {
     paramMenuToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         paramSubmenu.classList.toggle('open-submenu');
-        // Rotation de la petite flèche
         if (paramSubmenu.classList.contains('open-submenu')) {
             arrowParam.style.transform = 'rotate(180deg)';
         } else {
