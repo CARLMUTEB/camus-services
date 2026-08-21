@@ -711,6 +711,12 @@ function render() {
 
             <article class="annonce-card">
 
+                ${service.image ? `
+                    <div style="margin-bottom: 10px; border-radius: 6px; overflow: hidden; max-height: 180px;">
+                        <img src="${service.image}" alt="Illustration" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                ` : ""}
+
                 <span class="badge-cat">
 
                     ${e(service.categorie || "Général")}
