@@ -67,15 +67,21 @@ function appliquerTheme() {
 
   if (theme === "dark") {
 
-    document.documentElement.classList.add("dark-mode");
+    document.documentElement.classList.add(
+      "dark-mode"
+    );
 
   } else {
 
-    document.documentElement.classList.remove("dark-mode");
+    document.documentElement.classList.remove(
+      "dark-mode"
+    );
 
   }
 
 }
+
+appliquerTheme();
 
 
 /* =========================================================
@@ -92,17 +98,20 @@ function appliquerLangue() {
     document.documentElement.lang =
       language;
 
+  } else {
+
+    document.documentElement.lang =
+      "fr";
+
   }
 
 }
 
-
-appliquerTheme();
 appliquerLangue();
 
 
 /* =========================================================
-   UTILISATEUR COURANT
+   UTILITAIRE — UTILISATEUR CONNECTÉ
    ========================================================= */
 
 export function getCurrentUser() {
@@ -112,6 +121,10 @@ export function getCurrentUser() {
 }
 
 
+/* =========================================================
+   UTILITAIRE — VÉRIFIER LA CONNEXION
+   ========================================================= */
+
 export function isUserConnected() {
 
   return !!auth.currentUser;
@@ -120,27 +133,51 @@ export function isUserConnected() {
 
 
 /* =========================================================
-   ÉTAT AUTHENTIFICATION GLOBAL
+   ÉTAT D'AUTHENTIFICATION GLOBAL
    ========================================================= */
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(
+  auth,
+  (user) => {
 
-  window.camuCurrentUser =
-    user || null;
+    window.camuCurrentUser =
+      user || null;
 
 
-  document.dispatchEvent(
-    new CustomEvent(
-      "camu-auth-changed",
-      {
-        detail: {
-          user: user || null
+    /*
+     * Événement global pour les autres pages
+     */
+
+    document.dispatchEvent(
+      new CustomEvent(
+        "camu-auth-changed",
+        {
+          detail: {
+            user: user || null
+          }
         }
-      }
-    )
-  );
+      )
+    );
 
-});
+
+    /*
+     * Événement supplémentaire pour
+     * les pages qui veulent écouter Firebase
+     */
+
+    document.dispatchEvent(
+      new CustomEvent(
+        "camu-user-ready",
+        {
+          detail: {
+            user: user || null
+          }
+        }
+      )
+    );
+
+  }
+);
 
 
 /* =========================================================
@@ -153,8 +190,14 @@ window.camuLogout = async function () {
 
     await signOut(auth);
 
+    console.log(
+      "CAMU SERVICES : utilisateur déconnecté."
+    );
+
+
     window.location.href =
       "profil.html";
+
 
   } catch (error) {
 
@@ -162,6 +205,7 @@ window.camuLogout = async function () {
       "Erreur déconnexion :",
       error
     );
+
 
     alert(
       "Impossible de se déconnecter. Veuillez réessayer."
@@ -173,7 +217,7 @@ window.camuLogout = async function () {
 
 
 /* =========================================================
-   OBJET GLOBAL CAMU
+   CAMU GLOBAL
    ========================================================= */
 
 window.CAMU = {
@@ -188,7 +232,83 @@ window.CAMU = {
 
   isUserConnected,
 
-  logout: window.camuLogout
+  logout:
+    window.camuLogout
+
+};
+
+
+/* =========================================================
+   FONCTIONS THÈME DISPONIBLES PARTOUT
+   ========================================================= */
+
+window.camuSetTheme = function(theme) {
+
+  if (
+    theme !== "dark" &&
+    theme !== "light"
+  ) {
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "camu_theme",
+    theme
+  );
+
+
+  appliquerTheme();
+
+
+  document.dispatchEvent(
+    new CustomEvent(
+      "camu-theme-changed",
+      {
+        detail: {
+          theme
+        }
+      }
+    )
+  );
+
+};
+
+
+/* =========================================================
+   FONCTIONS LANGUE DISPONIBLES PARTOUT
+   ========================================================= */
+
+window.camuSetLanguage = function(language) {
+
+  if (!language) {
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "camu_language",
+    language
+  );
+
+
+  appliquerLangue();
+
+
+  document.dispatchEvent(
+    new CustomEvent(
+      "camu-language-changed",
+      {
+        detail: {
+          language
+        }
+      }
+    )
+  );
 
 };
 
