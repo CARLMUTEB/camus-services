@@ -1,5 +1,5 @@
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 
 <head>
@@ -7,414 +7,32 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+      content="width=device-width,initial-scale=1">
 
-<title>CAMU SERVICES — Mon Profil</title>
+<title>CAMU SERVICES — Accueil</title>
 
 <link rel="stylesheet" href="style.css">
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
-<!-- =====================================================
-     THÈME AVANT AFFICHAGE
-     ===================================================== -->
-
 <script>
-
 (function () {
 
-    const theme =
-        localStorage.getItem("camu_theme");
+    const theme = localStorage.getItem("camu_theme");
 
     if (theme === "dark") {
-
-        document.documentElement.classList.add(
-            "dark-mode"
-        );
-
+        document.documentElement.classList.add("dark-mode");
     }
 
-    const language =
-        localStorage.getItem("camu_language");
+    const language = localStorage.getItem("camu_language");
 
     if (language) {
-
-        document.documentElement.lang =
-            language;
-
+        document.documentElement.lang = language;
     }
 
 })();
-
 </script>
-
-
-<style>
-
-/* =====================================================
-   PROFIL
-   ===================================================== */
-
-.profile-hero {
-
-    background:
-        linear-gradient(
-            135deg,
-            #111,
-            #292929
-        );
-
-    color: #fff;
-
-    border-radius: 18px;
-
-    padding: 25px 18px;
-
-    text-align: center;
-
-    margin-bottom: 15px;
-
-}
-
-
-.avatar-box {
-
-    width: 78px;
-    height: 78px;
-
-    border-radius: 50%;
-
-    background: #fff;
-
-    color: var(--red);
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin: 0 auto 12px;
-
-    font-size: 42px;
-
-    box-shadow:
-        0 8px 20px #0003;
-
-    overflow: hidden;
-
-}
-
-
-.avatar-box img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-}
-
-
-.user-name {
-
-    font-size: 19px;
-
-    font-weight: 900;
-
-    margin-bottom: 5px;
-
-}
-
-
-.user-email {
-
-    color: #bbb;
-
-    font-size: 12px;
-
-}
-
-
-.profile-status {
-
-    display: inline-block;
-
-    margin-top: 12px;
-
-    padding: 6px 12px;
-
-    border-radius: 20px;
-
-    background: #e8f5e9;
-
-    color: #2e7d32;
-
-    font-size: 11px;
-
-    font-weight: bold;
-
-}
-
-
-.profile-menu {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-
-}
-
-
-.profile-action {
-
-    background: var(--card);
-
-    border: 1px solid var(--border);
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-
-    box-shadow: var(--shadow);
-
-    transition: .2s;
-
-    text-decoration: none;
-
-    color: var(--text);
-
-}
-
-
-.profile-action:hover {
-
-    border-color: #f0b0b0;
-
-}
-
-
-.profile-action:active {
-
-    transform: scale(.98);
-
-}
-
-
-.profile-icon {
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 11px;
-
-    background: #ffebee;
-
-    color: var(--red);
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 18px;
-
-    flex-shrink: 0;
-
-}
-
-
-.profile-action-content {
-
-    flex: 1;
-
-}
-
-
-.profile-action-content strong {
-
-    display: block;
-
-    font-size: 14px;
-
-    margin-bottom: 3px;
-
-}
-
-
-.profile-action-content span {
-
-    display: block;
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-}
-
-
-.profile-arrow {
-
-    color: var(--muted);
-
-}
-
-
-.logout-card {
-
-    margin-top: 15px;
-
-}
-
-
-.logout-button {
-
-    width: 100%;
-
-    padding: 14px;
-
-    border: 0;
-
-    border-radius: 12px;
-
-    background: #111;
-
-    color: #fff;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    font-size: 13px;
-
-}
-
-
-.logout-button:hover {
-
-    background: #222;
-
-}
-
-
-.logout-button:disabled {
-
-    opacity: .7;
-
-    cursor: wait;
-
-}
-
-
-.logout-button i {
-
-    margin-right: 6px;
-
-}
-
-
-.account-info {
-
-    margin-top: 15px;
-
-    background: var(--card);
-
-    border: 1px solid var(--border);
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-}
-
-
-.account-info h3 {
-
-    font-size: 14px;
-
-    margin-bottom: 10px;
-
-}
-
-
-.account-row {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 10px;
-
-    padding: 8px 0;
-
-    border-bottom: 1px solid var(--border);
-
-    font-size: 12px;
-
-}
-
-
-.account-row:last-child {
-
-    border-bottom: 0;
-
-}
-
-
-.account-row span:first-child {
-
-    color: var(--muted);
-
-}
-
-
-.account-row span:last-child {
-
-    font-weight: bold;
-
-    text-align: right;
-
-    overflow-wrap: anywhere;
-
-}
-
-
-/* =====================================================
-   MODE SOMBRE
-   ===================================================== */
-
-html.dark-mode .profile-icon {
-
-    background: #351b1b;
-
-}
-
-
-html.dark-mode .logout-button {
-
-    background: #000;
-
-}
-
-
-html.dark-mode .profile-status {
-
-    background: #18351d;
-
-    color: #81c784;
-
-}
-
-</style>
 
 </head>
 
@@ -422,19 +40,16 @@ html.dark-mode .profile-status {
 <body>
 
 
-<!-- =====================================================
-     HEADER
-     ===================================================== -->
-
 <header class="top-bar">
 
-    <a
-        href="index.html"
-        aria-label="Retour">
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Menu">
 
-        <i class="fa-solid fa-arrow-left"></i>
+        <i class="fa-solid fa-bars"></i>
 
-    </a>
+    </button>
 
 
     <div class="logo-text">
@@ -445,11 +60,11 @@ html.dark-mode .profile-status {
 
 
     <a
-        href="admin.html"
-        style="color:#d32f2f;"
-        aria-label="Administration">
+        href="profil.html"
+        class="profile-btn"
+        aria-label="Profil">
 
-        <i class="fa-solid fa-lock"></i>
+        <i class="fa-solid fa-user"></i>
 
     </a>
 
@@ -457,292 +72,305 @@ html.dark-mode .profile-status {
 
 
 
-<!-- =====================================================
-     CONTENU
-     ===================================================== -->
+<aside class="sidebar-vertical">
+
+    <div class="sidebar-header">
+
+        <span data-i18n="navigation">
+            Navigation
+        </span>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+
+            <a
+                href="index.html"
+                class="active-link">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span data-i18n="accueil">
+                    Accueil
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="publier.html">
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+                <span data-i18n="publier">
+                    Publier
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="chat.html">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <span data-i18n="chat">
+                    Chat
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li
+            class="has-submenu"
+            id="paramMenuToggle">
+
+            <a
+                href="javascript:void(0);"
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
+
+                <span>
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span data-i18n="parametres">
+                        Paramètres
+                    </span>
+
+                </span>
+
+
+                <i
+                    class="fa-solid fa-chevron-down"
+                    id="arrowParam"
+                    style="
+                        font-size:11px;
+                        transition:transform .3s;
+                    ">
+                </i>
+
+            </a>
+
+        </li>
+
+
+        <ul
+            class="submenu-container"
+            id="paramSubmenu">
+
+            <li>
+
+                <a href="parametres.html#notifications">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span data-i18n="notifications">
+                        Notifications
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="parametres.html#langue">
+
+                    <i class="fa-solid fa-globe"></i>
+
+                    <span data-i18n="langue">
+                        Langue
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="parametres.html#theme">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                    <span data-i18n="modeSombre">
+                        Mode sombre
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <li>
+
+            <a href="conditions.html">
+
+                <i class="fa-solid fa-file-contract"></i>
+
+                <span data-i18n="conditions">
+                    Conditions
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="profil.html">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span data-i18n="monProfil">
+                    Mon Profil
+                </span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</aside>
+
+
 
 <main class="container">
 
 
-    <!-- =================================================
-         PROFIL
-         ================================================= -->
+    <section class="hero">
 
-    <section class="profile-hero">
+        <h1>
 
-        <div
-            id="avatarBox"
-            class="avatar-box">
+            <span data-i18n="heroTitre">
+                Trouvez le service qu'il vous faut
+            </span>
 
-            <i class="fa-solid fa-user"></i>
+            <span>
 
-        </div>
+                <span data-i18n="heroSousTitre">
+                    près de chez vous.
+                </span>
 
-
-        <h1
-            id="profileName"
-            class="user-name">
-
-            Chargement...
+            </span>
 
         </h1>
 
 
-        <p
-            id="profileEmail"
-            class="user-email">
+        <p data-i18n="heroDescription">
 
-            Chargement...
+            Découvrez des prestataires locaux et contactez-les directement.
 
         </p>
-
-
-        <span
-            id="profileStatus"
-            class="profile-status">
-
-            Vérification...
-
-        </span>
 
     </section>
 
 
 
-    <!-- =================================================
-         MENU
-         ================================================= -->
+    <div class="search-bar">
 
-    <div class="section-title">
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-        <i class="fa-solid fa-table-cells-large"></i>
-
-        Mon espace
-
-    </div>
-
-
-    <div class="profile-menu">
-
-
-        <!-- SERVICES -->
-
-        <a
-            href="compte-entrepreneur.html"
-            class="profile-action">
-
-            <div class="profile-icon">
-
-                <i class="fa-solid fa-briefcase"></i>
-
-            </div>
-
-
-            <div class="profile-action-content">
-
-                <strong>
-                    Gérer mes services
-                </strong>
-
-                <span>
-                    Consultez et gérez vos publications
-                </span>
-
-            </div>
-
-
-            <i
-                class="fa-solid fa-chevron-right profile-arrow">
-            </i>
-
-        </a>
-
-
-
-        <!-- PUBLIER -->
-
-        <a
-            href="publier.html"
-            class="profile-action">
-
-            <div class="profile-icon">
-
-                <i class="fa-solid fa-circle-plus"></i>
-
-            </div>
-
-
-            <div class="profile-action-content">
-
-                <strong>
-                    Publier un service
-                </strong>
-
-                <span>
-                    Présentez votre activité
-                </span>
-
-            </div>
-
-
-            <i
-                class="fa-solid fa-chevron-right profile-arrow">
-            </i>
-
-        </a>
-
-
-
-        <!-- FAVORIS -->
-
-        <a
-            href="favoris.html"
-            class="profile-action">
-
-            <div
-                class="profile-icon"
-                style="
-                    background:#fff8e1;
-                    color:#f9a825;
-                ">
-
-                <i class="fa-solid fa-star"></i>
-
-            </div>
-
-
-            <div class="profile-action-content">
-
-                <strong>
-                    Mes favoris
-                </strong>
-
-                <span>
-                    Retrouvez vos services enregistrés
-                </span>
-
-            </div>
-
-
-            <i
-                class="fa-solid fa-chevron-right profile-arrow">
-            </i>
-
-        </a>
-
-
-
-        <!-- CHAT -->
-
-        <a
-            href="chat.html"
-            class="profile-action">
-
-            <div class="profile-icon">
-
-                <i class="fa-solid fa-comments"></i>
-
-            </div>
-
-
-            <div class="profile-action-content">
-
-                <strong>
-                    Mes conversations
-                </strong>
-
-                <span>
-                    Discutez avec les prestataires
-                </span>
-
-            </div>
-
-
-            <i
-                class="fa-solid fa-chevron-right profile-arrow">
-            </i>
-
-        </a>
+        <input
+            id="search"
+            data-i18n-placeholder="rechercher"
+            placeholder="Rechercher un service...">
 
     </div>
 
 
 
-    <!-- =================================================
-         INFORMATIONS DU COMPTE
-         ================================================= -->
+    <div
+        class="section-title"
+        data-i18n="categories">
 
-    <div class="account-info">
-
-        <h3>
-
-            <i
-                class="fa-solid fa-circle-info"
-                style="color:var(--red);">
-            </i>
-
-            Informations du compte
-
-        </h3>
-
-
-        <div class="account-row">
-
-            <span>
-                Nom
-            </span>
-
-            <span id="infoName">
-                —
-            </span>
-
-        </div>
-
-
-        <div class="account-row">
-
-            <span>
-                Email
-            </span>
-
-            <span id="infoEmail">
-                —
-            </span>
-
-        </div>
-
-
-        <div class="account-row">
-
-            <span>
-                Statut
-            </span>
-
-            <span id="infoStatus">
-                —
-            </span>
-
-        </div>
+        Catégories
 
     </div>
 
 
-
-    <!-- =================================================
-         DÉCONNEXION
-         ================================================= -->
-
-    <div class="logout-card">
+    <div class="categories">
 
         <button
-            id="logoutButton"
-            class="logout-button">
+            class="cat-btn"
+            data-cat=""
+            data-i18n="tout">
 
-            <i
-                class="fa-solid fa-right-from-bracket">
-            </i>
+            Tout
 
-            Se déconnecter
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="BTP & Construction">
+
+            BTP
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Technique & Maintenance">
+
+            Technique
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Informatique & Numérique">
+
+            Informatique
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Maison & Immobilier">
+
+            Maison
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Transport & Livraison">
+
+            Transport
+
+        </button>
+
+
+        <button
+            class="cat-btn"
+            data-cat="Divers & Services">
+
+            Divers
 
         </button>
 
@@ -750,9 +378,34 @@ html.dark-mode .profile-status {
 
 
 
-    <!-- =================================================
-         FOOTER
-         ================================================= -->
+    <div id="communiquesContainer"></div>
+
+
+
+    <div
+        class="section-title"
+        data-i18n="servicesDisponibles">
+
+        Services disponibles
+
+    </div>
+
+
+    <div id="services">
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <p data-i18n="chargement">
+                Chargement...
+            </p>
+
+        </div>
+
+    </div>
+
+
 
     <footer class="footer">
 
@@ -761,7 +414,7 @@ html.dark-mode .profile-status {
         </h3>
 
 
-        <p>
+        <p data-i18n="marketplace">
             Votre marketplace locale de services.
         </p>
 
@@ -784,6 +437,10 @@ html.dark-mode .profile-status {
                 Politique d'utilisation
             </a>
 
+            <a href="manifestations.html">
+                Manifestations
+            </a>
+
         </div>
 
 
@@ -797,17 +454,15 @@ html.dark-mode .profile-status {
 
 
 
-<!-- =====================================================
-     NAVIGATION MOBILE
-     ===================================================== -->
-
 <nav class="bottom-nav">
 
-    <a href="index.html">
+    <a
+        class="active"
+        href="index.html">
 
         <i class="fa-solid fa-house"></i>
 
-        <span>
+        <span data-i18n="accueil">
             Accueil
         </span>
 
@@ -818,7 +473,7 @@ html.dark-mode .profile-status {
 
         <i class="fa-solid fa-circle-plus"></i>
 
-        <span>
+        <span data-i18n="publier">
             Publier
         </span>
 
@@ -829,20 +484,18 @@ html.dark-mode .profile-status {
 
         <i class="fa-solid fa-comments"></i>
 
-        <span>
+        <span data-i18n="chat">
             Chat
         </span>
 
     </a>
 
 
-    <a
-        href="profil.html"
-        class="active">
+    <a href="profil.html">
 
         <i class="fa-solid fa-user"></i>
 
-        <span>
+        <span data-i18n="profil">
             Profil
         </span>
 
@@ -852,53 +505,224 @@ html.dark-mode .profile-status {
 
 
 
-<!-- =====================================================
-     FIREBASE + PROFIL
-     ===================================================== -->
-
 <script type="module">
 
-import {
-    db,
-    auth,
-    signOut,
-    onAuthStateChanged
-} from "./app.js";
+import { db, auth } from "./app.js";
 
 import {
+    collection,
+    getDocs,
+    getDoc,
     doc,
-    getDoc
+    query,
+    where,
+    setDoc,
+    deleteDoc,
+    addDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
 
 /* =====================================================
-   ÉLÉMENTS
+   VARIABLES
    ===================================================== */
 
-const profileName =
-    document.getElementById("profileName");
+let all = [];
+let cat = "";
+let currentUser = null;
 
-const profileEmail =
-    document.getElementById("profileEmail");
 
-const profileStatus =
-    document.getElementById("profileStatus");
 
-const infoName =
-    document.getElementById("infoName");
+/* =====================================================
+   PROTECTION HTML
+   ===================================================== */
 
-const infoEmail =
-    document.getElementById("infoEmail");
+const e = x => String(x ?? "")
+    .replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    }[c]));
 
-const infoStatus =
-    document.getElementById("infoStatus");
 
-const logoutButton =
-    document.getElementById("logoutButton");
 
-const avatarBox =
-    document.getElementById("avatarBox");
+/* =====================================================
+   NORMALISATION NUMÉRO WHATSAPP
+   ===================================================== */
+
+function nettoyerWhatsApp(numero) {
+
+    if (!numero) return "";
+
+    return String(numero)
+        .replace(/[^\d]/g, "");
+
+}
+
+
+
+/* =====================================================
+   OUVRIR WHATSAPP
+   ===================================================== */
+
+function ouvrirWhatsApp(numero, titre = "") {
+
+    const cleanNumber = nettoyerWhatsApp(numero);
+
+    if (!cleanNumber) {
+
+        alert(
+            "Ce professionnel n'a pas encore renseigné de numéro WhatsApp."
+        );
+
+        return;
+
+    }
+
+    const message =
+        `Bonjour, je viens de voir votre publication "${titre}" sur CAMU SERVICES.`;
+
+    const url =
+        `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank");
+
+}
+
+
+
+window.ouvrirWhatsApp = ouvrirWhatsApp;
+
+
+
+/* =====================================================
+   FAVORIS
+   ===================================================== */
+
+async function estFavori(serviceId) {
+
+    if (!currentUser || !serviceId) return false;
+
+    try {
+
+        const ref = doc(
+            db,
+            "users",
+            currentUser.uid,
+            "favoris",
+            serviceId
+        );
+
+        const snap = await getDoc(ref);
+
+        return snap.exists();
+
+    } catch (error) {
+
+        console.error(
+            "Erreur vérification favori :",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+
+async function basculerFavori(serviceId, button) {
+
+    if (!currentUser) {
+
+        alert(
+            "Connectez-vous pour ajouter une publication aux favoris."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const ref = doc(
+            db,
+            "users",
+            currentUser.uid,
+            "favoris",
+            serviceId
+        );
+
+
+        const snap = await getDoc(ref);
+
+
+        if (snap.exists()) {
+
+            await deleteDoc(ref);
+
+            button.classList.remove("active");
+
+            button.innerHTML =
+                `<i class="fa-regular fa-star"></i>`;
+
+            button.setAttribute(
+                "aria-label",
+                "Ajouter aux favoris"
+            );
+
+        } else {
+
+            await setDoc(ref, {
+
+                serviceId: serviceId,
+
+                userId: currentUser.uid,
+
+                createdAt: serverTimestamp()
+
+            });
+
+
+            button.classList.add("active");
+
+            button.innerHTML =
+                `<i class="fa-solid fa-star"></i>`;
+
+            button.setAttribute(
+                "aria-label",
+                "Retirer des favoris"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Erreur favori :",
+            error
+        );
+
+        alert(
+            "Impossible de modifier les favoris."
+        );
+
+    }
+
+}
+
+
+
+window.basculerFavori = basculerFavori;
 
 
 
@@ -906,57 +730,976 @@ const avatarBox =
    AUTHENTIFICATION
    ===================================================== */
 
-onAuthStateChanged(
-    auth,
-    async (user) => {
+onAuthStateChanged(auth, async user => {
 
-        if (!user) {
+    currentUser = user || null;
 
-            window.location.href =
-                "connexion.html";
 
-            return;
+    if (user) {
 
-        }
+        await load();
 
+    } else {
+
+        document.getElementById("services").innerHTML = `
+
+            <div class="empty-state"
+                 style="padding:40px 20px;text-align:center;">
+
+                <i class="fa-solid fa-lock"
+                   style="
+                        font-size:32px;
+                        margin-bottom:15px;
+                        color:#e53935;
+                   ">
+                </i>
+
+                <h3 style="margin-bottom:10px;">
+                    Accès restreint
+                </h3>
+
+                <p style="margin-bottom:20px;">
+                    Connectez-vous ou créez un compte pour continuer.
+                </p>
+
+                <a
+                    href="profil.html"
+                    class="btn-submit"
+                    style="
+                        display:inline-block;
+                        padding:10px 20px;
+                        text-decoration:none;
+                        border-radius:5px;
+                    ">
+
+                    Se connecter
+
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+});
+
+
+
+/* =====================================================
+   CHARGEMENT SERVICES
+   ===================================================== */
+
+async function load() {
+
+    try {
+
+        const snapshot = await getDocs(
+
+            query(
+                collection(db, "services"),
+                where("valide", "==", true)
+            )
+
+        );
+
+
+        all = snapshot.docs.map(item => ({
+
+            id: item.id,
+
+            ...item.data()
+
+        }));
+
+
+        render();
+
+        chargerCommuniquesAccueil();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById("services").innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <h2>
+                    Impossible de charger les services
+                </h2>
+
+                <p>
+                    Vérifiez Internet et réessayez.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   AFFICHAGE SERVICES
+   ===================================================== */
+
+async function render() {
+
+    const searchValue =
+        document
+            .getElementById("search")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const filtered = all.filter(service => {
+
+        const texte = `
+
+            ${service.titre || ""}
+            ${service.description || ""}
+            ${service.ville || ""}
+            ${service.categorie || ""}
+            ${service.userName || ""}
+            ${service.nom || ""}
+
+        `.toLowerCase();
+
+
+        return (
+
+            (!cat || service.categorie === cat)
+
+            &&
+
+            (!searchValue || texte.includes(searchValue))
+
+        );
+
+    });
+
+
+    if (!filtered.length) {
+
+        document.getElementById("services").innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fa-solid fa-inbox"></i>
+
+                <h2>
+                    Aucun service trouvé
+                </h2>
+
+                <p>
+                    Essayez une autre recherche.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const cartes = await Promise.all(
+
+        filtered.map(async service => {
+
+            const favori =
+                await estFavori(service.id);
+
+
+            const nom =
+                service.userName ||
+                service.nom ||
+                service.userEmail ||
+                "Prestataire";
+
+
+            const photo =
+                service.userPhoto ||
+                service.photo ||
+                service.photoURL ||
+                "";
+
+
+            const whatsapp =
+                service.whatsapp ||
+                service.numeroWhatsApp ||
+                service.telephone ||
+                service.phone ||
+                "";
+
+
+            return `
+
+                <article
+                    class="annonce-card"
+                    style="cursor:pointer;"
+                    onclick="ouvrirDetails('${service.id}')">
+
+
+                    <!-- PROFESSIONNEL -->
+
+                    <div
+                        style="
+                            display:flex;
+                            align-items:center;
+                            margin-bottom:10px;
+                            gap:10px;
+                        "
+                        onclick="event.stopPropagation(); ouvrirProfilPrestataire(
+                            '${e(service.userId || "")}',
+                            '${e(nom)}',
+                            '${e(photo)}'
+                        )">
+
+
+                        <div
+                            style="
+                                width:40px;
+                                height:40px;
+                                border-radius:50%;
+                                background:#ddd;
+                                overflow:hidden;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                flex-shrink:0;
+                            ">
+
+                            ${
+                                photo
+
+                                ?
+
+                                `<img
+                                    src="${e(photo)}"
+                                    alt="Photo du professionnel"
+                                    style="
+                                        width:100%;
+                                        height:100%;
+                                        object-fit:cover;
+                                    ">`
+
+                                :
+
+                                `<i
+                                    class="fa-solid fa-user"
+                                    style="
+                                        color:#666;
+                                        font-size:16px;
+                                    ">
+                                </i>`
+                            }
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                style="
+                                    font-size:13px;
+                                    font-weight:bold;
+                                ">
+
+                                ${e(nom)}
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    font-size:11px;
+                                    color:#777;
+                                ">
+
+                                Voir le profil
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- IMAGE -->
+
+                    ${
+                        service.image
+
+                        ?
+
+                        `
+                        <div
+                            style="
+                                margin-bottom:10px;
+                                border-radius:8px;
+                                overflow:hidden;
+                                max-height:220px;
+                            ">
+
+                            <img
+                                src="${e(service.image)}"
+                                alt="${e(service.titre || "Publication")}"
+                                style="
+                                    width:100%;
+                                    height:220px;
+                                    object-fit:cover;
+                                ">
+
+                        </div>
+                        `
+
+                        :
+
+                        ""
+                    }
+
+
+
+                    <!-- CATÉGORIE -->
+
+                    <span class="badge-cat">
+
+                        ${e(service.categorie || "Général")}
+
+                    </span>
+
+
+
+                    <!-- TITRE -->
+
+                    <h3>
+
+                        ${e(service.titre || "Service")}
+
+                    </h3>
+
+
+
+                    <!-- LOCALISATION -->
+
+                    <div class="location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        ${e(service.ville || "RDC")}
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <p
+                        style="
+                            font-size:13px;
+                            color:#666;
+                        ">
+
+                        ${e(
+                            (service.description || "")
+                            .slice(0,130)
+                        )}
+
+                        ${
+                            (service.description || "").length > 130
+                            ? "…"
+                            : ""
+                        }
+
+                    </p>
+
+
+
+                    <!-- PRIX -->
+
+                    <p class="prix">
+
+                        ${e(service.prix || "Sur devis")}
+
+                    </p>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div
+                        class="card-actions"
+                        onclick="event.stopPropagation()">
+
+
+                        <!-- CHAT -->
+
+                        <a
+                            class="btn-submit"
+                            style="
+                                flex:1;
+                                text-align:center;
+                                text-decoration:none;
+                            "
+                            href="chat.html?serviceId=${encodeURIComponent(service.id)}">
+
+                            <i class="fa-solid fa-comments"></i>
+
+                            Contacter
+
+                        </a>
+
+
+
+                        <!-- WHATSAPP -->
+
+                        <button
+                            type="button"
+                            title="Contacter sur WhatsApp"
+                            style="
+                                border:none;
+                                background:#25D366;
+                                color:white;
+                                width:42px;
+                                height:42px;
+                                border-radius:7px;
+                                cursor:pointer;
+                            "
+                            onclick="
+                                event.stopPropagation();
+                                ouvrirWhatsApp(
+                                    '${e(whatsapp)}',
+                                    '${e(service.titre || "Service")}'
+                                );
+                            ">
+
+                            <i class="fa-brands fa-whatsapp"></i>
+
+                        </button>
+
+
+
+                        <!-- FAVORI -->
+
+                        <button
+                            class="favorite-btn ${favori ? "active" : ""}"
+                            type="button"
+                            title="${favori ? "Retirer des favoris" : "Ajouter aux favoris"}"
+                            aria-label="${favori ? "Retirer des favoris" : "Ajouter aux favoris"}"
+                            onclick="
+                                event.stopPropagation();
+                                basculerFavori(
+                                    '${service.id}',
+                                    this
+                                );
+                            ">
+
+                            ${
+                                favori
+                                ? `<i class="fa-solid fa-star"></i>`
+                                : `<i class="fa-regular fa-star"></i>`
+                            }
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        })
+
+    );
+
+
+    document.getElementById("services").innerHTML =
+        cartes.join("");
+
+}
+
+
+
+/* =====================================================
+   DÉTAILS DE LA PUBLICATION
+   ===================================================== */
+
+window.ouvrirDetails = function(id) {
+
+    const service =
+        all.find(s => s.id === id);
+
+
+    if (!service) return;
+
+
+    const modalId =
+        "modalDetailsService";
+
+
+    const ancien =
+        document.getElementById(modalId);
+
+
+    if (ancien) ancien.remove();
+
+
+    const nom =
+        service.userName ||
+        service.nom ||
+        service.userEmail ||
+        "Prestataire";
+
+
+    const photo =
+        service.userPhoto ||
+        service.photo ||
+        service.photoURL ||
+        "";
+
+
+    const whatsapp =
+        service.whatsapp ||
+        service.numeroWhatsApp ||
+        service.telephone ||
+        service.phone ||
+        "";
+
+
+    const modalHTML = `
+
+        <div
+            id="${modalId}"
+            style="
+                position:fixed;
+                inset:0;
+                background:rgba(0,0,0,.65);
+                z-index:9999;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:20px;
+            ">
+
+
+            <div
+                style="
+                    background:var(--bg-card,#fff);
+                    color:var(--text-color,#333);
+                    width:100%;
+                    max-width:550px;
+                    max-height:90vh;
+                    border-radius:14px;
+                    overflow-y:auto;
+                    padding:20px;
+                    position:relative;
+                    box-shadow:0 4px 25px rgba(0,0,0,.3);
+                ">
+
+
+                <button
+                    onclick="
+                        document
+                        .getElementById('${modalId}')
+                        .remove()
+                    "
+                    style="
+                        position:absolute;
+                        top:12px;
+                        right:12px;
+                        background:rgba(0,0,0,.08);
+                        border:none;
+                        width:35px;
+                        height:35px;
+                        border-radius:50%;
+                        cursor:pointer;
+                        font-size:18px;
+                    ">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+
+
+                <!-- PROFIL -->
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:12px;
+                        margin-bottom:18px;
+                        cursor:pointer;
+                    "
+                    onclick="
+                        document
+                        .getElementById('${modalId}')
+                        .remove();
+
+                        ouvrirProfilPrestataire(
+                            '${e(service.userId || "")}',
+                            '${e(nom)}',
+                            '${e(photo)}'
+                        );
+                    ">
+
+
+                    <div
+                        style="
+                            width:50px;
+                            height:50px;
+                            border-radius:50%;
+                            overflow:hidden;
+                            background:#ddd;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                        ">
+
+                        ${
+                            photo
+
+                            ?
+
+                            `<img
+                                src="${e(photo)}"
+                                style="
+                                    width:100%;
+                                    height:100%;
+                                    object-fit:cover;
+                                ">`
+
+                            :
+
+                            `<i class="fa-solid fa-user"></i>`
+                        }
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            ${e(nom)}
+
+                        </strong>
+
+
+                        <div
+                            style="
+                                font-size:12px;
+                                color:#777;
+                            ">
+
+                            Voir le profil professionnel
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- IMAGE -->
+
+                ${
+                    service.image
+
+                    ?
+
+                    `
+                    <img
+                        src="${e(service.image)}"
+                        alt="${e(service.titre)}"
+                        style="
+                            width:100%;
+                            max-height:300px;
+                            object-fit:cover;
+                            border-radius:10px;
+                            margin-bottom:15px;
+                        ">
+                    `
+
+                    :
+
+                    ""
+                }
+
+
+
+                <span class="badge-cat">
+
+                    ${e(service.categorie || "Général")}
+
+                </span>
+
+
+
+                <h2 style="margin:12px 0 10px;">
+
+                    ${e(service.titre || "Service")}
+
+                </h2>
+
+
+
+                <div
+                    style="
+                        display:flex;
+                        gap:15px;
+                        flex-wrap:wrap;
+                        margin-bottom:15px;
+                        font-size:13px;
+                        color:#666;
+                    ">
+
+                    <span>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        ${e(service.ville || "RDC")}
+
+                    </span>
+
+
+                    ${
+                        service.adresse
+
+                        ?
+
+                        `
+                        <span>
+
+                            <i class="fa-solid fa-map-pin"></i>
+
+                            ${e(service.adresse)}
+
+                        </span>
+                        `
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+
+
+                <div
+                    style="
+                        font-size:14px;
+                        line-height:1.7;
+                        margin-bottom:18px;
+                        white-space:pre-line;
+                    ">
+
+                    ${e(service.description || "Aucune description.")}
+
+                </div>
+
+
+
+                <div
+                    style="
+                        font-size:20px;
+                        font-weight:bold;
+                        color:#e53935;
+                        margin-bottom:20px;
+                    ">
+
+                    ${e(service.prix || "Sur devis")}
+
+                </div>
+
+
+
+                <div
+                    style="
+                        display:flex;
+                        gap:8px;
+                    ">
+
+
+                    <a
+                        href="chat.html?serviceId=${encodeURIComponent(service.id)}"
+                        class="btn-submit"
+                        style="
+                            flex:1;
+                            text-align:center;
+                            text-decoration:none;
+                            padding:12px;
+                        ">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Contacter
+
+                    </a>
+
+
+                    <button
+                        type="button"
+                        style="
+                            flex:1;
+                            border:none;
+                            background:#25D366;
+                            color:white;
+                            border-radius:6px;
+                            cursor:pointer;
+                            font-weight:bold;
+                        "
+                        onclick="
+                            ouvrirWhatsApp(
+                                '${e(whatsapp)}',
+                                '${e(service.titre || "Service")}'
+                            );
+                        ">
+
+                        <i class="fa-brands fa-whatsapp"></i>
+
+                        WhatsApp
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+        modalHTML
+    );
+
+};
+
+
+
+/* =====================================================
+   PROFIL PUBLIC DU PROFESSIONNEL
+   ===================================================== */
+
+window.ouvrirProfilPrestataire = async function(
+    userId,
+    fallbackName,
+    fallbackPhoto
+) {
+
+    const modalId =
+        "modalProfilPrestataire";
+
+
+    const ancien =
+        document.getElementById(modalId);
+
+
+    if (ancien) ancien.remove();
+
+
+    const loadingHTML = `
+
+        <div
+            id="${modalId}"
+            style="
+                position:fixed;
+                inset:0;
+                background:rgba(0,0,0,.65);
+                z-index:10000;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:20px;
+            ">
+
+            <div
+                style="
+                    background:var(--bg-card,#fff);
+                    width:100%;
+                    max-width:550px;
+                    border-radius:14px;
+                    padding:30px;
+                    text-align:center;
+                ">
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                    style="
+                        font-size:30px;
+                        color:#e53935;
+                    ">
+                </i>
+
+                <p>
+                    Chargement du profil...
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+        loadingHTML
+    );
+
+
+    let userData = {
+
+        name: fallbackName || "Professionnel",
+
+        photo: fallbackPhoto || "",
+
+        bio: "",
+
+        ville: "",
+
+        telephone: "",
+
+        whatsapp: "",
+
+        email: "",
+
+        type: "Professionnel"
+
+    };
+
+
+    /* RÉCUPÉRATION DU COMPTE */
+
+    if (userId) {
 
         try {
 
             const userRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
+                doc(db, "users", userId);
 
 
             const userSnap =
                 await getDoc(userRef);
 
-
-            let name =
-                user.displayName ||
-                "Utilisateur";
-
-
-            let email =
-                user.email ||
-                "";
-
-
-            let status =
-                "actif";
-
-
-            let photo =
-                user.photoURL ||
-                "";
-
-
-
-            /* =========================================
-               DONNÉES FIRESTORE
-               ========================================= */
 
             if (userSnap.exists()) {
 
@@ -964,116 +1707,60 @@ onAuthStateChanged(
                     userSnap.data();
 
 
-                name =
+                userData.name =
                     data.nom ||
                     data.name ||
-                    user.displayName ||
-                    "Utilisateur";
+                    data.userName ||
+                    fallbackName ||
+                    "Professionnel";
 
 
-                email =
-                    data.email ||
-                    user.email ||
-                    "";
-
-
-                status =
-                    data.status ||
-                    "actif";
-
-
-                photo =
+                userData.photo =
                     data.photo ||
                     data.photoURL ||
-                    user.photoURL ||
+                    data.logo ||
+                    fallbackPhoto ||
                     "";
 
-            }
+
+                userData.bio =
+                    data.bio ||
+                    data.description ||
+                    data.presentation ||
+                    "";
 
 
-
-            /* =========================================
-               AFFICHAGE
-               ========================================= */
-
-            profileName.textContent =
-                name;
+                userData.ville =
+                    data.ville ||
+                    data.city ||
+                    "";
 
 
-            profileEmail.textContent =
-                email;
+                userData.telephone =
+                    data.telephone ||
+                    data.phone ||
+                    data.numero ||
+                    "";
 
 
-            infoName.textContent =
-                name;
+                userData.whatsapp =
+                    data.whatsapp ||
+                    data.numeroWhatsApp ||
+                    data.telephone ||
+                    data.phone ||
+                    "";
 
 
-            infoEmail.textContent =
-                email;
+                userData.email =
+                    data.email || "";
 
 
-
-            /* =========================================
-               PHOTO
-               ========================================= */
-
-            if (photo) {
-
-                avatarBox.innerHTML = `
-
-                    <img
-                        src="${photo}"
-                        alt="Photo de profil">
-
-                `;
-
-            } else {
-
-                avatarBox.innerHTML = `
-
-                    <i class="fa-solid fa-user"></i>
-
-                `;
+                userData.type =
+                    data.typeCompte ||
+                    data.role ||
+                    "Professionnel";
 
             }
-
-
-
-            /* =========================================
-               STATUT
-               ========================================= */
-
-            if (
-                String(status).toLowerCase()
-                === "suspendu"
-            ) {
-
-                profileStatus.textContent =
-                    "Compte suspendu";
-
-
-                profileStatus.style.background =
-                    "#ffebee";
-
-
-                profileStatus.style.color =
-                    "#c62828";
-
-
-                infoStatus.textContent =
-                    "Suspendu";
-
-            } else {
-
-                profileStatus.textContent =
-                    "Compte actif";
-
-
-                infoStatus.textContent =
-                    "Actif";
-
-            }
-
 
         } catch (error) {
 
@@ -1082,100 +1769,1101 @@ onAuthStateChanged(
                 error
             );
 
-
-            profileName.textContent =
-                user.displayName ||
-                "Utilisateur";
-
-
-            profileEmail.textContent =
-                user.email ||
-                "";
-
-
-            infoName.textContent =
-                user.displayName ||
-                "Utilisateur";
-
-
-            infoEmail.textContent =
-                user.email ||
-                "";
-
-
-            profileStatus.textContent =
-                "Compte actif";
-
-
-            infoStatus.textContent =
-                "Actif";
-
         }
 
     }
-);
 
 
+    /* PUBLICATIONS DU PROFESSIONNEL */
 
-/* =====================================================
-   DÉCONNEXION
-   ===================================================== */
+    let userServices =
+        all.filter(
+            s => s.userId === userId
+        );
 
-logoutButton.addEventListener(
-    "click",
-    async () => {
+
+    /*
+       Si les publications ne sont pas toutes
+       dans all, on récupère directement
+       les publications Firestore.
+    */
+
+    if (userId && userServices.length === 0) {
 
         try {
 
-            logoutButton.disabled =
-                true;
+            const servicesSnap =
+                await getDocs(
+
+                    query(
+                        collection(db, "services"),
+                        where("userId", "==", userId),
+                        where("valide", "==", true)
+                    )
+
+                );
 
 
-            logoutButton.innerHTML = `
+            userServices =
+                servicesSnap.docs.map(item => ({
 
-                <i class="fa-solid fa-spinner fa-spin"></i>
+                    id: item.id,
 
-                Déconnexion...
+                    ...item.data()
 
-            `;
-
-
-            await signOut(auth);
-
-
-            window.location.href =
-                "index.html";
-
+                }));
 
         } catch (error) {
 
             console.error(
-                "Erreur déconnexion :",
+                "Erreur publications profil :",
                 error
             );
-
-
-            alert(
-                "Impossible de se déconnecter. Veuillez réessayer."
-            );
-
-
-            logoutButton.disabled =
-                false;
-
-
-            logoutButton.innerHTML = `
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-                Se déconnecter
-
-            `;
 
         }
 
     }
-);
+
+
+    const modal =
+        document.getElementById(modalId);
+
+
+    if (!modal) return;
+
+
+    modal.innerHTML = `
+
+        <div
+            style="
+                background:var(--bg-card,#fff);
+                color:var(--text-color,#333);
+                width:100%;
+                max-width:550px;
+                max-height:90vh;
+                overflow-y:auto;
+                border-radius:14px;
+                padding:20px;
+                position:relative;
+                box-shadow:0 4px 25px rgba(0,0,0,.3);
+            ">
+
+
+            <!-- FERMER -->
+
+            <button
+                onclick="
+                    document
+                    .getElementById('${modalId}')
+                    .remove()
+                "
+                style="
+                    position:absolute;
+                    top:12px;
+                    right:12px;
+                    width:35px;
+                    height:35px;
+                    border:none;
+                    border-radius:50%;
+                    background:rgba(0,0,0,.08);
+                    cursor:pointer;
+                ">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+
+            <!-- PHOTO / LOGO -->
+
+            <div
+                style="
+                    text-align:center;
+                    margin-bottom:12px;
+                ">
+
+
+                <div
+                    style="
+                        width:90px;
+                        height:90px;
+                        border-radius:50%;
+                        background:#ddd;
+                        overflow:hidden;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        margin:auto;
+                    ">
+
+                    ${
+                        userData.photo
+
+                        ?
+
+                        `<img
+                            src="${e(userData.photo)}"
+                            alt="Photo ou logo"
+                            style="
+                                width:100%;
+                                height:100%;
+                                object-fit:cover;
+                            ">`
+
+                        :
+
+                        `<i
+                            class="fa-solid fa-building-user"
+                            style="
+                                font-size:35px;
+                                color:#777;
+                            ">
+                        </i>`
+                    }
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NOM -->
+
+            <div
+                style="
+                    text-align:center;
+                    margin-bottom:15px;
+                ">
+
+                <h2 style="margin-bottom:5px;">
+
+                    ${e(userData.name)}
+
+                </h2>
+
+
+                <span
+                    style="
+                        font-size:12px;
+                        color:#777;
+                    ">
+
+                    ${e(userData.type)}
+
+                </span>
+
+            </div>
+
+
+
+            <!-- INFORMATIONS -->
+
+            <div
+                style="
+                    display:flex;
+                    flex-direction:column;
+                    gap:8px;
+                    margin-bottom:18px;
+                ">
+
+
+                ${
+                    userData.ville
+
+                    ?
+
+                    `
+                    <div>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        ${e(userData.ville)}
+
+                    </div>
+                    `
+
+                    :
+
+                    ""
+                }
+
+
+                ${
+                    userData.telephone
+
+                    ?
+
+                    `
+                    <div>
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        ${e(userData.telephone)}
+
+                    </div>
+                    `
+
+                    :
+
+                    ""
+                }
+
+            </div>
+
+
+
+            <!-- BIO -->
+
+            <div
+                style="
+                    background:rgba(0,0,0,.04);
+                    border-radius:10px;
+                    padding:13px;
+                    margin-bottom:20px;
+                    font-size:13px;
+                    line-height:1.6;
+                ">
+
+                <strong>
+                    À propos
+                </strong>
+
+                <br>
+
+                ${
+                    e(
+                        userData.bio ||
+                        "Aucune information supplémentaire pour le moment."
+                    )
+                }
+
+            </div>
+
+
+
+            <!-- PUBLICATIONS -->
+
+            <h3
+                style="
+                    font-size:16px;
+                    margin-bottom:12px;
+                ">
+
+                <i
+                    class="fa-solid fa-bullhorn"
+                    style="color:#e53935;">
+                </i>
+
+                Publications récentes
+
+                <span
+                    style="
+                        font-size:12px;
+                        color:#777;
+                    ">
+
+                    (${userServices.length})
+
+                </span>
+
+            </h3>
+
+
+
+            <div
+                style="
+                    display:flex;
+                    flex-direction:column;
+                    gap:10px;
+                ">
+
+                ${
+                    userServices.length
+
+                    ?
+
+                    userServices.map(srv => `
+
+                        <div
+                            onclick="
+                                document
+                                .getElementById('${modalId}')
+                                .remove();
+
+                                ouvrirDetails('${srv.id}');
+                            "
+                            style="
+                                display:flex;
+                                gap:10px;
+                                padding:10px;
+                                border:1px solid #eee;
+                                border-radius:9px;
+                                cursor:pointer;
+                            ">
+
+
+                            ${
+                                srv.image
+
+                                ?
+
+                                `<img
+                                    src="${e(srv.image)}"
+                                    style="
+                                        width:60px;
+                                        height:60px;
+                                        object-fit:cover;
+                                        border-radius:7px;
+                                    ">`
+
+                                :
+
+                                `
+                                <div
+                                    style="
+                                        width:60px;
+                                        height:60px;
+                                        background:#ddd;
+                                        border-radius:7px;
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;
+                                    ">
+
+                                    <i class="fa-solid fa-image"></i>
+
+                                </div>
+                                `
+                            }
+
+
+                            <div
+                                style="
+                                    flex:1;
+                                    overflow:hidden;
+                                ">
+
+                                <strong>
+
+                                    ${e(srv.titre || "Publication")}
+
+                                </strong>
+
+
+                                <p
+                                    style="
+                                        margin:4px 0;
+                                        font-size:12px;
+                                        color:#777;
+                                        white-space:nowrap;
+                                        overflow:hidden;
+                                        text-overflow:ellipsis;
+                                    ">
+
+                                    ${e(srv.description || "")}
+
+                                </p>
+
+
+                                <span
+                                    style="
+                                        color:#e53935;
+                                        font-weight:bold;
+                                        font-size:12px;
+                                    ">
+
+                                    ${e(srv.prix || "Sur devis")}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    `).join("")
+
+                    :
+
+                    `
+                    <p
+                        style="
+                            text-align:center;
+                            color:#777;
+                            font-size:13px;
+                            padding:15px;
+                        ">
+
+                        Aucune publication récente.
+
+                    </p>
+                    `
+
+                }
+
+            </div>
+
+
+
+            <!-- WHATSAPP -->
+
+            ${
+                userData.whatsapp
+
+                ?
+
+                `
+                <button
+                    type="button"
+                    style="
+                        width:100%;
+                        margin-top:18px;
+                        padding:12px;
+                        border:none;
+                        border-radius:7px;
+                        background:#25D366;
+                        color:white;
+                        font-weight:bold;
+                        cursor:pointer;
+                    "
+                    onclick="
+                        ouvrirWhatsApp(
+                            '${e(userData.whatsapp)}',
+                            '${e(userData.name)}'
+                        );
+                    ">
+
+                    <i class="fa-brands fa-whatsapp"></i>
+
+                    Contacter sur WhatsApp
+
+                </button>
+                `
+
+                :
+
+                ""
+            }
+
+
+
+            <!-- SIGNALER -->
+
+            <button
+                type="button"
+                style="
+                    width:100%;
+                    margin-top:10px;
+                    padding:11px;
+                    border:1px solid #e53935;
+                    border-radius:7px;
+                    background:transparent;
+                    color:#e53935;
+                    cursor:pointer;
+                    font-weight:bold;
+                "
+                onclick="
+                    ouvrirSignalementCompte(
+                        '${e(userId)}',
+                        '${e(userData.name)}'
+                    );
+                ">
+
+                <i class="fa-solid fa-flag"></i>
+
+                Signaler ce compte
+
+            </button>
+
+
+        </div>
+
+    `;
+
+};
+
+
+
+/* =====================================================
+   SIGNALEMENT D'UN COMPTE
+   ===================================================== */
+
+window.ouvrirSignalementCompte = function(
+    userId,
+    userName
+) {
+
+    if (!currentUser) {
+
+        alert(
+            "Vous devez être connecté pour signaler un compte."
+        );
+
+        return;
+
+    }
+
+
+    const modalId =
+        "modalSignalementCompte";
+
+
+    const ancien =
+        document.getElementById(modalId);
+
+
+    if (ancien) ancien.remove();
+
+
+    document.body.insertAdjacentHTML(
+
+        "beforeend",
+
+        `
+
+        <div
+            id="${modalId}"
+            style="
+                position:fixed;
+                inset:0;
+                background:rgba(0,0,0,.65);
+                z-index:11000;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:20px;
+            ">
+
+            <div
+                style="
+                    background:var(--bg-card,#fff);
+                    color:var(--text-color,#333);
+                    width:100%;
+                    max-width:450px;
+                    border-radius:14px;
+                    padding:20px;
+                ">
+
+
+                <h3>
+
+                    <i
+                        class="fa-solid fa-flag"
+                        style="color:#e53935;">
+                    </i>
+
+                    Signaler ${e(userName)}
+
+                </h3>
+
+
+                <p
+                    style="
+                        font-size:13px;
+                        color:#777;
+                        margin:10px 0 15px;
+                    ">
+
+                    Sélectionnez la raison du signalement.
+
+                </p>
+
+
+                <select
+                    id="raisonSignalement"
+                    style="
+                        width:100%;
+                        padding:11px;
+                        border-radius:7px;
+                        border:1px solid #ddd;
+                        margin-bottom:12px;
+                    ">
+
+                    <option value="">
+                        Choisir une raison
+                    </option>
+
+                    <option value="Contenu frauduleux">
+                        Contenu frauduleux
+                    </option>
+
+                    <option value="Fausse identité">
+                        Fausse identité
+                    </option>
+
+                    <option value="Spam">
+                        Spam
+                    </option>
+
+                    <option value="Comportement abusif">
+                        Comportement abusif
+                    </option>
+
+                    <option value="Contenu inapproprié">
+                        Contenu inapproprié
+                    </option>
+
+                    <option value="Autre">
+                        Autre
+                    </option>
+
+                </select>
+
+
+                <textarea
+                    id="detailsSignalement"
+                    placeholder="Expliquez brièvement le problème..."
+                    style="
+                        width:100%;
+                        min-height:100px;
+                        padding:10px;
+                        border-radius:7px;
+                        border:1px solid #ddd;
+                        resize:vertical;
+                        box-sizing:border-box;
+                        margin-bottom:12px;
+                    "></textarea>
+
+
+                <div
+                    style="
+                        display:flex;
+                        gap:8px;
+                    ">
+
+                    <button
+                        type="button"
+                        style="
+                            flex:1;
+                            padding:11px;
+                            border:none;
+                            border-radius:7px;
+                            cursor:pointer;
+                        "
+                        onclick="
+                            document
+                            .getElementById('${modalId}')
+                            .remove();
+                        ">
+
+                        Annuler
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        style="
+                            flex:1;
+                            padding:11px;
+                            border:none;
+                            border-radius:7px;
+                            background:#e53935;
+                            color:white;
+                            cursor:pointer;
+                            font-weight:bold;
+                        "
+                        onclick="
+                            envoyerSignalementCompte(
+                                '${e(userId)}',
+                                '${e(userName)}'
+                            );
+                        ">
+
+                        Signaler
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `
+
+    );
+
+};
+
+
+
+/* =====================================================
+   ENVOYER LE SIGNALEMENT FIRESTORE
+   ===================================================== */
+
+window.envoyerSignalementCompte = async function(
+    userId,
+    userName
+) {
+
+    if (!currentUser) {
+
+        alert(
+            "Vous devez être connecté."
+        );
+
+        return;
+
+    }
+
+
+    const raison =
+        document.getElementById(
+            "raisonSignalement"
+        ).value;
+
+
+    const details =
+        document.getElementById(
+            "detailsSignalement"
+        ).value.trim();
+
+
+    if (!raison) {
+
+        alert(
+            "Veuillez choisir une raison."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        await addDoc(
+
+            collection(
+                db,
+                "signalements"
+            ),
+
+            {
+
+                type: "compte",
+
+                userIdSignale: userId,
+
+                nomCompteSignale: userName,
+
+                signalePar: currentUser.uid,
+
+                raison: raison,
+
+                details: details,
+
+                statut: "en_attente",
+
+                createdAt: serverTimestamp()
+
+            }
+
+        );
+
+
+        const modal =
+            document.getElementById(
+                "modalSignalementCompte"
+            );
+
+
+        if (modal) modal.remove();
+
+
+        alert(
+            "Votre signalement a été envoyé. Merci."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur signalement :",
+            error
+        );
+
+
+        alert(
+            "Impossible d'envoyer le signalement."
+        );
+
+    }
+
+};
+
+
+
+/* =====================================================
+   COMMUNIQUÉS
+   ===================================================== */
+
+async function chargerCommuniquesAccueil() {
+
+    const container =
+        document.getElementById(
+            "communiquesContainer"
+        );
+
+
+    if (!container) return;
+
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "communiques"
+                )
+            );
+
+
+        let html = "";
+
+
+        snapshot.forEach(item => {
+
+            const com =
+                item.data();
+
+
+            if (com.published === true) {
+
+                html += `
+
+                    <div
+                        style="
+                            background:#222;
+                            border-left:4px solid #2e7d32;
+                            padding:12px 15px;
+                            border-radius:8px;
+                            margin-bottom:10px;
+                            color:white;
+                        ">
+
+                        <h4
+                            style="
+                                margin:0 0 5px;
+                                font-size:14px;
+                                color:#4caf50;
+                            ">
+
+                            <i class="fa-solid fa-bullhorn"></i>
+
+                            ${e(com.titre)}
+
+                        </h4>
+
+
+                        <p
+                            style="
+                                margin:0;
+                                font-size:12px;
+                                color:#ccc;
+                                line-height:1.4;
+                            ">
+
+                            ${e(com.description)}
+
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        });
+
+
+        container.innerHTML = html;
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur communiqués :",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   RECHERCHE
+   ===================================================== */
+
+document
+    .getElementById("search")
+    .addEventListener(
+        "input",
+        render
+    );
+
+
+
+/* =====================================================
+   CATÉGORIES
+   ===================================================== */
+
+document
+    .querySelectorAll(".cat-btn")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                cat =
+                    button.dataset.cat || "";
+
+                render();
+
+            }
+        );
+
+    });
+
+
+
+/* =====================================================
+   MENU
+   ===================================================== */
+
+const menuToggle =
+    document.getElementById(
+        "menuToggle"
+    );
+
+
+const sidebar =
+    document.querySelector(
+        ".sidebar-vertical"
+    );
+
+
+const paramMenuToggle =
+    document.getElementById(
+        "paramMenuToggle"
+    );
+
+
+const paramSubmenu =
+    document.getElementById(
+        "paramSubmenu"
+    );
+
+
+const arrowParam =
+    document.getElementById(
+        "arrowParam"
+    );
+
+
+
+if (menuToggle && sidebar) {
+
+    menuToggle.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            if (
+                !sidebar.contains(event.target)
+                &&
+                !menuToggle.contains(event.target)
+            ) {
+
+                sidebar.classList.remove(
+                    "open"
+                );
+
+
+                if (paramSubmenu) {
+
+                    paramSubmenu.classList.remove(
+                        "open-submenu"
+                    );
+
+                }
+
+
+                if (arrowParam) {
+
+                    arrowParam.style.transform =
+                        "rotate(0deg)";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   SOUS-MENU PARAMÈTRES
+   ===================================================== */
+
+if (
+    paramMenuToggle &&
+    paramSubmenu
+) {
+
+    paramMenuToggle.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+
+            paramSubmenu.classList.toggle(
+                "open-submenu"
+            );
+
+
+            if (
+                paramSubmenu.classList.contains(
+                    "open-submenu"
+                )
+            ) {
+
+                arrowParam.style.transform =
+                    "rotate(180deg)";
+
+            } else {
+
+                arrowParam.style.transform =
+                    "rotate(0deg)";
+
+            }
+
+        }
+    );
+
+}
 
 </script>
 
