@@ -1,6 +1,6 @@
 /* =========================================================
-   CAMU SERVICES — FIREBASE APP
-   Auth + Firestore + fonctions globales
+   CAMU SERVICES — APP.JS
+   Firebase / Authentification / Firestore
    ========================================================= */
 
 import {
@@ -9,24 +9,20 @@ import {
 
 import {
   getAuth,
-  signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 import {
   getFirestore,
   collection,
   getDocs,
-  getDoc,
   doc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  setDoc,
+  getDoc,
   query,
   where,
   orderBy,
-  serverTimestamp
+  limit
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
@@ -45,7 +41,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALISATION
+   INITIALISATION FIREBASE
    ========================================================= */
 
 const app = initializeApp(firebaseConfig);
@@ -56,62 +52,12 @@ const db = getFirestore(app);
 
 
 /* =========================================================
-   MODE SOMBRE
+   UTILITAIRES
    ========================================================= */
 
-function appliquerTheme() {
-
-  const theme = localStorage.getItem("theme");
-
-  if (theme === "dark") {
-
-    document.documentElement.classList.add("dark-mode");
-
-    if (document.body) {
-      document.body.classList.add("dark-mode");
-    }
-
-  } else {
-
-    document.documentElement.classList.remove("dark-mode");
-
-    if (document.body) {
-      document.body.classList.remove("dark-mode");
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   INITIALISATION DU THÈME
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  appliquerTheme();
-
-});
-
-
-/* =========================================================
-   ÉCOUTE DU CHANGEMENT DE THÈME
-   ========================================================= */
-
-window.addEventListener("storage", (event) => {
-
-  if (event.key === "theme") {
-    appliquerTheme();
-  }
-
-});
-
-
-/* =========================================================
-   UTILITAIRE — ÉCHAPPEMENT HTML
-   ========================================================= */
-
+/**
+ * Protection contre l'injection HTML
+ */
 function escapeHTML(value) {
 
   return String(value ?? "")
@@ -124,137 +70,959 @@ function escapeHTML(value) {
 }
 
 
-/* =========================================================
-   UTILITAIRE — NUMÉRO WHATSAPP
-   ========================================================= */
+/**
+ * Nettoyage d'un numéro WhatsApp
+ *
+ * Exemple :
+ * +243 81 234 5678
+ * devient :
+ * 243812345678
+ */
+function cleanPhoneNumber(phone) {
 
-function nettoyerNumeroWhatsApp(numero) {
-
-  if (!numero) {
+  if (!phone) {
     return "";
   }
 
-  let value = String(numero)
-    .trim()
-    .replace(/[^\d+]/g, "");
+  return String(phone)
+    .replace(/[^\d]/g, "");
 
-  /*
-   * Si le numéro commence par 0,
-   * on suppose que le pays est la RDC (+243).
-   */
+}
 
-  if (value.startsWith("0")) {
-    value = "243" + value.substring(1);
+
+/**
+ * Génère un lien WhatsApp
+ */
+function getWhatsAppLink(phone, message = "") {
+
+  const cleanPhone = cleanPhoneNumber(phone);
+
+  if (!cleanPhone) {
+    return "";
   }
 
-  value = value.replace("+", "");
+  const text = encodeURIComponent(message);
 
-  return value;
+  return `https://wa.me/${cleanPhone}${text ? `?text=${text}` : ""}`;
 
 }
 
 
 /* =========================================================
-   LIEN WHATSAPP
+   RÉCUPÉRER L'UTILISATEUR PAR OWNER ID
    ========================================================= */
 
-function creerLienWhatsApp(numero, message = "") {
+async function getOwnerById(ownerId) {
 
-  const telephone = nettoyerNumeroWhatsApp(numero);
-
-  if (!telephone) {
-    return "#";
+  if (!ownerId) {
+    return null;
   }
 
-  const texte = encodeURIComponent(message);
+  try {
 
-  return `https://wa.me/${telephone}?text=${texte}`;
+    const ownerRef = doc(
+      db,
+      "users",
+      ownerId
+    );
+
+    const ownerSnap = await getDoc(ownerRef);
+
+    if (!ownerSnap.exists()) {
+      return null;
+    }
+
+    return {
+      id: ownerSnap.id,
+      ...ownerSnap.data()
+    };
+
+  } catch (error) {
+
+    console.error(
+      "Erreur récupération propriétaire :",
+      error
+    );
+
+    return null;
+
+  }
 
 }
 
 
 /* =========================================================
-   LIEN TÉLÉPHONE
+   RÉCUPÉRER UN SERVICE PAR SON ID
    ========================================================= */
 
-function creerLienTelephone(numero) {
+async function getServiceById(serviceId) {
 
-  if (!numero) {
-    return "#";
+  if (!serviceId) {
+    return null;
   }
 
-  const telephone = String(numero)
-    .trim()
-    .replace(/[^\d+]/g, "");
+  try {
 
-  return `tel:${telephone}`;
+    const serviceRef = doc(
+      db,
+      "services",
+      serviceId
+    );
+
+    const serviceSnap = await getDoc(serviceRef);
+
+    if (!serviceSnap.exists()) {
+      return null;
+    }
+
+    return {
+      id: serviceSnap.id,
+      ...serviceSnap.data()
+    };
+
+  } catch (error) {
+
+    console.error(
+      "Erreur récupération service :",
+      error
+    );
+
+    return null;
+
+  }
 
 }
 
 
 /* =========================================================
-   UTILITAIRE — NOTIFICATION
+   CHARGER TOUS LES SERVICES
    ========================================================= */
 
-function afficherNotification(message, type = "info") {
+async function getServices() {
 
-  let notification =
-    document.getElementById("camuNotification");
+  try {
 
-  if (!notification) {
+    const servicesRef =
+      collection(db, "services");
 
-    notification = document.createElement("div");
+    const snapshot =
+      await getDocs(servicesRef);
 
-    notification.id = "camuNotification";
+    const services = [];
 
-    notification.style.position = "fixed";
-    notification.style.left = "50%";
-    notification.style.bottom = "90px";
-    notification.style.transform = "translateX(-50%)";
-    notification.style.zIndex = "99999";
-    notification.style.padding = "12px 16px";
-    notification.style.borderRadius = "12px";
-    notification.style.fontSize = "13px";
-    notification.style.fontWeight = "700";
-    notification.style.maxWidth = "90%";
-    notification.style.textAlign = "center";
-    notification.style.boxShadow =
-      "0 8px 25px rgba(0,0,0,.20)";
+    snapshot.forEach((document) => {
 
-    document.body.appendChild(notification);
+      services.push({
+        id: document.id,
+        ...document.data()
+      });
+
+    });
+
+    return services;
+
+  } catch (error) {
+
+    console.error(
+      "Erreur récupération services :",
+      error
+    );
+
+    return [];
 
   }
 
-  notification.textContent = message;
+}
 
-  if (type === "success") {
 
-    notification.style.background = "#e8f5e9";
-    notification.style.color = "#2e7d32";
+/* =========================================================
+   CHARGER UNIQUEMENT LES SERVICES VALIDÉS
+   ========================================================= */
 
-  } else if (type === "error") {
+async function getPublicServices() {
 
-    notification.style.background = "#ffebee";
-    notification.style.color = "#c62828";
+  try {
+
+    const servicesRef =
+      collection(db, "services");
+
+    const q = query(
+      servicesRef,
+      where("valide", "==", true)
+    );
+
+    const snapshot =
+      await getDocs(q);
+
+    const services = [];
+
+    snapshot.forEach((document) => {
+
+      services.push({
+        id: document.id,
+        ...document.data()
+      });
+
+    });
+
+    return services;
+
+  } catch (error) {
+
+    console.error(
+      "Erreur récupération services publics :",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================================
+   SERVICES D'UN PROPRIÉTAIRE
+   ========================================================= */
+
+async function getServicesByOwner(ownerId) {
+
+  if (!ownerId) {
+    return [];
+  }
+
+  try {
+
+    const servicesRef =
+      collection(db, "services");
+
+    const q = query(
+      servicesRef,
+      where("ownerId", "==", ownerId)
+    );
+
+    const snapshot =
+      await getDocs(q);
+
+    const services = [];
+
+    snapshot.forEach((document) => {
+
+      services.push({
+        id: document.id,
+        ...document.data()
+      });
+
+    });
+
+    return services;
+
+  } catch (error) {
+
+    console.error(
+      "Erreur services propriétaire :",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================================
+   CHARGER LES SERVICES AVEC LES INFORMATIONS DU PROPRIÉTAIRE
+   ========================================================= */
+
+async function getServicesWithOwners() {
+
+  const services =
+    await getPublicServices();
+
+  const ownerCache = {};
+
+  const results = [];
+
+  for (const service of services) {
+
+    let owner = null;
+
+    if (service.ownerId) {
+
+      if (
+        Object.prototype.hasOwnProperty.call(
+          ownerCache,
+          service.ownerId
+        )
+      ) {
+
+        owner =
+          ownerCache[service.ownerId];
+
+      } else {
+
+        owner =
+          await getOwnerById(
+            service.ownerId
+          );
+
+        ownerCache[service.ownerId] =
+          owner;
+
+      }
+
+    }
+
+    results.push({
+
+      ...service,
+
+      owner: owner,
+
+      ownerName:
+        owner?.nom ||
+        owner?.name ||
+        owner?.displayName ||
+        "Prestataire",
+
+      ownerPhone:
+        owner?.telephone ||
+        owner?.phone ||
+        owner?.whatsapp ||
+        "",
+
+      ownerEmail:
+        owner?.email ||
+        service.ownerEmail ||
+        ""
+
+    });
+
+  }
+
+  return results;
+
+}
+
+
+/* =========================================================
+   GÉNÉRER LE LIEN WHATSAPP D'UN SERVICE
+   ========================================================= */
+
+function createServiceWhatsAppLink(service) {
+
+  if (!service) {
+    return "";
+  }
+
+  const phone =
+    service.ownerPhone ||
+    service.whatsapp ||
+    service.telephone ||
+    service.phone ||
+    "";
+
+  if (!phone) {
+    return "";
+  }
+
+  const titre =
+    service.titre ||
+    "votre service";
+
+  const ville =
+    service.ville ||
+    "";
+
+  const message =
+    `Bonjour ${service.ownerName || ""}, je suis intéressé(e) par votre service "${titre}"${ville ? ` à ${ville}` : ""}.`;
+
+  return getWhatsAppLink(
+    phone,
+    message
+  );
+
+}
+
+
+/* =========================================================
+   CRÉER UNE CARTE SERVICE
+   ========================================================= */
+
+function createServiceCard(service) {
+
+  const whatsappLink =
+    createServiceWhatsAppLink(service);
+
+  const serviceId =
+    escapeHTML(service.id || "");
+
+  const ownerId =
+    escapeHTML(service.ownerId || "");
+
+  const titre =
+    escapeHTML(
+      service.titre ||
+      "Service"
+    );
+
+  const categorie =
+    escapeHTML(
+      service.categorie ||
+      "Service"
+    );
+
+  const ville =
+    escapeHTML(
+      service.ville ||
+      "RDC"
+    );
+
+  const prix =
+    escapeHTML(
+      service.prix ||
+      "Sur devis"
+    );
+
+  const description =
+    escapeHTML(
+      service.description ||
+      ""
+    );
+
+  const ownerName =
+    escapeHTML(
+      service.ownerName ||
+      "Prestataire"
+    );
+
+  const image =
+    service.image
+      ? `
+        <div class="service-image">
+          <img
+            src="${escapeHTML(service.image)}"
+            alt="${titre}"
+            loading="lazy"
+          >
+        </div>
+      `
+      : "";
+
+
+  const whatsappButton =
+    whatsappLink
+      ? `
+        <a
+          href="${whatsappLink}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-whatsapp"
+          data-service-id="${serviceId}"
+          data-owner-id="${ownerId}"
+        >
+          <i class="fa-brands fa-whatsapp"></i>
+          WhatsApp
+        </a>
+      `
+      : `
+        <button
+          type="button"
+          class="btn-whatsapp disabled"
+          disabled
+          title="WhatsApp non renseigné"
+        >
+          <i class="fa-brands fa-whatsapp"></i>
+          WhatsApp
+        </button>
+      `;
+
+
+  return `
+
+    <article
+      class="annonce-card"
+      data-service-id="${serviceId}"
+      data-owner-id="${ownerId}"
+    >
+
+      ${image}
+
+      <span class="badge-cat">
+        ${categorie}
+      </span>
+
+      <h3>
+        ${titre}
+      </h3>
+
+      <div class="meta">
+        <i class="fa-solid fa-user"></i>
+        ${ownerName}
+      </div>
+
+      <div class="location">
+        <i class="fa-solid fa-location-dot"></i>
+        ${ville}
+      </div>
+
+      <p>
+        ${description}
+      </p>
+
+      <div class="prix">
+        ${prix}
+      </div>
+
+      <div class="card-actions">
+
+        ${whatsappButton}
+
+        <a
+          href="chat.html?serviceId=${encodeURIComponent(service.id || "")}&ownerId=${encodeURIComponent(service.ownerId || "")}"
+          class="btn-primary"
+        >
+          <i class="fa-solid fa-comments"></i>
+          Contacter
+        </a>
+
+        <button
+          type="button"
+          class="favorite-btn"
+          data-service-id="${serviceId}"
+          aria-label="Ajouter aux favoris"
+        >
+          <i class="fa-regular fa-star"></i>
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   AFFICHER LES SERVICES DANS UN CONTENEUR
+   ========================================================= */
+
+async function afficherServices(
+  containerId = "services-container"
+) {
+
+  const container =
+    document.getElementById(
+      containerId
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = `
+
+    <div class="empty-state">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <h2>Chargement...</h2>
+
+      <p>
+        Nous recherchons les services disponibles.
+      </p>
+
+    </div>
+
+  `;
+
+
+  try {
+
+    const services =
+      await getServicesWithOwners();
+
+
+    if (!services.length) {
+
+      container.innerHTML = `
+
+        <div class="empty-state">
+
+          <i class="fa-solid fa-folder-open"></i>
+
+          <h2>Aucun service disponible</h2>
+
+          <p>
+            Aucun service n'a encore été validé.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      services
+        .map(createServiceCard)
+        .join("");
+
+
+    initialiserFavoris();
+
+  } catch (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <h2>Erreur</h2>
+
+        <p>
+          Impossible de charger les services.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   FAVORIS
+   ========================================================= */
+
+function getFavorites() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "camuFavorites"
+      ) || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+function saveFavorites(favorites) {
+
+  localStorage.setItem(
+    "camuFavorites",
+    JSON.stringify(favorites)
+  );
+
+}
+
+
+function toggleFavorite(serviceId) {
+
+  if (!serviceId) {
+    return false;
+  }
+
+  let favorites =
+    getFavorites();
+
+  const index =
+    favorites.indexOf(serviceId);
+
+
+  if (index === -1) {
+
+    favorites.push(serviceId);
+
+    saveFavorites(favorites);
+
+    return true;
+
+  }
+
+
+  favorites.splice(
+    index,
+    1
+  );
+
+  saveFavorites(favorites);
+
+  return false;
+
+}
+
+
+function initialiserFavoris() {
+
+  const buttons =
+    document.querySelectorAll(
+      ".favorite-btn"
+    );
+
+  const favorites =
+    getFavorites();
+
+
+  buttons.forEach((button) => {
+
+    const serviceId =
+      button.dataset.serviceId;
+
+    if (
+      favorites.includes(
+        serviceId
+      )
+    ) {
+
+      button.classList.add(
+        "active"
+      );
+
+      const icon =
+        button.querySelector("i");
+
+      if (icon) {
+
+        icon.className =
+          "fa-solid fa-star";
+
+      }
+
+    }
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const added =
+          toggleFavorite(
+            serviceId
+          );
+
+        const icon =
+          button.querySelector("i");
+
+
+        if (added) {
+
+          button.classList.add(
+            "active"
+          );
+
+          if (icon) {
+
+            icon.className =
+              "fa-solid fa-star";
+
+          }
+
+        } else {
+
+          button.classList.remove(
+            "active"
+          );
+
+          if (icon) {
+
+            icon.className =
+              "fa-regular fa-star";
+
+          }
+
+        }
+
+      }
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   RECHERCHE LOCALE
+   ========================================================= */
+
+function filtrerServices(
+  services,
+  recherche = ""
+) {
+
+  const text =
+    recherche
+      .toLowerCase()
+      .trim();
+
+  if (!text) {
+    return services;
+  }
+
+  return services.filter(
+    (service) => {
+
+      const contenu = [
+
+        service.titre,
+        service.categorie,
+        service.ville,
+        service.description,
+        service.ownerName
+
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return contenu.includes(text);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   AUTHENTIFICATION
+   ========================================================= */
+
+function attendreUtilisateur() {
+
+  return new Promise(
+    (resolve) => {
+
+      const unsubscribe =
+        onAuthStateChanged(
+          auth,
+          (user) => {
+
+            unsubscribe();
+
+            resolve(user);
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   CHARGEMENT AUTOMATIQUE DE LA PAGE INDEX
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const container =
+      document.getElementById(
+        "services-container"
+      );
+
+
+    if (!container) {
+      return;
+    }
+
+
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+
+        /*
+         * Le site public peut afficher
+         * les services validés même sans
+         * connexion.
+         */
+
+        if (user) {
+
+          console.log(
+            "Utilisateur connecté :",
+            user.uid
+          );
+
+        }
+
+
+        await afficherServices(
+          "services-container"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   MODE SOMBRE
+   ========================================================= */
+
+function appliquerTheme() {
+
+  const theme =
+    localStorage.getItem(
+      "theme"
+    );
+
+
+  if (theme === "dark") {
+
+    document.documentElement
+      .classList.add(
+        "dark-mode"
+      );
+
+    document.body
+      .classList.add(
+        "dark-mode"
+      );
 
   } else {
 
-    notification.style.background = "#111";
-    notification.style.color = "#fff";
+    document.documentElement
+      .classList.remove(
+        "dark-mode"
+      );
+
+    document.body
+      .classList.remove(
+        "dark-mode"
+      );
 
   }
 
-  notification.style.display = "block";
-
-  clearTimeout(notification._timer);
-
-  notification._timer = setTimeout(() => {
-
-    notification.style.display = "none";
-
-  }, 3000);
-
 }
+
+
+/* =========================================================
+   INITIALISATION DU THÈME
+   ========================================================= */
+
+appliquerTheme();
 
 
 /* =========================================================
@@ -273,38 +1041,40 @@ export {
 
   onAuthStateChanged,
 
-  collection,
-
-  getDocs,
-
-  getDoc,
-
-  doc,
-
-  addDoc,
-
-  updateDoc,
-
-  deleteDoc,
-
-  setDoc,
-
-  query,
-
-  where,
-
-  orderBy,
-
-  serverTimestamp,
-
   escapeHTML,
 
-  nettoyerNumeroWhatsApp,
+  cleanPhoneNumber,
 
-  creerLienWhatsApp,
+  getWhatsAppLink,
 
-  creerLienTelephone,
+  getOwnerById,
 
-  afficherNotification
+  getServiceById,
+
+  getServices,
+
+  getPublicServices,
+
+  getServicesByOwner,
+
+  getServicesWithOwners,
+
+  createServiceWhatsAppLink,
+
+  createServiceCard,
+
+  afficherServices,
+
+  getFavorites,
+
+  saveFavorites,
+
+  toggleFavorite,
+
+  filtrerServices,
+
+  attendreUtilisateur,
+
+  appliquerTheme
 
 };
