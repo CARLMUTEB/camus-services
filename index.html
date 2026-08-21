@@ -537,16 +537,18 @@
 
 <script type="module">
 
-import { db } from "./app.js";
+import { db, auth } from "./app.js";
 
 import {
-
     collection,
     getDocs,
     query,
     where
-
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
 
@@ -555,7 +557,6 @@ import {
    ===================================================== */
 
 let all = [];
-
 let cat = "";
 
 
@@ -572,6 +573,31 @@ const e = x => String(x ?? "")
         '"':"&quot;",
         "'":"&#039;"
     }[c]));
+
+
+
+/* =====================================================
+   VÉRIFICATION AUTH & CHARGEMENT
+   ===================================================== */
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // L'utilisateur est connecté : on charge les services et communiqués
+        load();
+    } else {
+        // L'utilisateur n'est PAS connecté : on affiche votre message personnalisé
+        document.getElementById("services").innerHTML = `
+            <div class="empty-state" style="padding: 40px 20px; text-align: center;">
+                <i class="fa-solid fa-lock" style="font-size: 32px; margin-bottom: 15px; color: #e53935;"></i>
+                <h3 style="margin-bottom: 10px; color: #333;">Accès restreint</h3>
+                <p style="margin-bottom: 20px; color: #666;">Connectez-vous ou créez un compte pour continuer</p>
+                <a href="profil.html" class="btn-submit" style="display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                    Se connecter
+                </a>
+            </div>
+        `;
+    }
+});
 
 
 
@@ -1004,14 +1030,6 @@ if (paramMenuToggle && paramSubmenu) {
     );
 
 }
-
-
-
-/* =====================================================
-   CHARGEMENT
-   ===================================================== */
-
-load();
 
 </script>
 
