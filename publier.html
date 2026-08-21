@@ -222,6 +222,28 @@
       </div>
 
 
+      <!-- PHOTO / MEDIA -->
+
+      <div class="form-group" style="margin-bottom: 15px;">
+
+        <label for="mediaService" style="display:block; font-size:13px; font-weight:700; margin-bottom:5px;">
+          Photo ou Illustration (Optionnel)
+        </label>
+
+        <input
+          type="file"
+          id="mediaService"
+          accept="image/*"
+          style="width:100%; padding:8px; border:1px solid var(--border); border-radius:8px; font-size:13px; background:#fafafa; cursor:pointer;">
+
+        <!-- Aperçu de l'image -->
+        <div id="previewContainer" style="margin-top: 10px; display: none;">
+          <img id="imagePreview" src="" alt="Aperçu" style="max-width: 100%; max-height: 150px; border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+
+      </div>
+
+
       <!-- DESCRIPTION -->
 
       <div class="form-group" style="margin-bottom: 20px;">
@@ -436,6 +458,36 @@ const message =
 const container =
   document.getElementById("publicAdsContainer");
 
+const mediaInput =
+  document.getElementById("mediaService");
+
+const previewContainer =
+  document.getElementById("previewContainer");
+
+const imagePreview =
+  document.getElementById("imagePreview");
+
+let base64Image = "";
+
+
+/* GESTION DE L'APERÇU DE L'IMAGE */
+
+mediaInput.addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(uploadEvent) {
+      base64Image = uploadEvent.target.result;
+      imagePreview.src = base64Image;
+      previewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  } else {
+    base64Image = "";
+    previewContainer.style.display = "none";
+  }
+});
+
 
 /* AUTH */
 
@@ -483,6 +535,12 @@ async function loadPublicAds() {
         html += `
 
           <article class="annonce-card">
+
+            ${service.image ? `
+              <div style="margin-bottom: 10px; border-radius: 6px; overflow: hidden; max-height: 180px;">
+                <img src="${service.image}" alt="Illustration" style="width: 100%; object-fit: cover;">
+              </div>
+            ` : ""}
 
             <span class="badge-cat">
               ${escapeHTML(
@@ -645,7 +703,7 @@ form.addEventListener(
     ) {
 
       afficherMessage(
-        "Veuillez remplir tous les champs.",
+        "Veuillez remplir tous les champs obligatoires.",
         false
       );
 
@@ -676,6 +734,8 @@ form.addEventListener(
 
           description,
 
+          image: base64Image || "",
+
           ownerId:
             currentUser.uid,
 
@@ -699,6 +759,9 @@ form.addEventListener(
 
 
       form.reset();
+      base64Image = "";
+      previewContainer.style.display = "none";
+      imagePreview.src = "";
 
 
     }
