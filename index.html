@@ -2,6 +2,7 @@
 <html lang="fr">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -14,9 +15,15 @@
     content="CAMU SERVICES — La plateforme qui connecte les entreprises locales à leurs clients."
   >
 
-  <meta name="theme-color" content="#111111">
+  <meta
+    name="theme-color"
+    content="#111111"
+  >
 
-  <title>CAMU SERVICES — Trouver des services près de chez vous</title>
+  <title>
+    CAMU SERVICES — Trouver des services près de chez vous
+  </title>
+
 
   <!-- =====================================================
        FONT AWESOME
@@ -27,15 +34,19 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   >
 
+
   <!-- =====================================================
-       STYLE PRINCIPAL
+       CSS PRINCIPAL
        ===================================================== -->
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 
   <!-- =====================================================
-       STYLES DES CARTES ET COMMUNIQUÉS
+       STYLES SPÉCIFIQUES À INDEX
        ===================================================== -->
 
   <style>
@@ -45,76 +56,134 @@
        ===================================================== */
 
     .services-grid {
+
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(260px, 1fr)
+        );
+
       gap: 12px;
+
       margin-bottom: 20px;
+
     }
 
 
     .annonce-card.service-card {
+
       border-radius: 10px;
+
       overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+      box-shadow:
+        0 2px 6px
+        rgba(0, 0, 0, 0.06);
+
       background: #fff;
+
       display: flex;
+
       flex-direction: column;
+
       font-size: 0.9rem;
+
     }
 
 
     .annonce-card .service-image {
+
       height: 120px;
+
       position: relative;
+
+      overflow: hidden;
+
+    }
+
+
+    .annonce-card .service-image img {
+
+      display: block;
+
     }
 
 
     .annonce-card .service-card-content {
+
       padding: 12px;
+
     }
 
 
     .annonce-card h3 {
+
       font-size: 1rem;
+
       margin-bottom: 4px;
+
     }
 
 
     .annonce-card .service-description {
+
       font-size: 0.82rem;
+
       margin-bottom: 8px;
+
       display: -webkit-box;
+
       -webkit-line-clamp: 2;
+
       -webkit-box-orient: vertical;
+
       overflow: hidden;
+
     }
 
 
     .annonce-card .location,
     .annonce-card .service-footer {
+
       font-size: 0.78rem;
+
       margin-bottom: 6px;
+
     }
 
 
     .annonce-card .card-actions {
+
       display: flex;
+
       gap: 8px;
+
       margin-top: 8px;
+
     }
 
 
     .annonce-card .card-actions .btn-primary {
+
       padding: 6px 10px;
+
       font-size: 0.82rem;
+
       flex: 1;
+
       text-align: center;
+
     }
 
 
     .annonce-card .favorite-btn {
+
       padding: 6px 10px;
+
       font-size: 0.9rem;
+
     }
 
 
@@ -123,123 +192,237 @@
        ===================================================== */
 
     #communiquesContainer {
+
       display: flex;
+
       flex-direction: column;
+
       gap: 12px;
+
     }
 
 
     .announcement-box {
+
       display: flex;
+
       gap: 14px;
+
       padding: 16px;
+
       background: #ffffff;
+
       border-radius: 12px;
-      border-left: 4px solid #d32f2f;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      border-left:
+        4px solid #d32f2f;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.07);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
     }
 
 
     .announcement-box:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.10);
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 5px 15px
+        rgba(0, 0, 0, 0.10);
+
     }
 
 
     .announcement-icon {
+
       min-width: 42px;
+
       width: 42px;
+
       height: 42px;
+
       border-radius: 50%;
+
       background: #d32f2f;
+
       color: #ffffff;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 17px;
+
     }
 
 
     .announcement-content {
+
       flex: 1;
+
       min-width: 0;
+
     }
 
 
     .announcement-label {
+
       display: inline-block;
+
       font-size: 0.72rem;
+
       font-weight: 700;
+
       color: #d32f2f;
+
       margin-bottom: 4px;
+
       text-transform: uppercase;
+
     }
 
 
     .announcement-content h3 {
-      margin: 0 0 6px;
+
+      margin:
+        0 0 6px;
+
       font-size: 1rem;
+
       color: #222;
+
     }
 
 
     .announcement-content p {
+
       margin: 0;
+
       color: #555;
+
       font-size: 0.86rem;
+
       line-height: 1.5;
+
       white-space: pre-line;
+
     }
 
 
     .announcement-date {
+
       margin-top: 8px;
+
       font-size: 0.72rem;
+
       color: #888;
+
       display: flex;
+
       align-items: center;
+
       gap: 5px;
-    }
 
-
-    .announcement-empty {
-      padding: 22px;
-      text-align: center;
-      background: #ffffff;
-      border-radius: 12px;
-      color: #777;
-      box-shadow: 0 2px 7px rgba(0, 0, 0, 0.05);
-    }
-
-
-    .announcement-empty i {
-      font-size: 25px;
-      margin-bottom: 8px;
-      color: #aaa;
     }
 
 
     .announcement-loading {
+
       padding: 20px;
+
       text-align: center;
+
       color: #777;
+
       background: #ffffff;
+
       border-radius: 12px;
+
     }
 
 
-    .announcement-loading i {
-      margin-right: 7px;
+    .announcement-empty {
+
+      padding: 22px;
+
+      text-align: center;
+
+      color: #777;
+
+      background: #ffffff;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 2px 7px
+        rgba(0, 0, 0, 0.05);
+
+    }
+
+
+    .announcement-empty i {
+
+      font-size: 25px;
+
+      margin-bottom: 8px;
+
+      color: #aaa;
+
+    }
+
+
+    .announcement-empty h3 {
+
+      margin:
+        5px 0;
+
+    }
+
+
+    .announcement-empty p {
+
+      margin: 0;
+
     }
 
 
     .announcement-error {
+
       padding: 16px;
+
       border-radius: 12px;
+
       background: #fff3f3;
+
       color: #b71c1c;
-      border-left: 4px solid #d32f2f;
+
+      border-left:
+        4px solid #d32f2f;
+
+    }
+
+
+    .announcement-error i {
+
+      margin-right: 6px;
+
+    }
+
+
+    .announcement-error p {
+
+      margin:
+        6px 0 0;
+
     }
 
 
@@ -250,31 +433,45 @@
     @media (max-width: 600px) {
 
       .announcement-box {
+
         padding: 13px;
+
         gap: 10px;
+
       }
 
 
       .announcement-icon {
+
         min-width: 36px;
+
         width: 36px;
+
         height: 36px;
+
         font-size: 14px;
+
       }
 
 
       .announcement-content h3 {
+
         font-size: 0.92rem;
+
       }
 
 
       .announcement-content p {
+
         font-size: 0.8rem;
+
       }
 
 
       .services-grid {
+
         grid-template-columns: 1fr;
+
       }
 
     }
@@ -283,15 +480,19 @@
 
 
   <!-- =====================================================
-       APPLICATION FIREBASE
+       FIREBASE / APP
        ===================================================== -->
 
-  <script type="module" src="app.js"></script>
+  <script
+    type="module"
+    src="app.js"
+  ></script>
 
 </head>
 
 
 <body>
+
 
   <!-- =====================================================
        BARRE SUPÉRIEURE
@@ -306,7 +507,9 @@
       aria-label="Ouvrir le menu"
       aria-expanded="false"
     >
+
       <i class="fa-solid fa-bars"></i>
+
     </button>
 
 
@@ -315,7 +518,10 @@
       class="logo-text"
       aria-label="CAMU SERVICES"
     >
-      CAMU <span>SERVICES</span>
+
+      CAMU
+      <span>SERVICES</span>
+
     </a>
 
 
@@ -325,7 +531,9 @@
       aria-label="Mon profil"
       title="Mon profil"
     >
+
       <i class="fa-solid fa-user"></i>
+
     </a>
 
   </header>
@@ -342,89 +550,164 @@
   >
 
     <div class="sidebar-header">
+
       CAMU SERVICES
+
     </div>
 
 
     <ul>
 
       <li>
-        <a href="index.html" class="active-link">
+
+        <a
+          href="index.html"
+          class="active-link"
+        >
+
           <i class="fa-solid fa-house"></i>
-          <span>Accueil</span>
+
+          <span>
+            Accueil
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="recherche.html">
+
           <i class="fa-solid fa-magnifying-glass"></i>
-          <span>Rechercher</span>
+
+          <span>
+            Rechercher
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="categories.html">
+
           <i class="fa-solid fa-layer-group"></i>
-          <span>Catégories</span>
+
+          <span>
+            Catégories
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="entreprises.html">
+
           <i class="fa-solid fa-building"></i>
-          <span>Entreprises</span>
+
+          <span>
+            Entreprises
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="favoris.html">
+
           <i class="fa-solid fa-heart"></i>
-          <span>Mes favoris</span>
+
+          <span>
+            Mes favoris
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="messages.html">
+
           <i class="fa-solid fa-comments"></i>
-          <span>Messages</span>
+
+          <span>
+            Messages
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="communiques.html">
+
           <i class="fa-solid fa-bullhorn"></i>
-          <span>Communiqués</span>
+
+          <span>
+            Communiqués
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="inscription-entreprise.html">
+
           <i class="fa-solid fa-store"></i>
-          <span>Inscrire mon entreprise</span>
+
+          <span>
+            Inscrire mon entreprise
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="profil.html">
+
           <i class="fa-solid fa-user"></i>
-          <span>Mon profil</span>
+
+          <span>
+            Mon profil
+          </span>
+
         </a>
+
       </li>
 
 
       <li>
+
         <a href="parametres.html">
+
           <i class="fa-solid fa-gear"></i>
-          <span>Paramètres</span>
+
+          <span>
+            Paramètres
+          </span>
+
         </a>
+
       </li>
 
     </ul>
@@ -448,22 +731,33 @@
       <div class="hero-content">
 
         <span class="hero-badge">
+
           <i class="fa-solid fa-location-dot"></i>
+
           Services locaux
+
         </span>
 
 
         <h1>
+
           Trouvez les meilleurs
-          <span>services</span>
+
+          <span>
+            services
+          </span>
+
           près de chez vous.
+
         </h1>
 
 
         <p>
+
           CAMU SERVICES connecte directement les clients
           aux entreprises, commerçants, artisans et
           professionnels locaux.
+
         </p>
 
       </div>
@@ -479,7 +773,10 @@
 
       <div class="search-bar">
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i
+          class="fa-solid fa-magnifying-glass"
+        ></i>
+
 
         <input
           type="search"
@@ -496,7 +793,9 @@
           aria-label="Effacer la recherche"
           title="Effacer"
         >
+
           <i class="fa-solid fa-xmark"></i>
+
         </button>
 
       </div>
@@ -511,7 +810,9 @@
     <section>
 
       <h2 class="section-title">
+
         Catégories
+
       </h2>
 
 
@@ -525,7 +826,9 @@
           type="button"
           data-category="Toutes"
         >
+
           Toutes
+
         </button>
 
 
@@ -534,8 +837,11 @@
           type="button"
           data-category="Construction"
         >
+
           <i class="fa-solid fa-helmet-safety"></i>
+
           Construction
+
         </button>
 
 
@@ -544,8 +850,11 @@
           type="button"
           data-category="Transport"
         >
+
           <i class="fa-solid fa-car"></i>
+
           Transport
+
         </button>
 
 
@@ -554,8 +863,11 @@
           type="button"
           data-category="Beauté"
         >
+
           <i class="fa-solid fa-scissors"></i>
+
           Beauté
+
         </button>
 
 
@@ -564,8 +876,11 @@
           type="button"
           data-category="Restaurant"
         >
+
           <i class="fa-solid fa-utensils"></i>
+
           Restaurant
+
         </button>
 
 
@@ -574,8 +889,11 @@
           type="button"
           data-category="Informatique"
         >
+
           <i class="fa-solid fa-laptop"></i>
+
           Informatique
+
         </button>
 
 
@@ -584,8 +902,11 @@
           type="button"
           data-category="Commerce"
         >
+
           <i class="fa-solid fa-shop"></i>
+
           Commerce
+
         </button>
 
 
@@ -594,8 +915,11 @@
           type="button"
           data-category="Services"
         >
+
           <i class="fa-solid fa-briefcase"></i>
+
           Services
+
         </button>
 
       </div>
@@ -604,16 +928,20 @@
 
 
     <!-- ===================================================
-         COMMUNIQUÉS FIRESTORE
+         COMMUNIQUÉS
          =================================================== -->
 
     <section id="communiquesSection">
 
+
       <div class="section-heading">
 
         <h2 class="section-title">
+
           <i class="fa-solid fa-bullhorn"></i>
+
           Communiqués
+
         </h2>
 
 
@@ -621,8 +949,11 @@
           href="communiques.html"
           class="see-all"
         >
+
           Voir tout
+
           <i class="fa-solid fa-arrow-right"></i>
+
         </a>
 
       </div>
@@ -631,11 +962,15 @@
       <!--
         IMPORTANT :
 
-        Les communiqués seront injectés ici
-        automatiquement depuis Firestore.
+        NE PAS METTRE DE COMMUNIQUÉ STATIQUE ICI.
+
+        app.js remplira automatiquement cette zone
+        avec les données de Firestore.
       -->
 
-      <div id="communiquesContainer">
+      <div
+        id="communiquesContainer"
+      >
 
         <div class="announcement-loading">
 
@@ -656,10 +991,13 @@
 
     <section id="services">
 
+
       <div class="section-heading">
 
         <h2 class="section-title">
+
           Entreprises mises en avant
+
         </h2>
 
 
@@ -667,278 +1005,39 @@
           href="entreprises.html"
           class="see-all"
         >
+
           Voir tout
+
           <i class="fa-solid fa-arrow-right"></i>
+
         </a>
 
       </div>
 
+
+      <!--
+        Les services Firebase seront injectés ici
+        automatiquement par app.js.
+      -->
 
       <div
         class="services-grid"
         id="servicesContainer"
       >
 
-
-        <!-- CARTE 1 -->
-
-        <article
-          class="annonce-card service-card"
-          data-category="Construction"
-          data-search="construction bâtiment maçon entrepreneur"
+        <div
+          style="
+            text-align:center;
+            grid-column:1/-1;
+            padding:20px;
+          "
         >
 
-          <div class="service-image">
+          <i class="fa-solid fa-spinner fa-spin"></i>
 
-            <div class="service-placeholder">
-              <i class="fa-solid fa-building"></i>
-            </div>
+          Chargement des services...
 
-
-            <span class="featured-badge">
-              <i class="fa-solid fa-star"></i>
-              Sponsorisé
-            </span>
-
-          </div>
-
-
-          <div class="service-card-content">
-
-            <span class="badge-cat">
-              Construction
-            </span>
-
-
-            <h3>
-              Services Construction
-            </h3>
-
-
-            <p class="service-description">
-              Travaux de construction, rénovation,
-              maçonnerie et aménagement.
-            </p>
-
-
-            <p class="location">
-              <i class="fa-solid fa-location-dot"></i>
-              Disponible localement
-            </p>
-
-
-            <div class="service-footer">
-
-              <span class="service-status">
-                <i class="fa-solid fa-circle"></i>
-                Disponible
-              </span>
-
-
-              <span class="rating">
-                <i class="fa-solid fa-star"></i>
-                4.8
-              </span>
-
-            </div>
-
-
-            <div class="card-actions">
-
-              <a
-                href="entreprise.html"
-                class="btn-primary"
-              >
-                Voir le profil
-              </a>
-
-
-              <button
-                type="button"
-                class="favorite-btn"
-                aria-label="Ajouter aux favoris"
-                title="Ajouter aux favoris"
-              >
-                <i class="fa-regular fa-heart"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <!-- CARTE 2 -->
-
-        <article
-          class="annonce-card service-card"
-          data-category="Transport"
-          data-search="transport voiture taxi déplacement chauffeur"
-        >
-
-          <div class="service-image">
-
-            <div class="service-placeholder">
-              <i class="fa-solid fa-car"></i>
-            </div>
-
-
-            <span class="featured-badge">
-              <i class="fa-solid fa-star"></i>
-              Mis en avant
-            </span>
-
-          </div>
-
-
-          <div class="service-card-content">
-
-            <span class="badge-cat">
-              Transport
-            </span>
-
-
-            <h3>
-              Transport & Déplacement
-            </h3>
-
-
-            <p class="service-description">
-              Solutions de transport et déplacement
-              pour particuliers et entreprises.
-            </p>
-
-
-            <p class="location">
-              <i class="fa-solid fa-location-dot"></i>
-              Disponible localement
-            </p>
-
-
-            <div class="service-footer">
-
-              <span class="service-status">
-                <i class="fa-solid fa-circle"></i>
-                Disponible
-              </span>
-
-
-              <span class="rating">
-                <i class="fa-solid fa-star"></i>
-                4.7
-              </span>
-
-            </div>
-
-
-            <div class="card-actions">
-
-              <a
-                href="entreprise.html"
-                class="btn-primary"
-              >
-                Voir le profil
-              </a>
-
-
-              <button
-                type="button"
-                class="favorite-btn"
-                aria-label="Ajouter aux favoris"
-                title="Ajouter aux favoris"
-              >
-                <i class="fa-regular fa-heart"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <!-- CARTE 3 -->
-
-        <article
-          class="annonce-card service-card"
-          data-category="Informatique"
-          data-search="informatique ordinateur téléphone réparation logiciel"
-        >
-
-          <div class="service-image">
-
-            <div class="service-placeholder">
-              <i class="fa-solid fa-laptop"></i>
-            </div>
-
-          </div>
-
-
-          <div class="service-card-content">
-
-            <span class="badge-cat">
-              Informatique
-            </span>
-
-
-            <h3>
-              Services Informatiques
-            </h3>
-
-
-            <p class="service-description">
-              Assistance informatique, maintenance,
-              installation et réparation.
-            </p>
-
-
-            <p class="location">
-              <i class="fa-solid fa-location-dot"></i>
-              Disponible localement
-            </p>
-
-
-            <div class="service-footer">
-
-              <span class="service-status">
-                <i class="fa-solid fa-circle"></i>
-                Disponible
-              </span>
-
-
-              <span class="rating">
-                <i class="fa-solid fa-star"></i>
-                4.6
-              </span>
-
-            </div>
-
-
-            <div class="card-actions">
-
-              <a
-                href="entreprise.html"
-                class="btn-primary"
-              >
-                Voir le profil
-              </a>
-
-
-              <button
-                type="button"
-                class="favorite-btn"
-                aria-label="Ajouter aux favoris"
-                title="Ajouter aux favoris"
-              >
-                <i class="fa-regular fa-heart"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
+        </div>
 
       </div>
 
@@ -953,17 +1052,23 @@
         hidden
       >
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i
+          class="fa-solid fa-magnifying-glass"
+        ></i>
 
 
         <h2>
+
           Aucun résultat
+
         </h2>
 
 
         <p>
+
           Aucun service ne correspond à votre recherche.
           Essayez un autre mot-clé ou une autre catégorie.
+
         </p>
 
       </div>
@@ -978,13 +1083,17 @@
     <footer class="footer">
 
       <h3>
+
         CAMU SERVICES
+
       </h3>
 
 
       <p>
+
         La plateforme qui connecte les entreprises locales
         à leurs clients.
+
       </p>
 
 
@@ -1019,9 +1128,12 @@
 
       <p class="copyright">
 
-        © <span id="currentYear"></span>
+        ©
+
+        <span id="currentYear"></span>
 
         CAMU SERVICES.
+
         Tous droits réservés.
 
       </p>
@@ -1044,59 +1156,67 @@
       href="index.html"
       class="active"
     >
+
       <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
+
+      <span>
+        Accueil
+      </span>
+
     </a>
 
 
     <a href="recherche.html">
+
       <i class="fa-solid fa-magnifying-glass"></i>
-      <span>Recherche</span>
+
+      <span>
+        Recherche
+      </span>
+
     </a>
 
 
     <a href="categories.html">
+
       <i class="fa-solid fa-layer-group"></i>
-      <span>Catégories</span>
+
+      <span>
+        Catégories
+      </span>
+
     </a>
 
 
     <a href="favoris.html">
+
       <i class="fa-regular fa-heart"></i>
-      <span>Favoris</span>
+
+      <span>
+        Favoris
+      </span>
+
     </a>
 
 
     <a href="profil.html">
+
       <i class="fa-regular fa-user"></i>
-      <span>Profil</span>
+
+      <span>
+        Profil
+      </span>
+
     </a>
 
   </nav>
 
 
   <!-- =====================================================
-       JAVASCRIPT DE LA PAGE
+       JAVASCRIPT INDEX
        ===================================================== -->
 
-  <script type="module">
-
-    /* =====================================================
-       FIRESTORE
-       ===================================================== */
-
-    import {
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      limit
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-    /* =====================================================
-       DOM
-       ===================================================== */
+  <script>
 
     document.addEventListener(
       "DOMContentLoaded",
@@ -1108,7 +1228,9 @@
            ================================================= */
 
         const year =
-          document.getElementById("currentYear");
+          document.getElementById(
+            "currentYear"
+          );
 
 
         if (year) {
@@ -1124,31 +1246,44 @@
            ================================================= */
 
         const menuToggle =
-          document.getElementById("menuToggle");
+          document.getElementById(
+            "menuToggle"
+          );
 
 
         const sidebar =
-          document.getElementById("sidebar");
+          document.getElementById(
+            "sidebar"
+          );
 
 
-        if (menuToggle && sidebar) {
+        if (
+          menuToggle &&
+          sidebar
+        ) {
 
           menuToggle.addEventListener(
             "click",
             function () {
 
               const opened =
-                sidebar.classList.toggle("open");
+                sidebar.classList.toggle(
+                  "open"
+                );
 
 
               menuToggle.setAttribute(
                 "aria-expanded",
-                opened ? "true" : "false"
+                opened
+                  ? "true"
+                  : "false"
               );
 
 
               const icon =
-                menuToggle.querySelector("i");
+                menuToggle.querySelector(
+                  "i"
+                );
 
 
               if (icon) {
@@ -1172,71 +1307,100 @@
 
           sidebar
             .querySelectorAll("a")
-            .forEach(function (link) {
+            .forEach(
+              function (link) {
 
-              link.addEventListener(
-                "click",
-                function () {
+                link.addEventListener(
+                  "click",
+                  function () {
 
-                  sidebar.classList.remove("open");
-
-
-                  menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
+                    sidebar.classList.remove(
+                      "open"
+                    );
 
 
-                  const icon =
-                    menuToggle.querySelector("i");
+                    menuToggle.setAttribute(
+                      "aria-expanded",
+                      "false"
+                    );
 
 
-                  if (icon) {
+                    const icon =
+                      menuToggle.querySelector(
+                        "i"
+                      );
 
-                    icon.classList.add("fa-bars");
 
-                    icon.classList.remove("fa-xmark");
+                    if (icon) {
+
+                      icon.classList.add(
+                        "fa-bars"
+                      );
+
+
+                      icon.classList.remove(
+                        "fa-xmark"
+                      );
+
+                    }
 
                   }
+                );
 
-                }
-              );
-
-            });
+              }
+            );
 
         }
 
 
         /* =================================================
-           RECHERCHE
+           RECHERCHE ET FILTRES
            ================================================= */
 
         const searchInput =
-          document.getElementById("searchInput");
+          document.getElementById(
+            "searchInput"
+          );
 
 
         const clearSearch =
-          document.getElementById("clearSearch");
-
-
-        const cards =
-          Array.from(
-            document.querySelectorAll(".service-card")
+          document.getElementById(
+            "clearSearch"
           );
 
 
         const noResults =
-          document.getElementById("noResults");
+          document.getElementById(
+            "noResults"
+          );
 
 
         let selectedCategory =
           "Toutes";
 
 
+        function getCards() {
+
+          return Array.from(
+            document.querySelectorAll(
+              ".service-card"
+            )
+          );
+
+        }
+
+
         function filterServices() {
 
+          const cards =
+            getCards();
+
+
           const search =
-            (searchInput?.value || "")
+            (
+              searchInput?.value ||
+              ""
+            )
               .trim()
               .toLowerCase();
 
@@ -1245,55 +1409,75 @@
             0;
 
 
-          cards.forEach(function (card) {
+          cards.forEach(
+            function (card) {
 
-            const category =
-              (
-                card.dataset.category || ""
-              ).toLowerCase();
-
-
-            const searchable =
-              (
-                card.dataset.search || ""
-              ).toLowerCase();
+              const category =
+                (
+                  card.dataset.category ||
+                  ""
+                ).toLowerCase();
 
 
-            const title =
-              (
-                card.querySelector("h3")?.textContent || ""
-              ).toLowerCase();
+              const searchable =
+                (
+                  card.dataset.search ||
+                  ""
+                ).toLowerCase();
 
 
-            const categoryMatch =
-              selectedCategory === "Toutes" ||
-              category ===
-              selectedCategory.toLowerCase();
+              const title =
+                (
+                  card.querySelector(
+                    "h3"
+                  )?.textContent ||
+                  ""
+                ).toLowerCase();
 
 
-            const searchMatch =
-              !search ||
-              searchable.includes(search) ||
-              title.includes(search) ||
-              category.includes(search);
+              const description =
+                (
+                  card.querySelector(
+                    ".service-description"
+                  )?.textContent ||
+                  ""
+                ).toLowerCase();
 
 
-            const show =
-              categoryMatch &&
-              searchMatch;
+              const categoryMatch =
+                selectedCategory ===
+                  "Toutes" ||
+                category ===
+                  selectedCategory.toLowerCase();
 
 
-            card.style.display =
-              show ? "" : "none";
+              const searchMatch =
+                !search ||
+                searchable.includes(search) ||
+                title.includes(search) ||
+                description.includes(search) ||
+                category.includes(search);
 
 
-            if (show) {
+              const show =
+                categoryMatch &&
+                searchMatch;
 
-              visible++;
+
+              card.style.display =
+                show
+                  ? ""
+                  : "none";
+
+
+              if (show) {
+
+                visible++;
+
+              }
 
             }
-
-          });
+          );
 
 
           if (noResults) {
@@ -1324,7 +1508,8 @@
 
               if (searchInput) {
 
-                searchInput.value = "";
+                searchInput.value =
+                  "";
 
                 searchInput.focus();
 
@@ -1344,82 +1529,137 @@
            ================================================= */
 
         document
-          .querySelectorAll(".cat-btn")
-          .forEach(function (button) {
+          .querySelectorAll(
+            ".cat-btn"
+          )
+          .forEach(
+            function (button) {
 
-            button.addEventListener(
-              "click",
-              function () {
+              button.addEventListener(
+                "click",
+                function () {
 
-                document
-                  .querySelectorAll(".cat-btn")
-                  .forEach(function (btn) {
+                  document
+                    .querySelectorAll(
+                      ".cat-btn"
+                    )
+                    .forEach(
+                      function (btn) {
 
-                    btn.classList.remove("active");
+                        btn.classList.remove(
+                          "active"
+                        );
 
-                  });
-
-
-                button.classList.add("active");
-
-
-                selectedCategory =
-                  button.dataset.category ||
-                  "Toutes";
+                      }
+                    );
 
 
-                filterServices();
+                  button.classList.add(
+                    "active"
+                  );
 
-              }
-            );
 
-          });
+                  selectedCategory =
+                    button.dataset.category ||
+                    "Toutes";
+
+
+                  filterServices();
+
+                }
+              );
+
+            }
+          );
 
 
         /* =================================================
            FAVORIS
            ================================================= */
 
-        document
-          .querySelectorAll(".favorite-btn")
-          .forEach(function (button) {
+        function activerFavoris() {
 
-            button.addEventListener(
-              "click",
-              function () {
+          document
+            .querySelectorAll(
+              ".favorite-btn"
+            )
+            .forEach(
+              function (button) {
 
-                const icon =
-                  button.querySelector("i");
-
-
-                if (!icon) {
+                if (
+                  button.dataset.favoriteReady
+                ) {
 
                   return;
 
                 }
 
 
-                const active =
-                  button.classList.toggle(
-                    "favorite-active"
-                  );
+                button.dataset.favoriteReady =
+                  "true";
 
 
-                icon.classList.toggle(
-                  "fa-regular",
-                  !active
-                );
+                button.addEventListener(
+                  "click",
+                  function () {
+
+                    const icon =
+                      button.querySelector(
+                        "i"
+                      );
 
 
-                icon.classList.toggle(
-                  "fa-solid",
-                  active
+                    if (!icon) {
+
+                      return;
+
+                    }
+
+
+                    const active =
+                      button.classList.toggle(
+                        "favorite-active"
+                      );
+
+
+                    icon.classList.toggle(
+                      "fa-regular",
+                      !active
+                    );
+
+
+                    icon.classList.toggle(
+                      "fa-solid",
+                      active
+                    );
+
+                  }
                 );
 
               }
             );
 
-          });
+        }
+
+
+        activerFavoris();
+
+
+        /*
+         * Les services viennent de Firebase
+         * après le chargement initial.
+         */
+
+        document.addEventListener(
+          "camu-services-loaded",
+          function () {
+
+            filterServices();
+
+            activerFavoris();
+
+          }
+        );
 
 
         /* =================================================
@@ -1444,17 +1684,10 @@
             profileButtons.forEach(
               function (button) {
 
-                if (user) {
-
-                  button.title =
-                    "Mon profil";
-
-                } else {
-
-                  button.title =
-                    "Se connecter";
-
-                }
+                button.title =
+                  user
+                    ? "Mon profil"
+                    : "Se connecter";
 
               }
             );
@@ -1462,468 +1695,9 @@
           }
         );
 
-      }
 
+      }
     );
-
-
-    /* =====================================================
-       COMMUNIQUÉS FIRESTORE
-       ===================================================== */
-
-    async function chargerCommuniques() {
-
-      const container =
-        document.getElementById(
-          "communiquesContainer"
-        );
-
-
-      if (!container) {
-
-        return;
-
-      }
-
-
-      try {
-
-        /*
-         * On attend que app.js ait initialisé Firebase.
-         */
-
-        let tentatives =
-          0;
-
-
-        while (
-          !window.db &&
-          tentatives < 50
-        ) {
-
-          await new Promise(
-            resolve =>
-              setTimeout(resolve, 100)
-          );
-
-
-          tentatives++;
-
-        }
-
-
-        /*
-         * Vérification de Firestore.
-         */
-
-        if (!window.db) {
-
-          container.innerHTML = `
-
-            <div class="announcement-error">
-
-              <i class="fa-solid fa-triangle-exclamation"></i>
-
-              Impossible de se connecter à la base
-              de données Firebase.
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        /*
-         * Collection Firestore :
-         *
-         * communiques
-         */
-
-        const communiquesRef =
-          collection(
-            window.db,
-            "communiques"
-          );
-
-
-        /*
-         * Les 10 derniers communiqués.
-         */
-
-        let communiquesQuery;
-
-
-        try {
-
-          communiquesQuery =
-            query(
-              communiquesRef,
-              orderBy(
-                "date",
-                "desc"
-              ),
-              limit(10)
-            );
-
-        } catch (error) {
-
-          communiquesQuery =
-            query(
-              communiquesRef,
-              limit(10)
-            );
-
-        }
-
-
-        const snapshot =
-          await getDocs(
-            communiquesQuery
-          );
-
-
-        /*
-         * Aucun communiqué.
-         */
-
-        if (snapshot.empty) {
-
-          container.innerHTML = `
-
-            <div class="announcement-empty">
-
-              <i class="fa-solid fa-bullhorn"></i>
-
-              <div>
-                Aucun communiqué disponible pour le moment.
-              </div>
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        /*
-         * Nettoyage du conteneur.
-         */
-
-        container.innerHTML = "";
-
-
-        /*
-         * Conversion des documents.
-         */
-
-        const communiques =
-          [];
-
-
-        snapshot.forEach(
-          function (docSnap) {
-
-            const data =
-              docSnap.data();
-
-
-            communiques.push({
-
-              id:
-                docSnap.id,
-
-              ...data
-
-            });
-
-          }
-        );
-
-
-        /*
-         * Affichage.
-         */
-
-        communiques.forEach(
-          function (communique) {
-
-            const article =
-              document.createElement(
-                "article"
-              );
-
-
-            article.className =
-              "announcement-box";
-
-
-            /*
-             * Champs acceptés.
-             *
-             * titre
-             * contenu
-             * message
-             * description
-             * type
-             * date
-             */
-
-            const titre =
-              communique.titre ||
-              communique.title ||
-              "Communiqué";
-
-
-            const contenu =
-              communique.contenu ||
-              communique.message ||
-              communique.description ||
-              "";
-
-
-            const type =
-              communique.type ||
-              "Information";
-
-
-            const date =
-              formaterDate(
-                communique.date ||
-                communique.createdAt ||
-                communique.timestamp
-              );
-
-
-            article.innerHTML = `
-
-              <div class="announcement-icon">
-
-                <i class="fa-solid fa-bullhorn"></i>
-
-              </div>
-
-
-              <div class="announcement-content">
-
-                <span class="announcement-label">
-
-                  ${echapperHTML(type)}
-
-                </span>
-
-
-                <h3>
-
-                  ${echapperHTML(titre)}
-
-                </h3>
-
-
-                <p>
-
-                  ${echapperHTML(contenu)}
-
-                </p>
-
-
-                ${
-                  date
-                    ? `
-                      <div class="announcement-date">
-
-                        <i class="fa-regular fa-clock"></i>
-
-                        ${echapperHTML(date)}
-
-                      </div>
-                    `
-                    : ""
-                }
-
-              </div>
-
-            `;
-
-
-            container.appendChild(
-              article
-            );
-
-          }
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Erreur chargement communiqués :",
-          error
-        );
-
-
-        container.innerHTML = `
-
-          <div class="announcement-error">
-
-            <i class="fa-solid fa-triangle-exclamation"></i>
-
-            Une erreur est survenue lors du
-            chargement des communiqués.
-
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       FORMATER UNE DATE FIRESTORE
-       ===================================================== */
-
-    function formaterDate(valeur) {
-
-      if (!valeur) {
-
-        return "";
-
-      }
-
-
-      try {
-
-        let date;
-
-
-        /*
-         * Timestamp Firestore
-         */
-
-        if (
-          typeof valeur.toDate ===
-          "function"
-        ) {
-
-          date =
-            valeur.toDate();
-
-        }
-
-
-        /*
-         * Date JavaScript
-         */
-
-        else if (
-          valeur instanceof Date
-        ) {
-
-          date =
-            valeur;
-
-        }
-
-
-        /*
-         * Timestamp numérique
-         */
-
-        else if (
-          typeof valeur ===
-          "number"
-        ) {
-
-          date =
-            new Date(valeur);
-
-        }
-
-
-        /*
-         * Texte
-         */
-
-        else {
-
-          date =
-            new Date(valeur);
-
-        }
-
-
-        if (
-          isNaN(
-            date.getTime()
-          )
-        ) {
-
-          return "";
-
-        }
-
-
-        return date.toLocaleDateString(
-          "fr-FR",
-          {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-          }
-        );
-
-      } catch (error) {
-
-        return "";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       PROTECTION CONTRE HTML
-       ===================================================== */
-
-    function echapperHTML(texte) {
-
-      return String(
-        texte ?? ""
-      )
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
-
-    /* =====================================================
-       LANCEMENT
-       ===================================================== */
-
-    chargerCommuniques();
 
   </script>
 
