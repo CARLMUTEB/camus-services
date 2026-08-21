@@ -429,14 +429,13 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK (Modular v10) & Logique de chargement des données -->
+    <!-- Firebase SDK & Logique de chargement -->
     <script type="module">
-        // Importez Firebase depuis les CDN officiels
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ==========================================
-        // REMPLACEZ AVEC VOS CONFIGURATIONS FIREBASE
+        // VOS CONFIGURATIONS FIREBASE
         // ==========================================
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
@@ -447,27 +446,25 @@
             appId: "votre_app_id"
         };
 
-        // Initialisation de Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         let allPublications = [];
         let currentCategory = 'all';
 
-        // Fonction pour récupérer les vraies données depuis Firestore
         async function fetchPublicationsFromFirebase() {
             const container = document.getElementById('cardsContainer');
             try {
-                // Nom de votre collection Firestore (ex: "annonces" ou "publications")
-                const querySnapshot = await getDocs(collection(db, "annonces"));
                 allPublications = [];
 
-                querySnapshot.forEach((doc) => {
+                // 1. Récupérer depuis la collection "communiques"
+                const snapCommuniques = await getDocs(collection(db, "communiques"));
+                snapCommuniques.forEach((doc) => {
                     const data = doc.data();
                     allPublications.push({
                         id: doc.id,
                         type: data.type || 'article', // 'article' ou 'prestataire'
-                        titre: data.titre || 'Sans titre',
+                        titre: data.titre || data.title || 'Sans titre',
                         description: data.description || '',
                         prixOrStatut: data.prixOrStatut || '',
                         image: data.image || 'https://via.placeholder.com/300',
@@ -475,14 +472,32 @@
                     });
                 });
 
+                // 2. Récupérer depuis la collection "services" (si elle existe)
+                try {
+                    const snapServices = await getDocs(collection(db, "services"));
+                    snapServices.forEach((doc) => {
+                        const data = doc.data();
+                        allPublications.push({
+                            id: doc.id,
+                            type: data.type || 'prestataire',
+                            titre: data.titre || data.nom || 'Sans nom',
+                            description: data.description || '',
+                            prixOrStatut: data.prixOrStatut || 'Disponible',
+                            image: data.image || 'https://via.placeholder.com/300',
+                            btnText: 'Contacter'
+                        });
+                    });
+                } catch (e) {
+                    console.log("Collection 'services' optionnelle non lue ou vide.");
+                }
+
                 filterAndRender();
             } catch (error) {
-                console.error("Erreur lors du chargement Firebase : ", error);
-                container.innerHTML = '<p class="loader-text" style="color:var(--red);">Erreur de connexion à la base de données.</p>';
+                console.error("Erreur Firebase : ", error);
+                container.innerHTML = `<p class="loader-text" style="color:var(--red);">Erreur : ${error.message}</p>`;
             }
         }
 
-        // Fonction globale de filtrage et rendu
         window.filterAndRender = function() {
             const container = document.getElementById('cardsContainer');
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
@@ -527,7 +542,6 @@
             });
         }
 
-        // Changer de catégorie
         window.setCategory = function(category, btnElement) {
             currentCategory = category;
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -535,7 +549,6 @@
             filterAndRender();
         }
 
-        // Action au clic sur une carte
         window.handleAction = function(id) {
             const item = allPublications.find(p => p.id === id);
             if (item) {
@@ -543,7 +556,6 @@
             }
         }
 
-        // Lancement au démarrage
         fetchPublicationsFromFirebase();
     </script>
 
