@@ -1,6 +1,5 @@
 /* =========================================================
-   CAMU SERVICES — STYLE GLOBAL
-   Version harmonisée avec index.html
+   CAMU SERVICES — STYLE GLOBAL (Version Harmonisée)
    Responsive : téléphone / tablette / ordinateur
    ========================================================= */
 
@@ -25,10 +24,10 @@
   --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.10);
 
   --radius: 14px;
-  --nav-height: 68px;
+  --nav-height: 70px;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -47,8 +46,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  padding-top: 64px;
-  padding-bottom: calc(var(--nav-height) + 15px);
+  padding-top: 74px; /* Espace pour la top-bar fixe */
+  padding-bottom: calc(var(--nav-height) + 25px); /* Empêche le texte d'être coupé en bas */
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
@@ -153,13 +152,13 @@ h1, h2, h3, h4, p, span, a, button, label {
   transform: scale(0.95);
 }
 
-/* SIDEBAR */
+/* SIDEBAR VERTICALE */
 .sidebar-vertical {
   position: fixed;
-  top: 76px;
-  left: 18px;
+  top: 74px;
+  left: 15px;
   width: 280px;
-  max-height: calc(100vh - 94px);
+  max-height: calc(100vh - 90px);
   overflow-y: auto;
   background: var(--card);
   border: 1px solid var(--border);
@@ -182,6 +181,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   letter-spacing: 0.8px;
   margin-bottom: 12px;
   padding-left: 8px;
+  text-transform: uppercase;
 }
 
 .sidebar-vertical ul {
@@ -221,21 +221,21 @@ h1, h2, h3, h4, p, span, a, button, label {
   color: var(--red);
 }
 
-/* CONTENEUR */
+/* CONTENEUR PRINCIPAL */
 .container {
   width: min(92%, 760px);
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 10px 0 30px 0;
 }
 
-/* HERO */
+/* HERO SECTION */
 .hero {
   width: 100%;
   background: linear-gradient(135deg, #111111 0%, #252525 100%);
   color: #ffffff;
   border-radius: 20px;
   padding: 30px 25px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
@@ -250,6 +250,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   top: -70px;
   border-radius: 50%;
   background: rgba(211, 47, 47, 0.16);
+  pointer-events: none;
 }
 
 .hero-content {
@@ -272,8 +273,8 @@ h1, h2, h3, h4, p, span, a, button, label {
 
 .hero h1 {
   max-width: 600px;
-  font-size: 29px;
-  line-height: 1.16;
+  font-size: 26px;
+  line-height: 1.2;
   font-weight: 900;
   letter-spacing: -0.7px;
   margin-bottom: 11px;
@@ -355,11 +356,11 @@ h1, h2, h3, h4, p, span, a, button, label {
 
 .search-bar {
   width: 100%;
-  height: 53px;
+  height: 52px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 7px 0 14px;
+  padding: 0 8px 0 14px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -375,7 +376,6 @@ h1, h2, h3, h4, p, span, a, button, label {
 .search-bar input {
   flex: 1;
   min-width: 0;
-  width: 100%;
   height: 100%;
   border: none;
   outline: none;
@@ -389,9 +389,9 @@ h1, h2, h3, h4, p, span, a, button, label {
 }
 
 .search-button {
-  width: 39px;
-  height: 39px;
-  flex: 0 0 39px;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
   border: none;
   border-radius: 10px;
   background: var(--red);
@@ -412,7 +412,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   align-items: flex-end;
   justify-content: space-between;
   gap: 10px;
-  margin: 20px 0 11px;
+  margin: 22px 0 12px;
 }
 
 .section-label {
@@ -446,14 +446,14 @@ h1, h2, h3, h4, p, span, a, button, label {
   font-size: 9px;
 }
 
-/* CATÉGORIES */
+/* CATÉGORIES (SCROLLABLE) */
 .categories {
   display: flex;
   gap: 8px;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2px 2px 9px;
+  padding: 2px 2px 10px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -464,12 +464,12 @@ h1, h2, h3, h4, p, span, a, button, label {
 
 .cat-btn {
   flex: 0 0 auto;
-  min-height: 39px;
+  min-height: 38px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   white-space: nowrap;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 22px;
   border: 1px solid #f1c2c2;
   background: #fff5f5;
@@ -497,6 +497,9 @@ h1, h2, h3, h4, p, span, a, button, label {
 /* COMMUNIQUÉS & CARTES SERVICES */
 #communiquesContainer, #annoncesContainer {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .communique-card {
@@ -508,7 +511,6 @@ h1, h2, h3, h4, p, span, a, button, label {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
-  margin-bottom: 10px;
   box-shadow: var(--shadow);
 }
 
@@ -522,11 +524,12 @@ h1, h2, h3, h4, p, span, a, button, label {
   border-radius: 11px;
   background: var(--red-light);
   color: var(--red);
+  font-size: 16px;
 }
 
-/* CORRECTION DU BUG DE SYNTAXE ICI */
 .communique-content {
   min-width: 0;
+  flex: 1;
 }
 
 .communique-content h3 {
@@ -548,7 +551,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   align-items: flex-start;
   gap: 14px;
   width: 100%;
-  margin-top: 22px;
+  margin-top: 24px;
   padding: 20px;
   background: linear-gradient(135deg, #1b1b1b, #2b2b2b);
   color: #ffffff;
@@ -566,16 +569,20 @@ h1, h2, h3, h4, p, span, a, button, label {
   background: var(--red);
   border-radius: 12px;
   font-size: 19px;
+  color: #ffffff;
 }
 
 .professional-content {
   min-width: 0;
+  flex: 1;
 }
 
 .professional-content > span {
   color: #bbbbbb;
   font-size: 10px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .professional-content h2 {
@@ -594,7 +601,7 @@ h1, h2, h3, h4, p, span, a, button, label {
 /* FOOTER */
 .footer {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 28px;
   padding: 24px 16px;
   text-align: center;
   background: #111111;
@@ -634,10 +641,12 @@ h1, h2, h3, h4, p, span, a, button, label {
 .copyright {
   border-top: 1px solid #292929;
   padding-top: 12px;
+  font-size: 10px;
+  color: #888888;
 }
 
 /* =========================================================
-   NAVIGATION MOBILE DU BOTTOM
+   NAVIGATION MOBILE DU BOTTOM (BARRE INFERIEURE)
    ========================================================= */
 .bottom-nav {
   position: fixed;
@@ -648,11 +657,13 @@ h1, h2, h3, h4, p, span, a, button, label {
   height: var(--nav-height);
   display: flex;
   align-items: stretch;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid var(--border);
   box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
   z-index: 1000;
-  padding: 5px;
+  padding: 6px;
 }
 
 .bottom-nav a {
@@ -662,7 +673,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   color: #666666;
   border-radius: 10px;
   font-size: 10px;
@@ -699,8 +710,7 @@ html.dark-mode body {
 }
 
 html.dark-mode .search-bar,
-html.dark-mode .empty-state,
-html.dark-mode .loading-card {
+html.dark-mode .communique-card {
   background: var(--card);
   border-color: var(--border);
 }
@@ -710,7 +720,7 @@ html.dark-mode .search-bar input {
 }
 
 html.dark-mode .bottom-nav {
-  background: rgba(25, 25, 25, 0.98);
+  background: rgba(25, 25, 25, 0.96);
   border-color: #333333;
 }
 
@@ -725,7 +735,7 @@ html.dark-mode .bottom-nav a.active {
 /* ORDINATEUR : MASQUER LA NAVIGATION MOBILE */
 @media (min-width: 1000px) {
   body {
-    padding-bottom: 20px;
+    padding-bottom: 30px;
   }
 
   .bottom-nav {
