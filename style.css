@@ -524,7 +524,9 @@ h1, h2, h3, h4, p, span, a, button, label {
   color: var(--red);
 }
 
-.communique-content min-width: 0;
+.communique-content {
+  min-width: 0;
+}
 
 .communique-content h3 {
   font-size: 14px;
