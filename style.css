@@ -1,5 +1,5 @@
 /* =========================================================
-   CAMU SERVICES — STYLE GLOBAL (Version Harmonisée)
+   CAMU SERVICES — STYLE GLOBAL (Version Harmonisée & Corrigée)
    Responsive : téléphone / tablette / ordinateur
    ========================================================= */
 
@@ -46,8 +46,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  padding-top: 74px; /* Espace pour la top-bar fixe */
-  padding-bottom: calc(var(--nav-height) + 25px); /* Empêche le texte d'être coupé en bas */
+  padding-top: 74px;
+  padding-bottom: calc(var(--nav-height) + 25px);
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
@@ -745,4 +745,47 @@ html.dark-mode .bottom-nav a.active {
   .container {
     width: min(90%, 800px);
   }
+}
+
+
+/* =========================================================
+   PROTECTION ANTI-GIGANTISME DES ICÔNES & CARTES (AJOUTÉ)
+   ========================================================= */
+.communique-card > i,
+.entreprise-card > i,
+.service-card > i,
+.card > i {
+  width: 40px !important;
+  height: 40px !important;
+  flex: 0 0 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 11px !important;
+  background: var(--red-light) !important;
+  color: var(--red) !important;
+  font-size: 16px !important;
+  margin-right: 12px;
+}
+
+.communique-icon, 
+.entreprise-icon, 
+.service-icon,
+.card-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  flex: 0 0 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 11px !important;
+  background: var(--red-light) !important;
+  color: var(--red) !important;
+  font-size: 16px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
