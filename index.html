@@ -6,30 +6,30 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,initial-scale=1">
+      content="width=device-width,initial-scale=1">
 
 <title>CAMU SERVICES — Accueil</title>
 
 <link rel="stylesheet" href="style.css">
 
 <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <!-- Appliquer le thème avant affichage -->
 <script>
 (function () {
 
-    const theme = localStorage.getItem("camu_theme");
+    const theme = localStorage.getItem("camu_theme");
 
-    if (theme === "dark") {
-        document.documentElement.classList.add("dark-mode");
-    }
+    if (theme === "dark") {
+        document.documentElement.classList.add("dark-mode");
+    }
 
-    const language = localStorage.getItem("camu_language");
+    const language = localStorage.getItem("camu_language");
 
-    if (language) {
-        document.documentElement.lang = language;
-    }
+    if (language) {
+        document.documentElement.lang = language;
+    }
 
 })();
 </script>
@@ -41,522 +41,522 @@
 
 
 <!-- =====================================================
-     BARRE SUPÉRIEURE
-     ===================================================== -->
+     BARRE SUPÉRIEURE
+     ===================================================== -->
 
 <header class="top-bar">
 
-    <button
-        class="menu-toggle"
-        id="menuToggle"
-        aria-label="Menu">
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Menu">
 
-        <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-bars"></i>
 
-    </button>
-
-
-    <div class="logo-text">
-
-        CAMU <span>SERVICES</span>
-
-    </div>
+    </button>
 
 
-    <a
-        href="profil.html"
-        class="profile-btn"
-        aria-label="Profil">
+    <div class="logo-text">
 
-        <i class="fa-solid fa-user"></i>
+        CAMU <span>SERVICES</span>
 
-    </a>
+    </div>
+
+
+    <a
+        href="profil.html"
+        class="profile-btn"
+        aria-label="Profil">
+
+        <i class="fa-solid fa-user"></i>
+
+    </a>
 
 </header>
 
 
 
 <!-- =====================================================
-     MENU LATÉRAL
-     ===================================================== -->
+     MENU LATÉRAL
+     ===================================================== -->
 
 <aside class="sidebar-vertical">
 
-    <div class="sidebar-header">
+    <div class="sidebar-header">
 
-        <span data-i18n="navigation">
-            Navigation
-        </span>
+        <span data-i18n="navigation">
+            Navigation
+        </span>
 
-    </div>
+    </div>
 
 
-    <ul>
+    <ul>
 
-        <li>
+        <li>
 
-            <a
-                href="index.html"
-                class="active-link">
+            <a
+                href="index.html"
+                class="active-link">
 
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-house"></i>
 
-                <span data-i18n="accueil">
-                    Accueil
-                </span>
+                <span data-i18n="accueil">
+                    Accueil
+                </span>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
 
-        <li>
+        <li>
 
-            <a href="publier.html">
+            <a href="publier.html">
 
-                <i class="fa-solid fa-circle-plus"></i>
+                <i class="fa-solid fa-circle-plus"></i>
 
-                <span data-i18n="publier">
-                    Publier
-                </span>
+                <span data-i18n="publier">
+                    Publier
+                </span>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
 
-        <li>
+        <li>
 
-            <a href="chat.html">
+            <a href="chat.html">
 
-                <i class="fa-solid fa-comments"></i>
+                <i class="fa-solid fa-comments"></i>
 
-                <span data-i18n="chat">
-                    Chat
-                </span>
+                <span data-i18n="chat">
+                    Chat
+                </span>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
 
-        <!-- PARAMÈTRES -->
+        <!-- PARAMÈTRES -->
 
-        <li
-            class="has-submenu"
-            id="paramMenuToggle">
+        <li
+            class="has-submenu"
+            id="paramMenuToggle">
 
-            <a
-                href="javascript:void(0);"
-                style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                ">
+            <a
+                href="javascript:void(0);"
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
 
-                <span>
+                <span>
 
-                    <i class="fa-solid fa-gear"></i>
+                    <i class="fa-solid fa-gear"></i>
 
-                    <span data-i18n="parametres">
-                        Paramètres
-                    </span>
+                    <span data-i18n="parametres">
+                        Paramètres
+                    </span>
 
-                </span>
+                </span>
 
 
-                <i
-                    class="fa-solid fa-chevron-down"
-                    id="arrowParam"
-                    style="
-                        font-size:11px;
-                        transition:transform .3s;
-                    ">
-                </i>
+                <i
+                    class="fa-solid fa-chevron-down"
+                    id="arrowParam"
+                    style="
+                        font-size:11px;
+                        transition:transform .3s;
+                    ">
+                </i>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
 
-        <ul
-            class="submenu-container"
-            id="paramSubmenu">
+        <ul
+            class="submenu-container"
+            id="paramSubmenu">
 
-            <li>
+            <li>
 
-                <a href="parametres.html#notifications">
+                <a href="parametres.html#notifications">
 
-                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-bell"></i>
 
-                    <span data-i18n="notifications">
-                        Notifications
-                    </span>
+                    <span data-i18n="notifications">
+                        Notifications
+                    </span>
 
-                </a>
+                </a>
 
-            </li>
+            </li>
 
 
-            <li>
+            <li>
 
-                <a href="parametres.html#langue">
+                <a href="parametres.html#langue">
 
-                    <i class="fa-solid fa-globe"></i>
+                    <i class="fa-solid fa-globe"></i>
 
-                    <span data-i18n="langue">
-                        Langue
-                    </span>
+                    <span data-i18n="langue">
+                        Langue
+                    </span>
 
-                </a>
+                </a>
 
-            </li>
+            </li>
 
 
-            <li>
+            <li>
 
-                <a href="parametres.html#theme">
+                <a href="parametres.html#theme">
 
-                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-moon"></i>
 
-                    <span data-i18n="modeSombre">
-                        Mode sombre
-                    </span>
+                    <span data-i18n="modeSombre">
+                        Mode sombre
+                    </span>
 
-                </a>
+                </a>
 
-            </li>
+            </li>
 
-        </ul>
+        </ul>
 
 
-        <li>
+        <li>
 
-            <a href="conditions.html">
+            <a href="conditions.html">
 
-                <i class="fa-solid fa-file-contract"></i>
+                <i class="fa-solid fa-file-contract"></i>
 
-                <span data-i18n="conditions">
-                    Conditions
-                </span>
+                <span data-i18n="conditions">
+                    Conditions
+                </span>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
 
-        <li>
+        <li>
 
-            <a href="profil.html">
+            <a href="profil.html">
 
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user"></i>
 
-                <span data-i18n="monProfil">
-                    Mon Profil
-                </span>
+                <span data-i18n="monProfil">
+                    Mon Profil
+                </span>
 
-            </a>
+            </a>
 
-        </li>
+        </li>
 
-    </ul>
+    </ul>
 
 </aside>
 
 
 
 <!-- =====================================================
-     CONTENU
-     ===================================================== -->
+     CONTENU
+     ===================================================== -->
 
 <main class="container">
 
 
-    <section class="hero">
+    <section class="hero">
 
-        <h1>
+        <h1>
 
-            <span data-i18n="heroTitre">
-                Trouvez le service qu'il vous faut
-            </span>
+            <span data-i18n="heroTitre">
+                Trouvez le service qu'il vous faut
+            </span>
 
-            <span>
-                <span data-i18n="heroSousTitre">
-                    près de chez vous.
-                </span>
-            </span>
+            <span>
+                <span data-i18n="heroSousTitre">
+                    près de chez vous.
+                </span>
+            </span>
 
-        </h1>
+        </h1>
 
 
-        <p data-i18n="heroDescription">
+        <p data-i18n="heroDescription">
 
-            Découvrez des prestataires locaux et contactez-les directement.
+            Découvrez des prestataires locaux et contactez-les directement.
 
-        </p>
+        </p>
 
-    </section>
+    </section>
 
 
 
-    <!-- RECHERCHE -->
+    <!-- RECHERCHE -->
 
-    <div class="search-bar">
+    <div class="search-bar">
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-        <input
-            id="search"
-            data-i18n-placeholder="rechercher"
-            placeholder="Rechercher un service...">
+        <input
+            id="search"
+            data-i18n-placeholder="rechercher"
+            placeholder="Rechercher un service...">
 
-    </div>
+    </div>
 
 
 
-    <!-- CATÉGORIES -->
+    <!-- CATÉGORIES -->
 
-    <div
-        class="section-title"
-        data-i18n="categories">
+    <div
+        class="section-title"
+        data-i18n="categories">
 
-        Catégories
+        Catégories
 
-    </div>
+    </div>
 
 
-    <div class="categories">
+    <div class="categories">
 
-        <button
-            class="cat-btn"
-            data-cat=""
-            data-i18n="tout">
+        <button
+            class="cat-btn"
+            data-cat=""
+            data-i18n="tout">
 
-            Tout
+            Tout
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="BTP & Construction">
+        <button
+            class="cat-btn"
+            data-cat="BTP & Construction">
 
-            BTP
+            BTP
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="Technique & Maintenance">
+        <button
+            class="cat-btn"
+            data-cat="Technique & Maintenance">
 
-            Technique
+            Technique
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="Informatique & Numérique">
+        <button
+            class="cat-btn"
+            data-cat="Informatique & Numérique">
 
-            Informatique
+            Informatique
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="Maison & Immobilier">
+        <button
+            class="cat-btn"
+            data-cat="Maison & Immobilier">
 
-            Maison
+            Maison
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="Transport & Livraison">
+        <button
+            class="cat-btn"
+            data-cat="Transport & Livraison">
 
-            Transport
+            Transport
 
-        </button>
+        </button>
 
 
-        <button
-            class="cat-btn"
-            data-cat="Divers & Services">
+        <button
+            class="cat-btn"
+            data-cat="Divers & Services">
 
-            Divers
+            Divers
 
-        </button>
+        </button>
 
-    </div>
+    </div>
 
 
 
-    <!-- COMMUNIQUÉS -->
+    <!-- COMMUNIQUÉS -->
 
-    <div id="communiquesContainer"></div>
+    <div id="communiquesContainer"></div>
 
 
 
-    <!-- SERVICES -->
+    <!-- SERVICES -->
 
-    <div
-        class="section-title"
-        data-i18n="servicesDisponibles">
+    <div
+        class="section-title"
+        data-i18n="servicesDisponibles">
 
-        Services disponibles
+        Services disponibles
 
-    </div>
+    </div>
 
 
-    <div id="services">
+    <div id="services">
 
-        <div class="empty-state">
+        <div class="empty-state">
 
-            <i class="fa-solid fa-spinner fa-spin"></i>
+            <i class="fa-solid fa-spinner fa-spin"></i>
 
-            <p data-i18n="chargement">
-                Chargement...
-            </p>
+            <p data-i18n="chargement">
+                Chargement...
+            </p>
 
-        </div>
+        </div>
 
-    </div>
+    </div>
 
 
 
-    <!-- FOOTER -->
+    <!-- FOOTER -->
 
-    <footer class="footer">
+    <footer class="footer">
 
-        <h3>
-            CAMU SERVICES
-        </h3>
+        <h3>
+            CAMU SERVICES
+        </h3>
 
 
-        <p data-i18n="marketplace">
-            Votre marketplace locale de services.
-        </p>
+        <p data-i18n="marketplace">
+            Votre marketplace locale de services.
+        </p>
 
 
-        <div class="footer-links">
+        <div class="footer-links">
 
-            <a href="a-propos.html">
-                À propos
-            </a>
+            <a href="a-propos.html">
+                À propos
+            </a>
 
-            <a href="conditions.html">
-                Conditions
-            </a>
+            <a href="conditions.html">
+                Conditions
+            </a>
 
-            <a href="contact.html">
-                Contact
-            </a>
+            <a href="contact.html">
+                Contact
+            </a>
 
-            <a href="politique.html">
-                Politique d'utilisation
-            </a>
+            <a href="politique.html">
+                Politique d'utilisation
+            </a>
 
-            <a href="manifestations.html">
-                Manifestations
-            </a>
+            <a href="manifestations.html">
+                Manifestations
+            </a>
 
-        </div>
+        </div>
 
 
-        <p>
-            © 2026 CAMU SERVICES
-        </p>
+        <p>
+            © 2026 CAMU SERVICES
+        </p>
 
-    </footer>
+    </footer>
 
 </main>
 
 
 
 <!-- =====================================================
-     NAVIGATION MOBILE
-     ===================================================== -->
+     NAVIGATION MOBILE
+     ===================================================== -->
 
 <nav class="bottom-nav">
 
-    <a
-        class="active"
-        href="index.html">
+    <a
+        class="active"
+        href="index.html">
 
-        <i class="fa-solid fa-house"></i>
+        <i class="fa-solid fa-house"></i>
 
-        <span data-i18n="accueil">
-            Accueil
-        </span>
+        <span data-i18n="accueil">
+            Accueil
+        </span>
 
-    </a>
-
-
-    <a href="publier.html">
-
-        <i class="fa-solid fa-circle-plus"></i>
-
-        <span data-i18n="publier">
-            Publier
-        </span>
-
-    </a>
+    </a>
 
 
-    <a href="chat.html">
+    <a href="publier.html">
 
-        <i class="fa-solid fa-comments"></i>
+        <i class="fa-solid fa-circle-plus"></i>
 
-        <span data-i18n="chat">
-            Chat
-        </span>
+        <span data-i18n="publier">
+            Publier
+        </span>
 
-    </a>
+    </a>
 
 
-    <a href="profil.html">
+    <a href="chat.html">
 
-        <i class="fa-solid fa-user"></i>
+        <i class="fa-solid fa-comments"></i>
 
-        <span data-i18n="profil">
-            Profil
-        </span>
+        <span data-i18n="chat">
+            Chat
+        </span>
 
-    </a>
+    </a>
+
+
+    <a href="profil.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span data-i18n="profil">
+            Profil
+        </span>
+
+    </a>
 
 </nav>
 
 
 
 <!-- =====================================================
-     FIREBASE + LOGIQUE
-     ===================================================== -->
+     FIREBASE + LOGIQUE
+     ===================================================== -->
 
 <script type="module">
 
 import { db, auth } from "./app.js";
 
 import {
-    collection,
-    getDocs,
-    doc,
-    getDoc,
-    query,
-    where
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 import {
-    onAuthStateChanged
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
 
 /* =====================================================
-   VARIABLES
-   ===================================================== */
+   VARIABLES
+   ===================================================== */
 
 let all = [];
 let cat = "";
@@ -564,638 +564,638 @@ let cat = "";
 
 
 /* =====================================================
-   PROTECTION HTML
-   ===================================================== */
+   PROTECTION HTML
+   ===================================================== */
 
 const e = x => String(x ?? "")
-    .replace(/[&<>"']/g, c => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-    }[c]));
+    .replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    }[c]));
 
 
 
 /* =====================================================
-   VÉRIFICATION AUTH & CHARGEMENT
-   ===================================================== */
+   VÉRIFICATION AUTH & CHARGEMENT
+   ===================================================== */
 
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        load();
-    } else {
-        document.getElementById("services").innerHTML = `
-            <div class="empty-state" style="padding: 40px 20px; text-align: center;">
-                <i class="fa-solid fa-lock" style="font-size: 32px; margin-bottom: 15px; color: #e53935;"></i>
-                <h3 style="margin-bottom: 10px; color: #333;">Accès restreint</h3>
-                <p style="margin-bottom: 20px; color: #666;">Connectez-vous ou créez un compte pour continuer</p>
-                <a href="profil.html" class="btn-submit" style="display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                    Se connecter
-                </a>
-            </div>
-        `;
-    }
+    if (user) {
+        load();
+    } else {
+        document.getElementById("services").innerHTML = `
+            <div class="empty-state" style="padding: 40px 20px; text-align: center;">
+                <i class="fa-solid fa-lock" style="font-size: 32px; margin-bottom: 15px; color: #e53935;"></i>
+                <h3 style="margin-bottom: 10px; color: #333;">Accès restreint</h3>
+                <p style="margin-bottom: 20px; color: #666;">Connectez-vous ou créez un compte pour continuer</p>
+                <a href="profil.html" class="btn-submit" style="display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                    Se connecter
+                </a>
+            </div>
+        `;
+    }
 });
 
 
 
 /* =====================================================
-   CHARGEMENT DES SERVICES
-   ===================================================== */
+   CHARGEMENT DES SERVICES
+   ===================================================== */
 
 async function load() {
 
-    try {
+    try {
 
-        const snapshot = await getDocs(
+        const snapshot = await getDocs(
 
-            query(
-                collection(db, "services"),
-                where("valide", "==", true)
-            )
+            query(
+                collection(db, "services"),
+                where("valide", "==", true)
+            )
 
-        );
-
-
-        all = snapshot.docs.map(doc => ({
-
-            id: doc.id,
-
-            ...doc.data()
-
-        }));
+        );
 
 
-        render();
+        all = snapshot.docs.map(doc => ({
 
-        chargerCommuniquesAccueil();
+            id: doc.id,
+
+            ...doc.data()
+
+        }));
 
 
-    } catch (error) {
+        render();
 
-        console.error(error);
+        chargerCommuniquesAccueil();
 
 
-        document.getElementById("services").innerHTML = `
+    } catch (error) {
 
-            <div class="empty-state">
+        console.error(error);
 
-                <i class="fa-solid fa-triangle-exclamation"></i>
 
-                <h2>
-                    Impossible de charger les services
-                </h2>
+        document.getElementById("services").innerHTML = `
 
-                <p>
-                    Vérifiez Internet et réessayez.
-                </p>
+            <div class="empty-state">
 
-            </div>
+                <i class="fa-solid fa-triangle-exclamation"></i>
 
-        `;
+                <h2>
+                    Impossible de charger les services
+                </h2>
 
-    }
+                <p>
+                    Vérifiez Internet et réessayez.
+                </p>
+
+            </div>
+
+        `;
+
+    }
 
 }
 
 
 
 /* =====================================================
-   AFFICHAGE SERVICES
-   ===================================================== */
+   AFFICHAGE SERVICES
+   ===================================================== */
 
 function render() {
 
-    const searchValue =
-        document
-            .getElementById("search")
-            .value
-            .toLowerCase()
-            .trim();
+    const searchValue =
+        document
+            .getElementById("search")
+            .value
+            .toLowerCase()
+            .trim();
 
 
-    const filtered = all.filter(service => {
+    const filtered = all.filter(service => {
 
-        const texte = `
+        const texte = `
 
-            ${service.titre || ""}
-            ${service.description || ""}
-            ${service.ville || ""}
-            ${service.categorie || ""}
-            ${service.userName || ""}
+            ${service.titre || ""}
+            ${service.description || ""}
+            ${service.ville || ""}
+            ${service.categorie || ""}
+            ${service.userName || ""}
 
-        `.toLowerCase();
-
-
-        return (
-
-            (!cat || service.categorie === cat)
-
-            &&
-
-            (!searchValue || texte.includes(searchValue))
-
-        );
-
-    });
+        `.toLowerCase();
 
 
-    document.getElementById("services").innerHTML =
+        return (
 
-        filtered.length
+            (!cat || service.categorie === cat)
 
-        ?
+            &&
 
-        filtered.map(service => `
+            (!searchValue || texte.includes(searchValue))
 
-            <article class="annonce-card" style="cursor: pointer;" onclick="ouvrirDetails('${service.id}')">
+        );
 
-                <!-- EN-TÊTE : Photo/Logo et Nom de l'utilisateur -->
-                <div style="display: flex; align-items: center; margin-bottom: 10px; gap: 10px; cursor: pointer;" onclick="event.stopPropagation(); ouvrirProfilPrestataire('${service.userId || ''}', '${e(service.userName || service.userEmail || 'Prestataire')}', '${service.userPhoto || ''}')">
-                    <div style="width: 35px; height: 35px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        ${service.userPhoto ? `
-                            <img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
-                        ` : `
-                            <i class="fa-solid fa-user" style="color: #666; font-size: 14px;"></i>
-                        `}
-                    </div>
-                    <div style="font-size: 13px; font-weight: bold; color: #333;">
-                        ${e(service.userName || service.userEmail || "Prestataire")}
-                    </div>
-                </div>
-
-                ${service.image ? `
-                    <div style="margin-bottom: 10px; border-radius: 6px; overflow: hidden; max-height: 180px;">
-                        <img src="${service.image}" alt="Illustration" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                ` : ""}
-
-                <span class="badge-cat">
-
-                    ${e(service.categorie || "Général")}
-
-                </span>
+    });
 
 
-                <h3>
-                    ${e(service.titre || "Service")}
-                </h3>
+    document.getElementById("services").innerHTML =
+
+        filtered.length
+
+        ?
+
+        filtered.map(service => `
+
+            <article class="annonce-card" style="cursor: pointer;" onclick="ouvrirDetails('${service.id}')">
+
+                <!-- EN-TÊTE : Photo/Logo et Nom de l'utilisateur -->
+                <div style="display: flex; align-items: center; margin-bottom: 10px; gap: 10px; cursor: pointer;" onclick="event.stopPropagation(); ouvrirProfilPrestataire('${service.userId || ''}', '${e(service.userName || service.userEmail || 'Prestataire')}', '${service.userPhoto || ''}')">
+                    <div style="width: 35px; height: 35px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        ${service.userPhoto ? `
+                            <img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                        ` : `
+                            <i class="fa-solid fa-user" style="color: #666; font-size: 14px;"></i>
+                        `}
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333;">
+                        ${e(service.userName || service.userEmail || "Prestataire")}
+                    </div>
+                </div>
+
+                ${service.image ? `
+                    <div style="margin-bottom: 10px; border-radius: 6px; overflow: hidden; max-height: 180px;">
+                        <img src="${service.image}" alt="Illustration" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                ` : ""}
+
+                <span class="badge-cat">
+
+                    ${e(service.categorie || "Général")}
+
+                </span>
 
 
-                <div class="location">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    ${e(service.ville || "RDC")}
-
-                </div>
+                <h3>
+                    ${e(service.titre || "Service")}
+                </h3>
 
 
-                <p style="font-size:13px;color:#666">
+                <div class="location">
 
-                    ${e(
-                        (service.description || "").slice(0,130)
-                    )}
+                    <i class="fa-solid fa-location-dot"></i>
 
-                    ${
-                        (service.description || "").length > 130
-                        ? "…"
-                        : ""
-                    }
+                    ${e(service.ville || "RDC")}
 
-                </p>
+                </div>
 
 
-                <p class="prix">
+                <p style="font-size:13px;color:#666">
 
-                    ${e(service.prix || "Sur devis")}
+                    ${e(
+                        (service.description || "").slice(0,130)
+                    )}
 
-                </p>
+                    ${
+                        (service.description || "").length > 130
+                        ? "…"
+                        : ""
+                    }
 
-
-                <div class="card-actions" onclick="event.stopPropagation()">
-
-                    <a
-                        class="btn-submit"
-                        style="flex:1;text-align:center"
-                        href="chat.html?serviceId=${encodeURIComponent(service.id)}">
-
-                        <i class="fa-solid fa-comments"></i>
-
-                        Contacter
-
-                    </a>
+                </p>
 
 
-                    <button
-                        class="favorite-btn"
-                        type="button"
-                        aria-label="Ajouter aux favoris">
+                <p class="prix">
 
-                        ☆
+                    ${e(service.prix || "Sur devis")}
 
-                    </button>
+                </p>
 
-                </div>
 
-            </article>
+                <div class="card-actions" onclick="event.stopPropagation()">
 
-        `).join("")
+                    <a
+                        class="btn-submit"
+                        style="flex:1;text-align:center"
+                        href="chat.html?serviceId=${encodeURIComponent(service.id)}">
 
-        :
+                        <i class="fa-solid fa-comments"></i>
 
-        `
+                        Contacter
 
-        <div class="empty-state">
+                    </a>
 
-            <i class="fa-solid fa-inbox"></i>
 
-            <h2>
-                Aucun service trouvé
-            </h2>
+                    <button
+                        class="favorite-btn"
+                        type="button"
+                        aria-label="Ajouter aux favoris">
 
-            <p>
-                Essayez une autre recherche.
-            </p>
+                        ☆
 
-        </div>
+                    </button>
 
-        `;
+                </div>
+
+            </article>
+
+        `).join("")
+
+        :
+
+        `
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-inbox"></i>
+
+            <h2>
+                Aucun service trouvé
+            </h2>
+
+            <p>
+                Essayez une autre recherche.
+            </p>
+
+        </div>
+
+        `;
 
 }
 
 
 
 /* =====================================================
-   OUVERTURE DE LA MODALE DE DÉTAILS D'UN SERVICE
-   ===================================================== */
+   OUVERTURE DE LA MODALE DE DÉTAILS D'UN SERVICE
+   ===================================================== */
 
 window.ouvrirDetails = function(id) {
-    const service = all.find(s => s.id === id);
-    if (!service) return;
+    const service = all.find(s => s.id === id);
+    if (!service) return;
 
-    const modalId = "modalDetailsService";
-    let existingModal = document.getElementById(modalId);
-    if (existingModal) existingModal.remove();
+    const modalId = "modalDetailsService";
+    let existingModal = document.getElementById(modalId);
+    if (existingModal) existingModal.remove();
 
-    const modalHTML = `
-        <div id="${modalId}" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;">
-            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 20px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-                
-                <button onclick="document.getElementById('${modalId}').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: inherit;">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+    const modalHTML = `
+        <div id="${modalId}" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 20px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                
+                <button onclick="document.getElementById('${modalId}').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: inherit;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
 
-                <!-- En-tête cliquable vers le profil du prestataire -->
-                <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 12px; cursor: pointer;" onclick="document.getElementById('${modalId}').remove(); ouvrirProfilPrestataire('${service.userId || ''}', '${e(service.userName || service.userEmail || 'Prestataire')}', '${service.userPhoto || ''}')">
-                    <div style="width: 45px; height: 45px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        ${service.userPhoto ? `<img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fa-solid fa-user" style="color: #666;"></i>`}
-                    </div>
-                    <div>
-                        <div style="font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 5px;">
-                            ${e(service.userName || service.userEmail || "Prestataire")}
-                            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #888;"></i>
-                        </div>
-                        <div style="font-size: 12px; color: #777;">${e(service.ville || "RDC")} - Voir le profil</div>
-                    </div>
-                </div>
+                <!-- En-tête cliquable vers le profil du prestataire -->
+                <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 12px; cursor: pointer;" onclick="document.getElementById('${modalId}').remove(); ouvrirProfilPrestataire('${service.userId || ''}', '${e(service.userName || service.userEmail || 'Prestataire')}', '${service.userPhoto || ''}')">
+                    <div style="width: 45px; height: 45px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        ${service.userPhoto ? `<img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fa-solid fa-user" style="color: #666;"></i>`}
+                    </div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 5px;">
+                            ${e(service.userName || service.userEmail || "Prestataire")}
+                            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #888;"></i>
+                        </div>
+                        <div style="font-size: 12px; color: #777;">${e(service.ville || "RDC")} - Voir le profil</div>
+                    </div>
+                </div>
 
-                ${service.image ? `<div style="margin-bottom: 15px; border-radius: 8px; overflow: hidden;"><img src="${service.image}" alt="Service" style="width: 100%; max-height: 250px; object-fit: cover;"></div>` : ""}
+                ${service.image ? `<div style="margin-bottom: 15px; border-radius: 8px; overflow: hidden;"><img src="${service.image}" alt="Service" style="width: 100%; max-height: 250px; object-fit: cover;"></div>` : ""}
 
-                <span class="badge-cat" style="display: inline-block; margin-bottom: 10px;">${e(service.categorie)}</span>
-                <h2 style="margin-bottom: 10px; font-size: 18px;">${e(service.titre)}</h2>
-                <p style="font-size: 14px; line-height: 1.5; margin-bottom: 15px; white-space: pre-line;">${e(service.description)}</p>
-                <p style="font-weight: bold; font-size: 16px; color: #e53935; margin-bottom: 20px;">${e(service.prix || "Sur devis")}</p>
+                <span class="badge-cat" style="display: inline-block; margin-bottom: 10px;">${e(service.categorie)}</span>
+                <h2 style="margin-bottom: 10px; font-size: 18px;">${e(service.titre)}</h2>
+                <p style="font-size: 14px; line-height: 1.5; margin-bottom: 15px; white-space: pre-line;">${e(service.description)}</p>
+                <p style="font-weight: bold; font-size: 16px; color: #e53935; margin-bottom: 20px;">${e(service.prix || "Sur devis")}</p>
 
-                <a href="chat.html?serviceId=${encodeURIComponent(service.id)}" class="btn-submit" style="display: block; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px;">
-                    <i class="fa-solid fa-comments"></i> Contacter le prestataire
-                </a>
-            </div>
-        </div>
-    `;
+                <a href="chat.html?serviceId=${encodeURIComponent(service.id)}" class="btn-submit" style="display: block; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px;">
+                    <i class="fa-solid fa-comments"></i> Contacter le prestataire
+                </a>
+            </div>
+        </div>
+    `;
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 };
 
 
 
 /* =====================================================
-   OUVERTURE DU PROFIL COMPLET DU PRESTATAIRE
-   ===================================================== */
+   OUVERTURE DU PROFIL COMPLET DU PRESTATAIRE
+   ===================================================== */
 
 window.ouvrirProfilPrestataire = async function(userId, fallbackName, fallbackPhoto) {
-    const modalId = "modalProfilPrestataire";
-    let existingModal = document.getElementById(modalId);
-    if (existingModal) existingModal.remove();
+    const modalId = "modalProfilPrestataire";
+    let existingModal = document.getElementById(modalId);
+    if (existingModal) existingModal.remove();
 
-    // Modale de chargement initiale
-    const loadingHTML = `
-        <div id="${modalId}" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 30px; text-align: center; position: relative;">
-                <i class="fa-solid fa-spinner fa-spin" style="font-size: 30px; color: #e53935; margin-bottom: 15px;"></i>
-                <p>Chargement du profil...</p>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', loadingHTML);
+    // Modale de chargement initiale
+    const loadingHTML = `
+        <div id="${modalId}" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 30px; text-align: center; position: relative;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 30px; color: #e53935; margin-bottom: 15px;"></i>
+                <p>Chargement du profil...</p>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', loadingHTML);
 
-    let userData = { name: fallbackName, photo: fallbackPhoto, bio: "Aucune description pour le moment.", email: "" };
+    let userData = { name: fallbackName, photo: fallbackPhoto, bio: "Aucune description pour le moment.", email: "" };
 
-    // Tenter de récupérer les données utilisateur depuis Firestore si l'ID est disponible
-    if (userId) {
-        try {
-            const userDocRef = doc(db, "users", userId);
-            const userSnap = await getDoc(userDocRef);
-            if (userSnap.exists()) {
-                const data = userSnap.data();
-                userData.name = data.nom || data.name || fallbackName;
-                userData.photo = data.photo || data.photoURL || fallbackPhoto;
-                userData.bio = data.bio || data.description || "Aucune description pour le moment.";
-                userData.email = data.email || "";
-            }
-        } catch (err) {
-            console.error("Erreur récupération profil:", err);
-        }
-    }
+    // Tenter de récupérer les données utilisateur depuis Firestore si l'ID est disponible
+    if (userId) {
+        try {
+            const userDocRef = doc(db, "users", userId);
+            const userSnap = await getDoc(userDocRef);
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                userData.name = data.nom || data.name || fallbackName;
+                userData.photo = data.photo || data.photoURL || fallbackPhoto;
+                userData.bio = data.bio || data.description || "Aucune description pour le moment.";
+                userData.email = data.email || "";
+            }
+        } catch (err) {
+            console.error("Erreur récupération profil:", err);
+        }
+    }
 
-    // Filtrer toutes les publications (services) appartenant à ce prestataire
-    const userServices = all.filter(s => s.userId === userId);
+    // Filtrer toutes les publications (services) appartenant à ce prestataire
+    const userServices = all.filter(s => s.userId === userId);
 
-    // Mettre à jour la modale avec les informations complètes
-    const modalContainer = document.getElementById(modalId);
-    if (modalContainer) {
-        modalContainer.innerHTML = `
-            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 20px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: left;">
-                
-                <button onclick="document.getElementById('${modalId}').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: inherit;">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+    // Mettre à jour la modale avec les informations complètes
+    const modalContainer = document.getElementById(modalId);
+    if (modalContainer) {
+        modalContainer.innerHTML = `
+            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 20px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: left;">
+                
+                <button onclick="document.getElementById('${modalId}').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: inherit;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
 
-                <!-- Infos du Compte -->
-                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                    <div style="width: 70px; height: 70px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        ${userData.photo ? `<img src="${userData.photo}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fa-solid fa-user" style="font-size: 28px; color: #666;"></i>`}
-                    </div>
-                    <h2 style="font-size: 18px; margin-bottom: 4px;">${e(userData.name)}</h2>
-                    ${userData.email ? `<p style="font-size: 12px; color: #777; margin-bottom: 8px;">${e(userData.email)}</p>` : ""}
-                    
-                    <div style="background: #f9f9f9; padding: 10px 15px; border-radius: 8px; width: 100%; margin-top: 8px; font-size: 13px; color: #555; text-align: center;">
-                        <strong>À propos :</strong> ${e(userData.bio)}
-                    </div>
-                </div>
+                <!-- Infos du Compte -->
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        ${userData.photo ? `<img src="${userData.photo}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fa-solid fa-user" style="font-size: 28px; color: #666;"></i>`}
+                    </div>
+                    <h2 style="font-size: 18px; margin-bottom: 4px;">${e(userData.name)}</h2>
+                    ${userData.email ? `<p style="font-size: 12px; color: #777; margin-bottom: 8px;">${e(userData.email)}</p>` : ""}
+                    
+                    <div style="background: #f9f9f9; padding: 10px 15px; border-radius: 8px; width: 100%; margin-top: 8px; font-size: 13px; color: #555; text-align: center;">
+                        <strong>À propos :</strong> ${e(userData.bio)}
+                    </div>
+                </div>
 
-                <!-- Publications du Prestataire -->
-                <h3 style="font-size: 15px; margin-bottom: 12px;">
-                    <i class="fa-solid fa-bullhorn" style="color: #e53935; margin-right: 5px;"></i> Publications (${userServices.length})
-                </h3>
+                <!-- Publications du Prestataire -->
+                <h3 style="font-size: 15px; margin-bottom: 12px;">
+                    <i class="fa-solid fa-bullhorn" style="color: #e53935; margin-right: 5px;"></i> Publications (${userServices.length})
+                </h3>
 
-                <div style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto;">
-                    ${
-                        userServices.length > 0 
-                        ? userServices.map(srv => `
-                            <div onclick="document.getElementById('${modalId}').remove(); ouvrirDetails('${srv.id}')" style="display: flex; gap: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; background: rgba(0,0,0,0.02); align-items: center; transition: background 0.2s;">
-                                ${srv.image ? `<img src="${srv.image}" alt="" style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover; flex-shrink: 0;">` : `<div style="width: 50px; height: 50px; border-radius: 6px; background: #ddd; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="fa-solid fa-image" style="color:#777"></i></div>`}
-                                <div style="flex: 1; overflow: hidden;">
-                                    <h4 style="font-size: 14px; margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${e(srv.titre)}</h4>
-                                    <p style="font-size: 12px; color: #666; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${e(srv.description)}</p>
-                                    <span style="font-size: 11px; color: #e53935; font-weight: bold;">${e(srv.prix || "Sur devis")}</span>
-                                </div>
-                            </div>
-                        `).join("")
-                        : `<p style="font-size: 13px; color: #777; text-align: center; padding: 20px;">Ce prestataire n'a aucune autre publication active pour le moment.</p>`
-                    }
-                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto;">
+                    ${
+                        userServices.length > 0 
+                        ? userServices.map(srv => `
+                            <div onclick="document.getElementById('${modalId}').remove(); ouvrirDetails('${srv.id}')" style="display: flex; gap: 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; background: rgba(0,0,0,0.02); align-items: center; transition: background 0.2s;">
+                                ${srv.image ? `<img src="${srv.image}" alt="" style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover; flex-shrink: 0;">` : `<div style="width: 50px; height: 50px; border-radius: 6px; background: #ddd; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="fa-solid fa-image" style="color:#777"></i></div>`}
+                                <div style="flex: 1; overflow: hidden;">
+                                    <h4 style="font-size: 14px; margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${e(srv.titre)}</h4>
+                                    <p style="font-size: 12px; color: #666; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${e(srv.description)}</p>
+                                    <span style="font-size: 11px; color: #e53935; font-weight: bold;">${e(srv.prix || "Sur devis")}</span>
+                                </div>
+                            </div>
+                        `).join("")
+                        : `<p style="font-size: 13px; color: #777; text-align: center; padding: 20px;">Ce prestataire n'a aucune autre publication active pour le moment.</p>`
+                    }
+                </div>
 
-            </div>
-        `;
-    }
+            </div>
+        `;
+    }
 };
 
 
 
 /* =====================================================
-   COMMUNIQUÉS FIRESTORE
-   ===================================================== */
+   COMMUNIQUÉS FIRESTORE
+   ===================================================== */
 
 async function chargerCommuniquesAccueil() {
 
-    const container =
-        document.getElementById("communiquesContainer");
+    const container =
+        document.getElementById("communiquesContainer");
 
 
-    if (!container) return;
+    if (!container) return;
 
 
-    try {
+    try {
 
-        const snapshot =
-            await getDocs(
-                collection(db, "communiques")
-            );
-
-
-        let html = "";
+        const snapshot =
+            await getDocs(
+                collection(db, "communiques")
+            );
 
 
-        snapshot.forEach(doc => {
-
-            const com = doc.data();
+        let html = "";
 
 
-            if (com.published === true) {
+        snapshot.forEach(doc => {
 
-                html += `
-
-                    <div style="
-                        background:#222;
-                        border-left:4px solid #2e7d32;
-                        padding:12px 15px;
-                        border-radius:8px;
-                        margin-bottom:10px;
-                        color:white;
-                    ">
-
-                        <h4 style="
-                            margin:0 0 5px 0;
-                            font-size:14px;
-                            color:#4caf50;
-                        ">
-
-                            <i class="fa-solid fa-bullhorn"></i>
-
-                            ${e(com.titre)}
-
-                        </h4>
+            const com = doc.data();
 
 
-                        <p style="
-                            margin:0;
-                            font-size:12px;
-                            color:#ccc;
-                            line-height:1.4;
-                        ">
+            if (com.published === true) {
 
-                            ${e(com.description)}
+                html += `
 
-                        </p>
+                    <div style="
+                        background:#222;
+                        border-left:4px solid #2e7d32;
+                        padding:12px 15px;
+                        border-radius:8px;
+                        margin-bottom:10px;
+                        color:white;
+                    ">
 
-                    </div>
+                        <h4 style="
+                            margin:0 0 5px 0;
+                            font-size:14px;
+                            color:#4caf50;
+                        ">
 
-                `;
+                            <i class="fa-solid fa-bullhorn"></i>
 
-            }
+                            ${e(com.titre)}
 
-        });
-
-
-        container.innerHTML = html;
+                        </h4>
 
 
-    } catch (error) {
+                        <p style="
+                            margin:0;
+                            font-size:12px;
+                            color:#ccc;
+                            line-height:1.4;
+                        ">
 
-        console.error(
-            "Erreur communiqués :",
-            error
-        );
+                            ${e(com.description)}
 
-    }
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        });
+
+
+        container.innerHTML = html;
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur communiqués :",
+            error
+        );
+
+    }
 
 }
 
 
 
 /* =====================================================
-   RECHERCHE
-   ===================================================== */
+   RECHERCHE
+   ===================================================== */
 
 document
-    .getElementById("search")
-    .addEventListener("input", render);
+    .getElementById("search")
+    .addEventListener("input", render);
 
 
 
 /* =====================================================
-   CATÉGORIES
-   ===================================================== */
+   CATÉGORIES
+   ===================================================== */
 
 document
-    .querySelectorAll(".cat-btn")
-    .forEach(button => {
+    .querySelectorAll(".cat-btn")
+    .forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click", () => {
 
-            cat = button.dataset.cat || "";
+            cat = button.dataset.cat || "";
 
-            render();
+            render();
 
-        });
+        });
 
-    });
+    });
 
 
 
 /* =====================================================
-   MENU HAMBURGER
-   ===================================================== */
+   MENU HAMBURGER
+   ===================================================== */
 
 const menuToggle =
-    document.getElementById("menuToggle");
+    document.getElementById("menuToggle");
 
 const sidebar =
-    document.querySelector(".sidebar-vertical");
+    document.querySelector(".sidebar-vertical");
 
 const paramMenuToggle =
-    document.getElementById("paramMenuToggle");
+    document.getElementById("paramMenuToggle");
 
 const paramSubmenu =
-    document.getElementById("paramSubmenu");
+    document.getElementById("paramSubmenu");
 
 const arrowParam =
-    document.getElementById("arrowParam");
+    document.getElementById("arrowParam");
 
 
 
 if (menuToggle && sidebar) {
 
-    menuToggle.addEventListener("click", event => {
+    menuToggle.addEventListener("click", event => {
 
-        event.stopPropagation();
+        event.stopPropagation();
 
-        sidebar.classList.toggle("open");
+        sidebar.classList.toggle("open");
 
-    });
+    });
 
 
-    document.addEventListener("click", event => {
+    document.addEventListener("click", event => {
 
-        if (
-            !sidebar.contains(event.target)
-            &&
-            !menuToggle.contains(event.target)
-        ) {
+        if (
+            !sidebar.contains(event.target)
+            &&
+            !menuToggle.contains(event.target)
+        ) {
 
-            sidebar.classList.remove("open");
+            sidebar.classList.remove("open");
 
-            if (paramSubmenu) {
+            if (paramSubmenu) {
 
-                paramSubmenu.classList.remove(
-                    "open-submenu"
-                );
+                paramSubmenu.classList.remove(
+                    "open-submenu"
+                );
 
-            }
+            }
 
-            if (arrowParam) {
+            if (arrowParam) {
 
-                arrowParam.style.transform =
-                    "rotate(0deg)";
+                arrowParam.style.transform =
+                    "rotate(0deg)";
 
-            }
+            }
 
-        }
+        }
 
-    });
+    });
 
 }
 
 
 
 /* =====================================================
-   SOUS-MENU PARAMÈTRES
-   ===================================================== */
+   SOUS-MENU PARAMÈTRES
+   ===================================================== */
 
 if (paramMenuToggle && paramSubmenu) {
 
-    paramMenuToggle.addEventListener(
-        "click",
-        event => {
+    paramMenuToggle.addEventListener(
+        "click",
+        event => {
 
-            event.stopPropagation();
+            event.stopPropagation();
 
-            paramSubmenu.classList.toggle(
-                "open-submenu"
-            );
+            paramSubmenu.classList.toggle(
+                "open-submenu"
+            );
 
 
-            if (
-                paramSubmenu.classList.contains(
-                    "open-submenu"
-                )
-            ) {
+            if (
+                paramSubmenu.classList.contains(
+                    "open-submenu"
+                )
+            ) {
 
-                arrowParam.style.transform =
-                    "rotate(180deg)";
+                arrowParam.style.transform =
+                    "rotate(180deg)";
 
-            } else {
+            } else {
 
-                arrowParam.style.transform =
-                    "rotate(0deg)";
+                arrowParam.style.transform =
+                    "rotate(0deg)";
 
-            }
+            }
 
-        }
-    );
+        }
+    );
 
 }
 
