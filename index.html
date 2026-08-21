@@ -3,49 +3,38 @@
 
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
-
   <meta
     name="description"
     content="CAMU SERVICES — La plateforme qui connecte les entreprises locales à leurs clients."
   >
-
   <meta name="theme-color" content="#111111">
 
   <title>CAMU SERVICES</title>
 
   <!-- =====================================================
-       CSS PRINCIPAL
-       IMPORTANT : style.css doit être dans le même dossier
-       que index.html
-       ===================================================== -->
-
+        CSS PRINCIPAL
+        ===================================================== -->
   <link rel="stylesheet" href="style.css">
 
   <!-- =====================================================
-       FONT AWESOME
-       ===================================================== -->
-
+        FONT AWESOME
+        ===================================================== -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   >
-
 </head>
-
 
 <body>
 
   <!-- =====================================================
        BARRE SUPÉRIEURE
        ===================================================== -->
-
   <header class="top-bar">
-
     <button
       class="menu-toggle"
       id="menuToggle"
@@ -56,11 +45,9 @@
       <i class="fa-solid fa-bars"></i>
     </button>
 
-
     <a href="index.html" class="logo-text">
       CAMU <span>SERVICES</span>
     </a>
-
 
     <a
       href="profil.html"
@@ -69,118 +56,84 @@
     >
       <i class="fa-regular fa-user"></i>
     </a>
-
   </header>
-
 
   <!-- =====================================================
        MENU LATÉRAL
        ===================================================== -->
-
   <aside
     class="sidebar-vertical"
     id="sidebar"
     aria-label="Menu principal"
   >
-
     <div class="sidebar-header">
       MENU PRINCIPAL
     </div>
 
-
     <ul>
-
       <li>
-        <a
-          href="index.html"
-          class="active-link"
-        >
+        <a href="index.html" class="active-link">
           <i class="fa-solid fa-house"></i>
           <span>Accueil</span>
         </a>
       </li>
-
-
       <li>
         <a href="recherche.html">
           <i class="fa-solid fa-magnifying-glass"></i>
           <span>Rechercher</span>
         </a>
       </li>
-
-
       <li>
         <a href="categories.html">
           <i class="fa-solid fa-layer-group"></i>
           <span>Catégories</span>
         </a>
       </li>
-
-
       <li>
         <a href="favoris.html">
           <i class="fa-regular fa-heart"></i>
           <span>Mes favoris</span>
         </a>
       </li>
-
-
       <li>
         <a href="messages.html">
           <i class="fa-regular fa-comments"></i>
           <span>Messages</span>
         </a>
       </li>
-
-
       <li>
         <a href="profil.html">
           <i class="fa-regular fa-user"></i>
           <span>Mon profil</span>
         </a>
       </li>
-
-
       <li>
         <a href="parametres.html">
           <i class="fa-solid fa-gear"></i>
           <span>Paramètres</span>
         </a>
       </li>
-
-
       <li>
         <a href="inscription-professionnel.html">
           <i class="fa-solid fa-store"></i>
           <span>Inscrire mon entreprise</span>
         </a>
       </li>
-
     </ul>
-
   </aside>
-
 
   <!-- =====================================================
        CONTENU PRINCIPAL
        ===================================================== -->
-
   <main class="container">
 
-
-    <!-- ===================================================
-         HERO
-         =================================================== -->
-
+    <!-- HERO -->
     <section class="hero">
-
       <div class="hero-content">
-
         <span class="hero-badge">
           <i class="fa-solid fa-location-dot"></i>
           Commerce local
         </span>
-
 
         <h1>
           Trouvez facilement
@@ -188,56 +141,35 @@
           dont vous avez besoin.
         </h1>
 
-
         <p>
           CAMU SERVICES connecte les clients aux entreprises,
           artisans et professionnels locaux.
         </p>
 
-
         <div class="hero-actions">
-
-          <a
-            href="recherche.html"
-            class="btn-primary"
-          >
+          <a href="recherche.html" class="btn-primary">
             <i class="fa-solid fa-magnifying-glass"></i>
             Rechercher
           </a>
 
-
-          <a
-            href="inscription-professionnel.html"
-            class="btn-secondary hero-secondary"
-          >
+          <a href="inscription-professionnel.html" class="btn-secondary hero-secondary">
             <i class="fa-solid fa-store"></i>
             Inscrire mon entreprise
           </a>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         RECHERCHE
-         =================================================== -->
-
+    <!-- RECHERCHE -->
     <section class="search-section">
-
       <div class="search-bar">
-
         <i class="fa-solid fa-magnifying-glass"></i>
-
         <input
           type="search"
           id="searchInput"
           placeholder="Que recherchez-vous ?"
           autocomplete="off"
         >
-
         <button
           type="button"
           id="searchButton"
@@ -246,1055 +178,106 @@
         >
           <i class="fa-solid fa-arrow-right"></i>
         </button>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         CATÉGORIES
-         =================================================== -->
-
+    <!-- CATÉGORIES -->
     <section>
-
       <div class="section-heading">
-
         <div>
-          <span class="section-label">
-            Explorer
-          </span>
-
-          <h2 class="section-title">
-            Catégories
-          </h2>
+          <span class="section-label">Explorer</span>
+          <h2 class="section-title">Catégories</h2>
         </div>
-
-
-        <a
-          href="categories.html"
-          class="see-all"
-        >
+        <a href="categories.html" class="see-all">
           Voir tout
           <i class="fa-solid fa-chevron-right"></i>
         </a>
-
       </div>
-
 
       <div class="categories">
-
-
-        <button
-          class="cat-btn active"
-          data-category="Toutes"
-          type="button"
-        >
-          <i class="fa-solid fa-border-all"></i>
-          Toutes
+        <button class="cat-btn active" data-category="Toutes" type="button">
+          <i class="fa-solid fa-border-all"></i> Toutes
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Construction"
-          type="button"
-        >
-          <i class="fa-solid fa-helmet-safety"></i>
-          Construction
+        <button class="cat-btn" data-category="Construction" type="button">
+          <i class="fa-solid fa-helmet-safety"></i> Construction
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Transport"
-          type="button"
-        >
-          <i class="fa-solid fa-car"></i>
-          Transport
+        <button class="cat-btn" data-category="Transport" type="button">
+          <i class="fa-solid fa-car"></i> Transport
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Beauté"
-          type="button"
-        >
-          <i class="fa-solid fa-scissors"></i>
-          Beauté
+        <button class="cat-btn" data-category="Beauté" type="button">
+          <i class="fa-solid fa-scissors"></i> Beauté
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Restaurant"
-          type="button"
-        >
-          <i class="fa-solid fa-utensils"></i>
-          Restaurant
+        <button class="cat-btn" data-category="Restaurant" type="button">
+          <i class="fa-solid fa-utensils"></i> Restaurant
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Commerce"
-          type="button"
-        >
-          <i class="fa-solid fa-shop"></i>
-          Commerce
+        <button class="cat-btn" data-category="Commerce" type="button">
+          <i class="fa-solid fa-shop"></i> Commerce
         </button>
-
-
-        <button
-          class="cat-btn"
-          data-category="Services"
-          type="button"
-        >
-          <i class="fa-solid fa-briefcase"></i>
-          Services
+        <button class="cat-btn" data-category="Services" type="button">
+          <i class="fa-solid fa-briefcase"></i> Services
         </button>
-
       </div>
-
     </section>
 
+    <!-- CONTENEURS D'ANNONCES / COMMUNIQUÉS (Exemples / Dynamique) -->
+    <div id="communiquesContainer"></div>
+    <div id="annoncesContainer"></div>
 
-    <!-- ===================================================
-         COMMUNIQUÉS
-         =================================================== -->
-
-    <section id="communiquesSection">
-
-      <div class="section-heading">
-
-        <div>
-          <span class="section-label">
-            Actualités
-          </span>
-
-          <h2 class="section-title">
-            Communiqués
-          </h2>
-        </div>
-
-      </div>
-
-
-      <div id="communiquesContainer">
-
-        <div class="loading-card">
-
-          <div class="loading-spinner"></div>
-
-          <p>
-            Chargement des communiqués...
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         ENTREPRISES / SERVICES
-         =================================================== -->
-
-    <section>
-
-      <div class="section-heading">
-
-        <div>
-          <span class="section-label">
-            Découvrez
-          </span>
-
-          <h2 class="section-title">
-            Services disponibles
-          </h2>
-        </div>
-
-
-        <a
-          href="recherche.html"
-          class="see-all"
-        >
-          Voir tout
-          <i class="fa-solid fa-chevron-right"></i>
-        </a>
-
-      </div>
-
-
-      <div id="annoncesContainer">
-
-
-        <div class="loading-card">
-
-          <div class="loading-spinner"></div>
-
-          <p>
-            Chargement des services...
-          </p>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         APPEL PROFESSIONNELS
-         =================================================== -->
-
+    <!-- BANNIÈRE PROFESSIONNEL -->
     <section class="professional-banner">
-
       <div class="professional-icon">
-
         <i class="fa-solid fa-store"></i>
-
       </div>
-
-
       <div class="professional-content">
-
-        <span>
-          Vous êtes professionnel ?
-        </span>
-
-        <h2>
-          Faites connaître votre activité.
-        </h2>
-
-        <p>
-          Présentez votre entreprise, vos services et
-          permettez à vos clients de vous contacter directement.
-        </p>
-
-
-        <a
-          href="inscription-professionnel.html"
-          class="btn-primary"
-        >
-          <i class="fa-solid fa-plus"></i>
-          Inscrire mon entreprise
-        </a>
-
+        <span>Vous êtes professionnel ?</span>
+        <h2>Développez votre activité</h2>
+        <p>Inscrivez votre entreprise pour être visible auprès de milliers de clients potentiels.</p>
+        <a href="inscription-professionnel.html" class="btn-primary">Inscrire mon entreprise</a>
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         FOOTER
-         =================================================== -->
-
+    <!-- FOOTER -->
     <footer class="footer">
-
-      <h3>
-        CAMU SERVICES
-      </h3>
-
-
-      <p>
-        La plateforme qui connecte les entreprises locales
-        à leurs clients.
-      </p>
-
-
+      <h3>CAMU SERVICES</h3>
+      <p>Votre marketplace locale de services.</p>
       <div class="footer-links">
-
-        <a href="a-propos.html">
-          À propos
-        </a>
-
-        <a href="contact.html">
-          Contact
-        </a>
-
-        <a href="confidentialite.html">
-          Confidentialité
-        </a>
-
-        <a href="conditions.html">
-          Conditions
-        </a>
-
+        <a href="A-propos.html">À propos</a>
+        <a href="conditions.html">Conditions</a>
+        <a href="contact.html">Contact</a>
+        <a href="politique.html">Politique d'utilisation</a>
       </div>
-
-
-      <p class="copyright">
-        © 2026 CAMU SERVICES. Tous droits réservés.
-      </p>
-
+      <div class="copyright">
+        <p>© 2026 CAMU SERVICES</p>
+      </div>
     </footer>
 
   </main>
 
-
   <!-- =====================================================
-       NAVIGATION MOBILE
+       NAVIGATION MOBILE DU BAS (CORRIGÉE & AVEC RECHERCHE)
        ===================================================== -->
-
-  <nav
-    class="bottom-nav"
-    aria-label="Navigation principale"
-  >
-
-    <a
-      href="index.html"
-      class="active"
-    >
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html" class="active">
       <i class="fa-solid fa-house"></i>
       <span>Accueil</span>
     </a>
-
-
     <a href="recherche.html">
-
       <i class="fa-solid fa-magnifying-glass"></i>
-
       <span>Recherche</span>
-
     </a>
-
-
-    <a href="categories.html">
-
-      <i class="fa-solid fa-layer-group"></i>
-
-      <span>Catégories</span>
-
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
     </a>
-
-
-    <a href="favoris.html">
-
-      <i class="fa-regular fa-heart"></i>
-
-      <span>Favoris</span>
-
+    <a href="messages.html">
+      <i class="fa-regular fa-comments"></i>
+      <span>Chat</span>
     </a>
-
-
     <a href="profil.html">
-
       <i class="fa-regular fa-user"></i>
-
       <span>Profil</span>
-
     </a>
-
   </nav>
 
-
-  <!-- =====================================================
-       JAVASCRIPT DE LA PAGE
-       ===================================================== -->
-
-  <script type="module">
-
-    import {
-      db,
-      auth,
-      onAuthStateChanged
-    } from "./app.js";
-
-
-    import {
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      limit
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-
-    /* =====================================================
-       MENU
-       ===================================================== */
-
-    const menuToggle =
-      document.getElementById("menuToggle");
-
-    const sidebar =
-      document.getElementById("sidebar");
-
-
-    menuToggle.addEventListener("click", () => {
-
-      const isOpen =
-        sidebar.classList.toggle("open");
-
-      menuToggle.setAttribute(
-        "aria-expanded",
-        isOpen ? "true" : "false"
-      );
-
-      menuToggle.innerHTML =
-        isOpen
-          ? '<i class="fa-solid fa-xmark"></i>'
-          : '<i class="fa-solid fa-bars"></i>';
-
-    });
-
-
-    /* =====================================================
-       FERMER LE MENU APRÈS CLIC
-       ===================================================== */
-
-    document
-      .querySelectorAll(".sidebar-vertical a")
-      .forEach(link => {
-
-        link.addEventListener("click", () => {
-
-          sidebar.classList.remove("open");
-
-          menuToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-          menuToggle.innerHTML =
-            '<i class="fa-solid fa-bars"></i>';
-
-        });
-
-      });
-
-
-    /* =====================================================
-       RECHERCHE
-       ===================================================== */
-
-    const searchInput =
-      document.getElementById("searchInput");
-
-    const searchButton =
-      document.getElementById("searchButton");
-
-
-    function launchSearch() {
-
-      const value =
-        searchInput.value.trim();
-
-
-      if (!value) {
-
-        window.location.href =
-          "recherche.html";
-
-        return;
-
-      }
-
-
-      window.location.href =
-        "recherche.html?search=" +
-        encodeURIComponent(value);
-
-    }
-
-
-    searchButton.addEventListener(
-      "click",
-      launchSearch
-    );
-
-
-    searchInput.addEventListener(
-      "keydown",
-      event => {
-
-        if (event.key === "Enter") {
-
-          launchSearch();
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       CATÉGORIES
-       ===================================================== */
-
-    const categoryButtons =
-      document.querySelectorAll(".cat-btn");
-
-
-    categoryButtons.forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        categoryButtons.forEach(btn => {
-
-          btn.classList.remove("active");
-
-        });
-
-
-        button.classList.add("active");
-
-
-        const category =
-          button.dataset.category;
-
-
-        if (category === "Toutes") {
-
-          loadAnnonces();
-
-        } else {
-
-          loadAnnonces(category);
-
-        }
-
-      });
-
-    });
-
-
-    /* =====================================================
-       UTILISATEUR
-       ===================================================== */
-
-    onAuthStateChanged(auth, user => {
-
-      const profileButton =
-        document.querySelector(".profile-btn");
-
-
-      if (!profileButton) return;
-
-
-      if (user) {
-
-        profileButton.innerHTML =
-          '<i class="fa-solid fa-user-check"></i>';
-
-      } else {
-
-        profileButton.innerHTML =
-          '<i class="fa-regular fa-user"></i>';
-
-      }
-
-    });
-
-
-    /* =====================================================
-       CHARGER LES SERVICES
-       ===================================================== */
-
-    async function loadAnnonces(category = null) {
-
-      const container =
-        document.getElementById(
-          "annoncesContainer"
-        );
-
-
-      try {
-
-        const annoncesRef =
-          collection(db, "annonces");
-
-
-        const annoncesQuery =
-          query(
-            annoncesRef,
-            orderBy("createdAt", "desc"),
-            limit(20)
-          );
-
-
-        const snapshot =
-          await getDocs(annoncesQuery);
-
-
-        container.innerHTML = "";
-
-
-        let count = 0;
-
-
-        snapshot.forEach(doc => {
-
-          const data = doc.data();
-
-
-          const annonceCategory =
-            data.category ||
-            data.categorie ||
-            "Services";
-
-
-          if (
-            category &&
-            category !== annonceCategory
-          ) {
-
-            return;
-
-          }
-
-
-          count++;
-
-
-          const card =
-            createAnnonceCard(
-              doc.id,
-              data
-            );
-
-
-          container.appendChild(card);
-
-        });
-
-
-        if (count === 0) {
-
-          container.innerHTML = `
-
-            <div class="empty-state">
-
-              <div class="empty-icon">
-
-                <i class="fa-solid fa-store-slash"></i>
-
-              </div>
-
-              <h2>
-                Aucun service disponible
-              </h2>
-
-              <p>
-                Aucun service ne correspond actuellement
-                à cette catégorie.
-              </p>
-
-            </div>
-
-          `;
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Erreur chargement annonces :",
-          error
-        );
-
-
-        container.innerHTML = `
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-
-            <h2>
-              Impossible de charger les services
-            </h2>
-
-            <p>
-              Vérifiez votre connexion puis réessayez.
-            </p>
-
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       CARTE SERVICE
-       ===================================================== */
-
-    function createAnnonceCard(id, data) {
-
-      const card =
-        document.createElement("article");
-
-
-      card.className =
-        "annonce-card";
-
-
-      const title =
-        data.title ||
-        data.nom ||
-        data.name ||
-        "Service sans titre";
-
-
-      const description =
-        data.description ||
-        data.descriptionService ||
-        "Aucune description disponible.";
-
-
-      const category =
-        data.category ||
-        data.categorie ||
-        "Services";
-
-
-      const location =
-        data.location ||
-        data.adresse ||
-        data.ville ||
-        "Localisation non renseignée";
-
-
-      const price =
-        data.price ||
-        data.prix ||
-        "";
-
-
-      const image =
-        data.image ||
-        data.imageUrl ||
-        "";
-
-
-      card.innerHTML = `
-
-        ${
-          image
-            ? `
-              <div class="annonce-image-wrapper">
-
-                <img
-                  src="${escapeHTML(image)}"
-                  alt="${escapeHTML(title)}"
-                  class="annonce-image"
-                  loading="lazy"
-                >
-
-              </div>
-            `
-            : `
-              <div class="annonce-image-placeholder">
-
-                <i class="fa-solid fa-store"></i>
-
-              </div>
-            `
-        }
-
-
-        <div class="annonce-content">
-
-          <span class="badge-cat">
-
-            <i class="fa-solid fa-tag"></i>
-
-            ${escapeHTML(category)}
-
-          </span>
-
-
-          <h3>
-            ${escapeHTML(title)}
-          </h3>
-
-
-          <p class="annonce-description">
-            ${escapeHTML(description)}
-          </p>
-
-
-          <div class="location">
-
-            <i class="fa-solid fa-location-dot"></i>
-
-            ${escapeHTML(location)}
-
-          </div>
-
-
-          ${
-            price
-              ? `
-                <div class="prix">
-                  ${escapeHTML(String(price))}
-                </div>
-              `
-              : ""
-          }
-
-
-          <div class="card-actions">
-
-            <a
-              href="annonce.html?id=${encodeURIComponent(id)}"
-              class="btn-primary"
-            >
-
-              <i class="fa-solid fa-eye"></i>
-
-              Voir le service
-
-            </a>
-
-
-            <button
-              type="button"
-              class="favorite-btn"
-              data-id="${escapeHTML(id)}"
-              aria-label="Ajouter aux favoris"
-            >
-
-              <i class="fa-regular fa-heart"></i>
-
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-
-      const favoriteButton =
-        card.querySelector(
-          ".favorite-btn"
-        );
-
-
-      favoriteButton.addEventListener(
-        "click",
-        () => {
-
-          favoriteButton.classList.toggle(
-            "favorite-active"
-          );
-
-
-          const icon =
-            favoriteButton.querySelector("i");
-
-
-          if (
-            favoriteButton.classList.contains(
-              "favorite-active"
-            )
-          ) {
-
-            icon.className =
-              "fa-solid fa-heart";
-
-          } else {
-
-            icon.className =
-              "fa-regular fa-heart";
-
-          }
-
-        }
-      );
-
-
-      return card;
-
-    }
-
-
-    /* =====================================================
-       CHARGER LES COMMUNIQUÉS
-       ===================================================== */
-
-    async function loadCommuniques() {
-
-      const container =
-        document.getElementById(
-          "communiquesContainer"
-        );
-
-
-      try {
-
-        const ref =
-          collection(
-            db,
-            "communiques"
-          );
-
-
-        const q =
-          query(
-            ref,
-            orderBy(
-              "createdAt",
-              "desc"
-            ),
-            limit(5)
-          );
-
-
-        const snapshot =
-          await getDocs(q);
-
-
-        container.innerHTML = "";
-
-
-        if (snapshot.empty) {
-
-          container.innerHTML = `
-
-            <div class="empty-state compact">
-
-              <div class="empty-icon">
-                <i class="fa-regular fa-newspaper"></i>
-              </div>
-
-              <h2>
-                Aucun communiqué
-              </h2>
-
-              <p>
-                Les nouvelles publications apparaîtront ici.
-              </p>
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        snapshot.forEach(doc => {
-
-          const data =
-            doc.data();
-
-
-          const title =
-            data.title ||
-            data.titre ||
-            "Communiqué";
-
-
-          const text =
-            data.description ||
-            data.message ||
-            data.content ||
-            "";
-
-
-          const card =
-            document.createElement("article");
-
-
-          card.className =
-            "communique-card";
-
-
-          card.innerHTML = `
-
-            <div class="communique-icon">
-
-              <i class="fa-solid fa-bullhorn"></i>
-
-            </div>
-
-
-            <div class="communique-content">
-
-              <h3>
-                ${escapeHTML(title)}
-              </h3>
-
-              <p>
-                ${escapeHTML(text)}
-              </p>
-
-            </div>
-
-          `;
-
-
-          container.appendChild(card);
-
-        });
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur communiqués :",
-          error
-        );
-
-
-        container.innerHTML = "";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       PROTECTION TEXTE HTML
-       ===================================================== */
-
-    function escapeHTML(value) {
-
-      return String(value)
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
-
-    /* =====================================================
-       INITIALISATION
-       ===================================================== */
-
-    loadAnnonces();
-
-    loadCommuniques();
-
-  </script>
-
 </body>
-
 </html>
