@@ -1,204 +1,173 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CAMU SERVICES — Publier</title>
+<meta charset="UTF-8">
 
-  <link rel="stylesheet" href="style.css">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>CAMU SERVICES — Publier</title>
 
-  <style>
-    /* =========================================================
-       CARTES SERVICES — CAMU SERVICES
-       ========================================================= */
+<link rel="stylesheet" href="style.css">
 
-    .service-image {
-      width: 100%;
-      max-height: 230px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      background: #f1f1f1;
-    }
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    .service-description {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-top: 8px;
-      white-space: pre-line;
-    }
+<style>
 
-    .service-owner {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 13px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-    }
+/* =========================================================
+   PUBLICATION
+   ========================================================= */
 
-    .service-owner-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
+.publication-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 
-    .service-owner-info {
-      flex: 1;
-      min-width: 0;
-    }
+@media (max-width: 600px) {
+  .publication-contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
-    .service-owner-info strong {
-      display: block;
-      font-size: 12px;
-      color: var(--text);
-    }
 
-    .service-owner-info span {
-      display: block;
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+/* =========================================================
+   CARTE SERVICE
+   ========================================================= */
 
-    .service-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr 46px;
-      gap: 7px;
-      margin-top: 13px;
-    }
+.service-image {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: #eee;
+}
 
-    .service-action {
-      min-height: 43px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      border: none;
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .2s ease;
-    }
+.service-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 13px;
+}
 
-    .service-action:active {
-      transform: scale(.97);
-    }
+.service-card-actions a,
+.service-card-actions button {
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
 
-    .whatsapp-btn {
-      background: #25D366;
-      color: #fff;
-    }
+.btn-whatsapp {
+  background: #25d366 !important;
+  color: #fff !important;
+  border-color: #25d366 !important;
+}
 
-    .call-btn {
-      background: var(--red);
-      color: #fff;
-    }
+.btn-call {
+  background: var(--red) !important;
+  color: #fff !important;
+  border-color: var(--red) !important;
+}
 
-    .favorite-service-btn {
-      background: var(--card);
-      color: var(--red);
-      border: 1px solid var(--border);
-      font-size: 17px;
-    }
+.btn-share {
+  background: var(--card);
+  color: var(--text);
+}
 
-    .favorite-service-btn.active {
-      background: var(--red-light);
-      color: var(--red);
-    }
+.btn-favorite {
+  background: var(--card);
+  color: var(--text);
+}
 
-    .service-contact-warning {
-      margin-top: 10px;
-      padding: 9px 10px;
-      border-radius: 9px;
-      background: #fff4dc;
-      color: #8a5a00;
-      font-size: 11px;
-      line-height: 1.4;
-    }
+.btn-favorite.active {
+  color: #f9a825;
+  border-color: #f9a825;
+}
 
-    .owner-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: #2e7d32;
-      font-size: 10px;
-      font-weight: 800;
-    }
+.btn-details {
+  grid-column: 1 / -1;
+  background: #111;
+  color: #fff !important;
+  border-color: #111 !important;
+}
 
-    /* Mode sombre */
-    body.dark-mode .service-description {
-      color: #bbbbbb;
-    }
+body.dark-mode .btn-details {
+  background: #fff;
+  color: #111 !important;
+  border-color: #fff !important;
+}
 
-    body.dark-mode .favorite-service-btn {
-      background: #202020;
-      border-color: #444;
-    }
+.service-owner {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 7px;
+}
 
-    body.dark-mode .service-contact-warning {
-      background: #352b17;
-      color: #e6c36a;
-    }
 
-    /* Mobile */
-    @media (max-width: 380px) {
+/* =========================================================
+   APERÇU
+   ========================================================= */
 
-      .service-actions {
-        grid-template-columns: 1fr 1fr 43px;
-      }
+#previewContainer img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
 
-      .service-action {
-        font-size: 10px;
-      }
 
-      .service-action span {
-        display: none;
-      }
-    }
-  </style>
+/* =========================================================
+   MENU
+   ========================================================= */
+
+.menu-toggle {
+  background: transparent;
+  border: none;
+  color: #fff;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<!-- =========================================================
+
+<!-- ======================================================
      HEADER
-     ========================================================= -->
+     ====================================================== -->
 
 <header class="top-bar">
 
   <button
     class="menu-toggle"
     id="menuToggle"
-    aria-label="Ouvrir le menu">
+    aria-label="Menu">
 
     <i class="fa-solid fa-bars"></i>
 
   </button>
 
   <div class="logo-text">
+
     CAMU <span>SERVICES</span>
+
   </div>
 
   <a href="profil.html"
-     class="profile-btn"
-     aria-label="Mon profil">
+     aria-label="Profil">
 
     <i class="fa-solid fa-user"></i>
 
@@ -207,11 +176,11 @@
 </header>
 
 
-<!-- =========================================================
-     MENU LATÉRAL
-     ========================================================= -->
+<!-- ======================================================
+     MENU
+     ====================================================== -->
 
-<aside class="sidebar-vertical" id="sidebar">
+<aside class="sidebar-vertical">
 
   <div class="sidebar-header">
     Navigation
@@ -227,30 +196,39 @@
     </li>
 
     <li>
-      <a href="publier.html" class="active-link">
+      <a href="publier.html"
+         class="active-link">
+
         <i class="fa-solid fa-circle-plus"></i>
         Publier
+
       </a>
     </li>
 
     <li>
       <a href="chat.html">
+
         <i class="fa-solid fa-comments"></i>
         Chat
+
       </a>
     </li>
 
     <li>
       <a href="conditions.html">
+
         <i class="fa-solid fa-file-contract"></i>
         Conditions
+
       </a>
     </li>
 
     <li>
       <a href="profil.html">
+
         <i class="fa-solid fa-user"></i>
         Mon Profil
+
       </a>
     </li>
 
@@ -259,357 +237,340 @@
 </aside>
 
 
-<!-- =========================================================
+<!-- ======================================================
      CONTENU
-     ========================================================= -->
+     ====================================================== -->
 
 <main class="container">
 
 
-  <!-- HERO -->
+<section class="hero">
 
-  <section class="hero">
+  <h1>
+    Publiez votre <span>service.</span>
+  </h1>
 
-    <h1>
-      Publiez votre <span>service.</span>
-    </h1>
+  <p>
+    Présentez votre activité et permettez aux clients
+    de vous contacter directement par téléphone ou WhatsApp.
+  </p>
 
-    <p>
-      Présentez votre activité et permettez aux clients
-      de vous contacter directement.
-    </p>
+</section>
 
-  </section>
 
+<!-- ======================================================
+     FORMULAIRE
+     ====================================================== -->
 
-  <!-- =======================================================
-       FORMULAIRE
-       ======================================================= -->
+<section class="card-box">
 
-  <div class="card-box">
+  <h2 style="font-size:18px;margin-bottom:7px;">
 
-    <div style="margin-bottom:20px;">
-
-      <h2 style="font-size:18px;margin-bottom:6px;font-weight:800;">
-
-        <i class="fa-solid fa-circle-plus"
-           style="color:var(--red);"></i>
-
-        Nouvelle publication
-
-      </h2>
-
-      <p class="help">
-        Votre publication sera vérifiée par l'administration
-        avant d'être visible publiquement.
-      </p>
-
-    </div>
-
-
-    <form id="publierForm">
-
-
-      <!-- TITRE -->
-
-      <div class="form-group">
-
-        <label for="titreService">
-          Titre du service
-        </label>
-
-        <input
-          type="text"
-          id="titreService"
-          placeholder="Ex : Installation électrique"
-          maxlength="100"
-          required>
-
-      </div>
-
-
-      <!-- CATÉGORIE -->
-
-      <div class="form-group">
-
-        <label for="categorieService">
-          Catégorie
-        </label>
-
-        <select id="categorieService" required>
-
-          <option value="">
-            Sélectionner une catégorie
-          </option>
-
-          <option value="Technique & Maintenance">
-            Technique & Maintenance
-          </option>
-
-          <option value="BTP & Construction">
-            BTP & Construction
-          </option>
-
-          <option value="Informatique & Numérique">
-            Informatique & Numérique
-          </option>
-
-          <option value="Électricité">
-            Électricité
-          </option>
-
-          <option value="Transport">
-            Transport
-          </option>
-
-          <option value="Agriculture & Élevage">
-            Agriculture & Élevage
-          </option>
-
-          <option value="Maison & Immobilier">
-            Maison & Immobilier
-          </option>
-
-          <option value="Divers & Services">
-            Divers & Services
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- VILLE -->
-
-      <div class="form-group">
-
-        <label for="villeService">
-          Ville / Localisation
-        </label>
-
-        <input
-          type="text"
-          id="villeService"
-          placeholder="Ex : Lubumbashi"
-          maxlength="100"
-          required>
-
-      </div>
-
-
-      <!-- PRIX -->
-
-      <div class="form-group">
-
-        <label for="prixService">
-          Prix
-        </label>
-
-        <input
-          type="text"
-          id="prixService"
-          placeholder="Ex : 50 $ ou Sur devis"
-          maxlength="50"
-          required>
-
-      </div>
-
-
-      <!-- WHATSAPP -->
-
-      <div class="form-group">
-
-        <label for="whatsappService">
-          Numéro WhatsApp
-        </label>
-
-        <input
-          type="tel"
-          id="whatsappService"
-          placeholder="Ex : +243 812 345 678"
-          maxlength="25"
-          required>
-
-        <div class="help">
-          Ce numéro permettra aux clients de vous contacter
-          directement sur WhatsApp.
-        </div>
-
-      </div>
-
-
-      <!-- TÉLÉPHONE -->
-
-      <div class="form-group">
-
-        <label for="telephoneService">
-          Numéro de téléphone
-        </label>
-
-        <input
-          type="tel"
-          id="telephoneService"
-          placeholder="Ex : +243 812 345 678"
-          maxlength="25">
-
-      </div>
-
-
-      <!-- PHOTO -->
-
-      <div class="form-group">
-
-        <label for="mediaService">
-          Photo ou Illustration (Optionnel)
-        </label>
-
-        <input
-          type="file"
-          id="mediaService"
-          accept="image/*">
-
-        <div
-          id="previewContainer"
-          style="margin-top:10px;display:none;">
-
-          <img
-            id="imagePreview"
-            src=""
-            alt="Aperçu"
-            style="
-              width:100%;
-              max-height:200px;
-              object-fit:cover;
-              border-radius:10px;
-              border:1px solid var(--border);
-            ">
-
-        </div>
-
-      </div>
-
-
-      <!-- DESCRIPTION -->
-
-      <div class="form-group">
-
-        <label for="descService">
-          Description
-        </label>
-
-        <textarea
-          id="descService"
-          placeholder="Décrivez clairement votre service..."
-          maxlength="1000"
-          required></textarea>
-
-        <div class="help">
-          Décrivez ce que vous proposez, vos compétences
-          et ce que le client doit savoir.
-        </div>
-
-      </div>
-
-
-      <!-- BOUTON -->
-
-      <button
-        type="submit"
-        class="btn-submit"
-        id="btnPublier"
-        style="width:100%;">
-
-        <i class="fa-solid fa-paper-plane"></i>
-
-        Envoyer pour validation
-
-      </button>
-
-    </form>
-
-
-    <!-- MESSAGE -->
-
-    <div
-      id="messagePublication"
-      style="
-        display:none;
-        margin-top:15px;
-        padding:12px;
-        border-radius:10px;
-        text-align:center;
-        font-size:12px;
-        font-weight:bold;">
-    </div>
-
-  </div>
-
-
-  <!-- =======================================================
-       SERVICES
-       ======================================================= -->
-
-  <div class="section-title">
-
-    <i class="fa-solid fa-list"
+    <i class="fa-solid fa-circle-plus"
        style="color:var(--red);"></i>
 
-    Services disponibles
+    Nouvelle publication
+
+  </h2>
+
+  <p class="help"
+     style="margin-bottom:20px;">
+
+    Votre publication sera vérifiée par l'administration
+    avant sa mise en ligne.
+
+  </p>
+
+
+<form id="publierForm">
+
+
+<!-- TITRE -->
+
+<div class="form-group">
+
+  <label for="titreService">
+    Titre du service *
+  </label>
+
+  <input
+    type="text"
+    id="titreService"
+    maxlength="100"
+    placeholder="Ex : Installation électrique"
+    required>
+
+</div>
+
+
+<!-- CATÉGORIE -->
+
+<div class="form-group">
+
+  <label for="categorieService">
+    Catégorie *
+  </label>
+
+  <select id="categorieService" required>
+
+    <option value="">
+      Sélectionner une catégorie
+    </option>
+
+    <option>Technique & Maintenance</option>
+
+    <option>BTP & Construction</option>
+
+    <option>Informatique & Numérique</option>
+
+    <option>Électricité</option>
+
+    <option>Transport</option>
+
+    <option>Agriculture & Élevage</option>
+
+    <option>Maison & Immobilier</option>
+
+    <option>Commerce</option>
+
+    <option>Beauté & Bien-être</option>
+
+    <option>Formation & Éducation</option>
+
+    <option>Divers & Services</option>
+
+  </select>
+
+</div>
+
+
+<!-- VILLE -->
+
+<div class="form-group">
+
+  <label for="villeService">
+    Ville / Localisation *
+  </label>
+
+  <input
+    type="text"
+    id="villeService"
+    maxlength="100"
+    placeholder="Ex : Lubumbashi"
+    required>
+
+</div>
+
+
+<!-- PRIX -->
+
+<div class="form-group">
+
+  <label for="prixService">
+    Prix *
+  </label>
+
+  <input
+    type="text"
+    id="prixService"
+    maxlength="50"
+    placeholder="Ex : 50 $ ou Sur devis"
+    required>
+
+</div>
+
+
+<!-- CONTACT -->
+
+<div class="publication-contact-grid">
+
+  <div class="form-group">
+
+    <label for="telephoneService">
+      Téléphone *
+    </label>
+
+    <input
+      type="tel"
+      id="telephoneService"
+      maxlength="30"
+      placeholder="Ex : +243 8XX XXX XXX"
+      required>
 
   </div>
 
 
-  <div id="publicAdsContainer">
+  <div class="form-group">
 
-    <div class="empty-state">
+    <label for="whatsappService">
+      WhatsApp
+    </label>
 
-      <i class="fa-solid fa-spinner fa-spin"></i>
-
-      <p>Chargement...</p>
-
-    </div>
+    <input
+      type="tel"
+      id="whatsappService"
+      maxlength="30"
+      placeholder="Même numéro si WhatsApp">
 
   </div>
 
+</div>
 
-  <!-- =======================================================
-       FOOTER
-       ======================================================= -->
 
-  <footer class="footer">
+<p class="help"
+   style="margin-top:-5px;margin-bottom:15px;">
 
-    <h3>CAMU SERVICES</h3>
+  Le numéro WhatsApp permettra aux clients de vous contacter
+  directement depuis votre carte.
 
-    <p>
-      Votre marketplace locale de services.
-    </p>
+</p>
 
-    <div class="footer-links">
 
-      <a href="a-propos.html">À propos</a>
+<!-- IMAGE -->
 
-      <a href="conditions.html">Conditions</a>
+<div class="form-group">
 
-      <a href="contact.html">Contact</a>
+  <label for="mediaService">
+    Photo ou illustration
+  </label>
 
-      <a href="politique.html">
-        Politique d'utilisation
-      </a>
+  <input
+    type="file"
+    id="mediaService"
+    accept="image/*">
 
-    </div>
+  <div id="previewContainer"
+       style="display:none;margin-top:10px;">
 
-    <p>
-      © 2026 CAMU SERVICES
-    </p>
+    <img id="imagePreview"
+         src=""
+         alt="Aperçu">
 
-  </footer>
+  </div>
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<div class="form-group">
+
+  <label for="descService">
+    Description *
+  </label>
+
+  <textarea
+    id="descService"
+    maxlength="1000"
+    placeholder="Décrivez clairement votre service..."
+    required></textarea>
+
+  <p class="help">
+
+    Présentez vos compétences, vos prestations
+    et les informations importantes pour le client.
+
+  </p>
+
+</div>
+
+
+<button
+  type="submit"
+  id="btnPublier"
+  class="btn-submit"
+  style="width:100%;">
+
+  <i class="fa-solid fa-paper-plane"></i>
+
+  Envoyer pour validation
+
+</button>
+
+
+</form>
+
+
+<div id="messagePublication"
+     style="display:none;margin-top:15px;padding:12px;border-radius:10px;text-align:center;font-size:12px;font-weight:bold;">
+</div>
+
+
+</section>
+
+
+<!-- ======================================================
+     SERVICES
+     ====================================================== -->
+
+<div class="section-title">
+
+  <i class="fa-solid fa-list"
+     style="color:var(--red);"></i>
+
+  Services disponibles
+
+</div>
+
+
+<div id="publicAdsContainer">
+
+  <div class="empty-state">
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    <p>Chargement...</p>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+
+<footer class="footer">
+
+  <h3>CAMU SERVICES</h3>
+
+  <p>
+    Votre marketplace locale de services.
+  </p>
+
+  <div class="footer-links">
+
+    <a href="a-propos.html">
+      À propos
+    </a>
+
+    <a href="conditions.html">
+      Conditions
+    </a>
+
+    <a href="contact.html">
+      Contact
+    </a>
+
+    <a href="politique.html">
+      Politique d'utilisation
+    </a>
+
+  </div>
+
+  <p>
+    © 2026 CAMU SERVICES
+  </p>
+
+</footer>
+
 
 </main>
 
 
-<!-- =========================================================
-     NAVIGATION MOBILE
-     ========================================================= -->
+<!-- ======================================================
+     NAVIGATION BAS
+     ====================================================== -->
 
 <nav class="bottom-nav">
 
@@ -621,7 +582,8 @@
 
   </a>
 
-  <a href="publier.html" class="active">
+  <a href="publier.html"
+     class="active">
 
     <i class="fa-solid fa-circle-plus"></i>
 
@@ -648,9 +610,9 @@
 </nav>
 
 
-<!-- =========================================================
+<!-- ======================================================
      MENU JAVASCRIPT
-     ========================================================= -->
+     ====================================================== -->
 
 <script>
 
@@ -658,11 +620,12 @@ const menuToggle =
   document.getElementById("menuToggle");
 
 const sidebar =
-  document.getElementById("sidebar");
+  document.querySelector(".sidebar-vertical");
+
 
 if (menuToggle && sidebar) {
 
-  menuToggle.addEventListener("click", function(event) {
+  menuToggle.addEventListener("click", (event) => {
 
     event.stopPropagation();
 
@@ -670,7 +633,8 @@ if (menuToggle && sidebar) {
 
   });
 
-  document.addEventListener("click", function(event) {
+
+  document.addEventListener("click", (event) => {
 
     if (
       !sidebar.contains(event.target) &&
@@ -688,38 +652,30 @@ if (menuToggle && sidebar) {
 </script>
 
 
-<!-- =========================================================
+<!-- ======================================================
      FIREBASE
-     ========================================================= -->
+     ====================================================== -->
 
 <script type="module">
 
 import {
-  db,
-  auth
-} from "./app.js";
 
-import {
+  db,
+  auth,
   collection,
   getDocs,
   addDoc,
   serverTimestamp,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  onAuthStateChanged,
+  escapeHTML,
+  creerLienWhatsApp,
+  creerLienTelephone,
+  afficherNotification
 
-import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+} from "./app.js";
 
-
-/* =========================================================
-   VARIABLES
-   ========================================================= */
 
 let currentUser = null;
-
-let currentUserData = {};
 
 let base64Image = "";
 
@@ -746,33 +702,11 @@ const imagePreview =
   document.getElementById("imagePreview");
 
 
-/* =========================================================
-   MODE SOMBRE
-   ========================================================= */
-
-function appliquerTheme() {
-
-  const theme =
-    localStorage.getItem("theme");
-
-  if (theme === "dark") {
-
-    document.documentElement.classList.add("dark-mode");
-
-    document.body.classList.add("dark-mode");
-
-  }
-
-}
-
-appliquerTheme();
-
-
-/* =========================================================
+/* ======================================================
    APERÇU IMAGE
-   ========================================================= */
+   ====================================================== */
 
-mediaInput.addEventListener("change", function(event) {
+mediaInput.addEventListener("change", (event) => {
 
   const file =
     event.target.files[0];
@@ -781,7 +715,8 @@ mediaInput.addEventListener("change", function(event) {
 
     base64Image = "";
 
-    previewContainer.style.display = "none";
+    previewContainer.style.display =
+      "none";
 
     imagePreview.src = "";
 
@@ -792,9 +727,9 @@ mediaInput.addEventListener("change", function(event) {
 
   if (!file.type.startsWith("image/")) {
 
-    afficherMessage(
-      "Veuillez sélectionner une image valide.",
-      false
+    afficherNotification(
+      "Veuillez sélectionner une image.",
+      "error"
     );
 
     mediaInput.value = "";
@@ -804,16 +739,11 @@ mediaInput.addEventListener("change", function(event) {
   }
 
 
-  /*
-   * Limite raisonnable pour éviter de stocker
-   * des fichiers trop lourds directement dans Firestore.
-   */
-
   if (file.size > 2 * 1024 * 1024) {
 
-    afficherMessage(
+    afficherNotification(
       "L'image ne doit pas dépasser 2 Mo.",
-      false
+      "error"
     );
 
     mediaInput.value = "";
@@ -826,10 +756,11 @@ mediaInput.addEventListener("change", function(event) {
   const reader =
     new FileReader();
 
-  reader.onload = function(event) {
+
+  reader.onload = (e) => {
 
     base64Image =
-      event.target.result;
+      e.target.result;
 
     imagePreview.src =
       base64Image;
@@ -839,118 +770,47 @@ mediaInput.addEventListener("change", function(event) {
 
   };
 
+
   reader.readAsDataURL(file);
 
 });
 
 
-/* =========================================================
+/* ======================================================
    AUTHENTIFICATION
-   ========================================================= */
+   ====================================================== */
 
-onAuthStateChanged(
-  auth,
-  async function(user) {
+onAuthStateChanged(auth, async (user) => {
 
-    if (!user) {
+  if (!user) {
 
-      window.location.href =
-        "connexion.html";
+    currentUser = null;
 
-      return;
+    window.location.href =
+      "connexion.html";
 
-    }
-
-
-    currentUser =
-      user;
-
-
-    /*
-     * Récupération des informations
-     * du professionnel dans users/{uid}
-     */
-
-    try {
-
-      const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
-
-      const userSnap =
-        await getDoc(userRef);
-
-
-      if (userSnap.exists()) {
-
-        currentUserData =
-          userSnap.data();
-
-      }
-
-
-      /*
-       * Préremplir les numéros s'ils
-       * existent déjà dans le compte.
-       */
-
-      const whatsapp =
-        currentUserData.whatsapp ||
-        currentUserData.telephone ||
-        currentUserData.phone ||
-        "";
-
-      const telephone =
-        currentUserData.telephone ||
-        currentUserData.phone ||
-        "";
-
-
-      document.getElementById(
-        "whatsappService"
-      ).value = whatsapp;
-
-
-      document.getElementById(
-        "telephoneService"
-      ).value = telephone;
-
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Erreur récupération utilisateur :",
-        error
-      );
-
-    }
-
-
-    await loadPublicAds();
+    return;
 
   }
-);
+
+  currentUser = user;
+
+  await loadPublicAds();
+
+});
 
 
-/* =========================================================
-   CHARGER LES SERVICES VALIDÉS
-   ========================================================= */
+/* ======================================================
+   CHARGEMENT DES SERVICES
+   ====================================================== */
 
 async function loadPublicAds() {
 
   try {
 
-    const snap =
+    const snapshot =
       await getDocs(
-        collection(
-          db,
-          "services"
-        )
+        collection(db, "services")
       );
 
 
@@ -959,32 +819,252 @@ async function loadPublicAds() {
     let count = 0;
 
 
-    snap.forEach(function(docSnap) {
+    snapshot.forEach((docSnap) => {
 
       const service =
         docSnap.data();
 
 
-      /*
-       * SEULS LES SERVICES VALIDÉS
-       * SONT AFFICHÉS PUBLIQUEMENT.
-       */
-
       if (service.valide !== true) {
-
         return;
-
       }
 
 
       count++;
 
 
-      html +=
-        createServiceCard(
-          docSnap.id,
-          service
+      const id =
+        docSnap.id;
+
+
+      const titre =
+        escapeHTML(
+          service.titre || "Service"
         );
+
+
+      const categorie =
+        escapeHTML(
+          service.categorie || "Service"
+        );
+
+
+      const ville =
+        escapeHTML(
+          service.ville || "RDC"
+        );
+
+
+      const prix =
+        escapeHTML(
+          service.prix || "Sur devis"
+        );
+
+
+      const description =
+        escapeHTML(
+          service.description || ""
+        );
+
+
+      const telephone =
+        service.telephone ||
+        service.whatsapp ||
+        "";
+
+
+      const whatsapp =
+        service.whatsapp ||
+        service.telephone ||
+        "";
+
+
+      const whatsappLink =
+        creerLienWhatsApp(
+          whatsapp,
+          `Bonjour, je viens de voir votre service "${service.titre || "Service"}" sur CAMU SERVICES.`
+        );
+
+
+      const telephoneLink =
+        creerLienTelephone(
+          telephone
+        );
+
+
+      html += `
+
+<article
+  class="annonce-card"
+  data-service-id="${escapeHTML(id)}">
+
+  ${
+    service.image
+      ? `
+        <img
+          class="service-image"
+          src="${service.image}"
+          alt="${titre}"
+          loading="lazy">
+      `
+      : ""
+  }
+
+
+  <span class="badge-cat">
+    ${categorie}
+  </span>
+
+
+  <h3>
+    ${titre}
+  </h3>
+
+
+  <div class="location">
+
+    <i class="fa-solid fa-location-dot"></i>
+
+    ${ville}
+
+  </div>
+
+
+  <p
+    style="
+      font-size:13px;
+      line-height:1.55;
+      color:var(--muted);
+      margin-top:8px;
+    ">
+
+    ${description}
+
+  </p>
+
+
+  <div class="prix">
+
+    ${prix}
+
+  </div>
+
+
+  ${
+    telephone
+      ? `
+        <div class="service-owner">
+
+          <i class="fa-solid fa-phone"></i>
+
+          ${escapeHTML(telephone)}
+
+        </div>
+      `
+      : ""
+  }
+
+
+  <div class="service-card-actions">
+
+    ${
+      whatsapp
+        ? `
+          <a
+            class="btn-whatsapp"
+            href="${whatsappLink}"
+            target="_blank"
+            rel="noopener">
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+            WhatsApp
+
+          </a>
+        `
+        : `
+          <button
+            type="button"
+            disabled
+            style="opacity:.5;">
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+            WhatsApp
+
+          </button>
+        `
+    }
+
+
+    ${
+      telephone
+        ? `
+          <a
+            class="btn-call"
+            href="${telephoneLink}">
+
+            <i class="fa-solid fa-phone"></i>
+
+            Appeler
+
+          </a>
+        `
+        : `
+          <button
+            type="button"
+            disabled
+            style="opacity:.5;">
+
+            <i class="fa-solid fa-phone"></i>
+
+            Appeler
+
+          </button>
+        `
+    }
+
+
+    <button
+      type="button"
+      class="btn-share"
+      data-share-id="${escapeHTML(id)}"
+      data-share-title="${titre}">
+
+      <i class="fa-solid fa-share-nodes"></i>
+
+      Partager
+
+    </button>
+
+
+    <button
+      type="button"
+      class="btn-favorite"
+      data-favorite-id="${escapeHTML(id)}">
+
+      <i class="fa-regular fa-star"></i>
+
+      Favori
+
+    </button>
+
+
+    <a
+      href="service.html?id=${encodeURIComponent(id)}"
+      class="btn-details">
+
+      <i class="fa-solid fa-eye"></i>
+
+      Voir le service
+
+    </a>
+
+  </div>
+
+</article>
+
+`;
 
     });
 
@@ -997,7 +1077,9 @@ async function loadPublicAds() {
 
           <i class="fa-solid fa-folder-open"></i>
 
-          <h2>Aucun service disponible</h2>
+          <h2>
+            Aucun service disponible
+          </h2>
 
           <p>
             Aucun service n'a encore été validé.
@@ -1016,16 +1098,14 @@ async function loadPublicAds() {
       html;
 
 
-    /* Initialiser les favoris */
-
-    initialiserFavoris();
+    activerBoutonsCartes();
 
   }
 
   catch (error) {
 
     console.error(
-      "Erreur chargement services :",
+      "Erreur services :",
       error
     );
 
@@ -1036,7 +1116,9 @@ async function loadPublicAds() {
 
         <i class="fa-solid fa-triangle-exclamation"></i>
 
-        <h2>Erreur</h2>
+        <h2>
+          Erreur
+        </h2>
 
         <p>
           Impossible de charger les services.
@@ -1051,489 +1133,150 @@ async function loadPublicAds() {
 }
 
 
-/* =========================================================
-   CRÉATION D'UNE CARTE
-   ========================================================= */
+/* ======================================================
+   BOUTONS DES CARTES
+   ====================================================== */
 
-function createServiceCard(
-  serviceId,
-  service
-) {
+function activerBoutonsCartes() {
 
-  const titre =
-    escapeHTML(
-      service.titre ||
-      "Service"
-    );
-
-
-  const categorie =
-    escapeHTML(
-      service.categorie ||
-      "Service"
-    );
-
-
-  const ville =
-    escapeHTML(
-      service.ville ||
-      "RDC"
-    );
-
-
-  const prix =
-    escapeHTML(
-      service.prix ||
-      "Sur devis"
-    );
-
-
-  const description =
-    escapeHTML(
-      service.description ||
-      ""
-    );
-
-
-  /*
-   * ownerId est récupéré depuis
-   * le document Firestore.
-   */
-
-  const ownerId =
-    service.ownerId ||
-    "";
 
-
-  const ownerName =
-    escapeHTML(
-      service.ownerName ||
-      service.nom ||
-      "Professionnel"
-    );
+  /* PARTAGE */
 
+  document
+    .querySelectorAll("[data-share-id]")
+    .forEach((button) => {
 
-  /*
-   * Numéro de contact.
-   *
-   * On accepte plusieurs noms de champs
-   * pour rester compatible avec ta collection.
-   */
-
-  const whatsapp =
-    service.whatsapp ||
-    service.ownerWhatsapp ||
-    service.telephone ||
-    service.phone ||
-    service.ownerPhone ||
-    "";
+      button.addEventListener("click", async () => {
 
+        const title =
+          button.dataset.shareTitle ||
+          "Service CAMU SERVICES";
 
-  const telephone =
-    service.telephone ||
-    service.phone ||
-    service.ownerPhone ||
-    service.whatsapp ||
-    "";
 
+        const url =
+          `${window.location.origin}${window.location.pathname.replace("publier.html", "")}service.html?id=${button.dataset.shareId}`;
 
-  const safeWhatsapp =
-    normalizePhone(
-      whatsapp
-    );
 
+        if (navigator.share) {
 
-  const safeTelephone =
-    normalizePhone(
-      telephone
-    );
+          try {
 
+            await navigator.share({
 
-  const whatsappLink =
-    safeWhatsapp
-      ? `https://wa.me/${safeWhatsapp}?text=${encodeURIComponent(
-          "Bonjour, je viens de voir votre service sur CAMU SERVICES : " +
-          (service.titre || "votre service")
-        )}`
-      : "";
+              title:
+                title,
 
+              text:
+                `Découvrez ce service sur CAMU SERVICES : ${title}`,
 
-  const imageHTML =
-    service.image
-      ? `
-        <img
-          src="${escapeAttribute(service.image)}"
-          alt="${titre}"
-          class="service-image"
-          loading="lazy">
-      `
-      : "";
+              url
 
+            });
 
-  const whatsappButton =
-    whatsappLink
-      ? `
-        <a
-          href="${whatsappLink}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="service-action whatsapp-btn">
+          }
 
-          <i class="fa-brands fa-whatsapp"></i>
+          catch (error) {
 
-          <span>WhatsApp</span>
+            if (error.name !== "AbortError") {
 
-        </a>
-      `
-      : `
-        <button
-          type="button"
-          class="service-action whatsapp-btn"
-          disabled
-          title="Numéro WhatsApp non disponible"
-          style="opacity:.55;cursor:not-allowed;">
+              console.error(error);
 
-          <i class="fa-brands fa-whatsapp"></i>
+            }
 
-          <span>WhatsApp</span>
+          }
 
-        </button>
-      `;
+        } else {
 
+          try {
 
-  const callButton =
-    safeTelephone
-      ? `
-        <a
-          href="tel:+${safeTelephone}"
-          class="service-action call-btn">
+            await navigator.clipboard.writeText(url);
 
-          <i class="fa-solid fa-phone"></i>
+            afficherNotification(
+              "Lien copié.",
+              "success"
+            );
 
-          <span>Appeler</span>
+          }
 
-        </a>
-      `
-      : `
-        <button
-          type="button"
-          class="service-action call-btn"
-          disabled
-          style="opacity:.55;cursor:not-allowed;">
+          catch {
 
-          <i class="fa-solid fa-phone"></i>
+            afficherNotification(
+              "Impossible de copier le lien.",
+              "error"
+            );
 
-          <span>Appeler</span>
+          }
 
-        </button>
-      `;
+        }
 
+      });
 
-  const warning =
-    (!whatsapp && !telephone)
-      ? `
-        <div class="service-contact-warning">
+    });
 
-          <i class="fa-solid fa-circle-info"></i>
 
-          Le professionnel n'a pas encore renseigné
-          de numéro de contact.
+  /* FAVORIS */
 
-        </div>
-      `
-      : "";
+  document
+    .querySelectorAll("[data-favorite-id]")
+    .forEach((button) => {
 
+      const id =
+        button.dataset.favoriteId;
 
-  return `
 
-    <article
-      class="annonce-card"
-      data-service-id="${escapeAttribute(serviceId)}"
-      data-owner-id="${escapeAttribute(ownerId)}">
+      const key =
+        `camu_favorite_${id}`;
 
 
-      ${imageHTML}
+      if (localStorage.getItem(key) === "true") {
 
+        button.classList.add("active");
 
-      <span class="badge-cat">
-
-        ${categorie}
-
-      </span>
-
-
-      <h3>
-
-        ${titre}
-
-      </h3>
-
-
-      <div class="location">
-
-        <i class="fa-solid fa-location-dot"></i>
-
-        ${ville}
-
-      </div>
-
-
-      <p class="service-description">
-
-        ${description}
-
-      </p>
-
-
-      <div class="prix">
-
-        ${prix}
-
-      </div>
-
-
-      <!-- PROPRIÉTAIRE -->
-
-      <div class="service-owner">
-
-        <div class="service-owner-icon">
-
-          <i class="fa-solid fa-user"></i>
-
-        </div>
-
-
-        <div class="service-owner-info">
-
-          <strong>
-
-            ${ownerName}
-
-          </strong>
-
-          <span>
-
-            <span class="owner-badge">
-
-              <i class="fa-solid fa-circle-check"></i>
-
-              Professionnel
-
-            </span>
-
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- ACTIONS -->
-
-      <div class="service-actions">
-
-        ${whatsappButton}
-
-        ${callButton}
-
-        <button
-          type="button"
-          class="service-action favorite-service-btn"
-          data-favorite-id="${escapeAttribute(serviceId)}"
-          title="Ajouter aux favoris">
-
-          <i class="fa-regular fa-star"></i>
-
-        </button>
-
-      </div>
-
-
-      ${warning}
-
-
-    </article>
-
-  `;
-
-}
-
-
-/* =========================================================
-   NORMALISER NUMÉRO
-   ========================================================= */
-
-function normalizePhone(phone) {
-
-  if (!phone) {
-
-    return "";
-
-  }
-
-
-  let value =
-    String(phone)
-      .trim()
-      .replace(/[^\d+]/g, "");
-
-
-  /*
-   * +243812345678
-   */
-
-  if (value.startsWith("+")) {
-
-    return value.substring(1);
-
-  }
-
-
-  /*
-   * 243812345678
-   */
-
-  if (value.startsWith("243")) {
-
-    return value;
-
-  }
-
-
-  /*
-   * 0812345678
-   */
-
-  if (value.startsWith("0")) {
-
-    return "243" +
-      value.substring(1);
-
-  }
-
-
-  return value;
-
-}
-
-
-/* =========================================================
-   FAVORIS
-   ========================================================= */
-
-function initialiserFavoris() {
-
-  const buttons =
-    document.querySelectorAll(
-      ".favorite-service-btn"
-    );
-
-
-  const favoris =
-    JSON.parse(
-      localStorage.getItem(
-        "camu_favoris"
-      ) || "[]"
-    );
-
-
-  buttons.forEach(function(button) {
-
-    const id =
-      button.dataset.favoriteId;
-
-
-    if (favoris.includes(id)) {
-
-      button.classList.add("active");
-
-      button.innerHTML =
-        '<i class="fa-solid fa-star"></i>';
-
-    }
-
-
-    button.addEventListener(
-      "click",
-      function() {
-
-        toggleFavori(
-          id,
-          button
-        );
+        button.innerHTML =
+          '<i class="fa-solid fa-star"></i> Favori';
 
       }
-    );
-
-  });
-
-}
 
 
-function toggleFavori(
-  id,
-  button
-) {
+      button.addEventListener("click", () => {
 
-  let favoris =
-    JSON.parse(
-      localStorage.getItem(
-        "camu_favoris"
-      ) || "[]"
-    );
+        const active =
+          button.classList.toggle("active");
 
 
-  if (favoris.includes(id)) {
-
-    favoris =
-      favoris.filter(
-        function(item) {
-          return item !== id;
-        }
-      );
+        localStorage.setItem(
+          key,
+          active ? "true" : "false"
+        );
 
 
-    button.classList.remove(
-      "active"
-    );
+        button.innerHTML =
+          active
+            ? '<i class="fa-solid fa-star"></i> Favori'
+            : '<i class="fa-regular fa-star"></i> Favori';
 
 
-    button.innerHTML =
-      '<i class="fa-regular fa-star"></i>';
+        afficherNotification(
+          active
+            ? "Service ajouté aux favoris."
+            : "Service retiré des favoris.",
+          "success"
+        );
 
-  }
+      });
 
-  else {
-
-    favoris.push(id);
-
-
-    button.classList.add(
-      "active"
-    );
-
-
-    button.innerHTML =
-      '<i class="fa-solid fa-star"></i>';
-
-  }
-
-
-  localStorage.setItem(
-    "camu_favoris",
-    JSON.stringify(favoris)
-  );
+    });
 
 }
 
 
-/* =========================================================
+/* ======================================================
    PUBLICATION
-   ========================================================= */
+   ====================================================== */
 
 form.addEventListener(
   "submit",
-  async function(event) {
+  async (event) => {
 
     event.preventDefault();
 
@@ -1575,16 +1318,16 @@ form.addEventListener(
         .trim();
 
 
-    const whatsapp =
+    const telephone =
       document
-        .getElementById("whatsappService")
+        .getElementById("telephoneService")
         .value
         .trim();
 
 
-    const telephone =
+    let whatsapp =
       document
-        .getElementById("telephoneService")
+        .getElementById("whatsappService")
         .value
         .trim();
 
@@ -1596,12 +1339,20 @@ form.addEventListener(
         .trim();
 
 
+    if (!whatsapp) {
+
+      whatsapp =
+        telephone;
+
+    }
+
+
     if (
       !titre ||
       !categorie ||
       !ville ||
       !prix ||
-      !whatsapp ||
+      !telephone ||
       !description
     ) {
 
@@ -1625,101 +1376,43 @@ form.addEventListener(
         '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
 
 
-      /*
-       * NOM DU PROFESSIONNEL
-       */
-
-      const ownerName =
-        currentUserData.nom ||
-        currentUserData.name ||
-        currentUser.displayName ||
-        "Professionnel";
-
-
-      /*
-       * DOCUMENT FIRESTORE
-       *
-       * IMPORTANT :
-       * ownerId = currentUser.uid
-       *
-       * Ainsi chaque publication reste
-       * liée à son propriétaire.
-       */
-
-      const serviceData = {
-
-        titre,
-
-        categorie,
-
-        ville,
-
-        prix,
-
-        description,
-
-        image:
-          base64Image || "",
-
-
-        /* IDENTIFICATION DU PROPRIÉTAIRE */
-
-        ownerId:
-          currentUser.uid,
-
-        ownerName:
-          ownerName,
-
-
-        /* CONTACT */
-
-        whatsapp:
-          whatsapp,
-
-        telephone:
-          telephone || whatsapp,
-
-
-        ownerWhatsapp:
-          whatsapp,
-
-        ownerPhone:
-          telephone || whatsapp,
-
-
-        ownerEmail:
-          currentUser.email || "",
-
-
-        /* VALIDATION */
-
-        valide:
-          false,
-
-        statut:
-          "en_attente",
-
-
-        /* DATE */
-
-        createdAt:
-          serverTimestamp()
-
-      };
-
-
-      /*
-       * AJOUT DANS :
-       *
-       * services
-       */
-
       await addDoc(
-        collection(
-          db,
-          "services"
-        ),
-        serviceData
+        collection(db, "services"),
+        {
+
+          titre,
+
+          categorie,
+
+          ville,
+
+          prix,
+
+          telephone,
+
+          whatsapp,
+
+          description,
+
+          image:
+            base64Image || "",
+
+          ownerId:
+            currentUser.uid,
+
+          ownerEmail:
+            currentUser.email || "",
+
+          valide:
+            false,
+
+          status:
+            "en_attente",
+
+          createdAt:
+            serverTimestamp()
+
+        }
       );
 
 
@@ -1744,9 +1437,11 @@ form.addEventListener(
         "";
 
 
-      /*
-       * Recharger les services
-       */
+      afficherNotification(
+        "Publication envoyée pour validation.",
+        "success"
+      );
+
 
       await loadPublicAds();
 
@@ -1754,14 +1449,11 @@ form.addEventListener(
 
     catch (error) {
 
-      console.error(
-        "Erreur publication :",
-        error
-      );
+      console.error(error);
 
 
       afficherMessage(
-        "Erreur lors de la publication. Veuillez réessayer.",
+        "Erreur lors de la publication. Vérifiez votre connexion et réessayez.",
         false
       );
 
@@ -1779,9 +1471,9 @@ form.addEventListener(
 );
 
 
-/* =========================================================
+/* ======================================================
    MESSAGE
-   ========================================================= */
+   ====================================================== */
 
 function afficherMessage(
   texte,
@@ -1807,63 +1499,9 @@ function afficherMessage(
   message.textContent =
     texte;
 
-
-  setTimeout(
-    function() {
-
-      message.style.display =
-        "none";
-
-    },
-    5000
-  );
-
-}
-
-
-/* =========================================================
-   SÉCURITÉ HTML
-   ========================================================= */
-
-function escapeHTML(value) {
-
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
-
-}
-
-
-function escapeAttribute(value) {
-
-  return escapeHTML(
-    value
-  );
-
 }
 
 </script>
 
 </body>
 </html>
-```
