@@ -403,7 +403,7 @@
 
         <h2 class="section-title">Catalogue récent</h2>
 
-        <!-- Grille 2 colonnes dynamique (Connectée à Firebase) -->
+        <!-- Grille 2 colonnes connectée à Firebase -->
         <div class="cards-grid-2" id="cardsContainer">
             <div class="loader-text"><i class="fa-solid fa-spinner fa-spin"></i> Chargement des publications...</div>
         </div>
@@ -429,14 +429,12 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK & Logique de chargement -->
+    <!-- Firebase SDK & Logique -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ==========================================
         // VOS CONFIGURATIONS FIREBASE
-        // ==========================================
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "votre-projet.firebaseapp.com",
@@ -457,44 +455,27 @@
             try {
                 allPublications = [];
 
-                // 1. Récupérer depuis la collection "communiques"
-                const snapCommuniques = await getDocs(collection(db, "communiques"));
-                snapCommuniques.forEach((doc) => {
+                // Récupération depuis la collection "services"
+                const querySnapshot = await getDocs(collection(db, "services"));
+                
+                querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    
                     allPublications.push({
                         id: doc.id,
-                        type: data.type || 'article', // 'article' ou 'prestataire'
-                        titre: data.titre || data.title || 'Sans titre',
+                        type: 'prestataire', 
+                        titre: data.titre || data.categorie || 'Sans titre', // Récupère le champ 'titre' (ou 'categorie' par défaut)
                         description: data.description || '',
-                        prixOrStatut: data.prixOrStatut || '',
+                        prixOrStatut: data.prix ? data.prix + " FC" : 'Disponible',
                         image: data.image || 'https://via.placeholder.com/300',
-                        btnText: data.type === 'prestataire' ? 'Contacter' : 'Commander'
+                        btnText: 'Contacter'
                     });
                 });
-
-                // 2. Récupérer depuis la collection "services" (si elle existe)
-                try {
-                    const snapServices = await getDocs(collection(db, "services"));
-                    snapServices.forEach((doc) => {
-                        const data = doc.data();
-                        allPublications.push({
-                            id: doc.id,
-                            type: data.type || 'prestataire',
-                            titre: data.titre || data.nom || 'Sans nom',
-                            description: data.description || '',
-                            prixOrStatut: data.prixOrStatut || 'Disponible',
-                            image: data.image || 'https://via.placeholder.com/300',
-                            btnText: 'Contacter'
-                        });
-                    });
-                } catch (e) {
-                    console.log("Collection 'services' optionnelle non lue ou vide.");
-                }
 
                 filterAndRender();
             } catch (error) {
                 console.error("Erreur Firebase : ", error);
-                container.innerHTML = `<p class="loader-text" style="color:var(--red);">Erreur : ${error.message}</p>`;
+                container.innerHTML = `<div class="loader-text" style="color:var(--red);">Erreur : ${error.message}</div>`;
             }
         }
 
