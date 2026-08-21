@@ -582,10 +582,8 @@ const e = x => String(x ?? "")
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // L'utilisateur est connecté : on charge les services et communiqués
         load();
     } else {
-        // L'utilisateur n'est PAS connecté : on affiche votre message personnalisé
         document.getElementById("services").innerHTML = `
             <div class="empty-state" style="padding: 40px 20px; text-align: center;">
                 <i class="fa-solid fa-lock" style="font-size: 32px; margin-bottom: 15px; color: #e53935;"></i>
@@ -684,6 +682,7 @@ function render() {
             ${service.description || ""}
             ${service.ville || ""}
             ${service.categorie || ""}
+            ${service.userName || ""}
 
         `.toLowerCase();
 
@@ -709,7 +708,21 @@ function render() {
 
         filtered.map(service => `
 
-            <article class="annonce-card">
+            <article class="annonce-card" style="cursor: pointer;" onclick="ouvrirDetails('${service.id}')">
+
+                <!-- EN-TÊTE : Photo/Logo et Nom de l'utilisateur -->
+                <div style="display: flex; align-items: center; margin-bottom: 10px; gap: 10px;">
+                    <div style="width: 35px; height: 35px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        ${service.userPhoto ? `
+                            <img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                        ` : `
+                            <i class="fa-solid fa-user" style="color: #666; font-size: 14px;"></i>
+                        `}
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333;">
+                        ${e(service.userName || service.userEmail || "Prestataire")}
+                    </div>
+                </div>
 
                 ${service.image ? `
                     <div style="margin-bottom: 10px; border-radius: 6px; overflow: hidden; max-height: 180px;">
@@ -760,7 +773,7 @@ function render() {
                 </p>
 
 
-                <div class="card-actions">
+                <div class="card-actions" onclick="event.stopPropagation()">
 
                     <a
                         class="btn-submit"
@@ -810,6 +823,55 @@ function render() {
         `;
 
 }
+
+
+
+/* =====================================================
+   OUVERTURE DE LA MODALE DE DÉTAILS
+   ===================================================== */
+
+window.ouvrirDetails = function(id) {
+    const service = all.find(s => s.id === id);
+    if (!service) return;
+
+    const modalId = "modalDetailsService";
+    let existingModal = document.getElementById(modalId);
+    if (existingModal) existingModal.remove();
+
+    const modalHTML = `
+        <div id="${modalId}" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: var(--bg-card, #fff); color: var(--text-color, #333); width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; overflow-y: auto; padding: 20px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                
+                <button onclick="document.getElementById('${modalId}').remove()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: inherit;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 12px;">
+                    <div style="width: 45px; height: 45px; border-radius: 50%; background: #ddd; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        ${service.userPhoto ? `<img src="${service.userPhoto}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fa-solid fa-user" style="color: #666;"></i>`}
+                    </div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 15px;">${e(service.userName || service.userEmail || "Prestataire")}</div>
+                        <div style="font-size: 12px; color: #777;">${e(service.ville || "RDC")}</div>
+                    </div>
+                </div>
+
+                ${service.image ? `<div style="margin-bottom: 15px; border-radius: 8px; overflow: hidden;"><img src="${service.image}" alt="Service" style="width: 100%; max-height: 250px; object-fit: cover;"></div>` : ""}
+
+                <span class="badge-cat" style="display: inline-block; margin-bottom: 10px;">${e(service.categorie)}</span>
+                <h2 style="margin-bottom: 10px; font-size: 18px;">${e(service.titre)}</h2>
+                <p style="font-size: 14px; line-height: 1.5; margin-bottom: 15px; white-space: pre-line;">${e(service.description)}</p>
+                <p style="font-weight: bold; font-size: 16px; color: #e53935; margin-bottom: 20px;">${e(service.prix || "Sur devis")}</p>
+
+                <a href="chat.html?serviceId=${encodeURIComponent(service.id)}" class="btn-submit" style="display: block; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px;">
+                    <i class="fa-solid fa-comments"></i> Contacter le prestataire
+                </a>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+};
 
 
 
