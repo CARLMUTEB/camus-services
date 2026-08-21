@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camu Services — Catalogue</title>
+    <!-- FontAwesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -35,6 +36,7 @@
             padding-bottom: 70px;
         }
 
+        /* --- BARRE SUPÉRIEURE --- */
         .top-bar {
             position: fixed;
             top: 0;
@@ -50,6 +52,24 @@
             z-index: 1000;
         }
 
+        .menu-toggle {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         .logo-text {
             font-size: 18px;
             font-weight: 900;
@@ -59,6 +79,96 @@
             color: var(--red);
         }
 
+        /* --- MENU LATÉRAL (TIROIR GAUCHE) --- */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: var(--card);
+            z-index: 1600;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu-header {
+            background: var(--dark);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .side-menu-header h2 {
+            font-size: 16px;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .side-menu-links {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .side-menu-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .side-menu-links a:hover, .side-menu-links a.active {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .side-menu-links i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- CONTENEUR PRINCIPAL --- */
         .container {
             width: min(94%, 600px);
             margin: 0 auto;
@@ -124,7 +234,7 @@
             color: var(--muted);
         }
 
-        /* Grille stricte à 2 colonnes côte à côte */
+        /* --- GRILLE 2 COLONNES --- */
         .cards-grid-2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -142,17 +252,19 @@
             justify-content: space-between;
         }
 
-        .card-img-placeholder {
+        .card-img-container {
             width: 100%;
-            height: 95px;
-            background: var(--red-light);
-            color: var(--red);
+            height: 100px;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
+            overflow: hidden;
             margin-bottom: 8px;
+            background: #eee;
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .badge-cat {
@@ -164,6 +276,11 @@
             font-size: 9px;
             font-weight: 800;
             margin-bottom: 4px;
+        }
+
+        .badge-prestataire {
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
         .annonce-card h3 {
@@ -200,6 +317,19 @@
             text-align: center;
         }
 
+        .btn-prestataire {
+            background: #2e7d32;
+        }
+
+        .loader-text {
+            grid-column: span 2;
+            text-align: center;
+            color: var(--muted);
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        /* --- BARRE DE NAVIGATION DU BAS --- */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -221,6 +351,7 @@
             color: var(--muted);
             font-size: 10px;
             gap: 3px;
+            text-decoration: none;
         }
 
         .bottom-nav a.active {
@@ -234,115 +365,211 @@
 </head>
 <body>
 
+    <!-- Barre supérieure avec bouton menu -->
     <header class="top-bar">
-        <div class="logo-text" style="margin-left: 5px;">CAMU <span>SERVICES</span></div>
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-text">CAMU <span>SERVICES</span></div>
+        <div style="width: 40px;"></div>
     </header>
 
+    <!-- Menu latéral (Tiroir) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>Navigation</h2>
+            <button class="close-menu" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="side-menu-links">
+            <a href="#" id="side-home" class="active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Accueil</a>
+            <a href="#" id="side-explore" onclick="switchTab('explore')"><i class="fa-solid fa-compass"></i> Explorer</a>
+            <a href="#" id="side-favorites" onclick="switchTab('favorites')"><i class="fa-solid fa-heart"></i> Favoris</a>
+            <a href="#" id="side-profile" onclick="switchTab('profile')"><i class="fa-solid fa-user"></i> Mon Profil</a>
+        </div>
+    </aside>
+
+    <!-- Contenu Principal -->
     <main class="container">
         
         <div class="search-bar">
             <i class="fa-solid fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="searchCards()">
+            <input type="text" id="searchInput" placeholder="Rechercher un article, un service..." onkeyup="filterAndRender()">
         </div>
 
         <div class="categories">
-            <button onclick="filterCategory('all', this)" class="cat-btn active">Tout</button>
-            <button onclick="filterCategory('article', this)" class="cat-btn">Articles</button>
-            <button onclick="filterCategory('prestataire', this)" class="cat-btn">Prestataires locaux</button>
+            <button onclick="setCategory('all', this)" class="cat-btn active">Tout</button>
+            <button onclick="setCategory('article', this)" class="cat-btn">Articles</button>
+            <button onclick="setCategory('prestataire', this)" class="cat-btn">Prestataires locaux</button>
         </div>
 
         <h2 class="section-title">Catalogue récent</h2>
 
-        <!-- Grille 2 colonnes -->
+        <!-- Grille 2 colonnes dynamique (Connectée à Firebase) -->
         <div class="cards-grid-2" id="cardsContainer">
-            
-            <div class="annonce-card" data-category="article">
-                <div>
-                    <div class="card-img-placeholder"><i class="fa-solid fa-headphones"></i></div>
-                    <span class="badge-cat">Article</span>
-                    <h3>Casque Bluetooth</h3>
-                    <p class="meta">Son haute fidélité</p>
-                </div>
-                <div>
-                    <div class="prix">45 000 FC</div>
-                    <button class="btn-primary">Commander</button>
-                </div>
-            </div>
-
-            <div class="annonce-card" data-category="prestataire">
-                <div>
-                    <div class="card-img-placeholder" style="background:#e8f5e9; color:#2e7d32;"><i class="fa-solid fa-bolt"></i></div>
-                    <span class="badge-cat" style="background:#e8f5e9; color:#2e7d32;">Prestataire</span>
-                    <h3>Jean Électricien</h3>
-                    <p class="meta">Dépannage & Installation</p>
-                </div>
-                <div>
-                    <div class="prix" style="color:#2e7d32;">Disponible</div>
-                    <button class="btn-primary" style="background:#2e7d32;">Contacter</button>
-                </div>
-            </div>
-
-            <div class="annonce-card" data-category="article">
-                <div>
-                    <div class="card-img-placeholder"><i class="fa-solid fa-clock"></i></div>
-                    <span class="badge-cat">Article</span>
-                    <h3>Montre Classique</h3>
-                    <p class="meta">Cuir Véritable</p>
-                </div>
-                <div>
-                    <div class="prix">25 000 FC</div>
-                    <button class="btn-primary">Commander</button>
-                </div>
-            </div>
-
-            <div class="annonce-card" data-category="prestataire">
-                <div>
-                    <div class="card-img-placeholder" style="background:#e8f5e9; color:#2e7d32;"><i class="fa-solid fa-camera"></i></div>
-                    <span class="badge-cat" style="background:#e8f5e9; color:#2e7d32;">Prestataire</span>
-                    <h3>Studio Photo Pro</h3>
-                    <p class="meta">Mariages & Événements</p>
-                </div>
-                <div>
-                    <div class="prix" style="color:#2e7d32;">Sur RDV</div>
-                    <button class="btn-primary" style="background:#2e7d32;">Contacter</button>
-                </div>
-            </div>
-
+            <div class="loader-text"><i class="fa-solid fa-spinner fa-spin"></i> Chargement des publications...</div>
         </div>
     </main>
 
+    <!-- Barre de navigation du bas -->
     <nav class="bottom-nav">
-        <a href="#" class="active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-        <a href="#"><i class="fa-solid fa-compass"></i><span>Explorer</span></a>
-        <a href="#"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
-        <a href="#"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+        <a href="#" id="nav-home" class="active" onclick="switchTab('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="#" id="nav-explore" onclick="switchTab('explore')">
+            <i class="fa-solid fa-compass"></i>
+            <span>Explorer</span>
+        </a>
+        <a href="#" id="nav-favorites" onclick="switchTab('favorites')">
+            <i class="fa-solid fa-heart"></i>
+            <span>Favoris</span>
+        </a>
+        <a href="#" id="nav-profile" onclick="switchTab('profile')">
+            <i class="fa-solid fa-user"></i>
+            <span>Profil</span>
+        </a>
     </nav>
 
-    <script>
-        function filterCategory(category, buttonEl) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            buttonEl.classList.add('active');
+    <!-- Firebase SDK (Modular v10) & Logique de chargement des données -->
+    <script type="module">
+        // Importez Firebase depuis les CDN officiels
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            document.querySelectorAll('.annonce-card').forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
+        // ==========================================
+        // REMPLACEZ AVEC VOS CONFIGURATIONS FIREBASE
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "VOTRE_API_KEY",
+            authDomain: "votre-projet.firebaseapp.com",
+            projectId: "votre-projet-id",
+            storageBucket: "votre-projet.appspot.com",
+            messagingSenderId: "votre_sender_id",
+            appId: "votre_app_id"
+        };
+
+        // Initialisation de Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allPublications = [];
+        let currentCategory = 'all';
+
+        // Fonction pour récupérer les vraies données depuis Firestore
+        async function fetchPublicationsFromFirebase() {
+            const container = document.getElementById('cardsContainer');
+            try {
+                // Nom de votre collection Firestore (ex: "annonces" ou "publications")
+                const querySnapshot = await getDocs(collection(db, "annonces"));
+                allPublications = [];
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allPublications.push({
+                        id: doc.id,
+                        type: data.type || 'article', // 'article' ou 'prestataire'
+                        titre: data.titre || 'Sans titre',
+                        description: data.description || '',
+                        prixOrStatut: data.prixOrStatut || '',
+                        image: data.image || 'https://via.placeholder.com/300',
+                        btnText: data.type === 'prestataire' ? 'Contacter' : 'Commander'
+                    });
+                });
+
+                filterAndRender();
+            } catch (error) {
+                console.error("Erreur lors du chargement Firebase : ", error);
+                container.innerHTML = '<p class="loader-text" style="color:var(--red);">Erreur de connexion à la base de données.</p>';
+            }
+        }
+
+        // Fonction globale de filtrage et rendu
+        window.filterAndRender = function() {
+            const container = document.getElementById('cardsContainer');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            
+            container.innerHTML = '';
+
+            const filtered = allPublications.filter(item => {
+                const matchCat = (currentCategory === 'all' || item.type === currentCategory);
+                const matchSearch = item.titre.toLowerCase().includes(searchQuery) || item.description.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="loader-text">Aucune publication trouvée dans Firebase.</p>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isPrestataire = item.type === 'prestataire';
+                const badgeClass = isPrestataire ? 'badge-cat badge-prestataire' : 'badge-cat';
+                const badgeText = isPrestataire ? 'Prestataire' : 'Article';
+                const btnClass = isPrestataire ? 'btn-primary btn-prestataire' : 'btn-primary';
+                const prixStyle = isPrestataire ? 'color: #2e7d32; font-size: 12px;' : '';
+
+                const cardHTML = `
+                    <div class="annonce-card">
+                        <div>
+                            <div class="card-img-container">
+                                <img src="${item.image}" alt="${item.titre}">
+                            </div>
+                            <span class="${badgeClass}">${badgeText}</span>
+                            <h3>${item.titre}</h3>
+                            <p class="meta">${item.description}</p>
+                        </div>
+                        <div>
+                            <div class="prix" style="${prixStyle}">${item.prixOrStatut}</div>
+                            <button class="${btnClass}" onclick="handleAction('${item.id}')">${item.btnText}</button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
             });
         }
 
-        function searchCards() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.annonce-card').forEach(card => {
-                let title = card.querySelector('h3').textContent.toLowerCase();
-                let meta = card.querySelector('.meta').textContent.toLowerCase();
-                if (title.includes(input) || meta.includes(input)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+        // Changer de catégorie
+        window.setCategory = function(category, btnElement) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            filterAndRender();
+        }
+
+        // Action au clic sur une carte
+        window.handleAction = function(id) {
+            const item = allPublications.find(p => p.id === id);
+            if (item) {
+                alert(`Action sélectionnée pour : ${item.titre}`);
+            }
+        }
+
+        // Lancement au démarrage
+        fetchPublicationsFromFirebase();
+    </script>
+
+    <!-- Scripts utilitaires (Menu & Navigation) -->
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.bottom-nav a, .side-menu-links a').forEach(a => a.classList.remove('active'));
+            
+            if(document.getElementById('nav-' + tabName)) document.getElementById('nav-' + tabName).classList.add('active');
+            if(document.getElementById('side-' + tabName)) document.getElementById('side-' + tabName).classList.add('active');
+
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+
+            if (tabName === 'profile') {
+                alert("Ouverture de votre profil...");
+            } else if (tabName === 'favorites') {
+                alert("Affichage de vos favoris...");
+            } else if (tabName === 'explore') {
+                alert("Mode exploration active.");
+            }
         }
     </script>
 </body>
