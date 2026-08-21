@@ -33,7 +33,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALISATION FIREBASE
+   INITIALISATION
    ========================================================= */
 
 const app = initializeApp(firebaseConfig);
@@ -57,36 +57,32 @@ export {
 
 
 /* =========================================================
-   GESTION GLOBALE DU THÈME
+   THÈME
    ========================================================= */
 
-(function () {
+function appliquerTheme() {
 
   const theme =
     localStorage.getItem("camu_theme");
 
   if (theme === "dark") {
 
-    document.documentElement.classList.add(
-      "dark-mode"
-    );
+    document.documentElement.classList.add("dark-mode");
 
   } else {
 
-    document.documentElement.classList.remove(
-      "dark-mode"
-    );
+    document.documentElement.classList.remove("dark-mode");
 
   }
 
-})();
+}
 
 
 /* =========================================================
-   GESTION GLOBALE DE LA LANGUE
+   LANGUE
    ========================================================= */
 
-(function () {
+function appliquerLangue() {
 
   const language =
     localStorage.getItem("camu_language");
@@ -98,11 +94,15 @@ export {
 
   }
 
-})();
+}
+
+
+appliquerTheme();
+appliquerLangue();
 
 
 /* =========================================================
-   UTILITAIRE — UTILISATEUR CONNECTÉ
+   UTILISATEUR COURANT
    ========================================================= */
 
 export function getCurrentUser() {
@@ -112,10 +112,6 @@ export function getCurrentUser() {
 }
 
 
-/* =========================================================
-   UTILITAIRE — VÉRIFIER LA CONNEXION
-   ========================================================= */
-
 export function isUserConnected() {
 
   return !!auth.currentUser;
@@ -124,17 +120,14 @@ export function isUserConnected() {
 
 
 /* =========================================================
-   ÉCOUTEUR D'AUTHENTIFICATION
+   ÉTAT AUTHENTIFICATION GLOBAL
    ========================================================= */
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, user => {
 
-  window.camuCurrentUser = user || null;
+  window.camuCurrentUser =
+    user || null;
 
-  /*
-   * Événement personnalisé permettant aux autres pages
-   * de savoir automatiquement si l'utilisateur est connecté.
-   */
 
   document.dispatchEvent(
     new CustomEvent(
@@ -151,7 +144,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 /* =========================================================
-   FONCTION DE DÉCONNEXION
+   DÉCONNEXION
    ========================================================= */
 
 window.camuLogout = async function () {
@@ -160,17 +153,13 @@ window.camuLogout = async function () {
 
     await signOut(auth);
 
-    console.log(
-      "Utilisateur déconnecté."
-    );
-
     window.location.href =
       "profil.html";
 
   } catch (error) {
 
     console.error(
-      "Erreur lors de la déconnexion :",
+      "Erreur déconnexion :",
       error
     );
 
@@ -184,7 +173,7 @@ window.camuLogout = async function () {
 
 
 /* =========================================================
-   ÉTAT GLOBAL DISPONIBLE POUR LES AUTRES PAGES
+   OBJET GLOBAL CAMU
    ========================================================= */
 
 window.CAMU = {
