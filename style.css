@@ -524,6 +524,7 @@ h1, h2, h3, h4, p, span, a, button, label {
   color: var(--red);
 }
 
+/* CORRECTION DU BUG DE SYNTAXE ICI */
 .communique-content {
   min-width: 0;
 }
@@ -636,7 +637,7 @@ h1, h2, h3, h4, p, span, a, button, label {
 }
 
 /* =========================================================
-   NAVIGATION MOBILE DU BAS (5 ELEMENTS : ACCUEIL, RECHERCHE, PUBLIER, CHAT, PROFIL)
+   NAVIGATION MOBILE DU BOTTOM
    ========================================================= */
 .bottom-nav {
   position: fixed;
