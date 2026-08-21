@@ -18,23 +18,39 @@
 
   <title>CAMU SERVICES — Trouver des services près de chez vous</title>
 
-  <!-- Font Awesome -->
+  <!-- =====================================================
+       FONT AWESOME
+       ===================================================== -->
+
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   >
 
-  <!-- Style principal -->
+  <!-- =====================================================
+       STYLE PRINCIPAL
+       ===================================================== -->
+
   <link rel="stylesheet" href="style.css">
 
-  <!-- Styles personnalisés pour des cartes plus compactes et propres -->
+
+  <!-- =====================================================
+       STYLES DES CARTES ET COMMUNIQUÉS
+       ===================================================== -->
+
   <style>
+
+    /* =====================================================
+       SERVICES
+       ===================================================== */
+
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 12px;
       margin-bottom: 20px;
     }
+
 
     .annonce-card.service-card {
       border-radius: 10px;
@@ -46,19 +62,23 @@
       font-size: 0.9rem;
     }
 
+
     .annonce-card .service-image {
       height: 120px;
       position: relative;
     }
 
+
     .annonce-card .service-card-content {
       padding: 12px;
     }
+
 
     .annonce-card h3 {
       font-size: 1rem;
       margin-bottom: 4px;
     }
+
 
     .annonce-card .service-description {
       font-size: 0.82rem;
@@ -69,17 +89,20 @@
       overflow: hidden;
     }
 
+
     .annonce-card .location,
     .annonce-card .service-footer {
       font-size: 0.78rem;
       margin-bottom: 6px;
     }
 
+
     .annonce-card .card-actions {
       display: flex;
       gap: 8px;
       margin-top: 8px;
     }
+
 
     .annonce-card .card-actions .btn-primary {
       padding: 6px 10px;
@@ -88,23 +111,183 @@
       text-align: center;
     }
 
+
     .annonce-card .favorite-btn {
       padding: 6px 10px;
       font-size: 0.9rem;
     }
+
+
+    /* =====================================================
+       COMMUNIQUÉS
+       ===================================================== */
+
+    #communiquesContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+
+    .announcement-box {
+      display: flex;
+      gap: 14px;
+      padding: 16px;
+      background: #ffffff;
+      border-radius: 12px;
+      border-left: 4px solid #d32f2f;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+
+    .announcement-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.10);
+    }
+
+
+    .announcement-icon {
+      min-width: 42px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #d32f2f;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+
+    .announcement-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+
+    .announcement-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #d32f2f;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+
+    .announcement-content h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #222;
+    }
+
+
+    .announcement-content p {
+      margin: 0;
+      color: #555;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+
+    .announcement-date {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
+    .announcement-empty {
+      padding: 22px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 12px;
+      color: #777;
+      box-shadow: 0 2px 7px rgba(0, 0, 0, 0.05);
+    }
+
+
+    .announcement-empty i {
+      font-size: 25px;
+      margin-bottom: 8px;
+      color: #aaa;
+    }
+
+
+    .announcement-loading {
+      padding: 20px;
+      text-align: center;
+      color: #777;
+      background: #ffffff;
+      border-radius: 12px;
+    }
+
+
+    .announcement-loading i {
+      margin-right: 7px;
+    }
+
+
+    .announcement-error {
+      padding: 16px;
+      border-radius: 12px;
+      background: #fff3f3;
+      color: #b71c1c;
+      border-left: 4px solid #d32f2f;
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 600px) {
+
+      .announcement-box {
+        padding: 13px;
+        gap: 10px;
+      }
+
+
+      .announcement-icon {
+        min-width: 36px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+
+
+      .announcement-content h3 {
+        font-size: 0.92rem;
+      }
+
+
+      .announcement-content p {
+        font-size: 0.8rem;
+      }
+
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
   </style>
 
-  <!--
-    Application Firebase
-    Le fichier app.js contient :
-    - Firebase Authentication
-    - Firestore
-    - thème
-    - langue
-    - utilisateur connecté
-    - déconnexion
-  -->
+
+  <!-- =====================================================
+       APPLICATION FIREBASE
+       ===================================================== -->
+
   <script type="module" src="app.js"></script>
+
 </head>
 
 
@@ -116,7 +299,6 @@
 
   <header class="top-bar">
 
-    <!-- MENU -->
     <button
       class="menu-toggle"
       id="menuToggle"
@@ -128,7 +310,6 @@
     </button>
 
 
-    <!-- LOGO -->
     <a
       href="index.html"
       class="logo-text"
@@ -138,7 +319,6 @@
     </a>
 
 
-    <!-- PROFIL -->
     <a
       href="profil.html"
       class="profile-btn"
@@ -149,7 +329,6 @@
     </a>
 
   </header>
-
 
 
   <!-- =====================================================
@@ -170,10 +349,7 @@
     <ul>
 
       <li>
-        <a
-          href="index.html"
-          class="active-link"
-        >
+        <a href="index.html" class="active-link">
           <i class="fa-solid fa-house"></i>
           <span>Accueil</span>
         </a>
@@ -256,7 +432,6 @@
   </aside>
 
 
-
   <!-- =====================================================
        CONTENU PRINCIPAL
        ===================================================== -->
@@ -265,7 +440,7 @@
 
 
     <!-- ===================================================
-         HERO (Boutons retirés)
+         HERO
          =================================================== -->
 
     <section class="hero">
@@ -296,7 +471,6 @@
     </section>
 
 
-
     <!-- ===================================================
          RECHERCHE
          =================================================== -->
@@ -314,6 +488,7 @@
           autocomplete="off"
         >
 
+
         <button
           type="button"
           id="clearSearch"
@@ -327,7 +502,6 @@
       </div>
 
     </section>
-
 
 
     <!-- ===================================================
@@ -429,53 +603,51 @@
     </section>
 
 
-
     <!-- ===================================================
-         COMMUNIQUÉS
+         COMMUNIQUÉS FIRESTORE
          =================================================== -->
 
     <section id="communiquesSection">
 
-      <h2 class="section-title">
-        <i class="fa-solid fa-bullhorn"></i>
-        Communiqués
-      </h2>
+      <div class="section-heading">
 
+        <h2 class="section-title">
+          <i class="fa-solid fa-bullhorn"></i>
+          Communiqués
+        </h2>
+
+
+        <a
+          href="communiques.html"
+          class="see-all"
+        >
+          Voir tout
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+      </div>
+
+
+      <!--
+        IMPORTANT :
+
+        Les communiqués seront injectés ici
+        automatiquement depuis Firestore.
+      -->
 
       <div id="communiquesContainer">
 
+        <div class="announcement-loading">
 
-        <article class="announcement-box">
+          <i class="fa-solid fa-spinner fa-spin"></i>
 
-          <div class="announcement-icon">
-            <i class="fa-solid fa-bullhorn"></i>
-          </div>
+          Chargement des communiqués...
 
-
-          <div class="announcement-content">
-
-            <span class="announcement-label">
-              Information
-            </span>
-
-            <h3>
-              Bienvenue sur CAMU SERVICES
-            </h3>
-
-            <p>
-              Découvrez les entreprises et professionnels
-              disponibles dans votre région.
-            </p>
-
-          </div>
-
-        </article>
-
+        </div>
 
       </div>
 
     </section>
-
 
 
     <!-- ===================================================
@@ -522,6 +694,7 @@
               <i class="fa-solid fa-building"></i>
             </div>
 
+
             <span class="featured-badge">
               <i class="fa-solid fa-star"></i>
               Sponsorisé
@@ -561,6 +734,7 @@
                 Disponible
               </span>
 
+
               <span class="rating">
                 <i class="fa-solid fa-star"></i>
                 4.8
@@ -595,7 +769,6 @@
         </article>
 
 
-
         <!-- CARTE 2 -->
 
         <article
@@ -609,6 +782,7 @@
             <div class="service-placeholder">
               <i class="fa-solid fa-car"></i>
             </div>
+
 
             <span class="featured-badge">
               <i class="fa-solid fa-star"></i>
@@ -649,6 +823,7 @@
                 Disponible
               </span>
 
+
               <span class="rating">
                 <i class="fa-solid fa-star"></i>
                 4.7
@@ -681,7 +856,6 @@
           </div>
 
         </article>
-
 
 
         <!-- CARTE 3 -->
@@ -732,6 +906,7 @@
                 Disponible
               </span>
 
+
               <span class="rating">
                 <i class="fa-solid fa-star"></i>
                 4.6
@@ -765,11 +940,12 @@
 
         </article>
 
-
       </div>
 
 
-      <!-- AUCUN RÉSULTAT -->
+      <!-- =================================================
+           AUCUN RÉSULTAT
+           ================================================= -->
 
       <div
         id="noResults"
@@ -779,9 +955,11 @@
 
         <i class="fa-solid fa-magnifying-glass"></i>
 
+
         <h2>
           Aucun résultat
         </h2>
+
 
         <p>
           Aucun service ne correspond à votre recherche.
@@ -791,7 +969,6 @@
       </div>
 
     </section>
-
 
 
     <!-- ===================================================
@@ -817,17 +994,21 @@
           Accueil
         </a>
 
+
         <a href="a-propos.html">
           À propos
         </a>
+
 
         <a href="confidentialite.html">
           Confidentialité
         </a>
 
+
         <a href="conditions.html">
           Conditions
         </a>
+
 
         <a href="contact.html">
           Contact
@@ -837,15 +1018,17 @@
 
 
       <p class="copyright">
+
         © <span id="currentYear"></span>
-        CAMU SERVICES. Tous droits réservés.
+
+        CAMU SERVICES.
+        Tous droits réservés.
+
       </p>
 
     </footer>
 
-
   </main>
-
 
 
   <!-- =====================================================
@@ -892,38 +1075,57 @@
   </nav>
 
 
-
   <!-- =====================================================
        JAVASCRIPT DE LA PAGE
        ===================================================== -->
 
-  <script>
+  <script type="module">
+
+    /* =====================================================
+       FIRESTORE
+       ===================================================== */
+
+    import {
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      limit
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    /* =====================================================
+       DOM
+       ===================================================== */
 
     document.addEventListener(
       "DOMContentLoaded",
       function () {
 
 
-        /* ================================================
+        /* =================================================
            ANNÉE
-           ================================================ */
+           ================================================= */
 
         const year =
           document.getElementById("currentYear");
 
+
         if (year) {
+
           year.textContent =
             new Date().getFullYear();
+
         }
 
 
-
-        /* ================================================
+        /* =================================================
            MENU
-           ================================================ */
+           ================================================= */
 
         const menuToggle =
           document.getElementById("menuToggle");
+
 
         const sidebar =
           document.getElementById("sidebar");
@@ -937,6 +1139,7 @@
 
               const opened =
                 sidebar.classList.toggle("open");
+
 
               menuToggle.setAttribute(
                 "aria-expanded",
@@ -955,6 +1158,7 @@
                   !opened
                 );
 
+
                 icon.classList.toggle(
                   "fa-xmark",
                   opened
@@ -966,8 +1170,6 @@
           );
 
 
-          /* Fermer le menu après clic */
-
           sidebar
             .querySelectorAll("a")
             .forEach(function (link) {
@@ -977,6 +1179,7 @@
                 function () {
 
                   sidebar.classList.remove("open");
+
 
                   menuToggle.setAttribute(
                     "aria-expanded",
@@ -1004,27 +1207,30 @@
         }
 
 
-
-        /* ================================================
+        /* =================================================
            RECHERCHE
-           ================================================ */
+           ================================================= */
 
         const searchInput =
           document.getElementById("searchInput");
 
+
         const clearSearch =
           document.getElementById("clearSearch");
+
 
         const cards =
           Array.from(
             document.querySelectorAll(".service-card")
           );
 
+
         const noResults =
           document.getElementById("noResults");
 
 
-        let selectedCategory = "Toutes";
+        let selectedCategory =
+          "Toutes";
 
 
         function filterServices() {
@@ -1035,7 +1241,8 @@
               .toLowerCase();
 
 
-          let visible = 0;
+          let visible =
+            0;
 
 
           cards.forEach(function (card) {
@@ -1072,7 +1279,8 @@
 
 
             const show =
-              categoryMatch && searchMatch;
+              categoryMatch &&
+              searchMatch;
 
 
             card.style.display =
@@ -1080,7 +1288,9 @@
 
 
             if (show) {
+
               visible++;
+
             }
 
           });
@@ -1120,6 +1330,7 @@
 
               }
 
+
               filterServices();
 
             }
@@ -1128,10 +1339,9 @@
         }
 
 
-
-        /* ================================================
+        /* =================================================
            CATÉGORIES
-           ================================================ */
+           ================================================= */
 
         document
           .querySelectorAll(".cat-btn")
@@ -1166,10 +1376,9 @@
           });
 
 
-
-        /* ================================================
+        /* =================================================
            FAVORIS
-           ================================================ */
+           ================================================= */
 
         document
           .querySelectorAll(".favorite-btn")
@@ -1184,18 +1393,23 @@
 
 
                 if (!icon) {
+
                   return;
+
                 }
 
 
                 const active =
-                  button.classList.toggle("favorite-active");
+                  button.classList.toggle(
+                    "favorite-active"
+                  );
 
 
                 icon.classList.toggle(
                   "fa-regular",
                   !active
                 );
+
 
                 icon.classList.toggle(
                   "fa-solid",
@@ -1208,17 +1422,17 @@
           });
 
 
-
-        /* ================================================
+        /* =================================================
            AUTHENTIFICATION
-           ================================================ */
+           ================================================= */
 
         document.addEventListener(
           "camu-auth-changed",
           function (event) {
 
             const user =
-              event.detail?.user || null;
+              event.detail?.user ||
+              null;
 
 
             const profileButtons =
@@ -1248,9 +1462,468 @@
           }
         );
 
+      }
+
+    );
+
+
+    /* =====================================================
+       COMMUNIQUÉS FIRESTORE
+       ===================================================== */
+
+    async function chargerCommuniques() {
+
+      const container =
+        document.getElementById(
+          "communiquesContainer"
+        );
+
+
+      if (!container) {
+
+        return;
 
       }
-    );
+
+
+      try {
+
+        /*
+         * On attend que app.js ait initialisé Firebase.
+         */
+
+        let tentatives =
+          0;
+
+
+        while (
+          !window.db &&
+          tentatives < 50
+        ) {
+
+          await new Promise(
+            resolve =>
+              setTimeout(resolve, 100)
+          );
+
+
+          tentatives++;
+
+        }
+
+
+        /*
+         * Vérification de Firestore.
+         */
+
+        if (!window.db) {
+
+          container.innerHTML = `
+
+            <div class="announcement-error">
+
+              <i class="fa-solid fa-triangle-exclamation"></i>
+
+              Impossible de se connecter à la base
+              de données Firebase.
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        /*
+         * Collection Firestore :
+         *
+         * communiques
+         */
+
+        const communiquesRef =
+          collection(
+            window.db,
+            "communiques"
+          );
+
+
+        /*
+         * Les 10 derniers communiqués.
+         */
+
+        let communiquesQuery;
+
+
+        try {
+
+          communiquesQuery =
+            query(
+              communiquesRef,
+              orderBy(
+                "date",
+                "desc"
+              ),
+              limit(10)
+            );
+
+        } catch (error) {
+
+          communiquesQuery =
+            query(
+              communiquesRef,
+              limit(10)
+            );
+
+        }
+
+
+        const snapshot =
+          await getDocs(
+            communiquesQuery
+          );
+
+
+        /*
+         * Aucun communiqué.
+         */
+
+        if (snapshot.empty) {
+
+          container.innerHTML = `
+
+            <div class="announcement-empty">
+
+              <i class="fa-solid fa-bullhorn"></i>
+
+              <div>
+                Aucun communiqué disponible pour le moment.
+              </div>
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        /*
+         * Nettoyage du conteneur.
+         */
+
+        container.innerHTML = "";
+
+
+        /*
+         * Conversion des documents.
+         */
+
+        const communiques =
+          [];
+
+
+        snapshot.forEach(
+          function (docSnap) {
+
+            const data =
+              docSnap.data();
+
+
+            communiques.push({
+
+              id:
+                docSnap.id,
+
+              ...data
+
+            });
+
+          }
+        );
+
+
+        /*
+         * Affichage.
+         */
+
+        communiques.forEach(
+          function (communique) {
+
+            const article =
+              document.createElement(
+                "article"
+              );
+
+
+            article.className =
+              "announcement-box";
+
+
+            /*
+             * Champs acceptés.
+             *
+             * titre
+             * contenu
+             * message
+             * description
+             * type
+             * date
+             */
+
+            const titre =
+              communique.titre ||
+              communique.title ||
+              "Communiqué";
+
+
+            const contenu =
+              communique.contenu ||
+              communique.message ||
+              communique.description ||
+              "";
+
+
+            const type =
+              communique.type ||
+              "Information";
+
+
+            const date =
+              formaterDate(
+                communique.date ||
+                communique.createdAt ||
+                communique.timestamp
+              );
+
+
+            article.innerHTML = `
+
+              <div class="announcement-icon">
+
+                <i class="fa-solid fa-bullhorn"></i>
+
+              </div>
+
+
+              <div class="announcement-content">
+
+                <span class="announcement-label">
+
+                  ${echapperHTML(type)}
+
+                </span>
+
+
+                <h3>
+
+                  ${echapperHTML(titre)}
+
+                </h3>
+
+
+                <p>
+
+                  ${echapperHTML(contenu)}
+
+                </p>
+
+
+                ${
+                  date
+                    ? `
+                      <div class="announcement-date">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        ${echapperHTML(date)}
+
+                      </div>
+                    `
+                    : ""
+                }
+
+              </div>
+
+            `;
+
+
+            container.appendChild(
+              article
+            );
+
+          }
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Erreur chargement communiqués :",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div class="announcement-error">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            Une erreur est survenue lors du
+            chargement des communiqués.
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       FORMATER UNE DATE FIRESTORE
+       ===================================================== */
+
+    function formaterDate(valeur) {
+
+      if (!valeur) {
+
+        return "";
+
+      }
+
+
+      try {
+
+        let date;
+
+
+        /*
+         * Timestamp Firestore
+         */
+
+        if (
+          typeof valeur.toDate ===
+          "function"
+        ) {
+
+          date =
+            valeur.toDate();
+
+        }
+
+
+        /*
+         * Date JavaScript
+         */
+
+        else if (
+          valeur instanceof Date
+        ) {
+
+          date =
+            valeur;
+
+        }
+
+
+        /*
+         * Timestamp numérique
+         */
+
+        else if (
+          typeof valeur ===
+          "number"
+        ) {
+
+          date =
+            new Date(valeur);
+
+        }
+
+
+        /*
+         * Texte
+         */
+
+        else {
+
+          date =
+            new Date(valeur);
+
+        }
+
+
+        if (
+          isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return "";
+
+        }
+
+
+        return date.toLocaleDateString(
+          "fr-FR",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }
+        );
+
+      } catch (error) {
+
+        return "";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       PROTECTION CONTRE HTML
+       ===================================================== */
+
+    function echapperHTML(texte) {
+
+      return String(
+        texte ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       LANCEMENT
+       ===================================================== */
+
+    chargerCommuniques();
 
   </script>
 
