@@ -3,38 +3,53 @@
 
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
+
   <meta
     name="description"
     content="CAMU SERVICES — La plateforme qui connecte les entreprises locales à leurs clients."
   >
+
   <meta name="theme-color" content="#111111">
 
-  <title>CAMU SERVICES</title>
+  <title>CAMU SERVICES — Trouver des services près de chez vous</title>
 
-  <!-- =====================================================
-       CSS PRINCIPAL
-       ===================================================== -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- =====================================================
-       FONT AWESOME
-       ===================================================== -->
+  <!-- Font Awesome -->
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   >
+
+  <!-- Style principal -->
+  <link rel="stylesheet" href="style.css">
+
+  <!--
+    Application Firebase
+    Le fichier app.js contient :
+    - Firebase Authentication
+    - Firestore
+    - thème
+    - langue
+    - utilisateur connecté
+    - déconnexion
+  -->
+  <script type="module" src="app.js"></script>
 </head>
+
 
 <body>
 
   <!-- =====================================================
        BARRE SUPÉRIEURE
        ===================================================== -->
+
   <header class="top-bar">
+
+    <!-- MENU -->
     <button
       class="menu-toggle"
       id="menuToggle"
@@ -45,239 +60,1196 @@
       <i class="fa-solid fa-bars"></i>
     </button>
 
-    <a href="index.html" class="logo-text">
+
+    <!-- LOGO -->
+    <a
+      href="index.html"
+      class="logo-text"
+      aria-label="CAMU SERVICES"
+    >
       CAMU <span>SERVICES</span>
     </a>
 
+
+    <!-- PROFIL -->
     <a
       href="profil.html"
       class="profile-btn"
       aria-label="Mon profil"
+      title="Mon profil"
     >
-      <i class="fa-regular fa-user"></i>
+      <i class="fa-solid fa-user"></i>
     </a>
+
   </header>
+
+
 
   <!-- =====================================================
        MENU LATÉRAL
        ===================================================== -->
+
   <aside
     class="sidebar-vertical"
     id="sidebar"
     aria-label="Menu principal"
   >
+
     <div class="sidebar-header">
-      MENU PRINCIPAL
+      CAMU SERVICES
     </div>
 
+
     <ul>
+
       <li>
-        <a href="index.html" class="active-link">
+        <a
+          href="index.html"
+          class="active-link"
+        >
           <i class="fa-solid fa-house"></i>
           <span>Accueil</span>
         </a>
       </li>
+
+
       <li>
         <a href="recherche.html">
           <i class="fa-solid fa-magnifying-glass"></i>
           <span>Rechercher</span>
         </a>
       </li>
+
+
       <li>
         <a href="categories.html">
           <i class="fa-solid fa-layer-group"></i>
           <span>Catégories</span>
         </a>
       </li>
+
+
+      <li>
+        <a href="entreprises.html">
+          <i class="fa-solid fa-building"></i>
+          <span>Entreprises</span>
+        </a>
+      </li>
+
+
       <li>
         <a href="favoris.html">
-          <i class="fa-regular fa-heart"></i>
+          <i class="fa-solid fa-heart"></i>
           <span>Mes favoris</span>
         </a>
       </li>
+
+
       <li>
         <a href="messages.html">
-          <i class="fa-regular fa-comments"></i>
+          <i class="fa-solid fa-comments"></i>
           <span>Messages</span>
         </a>
       </li>
+
+
+      <li>
+        <a href="communiques.html">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>Communiqués</span>
+        </a>
+      </li>
+
+
+      <li>
+        <a href="inscription-entreprise.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Inscrire mon entreprise</span>
+        </a>
+      </li>
+
+
       <li>
         <a href="profil.html">
-          <i class="fa-regular fa-user"></i>
+          <i class="fa-solid fa-user"></i>
           <span>Mon profil</span>
         </a>
       </li>
+
+
       <li>
         <a href="parametres.html">
           <i class="fa-solid fa-gear"></i>
           <span>Paramètres</span>
         </a>
       </li>
-      <li>
-        <a href="inscription-professionnel.html">
-          <i class="fa-solid fa-store"></i>
-          <span>Inscrire mon entreprise</span>
-        </a>
-      </li>
+
     </ul>
+
   </aside>
+
+
 
   <!-- =====================================================
        CONTENU PRINCIPAL
        ===================================================== -->
+
   <main class="container">
 
-    <!-- HERO -->
+
+    <!-- ===================================================
+         HERO
+         =================================================== -->
+
     <section class="hero">
+
       <div class="hero-content">
+
         <span class="hero-badge">
           <i class="fa-solid fa-location-dot"></i>
-          Commerce local
+          Services locaux
         </span>
 
+
         <h1>
-          Trouvez facilement
-          <span>les services</span>
-          dont vous avez besoin.
+          Trouvez les meilleurs
+          <span>services</span>
+          près de chez vous.
         </h1>
 
+
         <p>
-          CAMU SERVICES connecte les clients aux entreprises,
-          artisans et professionnels locaux.
+          CAMU SERVICES connecte directement les clients
+          aux entreprises, commerçants, artisans et
+          professionnels locaux.
         </p>
 
+
         <div class="hero-actions">
-          <a href="recherche.html" class="btn-primary">
+
+          <a
+            href="#services"
+            class="btn-primary"
+          >
             <i class="fa-solid fa-magnifying-glass"></i>
-            Rechercher
+            Explorer
           </a>
 
-          <a href="inscription-professionnel.html" class="btn-secondary hero-secondary">
+
+          <a
+            href="inscription-entreprise.html"
+            class="btn-secondary hero-secondary"
+          >
             <i class="fa-solid fa-store"></i>
             Inscrire mon entreprise
           </a>
+
         </div>
+
       </div>
+
     </section>
 
-    <!-- RECHERCHE -->
-    <section class="search-section">
+
+
+    <!-- ===================================================
+         RECHERCHE
+         =================================================== -->
+
+    <section>
+
       <div class="search-bar">
+
         <i class="fa-solid fa-magnifying-glass"></i>
+
         <input
           type="search"
           id="searchInput"
-          placeholder="Que recherchez-vous ?"
+          placeholder="Rechercher un service, une entreprise..."
           autocomplete="off"
         >
+
         <button
           type="button"
-          id="searchButton"
-          class="search-button"
-          aria-label="Rechercher"
+          id="clearSearch"
+          class="search-clear"
+          aria-label="Effacer la recherche"
+          title="Effacer"
         >
-          <i class="fa-solid fa-arrow-right"></i>
+          <i class="fa-solid fa-xmark"></i>
         </button>
+
       </div>
+
     </section>
 
-    <!-- CATÉGORIES -->
+
+
+    <!-- ===================================================
+         CATÉGORIES
+         =================================================== -->
+
     <section>
-      <div class="section-heading">
-        <div>
-          <span class="section-label">Explorer</span>
-          <h2 class="section-title">Catégories</h2>
-        </div>
-        <a href="categories.html" class="see-all">
-          Voir tout
-          <i class="fa-solid fa-chevron-right"></i>
-        </a>
+
+      <h2 class="section-title">
+        Catégories
+      </h2>
+
+
+      <div
+        class="categories"
+        id="categories"
+      >
+
+        <button
+          class="cat-btn active"
+          type="button"
+          data-category="Toutes"
+        >
+          Toutes
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Construction"
+        >
+          <i class="fa-solid fa-helmet-safety"></i>
+          Construction
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Transport"
+        >
+          <i class="fa-solid fa-car"></i>
+          Transport
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Beauté"
+        >
+          <i class="fa-solid fa-scissors"></i>
+          Beauté
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Restaurant"
+        >
+          <i class="fa-solid fa-utensils"></i>
+          Restaurant
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Informatique"
+        >
+          <i class="fa-solid fa-laptop"></i>
+          Informatique
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Commerce"
+        >
+          <i class="fa-solid fa-shop"></i>
+          Commerce
+        </button>
+
+
+        <button
+          class="cat-btn"
+          type="button"
+          data-category="Services"
+        >
+          <i class="fa-solid fa-briefcase"></i>
+          Services
+        </button>
+
       </div>
 
-      <div class="categories">
-        <button class="cat-btn active" data-category="Toutes" type="button">
-          <i class="fa-solid fa-border-all"></i> Toutes
-        </button>
-        <button class="cat-btn" data-category="Construction" type="button">
-          <i class="fa-solid fa-helmet-safety"></i> Construction
-        </button>
-        <button class="cat-btn" data-category="Transport" type="button">
-          <i class="fa-solid fa-car"></i> Transport
-        </button>
-        <button class="cat-btn" data-category="Beauté" type="button">
-          <i class="fa-solid fa-scissors"></i> Beauté
-        </button>
-        <button class="cat-btn" data-category="Restaurant" type="button">
-          <i class="fa-solid fa-utensils"></i> Restaurant
-        </button>
-        <button class="cat-btn" data-category="Commerce" type="button">
-          <i class="fa-solid fa-shop"></i> Commerce
-        </button>
-        <button class="cat-btn" data-category="Services" type="button">
-          <i class="fa-solid fa-briefcase"></i> Services
-        </button>
-      </div>
     </section>
 
-    <!-- CONTENEURS D'ANNONCES / COMMUNIQUÉS -->
-    <div id="communiquesContainer"></div>
-    <div id="annoncesContainer"></div>
 
-    <!-- BANNIÈRE PROFESSIONNEL -->
-    <section class="professional-banner">
-      <div class="professional-icon">
+
+    <!-- ===================================================
+         COMMUNIQUÉS
+         =================================================== -->
+
+    <section id="communiquesSection">
+
+      <h2 class="section-title">
+        <i class="fa-solid fa-bullhorn"></i>
+        Communiqués
+      </h2>
+
+
+      <div id="communiquesContainer">
+
+
+        <article class="announcement-box">
+
+          <div class="announcement-icon">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+
+
+          <div class="announcement-content">
+
+            <span class="announcement-label">
+              Information
+            </span>
+
+            <h3>
+              Bienvenue sur CAMU SERVICES
+            </h3>
+
+            <p>
+              Découvrez les entreprises et professionnels
+              disponibles dans votre région.
+            </p>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         ENTREPRISES MISES EN AVANT
+         =================================================== -->
+
+    <section id="services">
+
+      <div class="section-heading">
+
+        <h2 class="section-title">
+          Entreprises mises en avant
+        </h2>
+
+
+        <a
+          href="entreprises.html"
+          class="see-all"
+        >
+          Voir tout
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+      </div>
+
+
+      <div
+        class="services-grid"
+        id="servicesContainer"
+      >
+
+
+        <!-- CARTE 1 -->
+
+        <article
+          class="annonce-card service-card"
+          data-category="Construction"
+          data-search="construction bâtiment maçon entrepreneur"
+        >
+
+          <div class="service-image">
+
+            <div class="service-placeholder">
+              <i class="fa-solid fa-building"></i>
+            </div>
+
+            <span class="featured-badge">
+              <i class="fa-solid fa-star"></i>
+              Sponsorisé
+            </span>
+
+          </div>
+
+
+          <div class="service-card-content">
+
+            <span class="badge-cat">
+              Construction
+            </span>
+
+
+            <h3>
+              Services Construction
+            </h3>
+
+
+            <p class="service-description">
+              Travaux de construction, rénovation,
+              maçonnerie et aménagement.
+            </p>
+
+
+            <p class="location">
+              <i class="fa-solid fa-location-dot"></i>
+              Disponible localement
+            </p>
+
+
+            <div class="service-footer">
+
+              <span class="service-status">
+                <i class="fa-solid fa-circle"></i>
+                Disponible
+              </span>
+
+              <span class="rating">
+                <i class="fa-solid fa-star"></i>
+                4.8
+              </span>
+
+            </div>
+
+
+            <div class="card-actions">
+
+              <a
+                href="entreprise.html"
+                class="btn-primary"
+              >
+                Voir le profil
+              </a>
+
+
+              <button
+                type="button"
+                class="favorite-btn"
+                aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris"
+              >
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- CARTE 2 -->
+
+        <article
+          class="annonce-card service-card"
+          data-category="Transport"
+          data-search="transport voiture taxi déplacement chauffeur"
+        >
+
+          <div class="service-image">
+
+            <div class="service-placeholder">
+              <i class="fa-solid fa-car"></i>
+            </div>
+
+            <span class="featured-badge">
+              <i class="fa-solid fa-star"></i>
+              Mis en avant
+            </span>
+
+          </div>
+
+
+          <div class="service-card-content">
+
+            <span class="badge-cat">
+              Transport
+            </span>
+
+
+            <h3>
+              Transport & Déplacement
+            </h3>
+
+
+            <p class="service-description">
+              Solutions de transport et déplacement
+              pour particuliers et entreprises.
+            </p>
+
+
+            <p class="location">
+              <i class="fa-solid fa-location-dot"></i>
+              Disponible localement
+            </p>
+
+
+            <div class="service-footer">
+
+              <span class="service-status">
+                <i class="fa-solid fa-circle"></i>
+                Disponible
+              </span>
+
+              <span class="rating">
+                <i class="fa-solid fa-star"></i>
+                4.7
+              </span>
+
+            </div>
+
+
+            <div class="card-actions">
+
+              <a
+                href="entreprise.html"
+                class="btn-primary"
+              >
+                Voir le profil
+              </a>
+
+
+              <button
+                type="button"
+                class="favorite-btn"
+                aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris"
+              >
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- CARTE 3 -->
+
+        <article
+          class="annonce-card service-card"
+          data-category="Informatique"
+          data-search="informatique ordinateur téléphone réparation logiciel"
+        >
+
+          <div class="service-image">
+
+            <div class="service-placeholder">
+              <i class="fa-solid fa-laptop"></i>
+            </div>
+
+          </div>
+
+
+          <div class="service-card-content">
+
+            <span class="badge-cat">
+              Informatique
+            </span>
+
+
+            <h3>
+              Services Informatiques
+            </h3>
+
+
+            <p class="service-description">
+              Assistance informatique, maintenance,
+              installation et réparation.
+            </p>
+
+
+            <p class="location">
+              <i class="fa-solid fa-location-dot"></i>
+              Disponible localement
+            </p>
+
+
+            <div class="service-footer">
+
+              <span class="service-status">
+                <i class="fa-solid fa-circle"></i>
+                Disponible
+              </span>
+
+              <span class="rating">
+                <i class="fa-solid fa-star"></i>
+                4.6
+              </span>
+
+            </div>
+
+
+            <div class="card-actions">
+
+              <a
+                href="entreprise.html"
+                class="btn-primary"
+              >
+                Voir le profil
+              </a>
+
+
+              <button
+                type="button"
+                class="favorite-btn"
+                aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris"
+              >
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+      <!-- AUCUN RÉSULTAT -->
+
+      <div
+        id="noResults"
+        class="empty-state"
+        hidden
+      >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <h2>
+          Aucun résultat
+        </h2>
+
+        <p>
+          Aucun service ne correspond à votre recherche.
+          Essayez un autre mot-clé ou une autre catégorie.
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         APPEL À L'ACTION PROFESSIONNEL
+         =================================================== -->
+
+    <section class="professional-cta">
+
+      <div class="cta-icon">
         <i class="fa-solid fa-store"></i>
       </div>
-      <div class="professional-content">
-        <span>Vous êtes professionnel ?</span>
-        <h2>Développez votre activité</h2>
-        <p>Inscrivez votre entreprise pour être visible auprès de milliers de clients potentiels.</p>
-        <a href="inscription-professionnel.html" class="btn-primary">Inscrire mon entreprise</a>
+
+
+      <div class="cta-content">
+
+        <span>
+          Vous êtes professionnel ?
+        </span>
+
+        <h2>
+          Faites connaître votre entreprise.
+        </h2>
+
+        <p>
+          Présentez vos services, ajoutez vos coordonnées
+          et augmentez votre visibilité auprès de vos clients.
+        </p>
+
+
+        <a
+          href="inscription-entreprise.html"
+          class="btn-primary"
+        >
+          Inscrire mon entreprise
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
       </div>
+
     </section>
 
-    <!-- FOOTER -->
+
+
+    <!-- ===================================================
+         FOOTER
+         =================================================== -->
+
     <footer class="footer">
-      <h3>CAMU SERVICES</h3>
-      <p>Votre marketplace locale de services.</p>
+
+      <h3>
+        CAMU SERVICES
+      </h3>
+
+
+      <p>
+        La plateforme qui connecte les entreprises locales
+        à leurs clients.
+      </p>
+
+
       <div class="footer-links">
-        <a href="A-propos.html">À propos</a>
-        <a href="conditions.html">Conditions</a>
-        <a href="contact.html">Contact</a>
-        <a href="politique.html">Politique d'utilisation</a>
+
+        <a href="index.html">
+          Accueil
+        </a>
+
+        <a href="a-propos.html">
+          À propos
+        </a>
+
+        <a href="confidentialite.html">
+          Confidentialité
+        </a>
+
+        <a href="conditions.html">
+          Conditions
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
       </div>
-      <div class="copyright">
-        <p>© 2026 CAMU SERVICES</p>
-      </div>
+
+
+      <p class="copyright">
+        © <span id="currentYear"></span>
+        CAMU SERVICES. Tous droits réservés.
+      </p>
+
     </footer>
+
 
   </main>
 
+
+
   <!-- =====================================================
-       NAVIGATION MOBILE DU BAS (AVEC RECHERCHE INTÉGRÉE)
+       NAVIGATION MOBILE
        ===================================================== -->
-  <nav class="bottom-nav" aria-label="Navigation mobile">
-    <a href="index.html" class="active">
+
+  <nav
+    class="bottom-nav"
+    aria-label="Navigation mobile"
+  >
+
+    <a
+      href="index.html"
+      class="active"
+    >
       <i class="fa-solid fa-house"></i>
       <span>Accueil</span>
     </a>
+
+
     <a href="recherche.html">
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Recherche</span>
     </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
+
+
+    <a href="categories.html">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Catégories</span>
     </a>
-    <a href="messages.html">
-      <i class="fa-regular fa-comments"></i>
-      <span>Chat</span>
+
+
+    <a href="favoris.html">
+      <i class="fa-regular fa-heart"></i>
+      <span>Favoris</span>
     </a>
+
+
     <a href="profil.html">
       <i class="fa-regular fa-user"></i>
       <span>Profil</span>
     </a>
+
   </nav>
 
+
+
+  <!-- =====================================================
+       JAVASCRIPT DE LA PAGE
+       ===================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+
+        /* ================================================
+           ANNÉE
+           ================================================ */
+
+        const year =
+          document.getElementById("currentYear");
+
+        if (year) {
+          year.textContent =
+            new Date().getFullYear();
+        }
+
+
+
+        /* ================================================
+           MENU
+           ================================================ */
+
+        const menuToggle =
+          document.getElementById("menuToggle");
+
+        const sidebar =
+          document.getElementById("sidebar");
+
+
+        if (menuToggle && sidebar) {
+
+          menuToggle.addEventListener(
+            "click",
+            function () {
+
+              const opened =
+                sidebar.classList.toggle("open");
+
+              menuToggle.setAttribute(
+                "aria-expanded",
+                opened ? "true" : "false"
+              );
+
+
+              const icon =
+                menuToggle.querySelector("i");
+
+
+              if (icon) {
+
+                icon.classList.toggle(
+                  "fa-bars",
+                  !opened
+                );
+
+                icon.classList.toggle(
+                  "fa-xmark",
+                  opened
+                );
+
+              }
+
+            }
+          );
+
+
+          /* Fermer le menu après clic */
+
+          sidebar
+            .querySelectorAll("a")
+            .forEach(function (link) {
+
+              link.addEventListener(
+                "click",
+                function () {
+
+                  sidebar.classList.remove("open");
+
+                  menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+
+                  const icon =
+                    menuToggle.querySelector("i");
+
+
+                  if (icon) {
+
+                    icon.classList.add("fa-bars");
+
+                    icon.classList.remove("fa-xmark");
+
+                  }
+
+                }
+              );
+
+            });
+
+        }
+
+
+
+        /* ================================================
+           RECHERCHE
+           ================================================ */
+
+        const searchInput =
+          document.getElementById("searchInput");
+
+        const clearSearch =
+          document.getElementById("clearSearch");
+
+        const cards =
+          Array.from(
+            document.querySelectorAll(".service-card")
+          );
+
+        const noResults =
+          document.getElementById("noResults");
+
+
+        let selectedCategory = "Toutes";
+
+
+        function filterServices() {
+
+          const search =
+            (searchInput?.value || "")
+              .trim()
+              .toLowerCase();
+
+
+          let visible = 0;
+
+
+          cards.forEach(function (card) {
+
+            const category =
+              (
+                card.dataset.category || ""
+              ).toLowerCase();
+
+
+            const searchable =
+              (
+                card.dataset.search || ""
+              ).toLowerCase();
+
+
+            const title =
+              (
+                card.querySelector("h3")?.textContent || ""
+              ).toLowerCase();
+
+
+            const categoryMatch =
+              selectedCategory === "Toutes" ||
+              category ===
+              selectedCategory.toLowerCase();
+
+
+            const searchMatch =
+              !search ||
+              searchable.includes(search) ||
+              title.includes(search) ||
+              category.includes(search);
+
+
+            const show =
+              categoryMatch && searchMatch;
+
+
+            card.style.display =
+              show ? "" : "none";
+
+
+            if (show) {
+              visible++;
+            }
+
+          });
+
+
+          if (noResults) {
+
+            noResults.hidden =
+              visible !== 0;
+
+          }
+
+        }
+
+
+        if (searchInput) {
+
+          searchInput.addEventListener(
+            "input",
+            filterServices
+          );
+
+        }
+
+
+        if (clearSearch) {
+
+          clearSearch.addEventListener(
+            "click",
+            function () {
+
+              if (searchInput) {
+
+                searchInput.value = "";
+
+                searchInput.focus();
+
+              }
+
+              filterServices();
+
+            }
+          );
+
+        }
+
+
+
+        /* ================================================
+           CATÉGORIES
+           ================================================ */
+
+        document
+          .querySelectorAll(".cat-btn")
+          .forEach(function (button) {
+
+            button.addEventListener(
+              "click",
+              function () {
+
+                document
+                  .querySelectorAll(".cat-btn")
+                  .forEach(function (btn) {
+
+                    btn.classList.remove("active");
+
+                  });
+
+
+                button.classList.add("active");
+
+
+                selectedCategory =
+                  button.dataset.category ||
+                  "Toutes";
+
+
+                filterServices();
+
+              }
+            );
+
+          });
+
+
+
+        /* ================================================
+           FAVORIS
+           ================================================ */
+
+        document
+          .querySelectorAll(".favorite-btn")
+          .forEach(function (button) {
+
+            button.addEventListener(
+              "click",
+              function () {
+
+                const icon =
+                  button.querySelector("i");
+
+
+                if (!icon) {
+                  return;
+                }
+
+
+                const active =
+                  button.classList.toggle("favorite-active");
+
+
+                icon.classList.toggle(
+                  "fa-regular",
+                  !active
+                );
+
+                icon.classList.toggle(
+                  "fa-solid",
+                  active
+                );
+
+              }
+            );
+
+          });
+
+
+
+        /* ================================================
+           AUTHENTIFICATION
+           ================================================ */
+
+        document.addEventListener(
+          "camu-auth-changed",
+          function (event) {
+
+            const user =
+              event.detail?.user || null;
+
+
+            const profileButtons =
+              document.querySelectorAll(
+                ".profile-btn"
+              );
+
+
+            profileButtons.forEach(
+              function (button) {
+
+                if (user) {
+
+                  button.title =
+                    "Mon profil";
+
+                } else {
+
+                  button.title =
+                    "Se connecter";
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+      }
+    );
+
+  </script>
+
 </body>
+
 </html>
