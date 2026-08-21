@@ -1,426 +1,1185 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camu Services — Catalogue</title>
-    <!-- FontAwesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --red: #d32f2f;
-            --red-dark: #b71c1c;
-            --red-light: #ffebee;
-            --dark: #111111;
-            --bg: #f6f7f9;
-            --card: #ffffff;
-            --text: #171717;
-            --muted: #70757a;
-            --border: #e5e7eb;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            padding-top: 70px;
-            padding-bottom: 40px;
-        }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        /* --- BARRE SUPÉRIEURE MODERNE --- */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: var(--dark);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            z-index: 1000;
-        }
+<title>CAMU SERVICES — Mon Profil</title>
 
-        .top-bar-left, .top-bar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+<link rel="stylesheet" href="style.css">
 
-        .icon-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #ffffff;
-            font-size: 16px;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 50%;
-            transition: 0.2s;
-            text-decoration: none;
-        }
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .icon-btn:hover {
-            background: var(--red);
-        }
 
-        .logo-text {
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
+<!-- =====================================================
+     THÈME AVANT AFFICHAGE
+     ===================================================== -->
 
-        .logo-text span {
-            color: var(--red);
-        }
+<script>
 
-        .btn-publier {
-            background: var(--red);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+(function () {
 
-        /* --- CONTENEUR PRINCIPAL --- */
-        .container {
-            width: min(94%, 600px);
-            margin: 0 auto;
-            padding: 10px 0;
-        }
+    const theme =
+        localStorage.getItem("camu_theme");
 
-        .search-bar {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 0 14px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            box-shadow: var(--shadow);
-        }
+    if (theme === "dark") {
 
-        .search-bar input {
-            width: 100%;
-            border: none;
-            outline: none;
-            background: transparent;
-            font-size: 14px;
-        }
+        document.documentElement.classList.add(
+            "dark-mode"
+        );
 
-        .categories {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-            scrollbar-width: none;
-        }
+    }
 
-        .categories::-webkit-scrollbar {
-            display: none;
-        }
+    const language =
+        localStorage.getItem("camu_language");
 
-        .cat-btn {
-            flex: 0 0 auto;
-            border: 1px solid #f1c2c2;
-            background: #fff5f5;
-            color: var(--red);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+    if (language) {
 
-        .cat-btn.active, .cat-btn:hover {
-            background: var(--red);
-            color: #ffffff;
-        }
+        document.documentElement.lang =
+            language;
 
-        .section-title {
-            font-size: 13px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            color: var(--muted);
-        }
+    }
 
-        /* --- GRILLE 2 COLONNES --- */
-        .cards-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+})();
 
-        .annonce-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 10px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+</script>
 
-        .card-img-container {
-            width: 100%;
-            height: 110px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 8px;
-            background: #eee;
-        }
 
-        .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+<style>
 
-        .badge-cat {
-            display: inline-block;
-            background: var(--red-light);
-            color: var(--red);
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
+/* =====================================================
+   PROFIL
+   ===================================================== */
 
-        .badge-prestataire {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
+.profile-hero {
 
-        .annonce-card h3 {
-            font-size: 13px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 4px;
-            color: var(--text);
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #111,
+            #292929
+        );
 
-        .meta {
-            font-size: 11px;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
+    color: #fff;
 
-        .prix {
-            color: var(--red);
-            font-size: 13px;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
+    border-radius: 18px;
 
-        .btn-primary {
-            background: var(--red);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            padding: 7px;
-            width: 100%;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            text-align: center;
-        }
+    padding: 25px 18px;
 
-        .btn-prestataire {
-            background: #2e7d32;
-        }
+    text-align: center;
 
-        .loader-text {
-            grid-column: span 2;
-            text-align: center;
-            color: var(--muted);
-            padding: 25px;
-            font-size: 13px;
-        }
-    </style>
+    margin-bottom: 15px;
+
+}
+
+
+.avatar-box {
+
+    width: 78px;
+    height: 78px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: var(--red);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 12px;
+
+    font-size: 42px;
+
+    box-shadow:
+        0 8px 20px #0003;
+
+    overflow: hidden;
+
+}
+
+
+.avatar-box img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.user-name {
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    margin-bottom: 5px;
+
+}
+
+
+.user-email {
+
+    color: #bbb;
+
+    font-size: 12px;
+
+}
+
+
+.profile-status {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+.profile-menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+.profile-action {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    box-shadow: var(--shadow);
+
+    transition: .2s;
+
+    text-decoration: none;
+
+    color: var(--text);
+
+}
+
+
+.profile-action:hover {
+
+    border-color: #f0b0b0;
+
+}
+
+
+.profile-action:active {
+
+    transform: scale(.98);
+
+}
+
+
+.profile-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    background: #ffebee;
+
+    color: var(--red);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    flex-shrink: 0;
+
+}
+
+
+.profile-action-content {
+
+    flex: 1;
+
+}
+
+
+.profile-action-content strong {
+
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.profile-action-content span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+.profile-arrow {
+
+    color: var(--muted);
+
+}
+
+
+.logout-card {
+
+    margin-top: 15px;
+
+}
+
+
+.logout-button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background: #111;
+
+    color: #fff;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+}
+
+
+.logout-button:hover {
+
+    background: #222;
+
+}
+
+
+.logout-button:disabled {
+
+    opacity: .7;
+
+    cursor: wait;
+
+}
+
+
+.logout-button i {
+
+    margin-right: 6px;
+
+}
+
+
+.account-info {
+
+    margin-top: 15px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+}
+
+
+.account-info h3 {
+
+    font-size: 14px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.account-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: 12px;
+
+}
+
+
+.account-row:last-child {
+
+    border-bottom: 0;
+
+}
+
+
+.account-row span:first-child {
+
+    color: var(--muted);
+
+}
+
+
+.account-row span:last-child {
+
+    font-weight: bold;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* =====================================================
+   MODE SOMBRE
+   ===================================================== */
+
+html.dark-mode .profile-icon {
+
+    background: #351b1b;
+
+}
+
+
+html.dark-mode .logout-button {
+
+    background: #000;
+
+}
+
+
+html.dark-mode .profile-status {
+
+    background: #18351d;
+
+    color: #81c784;
+
+}
+
+</style>
+
 </head>
+
+
 <body>
 
-    <!-- Barre supérieure : Logo à gauche | Publier + Profil à droite -->
-    <header class="top-bar">
-        <div class="top-bar-left">
-            <div class="logo-text">CAMU <span>SERVICES</span></div>
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="top-bar">
+
+    <a
+        href="index.html"
+        aria-label="Retour">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+    </a>
+
+
+    <div class="logo-text">
+
+        CAMU <span>SERVICES</span>
+
+    </div>
+
+
+    <a
+        href="admin.html"
+        style="color:#d32f2f;"
+        aria-label="Administration">
+
+        <i class="fa-solid fa-lock"></i>
+
+    </a>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTENU
+     ===================================================== -->
+
+<main class="container">
+
+
+    <!-- =================================================
+         PROFIL
+         ================================================= -->
+
+    <section class="profile-hero">
+
+        <div
+            id="avatarBox"
+            class="avatar-box">
+
+            <i class="fa-solid fa-user"></i>
+
         </div>
-        <div class="top-bar-right">
-            <button class="btn-publier" onclick="ouvrirPublication()"><i class="fa-solid fa-plus"></i> Publier</button>
-            <button class="icon-btn" onclick="ouvrirProfil()" title="Mon Profil"><i class="fa-solid fa-user"></i></button>
+
+
+        <h1
+            id="profileName"
+            class="user-name">
+
+            Chargement...
+
+        </h1>
+
+
+        <p
+            id="profileEmail"
+            class="user-email">
+
+            Chargement...
+
+        </p>
+
+
+        <span
+            id="profileStatus"
+            class="profile-status">
+
+            Vérification...
+
+        </span>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MENU
+         ================================================= -->
+
+    <div class="section-title">
+
+        <i class="fa-solid fa-table-cells-large"></i>
+
+        Mon espace
+
+    </div>
+
+
+    <div class="profile-menu">
+
+
+        <!-- SERVICES -->
+
+        <a
+            href="compte-entrepreneur.html"
+            class="profile-action">
+
+            <div class="profile-icon">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+            </div>
+
+
+            <div class="profile-action-content">
+
+                <strong>
+                    Gérer mes services
+                </strong>
+
+                <span>
+                    Consultez et gérez vos publications
+                </span>
+
+            </div>
+
+
+            <i
+                class="fa-solid fa-chevron-right profile-arrow">
+            </i>
+
+        </a>
+
+
+
+        <!-- PUBLIER -->
+
+        <a
+            href="publier.html"
+            class="profile-action">
+
+            <div class="profile-icon">
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+            </div>
+
+
+            <div class="profile-action-content">
+
+                <strong>
+                    Publier un service
+                </strong>
+
+                <span>
+                    Présentez votre activité
+                </span>
+
+            </div>
+
+
+            <i
+                class="fa-solid fa-chevron-right profile-arrow">
+            </i>
+
+        </a>
+
+
+
+        <!-- FAVORIS -->
+
+        <a
+            href="favoris.html"
+            class="profile-action">
+
+            <div
+                class="profile-icon"
+                style="
+                    background:#fff8e1;
+                    color:#f9a825;
+                ">
+
+                <i class="fa-solid fa-star"></i>
+
+            </div>
+
+
+            <div class="profile-action-content">
+
+                <strong>
+                    Mes favoris
+                </strong>
+
+                <span>
+                    Retrouvez vos services enregistrés
+                </span>
+
+            </div>
+
+
+            <i
+                class="fa-solid fa-chevron-right profile-arrow">
+            </i>
+
+        </a>
+
+
+
+        <!-- CHAT -->
+
+        <a
+            href="chat.html"
+            class="profile-action">
+
+            <div class="profile-icon">
+
+                <i class="fa-solid fa-comments"></i>
+
+            </div>
+
+
+            <div class="profile-action-content">
+
+                <strong>
+                    Mes conversations
+                </strong>
+
+                <span>
+                    Discutez avec les prestataires
+                </span>
+
+            </div>
+
+
+            <i
+                class="fa-solid fa-chevron-right profile-arrow">
+            </i>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =================================================
+         INFORMATIONS DU COMPTE
+         ================================================= -->
+
+    <div class="account-info">
+
+        <h3>
+
+            <i
+                class="fa-solid fa-circle-info"
+                style="color:var(--red);">
+            </i>
+
+            Informations du compte
+
+        </h3>
+
+
+        <div class="account-row">
+
+            <span>
+                Nom
+            </span>
+
+            <span id="infoName">
+                —
+            </span>
+
         </div>
-    </header>
 
-    <!-- Contenu Principal -->
-    <main class="container">
-        
-        <div class="search-bar">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Rechercher un article, un service..." onkeyup="filterAndRender()">
+
+        <div class="account-row">
+
+            <span>
+                Email
+            </span>
+
+            <span id="infoEmail">
+                —
+            </span>
+
         </div>
 
-        <div class="categories">
-            <button onclick="setCategory('all', this)" class="cat-btn active">Tout</button>
-            <button onclick="setCategory('article', this)" class="cat-btn">Articles</button>
-            <button onclick="setCategory('prestataire', this)" class="cat-btn">Prestataires locaux</button>
+
+        <div class="account-row">
+
+            <span>
+                Statut
+            </span>
+
+            <span id="infoStatus">
+                —
+            </span>
+
         </div>
 
-        <h2 class="section-title">Catalogue récent</h2>
+    </div>
 
-        <!-- Grille connectée dynamiquement à Firebase -->
-        <div class="cards-grid-2" id="cardsContainer">
-            <div class="loader-text"><i class="fa-solid fa-spinner fa-spin"></i> Chargement de vos données...</div>
+
+
+    <!-- =================================================
+         DÉCONNEXION
+         ================================================= -->
+
+    <div class="logout-card">
+
+        <button
+            id="logoutButton"
+            class="logout-button">
+
+            <i
+                class="fa-solid fa-right-from-bracket">
+            </i>
+
+            Se déconnecter
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="footer">
+
+        <h3>
+            CAMU SERVICES
+        </h3>
+
+
+        <p>
+            Votre marketplace locale de services.
+        </p>
+
+
+        <div class="footer-links">
+
+            <a href="a-propos.html">
+                À propos
+            </a>
+
+            <a href="conditions.html">
+                Conditions
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="politique.html">
+                Politique d'utilisation
+            </a>
+
         </div>
-    </main>
 
-    <!-- Script Firebase & Logique -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "VOTRE_API_KEY",
-            authDomain: "votre-projet.firebaseapp.com",
-            projectId: "votre-projet-id",
-            storageBucket: "votre-projet.appspot.com",
-            messagingSenderId: "votre_sender_id",
-            appId: "votre_app_id"
-        };
+        <p>
+            © 2026 CAMU SERVICES
+        </p>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    </footer>
 
-        let allPublications = [];
-        let currentCategory = 'all';
+</main>
 
-        async function fetchPublications() {
-            const container = document.getElementById('cardsContainer');
-            try {
-                allPublications = [];
-                
-                // On essaie de récupérer depuis la collection "services" (changez "services" par le nom exact de votre collection si besoin)
-                let querySnapshot;
-                try {
-                    querySnapshot = await getDocs(collection(db, "services"));
-                } catch (e) {
-                    querySnapshot = await getDocs(collection(db, "publications"));
-                }
-                
-                if (querySnapshot.empty) {
-                    container.innerHTML = '<p class="loader-text">Aucun document trouvé dans Firebase. Cliquez sur "Publier" pour en ajouter !</p>';
-                    return;
-                }
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allPublications.push({
-                        id: doc.id,
-                        type: data.type || 'prestataire', 
-                        titre: data.titre || data.nom || 'Sans titre',
-                        description: data.description || '',
-                        prixOrStatut: data.prix ? data.prix + " FC" : (data.statut || 'Disponible'),
-                        image: data.image || 'https://via.placeholder.com/300'
-                    });
-                });
 
-                filterAndRender();
-            } catch (error) {
-                console.error("Erreur Firebase : ", error);
-                container.innerHTML = `<div class="loader-text" style="color:var(--red);">Erreur de connexion : ${error.message}</div>`;
-            }
+<!-- =====================================================
+     NAVIGATION MOBILE
+     ===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+            Accueil
+        </span>
+
+    </a>
+
+
+    <a href="publier.html">
+
+        <i class="fa-solid fa-circle-plus"></i>
+
+        <span>
+            Publier
+        </span>
+
+    </a>
+
+
+    <a href="chat.html">
+
+        <i class="fa-solid fa-comments"></i>
+
+        <span>
+            Chat
+        </span>
+
+    </a>
+
+
+    <a
+        href="profil.html"
+        class="active">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            Profil
+        </span>
+
+    </a>
+
+</nav>
+
+
+
+<!-- =====================================================
+     FIREBASE + PROFIL
+     ===================================================== -->
+
+<script type="module">
+
+import {
+    db,
+    auth,
+    signOut,
+    onAuthStateChanged
+} from "./app.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+
+/* =====================================================
+   ÉLÉMENTS
+   ===================================================== */
+
+const profileName =
+    document.getElementById("profileName");
+
+const profileEmail =
+    document.getElementById("profileEmail");
+
+const profileStatus =
+    document.getElementById("profileStatus");
+
+const infoName =
+    document.getElementById("infoName");
+
+const infoEmail =
+    document.getElementById("infoEmail");
+
+const infoStatus =
+    document.getElementById("infoStatus");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const avatarBox =
+    document.getElementById("avatarBox");
+
+
+
+/* =====================================================
+   AUTHENTIFICATION
+   ===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
         }
 
-        window.filterAndRender = function() {
-            const container = document.getElementById('cardsContainer');
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            
-            container.innerHTML = '';
 
-            const filtered = allPublications.filter(item => {
-                const matchCat = (currentCategory === 'all' || item.type.toLowerCase() === currentCategory.toLowerCase());
-                const matchSearch = item.titre.toLowerCase().includes(searchQuery) || item.description.toLowerCase().includes(searchQuery);
-                return matchCat && matchSearch;
-            });
+        try {
 
-            if (filtered.length === 0) {
-                container.innerHTML = '<p class="loader-text">Aucun résultat trouvé.</p>';
-                return;
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const userSnap =
+                await getDoc(userRef);
+
+
+            let name =
+                user.displayName ||
+                "Utilisateur";
+
+
+            let email =
+                user.email ||
+                "";
+
+
+            let status =
+                "actif";
+
+
+            let photo =
+                user.photoURL ||
+                "";
+
+
+
+            /* =========================================
+               DONNÉES FIRESTORE
+               ========================================= */
+
+            if (userSnap.exists()) {
+
+                const data =
+                    userSnap.data();
+
+
+                name =
+                    data.nom ||
+                    data.name ||
+                    user.displayName ||
+                    "Utilisateur";
+
+
+                email =
+                    data.email ||
+                    user.email ||
+                    "";
+
+
+                status =
+                    data.status ||
+                    "actif";
+
+
+                photo =
+                    data.photo ||
+                    data.photoURL ||
+                    user.photoURL ||
+                    "";
+
             }
 
-            filtered.forEach(item => {
-                const isPrestataire = item.type.toLowerCase() === 'prestataire';
-                const badgeClass = isPrestataire ? 'badge-cat badge-prestataire' : 'badge-cat';
-                const badgeText = isPrestataire ? 'Prestataire' : 'Article';
-                const btnClass = isPrestataire ? 'btn-primary btn-prestataire' : 'btn-primary';
-                const prixStyle = isPrestataire ? 'color: #2e7d32; font-size: 12px;' : '';
 
-                const cardHTML = `
-                    <div class="annonce-card">
-                        <div>
-                            <div class="card-img-container">
-                                <img src="${item.image}" alt="${item.titre}">
-                            </div>
-                            <span class="${badgeClass}">${badgeText}</span>
-                            <h3>${item.titre}</h3>
-                            <p class="meta">${item.description}</p>
-                        </div>
-                        <div>
-                            <div class="prix" style="${prixStyle}">${item.prixOrStatut}</div>
-                            <button class="${btnClass}" onclick="alert('Contact pour : ${item.titre}')">Contacter</button>
-                        </div>
-                    </div>
+
+            /* =========================================
+               AFFICHAGE
+               ========================================= */
+
+            profileName.textContent =
+                name;
+
+
+            profileEmail.textContent =
+                email;
+
+
+            infoName.textContent =
+                name;
+
+
+            infoEmail.textContent =
+                email;
+
+
+
+            /* =========================================
+               PHOTO
+               ========================================= */
+
+            if (photo) {
+
+                avatarBox.innerHTML = `
+
+                    <img
+                        src="${photo}"
+                        alt="Photo de profil">
+
                 `;
-                container.innerHTML += cardHTML;
-            });
+
+            } else {
+
+                avatarBox.innerHTML = `
+
+                    <i class="fa-solid fa-user"></i>
+
+                `;
+
+            }
+
+
+
+            /* =========================================
+               STATUT
+               ========================================= */
+
+            if (
+                String(status).toLowerCase()
+                === "suspendu"
+            ) {
+
+                profileStatus.textContent =
+                    "Compte suspendu";
+
+
+                profileStatus.style.background =
+                    "#ffebee";
+
+
+                profileStatus.style.color =
+                    "#c62828";
+
+
+                infoStatus.textContent =
+                    "Suspendu";
+
+            } else {
+
+                profileStatus.textContent =
+                    "Compte actif";
+
+
+                infoStatus.textContent =
+                    "Actif";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur profil :",
+                error
+            );
+
+
+            profileName.textContent =
+                user.displayName ||
+                "Utilisateur";
+
+
+            profileEmail.textContent =
+                user.email ||
+                "";
+
+
+            infoName.textContent =
+                user.displayName ||
+                "Utilisateur";
+
+
+            infoEmail.textContent =
+                user.email ||
+                "";
+
+
+            profileStatus.textContent =
+                "Compte actif";
+
+
+            infoStatus.textContent =
+                "Actif";
+
         }
 
-        window.setCategory = function(category, btnElement) {
-            currentCategory = category;
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            filterAndRender();
+    }
+);
+
+
+
+/* =====================================================
+   DÉCONNEXION
+   ===================================================== */
+
+logoutButton.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            logoutButton.disabled =
+                true;
+
+
+            logoutButton.innerHTML = `
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                Déconnexion...
+
+            `;
+
+
+            await signOut(auth);
+
+
+            window.location.href =
+                "index.html";
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur déconnexion :",
+                error
+            );
+
+
+            alert(
+                "Impossible de se déconnecter. Veuillez réessayer."
+            );
+
+
+            logoutButton.disabled =
+                false;
+
+
+            logoutButton.innerHTML = `
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Se déconnecter
+
+            `;
+
         }
 
-        fetchPublications();
-    </script>
+    }
+);
 
-    <!-- Gestion des boutons du haut -->
-    <script>
-        function ouvrirPublication() {
-            alert("Redirection vers la page de publication...");
-            // Vous pourrez lier ici votre page d'ajout (ex: window.location.href = 'publier.html';)
-        }
+</script>
 
-        function ouvrirProfil() {
-            alert("Ouverture du profil utilisateur...");
-            // Vous pourrez lier ici votre page profil
-        }
-    </script>
+
 </body>
 </html>
+```
