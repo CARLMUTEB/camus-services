@@ -79,7 +79,7 @@
             color: var(--red);
         }
 
-        /* --- MENU LATÉRAL (TIROIR GAUCHE) --- */
+        /* --- MENU LATÉRAL --- */
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -365,14 +365,14 @@
 </head>
 <body>
 
-    <!-- Barre supérieure avec bouton menu -->
+    <!-- Barre supérieure -->
     <header class="top-bar">
         <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
         <div class="logo-text">CAMU <span>SERVICES</span></div>
         <div style="width: 40px;"></div>
     </header>
 
-    <!-- Menu latéral (Tiroir) -->
+    <!-- Menu latéral -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <aside class="side-menu" id="sideMenu">
         <div class="side-menu-header">
@@ -403,9 +403,9 @@
 
         <h2 class="section-title">Catalogue récent</h2>
 
-        <!-- Grille 2 colonnes connectée à Firebase -->
+        <!-- Grille connectée à la collection "publications" -->
         <div class="cards-grid-2" id="cardsContainer">
-            <div class="loader-text"><i class="fa-solid fa-spinner fa-spin"></i> Chargement des publications...</div>
+            <div class="loader-text"><i class="fa-solid fa-spinner fa-spin"></i> Chargement depuis Firebase...</div>
         </div>
     </main>
 
@@ -429,12 +429,11 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK & Logique -->
+    <!-- Script Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // VOS CONFIGURATIONS FIREBASE
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "votre-projet.firebaseapp.com",
@@ -450,31 +449,32 @@
         let allPublications = [];
         let currentCategory = 'all';
 
-        async function fetchPublicationsFromFirebase() {
+        async function fetchPublications() {
             const container = document.getElementById('cardsContainer');
             try {
                 allPublications = [];
-
-                // Récupération depuis la collection "services"
-                const querySnapshot = await getDocs(collection(db, "services"));
+                const querySnapshot = await getDocs(collection(db, "publications"));
                 
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<p class="loader-text">Aucun document trouvé dans la collection "publications".</p>';
+                    return;
+                }
+
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    
                     allPublications.push({
                         id: doc.id,
-                        type: 'prestataire', 
-                        titre: data.titre || data.categorie || 'Sans titre', // Récupère le champ 'titre' (ou 'categorie' par défaut)
+                        type: data.type || 'article', 
+                        titre: data.titre || 'Sans titre',
                         description: data.description || '',
                         prixOrStatut: data.prix ? data.prix + " FC" : 'Disponible',
-                        image: data.image || 'https://via.placeholder.com/300',
-                        btnText: 'Contacter'
+                        image: data.image || 'https://via.placeholder.com/300'
                     });
                 });
 
                 filterAndRender();
             } catch (error) {
-                console.error("Erreur Firebase : ", error);
+                console.error("Erreur de chargement : ", error);
                 container.innerHTML = `<div class="loader-text" style="color:var(--red);">Erreur : ${error.message}</div>`;
             }
         }
@@ -486,18 +486,18 @@
             container.innerHTML = '';
 
             const filtered = allPublications.filter(item => {
-                const matchCat = (currentCategory === 'all' || item.type === currentCategory);
+                const matchCat = (currentCategory === 'all' || item.type.toLowerCase() === currentCategory.toLowerCase());
                 const matchSearch = item.titre.toLowerCase().includes(searchQuery) || item.description.toLowerCase().includes(searchQuery);
                 return matchCat && matchSearch;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = '<p class="loader-text">Aucune publication trouvée dans Firebase.</p>';
+                container.innerHTML = '<p class="loader-text">Aucun résultat ne correspond à votre recherche.</p>';
                 return;
             }
 
             filtered.forEach(item => {
-                const isPrestataire = item.type === 'prestataire';
+                const isPrestataire = item.type.toLowerCase() === 'prestataire';
                 const badgeClass = isPrestataire ? 'badge-cat badge-prestataire' : 'badge-cat';
                 const badgeText = isPrestataire ? 'Prestataire' : 'Article';
                 const btnClass = isPrestataire ? 'btn-primary btn-prestataire' : 'btn-primary';
@@ -515,7 +515,7 @@
                         </div>
                         <div>
                             <div class="prix" style="${prixStyle}">${item.prixOrStatut}</div>
-                            <button class="${btnClass}" onclick="handleAction('${item.id}')">${item.btnText}</button>
+                            <button class="${btnClass}" onclick="alert('Contact pour : ${item.titre}')">Contacter</button>
                         </div>
                     </div>
                 `;
@@ -530,17 +530,10 @@
             filterAndRender();
         }
 
-        window.handleAction = function(id) {
-            const item = allPublications.find(p => p.id === id);
-            if (item) {
-                alert(`Action sélectionnée pour : ${item.titre}`);
-            }
-        }
-
-        fetchPublicationsFromFirebase();
+        fetchPublications();
     </script>
 
-    <!-- Scripts utilitaires (Menu & Navigation) -->
+    <!-- Scripts utilitaires -->
     <script>
         function toggleSidebar() {
             document.getElementById('sideMenu').classList.toggle('active');
@@ -549,20 +542,11 @@
 
         function switchTab(tabName) {
             document.querySelectorAll('.bottom-nav a, .side-menu-links a').forEach(a => a.classList.remove('active'));
-            
             if(document.getElementById('nav-' + tabName)) document.getElementById('nav-' + tabName).classList.add('active');
             if(document.getElementById('side-' + tabName)) document.getElementById('side-' + tabName).classList.add('active');
 
             document.getElementById('sideMenu').classList.remove('active');
             document.getElementById('sidebarOverlay').classList.remove('active');
-
-            if (tabName === 'profile') {
-                alert("Ouverture de votre profil...");
-            } else if (tabName === 'favorites') {
-                alert("Affichage de vos favoris...");
-            } else if (tabName === 'explore') {
-                alert("Mode exploration active.");
-            }
         }
     </script>
 </body>
