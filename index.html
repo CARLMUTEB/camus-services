@@ -1,2067 +1,1300 @@
-/* =========================================================
-   CAMU SERVICES — STYLE GLOBAL
-   Responsive : téléphone / tablette / ordinateur
-   ========================================================= */
-
-:root {
-  --red: #d32f2f;
-  --red-dark: #b71c1c;
-  --red-light: #ffebee;
-
-  --dark: #111111;
-  --dark-2: #1c1c1c;
-
-  --bg: #f6f7f9;
-  --card: #ffffff;
-
-  --text: #171717;
-  --muted: #70757a;
-
-  --border: #e5e7eb;
-
-  --shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-
-  --radius: 14px;
-
-  --nav-height: 70px;
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
+<!DOCTYPE html>
+<html lang="fr">
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+<head>
+  <meta charset="UTF-8">
 
-html {
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
 
-body {
-  width: 100%;
-  min-height: 100vh;
+  <meta
+    name="description"
+    content="CAMU SERVICES — La plateforme qui connecte les entreprises locales à leurs clients."
+  >
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  <meta name="theme-color" content="#111111">
 
-  background: var(--bg);
-  color: var(--text);
+  <title>CAMU SERVICES</title>
 
-  padding-top: 64px;
-  padding-bottom: calc(var(--nav-height) + 12px);
+  <!-- =====================================================
+       CSS PRINCIPAL
+       IMPORTANT : style.css doit être dans le même dossier
+       que index.html
+       ===================================================== -->
 
-  overflow-x: hidden;
+  <link rel="stylesheet" href="style.css">
 
-  -webkit-text-size-adjust: 100%;
-}
+  <!-- =====================================================
+       FONT AWESOME
+       ===================================================== -->
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
 
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-}
+</head>
 
-button {
-  cursor: pointer;
-}
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+<body>
 
-h1,
-h2,
-h3,
-h4,
-p,
-span,
-a,
-button,
-label {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
+  <!-- =====================================================
+       BARRE SUPÉRIEURE
+       ===================================================== -->
 
+  <header class="top-bar">
 
-/* =========================================================
-   BARRE SUPÉRIEURE
-   ========================================================= */
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-.top-bar {
-  position: fixed;
 
-  top: 0;
-  left: 0;
-  right: 0;
+    <a href="index.html" class="logo-text">
+      CAMU <span>SERVICES</span>
+    </a>
 
-  width: 100%;
-  height: 64px;
 
-  background: var(--dark);
-  color: #ffffff;
+    <a
+      href="profil.html"
+      class="profile-btn"
+      aria-label="Mon profil"
+    >
+      <i class="fa-regular fa-user"></i>
+    </a>
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  </header>
 
-  padding: 0 15px;
 
-  z-index: 1250;
+  <!-- =====================================================
+       MENU LATÉRAL
+       ===================================================== -->
 
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
-}
+  <aside
+    class="sidebar-vertical"
+    id="sidebar"
+    aria-label="Menu principal"
+  >
 
+    <div class="sidebar-header">
+      MENU PRINCIPAL
+    </div>
 
-/* =========================================================
-   BOUTON HAMBURGER
-   ========================================================= */
 
-.menu-toggle {
-  position: relative;
-  z-index: 1300;
+    <ul>
 
-  background: transparent;
-  border: none;
+      <li>
+        <a
+          href="index.html"
+          class="active-link"
+        >
+          <i class="fa-solid fa-house"></i>
+          <span>Accueil</span>
+        </a>
+      </li>
 
-  color: #ffffff;
 
-  font-size: 20px;
+      <li>
+        <a href="recherche.html">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Rechercher</span>
+        </a>
+      </li>
 
-  width: 40px;
-  height: 40px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+      <li>
+        <a href="categories.html">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Catégories</span>
+        </a>
+      </li>
 
-  cursor: pointer;
 
-  border-radius: 50%;
+      <li>
+        <a href="favoris.html">
+          <i class="fa-regular fa-heart"></i>
+          <span>Mes favoris</span>
+        </a>
+      </li>
 
-  transition: 0.2s ease;
-}
 
-.menu-toggle:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
+      <li>
+        <a href="messages.html">
+          <i class="fa-regular fa-comments"></i>
+          <span>Messages</span>
+        </a>
+      </li>
 
-.menu-toggle:active {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0.95);
-}
 
+      <li>
+        <a href="profil.html">
+          <i class="fa-regular fa-user"></i>
+          <span>Mon profil</span>
+        </a>
+      </li>
 
-/* =========================================================
-   LOGO
-   ========================================================= */
 
-.top-bar .logo-text {
-  font-size: 18px;
+      <li>
+        <a href="parametres.html">
+          <i class="fa-solid fa-gear"></i>
+          <span>Paramètres</span>
+        </a>
+      </li>
 
-  font-weight: 900;
 
-  letter-spacing: -0.3px;
+      <li>
+        <a href="inscription-professionnel.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Inscrire mon entreprise</span>
+        </a>
+      </li>
 
-  flex: 1;
+    </ul>
 
-  margin-left: 10px;
-}
+  </aside>
 
-.logo-text span {
-  color: var(--red);
-}
 
+  <!-- =====================================================
+       CONTENU PRINCIPAL
+       ===================================================== -->
 
-/* =========================================================
-   PROFIL
-   ========================================================= */
+  <main class="container">
 
-.profile-btn,
-.top-bar > a {
-  color: #ffffff;
 
-  font-size: 18px;
+    <!-- ===================================================
+         HERO
+         =================================================== -->
 
-  width: 40px;
-  height: 40px;
+    <section class="hero">
 
-  display: flex;
+      <div class="hero-content">
 
-  align-items: center;
-  justify-content: center;
+        <span class="hero-badge">
+          <i class="fa-solid fa-location-dot"></i>
+          Commerce local
+        </span>
 
-  border-radius: 50%;
 
-  transition: 0.2s ease;
-}
+        <h1>
+          Trouvez facilement
+          <span>les services</span>
+          dont vous avez besoin.
+        </h1>
 
-.profile-btn:hover,
-.top-bar > a:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
 
-.profile-btn:active,
-.top-bar > a:active {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0.95);
-}
+        <p>
+          CAMU SERVICES connecte les clients aux entreprises,
+          artisans et professionnels locaux.
+        </p>
 
 
-/* =========================================================
-   CONTENEUR PRINCIPAL
-   ========================================================= */
+        <div class="hero-actions">
 
-.container {
-  width: min(92%, 720px);
+          <a
+            href="recherche.html"
+            class="btn-primary"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Rechercher
+          </a>
 
-  margin-left: auto;
-  margin-right: auto;
 
-  padding: 18px 0;
-}
+          <a
+            href="inscription-professionnel.html"
+            class="btn-secondary hero-secondary"
+          >
+            <i class="fa-solid fa-store"></i>
+            Inscrire mon entreprise
+          </a>
 
+        </div>
 
-/* =========================================================
-   HERO
-   ========================================================= */
+      </div>
 
-.hero {
-  width: 100%;
+    </section>
 
-  background:
-    linear-gradient(
-      135deg,
-      #111111 0%,
-      #242424 100%
+
+    <!-- ===================================================
+         RECHERCHE
+         =================================================== -->
+
+    <section class="search-section">
+
+      <div class="search-bar">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Que recherchez-vous ?"
+          autocomplete="off"
+        >
+
+        <button
+          type="button"
+          id="searchButton"
+          class="search-button"
+          aria-label="Rechercher"
+        >
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CATÉGORIES
+         =================================================== -->
+
+    <section>
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">
+            Explorer
+          </span>
+
+          <h2 class="section-title">
+            Catégories
+          </h2>
+        </div>
+
+
+        <a
+          href="categories.html"
+          class="see-all"
+        >
+          Voir tout
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+      </div>
+
+
+      <div class="categories">
+
+
+        <button
+          class="cat-btn active"
+          data-category="Toutes"
+          type="button"
+        >
+          <i class="fa-solid fa-border-all"></i>
+          Toutes
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Construction"
+          type="button"
+        >
+          <i class="fa-solid fa-helmet-safety"></i>
+          Construction
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Transport"
+          type="button"
+        >
+          <i class="fa-solid fa-car"></i>
+          Transport
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Beauté"
+          type="button"
+        >
+          <i class="fa-solid fa-scissors"></i>
+          Beauté
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Restaurant"
+          type="button"
+        >
+          <i class="fa-solid fa-utensils"></i>
+          Restaurant
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Commerce"
+          type="button"
+        >
+          <i class="fa-solid fa-shop"></i>
+          Commerce
+        </button>
+
+
+        <button
+          class="cat-btn"
+          data-category="Services"
+          type="button"
+        >
+          <i class="fa-solid fa-briefcase"></i>
+          Services
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         COMMUNIQUÉS
+         =================================================== -->
+
+    <section id="communiquesSection">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">
+            Actualités
+          </span>
+
+          <h2 class="section-title">
+            Communiqués
+          </h2>
+        </div>
+
+      </div>
+
+
+      <div id="communiquesContainer">
+
+        <div class="loading-card">
+
+          <div class="loading-spinner"></div>
+
+          <p>
+            Chargement des communiqués...
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ENTREPRISES / SERVICES
+         =================================================== -->
+
+    <section>
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">
+            Découvrez
+          </span>
+
+          <h2 class="section-title">
+            Services disponibles
+          </h2>
+        </div>
+
+
+        <a
+          href="recherche.html"
+          class="see-all"
+        >
+          Voir tout
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+      </div>
+
+
+      <div id="annoncesContainer">
+
+
+        <div class="loading-card">
+
+          <div class="loading-spinner"></div>
+
+          <p>
+            Chargement des services...
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         APPEL PROFESSIONNELS
+         =================================================== -->
+
+    <section class="professional-banner">
+
+      <div class="professional-icon">
+
+        <i class="fa-solid fa-store"></i>
+
+      </div>
+
+
+      <div class="professional-content">
+
+        <span>
+          Vous êtes professionnel ?
+        </span>
+
+        <h2>
+          Faites connaître votre activité.
+        </h2>
+
+        <p>
+          Présentez votre entreprise, vos services et
+          permettez à vos clients de vous contacter directement.
+        </p>
+
+
+        <a
+          href="inscription-professionnel.html"
+          class="btn-primary"
+        >
+          <i class="fa-solid fa-plus"></i>
+          Inscrire mon entreprise
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         FOOTER
+         =================================================== -->
+
+    <footer class="footer">
+
+      <h3>
+        CAMU SERVICES
+      </h3>
+
+
+      <p>
+        La plateforme qui connecte les entreprises locales
+        à leurs clients.
+      </p>
+
+
+      <div class="footer-links">
+
+        <a href="a-propos.html">
+          À propos
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+        <a href="confidentialite.html">
+          Confidentialité
+        </a>
+
+        <a href="conditions.html">
+          Conditions
+        </a>
+
+      </div>
+
+
+      <p class="copyright">
+        © 2026 CAMU SERVICES. Tous droits réservés.
+      </p>
+
+    </footer>
+
+  </main>
+
+
+  <!-- =====================================================
+       NAVIGATION MOBILE
+       ===================================================== -->
+
+  <nav
+    class="bottom-nav"
+    aria-label="Navigation principale"
+  >
+
+    <a
+      href="index.html"
+      class="active"
+    >
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+
+
+    <a href="recherche.html">
+
+      <i class="fa-solid fa-magnifying-glass"></i>
+
+      <span>Recherche</span>
+
+    </a>
+
+
+    <a href="categories.html">
+
+      <i class="fa-solid fa-layer-group"></i>
+
+      <span>Catégories</span>
+
+    </a>
+
+
+    <a href="favoris.html">
+
+      <i class="fa-regular fa-heart"></i>
+
+      <span>Favoris</span>
+
+    </a>
+
+
+    <a href="profil.html">
+
+      <i class="fa-regular fa-user"></i>
+
+      <span>Profil</span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       JAVASCRIPT DE LA PAGE
+       ===================================================== -->
+
+  <script type="module">
+
+    import {
+      db,
+      auth,
+      onAuthStateChanged
+    } from "./app.js";
+
+
+    import {
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      limit
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+    /* =====================================================
+       MENU
+       ===================================================== */
+
+    const menuToggle =
+      document.getElementById("menuToggle");
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+
+    menuToggle.addEventListener("click", () => {
+
+      const isOpen =
+        sidebar.classList.toggle("open");
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        isOpen ? "true" : "false"
+      );
+
+      menuToggle.innerHTML =
+        isOpen
+          ? '<i class="fa-solid fa-xmark"></i>'
+          : '<i class="fa-solid fa-bars"></i>';
+
+    });
+
+
+    /* =====================================================
+       FERMER LE MENU APRÈS CLIC
+       ===================================================== */
+
+    document
+      .querySelectorAll(".sidebar-vertical a")
+      .forEach(link => {
+
+        link.addEventListener("click", () => {
+
+          sidebar.classList.remove("open");
+
+          menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          menuToggle.innerHTML =
+            '<i class="fa-solid fa-bars"></i>';
+
+        });
+
+      });
+
+
+    /* =====================================================
+       RECHERCHE
+       ===================================================== */
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const searchButton =
+      document.getElementById("searchButton");
+
+
+    function launchSearch() {
+
+      const value =
+        searchInput.value.trim();
+
+
+      if (!value) {
+
+        window.location.href =
+          "recherche.html";
+
+        return;
+
+      }
+
+
+      window.location.href =
+        "recherche.html?search=" +
+        encodeURIComponent(value);
+
+    }
+
+
+    searchButton.addEventListener(
+      "click",
+      launchSearch
     );
 
-  color: #ffffff;
 
-  border-radius: 18px;
+    searchInput.addEventListener(
+      "keydown",
+      event => {
 
-  padding: 25px 22px;
+        if (event.key === "Enter") {
 
-  margin-bottom: 17px;
+          launchSearch();
 
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.12);
+        }
 
-  overflow: hidden;
-}
+      }
+    );
 
-.hero h1 {
-  font-size: 26px;
 
-  line-height: 1.18;
+    /* =====================================================
+       CATÉGORIES
+       ===================================================== */
 
-  font-weight: 900;
+    const categoryButtons =
+      document.querySelectorAll(".cat-btn");
 
-  margin-bottom: 10px;
 
-  letter-spacing: -0.5px;
-}
+    categoryButtons.forEach(button => {
 
-.hero h1 > span {
-  color: #ef5350;
-}
+      button.addEventListener("click", () => {
 
-.hero p {
-  color: #dddddd;
+        categoryButtons.forEach(btn => {
 
-  font-size: 13px;
+          btn.classList.remove("active");
 
-  line-height: 1.55;
+        });
 
-  max-width: 560px;
-}
 
+        button.classList.add("active");
 
-/* =========================================================
-   BARRE DE RECHERCHE
-   ========================================================= */
 
-.search-bar {
-  width: 100%;
+        const category =
+          button.dataset.category;
 
-  background: var(--card);
 
-  border: 1px solid var(--border);
+        if (category === "Toutes") {
 
-  border-radius: 14px;
+          loadAnnonces();
 
-  padding: 0 14px;
+        } else {
 
-  height: 52px;
+          loadAnnonces(category);
 
-  display: flex;
+        }
 
-  align-items: center;
+      });
 
-  gap: 10px;
+    });
 
-  box-shadow: var(--shadow);
 
-  margin-bottom: 20px;
-}
+    /* =====================================================
+       UTILISATEUR
+       ===================================================== */
 
-.search-bar i {
-  color: #888;
+    onAuthStateChanged(auth, user => {
 
-  font-size: 15px;
+      const profileButton =
+        document.querySelector(".profile-btn");
 
-  flex-shrink: 0;
-}
 
-.search-bar input {
-  width: 100%;
+      if (!profileButton) return;
 
-  height: 100%;
 
-  border: none;
+      if (user) {
 
-  outline: none;
+        profileButton.innerHTML =
+          '<i class="fa-solid fa-user-check"></i>';
 
-  background: transparent;
+      } else {
 
-  font-size: 14px;
+        profileButton.innerHTML =
+          '<i class="fa-regular fa-user"></i>';
 
-  color: var(--text);
+      }
 
-  min-width: 0;
+    });
 
-  padding: 0;
-}
 
-.search-bar input::placeholder {
-  color: #999;
-}
+    /* =====================================================
+       CHARGER LES SERVICES
+       ===================================================== */
 
+    async function loadAnnonces(category = null) {
 
-/* =========================================================
-   TITRES
-   ========================================================= */
+      const container =
+        document.getElementById(
+          "annoncesContainer"
+        );
 
-.section-title {
-  font-size: 14px;
 
-  font-weight: 900;
+      try {
 
-  text-transform: uppercase;
+        const annoncesRef =
+          collection(db, "annonces");
 
-  margin: 20px 0 11px;
 
-  color: var(--text);
+        const annoncesQuery =
+          query(
+            annoncesRef,
+            orderBy("createdAt", "desc"),
+            limit(20)
+          );
 
-  letter-spacing: 0.2px;
-}
 
+        const snapshot =
+          await getDocs(annoncesQuery);
 
-/* =========================================================
-   CATÉGORIES
-   ========================================================= */
 
-.categories {
-  width: 100%;
+        container.innerHTML = "";
 
-  display: flex;
 
-  gap: 8px;
+        let count = 0;
 
-  overflow-x: auto;
 
-  overflow-y: hidden;
+        snapshot.forEach(doc => {
 
-  padding: 2px 2px 9px;
+          const data = doc.data();
 
-  margin-bottom: 3px;
 
-  scrollbar-width: none;
+          const annonceCategory =
+            data.category ||
+            data.categorie ||
+            "Services";
 
-  -webkit-overflow-scrolling: touch;
-}
 
-.categories::-webkit-scrollbar {
-  display: none;
-}
+          if (
+            category &&
+            category !== annonceCategory
+          ) {
 
-.cat-btn {
-  flex: 0 0 auto;
+            return;
 
-  white-space: nowrap;
+          }
 
-  border: 1px solid #f1c2c2;
 
-  background: #fff5f5;
+          count++;
 
-  color: var(--red);
 
-  padding: 9px 13px;
+          const card =
+            createAnnonceCard(
+              doc.id,
+              data
+            );
 
-  min-height: 38px;
 
-  border-radius: 22px;
+          container.appendChild(card);
 
-  font-size: 12px;
+        });
 
-  font-weight: 700;
 
-  transition: 0.2s ease;
-}
+        if (count === 0) {
 
-.cat-btn:hover {
-  background: var(--red);
+          container.innerHTML = `
 
-  color: #ffffff;
-}
+            <div class="empty-state">
 
-.cat-btn:active {
-  transform: scale(0.96);
-}
+              <div class="empty-icon">
 
-.cat-btn.active {
-  background: var(--red);
+                <i class="fa-solid fa-store-slash"></i>
 
-  color: #ffffff;
+              </div>
 
-  border-color: var(--red);
-}
+              <h2>
+                Aucun service disponible
+              </h2>
 
+              <p>
+                Aucun service ne correspond actuellement
+                à cette catégorie.
+              </p>
 
-/* =========================================================
-   COMMUNIQUÉS
-   ========================================================= */
+            </div>
 
-#communiquesContainer {
-  width: 100%;
+          `;
 
-  margin-top: 12px;
+        }
 
-  margin-bottom: 8px;
-}
+      } catch (error) {
 
+        console.error(
+          "Erreur chargement annonces :",
+          error
+        );
 
-/* =========================================================
-   CARTES SERVICES
-   ========================================================= */
 
-.annonce-card,
-.card-box,
-.page-card,
-.admin-card {
-  width: 100%;
+        container.innerHTML = `
 
-  background: var(--card);
+          <div class="empty-state">
 
-  border: 1px solid var(--border);
+            <div class="empty-icon">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
 
-  border-radius: var(--radius);
+            <h2>
+              Impossible de charger les services
+            </h2>
 
-  padding: 16px;
+            <p>
+              Vérifiez votre connexion puis réessayez.
+            </p>
 
-  margin-bottom: 12px;
+          </div>
 
-  box-shadow: var(--shadow);
+        `;
 
-  overflow: hidden;
+      }
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
+    }
 
-.annonce-card:hover {
-  box-shadow:
-    0 9px 26px rgba(0, 0, 0, 0.09);
-}
 
-.annonce-card h3 {
-  font-size: 17px;
+    /* =====================================================
+       CARTE SERVICE
+       ===================================================== */
 
-  line-height: 1.3;
+    function createAnnonceCard(id, data) {
 
-  margin: 9px 0 5px;
+      const card =
+        document.createElement("article");
 
-  font-weight: 800;
 
-  overflow-wrap: anywhere;
-}
+      card.className =
+        "annonce-card";
 
-.annonce-card p {
-  overflow-wrap: anywhere;
-}
 
-.annonce-card img {
-  max-width: 100%;
-}
+      const title =
+        data.title ||
+        data.nom ||
+        data.name ||
+        "Service sans titre";
 
-.badge-cat {
-  display: inline-block;
 
-  background: var(--red-light);
+      const description =
+        data.description ||
+        data.descriptionService ||
+        "Aucune description disponible.";
 
-  color: var(--red);
 
-  padding: 5px 9px;
+      const category =
+        data.category ||
+        data.categorie ||
+        "Services";
 
-  border-radius: 20px;
 
-  font-size: 10px;
+      const location =
+        data.location ||
+        data.adresse ||
+        data.ville ||
+        "Localisation non renseignée";
 
-  font-weight: 800;
 
-  max-width: 100%;
+      const price =
+        data.price ||
+        data.prix ||
+        "";
 
-  overflow-wrap: anywhere;
-}
 
-.meta,
-.location {
-  font-size: 12px;
+      const image =
+        data.image ||
+        data.imageUrl ||
+        "";
 
-  color: var(--muted);
 
-  margin: 6px 0;
+      card.innerHTML = `
 
-  line-height: 1.4;
-}
+        ${
+          image
+            ? `
+              <div class="annonce-image-wrapper">
 
-.location i {
-  color: var(--red);
-}
+                <img
+                  src="${escapeHTML(image)}"
+                  alt="${escapeHTML(title)}"
+                  class="annonce-image"
+                  loading="lazy"
+                >
 
-.prix {
-  color: var(--red);
+              </div>
+            `
+            : `
+              <div class="annonce-image-placeholder">
 
-  font-size: 17px;
+                <i class="fa-solid fa-store"></i>
 
-  font-weight: 900;
+              </div>
+            `
+        }
 
-  margin: 9px 0;
-}
 
+        <div class="annonce-content">
 
-/* =========================================================
-   ACTIONS
-   ========================================================= */
+          <span class="badge-cat">
 
-.card-actions {
-  display: flex;
+            <i class="fa-solid fa-tag"></i>
 
-  align-items: stretch;
+            ${escapeHTML(category)}
 
-  gap: 8px;
+          </span>
 
-  width: 100%;
 
-  margin-top: 13px;
-}
+          <h3>
+            ${escapeHTML(title)}
+          </h3>
 
-.card-actions > a {
-  min-width: 0;
-}
 
-.btn-submit,
-.btn-primary {
-  display: inline-flex;
+          <p class="annonce-description">
+            ${escapeHTML(description)}
+          </p>
 
-  align-items: center;
-  justify-content: center;
 
-  background: var(--red);
+          <div class="location">
 
-  color: #ffffff;
+            <i class="fa-solid fa-location-dot"></i>
 
-  border: none;
+            ${escapeHTML(location)}
 
-  border-radius: 10px;
+          </div>
 
-  padding: 11px 15px;
 
-  min-height: 44px;
+          ${
+            price
+              ? `
+                <div class="prix">
+                  ${escapeHTML(String(price))}
+                </div>
+              `
+              : ""
+          }
 
-  font-size: 13px;
 
-  font-weight: 800;
+          <div class="card-actions">
 
-  transition: 0.2s ease;
-}
+            <a
+              href="annonce.html?id=${encodeURIComponent(id)}"
+              class="btn-primary"
+            >
 
-.btn-submit:hover,
-.btn-primary:hover {
-  background: var(--red-dark);
-}
+              <i class="fa-solid fa-eye"></i>
 
-.btn-submit:active,
-.btn-primary:active {
-  transform: scale(0.98);
-}
+              Voir le service
 
-.btn-secondary {
-  display: inline-flex;
+            </a>
 
-  align-items: center;
-  justify-content: center;
 
-  background: #ffffff;
+            <button
+              type="button"
+              class="favorite-btn"
+              data-id="${escapeHTML(id)}"
+              aria-label="Ajouter aux favoris"
+            >
 
-  color: var(--text);
+              <i class="fa-regular fa-heart"></i>
 
-  border: 1px solid var(--border);
+            </button>
 
-  border-radius: 10px;
+          </div>
 
-  padding: 10px 14px;
+        </div>
 
-  min-height: 44px;
+      `;
 
-  font-weight: 700;
-}
 
-.favorite-btn {
-  flex: 0 0 48px;
+      const favoriteButton =
+        card.querySelector(
+          ".favorite-btn"
+        );
 
-  width: 48px;
-  min-width: 48px;
 
-  height: 44px;
+      favoriteButton.addEventListener(
+        "click",
+        () => {
 
-  background: #ffffff;
+          favoriteButton.classList.toggle(
+            "favorite-active"
+          );
 
-  border: 1px solid var(--border);
 
-  border-radius: 10px;
+          const icon =
+            favoriteButton.querySelector("i");
 
-  font-size: 21px;
 
-  color: #555;
+          if (
+            favoriteButton.classList.contains(
+              "favorite-active"
+            )
+          ) {
 
-  transition: 0.2s ease;
-}
+            icon.className =
+              "fa-solid fa-heart";
 
-.favorite-btn:hover {
-  color: var(--red);
+          } else {
 
-  border-color: #e8aaaa;
-}
+            icon.className =
+              "fa-regular fa-heart";
 
-.favorite-btn:active {
-  transform: scale(0.95);
-}
+          }
 
-
-/* =========================================================
-   FORMULAIRES
-   ========================================================= */
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  margin-bottom: 6px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea,
-input,
-select,
-textarea {
-  width: 100%;
-
-  max-width: 100%;
-
-  padding: 12px;
-
-  border: 1px solid #d8dce1;
-
-  border-radius: 10px;
-
-  background: #ffffff;
-
-  color: var(--text);
-
-  outline: none;
-
-  font-size: 14px;
-
-  -webkit-appearance: none;
-
-  appearance: none;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus,
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--red);
-
-  box-shadow:
-    0 0 0 3px rgba(211, 47, 47, 0.08);
-}
-
-.form-group textarea,
-textarea {
-  min-height: 120px;
-
-  resize: vertical;
-}
-
-.help {
-  font-size: 12px;
-
-  color: var(--muted);
-
-  line-height: 1.5;
-}
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
-.empty-state {
-  width: 100%;
-
-  text-align: center;
-
-  background: #ffffff;
-
-  border: 1px solid var(--border);
-
-  border-radius: 16px;
-
-  padding: 38px 18px;
-
-  color: var(--muted);
-
-  box-shadow: var(--shadow);
-}
-
-.empty-state i {
-  display: block;
-
-  font-size: 40px;
-
-  margin-bottom: 13px;
-
-  color: #aaa;
-}
-
-.empty-state h2 {
-  font-size: 17px;
-
-  color: #222;
-
-  margin-bottom: 7px;
-}
-
-.empty-state h3 {
-  margin-bottom: 7px;
-}
-
-.empty-state p {
-  font-size: 12px;
-
-  line-height: 1.5;
-}
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-.footer {
-  width: 100%;
-
-  background: #111111;
-
-  color: #dddddd;
-
-  border-radius: 16px;
-
-  margin-top: 25px;
-
-  padding: 23px 16px;
-
-  text-align: center;
-}
-
-.footer h3 {
-  color: #ffffff;
-
-  font-size: 17px;
-
-  margin-bottom: 8px;
-}
-
-.footer p {
-  font-size: 12px;
-
-  color: #aaaaaa;
-
-  line-height: 1.6;
-}
-
-.footer-links {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  justify-content: center;
-
-  gap: 12px 18px;
-
-  margin: 16px 0;
-}
-
-.footer-links a {
-  font-size: 12px;
-
-  color: #ffffff;
-}
-
-.footer-links a:hover {
-  color: #ef5350;
-}
-
-
-/* =========================================================
-   NAVIGATION DU BAS — MOBILE
-   ========================================================= */
-
-.bottom-nav {
-  position: fixed;
-
-  bottom: 0;
-
-  left: 0;
-  right: 0;
-
-  width: 100%;
-
-  height: var(--nav-height);
-
-  background: rgba(255, 255, 255, 0.98);
-
-  border-top: 1px solid var(--border);
-
-  display: flex;
-
-  z-index: 1000;
-
-  padding:
-    6px
-    max(6px, env(safe-area-inset-right))
-    calc(6px + env(safe-area-inset-bottom))
-    max(6px, env(safe-area-inset-left));
-
-  box-shadow:
-    0 -4px 15px rgba(0, 0, 0, 0.04);
-}
-
-.bottom-nav a {
-  flex: 1;
-
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  color: #666;
-
-  font-size: 11px;
-
-  gap: 4px;
-
-  border-radius: 10px;
-
-  text-align: center;
-
-  transition: 0.2s ease;
-}
-
-.bottom-nav a.active {
-  color: var(--red);
-}
-
-.bottom-nav a:active {
-  transform: scale(0.95);
-}
-
-.bottom-nav i {
-  font-size: 20px;
-}
-
-.bottom-nav span {
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   TEXTE / CONDITIONS / PAGES
-   ========================================================= */
-
-.prose h1 {
-  font-size: 24px;
-
-  line-height: 1.25;
-
-  margin-bottom: 15px;
-}
-
-.prose h2 {
-  font-size: 16px;
-
-  color: var(--red);
-
-  margin: 20px 0 8px;
-}
-
-.prose p,
-.prose li {
-  font-size: 13px;
-
-  line-height: 1.7;
-
-  color: #444;
-}
-
-.prose ul {
-  padding-left: 20px;
-}
-
-
-/* =========================================================
-   STATUTS
-   ========================================================= */
-
-.status {
-  display: inline-block;
-
-  font-size: 10px;
-
-  font-weight: 800;
-
-  padding: 4px 8px;
-
-  border-radius: 20px;
-}
-
-.status.ok {
-  background: #e8f5e9;
-
-  color: #2e7d32;
-}
-
-.status.wait {
-  background: #fff4dc;
-
-  color: #9a6200;
-}
-
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-
-.admin-body {
-  background: #111111;
-
-  color: #ffffff;
-}
-
-.admin-card {
-  background: #202020;
-
-  border-color: #333333;
-
-  color: #ffffff;
-}
-
-.admin-card input,
-.admin-card textarea,
-.admin-card select {
-  background: #171717;
-
-  color: #ffffff;
-
-  border-color: #444444;
-}
-
-.admin-title {
-  border-left: 4px solid var(--red);
-
-  padding-left: 9px;
-
-  margin: 20px 0 10px;
-
-  font-size: 15px;
-}
-
-.stat-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 8px;
-}
-
-.stat {
-  background: #181818;
-
-  border: 1px solid #333;
-
-  border-radius: 10px;
-
-  padding: 12px;
-
-  text-align: center;
-}
-
-.stat strong {
-  display: block;
-
-  font-size: 20px;
-}
-
-.stat span {
-  font-size: 10px;
-
-  color: #aaa;
-}
-
-.alert {
-  padding: 12px;
-
-  border-radius: 10px;
-
-  font-size: 12px;
-}
-
-.alert.error {
-  background: #3b1717;
-
-  color: #ffbcbc;
-}
-
-
-/* =========================================================
-   CHAT
-   ========================================================= */
-
-.messages-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 9px;
-
-  min-height: 55vh;
-
-  max-height:
-    calc(100vh - 220px);
-
-  overflow-y: auto;
-
-  overflow-x: hidden;
-
-  padding: 5px 2px;
-}
-
-.message {
-  max-width: 82%;
-
-  padding: 10px 12px;
-
-  border-radius: 14px;
-
-  background: #ffffff;
-
-  border: 1px solid var(--border);
-
-  align-self: flex-start;
-
-  overflow-wrap: anywhere;
-}
-
-.my-message {
-  background: var(--red);
-
-  color: #ffffff;
-
-  border-color: var(--red);
-
-  align-self: flex-end;
-}
-
-.chat-input {
-  position: fixed;
-
-  bottom: var(--nav-height);
-
-  left: 0;
-  right: 0;
-
-  background: #ffffff;
-
-  border-top: 1px solid var(--border);
-
-  padding: 9px;
-
-  display: flex;
-
-  gap: 8px;
-
-  z-index: 900;
-}
-
-.chat-input input {
-  flex: 1;
-
-  min-width: 0;
-}
-
-
-/* =========================================================
-   SOUS-MENU PARAMÈTRES
-   ========================================================= */
-
-.submenu-container {
-  display: none;
-
-  list-style: none;
-
-  margin: 4px 0 6px;
-
-  padding: 0 0 0 10px;
-}
-
-.submenu-container.open-submenu {
-  display: block;
-}
-
-.submenu-container li {
-  list-style: none;
-}
-
-.submenu-container a {
-  font-size: 12px !important;
-
-  padding: 9px 10px !important;
-}
-
-.submenu-container a i {
-  font-size: 14px !important;
-}
-
-
-/* =========================================================
-   MENU TÉLÉPHONE / TABLETTE
-   ========================================================= */
-
-.sidebar-vertical {
-  display: block;
-
-  position: fixed;
-
-  top: 64px;
-
-  left: 0;
-
-  width: min(280px, 86vw);
-
-  max-height: calc(100vh - 80px);
-
-  overflow-y: auto;
-
-  background: var(--card);
-
-  border-right: 1px solid var(--border);
-
-  border-bottom: 1px solid var(--border);
-
-  border-radius: 0 14px 14px 0;
-
-  padding: 16px;
-
-  box-shadow:
-    6px 8px 25px rgba(0, 0, 0, 0.12);
-
-  z-index: 1200;
-
-  transform: translateX(-110%);
-
-  transition:
-    transform 0.25s ease;
-}
-
-.sidebar-vertical.open {
-  transform: translateX(0);
-}
-
-
-/* =========================================================
-   LISTE DU MENU
-   ========================================================= */
-
-.sidebar-vertical ul {
-  list-style: none;
-
-  padding: 0;
-
-  margin: 0;
-}
-
-.sidebar-vertical li {
-  list-style: none;
-}
-
-
-/* =========================================================
-   LIENS DU MENU
-   ========================================================= */
-
-.sidebar-vertical a {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 11px 12px;
-
-  border-radius: 10px;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  color: var(--text);
-
-  transition: 0.2s ease;
-}
-
-.sidebar-vertical a:hover,
-.sidebar-vertical a.active-link {
-  background: var(--red-light);
-
-  color: var(--red);
-}
-
-.sidebar-vertical a i {
-  color: var(--red);
-}
-
-
-/* =========================================================
-   TABLETTE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-  .container {
-    width: calc(100% - 28px);
-
-    padding-top: 15px;
-  }
-
-  .hero {
-    padding: 22px 18px;
-
-    border-radius: 16px;
-  }
-
-  .hero h1 {
-    font-size: 23px;
-  }
-
-  .annonce-card {
-    padding: 15px;
-  }
-}
-
-
-/* =========================================================
-   TÉLÉPHONES
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-  body {
-    padding-top: 60px;
-
-    padding-bottom:
-      calc(var(--nav-height) + 10px);
-  }
-
-  .top-bar {
-    height: 60px;
-
-    padding: 0 13px;
-  }
-
-  .logo-text {
-    font-size: 16px;
-  }
-
-  .profile-btn,
-  .top-bar > a {
-    width: 38px;
-
-    height: 38px;
-
-    font-size: 18px;
-  }
-
-  .container {
-    width: 100%;
-
-    padding:
-      14px
-      12px
-      16px;
-  }
-
-  .hero {
-    border-radius: 15px;
-
-    padding: 20px 17px;
-
-    margin-bottom: 14px;
-  }
-
-  .hero h1 {
-    font-size: 21px;
-
-    line-height: 1.25;
-
-    letter-spacing: -0.3px;
-  }
-
-  .hero p {
-    font-size: 12px;
-
-    line-height: 1.55;
-  }
-
-  .search-bar {
-    height: 49px;
-
-    border-radius: 12px;
-
-    padding: 0 12px;
-
-    margin-bottom: 16px;
-  }
-
-  .search-bar input {
-    font-size: 13px;
-  }
-
-  .section-title {
-    font-size: 13px;
-
-    margin: 16px 0 9px;
-  }
-
-  .categories {
-    margin-left: -2px;
-
-    margin-right: -2px;
-
-    padding-left: 2px;
-
-    padding-right: 2px;
-  }
-
-  .cat-btn {
-    min-height: 37px;
-
-    padding: 8px 11px;
-
-    font-size: 11px;
-  }
-
-  .annonce-card,
-  .card-box,
-  .page-card {
-    padding: 14px;
-
-    border-radius: 14px;
-  }
-
-  .annonce-card h3 {
-    font-size: 16px;
-
-    line-height: 1.3;
-  }
-
-  .annonce-card p {
-    font-size: 12px;
-  }
-
-  .prix {
-    font-size: 16px;
-  }
-
-  .card-actions {
-    gap: 7px;
-  }
-
-  .btn-submit,
-  .btn-primary {
-    min-height: 44px;
-
-    padding: 10px 12px;
-
-    font-size: 12px;
-  }
-
-  .favorite-btn {
-    flex-basis: 45px;
-
-    width: 45px;
-
-    min-width: 45px;
-
-    height: 44px;
-  }
-
-  .footer {
-    border-radius: 14px;
-
-    padding: 20px 13px;
-
-    margin-top: 20px;
-  }
-
-  .footer-links {
-    gap: 10px 14px;
-  }
-
-  .footer-links a {
-    font-size: 11px;
-  }
-
-  .bottom-nav {
-    height: 68px;
-  }
-
-  .bottom-nav i {
-    font-size: 18px;
-  }
-
-  .bottom-nav a {
-    font-size: 10px;
-
-    gap: 3px;
-  }
-
-  .empty-state {
-    padding: 32px 15px;
-  }
-
-  .stat-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .message {
-    max-width: 88%;
-  }
-
-  .sidebar-vertical {
-    top: 60px;
-
-    width: min(280px, 86vw);
-
-    max-height: calc(100vh - 75px);
-  }
-}
-
-
-/* =========================================================
-   PETITS TÉLÉPHONES
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-  .container {
-    padding-left: 10px;
-
-    padding-right: 10px;
-  }
-
-  .hero h1 {
-    font-size: 19px;
-  }
-
-  .hero {
-    padding: 18px 15px;
-  }
-
-  .annonce-card {
-    padding: 13px;
-  }
-
-  .annonce-card h3 {
-    font-size: 15px;
-  }
-
-  .btn-submit,
-  .btn-primary {
-    padding-left: 9px;
-
-    padding-right: 9px;
-
-    font-size: 11px;
-  }
-
-  .favorite-btn {
-    width: 43px;
-
-    min-width: 43px;
-  }
-
-  .bottom-nav i {
-    font-size: 17px;
-  }
-
-  .bottom-nav a {
-    font-size: 9px;
-  }
-}
-
-
-/* =========================================================
-   ORDINATEUR
-   ========================================================= */
-
-@media (min-width: 1000px) {
-
-  body {
-    padding-right: 0;
-
-    display: block;
-  }
-
-  .container {
-    width: min(90%, 760px);
-
-    margin-left: auto;
-
-    margin-right: auto;
-  }
-
-  .bottom-nav {
-    display: none;
-  }
-
-  .sidebar-vertical {
-    display: block;
-
-    position: fixed;
-
-    top: 80px;
-
-    left: 20px;
-
-    right: auto;
-
-    width: 280px;
-
-    max-height: calc(100vh - 100px);
-
-    overflow-y: auto;
-
-    background: var(--card);
-
-    border: 1px solid var(--border);
-
-    border-radius: var(--radius);
-
-    padding: 16px;
-
-    box-shadow:
-      0 8px 25px rgba(0, 0, 0, 0.12);
-
-    z-index: 1200;
-
-    transform: translateX(-120%);
-
-    transition:
-      transform 0.25s ease;
-  }
-
-  .sidebar-vertical.open {
-    transform: translateX(0);
-  }
-
-  .sidebar-header {
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    color: var(--muted);
-
-    margin-bottom: 12px;
-
-    letter-spacing: 0.5px;
-
-    font-weight: 800;
-
-    padding-left: 8px;
-  }
-
-  .sidebar-vertical ul {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 6px;
-
-    list-style: none;
-  }
-
-  .sidebar-vertical a {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 11px 12px;
-
-    border-radius: 10px;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    color: var(--text);
-
-    transition: 0.2s ease;
-  }
-
-  .sidebar-vertical a i {
-    font-size: 16px;
-
-    color: var(--red);
-
-    width: 20px;
-
-    text-align: center;
-
-    flex-shrink: 0;
-  }
-
-  .sidebar-vertical a:hover,
-  .sidebar-vertical a.active-link {
-    background: var(--red-light);
-
-    color: var(--red);
-  }
-}
-
-
-/* =========================================================
-   GRAND ÉCRAN
-   ========================================================= */
-
-@media (min-width: 1400px) {
-
-  .sidebar-vertical {
-    width: 300px;
-
-    left: 30px;
-  }
-
-  .container {
-    width: min(90%, 800px);
-  }
-}
-
-
-/* =========================================================
-   MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode,
-body.dark-mode {
-
-  --bg: #101010;
-
-  --card: #1c1c1c;
-
-  --text: #f3f3f3;
-
-  --muted: #aaaaaa;
-
-  --border: #333333;
-
-  --shadow:
-    0 6px 20px rgba(0, 0, 0, 0.30);
-}
-
-
-/* =========================================================
-   CORPS MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode body,
-body.dark-mode {
-
-  background: var(--bg);
-
-  color: var(--text);
-}
-
-
-/* =========================================================
-   CARTES MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .card-box,
-html.dark-mode .page-card,
-html.dark-mode .annonce-card,
-html.dark-mode .admin-card,
-html.dark-mode .empty-state,
-html.dark-mode .search-bar,
-
-body.dark-mode .card-box,
-body.dark-mode .page-card,
-body.dark-mode .annonce-card,
-body.dark-mode .admin-card,
-body.dark-mode .empty-state,
-body.dark-mode .search-bar {
-
-  background: var(--card);
-
-  border-color: var(--border);
-
-  color: var(--text);
-}
-
-
-/* =========================================================
-   FORMULAIRES MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode input,
-html.dark-mode select,
-html.dark-mode textarea,
-html.dark-mode .form-group input,
-html.dark-mode .form-group select,
-html.dark-mode .form-group textarea,
-
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea,
-body.dark-mode .form-group input,
-body.dark-mode .form-group select,
-body.dark-mode .form-group textarea {
-
-  background: #171717;
-
-  color: #ffffff;
-
-  border-color: #444444;
-}
-
-html.dark-mode input::placeholder,
-body.dark-mode input::placeholder {
-  color: #888888;
-}
-
-
-/* =========================================================
-   NAVIGATION BAS MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .bottom-nav,
-body.dark-mode .bottom-nav {
-
-  background: rgba(25, 25, 25, 0.98);
-
-  border-color: #333333;
-}
-
-html.dark-mode .bottom-nav a,
-body.dark-mode .bottom-nav a {
-  color: #aaaaaa;
-}
-
-html.dark-mode .bottom-nav a.active,
-body.dark-mode .bottom-nav a.active {
-  color: var(--red);
-}
-
-
-/* =========================================================
-   MENU MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .sidebar-vertical,
-body.dark-mode .sidebar-vertical {
-
-  background: #1c1c1c;
-
-  border-color: #333333;
-}
-
-html.dark-mode .sidebar-vertical a,
-body.dark-mode .sidebar-vertical a {
-  color: #eeeeee;
-}
-
-html.dark-mode .sidebar-vertical a:hover,
-html.dark-mode .sidebar-vertical a.active-link,
-
-body.dark-mode .sidebar-vertical a:hover,
-body.dark-mode .sidebar-vertical a.active-link {
-
-  background: #351b1b;
-
-  color: var(--red);
-}
-
-
-/* =========================================================
-   FOOTER MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .footer,
-body.dark-mode .footer {
-  background: #080808;
-}
-
-
-/* =========================================================
-   BOUTON SECONDAIRE MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .btn-secondary,
-body.dark-mode .btn-secondary {
-
-  background: #202020;
-
-  color: #f3f3f3;
-
-  border-color: #444444;
-}
-
-html.dark-mode .btn-secondary:hover,
-body.dark-mode .btn-secondary:hover {
-  background: #2a2a2a;
-}
-
-
-/* =========================================================
-   EMPTY STATE MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .empty-state h2,
-body.dark-mode .empty-state h2 {
-  color: #eeeeee;
-}
-
-
-/* =========================================================
-   TEXTE DES ANNONCES MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .annonce-card p,
-body.dark-mode .annonce-card p {
-  color: #bbbbbb !important;
-}
-
-
-/* =========================================================
-   MESSAGES MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .message,
-body.dark-mode .message {
-
-  background: #1c1c1c;
-
-  border-color: #333333;
-
-  color: #eeeeee;
-}
-
-html.dark-mode .chat-input,
-body.dark-mode .chat-input {
-
-  background: #1c1c1c;
-
-  border-color: #333333;
-}
-
-
-/* =========================================================
-   RECHERCHE MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .search-bar input,
-body.dark-mode .search-bar input {
-  color: #ffffff;
-}
-
-
-/* =========================================================
-   TITRES MODE SOMBRE
-   ========================================================= */
-
-html.dark-mode .section-title,
-body.dark-mode .section-title {
-  color: #eeeeee;
-}
-
-
-/* =========================================================
-   PROFIL MODE SOMBRE
-   ========================================================= */
-
-body.dark-mode .profile-action,
-body.dark-mode .account-info {
-  background-color: var(--card) !important;
-
-  border-color: var(--border) !important;
-
-  color: var(--text) !important;
-}
-
-body.dark-mode .profile-action-content strong,
-body.dark-mode .account-row span:last-child {
-  color: var(--text) !important;
-}
-
-body.dark-mode .profile-action-content span,
-body.dark-mode .account-row span:first-child {
-  color: var(--muted) !important;
-}
-
-
-/* =========================================================
-   CHAT MODE SOMBRE
-   ========================================================= */
-
-body.dark-mode .messages-list {
-  background-color: var(--bg);
-}
-
-body.dark-mode .my-message {
-
-  background-color: var(--red) !important;
-
-  color: #ffffff !important;
-
-  border-color: var(--red) !important;
-}
-
-
-/* =========================================================
-   FORMULAIRES MODE SOMBRE
-   ========================================================= */
-
-body.dark-mode label,
-body.dark-mode .form-group label {
-  color: var(--text);
-}
-
-body.dark-mode .admin-body {
-  background-color: var(--bg);
-
-  color: var(--text);
-}
-
-
-/* =========================================================
-   ACCESSIBILITÉ
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-
-    animation-duration: 0.01ms !important;
-
-    animation-iteration-count: 1 !important;
-
-    transition-duration: 0.01ms !important;
-  }
-}
-
-
-/* =========================================================
-   SAFE AREA IPHONE
-   ========================================================= */
-
-@supports (padding: env(safe-area-inset-bottom)) {
-
-  body {
-
-    padding-bottom:
-      calc(
-        var(--nav-height)
-        + env(safe-area-inset-bottom)
-        + 8px
+        }
       );
-  }
-
-  .bottom-nav {
-
-    padding-bottom:
-      calc(
-        6px
-        + env(safe-area-inset-bottom)
-      );
-  }
-}
 
 
-/* =========================================================
-   FIN DU STYLE
-   ========================================================= */
+      return card;
+
+    }
+
+
+    /* =====================================================
+       CHARGER LES COMMUNIQUÉS
+       ===================================================== */
+
+    async function loadCommuniques() {
+
+      const container =
+        document.getElementById(
+          "communiquesContainer"
+        );
+
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            "communiques"
+          );
+
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "createdAt",
+              "desc"
+            ),
+            limit(5)
+          );
+
+
+        const snapshot =
+          await getDocs(q);
+
+
+        container.innerHTML = "";
+
+
+        if (snapshot.empty) {
+
+          container.innerHTML = `
+
+            <div class="empty-state compact">
+
+              <div class="empty-icon">
+                <i class="fa-regular fa-newspaper"></i>
+              </div>
+
+              <h2>
+                Aucun communiqué
+              </h2>
+
+              <p>
+                Les nouvelles publications apparaîtront ici.
+              </p>
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        snapshot.forEach(doc => {
+
+          const data =
+            doc.data();
+
+
+          const title =
+            data.title ||
+            data.titre ||
+            "Communiqué";
+
+
+          const text =
+            data.description ||
+            data.message ||
+            data.content ||
+            "";
+
+
+          const card =
+            document.createElement("article");
+
+
+          card.className =
+            "communique-card";
+
+
+          card.innerHTML = `
+
+            <div class="communique-icon">
+
+              <i class="fa-solid fa-bullhorn"></i>
+
+            </div>
+
+
+            <div class="communique-content">
+
+              <h3>
+                ${escapeHTML(title)}
+              </h3>
+
+              <p>
+                ${escapeHTML(text)}
+              </p>
+
+            </div>
+
+          `;
+
+
+          container.appendChild(card);
+
+        });
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur communiqués :",
+          error
+        );
+
+
+        container.innerHTML = "";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       PROTECTION TEXTE HTML
+       ===================================================== */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIALISATION
+       ===================================================== */
+
+    loadAnnonces();
+
+    loadCommuniques();
+
+  </script>
+
+</body>
+
+</html>
