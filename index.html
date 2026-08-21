@@ -1,2872 +1,2067 @@
-<!doctype html>
-<html lang="fr">
+/* =========================================================
+   CAMU SERVICES — STYLE GLOBAL
+   Responsive : téléphone / tablette / ordinateur
+   ========================================================= */
 
-<head>
+:root {
+  --red: #d32f2f;
+  --red-dark: #b71c1c;
+  --red-light: #ffebee;
 
-<meta charset="UTF-8">
+  --dark: #111111;
+  --dark-2: #1c1c1c;
 
-<meta name="viewport"
-      content="width=device-width,initial-scale=1">
+  --bg: #f6f7f9;
+  --card: #ffffff;
 
-<title>CAMU SERVICES — Accueil</title>
+  --text: #171717;
+  --muted: #70757a;
 
-<link rel="stylesheet" href="style.css">
+  --border: #e5e7eb;
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 
-<script>
-(function () {
+  --radius: 14px;
 
-    const theme = localStorage.getItem("camu_theme");
-
-    if (theme === "dark") {
-        document.documentElement.classList.add("dark-mode");
-    }
-
-    const language = localStorage.getItem("camu_language");
-
-    if (language) {
-        document.documentElement.lang = language;
-    }
-
-})();
-</script>
-
-</head>
-
-
-<body>
-
-
-<header class="top-bar">
-
-    <button
-        class="menu-toggle"
-        id="menuToggle"
-        aria-label="Menu">
-
-        <i class="fa-solid fa-bars"></i>
-
-    </button>
-
-
-    <div class="logo-text">
-
-        CAMU <span>SERVICES</span>
-
-    </div>
-
-
-    <a
-        href="profil.html"
-        class="profile-btn"
-        aria-label="Profil">
-
-        <i class="fa-solid fa-user"></i>
-
-    </a>
-
-</header>
-
-
-
-<aside class="sidebar-vertical">
-
-    <div class="sidebar-header">
-
-        <span data-i18n="navigation">
-            Navigation
-        </span>
-
-    </div>
-
-
-    <ul>
-
-        <li>
-
-            <a
-                href="index.html"
-                class="active-link">
-
-                <i class="fa-solid fa-house"></i>
-
-                <span data-i18n="accueil">
-                    Accueil
-                </span>
-
-            </a>
-
-        </li>
-
-
-        <li>
-
-            <a href="publier.html">
-
-                <i class="fa-solid fa-circle-plus"></i>
-
-                <span data-i18n="publier">
-                    Publier
-                </span>
-
-            </a>
-
-        </li>
-
-
-        <li>
-
-            <a href="chat.html">
-
-                <i class="fa-solid fa-comments"></i>
-
-                <span data-i18n="chat">
-                    Chat
-                </span>
-
-            </a>
-
-        </li>
-
-
-        <li
-            class="has-submenu"
-            id="paramMenuToggle">
-
-            <a
-                href="javascript:void(0);"
-                style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                ">
-
-                <span>
-
-                    <i class="fa-solid fa-gear"></i>
-
-                    <span data-i18n="parametres">
-                        Paramètres
-                    </span>
-
-                </span>
-
-
-                <i
-                    class="fa-solid fa-chevron-down"
-                    id="arrowParam"
-                    style="
-                        font-size:11px;
-                        transition:transform .3s;
-                    ">
-                </i>
-
-            </a>
-
-        </li>
-
-
-        <ul
-            class="submenu-container"
-            id="paramSubmenu">
-
-            <li>
-
-                <a href="parametres.html#notifications">
-
-                    <i class="fa-solid fa-bell"></i>
-
-                    <span data-i18n="notifications">
-                        Notifications
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a href="parametres.html#langue">
-
-                    <i class="fa-solid fa-globe"></i>
-
-                    <span data-i18n="langue">
-                        Langue
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a href="parametres.html#theme">
-
-                    <i class="fa-solid fa-moon"></i>
-
-                    <span data-i18n="modeSombre">
-                        Mode sombre
-                    </span>
-
-                </a>
-
-            </li>
-
-        </ul>
-
-
-        <li>
-
-            <a href="conditions.html">
-
-                <i class="fa-solid fa-file-contract"></i>
-
-                <span data-i18n="conditions">
-                    Conditions
-                </span>
-
-            </a>
-
-        </li>
-
-
-        <li>
-
-            <a href="profil.html">
-
-                <i class="fa-solid fa-user"></i>
-
-                <span data-i18n="monProfil">
-                    Mon Profil
-                </span>
-
-            </a>
-
-        </li>
-
-    </ul>
-
-</aside>
-
-
-
-<main class="container">
-
-
-    <section class="hero">
-
-        <h1>
-
-            <span data-i18n="heroTitre">
-                Trouvez le service qu'il vous faut
-            </span>
-
-            <span>
-
-                <span data-i18n="heroSousTitre">
-                    près de chez vous.
-                </span>
-
-            </span>
-
-        </h1>
-
-
-        <p data-i18n="heroDescription">
-
-            Découvrez des prestataires locaux et contactez-les directement.
-
-        </p>
-
-    </section>
-
-
-
-    <div class="search-bar">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input
-            id="search"
-            data-i18n-placeholder="rechercher"
-            placeholder="Rechercher un service...">
-
-    </div>
-
-
-
-    <div
-        class="section-title"
-        data-i18n="categories">
-
-        Catégories
-
-    </div>
-
-
-    <div class="categories">
-
-        <button
-            class="cat-btn"
-            data-cat=""
-            data-i18n="tout">
-
-            Tout
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="BTP & Construction">
-
-            BTP
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="Technique & Maintenance">
-
-            Technique
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="Informatique & Numérique">
-
-            Informatique
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="Maison & Immobilier">
-
-            Maison
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="Transport & Livraison">
-
-            Transport
-
-        </button>
-
-
-        <button
-            class="cat-btn"
-            data-cat="Divers & Services">
-
-            Divers
-
-        </button>
-
-    </div>
-
-
-
-    <div id="communiquesContainer"></div>
-
-
-
-    <div
-        class="section-title"
-        data-i18n="servicesDisponibles">
-
-        Services disponibles
-
-    </div>
-
-
-    <div id="services">
-
-        <div class="empty-state">
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <p data-i18n="chargement">
-                Chargement...
-            </p>
-
-        </div>
-
-    </div>
-
-
-
-    <footer class="footer">
-
-        <h3>
-            CAMU SERVICES
-        </h3>
-
-
-        <p data-i18n="marketplace">
-            Votre marketplace locale de services.
-        </p>
-
-
-        <div class="footer-links">
-
-            <a href="a-propos.html">
-                À propos
-            </a>
-
-            <a href="conditions.html">
-                Conditions
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            <a href="politique.html">
-                Politique d'utilisation
-            </a>
-
-            <a href="manifestations.html">
-                Manifestations
-            </a>
-
-        </div>
-
-
-        <p>
-            © 2026 CAMU SERVICES
-        </p>
-
-    </footer>
-
-</main>
-
-
-
-<nav class="bottom-nav">
-
-    <a
-        class="active"
-        href="index.html">
-
-        <i class="fa-solid fa-house"></i>
-
-        <span data-i18n="accueil">
-            Accueil
-        </span>
-
-    </a>
-
-
-    <a href="publier.html">
-
-        <i class="fa-solid fa-circle-plus"></i>
-
-        <span data-i18n="publier">
-            Publier
-        </span>
-
-    </a>
-
-
-    <a href="chat.html">
-
-        <i class="fa-solid fa-comments"></i>
-
-        <span data-i18n="chat">
-            Chat
-        </span>
-
-    </a>
-
-
-    <a href="profil.html">
-
-        <i class="fa-solid fa-user"></i>
-
-        <span data-i18n="profil">
-            Profil
-        </span>
-
-    </a>
-
-</nav>
-
-
-
-<script type="module">
-
-import { db, auth } from "./app.js";
-
-import {
-    collection,
-    getDocs,
-    getDoc,
-    doc,
-    query,
-    where,
-    setDoc,
-    deleteDoc,
-    addDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-
-/* =====================================================
-   VARIABLES
-   ===================================================== */
-
-let all = [];
-let cat = "";
-let currentUser = null;
-
-
-
-/* =====================================================
-   PROTECTION HTML
-   ===================================================== */
-
-const e = x => String(x ?? "")
-    .replace(/[&<>"']/g, c => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-    }[c]));
-
-
-
-/* =====================================================
-   NORMALISATION NUMÉRO WHATSAPP
-   ===================================================== */
-
-function nettoyerWhatsApp(numero) {
-
-    if (!numero) return "";
-
-    return String(numero)
-        .replace(/[^\d]/g, "");
-
+  --nav-height: 70px;
 }
 
 
+/* =========================================================
+   RESET
+   ========================================================= */
 
-/* =====================================================
-   OUVRIR WHATSAPP
-   ===================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-function ouvrirWhatsApp(numero, titre = "") {
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 
-    const cleanNumber = nettoyerWhatsApp(numero);
+body {
+  width: 100%;
+  min-height: 100vh;
 
-    if (!cleanNumber) {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
 
-        alert(
-            "Ce professionnel n'a pas encore renseigné de numéro WhatsApp."
-        );
+  background: var(--bg);
+  color: var(--text);
 
-        return;
+  padding-top: 64px;
+  padding-bottom: calc(var(--nav-height) + 12px);
 
-    }
+  overflow-x: hidden;
 
-    const message =
-        `Bonjour, je viens de voir votre publication "${titre}" sur CAMU SERVICES.`;
+  -webkit-text-size-adjust: 100%;
+}
 
-    const url =
-        `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
-    window.open(url, "_blank");
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
 
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+a,
+button,
+label {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 
+/* =========================================================
+   BARRE SUPÉRIEURE
+   ========================================================= */
 
-window.ouvrirWhatsApp = ouvrirWhatsApp;
+.top-bar {
+  position: fixed;
 
+  top: 0;
+  left: 0;
+  right: 0;
 
+  width: 100%;
+  height: 64px;
 
-/* =====================================================
-   FAVORIS
-   ===================================================== */
+  background: var(--dark);
+  color: #ffffff;
 
-async function estFavori(serviceId) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    if (!currentUser || !serviceId) return false;
+  padding: 0 15px;
 
-    try {
+  z-index: 1250;
 
-        const ref = doc(
-            db,
-            "users",
-            currentUser.uid,
-            "favoris",
-            serviceId
-        );
-
-        const snap = await getDoc(ref);
-
-        return snap.exists();
-
-    } catch (error) {
-
-        console.error(
-            "Erreur vérification favori :",
-            error
-        );
-
-        return false;
-
-    }
-
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 
 
+/* =========================================================
+   BOUTON HAMBURGER
+   ========================================================= */
 
-async function basculerFavori(serviceId, button) {
+.menu-toggle {
+  position: relative;
+  z-index: 1300;
 
-    if (!currentUser) {
+  background: transparent;
+  border: none;
 
-        alert(
-            "Connectez-vous pour ajouter une publication aux favoris."
-        );
+  color: #ffffff;
 
-        return;
+  font-size: 20px;
 
-    }
+  width: 40px;
+  height: 40px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    try {
+  cursor: pointer;
 
-        const ref = doc(
-            db,
-            "users",
-            currentUser.uid,
-            "favoris",
-            serviceId
-        );
+  border-radius: 50%;
 
+  transition: 0.2s ease;
+}
 
-        const snap = await getDoc(ref);
+.menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
 
-
-        if (snap.exists()) {
-
-            await deleteDoc(ref);
-
-            button.classList.remove("active");
-
-            button.innerHTML =
-                `<i class="fa-regular fa-star"></i>`;
-
-            button.setAttribute(
-                "aria-label",
-                "Ajouter aux favoris"
-            );
-
-        } else {
-
-            await setDoc(ref, {
-
-                serviceId: serviceId,
-
-                userId: currentUser.uid,
-
-                createdAt: serverTimestamp()
-
-            });
-
-
-            button.classList.add("active");
-
-            button.innerHTML =
-                `<i class="fa-solid fa-star"></i>`;
-
-            button.setAttribute(
-                "aria-label",
-                "Retirer des favoris"
-            );
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Erreur favori :",
-            error
-        );
-
-        alert(
-            "Impossible de modifier les favoris."
-        );
-
-    }
-
+.menu-toggle:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.95);
 }
 
 
+/* =========================================================
+   LOGO
+   ========================================================= */
 
-window.basculerFavori = basculerFavori;
+.top-bar .logo-text {
+  font-size: 18px;
 
+  font-weight: 900;
 
+  letter-spacing: -0.3px;
 
-/* =====================================================
-   AUTHENTIFICATION
-   ===================================================== */
+  flex: 1;
 
-onAuthStateChanged(auth, async user => {
+  margin-left: 10px;
+}
 
-    currentUser = user || null;
-
-
-    if (user) {
-
-        await load();
-
-    } else {
-
-        document.getElementById("services").innerHTML = `
-
-            <div class="empty-state"
-                 style="padding:40px 20px;text-align:center;">
-
-                <i class="fa-solid fa-lock"
-                   style="
-                        font-size:32px;
-                        margin-bottom:15px;
-                        color:#e53935;
-                   ">
-                </i>
-
-                <h3 style="margin-bottom:10px;">
-                    Accès restreint
-                </h3>
-
-                <p style="margin-bottom:20px;">
-                    Connectez-vous ou créez un compte pour continuer.
-                </p>
-
-                <a
-                    href="profil.html"
-                    class="btn-submit"
-                    style="
-                        display:inline-block;
-                        padding:10px 20px;
-                        text-decoration:none;
-                        border-radius:5px;
-                    ">
-
-                    Se connecter
-
-                </a>
-
-            </div>
-
-        `;
-
-    }
-
-});
-
-
-
-/* =====================================================
-   CHARGEMENT SERVICES
-   ===================================================== */
-
-async function load() {
-
-    try {
-
-        const snapshot = await getDocs(
-
-            query(
-                collection(db, "services"),
-                where("valide", "==", true)
-            )
-
-        );
-
-
-        all = snapshot.docs.map(item => ({
-
-            id: item.id,
-
-            ...item.data()
-
-        }));
-
-
-        render();
-
-        chargerCommuniquesAccueil();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        document.getElementById("services").innerHTML = `
-
-            <div class="empty-state">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                <h2>
-                    Impossible de charger les services
-                </h2>
-
-                <p>
-                    Vérifiez Internet et réessayez.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
+.logo-text span {
+  color: var(--red);
 }
 
 
+/* =========================================================
+   PROFIL
+   ========================================================= */
 
-/* =====================================================
-   AFFICHAGE SERVICES
-   ===================================================== */
+.profile-btn,
+.top-bar > a {
+  color: #ffffff;
 
-async function render() {
+  font-size: 18px;
 
-    const searchValue =
-        document
-            .getElementById("search")
-            .value
-            .toLowerCase()
-            .trim();
+  width: 40px;
+  height: 40px;
 
+  display: flex;
 
-    const filtered = all.filter(service => {
+  align-items: center;
+  justify-content: center;
 
-        const texte = `
+  border-radius: 50%;
 
-            ${service.titre || ""}
-            ${service.description || ""}
-            ${service.ville || ""}
-            ${service.categorie || ""}
-            ${service.userName || ""}
-            ${service.nom || ""}
+  transition: 0.2s ease;
+}
 
-        `.toLowerCase();
+.profile-btn:hover,
+.top-bar > a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
 
+.profile-btn:active,
+.top-bar > a:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.95);
+}
 
-        return (
 
-            (!cat || service.categorie === cat)
+/* =========================================================
+   CONTENEUR PRINCIPAL
+   ========================================================= */
 
-            &&
+.container {
+  width: min(92%, 720px);
 
-            (!searchValue || texte.includes(searchValue))
+  margin-left: auto;
+  margin-right: auto;
 
-        );
+  padding: 18px 0;
+}
 
-    });
 
+/* =========================================================
+   HERO
+   ========================================================= */
 
-    if (!filtered.length) {
+.hero {
+  width: 100%;
 
-        document.getElementById("services").innerHTML = `
-
-            <div class="empty-state">
-
-                <i class="fa-solid fa-inbox"></i>
-
-                <h2>
-                    Aucun service trouvé
-                </h2>
-
-                <p>
-                    Essayez une autre recherche.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const cartes = await Promise.all(
-
-        filtered.map(async service => {
-
-            const favori =
-                await estFavori(service.id);
-
-
-            const nom =
-                service.userName ||
-                service.nom ||
-                service.userEmail ||
-                "Prestataire";
-
-
-            const photo =
-                service.userPhoto ||
-                service.photo ||
-                service.photoURL ||
-                "";
-
-
-            const whatsapp =
-                service.whatsapp ||
-                service.numeroWhatsApp ||
-                service.telephone ||
-                service.phone ||
-                "";
-
-
-            return `
-
-                <article
-                    class="annonce-card"
-                    style="cursor:pointer;"
-                    onclick="ouvrirDetails('${service.id}')">
-
-
-                    <!-- PROFESSIONNEL -->
-
-                    <div
-                        style="
-                            display:flex;
-                            align-items:center;
-                            margin-bottom:10px;
-                            gap:10px;
-                        "
-                        onclick="event.stopPropagation(); ouvrirProfilPrestataire(
-                            '${e(service.userId || "")}',
-                            '${e(nom)}',
-                            '${e(photo)}'
-                        )">
-
-
-                        <div
-                            style="
-                                width:40px;
-                                height:40px;
-                                border-radius:50%;
-                                background:#ddd;
-                                overflow:hidden;
-                                display:flex;
-                                align-items:center;
-                                justify-content:center;
-                                flex-shrink:0;
-                            ">
-
-                            ${
-                                photo
-
-                                ?
-
-                                `<img
-                                    src="${e(photo)}"
-                                    alt="Photo du professionnel"
-                                    style="
-                                        width:100%;
-                                        height:100%;
-                                        object-fit:cover;
-                                    ">`
-
-                                :
-
-                                `<i
-                                    class="fa-solid fa-user"
-                                    style="
-                                        color:#666;
-                                        font-size:16px;
-                                    ">
-                                </i>`
-                            }
-
-                        </div>
-
-
-                        <div>
-
-                            <div
-                                style="
-                                    font-size:13px;
-                                    font-weight:bold;
-                                ">
-
-                                ${e(nom)}
-
-                            </div>
-
-
-                            <div
-                                style="
-                                    font-size:11px;
-                                    color:#777;
-                                ">
-
-                                Voir le profil
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- IMAGE -->
-
-                    ${
-                        service.image
-
-                        ?
-
-                        `
-                        <div
-                            style="
-                                margin-bottom:10px;
-                                border-radius:8px;
-                                overflow:hidden;
-                                max-height:220px;
-                            ">
-
-                            <img
-                                src="${e(service.image)}"
-                                alt="${e(service.titre || "Publication")}"
-                                style="
-                                    width:100%;
-                                    height:220px;
-                                    object-fit:cover;
-                                ">
-
-                        </div>
-                        `
-
-                        :
-
-                        ""
-                    }
-
-
-
-                    <!-- CATÉGORIE -->
-
-                    <span class="badge-cat">
-
-                        ${e(service.categorie || "Général")}
-
-                    </span>
-
-
-
-                    <!-- TITRE -->
-
-                    <h3>
-
-                        ${e(service.titre || "Service")}
-
-                    </h3>
-
-
-
-                    <!-- LOCALISATION -->
-
-                    <div class="location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        ${e(service.ville || "RDC")}
-
-                    </div>
-
-
-
-                    <!-- DESCRIPTION -->
-
-                    <p
-                        style="
-                            font-size:13px;
-                            color:#666;
-                        ">
-
-                        ${e(
-                            (service.description || "")
-                            .slice(0,130)
-                        )}
-
-                        ${
-                            (service.description || "").length > 130
-                            ? "…"
-                            : ""
-                        }
-
-                    </p>
-
-
-
-                    <!-- PRIX -->
-
-                    <p class="prix">
-
-                        ${e(service.prix || "Sur devis")}
-
-                    </p>
-
-
-
-                    <!-- ACTIONS -->
-
-                    <div
-                        class="card-actions"
-                        onclick="event.stopPropagation()">
-
-
-                        <!-- CHAT -->
-
-                        <a
-                            class="btn-submit"
-                            style="
-                                flex:1;
-                                text-align:center;
-                                text-decoration:none;
-                            "
-                            href="chat.html?serviceId=${encodeURIComponent(service.id)}">
-
-                            <i class="fa-solid fa-comments"></i>
-
-                            Contacter
-
-                        </a>
-
-
-
-                        <!-- WHATSAPP -->
-
-                        <button
-                            type="button"
-                            title="Contacter sur WhatsApp"
-                            style="
-                                border:none;
-                                background:#25D366;
-                                color:white;
-                                width:42px;
-                                height:42px;
-                                border-radius:7px;
-                                cursor:pointer;
-                            "
-                            onclick="
-                                event.stopPropagation();
-                                ouvrirWhatsApp(
-                                    '${e(whatsapp)}',
-                                    '${e(service.titre || "Service")}'
-                                );
-                            ">
-
-                            <i class="fa-brands fa-whatsapp"></i>
-
-                        </button>
-
-
-
-                        <!-- FAVORI -->
-
-                        <button
-                            class="favorite-btn ${favori ? "active" : ""}"
-                            type="button"
-                            title="${favori ? "Retirer des favoris" : "Ajouter aux favoris"}"
-                            aria-label="${favori ? "Retirer des favoris" : "Ajouter aux favoris"}"
-                            onclick="
-                                event.stopPropagation();
-                                basculerFavori(
-                                    '${service.id}',
-                                    this
-                                );
-                            ">
-
-                            ${
-                                favori
-                                ? `<i class="fa-solid fa-star"></i>`
-                                : `<i class="fa-regular fa-star"></i>`
-                            }
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-            `;
-
-        })
-
+  background:
+    linear-gradient(
+      135deg,
+      #111111 0%,
+      #242424 100%
     );
 
+  color: #ffffff;
 
-    document.getElementById("services").innerHTML =
-        cartes.join("");
+  border-radius: 18px;
 
+  padding: 25px 22px;
+
+  margin-bottom: 17px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+}
+
+.hero h1 {
+  font-size: 26px;
+
+  line-height: 1.18;
+
+  font-weight: 900;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -0.5px;
+}
+
+.hero h1 > span {
+  color: #ef5350;
+}
+
+.hero p {
+  color: #dddddd;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+
+  max-width: 560px;
 }
 
 
+/* =========================================================
+   BARRE DE RECHERCHE
+   ========================================================= */
 
-/* =====================================================
-   DÉTAILS DE LA PUBLICATION
-   ===================================================== */
+.search-bar {
+  width: 100%;
 
-window.ouvrirDetails = function(id) {
+  background: var(--card);
 
-    const service =
-        all.find(s => s.id === id);
+  border: 1px solid var(--border);
 
+  border-radius: 14px;
 
-    if (!service) return;
+  padding: 0 14px;
 
+  height: 52px;
 
-    const modalId =
-        "modalDetailsService";
+  display: flex;
 
+  align-items: center;
 
-    const ancien =
-        document.getElementById(modalId);
+  gap: 10px;
 
+  box-shadow: var(--shadow);
 
-    if (ancien) ancien.remove();
+  margin-bottom: 20px;
+}
 
+.search-bar i {
+  color: #888;
 
-    const nom =
-        service.userName ||
-        service.nom ||
-        service.userEmail ||
-        "Prestataire";
+  font-size: 15px;
 
+  flex-shrink: 0;
+}
 
-    const photo =
-        service.userPhoto ||
-        service.photo ||
-        service.photoURL ||
-        "";
+.search-bar input {
+  width: 100%;
 
+  height: 100%;
 
-    const whatsapp =
-        service.whatsapp ||
-        service.numeroWhatsApp ||
-        service.telephone ||
-        service.phone ||
-        "";
+  border: none;
 
+  outline: none;
 
-    const modalHTML = `
+  background: transparent;
 
-        <div
-            id="${modalId}"
-            style="
-                position:fixed;
-                inset:0;
-                background:rgba(0,0,0,.65);
-                z-index:9999;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                padding:20px;
-            ">
+  font-size: 14px;
 
+  color: var(--text);
 
-            <div
-                style="
-                    background:var(--bg-card,#fff);
-                    color:var(--text-color,#333);
-                    width:100%;
-                    max-width:550px;
-                    max-height:90vh;
-                    border-radius:14px;
-                    overflow-y:auto;
-                    padding:20px;
-                    position:relative;
-                    box-shadow:0 4px 25px rgba(0,0,0,.3);
-                ">
+  min-width: 0;
 
+  padding: 0;
+}
 
-                <button
-                    onclick="
-                        document
-                        .getElementById('${modalId}')
-                        .remove()
-                    "
-                    style="
-                        position:absolute;
-                        top:12px;
-                        right:12px;
-                        background:rgba(0,0,0,.08);
-                        border:none;
-                        width:35px;
-                        height:35px;
-                        border-radius:50%;
-                        cursor:pointer;
-                        font-size:18px;
-                    ">
-
-                    <i class="fa-solid fa-xmark"></i>
-
-                </button>
-
-
-
-                <!-- PROFIL -->
-
-                <div
-                    style="
-                        display:flex;
-                        align-items:center;
-                        gap:12px;
-                        margin-bottom:18px;
-                        cursor:pointer;
-                    "
-                    onclick="
-                        document
-                        .getElementById('${modalId}')
-                        .remove();
-
-                        ouvrirProfilPrestataire(
-                            '${e(service.userId || "")}',
-                            '${e(nom)}',
-                            '${e(photo)}'
-                        );
-                    ">
-
-
-                    <div
-                        style="
-                            width:50px;
-                            height:50px;
-                            border-radius:50%;
-                            overflow:hidden;
-                            background:#ddd;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                        ">
-
-                        ${
-                            photo
-
-                            ?
-
-                            `<img
-                                src="${e(photo)}"
-                                style="
-                                    width:100%;
-                                    height:100%;
-                                    object-fit:cover;
-                                ">`
-
-                            :
-
-                            `<i class="fa-solid fa-user"></i>`
-                        }
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-
-                            ${e(nom)}
-
-                        </strong>
-
-
-                        <div
-                            style="
-                                font-size:12px;
-                                color:#777;
-                            ">
-
-                            Voir le profil professionnel
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- IMAGE -->
-
-                ${
-                    service.image
-
-                    ?
-
-                    `
-                    <img
-                        src="${e(service.image)}"
-                        alt="${e(service.titre)}"
-                        style="
-                            width:100%;
-                            max-height:300px;
-                            object-fit:cover;
-                            border-radius:10px;
-                            margin-bottom:15px;
-                        ">
-                    `
-
-                    :
-
-                    ""
-                }
-
-
-
-                <span class="badge-cat">
-
-                    ${e(service.categorie || "Général")}
-
-                </span>
-
-
-
-                <h2 style="margin:12px 0 10px;">
-
-                    ${e(service.titre || "Service")}
-
-                </h2>
-
-
-
-                <div
-                    style="
-                        display:flex;
-                        gap:15px;
-                        flex-wrap:wrap;
-                        margin-bottom:15px;
-                        font-size:13px;
-                        color:#666;
-                    ">
-
-                    <span>
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        ${e(service.ville || "RDC")}
-
-                    </span>
-
-
-                    ${
-                        service.adresse
-
-                        ?
-
-                        `
-                        <span>
-
-                            <i class="fa-solid fa-map-pin"></i>
-
-                            ${e(service.adresse)}
-
-                        </span>
-                        `
-
-                        :
-
-                        ""
-                    }
-
-                </div>
-
-
-
-                <div
-                    style="
-                        font-size:14px;
-                        line-height:1.7;
-                        margin-bottom:18px;
-                        white-space:pre-line;
-                    ">
-
-                    ${e(service.description || "Aucune description.")}
-
-                </div>
-
-
-
-                <div
-                    style="
-                        font-size:20px;
-                        font-weight:bold;
-                        color:#e53935;
-                        margin-bottom:20px;
-                    ">
-
-                    ${e(service.prix || "Sur devis")}
-
-                </div>
-
-
-
-                <div
-                    style="
-                        display:flex;
-                        gap:8px;
-                    ">
-
-
-                    <a
-                        href="chat.html?serviceId=${encodeURIComponent(service.id)}"
-                        class="btn-submit"
-                        style="
-                            flex:1;
-                            text-align:center;
-                            text-decoration:none;
-                            padding:12px;
-                        ">
-
-                        <i class="fa-solid fa-comments"></i>
-
-                        Contacter
-
-                    </a>
-
-
-                    <button
-                        type="button"
-                        style="
-                            flex:1;
-                            border:none;
-                            background:#25D366;
-                            color:white;
-                            border-radius:6px;
-                            cursor:pointer;
-                            font-weight:bold;
-                        "
-                        onclick="
-                            ouvrirWhatsApp(
-                                '${e(whatsapp)}',
-                                '${e(service.titre || "Service")}'
-                            );
-                        ">
-
-                        <i class="fa-brands fa-whatsapp"></i>
-
-                        WhatsApp
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        modalHTML
-    );
-
-};
-
-
-
-/* =====================================================
-   PROFIL PUBLIC DU PROFESSIONNEL
-   ===================================================== */
-
-window.ouvrirProfilPrestataire = async function(
-    userId,
-    fallbackName,
-    fallbackPhoto
-) {
-
-    const modalId =
-        "modalProfilPrestataire";
-
-
-    const ancien =
-        document.getElementById(modalId);
-
-
-    if (ancien) ancien.remove();
-
-
-    const loadingHTML = `
-
-        <div
-            id="${modalId}"
-            style="
-                position:fixed;
-                inset:0;
-                background:rgba(0,0,0,.65);
-                z-index:10000;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                padding:20px;
-            ">
-
-            <div
-                style="
-                    background:var(--bg-card,#fff);
-                    width:100%;
-                    max-width:550px;
-                    border-radius:14px;
-                    padding:30px;
-                    text-align:center;
-                ">
-
-                <i
-                    class="fa-solid fa-spinner fa-spin"
-                    style="
-                        font-size:30px;
-                        color:#e53935;
-                    ">
-                </i>
-
-                <p>
-                    Chargement du profil...
-                </p>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        loadingHTML
-    );
-
-
-    let userData = {
-
-        name: fallbackName || "Professionnel",
-
-        photo: fallbackPhoto || "",
-
-        bio: "",
-
-        ville: "",
-
-        telephone: "",
-
-        whatsapp: "",
-
-        email: "",
-
-        type: "Professionnel"
-
-    };
-
-
-    /* RÉCUPÉRATION DU COMPTE */
-
-    if (userId) {
-
-        try {
-
-            const userRef =
-                doc(db, "users", userId);
-
-
-            const userSnap =
-                await getDoc(userRef);
-
-
-            if (userSnap.exists()) {
-
-                const data =
-                    userSnap.data();
-
-
-                userData.name =
-                    data.nom ||
-                    data.name ||
-                    data.userName ||
-                    fallbackName ||
-                    "Professionnel";
-
-
-                userData.photo =
-                    data.photo ||
-                    data.photoURL ||
-                    data.logo ||
-                    fallbackPhoto ||
-                    "";
-
-
-                userData.bio =
-                    data.bio ||
-                    data.description ||
-                    data.presentation ||
-                    "";
-
-
-                userData.ville =
-                    data.ville ||
-                    data.city ||
-                    "";
-
-
-                userData.telephone =
-                    data.telephone ||
-                    data.phone ||
-                    data.numero ||
-                    "";
-
-
-                userData.whatsapp =
-                    data.whatsapp ||
-                    data.numeroWhatsApp ||
-                    data.telephone ||
-                    data.phone ||
-                    "";
-
-
-                userData.email =
-                    data.email || "";
-
-
-                userData.type =
-                    data.typeCompte ||
-                    data.role ||
-                    "Professionnel";
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Erreur profil :",
-                error
-            );
-
-        }
-
-    }
-
-
-    /* PUBLICATIONS DU PROFESSIONNEL */
-
-    let userServices =
-        all.filter(
-            s => s.userId === userId
-        );
-
-
-    /*
-       Si les publications ne sont pas toutes
-       dans all, on récupère directement
-       les publications Firestore.
-    */
-
-    if (userId && userServices.length === 0) {
-
-        try {
-
-            const servicesSnap =
-                await getDocs(
-
-                    query(
-                        collection(db, "services"),
-                        where("userId", "==", userId),
-                        where("valide", "==", true)
-                    )
-
-                );
-
-
-            userServices =
-                servicesSnap.docs.map(item => ({
-
-                    id: item.id,
-
-                    ...item.data()
-
-                }));
-
-        } catch (error) {
-
-            console.error(
-                "Erreur publications profil :",
-                error
-            );
-
-        }
-
-    }
-
-
-    const modal =
-        document.getElementById(modalId);
-
-
-    if (!modal) return;
-
-
-    modal.innerHTML = `
-
-        <div
-            style="
-                background:var(--bg-card,#fff);
-                color:var(--text-color,#333);
-                width:100%;
-                max-width:550px;
-                max-height:90vh;
-                overflow-y:auto;
-                border-radius:14px;
-                padding:20px;
-                position:relative;
-                box-shadow:0 4px 25px rgba(0,0,0,.3);
-            ">
-
-
-            <!-- FERMER -->
-
-            <button
-                onclick="
-                    document
-                    .getElementById('${modalId}')
-                    .remove()
-                "
-                style="
-                    position:absolute;
-                    top:12px;
-                    right:12px;
-                    width:35px;
-                    height:35px;
-                    border:none;
-                    border-radius:50%;
-                    background:rgba(0,0,0,.08);
-                    cursor:pointer;
-                ">
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-
-
-            <!-- PHOTO / LOGO -->
-
-            <div
-                style="
-                    text-align:center;
-                    margin-bottom:12px;
-                ">
-
-
-                <div
-                    style="
-                        width:90px;
-                        height:90px;
-                        border-radius:50%;
-                        background:#ddd;
-                        overflow:hidden;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        margin:auto;
-                    ">
-
-                    ${
-                        userData.photo
-
-                        ?
-
-                        `<img
-                            src="${e(userData.photo)}"
-                            alt="Photo ou logo"
-                            style="
-                                width:100%;
-                                height:100%;
-                                object-fit:cover;
-                            ">`
-
-                        :
-
-                        `<i
-                            class="fa-solid fa-building-user"
-                            style="
-                                font-size:35px;
-                                color:#777;
-                            ">
-                        </i>`
-                    }
-
-                </div>
-
-            </div>
-
-
-
-            <!-- NOM -->
-
-            <div
-                style="
-                    text-align:center;
-                    margin-bottom:15px;
-                ">
-
-                <h2 style="margin-bottom:5px;">
-
-                    ${e(userData.name)}
-
-                </h2>
-
-
-                <span
-                    style="
-                        font-size:12px;
-                        color:#777;
-                    ">
-
-                    ${e(userData.type)}
-
-                </span>
-
-            </div>
-
-
-
-            <!-- INFORMATIONS -->
-
-            <div
-                style="
-                    display:flex;
-                    flex-direction:column;
-                    gap:8px;
-                    margin-bottom:18px;
-                ">
-
-
-                ${
-                    userData.ville
-
-                    ?
-
-                    `
-                    <div>
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        ${e(userData.ville)}
-
-                    </div>
-                    `
-
-                    :
-
-                    ""
-                }
-
-
-                ${
-                    userData.telephone
-
-                    ?
-
-                    `
-                    <div>
-
-                        <i class="fa-solid fa-phone"></i>
-
-                        ${e(userData.telephone)}
-
-                    </div>
-                    `
-
-                    :
-
-                    ""
-                }
-
-            </div>
-
-
-
-            <!-- BIO -->
-
-            <div
-                style="
-                    background:rgba(0,0,0,.04);
-                    border-radius:10px;
-                    padding:13px;
-                    margin-bottom:20px;
-                    font-size:13px;
-                    line-height:1.6;
-                ">
-
-                <strong>
-                    À propos
-                </strong>
-
-                <br>
-
-                ${
-                    e(
-                        userData.bio ||
-                        "Aucune information supplémentaire pour le moment."
-                    )
-                }
-
-            </div>
-
-
-
-            <!-- PUBLICATIONS -->
-
-            <h3
-                style="
-                    font-size:16px;
-                    margin-bottom:12px;
-                ">
-
-                <i
-                    class="fa-solid fa-bullhorn"
-                    style="color:#e53935;">
-                </i>
-
-                Publications récentes
-
-                <span
-                    style="
-                        font-size:12px;
-                        color:#777;
-                    ">
-
-                    (${userServices.length})
-
-                </span>
-
-            </h3>
-
-
-
-            <div
-                style="
-                    display:flex;
-                    flex-direction:column;
-                    gap:10px;
-                ">
-
-                ${
-                    userServices.length
-
-                    ?
-
-                    userServices.map(srv => `
-
-                        <div
-                            onclick="
-                                document
-                                .getElementById('${modalId}')
-                                .remove();
-
-                                ouvrirDetails('${srv.id}');
-                            "
-                            style="
-                                display:flex;
-                                gap:10px;
-                                padding:10px;
-                                border:1px solid #eee;
-                                border-radius:9px;
-                                cursor:pointer;
-                            ">
-
-
-                            ${
-                                srv.image
-
-                                ?
-
-                                `<img
-                                    src="${e(srv.image)}"
-                                    style="
-                                        width:60px;
-                                        height:60px;
-                                        object-fit:cover;
-                                        border-radius:7px;
-                                    ">`
-
-                                :
-
-                                `
-                                <div
-                                    style="
-                                        width:60px;
-                                        height:60px;
-                                        background:#ddd;
-                                        border-radius:7px;
-                                        display:flex;
-                                        align-items:center;
-                                        justify-content:center;
-                                    ">
-
-                                    <i class="fa-solid fa-image"></i>
-
-                                </div>
-                                `
-                            }
-
-
-                            <div
-                                style="
-                                    flex:1;
-                                    overflow:hidden;
-                                ">
-
-                                <strong>
-
-                                    ${e(srv.titre || "Publication")}
-
-                                </strong>
-
-
-                                <p
-                                    style="
-                                        margin:4px 0;
-                                        font-size:12px;
-                                        color:#777;
-                                        white-space:nowrap;
-                                        overflow:hidden;
-                                        text-overflow:ellipsis;
-                                    ">
-
-                                    ${e(srv.description || "")}
-
-                                </p>
-
-
-                                <span
-                                    style="
-                                        color:#e53935;
-                                        font-weight:bold;
-                                        font-size:12px;
-                                    ">
-
-                                    ${e(srv.prix || "Sur devis")}
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    `).join("")
-
-                    :
-
-                    `
-                    <p
-                        style="
-                            text-align:center;
-                            color:#777;
-                            font-size:13px;
-                            padding:15px;
-                        ">
-
-                        Aucune publication récente.
-
-                    </p>
-                    `
-
-                }
-
-            </div>
-
-
-
-            <!-- WHATSAPP -->
-
-            ${
-                userData.whatsapp
-
-                ?
-
-                `
-                <button
-                    type="button"
-                    style="
-                        width:100%;
-                        margin-top:18px;
-                        padding:12px;
-                        border:none;
-                        border-radius:7px;
-                        background:#25D366;
-                        color:white;
-                        font-weight:bold;
-                        cursor:pointer;
-                    "
-                    onclick="
-                        ouvrirWhatsApp(
-                            '${e(userData.whatsapp)}',
-                            '${e(userData.name)}'
-                        );
-                    ">
-
-                    <i class="fa-brands fa-whatsapp"></i>
-
-                    Contacter sur WhatsApp
-
-                </button>
-                `
-
-                :
-
-                ""
-            }
-
-
-
-            <!-- SIGNALER -->
-
-            <button
-                type="button"
-                style="
-                    width:100%;
-                    margin-top:10px;
-                    padding:11px;
-                    border:1px solid #e53935;
-                    border-radius:7px;
-                    background:transparent;
-                    color:#e53935;
-                    cursor:pointer;
-                    font-weight:bold;
-                "
-                onclick="
-                    ouvrirSignalementCompte(
-                        '${e(userId)}',
-                        '${e(userData.name)}'
-                    );
-                ">
-
-                <i class="fa-solid fa-flag"></i>
-
-                Signaler ce compte
-
-            </button>
-
-
-        </div>
-
-    `;
-
-};
-
-
-
-/* =====================================================
-   SIGNALEMENT D'UN COMPTE
-   ===================================================== */
-
-window.ouvrirSignalementCompte = function(
-    userId,
-    userName
-) {
-
-    if (!currentUser) {
-
-        alert(
-            "Vous devez être connecté pour signaler un compte."
-        );
-
-        return;
-
-    }
-
-
-    const modalId =
-        "modalSignalementCompte";
-
-
-    const ancien =
-        document.getElementById(modalId);
-
-
-    if (ancien) ancien.remove();
-
-
-    document.body.insertAdjacentHTML(
-
-        "beforeend",
-
-        `
-
-        <div
-            id="${modalId}"
-            style="
-                position:fixed;
-                inset:0;
-                background:rgba(0,0,0,.65);
-                z-index:11000;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                padding:20px;
-            ">
-
-            <div
-                style="
-                    background:var(--bg-card,#fff);
-                    color:var(--text-color,#333);
-                    width:100%;
-                    max-width:450px;
-                    border-radius:14px;
-                    padding:20px;
-                ">
-
-
-                <h3>
-
-                    <i
-                        class="fa-solid fa-flag"
-                        style="color:#e53935;">
-                    </i>
-
-                    Signaler ${e(userName)}
-
-                </h3>
-
-
-                <p
-                    style="
-                        font-size:13px;
-                        color:#777;
-                        margin:10px 0 15px;
-                    ">
-
-                    Sélectionnez la raison du signalement.
-
-                </p>
-
-
-                <select
-                    id="raisonSignalement"
-                    style="
-                        width:100%;
-                        padding:11px;
-                        border-radius:7px;
-                        border:1px solid #ddd;
-                        margin-bottom:12px;
-                    ">
-
-                    <option value="">
-                        Choisir une raison
-                    </option>
-
-                    <option value="Contenu frauduleux">
-                        Contenu frauduleux
-                    </option>
-
-                    <option value="Fausse identité">
-                        Fausse identité
-                    </option>
-
-                    <option value="Spam">
-                        Spam
-                    </option>
-
-                    <option value="Comportement abusif">
-                        Comportement abusif
-                    </option>
-
-                    <option value="Contenu inapproprié">
-                        Contenu inapproprié
-                    </option>
-
-                    <option value="Autre">
-                        Autre
-                    </option>
-
-                </select>
-
-
-                <textarea
-                    id="detailsSignalement"
-                    placeholder="Expliquez brièvement le problème..."
-                    style="
-                        width:100%;
-                        min-height:100px;
-                        padding:10px;
-                        border-radius:7px;
-                        border:1px solid #ddd;
-                        resize:vertical;
-                        box-sizing:border-box;
-                        margin-bottom:12px;
-                    "></textarea>
-
-
-                <div
-                    style="
-                        display:flex;
-                        gap:8px;
-                    ">
-
-                    <button
-                        type="button"
-                        style="
-                            flex:1;
-                            padding:11px;
-                            border:none;
-                            border-radius:7px;
-                            cursor:pointer;
-                        "
-                        onclick="
-                            document
-                            .getElementById('${modalId}')
-                            .remove();
-                        ">
-
-                        Annuler
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        style="
-                            flex:1;
-                            padding:11px;
-                            border:none;
-                            border-radius:7px;
-                            background:#e53935;
-                            color:white;
-                            cursor:pointer;
-                            font-weight:bold;
-                        "
-                        onclick="
-                            envoyerSignalementCompte(
-                                '${e(userId)}',
-                                '${e(userName)}'
-                            );
-                        ">
-
-                        Signaler
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        `
-
-    );
-
-};
-
-
-
-/* =====================================================
-   ENVOYER LE SIGNALEMENT FIRESTORE
-   ===================================================== */
-
-window.envoyerSignalementCompte = async function(
-    userId,
-    userName
-) {
-
-    if (!currentUser) {
-
-        alert(
-            "Vous devez être connecté."
-        );
-
-        return;
-
-    }
-
-
-    const raison =
-        document.getElementById(
-            "raisonSignalement"
-        ).value;
-
-
-    const details =
-        document.getElementById(
-            "detailsSignalement"
-        ).value.trim();
-
-
-    if (!raison) {
-
-        alert(
-            "Veuillez choisir une raison."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        await addDoc(
-
-            collection(
-                db,
-                "signalements"
-            ),
-
-            {
-
-                type: "compte",
-
-                userIdSignale: userId,
-
-                nomCompteSignale: userName,
-
-                signalePar: currentUser.uid,
-
-                raison: raison,
-
-                details: details,
-
-                statut: "en_attente",
-
-                createdAt: serverTimestamp()
-
-            }
-
-        );
-
-
-        const modal =
-            document.getElementById(
-                "modalSignalementCompte"
-            );
-
-
-        if (modal) modal.remove();
-
-
-        alert(
-            "Votre signalement a été envoyé. Merci."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur signalement :",
-            error
-        );
-
-
-        alert(
-            "Impossible d'envoyer le signalement."
-        );
-
-    }
-
-};
-
-
-
-/* =====================================================
-   COMMUNIQUÉS
-   ===================================================== */
-
-async function chargerCommuniquesAccueil() {
-
-    const container =
-        document.getElementById(
-            "communiquesContainer"
-        );
-
-
-    if (!container) return;
-
-
-    try {
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "communiques"
-                )
-            );
-
-
-        let html = "";
-
-
-        snapshot.forEach(item => {
-
-            const com =
-                item.data();
-
-
-            if (com.published === true) {
-
-                html += `
-
-                    <div
-                        style="
-                            background:#222;
-                            border-left:4px solid #2e7d32;
-                            padding:12px 15px;
-                            border-radius:8px;
-                            margin-bottom:10px;
-                            color:white;
-                        ">
-
-                        <h4
-                            style="
-                                margin:0 0 5px;
-                                font-size:14px;
-                                color:#4caf50;
-                            ">
-
-                            <i class="fa-solid fa-bullhorn"></i>
-
-                            ${e(com.titre)}
-
-                        </h4>
-
-
-                        <p
-                            style="
-                                margin:0;
-                                font-size:12px;
-                                color:#ccc;
-                                line-height:1.4;
-                            ">
-
-                            ${e(com.description)}
-
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-
-        });
-
-
-        container.innerHTML = html;
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur communiqués :",
-            error
-        );
-
-    }
-
+.search-bar input::placeholder {
+  color: #999;
 }
 
 
+/* =========================================================
+   TITRES
+   ========================================================= */
 
-/* =====================================================
-   RECHERCHE
-   ===================================================== */
+.section-title {
+  font-size: 14px;
 
-document
-    .getElementById("search")
-    .addEventListener(
-        "input",
-        render
-    );
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  margin: 20px 0 11px;
+
+  color: var(--text);
+
+  letter-spacing: 0.2px;
+}
 
 
-
-/* =====================================================
+/* =========================================================
    CATÉGORIES
-   ===================================================== */
+   ========================================================= */
 
-document
-    .querySelectorAll(".cat-btn")
-    .forEach(button => {
+.categories {
+  width: 100%;
 
-        button.addEventListener(
-            "click",
-            () => {
+  display: flex;
 
-                cat =
-                    button.dataset.cat || "";
+  gap: 8px;
 
-                render();
+  overflow-x: auto;
 
-            }
-        );
+  overflow-y: hidden;
 
-    });
+  padding: 2px 2px 9px;
 
+  margin-bottom: 3px;
 
+  scrollbar-width: none;
 
-/* =====================================================
-   MENU
-   ===================================================== */
+  -webkit-overflow-scrolling: touch;
+}
 
-const menuToggle =
-    document.getElementById(
-        "menuToggle"
-    );
+.categories::-webkit-scrollbar {
+  display: none;
+}
 
+.cat-btn {
+  flex: 0 0 auto;
 
-const sidebar =
-    document.querySelector(
-        ".sidebar-vertical"
-    );
+  white-space: nowrap;
 
+  border: 1px solid #f1c2c2;
 
-const paramMenuToggle =
-    document.getElementById(
-        "paramMenuToggle"
-    );
+  background: #fff5f5;
 
+  color: var(--red);
 
-const paramSubmenu =
-    document.getElementById(
-        "paramSubmenu"
-    );
+  padding: 9px 13px;
 
+  min-height: 38px;
 
-const arrowParam =
-    document.getElementById(
-        "arrowParam"
-    );
+  border-radius: 22px;
 
+  font-size: 12px;
 
+  font-weight: 700;
 
-if (menuToggle && sidebar) {
+  transition: 0.2s ease;
+}
 
-    menuToggle.addEventListener(
-        "click",
-        event => {
+.cat-btn:hover {
+  background: var(--red);
 
-            event.stopPropagation();
+  color: #ffffff;
+}
 
-            sidebar.classList.toggle(
-                "open"
-            );
+.cat-btn:active {
+  transform: scale(0.96);
+}
 
-        }
-    );
+.cat-btn.active {
+  background: var(--red);
 
+  color: #ffffff;
 
-    document.addEventListener(
-        "click",
-        event => {
-
-            if (
-                !sidebar.contains(event.target)
-                &&
-                !menuToggle.contains(event.target)
-            ) {
-
-                sidebar.classList.remove(
-                    "open"
-                );
-
-
-                if (paramSubmenu) {
-
-                    paramSubmenu.classList.remove(
-                        "open-submenu"
-                    );
-
-                }
-
-
-                if (arrowParam) {
-
-                    arrowParam.style.transform =
-                        "rotate(0deg)";
-
-                }
-
-            }
-
-        }
-    );
-
+  border-color: var(--red);
 }
 
 
+/* =========================================================
+   COMMUNIQUÉS
+   ========================================================= */
 
-/* =====================================================
+#communiquesContainer {
+  width: 100%;
+
+  margin-top: 12px;
+
+  margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   CARTES SERVICES
+   ========================================================= */
+
+.annonce-card,
+.card-box,
+.page-card,
+.admin-card {
+  width: 100%;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  padding: 16px;
+
+  margin-bottom: 12px;
+
+  box-shadow: var(--shadow);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.annonce-card:hover {
+  box-shadow:
+    0 9px 26px rgba(0, 0, 0, 0.09);
+}
+
+.annonce-card h3 {
+  font-size: 17px;
+
+  line-height: 1.3;
+
+  margin: 9px 0 5px;
+
+  font-weight: 800;
+
+  overflow-wrap: anywhere;
+}
+
+.annonce-card p {
+  overflow-wrap: anywhere;
+}
+
+.annonce-card img {
+  max-width: 100%;
+}
+
+.badge-cat {
+  display: inline-block;
+
+  background: var(--red-light);
+
+  color: var(--red);
+
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+}
+
+.meta,
+.location {
+  font-size: 12px;
+
+  color: var(--muted);
+
+  margin: 6px 0;
+
+  line-height: 1.4;
+}
+
+.location i {
+  color: var(--red);
+}
+
+.prix {
+  color: var(--red);
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+  margin: 9px 0;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.card-actions {
+  display: flex;
+
+  align-items: stretch;
+
+  gap: 8px;
+
+  width: 100%;
+
+  margin-top: 13px;
+}
+
+.card-actions > a {
+  min-width: 0;
+}
+
+.btn-submit,
+.btn-primary {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: var(--red);
+
+  color: #ffffff;
+
+  border: none;
+
+  border-radius: 10px;
+
+  padding: 11px 15px;
+
+  min-height: 44px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  transition: 0.2s ease;
+}
+
+.btn-submit:hover,
+.btn-primary:hover {
+  background: var(--red-dark);
+}
+
+.btn-submit:active,
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  color: var(--text);
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  padding: 10px 14px;
+
+  min-height: 44px;
+
+  font-weight: 700;
+}
+
+.favorite-btn {
+  flex: 0 0 48px;
+
+  width: 48px;
+  min-width: 48px;
+
+  height: 44px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  font-size: 21px;
+
+  color: #555;
+
+  transition: 0.2s ease;
+}
+
+.favorite-btn:hover {
+  color: var(--red);
+
+  border-color: #e8aaaa;
+}
+
+.favorite-btn:active {
+  transform: scale(0.95);
+}
+
+
+/* =========================================================
+   FORMULAIRES
+   ========================================================= */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+input,
+select,
+textarea {
+  width: 100%;
+
+  max-width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid #d8dce1;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: var(--text);
+
+  outline: none;
+
+  font-size: 14px;
+
+  -webkit-appearance: none;
+
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--red);
+
+  box-shadow:
+    0 0 0 3px rgba(211, 47, 47, 0.08);
+}
+
+.form-group textarea,
+textarea {
+  min-height: 120px;
+
+  resize: vertical;
+}
+
+.help {
+  font-size: 12px;
+
+  color: var(--muted);
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  width: 100%;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  padding: 38px 18px;
+
+  color: var(--muted);
+
+  box-shadow: var(--shadow);
+}
+
+.empty-state i {
+  display: block;
+
+  font-size: 40px;
+
+  margin-bottom: 13px;
+
+  color: #aaa;
+}
+
+.empty-state h2 {
+  font-size: 17px;
+
+  color: #222;
+
+  margin-bottom: 7px;
+}
+
+.empty-state h3 {
+  margin-bottom: 7px;
+}
+
+.empty-state p {
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  width: 100%;
+
+  background: #111111;
+
+  color: #dddddd;
+
+  border-radius: 16px;
+
+  margin-top: 25px;
+
+  padding: 23px 16px;
+
+  text-align: center;
+}
+
+.footer h3 {
+  color: #ffffff;
+
+  font-size: 17px;
+
+  margin-bottom: 8px;
+}
+
+.footer p {
+  font-size: 12px;
+
+  color: #aaaaaa;
+
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 12px 18px;
+
+  margin: 16px 0;
+}
+
+.footer-links a {
+  font-size: 12px;
+
+  color: #ffffff;
+}
+
+.footer-links a:hover {
+  color: #ef5350;
+}
+
+
+/* =========================================================
+   NAVIGATION DU BAS — MOBILE
+   ========================================================= */
+
+.bottom-nav {
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+  right: 0;
+
+  width: 100%;
+
+  height: var(--nav-height);
+
+  background: rgba(255, 255, 255, 0.98);
+
+  border-top: 1px solid var(--border);
+
+  display: flex;
+
+  z-index: 1000;
+
+  padding:
+    6px
+    max(6px, env(safe-area-inset-right))
+    calc(6px + env(safe-area-inset-bottom))
+    max(6px, env(safe-area-inset-left));
+
+  box-shadow:
+    0 -4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.bottom-nav a {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #666;
+
+  font-size: 11px;
+
+  gap: 4px;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  transition: 0.2s ease;
+}
+
+.bottom-nav a.active {
+  color: var(--red);
+}
+
+.bottom-nav a:active {
+  transform: scale(0.95);
+}
+
+.bottom-nav i {
+  font-size: 20px;
+}
+
+.bottom-nav span {
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TEXTE / CONDITIONS / PAGES
+   ========================================================= */
+
+.prose h1 {
+  font-size: 24px;
+
+  line-height: 1.25;
+
+  margin-bottom: 15px;
+}
+
+.prose h2 {
+  font-size: 16px;
+
+  color: var(--red);
+
+  margin: 20px 0 8px;
+}
+
+.prose p,
+.prose li {
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  color: #444;
+}
+
+.prose ul {
+  padding-left: 20px;
+}
+
+
+/* =========================================================
+   STATUTS
+   ========================================================= */
+
+.status {
+  display: inline-block;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  padding: 4px 8px;
+
+  border-radius: 20px;
+}
+
+.status.ok {
+  background: #e8f5e9;
+
+  color: #2e7d32;
+}
+
+.status.wait {
+  background: #fff4dc;
+
+  color: #9a6200;
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+.admin-body {
+  background: #111111;
+
+  color: #ffffff;
+}
+
+.admin-card {
+  background: #202020;
+
+  border-color: #333333;
+
+  color: #ffffff;
+}
+
+.admin-card input,
+.admin-card textarea,
+.admin-card select {
+  background: #171717;
+
+  color: #ffffff;
+
+  border-color: #444444;
+}
+
+.admin-title {
+  border-left: 4px solid var(--red);
+
+  padding-left: 9px;
+
+  margin: 20px 0 10px;
+
+  font-size: 15px;
+}
+
+.stat-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 8px;
+}
+
+.stat {
+  background: #181818;
+
+  border: 1px solid #333;
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+
+  font-size: 20px;
+}
+
+.stat span {
+  font-size: 10px;
+
+  color: #aaa;
+}
+
+.alert {
+  padding: 12px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+}
+
+.alert.error {
+  background: #3b1717;
+
+  color: #ffbcbc;
+}
+
+
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+.messages-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+
+  min-height: 55vh;
+
+  max-height:
+    calc(100vh - 220px);
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding: 5px 2px;
+}
+
+.message {
+  max-width: 82%;
+
+  padding: 10px 12px;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  align-self: flex-start;
+
+  overflow-wrap: anywhere;
+}
+
+.my-message {
+  background: var(--red);
+
+  color: #ffffff;
+
+  border-color: var(--red);
+
+  align-self: flex-end;
+}
+
+.chat-input {
+  position: fixed;
+
+  bottom: var(--nav-height);
+
+  left: 0;
+  right: 0;
+
+  background: #ffffff;
+
+  border-top: 1px solid var(--border);
+
+  padding: 9px;
+
+  display: flex;
+
+  gap: 8px;
+
+  z-index: 900;
+}
+
+.chat-input input {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
    SOUS-MENU PARAMÈTRES
-   ===================================================== */
+   ========================================================= */
 
-if (
-    paramMenuToggle &&
-    paramSubmenu
-) {
+.submenu-container {
+  display: none;
 
-    paramMenuToggle.addEventListener(
-        "click",
-        event => {
+  list-style: none;
 
-            event.stopPropagation();
+  margin: 4px 0 6px;
 
-
-            paramSubmenu.classList.toggle(
-                "open-submenu"
-            );
-
-
-            if (
-                paramSubmenu.classList.contains(
-                    "open-submenu"
-                )
-            ) {
-
-                arrowParam.style.transform =
-                    "rotate(180deg)";
-
-            } else {
-
-                arrowParam.style.transform =
-                    "rotate(0deg)";
-
-            }
-
-        }
-    );
-
+  padding: 0 0 0 10px;
 }
 
-</script>
+.submenu-container.open-submenu {
+  display: block;
+}
+
+.submenu-container li {
+  list-style: none;
+}
+
+.submenu-container a {
+  font-size: 12px !important;
+
+  padding: 9px 10px !important;
+}
+
+.submenu-container a i {
+  font-size: 14px !important;
+}
 
 
-</body>
-</html>
-```
+/* =========================================================
+   MENU TÉLÉPHONE / TABLETTE
+   ========================================================= */
+
+.sidebar-vertical {
+  display: block;
+
+  position: fixed;
+
+  top: 64px;
+
+  left: 0;
+
+  width: min(280px, 86vw);
+
+  max-height: calc(100vh - 80px);
+
+  overflow-y: auto;
+
+  background: var(--card);
+
+  border-right: 1px solid var(--border);
+
+  border-bottom: 1px solid var(--border);
+
+  border-radius: 0 14px 14px 0;
+
+  padding: 16px;
+
+  box-shadow:
+    6px 8px 25px rgba(0, 0, 0, 0.12);
+
+  z-index: 1200;
+
+  transform: translateX(-110%);
+
+  transition:
+    transform 0.25s ease;
+}
+
+.sidebar-vertical.open {
+  transform: translateX(0);
+}
+
+
+/* =========================================================
+   LISTE DU MENU
+   ========================================================= */
+
+.sidebar-vertical ul {
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+.sidebar-vertical li {
+  list-style: none;
+}
+
+
+/* =========================================================
+   LIENS DU MENU
+   ========================================================= */
+
+.sidebar-vertical a {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 11px 12px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: var(--text);
+
+  transition: 0.2s ease;
+}
+
+.sidebar-vertical a:hover,
+.sidebar-vertical a.active-link {
+  background: var(--red-light);
+
+  color: var(--red);
+}
+
+.sidebar-vertical a i {
+  color: var(--red);
+}
+
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .container {
+    width: calc(100% - 28px);
+
+    padding-top: 15px;
+  }
+
+  .hero {
+    padding: 22px 18px;
+
+    border-radius: 16px;
+  }
+
+  .hero h1 {
+    font-size: 23px;
+  }
+
+  .annonce-card {
+    padding: 15px;
+  }
+}
+
+
+/* =========================================================
+   TÉLÉPHONES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  body {
+    padding-top: 60px;
+
+    padding-bottom:
+      calc(var(--nav-height) + 10px);
+  }
+
+  .top-bar {
+    height: 60px;
+
+    padding: 0 13px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+
+  .profile-btn,
+  .top-bar > a {
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 18px;
+  }
+
+  .container {
+    width: 100%;
+
+    padding:
+      14px
+      12px
+      16px;
+  }
+
+  .hero {
+    border-radius: 15px;
+
+    padding: 20px 17px;
+
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-size: 21px;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.3px;
+  }
+
+  .hero p {
+    font-size: 12px;
+
+    line-height: 1.55;
+  }
+
+  .search-bar {
+    height: 49px;
+
+    border-radius: 12px;
+
+    padding: 0 12px;
+
+    margin-bottom: 16px;
+  }
+
+  .search-bar input {
+    font-size: 13px;
+  }
+
+  .section-title {
+    font-size: 13px;
+
+    margin: 16px 0 9px;
+  }
+
+  .categories {
+    margin-left: -2px;
+
+    margin-right: -2px;
+
+    padding-left: 2px;
+
+    padding-right: 2px;
+  }
+
+  .cat-btn {
+    min-height: 37px;
+
+    padding: 8px 11px;
+
+    font-size: 11px;
+  }
+
+  .annonce-card,
+  .card-box,
+  .page-card {
+    padding: 14px;
+
+    border-radius: 14px;
+  }
+
+  .annonce-card h3 {
+    font-size: 16px;
+
+    line-height: 1.3;
+  }
+
+  .annonce-card p {
+    font-size: 12px;
+  }
+
+  .prix {
+    font-size: 16px;
+  }
+
+  .card-actions {
+    gap: 7px;
+  }
+
+  .btn-submit,
+  .btn-primary {
+    min-height: 44px;
+
+    padding: 10px 12px;
+
+    font-size: 12px;
+  }
+
+  .favorite-btn {
+    flex-basis: 45px;
+
+    width: 45px;
+
+    min-width: 45px;
+
+    height: 44px;
+  }
+
+  .footer {
+    border-radius: 14px;
+
+    padding: 20px 13px;
+
+    margin-top: 20px;
+  }
+
+  .footer-links {
+    gap: 10px 14px;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+  }
+
+  .bottom-nav {
+    height: 68px;
+  }
+
+  .bottom-nav i {
+    font-size: 18px;
+  }
+
+  .bottom-nav a {
+    font-size: 10px;
+
+    gap: 3px;
+  }
+
+  .empty-state {
+    padding: 32px 15px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .message {
+    max-width: 88%;
+  }
+
+  .sidebar-vertical {
+    top: 60px;
+
+    width: min(280px, 86vw);
+
+    max-height: calc(100vh - 75px);
+  }
+}
+
+
+/* =========================================================
+   PETITS TÉLÉPHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .container {
+    padding-left: 10px;
+
+    padding-right: 10px;
+  }
+
+  .hero h1 {
+    font-size: 19px;
+  }
+
+  .hero {
+    padding: 18px 15px;
+  }
+
+  .annonce-card {
+    padding: 13px;
+  }
+
+  .annonce-card h3 {
+    font-size: 15px;
+  }
+
+  .btn-submit,
+  .btn-primary {
+    padding-left: 9px;
+
+    padding-right: 9px;
+
+    font-size: 11px;
+  }
+
+  .favorite-btn {
+    width: 43px;
+
+    min-width: 43px;
+  }
+
+  .bottom-nav i {
+    font-size: 17px;
+  }
+
+  .bottom-nav a {
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================================
+   ORDINATEUR
+   ========================================================= */
+
+@media (min-width: 1000px) {
+
+  body {
+    padding-right: 0;
+
+    display: block;
+  }
+
+  .container {
+    width: min(90%, 760px);
+
+    margin-left: auto;
+
+    margin-right: auto;
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .sidebar-vertical {
+    display: block;
+
+    position: fixed;
+
+    top: 80px;
+
+    left: 20px;
+
+    right: auto;
+
+    width: 280px;
+
+    max-height: calc(100vh - 100px);
+
+    overflow-y: auto;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 16px;
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.12);
+
+    z-index: 1200;
+
+    transform: translateX(-120%);
+
+    transition:
+      transform 0.25s ease;
+  }
+
+  .sidebar-vertical.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    color: var(--muted);
+
+    margin-bottom: 12px;
+
+    letter-spacing: 0.5px;
+
+    font-weight: 800;
+
+    padding-left: 8px;
+  }
+
+  .sidebar-vertical ul {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    list-style: none;
+  }
+
+  .sidebar-vertical a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 12px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: var(--text);
+
+    transition: 0.2s ease;
+  }
+
+  .sidebar-vertical a i {
+    font-size: 16px;
+
+    color: var(--red);
+
+    width: 20px;
+
+    text-align: center;
+
+    flex-shrink: 0;
+  }
+
+  .sidebar-vertical a:hover,
+  .sidebar-vertical a.active-link {
+    background: var(--red-light);
+
+    color: var(--red);
+  }
+}
+
+
+/* =========================================================
+   GRAND ÉCRAN
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+  .sidebar-vertical {
+    width: 300px;
+
+    left: 30px;
+  }
+
+  .container {
+    width: min(90%, 800px);
+  }
+}
+
+
+/* =========================================================
+   MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode,
+body.dark-mode {
+
+  --bg: #101010;
+
+  --card: #1c1c1c;
+
+  --text: #f3f3f3;
+
+  --muted: #aaaaaa;
+
+  --border: #333333;
+
+  --shadow:
+    0 6px 20px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =========================================================
+   CORPS MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode body,
+body.dark-mode {
+
+  background: var(--bg);
+
+  color: var(--text);
+}
+
+
+/* =========================================================
+   CARTES MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .card-box,
+html.dark-mode .page-card,
+html.dark-mode .annonce-card,
+html.dark-mode .admin-card,
+html.dark-mode .empty-state,
+html.dark-mode .search-bar,
+
+body.dark-mode .card-box,
+body.dark-mode .page-card,
+body.dark-mode .annonce-card,
+body.dark-mode .admin-card,
+body.dark-mode .empty-state,
+body.dark-mode .search-bar {
+
+  background: var(--card);
+
+  border-color: var(--border);
+
+  color: var(--text);
+}
+
+
+/* =========================================================
+   FORMULAIRES MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode input,
+html.dark-mode select,
+html.dark-mode textarea,
+html.dark-mode .form-group input,
+html.dark-mode .form-group select,
+html.dark-mode .form-group textarea,
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+
+  background: #171717;
+
+  color: #ffffff;
+
+  border-color: #444444;
+}
+
+html.dark-mode input::placeholder,
+body.dark-mode input::placeholder {
+  color: #888888;
+}
+
+
+/* =========================================================
+   NAVIGATION BAS MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .bottom-nav,
+body.dark-mode .bottom-nav {
+
+  background: rgba(25, 25, 25, 0.98);
+
+  border-color: #333333;
+}
+
+html.dark-mode .bottom-nav a,
+body.dark-mode .bottom-nav a {
+  color: #aaaaaa;
+}
+
+html.dark-mode .bottom-nav a.active,
+body.dark-mode .bottom-nav a.active {
+  color: var(--red);
+}
+
+
+/* =========================================================
+   MENU MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .sidebar-vertical,
+body.dark-mode .sidebar-vertical {
+
+  background: #1c1c1c;
+
+  border-color: #333333;
+}
+
+html.dark-mode .sidebar-vertical a,
+body.dark-mode .sidebar-vertical a {
+  color: #eeeeee;
+}
+
+html.dark-mode .sidebar-vertical a:hover,
+html.dark-mode .sidebar-vertical a.active-link,
+
+body.dark-mode .sidebar-vertical a:hover,
+body.dark-mode .sidebar-vertical a.active-link {
+
+  background: #351b1b;
+
+  color: var(--red);
+}
+
+
+/* =========================================================
+   FOOTER MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .footer,
+body.dark-mode .footer {
+  background: #080808;
+}
+
+
+/* =========================================================
+   BOUTON SECONDAIRE MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .btn-secondary,
+body.dark-mode .btn-secondary {
+
+  background: #202020;
+
+  color: #f3f3f3;
+
+  border-color: #444444;
+}
+
+html.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-secondary:hover {
+  background: #2a2a2a;
+}
+
+
+/* =========================================================
+   EMPTY STATE MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .empty-state h2,
+body.dark-mode .empty-state h2 {
+  color: #eeeeee;
+}
+
+
+/* =========================================================
+   TEXTE DES ANNONCES MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .annonce-card p,
+body.dark-mode .annonce-card p {
+  color: #bbbbbb !important;
+}
+
+
+/* =========================================================
+   MESSAGES MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .message,
+body.dark-mode .message {
+
+  background: #1c1c1c;
+
+  border-color: #333333;
+
+  color: #eeeeee;
+}
+
+html.dark-mode .chat-input,
+body.dark-mode .chat-input {
+
+  background: #1c1c1c;
+
+  border-color: #333333;
+}
+
+
+/* =========================================================
+   RECHERCHE MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .search-bar input,
+body.dark-mode .search-bar input {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   TITRES MODE SOMBRE
+   ========================================================= */
+
+html.dark-mode .section-title,
+body.dark-mode .section-title {
+  color: #eeeeee;
+}
+
+
+/* =========================================================
+   PROFIL MODE SOMBRE
+   ========================================================= */
+
+body.dark-mode .profile-action,
+body.dark-mode .account-info {
+  background-color: var(--card) !important;
+
+  border-color: var(--border) !important;
+
+  color: var(--text) !important;
+}
+
+body.dark-mode .profile-action-content strong,
+body.dark-mode .account-row span:last-child {
+  color: var(--text) !important;
+}
+
+body.dark-mode .profile-action-content span,
+body.dark-mode .account-row span:first-child {
+  color: var(--muted) !important;
+}
+
+
+/* =========================================================
+   CHAT MODE SOMBRE
+   ========================================================= */
+
+body.dark-mode .messages-list {
+  background-color: var(--bg);
+}
+
+body.dark-mode .my-message {
+
+  background-color: var(--red) !important;
+
+  color: #ffffff !important;
+
+  border-color: var(--red) !important;
+}
+
+
+/* =========================================================
+   FORMULAIRES MODE SOMBRE
+   ========================================================= */
+
+body.dark-mode label,
+body.dark-mode .form-group label {
+  color: var(--text);
+}
+
+body.dark-mode .admin-body {
+  background-color: var(--bg);
+
+  color: var(--text);
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* =========================================================
+   SAFE AREA IPHONE
+   ========================================================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+  body {
+
+    padding-bottom:
+      calc(
+        var(--nav-height)
+        + env(safe-area-inset-bottom)
+        + 8px
+      );
+  }
+
+  .bottom-nav {
+
+    padding-bottom:
+      calc(
+        6px
+        + env(safe-area-inset-bottom)
+      );
+  }
+}
+
+
+/* =========================================================
+   FIN DU STYLE
+   ========================================================= */
