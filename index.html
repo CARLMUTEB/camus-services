@@ -27,6 +27,73 @@
   <!-- Style principal -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Styles personnalisés pour des cartes plus compactes et propres -->
+  <style>
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .annonce-card.service-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+
+    .annonce-card .service-image {
+      height: 120px;
+      position: relative;
+    }
+
+    .annonce-card .service-card-content {
+      padding: 12px;
+    }
+
+    .annonce-card h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .annonce-card .service-description {
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .annonce-card .location,
+    .annonce-card .service-footer {
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+    }
+
+    .annonce-card .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .annonce-card .card-actions .btn-primary {
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      flex: 1;
+      text-align: center;
+    }
+
+    .annonce-card .favorite-btn {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+
   <!--
     Application Firebase
     Le fichier app.js contient :
@@ -198,7 +265,7 @@
 
 
     <!-- ===================================================
-         HERO
+         HERO (Boutons retirés)
          =================================================== -->
 
     <section class="hero">
@@ -223,28 +290,6 @@
           aux entreprises, commerçants, artisans et
           professionnels locaux.
         </p>
-
-
-        <div class="hero-actions">
-
-          <a
-            href="#services"
-            class="btn-primary"
-          >
-            <i class="fa-solid fa-magnifying-glass"></i>
-            Explorer
-          </a>
-
-
-          <a
-            href="inscription-entreprise.html"
-            class="btn-secondary hero-secondary"
-          >
-            <i class="fa-solid fa-store"></i>
-            Inscrire mon entreprise
-          </a>
-
-        </div>
 
       </div>
 
@@ -742,47 +787,6 @@
           Aucun service ne correspond à votre recherche.
           Essayez un autre mot-clé ou une autre catégorie.
         </p>
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================================
-         APPEL À L'ACTION PROFESSIONNEL
-         =================================================== -->
-
-    <section class="professional-cta">
-
-      <div class="cta-icon">
-        <i class="fa-solid fa-store"></i>
-      </div>
-
-
-      <div class="cta-content">
-
-        <span>
-          Vous êtes professionnel ?
-        </span>
-
-        <h2>
-          Faites connaître votre entreprise.
-        </h2>
-
-        <p>
-          Présentez vos services, ajoutez vos coordonnées
-          et augmentez votre visibilité auprès de vos clients.
-        </p>
-
-
-        <a
-          href="inscription-entreprise.html"
-          class="btn-primary"
-        >
-          Inscrire mon entreprise
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
 
       </div>
 
