@@ -1,435 +1,479 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES — Mon Profil</title>
+<script type="module">
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  import {
+    connexionUtilisateur,
+    connexionGoogle
+  } from "./app.js";
 
-  <!-- CSS principal -->
-  <link rel="stylesheet" href="style.css">
 
-  <!-- Styles spécifiques -->
-  <style>
-    .profile-card {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px 20px;
-      box-shadow: var(--shadow);
-      animation: fadeIn 0.4s ease;
-    }
+  const form =
+    document.getElementById(
+      "connexionForm"
+    );
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  const message =
+    document.getElementById(
+      "messageConnexion"
+    );
 
-    .profile-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+  const button =
+    document.getElementById(
+      "btnConnexion"
+    );
 
-    .profile-avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 36px;
-      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
-    }
+  const btnGoogle =
+    document.getElementById(
+      "btnGoogle"
+    );
 
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
 
-    .profile-name {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
+  function afficherMessage(
+    texte,
+    type = "success"
+  ) {
 
-    .profile-email {
-      font-size: 13px;
-      color: var(--muted);
-    }
+    message.style.display =
+      "block";
 
-    .profile-role {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      background: var(--red-light);
-      color: var(--red);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
+    message.textContent =
+      texte;
 
-    .info-group {
-      margin-bottom: 15px;
-      padding: 15px;
-      background: var(--bg);
-      border-radius: 10px;
-    }
+    message.className =
+      "message-box " + type;
 
-    .info-group label {
-      display: block;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
-    }
+  }
 
-    .info-group .info-value {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      word-break: break-word;
-    }
 
-    .btn-edit {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 15px;
-      background: var(--red);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      width: 100%;
-      text-decoration: none;
-    }
+  function masquerMessage() {
 
-    .btn-edit:hover { background: var(--red-dark); }
+    message.style.display =
+      "none";
 
-    .btn-logout {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 15px;
-      background: transparent;
-      color: var(--red);
-      border: 1px solid var(--red);
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      width: 100%;
-      margin-top: 10px;
-    }
+  }
 
-    .btn-logout:hover { background: var(--red-light); }
 
-    .btn-whatsapp-contact {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 15px;
-      background: var(--whatsapp);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      width: 100%;
-      margin-top: 10px;
-      text-decoration: none;
-    }
+  /* =====================================================
+     CONNEXION EMAIL / MOT DE PASSE
+     ===================================================== */
 
-    .btn-whatsapp-contact:hover { background: var(--whatsapp-dark); }
-    .btn-whatsapp-contact i { font-size: 16px; }
+  form.addEventListener(
+    "submit",
+    async function(event) {
 
-    .not-connected {
-      text-align: center;
-      padding: 30px 20px;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
+      event.preventDefault();
 
-    .not-connected i {
-      font-size: 50px;
-      color: #cccccc;
-      margin-bottom: 15px;
-    }
 
-    .not-connected h2 {
-      font-size: 18px;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
+      const email =
+        document
+          .getElementById(
+            "emailConnexion"
+          )
+          .value
+          .trim();
 
-    .not-connected p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
 
-    .btn-connect {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 20px;
-      background: var(--red);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      text-decoration: none;
-    }
+      const password =
+        document
+          .getElementById(
+            "motDePasseConnexion"
+          )
+          .value;
 
-    .btn-connect:hover { background: var(--red-dark); }
-  </style>
-</head>
-<body>
 
-  <!-- Header -->
-  <header class="top-bar">
-    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">CAMU <span>SERVICES</span></a>
-    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil"><i class="fa-solid fa-user"></i></a>
-  </header>
+      if (!email || !password) {
 
-  <!-- Menu latéral -->
-  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
-    <div class="sidebar-header">CAMU SERVICES</div>
-    <ul>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
-      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
-      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
-      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
-      <li><a href="favoris.html"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
-      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
-      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
-      <li><a href="profil.html" class="active-link"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
-      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
-      <li id="logoutMenuItem" style="display: none;">
-        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
-      </li>
-    </ul>
-  </aside>
+        afficherMessage(
+          "Veuillez remplir tous les champs.",
+          "error"
+        );
 
-  <!-- Contenu principal -->
-  <main class="container">
-    <!-- Section profil connecté -->
-    <div id="profileSection" style="display: none;">
-      <div class="profile-card">
-        <div class="profile-header">
-          <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user"></i></div>
-          <div class="profile-name" id="profileName">Chargement...</div>
-          <div class="profile-email" id="profileEmail">...</div>
-          <span class="profile-role" id="profileRole">...</span>
-        </div>
-
-        <div class="info-group">
-          <label>Téléphone / WhatsApp</label>
-          <div class="info-value" id="profilePhone">Non renseigné</div>
-        </div>
-
-        <div class="info-group">
-          <label>Localisation</label>
-          <div class="info-value" id="profileLocation">Non renseignée</div>
-        </div>
-
-        <div class="info-group">
-          <label>Membre depuis</label>
-          <div class="info-value" id="profileSince">...</div>
-        </div>
-
-        <a href="#" id="whatsappLink" class="btn-whatsapp-contact" style="display: none;">
-          <i class="fa-brands fa-whatsapp"></i> Contacter sur WhatsApp
-        </a>
-
-        <a href="parametres.html" class="btn-edit" style="margin-top: 10px;">
-          <i class="fa-solid fa-pen"></i> Modifier mon profil
-        </a>
-
-        <button class="btn-logout" id="btnLogout">
-          <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
-        </button>
-      </div>
-    </div>
-
-    <!-- Section non connecté -->
-    <div id="notConnectedSection" class="not-connected" style="display: block;">
-      <i class="fa-solid fa-user-circle"></i>
-      <h2>Vous n'êtes pas connecté</h2>
-      <p>Connectez-vous ou créez un compte pour accéder à votre profil.</p>
-      <a href="connexion.html" class="btn-connect"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</a>
-      <div style="margin-top: 12px;">
-        <a href="inscription.html" style="color: var(--red); font-weight: 800;">Créer un compte</a>
-      </div>
-    </div>
-  </main>
-
-  <!-- Navigation bas -->
-  <nav class="bottom-nav" aria-label="Navigation mobile">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="explorer.html"><i class="fa-solid fa-compass"></i><span>Explorer</span></a>
-  </nav>
-
-  <!-- Script -->
-  <script type="module">
-    import { auth, obtenirProfil, deconnexion, formaterNumeroWhatsApp, onAuthStateChanged } from "./app.js";
-
-    const profileSection = document.getElementById("profileSection");
-    const notConnectedSection = document.getElementById("notConnectedSection");
-    const logoutMenuItem = document.getElementById("logoutMenuItem");
-    const logoutSidebar = document.getElementById("logoutSidebar");
-    const btnLogout = document.getElementById("btnLogout");
-
-    async function afficherProfil(user) {
-      if (!user) {
-        profileSection.style.display = "none";
-        notConnectedSection.style.display = "block";
-        if (logoutMenuItem) logoutMenuItem.style.display = "none";
         return;
+
       }
 
-      profileSection.style.display = "block";
-      notConnectedSection.style.display = "none";
-      if (logoutMenuItem) logoutMenuItem.style.display = "block";
 
-      const avatar = document.getElementById("profileAvatar");
-      const nameEl = document.getElementById("profileName");
-      const emailEl = document.getElementById("profileEmail");
-      const roleEl = document.getElementById("profileRole");
-      const phoneEl = document.getElementById("profilePhone");
-      const locationEl = document.getElementById("profileLocation");
-      const sinceEl = document.getElementById("profileSince");
-      const whatsappLink = document.getElementById("whatsappLink");
+      button.disabled =
+        true;
 
-      const displayName = user.displayName || "Utilisateur";
-      const email = user.email || "Email non renseigné";
+      button.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
 
-      if (user.photoURL) {
-        avatar.innerHTML = `<img src="${user.photoURL}" alt="Photo de profil">`;
-      } else {
-        avatar.innerHTML = '<i class="fa-solid fa-user"></i>';
-      }
+      masquerMessage();
 
-      nameEl.textContent = displayName;
-      emailEl.textContent = email;
 
-      const profilData = await obtenirProfil(user.uid);
-      if (profilData.success && profilData.data) {
-        const data = profilData.data;
-        roleEl.textContent = data.role || "client";
-        phoneEl.textContent = data.telephone || data.whatsapp || "Non renseigné";
-        locationEl.textContent = data.localisation || "Non renseignée";
+      try {
 
-        if (data.createdAt && typeof data.createdAt.toDate === "function") {
-          const date = data.createdAt.toDate();
-          sinceEl.textContent = date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
-        } else {
-          sinceEl.textContent = "Date inconnue";
-        }
+        const resultat =
+          await connexionUtilisateur(
+            email,
+            password
+          );
 
-        const numero = data.whatsapp || data.telephone;
-        if (numero) {
-          const numeroFormate = formaterNumeroWhatsApp(numero);
-          if (numeroFormate) {
-            whatsappLink.href = `https://wa.me/${numeroFormate}?text=${encodeURIComponent("Bonjour, je vous contacte depuis CAMU SERVICES.")}`;
-            whatsappLink.style.display = "inline-flex";
-          } else {
-            whatsappLink.style.display = "none";
+
+        if (!resultat.success) {
+
+          let texte =
+            "Impossible de se connecter.";
+
+
+          const erreur =
+            String(
+              resultat.error || ""
+            ).toLowerCase();
+
+
+          if (
+            erreur.includes(
+              "invalid-credential"
+            ) ||
+            erreur.includes(
+              "wrong-password"
+            ) ||
+            erreur.includes(
+              "user-not-found"
+            )
+          ) {
+
+            texte =
+              "Email ou mot de passe incorrect.";
+
+          } else if (
+            erreur.includes(
+              "invalid-email"
+            )
+          ) {
+
+            texte =
+              "Adresse email invalide.";
+
+          } else if (
+            erreur.includes(
+              "too-many-requests"
+            )
+          ) {
+
+            texte =
+              "Trop de tentatives. Réessayez plus tard.";
+
           }
+
+
+          afficherMessage(
+            texte,
+            "error"
+          );
+
+
+          button.disabled =
+            false;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+
+
+          return;
+
+        }
+
+
+        /* ================================================
+           CONNEXION FIREBASE CONFIRMÉE
+           ================================================ */
+
+        afficherMessage(
+          "Connexion réussie. Vérification de votre session..."
+        );
+
+
+        /*
+         * IMPORTANT :
+         * On attend que Firebase confirme réellement
+         * l'état de connexion avec onAuthStateChanged.
+         */
+
+        const attendreUtilisateur =
+          new Promise(
+            (resolve) => {
+
+              let termine =
+                false;
+
+
+              const timeout =
+                setTimeout(
+                  () => {
+
+                    if (!termine) {
+
+                      termine =
+                        true;
+
+                      resolve(
+                        null
+                      );
+
+                    }
+
+                  },
+                  5000
+                );
+
+
+              document.addEventListener(
+                "camu-auth-changed",
+                function handler(event) {
+
+                  const user =
+                    event.detail?.user ||
+                    null;
+
+
+                  if (
+                    user &&
+                    !termine
+                  ) {
+
+                    termine =
+                      true;
+
+                    clearTimeout(
+                      timeout
+                    );
+
+                    document.removeEventListener(
+                      "camu-auth-changed",
+                      handler
+                    );
+
+                    resolve(
+                      user
+                    );
+
+                  }
+
+                }
+              );
+
+
+              /*
+               * Si Firebase a déjà terminé
+               * avant l'installation du listener.
+               */
+
+              if (
+                window.camuCurrentUser
+              ) {
+
+                termine =
+                  true;
+
+                clearTimeout(
+                  timeout
+                );
+
+                resolve(
+                  window.camuCurrentUser
+                );
+
+              }
+
+            }
+          );
+
+
+        const utilisateur =
+          await attendreUtilisateur;
+
+
+        if (utilisateur) {
+
+          console.log(
+            "CAMU : utilisateur confirmé :",
+            utilisateur.email
+          );
+
+
+          afficherMessage(
+            "Connexion réussie. Bienvenue !"
+          );
+
+
+          setTimeout(
+            () => {
+
+              window.location.replace(
+                "index.html"
+              );
+
+            },
+            700
+          );
+
+
         } else {
-          whatsappLink.style.display = "none";
+
+          afficherMessage(
+            "Connexion effectuée, mais Firebase n'a pas encore confirmé la session. Veuillez patienter.",
+            "error"
+          );
+
+
+          button.disabled =
+            false;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+
         }
-      } else {
-        roleEl.textContent = "Client";
-        phoneEl.textContent = "Non renseigné";
-        locationEl.textContent = "Non renseignée";
-        sinceEl.textContent = "Inconnue";
-        whatsappLink.style.display = "none";
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur connexion :",
+          error
+        );
+
+
+        afficherMessage(
+          "Une erreur est survenue pendant la connexion.",
+          "error"
+        );
+
+
+        button.disabled =
+          false;
+
+        button.innerHTML =
+          '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+
       }
+
     }
+  );
 
-    onAuthStateChanged(auth, (user) => {
-      afficherProfil(user);
-    });
 
-    if (btnLogout) {
-      btnLogout.addEventListener("click", async () => {
-        await deconnexion();
-        window.location.href = "index.html";
-      });
-    }
+  /* =====================================================
+     CONNEXION GOOGLE
+     ===================================================== */
 
-    if (logoutSidebar) {
-      logoutSidebar.addEventListener("click", async (e) => {
-        e.preventDefault();
-        await deconnexion();
-        window.location.href = "index.html";
-      });
-    }
+  btnGoogle.addEventListener(
+    "click",
+    async function() {
 
-    // Gestion du menu latéral
-    const menuToggle = document.getElementById("menuToggle");
-    const sidebar = document.getElementById("sidebar");
-    if (menuToggle && sidebar) {
-      menuToggle.addEventListener("click", function () {
-        const opened = sidebar.classList.toggle("open");
-        menuToggle.setAttribute("aria-expanded", opened ? "true" : "false");
-        const icon = menuToggle.querySelector("i");
-        if (icon) {
-          icon.classList.toggle("fa-bars", !opened);
-          icon.classList.toggle("fa-xmark", opened);
+      btnGoogle.disabled =
+        true;
+
+      btnGoogle.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+      masquerMessage();
+
+
+      try {
+
+        const resultat =
+          await connexionGoogle();
+
+
+        if (!resultat.success) {
+
+          afficherMessage(
+            "Erreur lors de la connexion Google.",
+            "error"
+          );
+
+
+          btnGoogle.disabled =
+            false;
+
+          btnGoogle.innerHTML =
+            '<i class="fa-brands fa-google"></i> Continuer avec Google';
+
+
+          return;
+
         }
-      });
 
-      sidebar.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", function () {
-          sidebar.classList.remove("open");
-          menuToggle.setAttribute("aria-expanded", "false");
-          const icon = menuToggle.querySelector("i");
-          if (icon) {
-            icon.classList.add("fa-bars");
-            icon.classList.remove("fa-xmark");
-          }
-        });
-      });
+
+        afficherMessage(
+          "Connexion Google réussie. Vérification..."
+        );
+
+
+        /*
+         * Firebase doit avoir un utilisateur.
+         */
+
+        let verification =
+          0;
+
+
+        while (
+          !window.camuCurrentUser &&
+          verification < 20
+        ) {
+
+          await new Promise(
+            resolve =>
+              setTimeout(
+                resolve,
+                100
+              )
+          );
+
+          verification++;
+
+        }
+
+
+        if (
+          window.camuCurrentUser
+        ) {
+
+          window.location.replace(
+            "index.html"
+          );
+
+        } else {
+
+          afficherMessage(
+            "La connexion Google n'a pas pu être confirmée.",
+            "error"
+          );
+
+          btnGoogle.disabled =
+            false;
+
+          btnGoogle.innerHTML =
+            '<i class="fa-brands fa-google"></i> Continuer avec Google';
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur Google :",
+          error
+        );
+
+
+        afficherMessage(
+          "Erreur lors de la connexion Google.",
+          "error"
+        );
+
+
+        btnGoogle.disabled =
+          false;
+
+        btnGoogle.innerHTML =
+          '<i class="fa-brands fa-google"></i> Continuer avec Google';
+
+      }
+
     }
-  </script>
-</body>
-</html>
+  );
+
+</script>
