@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mon profil CAMU SERVICES">
-
   <title>CAMU SERVICES — Mon Profil</title>
 
   <!-- Font Awesome -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- CSS Principal -->
+  <!-- CSS principal -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Styles spécifiques à la page profil -->
+  <!-- Styles spécifiques -->
   <style>
-    /* =====================================================
-       CARTE PROFIL
-       ===================================================== */
     .profile-card {
       width: 100%;
       max-width: 600px;
@@ -32,14 +27,8 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .profile-header {
@@ -92,9 +81,6 @@
       text-transform: uppercase;
     }
 
-    /* =====================================================
-       INFORMATIONS
-       ===================================================== */
     .info-group {
       margin-bottom: 15px;
       padding: 15px;
@@ -119,9 +105,6 @@
       word-break: break-word;
     }
 
-    /* =====================================================
-       BOUTONS
-       ===================================================== */
     .btn-edit {
       display: inline-flex;
       align-items: center;
@@ -138,11 +121,10 @@
       cursor: pointer;
       transition: background 0.2s ease;
       width: 100%;
+      text-decoration: none;
     }
 
-    .btn-edit:hover {
-      background: var(--red-dark);
-    }
+    .btn-edit:hover { background: var(--red-dark); }
 
     .btn-logout {
       display: inline-flex;
@@ -163,9 +145,7 @@
       margin-top: 10px;
     }
 
-    .btn-logout:hover {
-      background: var(--red-light);
-    }
+    .btn-logout:hover { background: var(--red-light); }
 
     .btn-whatsapp-contact {
       display: inline-flex;
@@ -187,20 +167,15 @@
       text-decoration: none;
     }
 
-    .btn-whatsapp-contact:hover {
-      background: var(--whatsapp-dark);
-    }
+    .btn-whatsapp-contact:hover { background: var(--whatsapp-dark); }
+    .btn-whatsapp-contact i { font-size: 16px; }
 
-    .btn-whatsapp-contact i {
-      font-size: 16px;
-    }
-
-    /* =====================================================
-       ÉTAT NON CONNECTÉ
-       ===================================================== */
     .not-connected {
       text-align: center;
       padding: 30px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
 
     .not-connected i {
@@ -238,156 +213,76 @@
       text-decoration: none;
     }
 
-    .btn-connect:hover {
-      background: var(--red-dark);
-    }
+    .btn-connect:hover { background: var(--red-dark); }
   </style>
 </head>
-
 <body>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="top-bar">
     <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>
     </button>
-
-    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
-      CAMU <span>SERVICES</span>
-    </a>
-
-    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
-      <i class="fa-solid fa-user"></i>
-    </a>
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">CAMU <span>SERVICES</span></a>
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil"><i class="fa-solid fa-user"></i></a>
   </header>
 
-  <!-- MENU LATÉRAL -->
+  <!-- Menu latéral -->
   <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
-    <div class="sidebar-header">
-      CAMU SERVICES
-    </div>
+    <div class="sidebar-header">CAMU SERVICES</div>
     <ul>
-      <li>
-        <a href="index.html">
-          <i class="fa-solid fa-house"></i>
-          <span>Accueil</span>
-        </a>
-      </li>
-      <li>
-        <a href="recherche.html">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <span>Rechercher</span>
-        </a>
-      </li>
-      <li>
-        <a href="categories.html">
-          <i class="fa-solid fa-layer-group"></i>
-          <span>Catégories</span>
-        </a>
-      </li>
-      <li>
-        <a href="entreprises.html">
-          <i class="fa-solid fa-building"></i>
-          <span>Entreprises</span>
-        </a>
-      </li>
-      <li>
-        <a href="favoris.html">
-          <i class="fa-solid fa-heart"></i>
-          <span>Mes favoris</span>
-        </a>
-      </li>
-      <li>
-        <a href="communiques.html">
-          <i class="fa-solid fa-bullhorn"></i>
-          <span>Communiqués</span>
-        </a>
-      </li>
-      <li>
-        <a href="inscription-entreprise.html">
-          <i class="fa-solid fa-store"></i>
-          <span>Inscrire mon entreprise</span>
-        </a>
-      </li>
-      <li>
-        <a href="profil.html" class="active-link">
-          <i class="fa-solid fa-user"></i>
-          <span>Mon profil</span>
-        </a>
-      </li>
-      <li>
-        <a href="parametres.html">
-          <i class="fa-solid fa-gear"></i>
-          <span>Paramètres</span>
-        </a>
-      </li>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
+      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
+      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
+      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
+      <li><a href="favoris.html"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
+      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
+      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
+      <li><a href="profil.html" class="active-link"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
+      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
       <li id="logoutMenuItem" style="display: none;">
-        <a href="#" id="logoutSidebar" class="logout-link">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Déconnexion</span>
-        </a>
+        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
       </li>
     </ul>
   </aside>
 
-  <!-- CONTENU PRINCIPAL -->
+  <!-- Contenu principal -->
   <main class="container">
-
     <!-- Section profil connecté -->
     <div id="profileSection" style="display: none;">
       <div class="profile-card">
         <div class="profile-header">
-          <div class="profile-avatar" id="profileAvatar">
-            <i class="fa-solid fa-user"></i>
-          </div>
-          <div class="profile-name" id="profileName">
-            Chargement...
-          </div>
-          <div class="profile-email" id="profileEmail">
-            ...
-          </div>
-          <span class="profile-role" id="profileRole">
-            ...
-          </span>
+          <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user"></i></div>
+          <div class="profile-name" id="profileName">Chargement...</div>
+          <div class="profile-email" id="profileEmail">...</div>
+          <span class="profile-role" id="profileRole">...</span>
         </div>
 
         <div class="info-group">
           <label>Téléphone / WhatsApp</label>
-          <div class="info-value" id="profilePhone">
-            Non renseigné
-          </div>
+          <div class="info-value" id="profilePhone">Non renseigné</div>
         </div>
 
         <div class="info-group">
           <label>Localisation</label>
-          <div class="info-value" id="profileLocation">
-            Non renseignée
-          </div>
+          <div class="info-value" id="profileLocation">Non renseignée</div>
         </div>
 
         <div class="info-group">
           <label>Membre depuis</label>
-          <div class="info-value" id="profileSince">
-            ...
-          </div>
+          <div class="info-value" id="profileSince">...</div>
         </div>
 
-        <!-- Bouton WhatsApp contact -->
         <a href="#" id="whatsappLink" class="btn-whatsapp-contact" style="display: none;">
-          <i class="fa-brands fa-whatsapp"></i>
-          Contacter sur WhatsApp
+          <i class="fa-brands fa-whatsapp"></i> Contacter sur WhatsApp
         </a>
 
-        <!-- Bouton modifier -->
-        <a href="parametres.html" class="btn-edit" style="margin-top: 10px; text-decoration: none;">
-          <i class="fa-solid fa-pen"></i>
-          Modifier mon profil
+        <a href="parametres.html" class="btn-edit" style="margin-top: 10px;">
+          <i class="fa-solid fa-pen"></i> Modifier mon profil
         </a>
 
-        <!-- Bouton déconnexion -->
         <button class="btn-logout" id="btnLogout">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          Se déconnecter
+          <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
         </button>
       </div>
     </div>
@@ -396,50 +291,25 @@
     <div id="notConnectedSection" class="not-connected" style="display: block;">
       <i class="fa-solid fa-user-circle"></i>
       <h2>Vous n'êtes pas connecté</h2>
-      <p>
-        Connectez-vous ou créez un compte pour accéder à votre profil
-        et gérer vos services favoris.
-      </p>
-      <a href="connexion.html" class="btn-connect">
-        <i class="fa-solid fa-right-to-bracket"></i>
-        Se connecter
-      </a>
+      <p>Connectez-vous ou créez un compte pour accéder à votre profil.</p>
+      <a href="connexion.html" class="btn-connect"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</a>
       <div style="margin-top: 12px;">
-        <a href="inscription.html" style="color: var(--red); font-weight: 800;">
-          Créer un compte
-        </a>
+        <a href="inscription.html" style="color: var(--red); font-weight: 800;">Créer un compte</a>
       </div>
     </div>
-
   </main>
 
-  <!-- NAVIGATION MOBILE -->
+  <!-- Navigation bas -->
   <nav class="bottom-nav" aria-label="Navigation mobile">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="explorer.html">
-      <i class="fa-solid fa-compass"></i>
-      <span>Explorer</span>
-    </a>
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
+    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="explorer.html"><i class="fa-solid fa-compass"></i><span>Explorer</span></a>
   </nav>
 
-  <!-- LOGIQUE FIREBASE -->
+  <!-- Script -->
   <script type="module">
-    // Import depuis app.js (plus d'import CDN séparé)
     import { auth, obtenirProfil, deconnexion, formaterNumeroWhatsApp, onAuthStateChanged } from "./app.js";
-
-    // Vérification de chargement du script
-    console.log("Script profil chargé !");
 
     const profileSection = document.getElementById("profileSection");
     const notConnectedSection = document.getElementById("notConnectedSection");
@@ -447,7 +317,6 @@
     const logoutSidebar = document.getElementById("logoutSidebar");
     const btnLogout = document.getElementById("btnLogout");
 
-    // Fonction pour afficher le profil
     async function afficherProfil(user) {
       if (!user) {
         profileSection.style.display = "none";
@@ -456,12 +325,10 @@
         return;
       }
 
-      // Afficher la section profil
       profileSection.style.display = "block";
       notConnectedSection.style.display = "none";
       if (logoutMenuItem) logoutMenuItem.style.display = "block";
 
-      // Remplir les données utilisateur de base
       const avatar = document.getElementById("profileAvatar");
       const nameEl = document.getElementById("profileName");
       const emailEl = document.getElementById("profileEmail");
@@ -471,11 +338,9 @@
       const sinceEl = document.getElementById("profileSince");
       const whatsappLink = document.getElementById("whatsappLink");
 
-      // Utiliser les données de Firebase Auth
       const displayName = user.displayName || "Utilisateur";
       const email = user.email || "Email non renseigné";
 
-      // Si photo de profil
       if (user.photoURL) {
         avatar.innerHTML = `<img src="${user.photoURL}" alt="Photo de profil">`;
       } else {
@@ -485,7 +350,6 @@
       nameEl.textContent = displayName;
       emailEl.textContent = email;
 
-      // Récupérer les données Firestore
       const profilData = await obtenirProfil(user.uid);
       if (profilData.success && profilData.data) {
         const data = profilData.data;
@@ -493,19 +357,13 @@
         phoneEl.textContent = data.telephone || data.whatsapp || "Non renseigné";
         locationEl.textContent = data.localisation || "Non renseignée";
 
-        // Formater la date d'inscription
         if (data.createdAt && typeof data.createdAt.toDate === "function") {
           const date = data.createdAt.toDate();
-          sinceEl.textContent = date.toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-          });
+          sinceEl.textContent = date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
         } else {
           sinceEl.textContent = "Date inconnue";
         }
 
-        // Configurer le bouton WhatsApp si le numéro existe
         const numero = data.whatsapp || data.telephone;
         if (numero) {
           const numeroFormate = formaterNumeroWhatsApp(numero);
@@ -519,7 +377,6 @@
           whatsappLink.style.display = "none";
         }
       } else {
-        // Données Firestore non disponibles, mettre des valeurs par défaut
         roleEl.textContent = "Client";
         phoneEl.textContent = "Non renseigné";
         locationEl.textContent = "Non renseignée";
@@ -528,16 +385,13 @@
       }
     }
 
-    // Écouter les changements d'état d'authentification
     onAuthStateChanged(auth, (user) => {
       afficherProfil(user);
     });
 
-    // Gestion de la déconnexion
     if (btnLogout) {
       btnLogout.addEventListener("click", async () => {
         await deconnexion();
-        // Redirection vers l'accueil après déconnexion
         window.location.href = "index.html";
       });
     }
@@ -550,10 +404,9 @@
       });
     }
 
-    // Gestion du menu latéral (même logique que index.html)
+    // Gestion du menu latéral
     const menuToggle = document.getElementById("menuToggle");
     const sidebar = document.getElementById("sidebar");
-
     if (menuToggle && sidebar) {
       menuToggle.addEventListener("click", function () {
         const opened = sidebar.classList.toggle("open");
@@ -578,6 +431,5 @@
       });
     }
   </script>
-
 </body>
 </html>
