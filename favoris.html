@@ -2,48 +2,609 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mes Favoris — CAMU SERVICES</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mes favoris — CAMU SERVICES">
+
+  <title>CAMU SERVICES — Mes favoris</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Styles spécifiques à la page favoris -->
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f8f9fa; color: #222; padding-bottom: 80px; }
-    .top-header { background: #ffffff; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; height: 60px; }
-    .brand-container h1 { font-size: 17px; font-weight: 800; color: #111; }
-    .brand-container h1 span { color: #d32f2f; }
-    .container { max-width: 600px; margin: 0 auto; padding: 30px 15px; }
-    .empty-state { background: #ffffff; border-radius: 12px; padding: 40px 20px; border: 1px solid #e0e0e0; text-align: center; }
-    .empty-state i { font-size: 50px; color: #fbc02d; margin-bottom: 15px; }
-    .empty-state h2 { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 8px; }
-    .empty-state p { font-size: 12px; color: #666; margin-bottom: 20px; }
-    .btn-explore { display: inline-block; background: #d32f2f; color: #ffffff; padding: 10px 22px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: bold; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
+    /* =====================================================
+       GRILLE DES FAVORIS
+       ===================================================== */
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .service-image {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .service-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #cccccc;
+      background: linear-gradient(135deg, #f0f0f0, #dddddd);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #ff9800;
+      color: #ffffff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .service-content {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      background: var(--red-light);
+      color: var(--red);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      align-self: flex-start;
+    }
+
+    .service-content h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .service-description {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .service-location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .service-location i {
+      color: var(--red);
+    }
+
+    .service-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .service-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .service-status i {
+      font-size: 9px;
+      animation: pulse-status 2s infinite;
+    }
+
+    @keyframes pulse-status {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #ff9800;
+      font-weight: 700;
+    }
+
+    .rating i {
+      font-size: 11px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .btn-detail {
+      flex: 1;
+      min-width: 100px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--red);
+      color: #ffffff;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-detail:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-whatsapp-sm {
+      flex: 1;
+      min-width: 100px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--whatsapp);
+      color: #ffffff;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-whatsapp-sm:hover {
+      background: var(--whatsapp-dark);
+    }
+
+    .btn-whatsapp-sm i {
+      font-size: 14px;
+    }
+
+    .btn-remove {
+      width: 40px;
+      min-width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-remove:hover {
+      background: var(--red-light);
+      border-color: #e6aaaa;
+      color: var(--red);
+    }
+
+    /* =====================================================
+       ÉTATS
+       ===================================================== */
+    .loading-state,
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      color: var(--muted);
+    }
+
+    .loading-state i,
+    .empty-state i {
+      font-size: 40px;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
+
+    .empty-state h2 {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+    }
+
+    .btn-connect {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 15px;
+    }
+
+    .btn-connect:hover {
+      background: var(--red-dark);
+    }
   </style>
 </head>
+
 <body>
-  <header class="top-header">
-    <a href="index.html" style="color:#333; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="brand-container">
-      <h1>CAMU <span>SERVICES</span></h1>
-    </div>
-    <div style="width: 18px;"></div>
+
+  <!-- HEADER -->
+  <header class="top-bar">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
+      CAMU <span>SERVICES</span>
+    </a>
+
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
+      <i class="fa-solid fa-user"></i>
+    </a>
   </header>
-  <main class="container">
-    <div class="empty-state">
-      <i class="fa-solid fa-star"></i>
-      <h2>Aucun favori pour le moment</h2>
-      <p>Cliquez sur l'étoile d'une annonce pour la retrouver facilement ici.</p>
-      <a href="index.html" class="btn-explore">Parcourir les annonces</a>
+
+  <!-- MENU LATÉRAL -->
+  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar-header">
+      CAMU SERVICES
     </div>
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
+      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
+      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
+      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
+      <li><a href="favoris.html" class="active-link"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
+      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
+      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
+      <li><a href="profil.html"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
+      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="container">
+
+    <!-- ÉTAT CHARGEMENT -->
+    <div id="loadingState" class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Chargement de vos favoris...</p>
+    </div>
+
+    <!-- ÉTAT VIDE / NON CONNECTÉ -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <i class="fa-regular fa-heart"></i>
+      <h2 id="emptyTitle">Aucun favori</h2>
+      <p id="emptyText">Vous n'avez pas encore ajouté de services à vos favoris.</p>
+      <a href="recherche.html" class="btn-connect" id="btnBrowse">
+        <i class="fa-solid fa-magnifying-glass"></i> Découvrir des services
+      </a>
+    </div>
+
+    <!-- GRILLE FAVORIS -->
+    <div id="favoritesContainer" class="favorites-grid">
+      <!-- Les favoris seront injectés ici -->
+    </div>
+
   </main>
-  <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html" class="active"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+
+  <!-- NAVIGATION MOBILE -->
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="explorer.html">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explorer</span>
+    </a>
   </nav>
+
+  <!-- LOGIQUE FIREBASE -->
+  <script type="module">
+    import { auth, db, obtenirFavoris, retirerFavori, deconnexion, onAuthStateChanged, formaterNumeroWhatsApp, genererMessageWhatsApp } from "./app.js";
+    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    console.log("Script favoris chargé !");
+
+    // Éléments DOM
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    const favoritesContainer = document.getElementById('favoritesContainer');
+    const emptyTitle = document.getElementById('emptyTitle');
+    const emptyText = document.getElementById('emptyText');
+    const btnBrowse = document.getElementById('btnBrowse');
+    const logoutMenuItem = document.getElementById('logoutMenuItem');
+    const logoutSidebar = document.getElementById('logoutSidebar');
+
+    // Fonction pour charger les favoris
+    async function loadFavorites() {
+      loadingState.style.display = 'block';
+      favoritesContainer.innerHTML = '';
+      emptyState.style.display = 'none';
+
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Vous n'êtes pas connecté";
+          emptyText.textContent = "Connectez-vous pour voir vos favoris.";
+          btnBrowse.textContent = "Se connecter";
+          btnBrowse.href = "connexion.html";
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        // Récupérer les favoris de l'utilisateur
+        const favResult = await obtenirFavoris();
+        if (!favResult.success) {
+          throw new Error(favResult.error || "Erreur lors de la récupération des favoris");
+        }
+
+        const favorisIds = favResult.favoris; // tableau d'IDs de services
+        if (favorisIds.length === 0) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Aucun favori";
+          emptyText.textContent = "Vous n'avez pas encore ajouté de services à vos favoris.";
+          btnBrowse.textContent = "Découvrir des services";
+          btnBrowse.href = "recherche.html";
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        // Récupérer les détails de chaque service
+        const servicesPromises = favorisIds.map(id => getDoc(doc(db, 'services', id)));
+        const servicesSnapshots = await Promise.all(servicesPromises);
+
+        let html = '';
+        const servicesExistants = [];
+
+        servicesSnapshots.forEach(snap => {
+          if (snap.exists()) {
+            const service = { id: snap.id, ...snap.data() };
+            servicesExistants.push(service);
+
+            const categorie = service.categorie || service.category || 'Service';
+            const titre = service.titre || service.nom || service.title || 'Sans titre';
+            const description = service.description || 'Aucune description disponible.';
+            const localisation = service.localisation || service.location || 'Disponible localement';
+            const note = service.note || service.rating || '4.8';
+            const imageUrl = service.imageUrl || service.image || '';
+            const whatsapp = service.whatsapp || service.telephone || '';
+
+            let whatsappBtn = '';
+            if (whatsapp) {
+              const message = genererMessageWhatsApp(service, 'contact');
+              const lien = `https://wa.me/${formaterNumeroWhatsApp(whatsapp)}?text=${encodeURIComponent(message)}`;
+              whatsappBtn = `
+                <a href="${lien}" target="_blank" class="btn-whatsapp-sm">
+                  <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+              `;
+            }
+
+            html += `
+              <article class="service-card" data-service-id="${service.id}">
+                <div class="service-image">
+                  ${imageUrl ? `<img src="${imageUrl}" alt="${titre}" loading="lazy">` : `<div class="service-placeholder"><i class="fa-solid fa-store"></i></div>`}
+                  <span class="featured-badge"><i class="fa-solid fa-star"></i> ${service.featured || service.sponsorise ? 'Sponsorisé' : 'Service'}</span>
+                </div>
+                <div class="service-content">
+                  <span class="badge-cat">${categorie}</span>
+                  <h3>${titre}</h3>
+                  <p class="service-description">${description}</p>
+                  <p class="service-location"><i class="fa-solid fa-location-dot"></i> ${localisation}</p>
+                  <div class="service-footer">
+                    <span class="service-status"><i class="fa-solid fa-circle"></i> Disponible</span>
+                    <span class="rating"><i class="fa-solid fa-star"></i> ${note}</span>
+                  </div>
+                  <div class="card-actions">
+                    <a href="entreprise.html?id=${service.id}" class="btn-detail">Voir le profil</a>
+                    ${whatsappBtn}
+                    <button class="btn-remove" data-service-id="${service.id}" title="Retirer des favoris">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            `;
+          }
+        });
+
+        if (servicesExistants.length === 0) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Aucun favori valide";
+          emptyText.textContent = "Certains services de vos favoris ne sont plus disponibles.";
+          btnBrowse.textContent = "Découvrir des services";
+          btnBrowse.href = "recherche.html";
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        favoritesContainer.innerHTML = html;
+        attachRemoveEvents();
+
+        loadingState.style.display = 'none';
+        emptyState.style.display = 'none';
+      } catch (error) {
+        console.error("Erreur chargement favoris :", error);
+        loadingState.style.display = 'none';
+        emptyTitle.textContent = "Erreur";
+        emptyText.textContent = "Impossible de charger vos favoris.";
+        btnBrowse.textContent = "Réessayer";
+        btnBrowse.href = "favoris.html";
+        emptyState.style.display = 'block';
+      }
+    }
+
+    // Attacher les événements de suppression
+    function attachRemoveEvents() {
+      document.querySelectorAll('.btn-remove').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const serviceId = this.dataset.serviceId;
+          if (!serviceId) return;
+
+          const card = this.closest('.service-card');
+          const resultat = await retirerFavori(serviceId);
+          if (resultat.success) {
+            // Animation de suppression
+            card.style.transition = 'opacity 0.3s ease';
+            card.style.opacity = '0';
+            setTimeout(() => {
+              card.remove();
+              // Vérifier s'il reste des favoris
+              if (favoritesContainer.children.length === 0) {
+                emptyTitle.textContent = "Aucun favori";
+                emptyText.textContent = "Vous n'avez pas encore ajouté de services à vos favoris.";
+                btnBrowse.textContent = "Découvrir des services";
+                btnBrowse.href = "recherche.html";
+                emptyState.style.display = 'block';
+              }
+            }, 300);
+          } else {
+            alert("Erreur lors de la suppression du favori.");
+          }
+        });
+      });
+    }
+
+    // Gestion de l'authentification
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        logoutMenuItem.style.display = 'block';
+        loadFavorites();
+      } else {
+        logoutMenuItem.style.display = 'none';
+        loadingState.style.display = 'none';
+        emptyTitle.textContent = "Vous n'êtes pas connecté";
+        emptyText.textContent = "Connectez-vous pour voir vos favoris.";
+        btnBrowse.textContent = "Se connecter";
+        btnBrowse.href = "connexion.html";
+        emptyState.style.display = 'block';
+        favoritesContainer.innerHTML = '';
+      }
+    });
+
+    // Déconnexion
+    if (logoutSidebar) {
+      logoutSidebar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await deconnexion();
+        window.location.href = 'index.html';
+      });
+    }
+
+    // Gestion du menu latéral
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', function() {
+        const opened = sidebar.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', !opened);
+          icon.classList.toggle('fa-xmark', opened);
+        }
+      });
+
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          sidebar.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-xmark');
+          }
+        });
+      });
+    }
+  </script>
+
 </body>
 </html>
