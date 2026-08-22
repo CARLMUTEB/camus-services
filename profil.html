@@ -3,165 +3,28 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<title>CAMU SERVICES — Mon profil</title>
+  <title>CAMU SERVICES — Mon profil</title>
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
->
 
-<link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  >
 
-<style>
-
-.profile-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 25px 15px 110px;
-}
-
-.profile-card {
-  background: var(--card, #fff);
-  border: 1px solid var(--border, #ddd);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,.08);
-}
-
-.profile-header {
-  padding: 35px 20px;
-  text-align: center;
-  background: #d32f2f;
-  color: white;
-}
-
-.profile-avatar {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  background: white;
-  color: #d32f2f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  overflow: hidden;
-}
-
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-header h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.profile-header p {
-  margin: 7px 0 0;
-  opacity: .9;
-  font-size: 13px;
-}
-
-.profile-body {
-  padding: 25px 20px;
-}
-
-.profile-row {
-  display: flex;
-  gap: 15px;
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.profile-row:last-child {
-  border-bottom: none;
-}
-
-.profile-row i {
-  width: 25px;
-  color: #d32f2f;
-  font-size: 18px;
-}
-
-.profile-info {
-  flex: 1;
-}
-
-.profile-label {
-  display: block;
-  font-size: 11px;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.profile-value {
-  font-size: 14px;
-  font-weight: 700;
-  color: #222;
-  word-break: break-word;
-}
-
-.profile-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.profile-actions button,
-.profile-actions a {
-  flex: 1;
-  min-height: 46px;
-  border-radius: 10px;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7px;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.btn-edit {
-  background: #d32f2f;
-  color: white;
-}
-
-.btn-logout {
-  background: #f5f5f5;
-  color: #d32f2f;
-  border: 1px solid #ddd !important;
-}
-
-.profile-loading {
-  text-align: center;
-  padding: 50px 20px;
-}
-
-.profile-error {
-  text-align: center;
-  padding: 40px 20px;
-  color: #c62828;
-}
-
-.hidden {
-  display: none !important;
-}
-
-</style>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 </head>
+
 
 <body>
 
@@ -173,266 +36,383 @@
     type="button"
     onclick="history.back()"
   >
+
     <i class="fa-solid fa-arrow-left"></i>
+
   </button>
 
+
   <div class="logo-text">
+
     CAMU <span>SERVICES</span>
+
   </div>
+
 
   <div class="spacer"></div>
 
 </header>
 
 
-<main class="profile-page">
 
-  <div
-    id="profileLoading"
-    class="profile-card profile-loading"
+<main class="container">
+
+  <section
+    style="
+      max-width:600px;
+      margin:30px auto;
+    "
   >
 
-    <i class="fa-solid fa-spinner fa-spin"></i>
 
-    <p>
-      Vérification de votre session...
-    </p>
+    <!-- =================================================
+         CHARGEMENT
+         ================================================= -->
 
-  </div>
-
-
-  <div
-    id="profileError"
-    class="profile-card profile-error hidden"
-  >
-
-    <i class="fa-solid fa-triangle-exclamation"></i>
-
-    <h2>Vous n'êtes pas connecté</h2>
-
-    <p>
-      Connectez-vous pour accéder à votre profil.
-    </p>
-
-    <a
-      href="connexion.html"
-      class="btn-edit"
+    <div
+      id="profilLoading"
       style="
-        display:inline-flex;
-        padding:12px 20px;
-        border-radius:10px;
-        text-decoration:none;
-        color:white;
+        text-align:center;
+        padding:40px 20px;
       "
     >
-      Se connecter
-    </a>
 
-  </div>
+      <i
+        class="fa-solid fa-spinner fa-spin"
+        style="
+          font-size:30px;
+          color:#d32f2f;
+        "
+      ></i>
 
 
-  <div
-    id="profileCard"
-    class="profile-card hidden"
-  >
-
-    <div class="profile-header">
-
-      <div class="profile-avatar">
-
-        <img
-          id="profilePhoto"
-          alt="Photo de profil"
-          style="display:none;"
-        >
-
-        <i
-          id="defaultAvatar"
-          class="fa-solid fa-user"
-        ></i>
-
-      </div>
-
-      <h1 id="profileName">
-        Mon profil
-      </h1>
-
-      <p id="profileEmail">
-        -
+      <p>
+        Vérification de votre compte...
       </p>
 
     </div>
 
 
-    <div class="profile-body">
+
+    <!-- =================================================
+         PROFIL CONNECTÉ
+         ================================================= -->
+
+    <div
+      id="profilConnecte"
+      style="display:none;"
+    >
 
 
-      <div class="profile-row">
-
-        <i class="fa-solid fa-user"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            Nom complet
-          </span>
-
-          <span
-            id="profileFullName"
-            class="profile-value"
-          >
-            -
-          </span>
-
-        </div>
-
-      </div>
+      <div
+        style="
+          background:var(--card,#fff);
+          border:1px solid var(--border,#ddd);
+          border-radius:15px;
+          padding:25px 20px;
+          box-shadow:0 5px 20px rgba(0,0,0,.08);
+        "
+      >
 
 
-      <div class="profile-row">
-
-        <i class="fa-solid fa-envelope"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            Adresse email
-          </span>
-
-          <span
-            id="profileEmailValue"
-            class="profile-value"
-          >
-            -
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-row">
-
-        <i class="fa-solid fa-phone"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            Téléphone
-          </span>
-
-          <span
-            id="profilePhone"
-            class="profile-value"
-          >
-            Non renseigné
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-row">
-
-        <i class="fa-brands fa-whatsapp"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            WhatsApp
-          </span>
-
-          <span
-            id="profileWhatsapp"
-            class="profile-value"
-          >
-            Non renseigné
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-row">
-
-        <i class="fa-solid fa-location-dot"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            Localisation
-          </span>
-
-          <span
-            id="profileLocation"
-            class="profile-value"
-          >
-            Non renseignée
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-row">
-
-        <i class="fa-solid fa-user-tag"></i>
-
-        <div class="profile-info">
-
-          <span class="profile-label">
-            Type de compte
-          </span>
-
-          <span
-            id="profileRole"
-            class="profile-value"
-          >
-            Client
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="profile-actions">
-
-        <a
-          href="parametres.html"
-          class="btn-edit"
+        <div
+          style="
+            text-align:center;
+            margin-bottom:25px;
+          "
         >
 
-          <i class="fa-solid fa-gear"></i>
+          <div
+            id="avatar"
+            style="
+              width:85px;
+              height:85px;
+              margin:auto;
+              border-radius:50%;
+              background:#ffebee;
+              color:#d32f2f;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:34px;
+              font-weight:800;
+            "
+          >
 
-          Paramètres
+            <i class="fa-solid fa-user"></i>
 
-        </a>
+          </div>
 
+
+          <h1
+            id="nomUtilisateur"
+            style="
+              font-size:22px;
+              margin:15px 0 5px;
+            "
+          >
+            Mon compte
+          </h1>
+
+
+          <p
+            id="emailUtilisateur"
+            style="
+              color:#777;
+              font-size:14px;
+              margin:0;
+            "
+          >
+          </p>
+
+        </div>
+
+
+
+        <!-- État -->
+
+        <div
+          style="
+            padding:13px;
+            border-radius:10px;
+            background:#e8f5e9;
+            color:#2e7d32;
+            text-align:center;
+            margin-bottom:20px;
+            font-weight:700;
+          "
+        >
+
+          <i class="fa-solid fa-circle-check"></i>
+
+          Compte connecté
+
+        </div>
+
+
+
+        <!-- Informations -->
+
+        <div
+          style="
+            display:grid;
+            gap:12px;
+          "
+        >
+
+          <div
+            style="
+              padding:14px;
+              background:#f7f7f7;
+              border-radius:10px;
+            "
+          >
+
+            <strong>
+              <i class="fa-solid fa-user"></i>
+              Nom
+            </strong>
+
+            <div
+              id="infoNom"
+              style="
+                margin-top:5px;
+                color:#666;
+              "
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div
+            style="
+              padding:14px;
+              background:#f7f7f7;
+              border-radius:10px;
+            "
+          >
+
+            <strong>
+              <i class="fa-solid fa-envelope"></i>
+              Email
+            </strong>
+
+            <div
+              id="infoEmail"
+              style="
+                margin-top:5px;
+                color:#666;
+              "
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div
+            style="
+              padding:14px;
+              background:#f7f7f7;
+              border-radius:10px;
+            "
+          >
+
+            <strong>
+              <i class="fa-solid fa-phone"></i>
+              Téléphone
+            </strong>
+
+            <div
+              id="infoTelephone"
+              style="
+                margin-top:5px;
+                color:#666;
+              "
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div
+            style="
+              padding:14px;
+              background:#f7f7f7;
+              border-radius:10px;
+            "
+          >
+
+            <strong>
+              <i class="fa-solid fa-user-tag"></i>
+              Type de compte
+            </strong>
+
+            <div
+              id="infoRole"
+              style="
+                margin-top:5px;
+                color:#666;
+              "
+            >
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Déconnexion -->
 
         <button
+          id="btnDeconnexion"
           type="button"
-          id="btnLogout"
-          class="btn-logout"
+          style="
+            width:100%;
+            margin-top:25px;
+            min-height:48px;
+            border:none;
+            border-radius:10px;
+            background:#d32f2f;
+            color:white;
+            font-weight:800;
+            cursor:pointer;
+          "
         >
 
           <i class="fa-solid fa-right-from-bracket"></i>
 
-          Déconnexion
+          Se déconnecter
 
         </button>
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NON CONNECTÉ
+         ================================================= -->
+
+    <div
+      id="profilNonConnecte"
+      style="
+        display:none;
+        text-align:center;
+        padding:40px 20px;
+      "
+    >
+
+      <div
+        style="
+          width:80px;
+          height:80px;
+          margin:auto;
+          border-radius:50%;
+          background:#ffebee;
+          color:#d32f2f;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:30px;
+        "
+      >
+
+        <i class="fa-solid fa-lock"></i>
 
       </div>
 
 
+      <h2>
+        Vous n'êtes pas connecté
+      </h2>
+
+
+      <p style="color:#777;">
+
+        Connectez-vous pour accéder à votre profil.
+
+      </p>
+
+
+      <a
+        href="connexion.html"
+        style="
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          gap:8px;
+          min-height:46px;
+          padding:0 25px;
+          background:#d32f2f;
+          color:white;
+          border-radius:10px;
+          text-decoration:none;
+          font-weight:800;
+        "
+      >
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        Se connecter
+
+      </a>
+
     </div>
 
-  </div>
+
+  </section>
 
 </main>
+
 
 
 <nav class="bottom-nav">
@@ -464,10 +444,7 @@
   </a>
 
 
-  <a
-    href="explorer.html"
-    class="active"
-  >
+  <a href="explorer.html">
 
     <i class="fa-solid fa-compass"></i>
 
@@ -478,210 +455,239 @@
 </nav>
 
 
+
 <script type="module">
 
-import {
-  auth,
-  deconnexion
-} from "./app.js";
+  import {
+
+    auth,
+
+    attendreUtilisateurConnecte,
+    obtenirProfil,
+    deconnexion
+
+  } from "./app.js";
 
 
-const loading =
-  document.getElementById(
-    "profileLoading"
-  );
-
-const errorBox =
-  document.getElementById(
-    "profileError"
-  );
-
-const profileCard =
-  document.getElementById(
-    "profileCard"
-  );
+  const loading =
+    document.getElementById(
+      "profilLoading"
+    );
 
 
-function afficherProfil(
-  user,
-  userData
-) {
-
-  loading.classList.add(
-    "hidden"
-  );
-
-  errorBox.classList.add(
-    "hidden"
-  );
-
-  profileCard.classList.remove(
-    "hidden"
-  );
+  const connecte =
+    document.getElementById(
+      "profilConnecte"
+    );
 
 
-  const prenom =
-    userData?.prenom || "";
+  const nonConnecte =
+    document.getElementById(
+      "profilNonConnecte"
+    );
+
 
   const nom =
-    userData?.nom || "";
-
-
-  const nomComplet =
-    `${prenom} ${nom}`.trim() ||
-    user.displayName ||
-    "Utilisateur CAMU";
-
-
-  document.getElementById(
-    "profileName"
-  ).textContent =
-    nomComplet;
-
-
-  document.getElementById(
-    "profileEmail"
-  ).textContent =
-    user.email || "-";
-
-
-  document.getElementById(
-    "profileFullName"
-  ).textContent =
-    nomComplet;
-
-
-  document.getElementById(
-    "profileEmailValue"
-  ).textContent =
-    user.email || "-";
-
-
-  document.getElementById(
-    "profilePhone"
-  ).textContent =
-    userData?.telephone ||
-    "Non renseigné";
-
-
-  document.getElementById(
-    "profileWhatsapp"
-  ).textContent =
-    userData?.whatsapp ||
-    "Non renseigné";
-
-
-  document.getElementById(
-    "profileLocation"
-  ).textContent =
-    userData?.localisation ||
-    "Non renseignée";
-
-
-  document.getElementById(
-    "profileRole"
-  ).textContent =
-    userData?.role ||
-    "client";
-
-
-  const photo =
     document.getElementById(
-      "profilePhoto"
+      "nomUtilisateur"
     );
 
-  const avatar =
+
+  const email =
     document.getElementById(
-      "defaultAvatar"
+      "emailUtilisateur"
     );
 
 
-  if (user.photoURL) {
-
-    photo.src =
-      user.photoURL;
-
-    photo.style.display =
-      "block";
-
-    avatar.style.display =
-      "none";
-
-  } else {
-
-    photo.style.display =
-      "none";
-
-    avatar.style.display =
-      "block";
-
-  }
-
-}
-
-
-/* =====================================================
-   ÉCOUTER FIREBASE
-   ===================================================== */
-
-document.addEventListener(
-  "camu-auth-changed",
-  (event) => {
-
-    const user =
-      event.detail?.user ||
-      null;
-
-    const userData =
-      event.detail?.userData ||
-      {};
-
-
-    if (!user) {
-
-      loading.classList.add(
-        "hidden"
-      );
-
-      profileCard.classList.add(
-        "hidden"
-      );
-
-      errorBox.classList.remove(
-        "hidden"
-      );
-
-      return;
-    }
-
-
-    afficherProfil(
-      user,
-      userData
+  const infoNom =
+    document.getElementById(
+      "infoNom"
     );
 
-  }
-);
+
+  const infoEmail =
+    document.getElementById(
+      "infoEmail"
+    );
 
 
-/* =====================================================
-   DÉCONNEXION
-   ===================================================== */
+  const infoTelephone =
+    document.getElementById(
+      "infoTelephone"
+    );
 
-document
-  .getElementById("btnLogout")
-  .addEventListener(
-    "click",
-    async () => {
 
-      const confirmation =
-        confirm(
-          "Voulez-vous vraiment vous déconnecter ?"
+  const infoRole =
+    document.getElementById(
+      "infoRole"
+    );
+
+
+  const btnDeconnexion =
+    document.getElementById(
+      "btnDeconnexion"
+    );
+
+
+  async function chargerProfil() {
+
+    try {
+
+      const user =
+        await attendreUtilisateurConnecte(
+          8000
         );
 
-      if (!confirmation) {
+
+      console.log(
+        "Profil — utilisateur :",
+        user
+      );
+
+
+      loading.style.display =
+        "none";
+
+
+      if (!user) {
+
+        nonConnecte.style.display =
+          "block";
+
         return;
+
       }
+
+
+      connecte.style.display =
+        "block";
+
+
+      /*
+       * Informations Firebase Authentication
+       */
+
+      const nomFirebase =
+        user.displayName ||
+        "Utilisateur";
+
+
+      nom.textContent =
+        nomFirebase;
+
+
+      email.textContent =
+        user.email || "";
+
+
+      infoEmail.textContent =
+        user.email || "—";
+
+
+      /*
+       * Profil Firestore
+       */
+
+      const resultat =
+        await obtenirProfil(
+          user.uid
+        );
+
+
+      if (resultat.success) {
+
+        const data =
+          resultat.data;
+
+
+        const nomComplet =
+          (
+            data.prenom ||
+            ""
+          ) +
+          " " +
+          (
+            data.nom ||
+            ""
+          );
+
+
+        if (nomComplet.trim()) {
+
+          nom.textContent =
+            nomComplet.trim();
+
+          infoNom.textContent =
+            nomComplet.trim();
+
+        } else {
+
+          infoNom.textContent =
+            "Non renseigné";
+
+        }
+
+
+        infoTelephone.textContent =
+          data.telephone ||
+          data.whatsapp ||
+          "Non renseigné";
+
+
+        infoRole.textContent =
+          data.role ||
+          "client";
+
+      } else {
+
+        infoNom.textContent =
+          user.displayName ||
+          "Non renseigné";
+
+        infoTelephone.textContent =
+          "Non renseigné";
+
+        infoRole.textContent =
+          "client";
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement profil :",
+        error
+      );
+
+
+      loading.style.display =
+        "none";
+
+
+      nonConnecte.style.display =
+        "block";
+
+    }
+
+  }
+
+
+  /*
+   * Déconnexion
+   */
+
+  btnDeconnexion.addEventListener(
+    "click",
+    async function() {
+
+      btnDeconnexion.disabled =
+        true;
+
+
+      btnDeconnexion.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Déconnexion...';
+
 
       await deconnexion();
 
@@ -689,32 +695,10 @@ document
   );
 
 
-/* =====================================================
-   SÉCURITÉ : CAS OÙ FIREBASE EST DÉJÀ CONNECTÉ
-   ===================================================== */
-
-setTimeout(
-  () => {
-
-    if (
-      auth.currentUser &&
-      profileCard.classList.contains(
-        "hidden"
-      )
-    ) {
-
-      afficherProfil(
-        auth.currentUser,
-        {}
-      );
-
-    }
-
-  },
-  1500
-);
+  chargerProfil();
 
 </script>
+
 
 </body>
 </html>
