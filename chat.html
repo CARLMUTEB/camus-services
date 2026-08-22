@@ -1,774 +1,477 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chat avec les prestataires — CAMU SERVICES">
 
-<meta charset="UTF-8">
+  <title>CAMU SERVICES — Chat</title>
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<title>CAMU SERVICES — Chat</title>
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet"
-      href="style.css">
+  <!-- Styles spécifiques à la page chat -->
+  <style>
+    /* =====================================================
+       LISTE DES CONVERSATIONS
+       ===================================================== */
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-<style>
+    .chat-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
 
-.chat-page {
-  padding-bottom: 150px;
-}
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
 
-.chat-wrapper {
-  width: min(100%, 720px);
-  margin: auto;
-}
+    .chat-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
-.chat-header-card {
-  background:#111;
-  color:#fff;
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:12px;
-}
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+    }
 
-.chat-header-card h2 {
-  font-size:18px;
-  margin-bottom:5px;
-}
+    .chat-info h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.chat-header-card p {
-  color:#aaa;
-  font-size:12px;
-}
+    .chat-info p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.chat-service {
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:12px;
-  box-shadow:var(--shadow);
-}
+    .btn-chat-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 8px 15px;
+      background: var(--whatsapp);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
 
-.chat-service-title {
-  font-size:15px;
-  font-weight:900;
-  margin-bottom:5px;
-}
+    .btn-chat-whatsapp:hover {
+      background: var(--whatsapp-dark);
+    }
 
-.chat-service-price {
-  font-size:12px;
-  color:var(--red);
-  font-weight:bold;
-}
+    .btn-chat-whatsapp i {
+      font-size: 16px;
+    }
 
-.messages-list {
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:15px;
-  min-height:420px;
-  max-height:calc(100vh - 350px);
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  box-shadow:var(--shadow);
-}
+    /* =====================================================
+       ÉTATS
+       ===================================================== */
+    .loading-state,
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      margin-top: 20px;
+    }
 
-.message {
-  max-width:82%;
-  padding:10px 13px;
-  border-radius:15px;
-  background:#f1f3f5;
-  color:#222;
-  align-self:flex-start;
-  word-break:break-word;
-}
+    .loading-state i,
+    .empty-state i {
+      font-size: 40px;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
 
-.my-message {
-  background:var(--red);
-  color:#fff;
-  align-self:flex-end;
-}
+    .empty-state h2 {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
 
-.sender {
-  font-size:10px;
-  font-weight:bold;
-  opacity:.65;
-  margin-bottom:4px;
-}
+    .empty-state p {
+      font-size: 13px;
+    }
 
-.message-text {
-  font-size:13px;
-  line-height:1.5;
-}
+    .btn-connect {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 15px;
+    }
 
-.empty-chat {
-  margin:auto;
-  text-align:center;
-  color:#999;
-  font-size:12px;
-  line-height:1.6;
-}
+    .btn-connect:hover {
+      background: var(--red-dark);
+    }
 
-.chat-composer {
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:72px;
-  background:#fff;
-  border-top:1px solid var(--border);
-  padding:10px;
-  z-index:900;
-}
+    /* =====================================================
+       EN-TÊTE DE PAGE
+       ===================================================== */
+    .page-header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
 
-.chat-form {
-  width:min(100%,720px);
-  margin:auto;
-  display:flex;
-  gap:8px;
-}
+    .page-header .icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 30px;
+      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+    }
 
-.chat-form input {
-  flex:1;
-  min-width:0;
-}
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
 
-.send-btn {
-  width:48px;
-  border:0;
-  border-radius:10px;
-  background:var(--red);
-  color:#fff;
-  font-size:16px;
-  cursor:pointer;
-}
-
-.send-btn:disabled {
-  opacity:.6;
-}
-
-@media(max-width:480px) {
-
-  .container {
-    width:94%;
-  }
-
-  .messages-list {
-    min-height:380px;
-    max-height:calc(100vh - 335px);
-  }
-
-  .message {
-    max-width:88%;
-  }
-
-}
-
-</style>
-
+    .page-header p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+  </style>
 </head>
-
 
 <body>
 
-
-<header class="top-bar">
-
-  <a href="index.html"
-     style="color:#fff;font-size:19px;">
-
-    <i class="fa-solid fa-arrow-left"></i>
-
-  </a>
-
-
-  <div class="logo-text">
-
-    CAMU <span>SERVICES</span>
-
-  </div>
-
-
-  <a href="profil.html"
-     style="color:#fff;font-size:18px;">
-
-    <i class="fa-solid fa-user"></i>
-
-  </a>
-
-</header>
-
-
-<main class="container chat-page">
-
-<div class="chat-wrapper">
-
-
-  <!-- TITRE -->
-
-  <section class="chat-header-card">
-
-    <h2>
-
-      <i class="fa-solid fa-comments"
-         style="color:#ef5350;"></i>
-
-      Messagerie
-
-    </h2>
-
-    <p>
-      Discutez directement avec le prestataire.
-    </p>
-
-  </section>
-
-
-  <!-- SERVICE -->
-
-  <div
-    id="serviceInfoBox"
-    class="chat-service">
-
-    <div class="chat-service-title">
-
-      Chargement du service...
-
-    </div>
-
-  </div>
-
-
-  <!-- MESSAGES -->
-
-  <div
-    id="messagesList"
-    class="messages-list">
-
-    <p class="empty-chat">
-
-      <i class="fa-solid fa-spinner fa-spin"
-         style="font-size:25px;"></i>
-
-      <br><br>
-
-      Chargement des messages...
-
-    </p>
-
-  </div>
-
-</div>
-
-</main>
-
-
-<!-- COMPOSER -->
-
-<div class="chat-composer">
-
-  <form
-    id="chatForm"
-    class="chat-form">
-
-    <input
-      type="text"
-      id="messageInput"
-      placeholder="Écrivez votre message..."
-      autocomplete="off"
-      maxlength="1000"
-      required>
-
-    <button
-      type="submit"
-      class="send-btn">
-
-      <i class="fa-solid fa-paper-plane"></i>
-
+  <!-- HEADER -->
+  <header class="top-bar">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
     </button>
 
-  </form>
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
+      CAMU <span>SERVICES</span>
+    </a>
 
-</div>
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
+      <i class="fa-solid fa-user"></i>
+    </a>
+  </header>
 
+  <!-- MENU LATÉRAL -->
+  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar-header">
+      CAMU SERVICES
+    </div>
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
+      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
+      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
+      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
+      <li><a href="favoris.html"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
+      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
+      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
+      <li><a href="profil.html"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
+      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
+      </li>
+    </ul>
+  </aside>
 
-<!-- NAVIGATION -->
+  <!-- CONTENU PRINCIPAL -->
+  <main class="container">
 
-<nav class="bottom-nav">
-
-  <a href="index.html">
-
-    <i class="fa-solid fa-house"></i>
-
-    <span>Accueil</span>
-
-  </a>
-
-
-  <a href="publier.html">
-
-    <i class="fa-solid fa-circle-plus"></i>
-
-    <span>Publier</span>
-
-  </a>
-
-
-  <a href="chat.html"
-     class="active">
-
-    <i class="fa-solid fa-comments"></i>
-
-    <span>Chat</span>
-
-  </a>
-
-
-  <a href="profil.html">
-
-    <i class="fa-solid fa-user"></i>
-
-    <span>Profil</span>
-
-  </a>
-
-</nav>
-
-
-<script type="module">
-
-import {
-  db,
-  auth
-} from "./app.js";
-
-
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-  serverTimestamp,
-  doc,
-  getDoc
-} from
-"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-
-import {
-  onAuthStateChanged
-} from
-"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-let currentUser = null;
-
-
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
-
-
-const serviceId =
-  params.get("serviceId");
-
-
-const serviceBox =
-  document.getElementById(
-    "serviceInfoBox"
-  );
-
-
-const messagesList =
-  document.getElementById(
-    "messagesList"
-  );
-
-
-/* SECURITY */
-
-function escapeHTML(value) {
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* SERVICE */
-
-async function chargerService() {
-
-  if (!serviceId) {
-
-    serviceBox.innerHTML = `
-
-      <div style="color:#c62828;font-size:13px;">
-
-        <i class="fa-solid fa-circle-exclamation"></i>
-
-        Aucun service sélectionné.
-
+    <!-- EN-TÊTE DE PAGE -->
+    <div class="page-header">
+      <div class="icon">
+        <i class="fa-brands fa-whatsapp"></i>
       </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  try {
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "services",
-          serviceId
-        )
-      );
-
-
-    if (!snap.exists()) {
-
-      serviceBox.innerHTML = `
-
-        <div class="chat-service-title"
-             style="color:#c62828;">
-
-          Service introuvable.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    const service =
-      snap.data();
-
-
-    serviceBox.innerHTML = `
-
-      <div class="chat-service-title">
-
-        <i class="fa-solid fa-briefcase"
-           style="color:var(--red);"></i>
-
-        ${escapeHTML(
-          service.titre || "Service"
-        )}
-
-      </div>
-
-      <div class="chat-service-price">
-
-        ${escapeHTML(
-          service.prix || "Sur devis"
-        )}
-
-      </div>
-
-    `;
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-  }
-
-}
-
-
-/* MESSAGES */
-
-function chargerMessages() {
-
-  if (!serviceId ||
-      !currentUser) return;
-
-
-  const q =
-    query(
-      collection(
-        db,
-        "messages"
-      ),
-      where(
-        "serviceId",
-        "==",
-        serviceId
-      )
-    );
-
-
-  onSnapshot(
-    q,
-    (snapshot) => {
-
-      const messages = [];
-
-
-      snapshot.forEach(
-        (messageDoc) => {
-
-          messages.push({
-            id:messageDoc.id,
-            ...messageDoc.data()
-          });
-
-        }
-      );
-
-
-      messages.sort(
-        (a,b) => {
-
-          const A =
-            a.createdAt?.seconds || 0;
-
-          const B =
-            b.createdAt?.seconds || 0;
-
-          return A-B;
-
-        }
-      );
-
-
-      if (!messages.length) {
-
-        messagesList.innerHTML = `
-
-          <p class="empty-chat">
-
-            <i class="fa-regular fa-comment-dots"
-               style="font-size:35px;"></i>
-
-            <br><br>
-
-            Aucun message pour le moment.
-
-            <br>
-
-            Commencez la conversation.
-
-          </p>
-
-        `;
-
-        return;
-
-      }
-
-
-      messagesList.innerHTML =
-        messages.map(
-          message => {
-
-            const isMe =
-              message.senderId ===
-              currentUser.uid;
-
-
-            return `
-
-              <div class="
-                message
-                ${isMe
-                  ? "my-message"
-                  : ""}
-              ">
-
-                <div class="sender">
-
-                  ${escapeHTML(
-                    isMe
-                      ? "Moi"
-                      : (
-                        message.senderName ||
-                        "Utilisateur"
-                      )
-                  )}
-
-                </div>
-
-                <div class="message-text">
-
-                  ${escapeHTML(
-                    message.text || ""
-                  )}
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        ).join("");
-
-
-      messagesList.scrollTop =
-        messagesList.scrollHeight;
-
-    },
-
-    (error) => {
-
-      console.error(error);
-
-      messagesList.innerHTML = `
-
-        <p class="empty-chat"
-           style="color:#c62828;">
-
-          Impossible de charger les messages.
-
-        </p>
-
-      `;
-
-    }
-
-  );
-
-}
-
-
-/* AUTH */
-
-onAuthStateChanged(
-  auth,
-  (user) => {
-
-    if (!user) {
-
-      window.location.href =
-        "connexion.html";
-
-      return;
-
-    }
-
-
-    currentUser = user;
-
-    chargerService();
-
-    chargerMessages();
-
-  }
-);
-
-
-/* ENVOI */
-
-document
-  .getElementById("chatForm")
-  .addEventListener(
-    "submit",
-    async (event) => {
-
-      event.preventDefault();
-
-
-      if (!currentUser ||
-          !serviceId) return;
-
-
-      const input =
-        document.getElementById(
-          "messageInput"
-        );
-
-
-      const text =
-        input.value.trim();
-
-
-      if (!text) return;
-
-
-      const button =
-        event.target.querySelector(
-          "button"
-        );
-
+      <h1>Discutez avec les prestataires</h1>
+      <p>
+        Utilisez WhatsApp pour contacter directement les services que vous avez enregistrés.
+      </p>
+    </div>
+
+    <!-- ÉTAT CHARGEMENT -->
+    <div id="loadingState" class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Chargement de vos contacts...</p>
+    </div>
+
+    <!-- ÉTAT VIDE / NON CONNECTÉ -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <i class="fa-regular fa-comments"></i>
+      <h2 id="emptyTitle">Aucun contact</h2>
+      <p id="emptyText">Ajoutez des services à vos favoris pour démarrer une conversation.</p>
+      <a href="recherche.html" class="btn-connect" id="btnBrowse">
+        <i class="fa-solid fa-magnifying-glass"></i> Découvrir des services
+      </a>
+    </div>
+
+    <!-- LISTE DES CONTACTS -->
+    <div id="chatList" class="chat-list">
+      <!-- Les contacts seront injectés ici -->
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION MOBILE -->
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html" class="active">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="explorer.html">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explorer</span>
+    </a>
+  </nav>
+
+  <!-- LOGIQUE FIREBASE -->
+  <script type="module">
+    import { auth, db, obtenirFavoris, deconnexion, onAuthStateChanged, formaterNumeroWhatsApp, genererMessageWhatsApp } from "./app.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    console.log("Script chat chargé !");
+
+    // Éléments DOM
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    const chatList = document.getElementById('chatList');
+    const emptyTitle = document.getElementById('emptyTitle');
+    const emptyText = document.getElementById('emptyText');
+    const btnBrowse = document.getElementById('btnBrowse');
+    const logoutMenuItem = document.getElementById('logoutMenuItem');
+    const logoutSidebar = document.getElementById('logoutSidebar');
+
+    // Fonction pour charger les contacts (services favoris)
+    async function loadChatContacts() {
+      loadingState.style.display = 'block';
+      chatList.innerHTML = '';
+      emptyState.style.display = 'none';
 
       try {
+        const user = auth.currentUser;
+        if (!user) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Vous n'êtes pas connecté";
+          emptyText.textContent = "Connectez-vous pour voir vos contacts et discuter avec les prestataires.";
+          btnBrowse.textContent = "Se connecter";
+          btnBrowse.href = "connexion.html";
+          emptyState.style.display = 'block';
+          return;
+        }
 
-        button.disabled = true;
+        // Récupérer les favoris de l'utilisateur
+        const favResult = await obtenirFavoris();
+        if (!favResult.success) {
+          throw new Error(favResult.error || "Erreur lors de la récupération des favoris");
+        }
 
+        const favorisIds = favResult.favoris;
+        if (favorisIds.length === 0) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Aucun contact";
+          emptyText.textContent = "Ajoutez des services à vos favoris pour démarrer une conversation.";
+          btnBrowse.textContent = "Découvrir des services";
+          btnBrowse.href = "recherche.html";
+          emptyState.style.display = 'block';
+          return;
+        }
 
-        await addDoc(
-          collection(
-            db,
-            "messages"
-          ),
-          {
+        // Récupérer les détails de chaque service
+        const servicesPromises = favorisIds.map(id => getDoc(doc(db, 'services', id)));
+        const servicesSnapshots = await Promise.all(servicesPromises);
 
-            text,
+        let html = '';
+        let contactsExistants = false;
 
-            senderId:
-              currentUser.uid,
+        servicesSnapshots.forEach(snap => {
+          if (snap.exists()) {
+            const service = { id: snap.id, ...snap.data() };
+            contactsExistants = true;
 
-            senderName:
-              currentUser.displayName ||
-              currentUser.email
-                ?.split("@")[0] ||
-              "Utilisateur",
+            const titre = service.titre || service.nom || service.title || 'Sans titre';
+            const description = service.description || 'Aucune description disponible.';
+            const imageUrl = service.imageUrl || service.image || '';
+            const whatsapp = service.whatsapp || service.telephone || '';
 
-            serviceId,
+            let whatsappLink = '#';
+            if (whatsapp) {
+              const message = genererMessageWhatsApp(service, 'contact');
+              const numeroFormate = formaterNumeroWhatsApp(whatsapp);
+              if (numeroFormate) {
+                whatsappLink = `https://wa.me/${numeroFormate}?text=${encodeURIComponent(message)}`;
+              }
+            }
 
-            createdAt:
-              serverTimestamp()
-
+            html += `
+              <div class="chat-item">
+                <div class="chat-avatar">
+                  ${imageUrl ? `<img src="${imageUrl}" alt="${titre}">` : `<i class="fa-solid fa-store"></i>`}
+                </div>
+                <div class="chat-info">
+                  <h3>${titre}</h3>
+                  <p>${description}</p>
+                </div>
+                <a href="${whatsappLink}" target="_blank" class="btn-chat-whatsapp">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  Discuter
+                </a>
+              </div>
+            `;
           }
-        );
+        });
 
+        if (!contactsExistants) {
+          loadingState.style.display = 'none';
+          emptyTitle.textContent = "Aucun contact valide";
+          emptyText.textContent = "Les services de vos favoris ne sont plus disponibles.";
+          btnBrowse.textContent = "Découvrir des services";
+          btnBrowse.href = "recherche.html";
+          emptyState.style.display = 'block';
+          return;
+        }
 
-        input.value = "";
-
-        input.focus();
-
+        chatList.innerHTML = html;
+        loadingState.style.display = 'none';
+        emptyState.style.display = 'none';
+      } catch (error) {
+        console.error("Erreur chargement chat :", error);
+        loadingState.style.display = 'none';
+        emptyTitle.textContent = "Erreur";
+        emptyText.textContent = "Impossible de charger vos contacts.";
+        btnBrowse.textContent = "Réessayer";
+        btnBrowse.href = "chat.html";
+        emptyState.style.display = 'block';
       }
-
-      catch(error) {
-
-        console.error(error);
-
-        alert(
-          "Impossible d'envoyer le message."
-        );
-
-      }
-
-
-      button.disabled = false;
-
     }
-  );
 
-</script>
+    // Gestion de l'authentification
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        logoutMenuItem.style.display = 'block';
+        loadChatContacts();
+      } else {
+        logoutMenuItem.style.display = 'none';
+        loadingState.style.display = 'none';
+        emptyTitle.textContent = "Vous n'êtes pas connecté";
+        emptyText.textContent = "Connectez-vous pour voir vos contacts et discuter avec les prestataires.";
+        btnBrowse.textContent = "Se connecter";
+        btnBrowse.href = "connexion.html";
+        emptyState.style.display = 'block';
+        chatList.innerHTML = '';
+      }
+    });
+
+    // Déconnexion
+    if (logoutSidebar) {
+      logoutSidebar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await deconnexion();
+        window.location.href = 'index.html';
+      });
+    }
+
+    // Gestion du menu latéral
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', function() {
+        const opened = sidebar.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', !opened);
+          icon.classList.toggle('fa-xmark', opened);
+        }
+      });
+
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          sidebar.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-xmark');
+          }
+        });
+      });
+    }
+  </script>
 
 </body>
 </html>
