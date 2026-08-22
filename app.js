@@ -1,6 +1,6 @@
 /* =========================================================
    CAMU SERVICES — APPLICATION PRINCIPALE
-   Version : 2.2 (avec persistance et corrections)
+   Version : 2.3 (corrigée et complète)
    ========================================================= */
 
 /* =========================================================
@@ -29,6 +29,7 @@ import {
   getDoc,
   doc,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
