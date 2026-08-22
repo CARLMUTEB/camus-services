@@ -1,1013 +1,720 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CAMU SERVICES — Mon profil</title>
+<meta charset="UTF-8">
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <link rel="stylesheet" href="style.css">
+<title>CAMU SERVICES — Mon profil</title>
 
-  <style>
-    .profile-page {
-      max-width: 700px;
-      margin: 0 auto;
-      padding-bottom: 100px;
-    }
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
 
-    .profile-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+<link rel="stylesheet" href="style.css">
 
-    .profile-cover {
-      height: 130px;
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
-      position: relative;
-    }
+<style>
 
-    .profile-avatar {
-      position: absolute;
-      left: 50%;
-      bottom: -45px;
-      transform: translateX(-50%);
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 5px solid var(--card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--red);
-      font-size: 38px;
-      box-shadow: 0 5px 15px rgba(0,0,0,.15);
-      overflow: hidden;
-    }
+.profile-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 25px 15px 110px;
+}
 
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.profile-card {
+  background: var(--card, #fff);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
 
-    .profile-header {
-      text-align: center;
-      padding: 58px 20px 22px;
-    }
+.profile-header {
+  padding: 35px 20px;
+  text-align: center;
+  background: #d32f2f;
+  color: white;
+}
 
-    .profile-header h1 {
-      margin: 0;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-    }
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: white;
+  color: #d32f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  overflow: hidden;
+}
 
-    .profile-header p {
-      margin: 7px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .profile-role {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 12px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      background: var(--red-light);
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 800;
-    }
+.profile-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .profile-info {
-      padding: 0 20px 20px;
-    }
+.profile-header p {
+  margin: 7px 0 0;
+  opacity: .9;
+  font-size: 13px;
+}
 
-    .info-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 15px 0;
-      border-top: 1px solid var(--border);
-    }
+.profile-body {
+  padding: 25px 20px;
+}
 
-    .info-icon {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 10px;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.profile-row {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
 
-    .info-content {
-      min-width: 0;
-      flex: 1;
-    }
+.profile-row:last-child {
+  border-bottom: none;
+}
 
-    .info-label {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 3px;
-      font-weight: 700;
-    }
+.profile-row i {
+  width: 25px;
+  color: #d32f2f;
+  font-size: 18px;
+}
 
-    .info-value {
-      display: block;
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 700;
-      overflow-wrap: anywhere;
-    }
+.profile-info {
+  flex: 1;
+}
 
-    .profile-actions {
-      padding: 20px;
-      display: grid;
-      gap: 10px;
-    }
+.profile-label {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 4px;
+}
 
-    .profile-btn-action {
-      width: 100%;
-      min-height: 46px;
-      border: none;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-    }
+.profile-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #222;
+  word-break: break-word;
+}
 
-    .btn-edit {
-      background: var(--red);
-      color: white;
-    }
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
 
-    .btn-edit:hover {
-      background: var(--red-dark);
-    }
+.profile-actions button,
+.profile-actions a {
+  flex: 1;
+  min-height: 46px;
+  border-radius: 10px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-    .btn-logout {
-      background: #fff0f0;
-      color: var(--red);
-      border: 1px solid #f1c2c2;
-    }
+.btn-edit {
+  background: #d32f2f;
+  color: white;
+}
 
-    .btn-logout:hover {
-      background: #ffe2e2;
-    }
+.btn-logout {
+  background: #f5f5f5;
+  color: #d32f2f;
+  border: 1px solid #ddd !important;
+}
 
-    .login-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 35px 20px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
+.profile-loading {
+  text-align: center;
+  padding: 50px 20px;
+}
 
-    .login-icon {
-      width: 75px;
-      height: 75px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-    }
+.profile-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: #c62828;
+}
 
-    .login-card h2 {
-      color: var(--text);
-      margin-bottom: 8px;
-    }
+.hidden {
+  display: none !important;
+}
 
-    .login-card p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
+</style>
 
-    .login-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 10px 25px;
-      border-radius: 10px;
-      background: var(--red);
-      color: white;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .loading-profile {
-      text-align: center;
-      padding: 50px 20px;
-      color: var(--muted);
-    }
-
-    .loading-profile i {
-      font-size: 28px;
-      margin-bottom: 12px;
-      color: var(--red);
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .back-link:hover {
-      color: var(--red);
-    }
-
-    @media (max-width: 600px) {
-      .profile-page {
-        padding: 10px 0 100px;
-      }
-
-      .profile-cover {
-        height: 110px;
-      }
-
-      .profile-avatar {
-        width: 82px;
-        height: 82px;
-        font-size: 32px;
-      }
-
-      .profile-header {
-        padding-top: 52px;
-      }
-    }
-  </style>
 </head>
 
 <body>
 
-  <!-- =====================================================
-       BARRE SUPÉRIEURE
-       ===================================================== -->
 
-  <header class="top-bar">
+<header class="top-bar">
 
-    <button
-      class="back-btn"
-      type="button"
-      onclick="history.back()"
-      aria-label="Retour"
+  <button
+    class="back-btn"
+    type="button"
+    onclick="history.back()"
+  >
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+
+  <div class="logo-text">
+    CAMU <span>SERVICES</span>
+  </div>
+
+  <div class="spacer"></div>
+
+</header>
+
+
+<main class="profile-page">
+
+  <div
+    id="profileLoading"
+    class="profile-card profile-loading"
+  >
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    <p>
+      Vérification de votre session...
+    </p>
+
+  </div>
+
+
+  <div
+    id="profileError"
+    class="profile-card profile-error hidden"
+  >
+
+    <i class="fa-solid fa-triangle-exclamation"></i>
+
+    <h2>Vous n'êtes pas connecté</h2>
+
+    <p>
+      Connectez-vous pour accéder à votre profil.
+    </p>
+
+    <a
+      href="connexion.html"
+      class="btn-edit"
+      style="
+        display:inline-flex;
+        padding:12px 20px;
+        border-radius:10px;
+        text-decoration:none;
+        color:white;
+      "
     >
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
+      Se connecter
+    </a>
 
-    <div class="logo-text">
-      CAMU <span>SERVICES</span>
+  </div>
+
+
+  <div
+    id="profileCard"
+    class="profile-card hidden"
+  >
+
+    <div class="profile-header">
+
+      <div class="profile-avatar">
+
+        <img
+          id="profilePhoto"
+          alt="Photo de profil"
+          style="display:none;"
+        >
+
+        <i
+          id="defaultAvatar"
+          class="fa-solid fa-user"
+        ></i>
+
+      </div>
+
+      <h1 id="profileName">
+        Mon profil
+      </h1>
+
+      <p id="profileEmail">
+        -
+      </p>
+
     </div>
 
-    <div class="spacer"></div>
 
-  </header>
-
-
-  <!-- =====================================================
-       CONTENU
-       ===================================================== -->
-
-  <main class="container">
-
-    <div class="profile-page">
-
-      <a href="index.html" class="back-link">
-        <i class="fa-solid fa-arrow-left"></i>
-        Retour à l'accueil
-      </a>
+    <div class="profile-body">
 
 
-      <!-- =================================================
-           CHARGEMENT
-           ================================================= -->
+      <div class="profile-row">
 
-      <div id="profileLoading" class="loading-profile">
+        <i class="fa-solid fa-user"></i>
 
-        <div>
-          <i class="fa-solid fa-spinner fa-spin"></i>
+        <div class="profile-info">
+
+          <span class="profile-label">
+            Nom complet
+          </span>
+
+          <span
+            id="profileFullName"
+            class="profile-value"
+          >
+            -
+          </span>
+
         </div>
-
-        <p>Vérification de votre connexion...</p>
 
       </div>
 
 
-      <!-- =================================================
-           UTILISATEUR CONNECTÉ
-           ================================================= -->
+      <div class="profile-row">
 
-      <section
-        id="profileConnected"
-        class="profile-card"
-        style="display:none;"
-      >
-
-        <div class="profile-cover">
-
-          <div class="profile-avatar" id="profileAvatar">
-
-            <i class="fa-solid fa-user"></i>
-
-          </div>
-
-        </div>
-
-
-        <div class="profile-header">
-
-          <h1 id="profileName">
-            Utilisateur
-          </h1>
-
-          <p id="profileEmail">
-            —
-          </p>
-
-          <div class="profile-role">
-
-            <i class="fa-solid fa-user-check"></i>
-
-            <span id="profileRole">
-              Client
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             INFORMATIONS
-             ================================================= -->
+        <i class="fa-solid fa-envelope"></i>
 
         <div class="profile-info">
 
-          <div class="info-row">
+          <span class="profile-label">
+            Adresse email
+          </span>
 
-            <div class="info-icon">
-              <i class="fa-solid fa-user"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                Nom complet
-              </span>
-
-              <span
-                class="info-value"
-                id="infoNom"
-              >
-                —
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-row">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-envelope"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                Adresse email
-              </span>
-
-              <span
-                class="info-value"
-                id="infoEmail"
-              >
-                —
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-row">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-phone"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                Téléphone
-              </span>
-
-              <span
-                class="info-value"
-                id="infoTelephone"
-              >
-                Non renseigné
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-row">
-
-            <div class="info-icon">
-              <i class="fa-brands fa-whatsapp"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                WhatsApp
-              </span>
-
-              <span
-                class="info-value"
-                id="infoWhatsapp"
-              >
-                Non renseigné
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-row">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-location-dot"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                Localisation
-              </span>
-
-              <span
-                class="info-value"
-                id="infoLocalisation"
-              >
-                Non renseignée
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="info-row">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-calendar"></i>
-            </div>
-
-            <div class="info-content">
-
-              <span class="info-label">
-                Compte créé le
-              </span>
-
-              <span
-                class="info-value"
-                id="infoCreatedAt"
-              >
-                —
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             ACTIONS
-             ================================================= -->
-
-        <div class="profile-actions">
-
-          <a
-            href="modifier-profil.html"
-            class="profile-btn-action btn-edit"
+          <span
+            id="profileEmailValue"
+            class="profile-value"
           >
-            <i class="fa-solid fa-pen"></i>
-            Modifier mon profil
-          </a>
+            -
+          </span>
 
-          <button
-            type="button"
-            id="btnLogout"
-            class="profile-btn-action btn-logout"
+        </div>
+
+      </div>
+
+
+      <div class="profile-row">
+
+        <i class="fa-solid fa-phone"></i>
+
+        <div class="profile-info">
+
+          <span class="profile-label">
+            Téléphone
+          </span>
+
+          <span
+            id="profilePhone"
+            class="profile-value"
           >
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Se déconnecter
-          </button>
+            Non renseigné
+          </span>
 
         </div>
 
-      </section>
+      </div>
 
 
-      <!-- =================================================
-           NON CONNECTÉ
-           ================================================= -->
+      <div class="profile-row">
 
-      <section
-        id="profileDisconnected"
-        class="login-card"
-        style="display:none;"
-      >
+        <i class="fa-brands fa-whatsapp"></i>
 
-        <div class="login-icon">
+        <div class="profile-info">
 
-          <i class="fa-solid fa-user-lock"></i>
+          <span class="profile-label">
+            WhatsApp
+          </span>
+
+          <span
+            id="profileWhatsapp"
+            class="profile-value"
+          >
+            Non renseigné
+          </span>
 
         </div>
 
-        <h2>
-          Vous n'êtes pas connecté
-        </h2>
+      </div>
 
-        <p>
-          Connectez-vous à votre compte CAMU SERVICES
-          pour accéder à votre profil et à vos informations.
-        </p>
+
+      <div class="profile-row">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <div class="profile-info">
+
+          <span class="profile-label">
+            Localisation
+          </span>
+
+          <span
+            id="profileLocation"
+            class="profile-value"
+          >
+            Non renseignée
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="profile-row">
+
+        <i class="fa-solid fa-user-tag"></i>
+
+        <div class="profile-info">
+
+          <span class="profile-label">
+            Type de compte
+          </span>
+
+          <span
+            id="profileRole"
+            class="profile-value"
+          >
+            Client
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="profile-actions">
 
         <a
-          href="connexion.html"
-          class="login-btn"
+          href="parametres.html"
+          class="btn-edit"
         >
-          <i class="fa-solid fa-right-to-bracket"></i>
-          Se connecter
+
+          <i class="fa-solid fa-gear"></i>
+
+          Paramètres
+
         </a>
 
-      </section>
+
+        <button
+          type="button"
+          id="btnLogout"
+          class="btn-logout"
+        >
+
+          <i class="fa-solid fa-right-from-bracket"></i>
+
+          Déconnexion
+
+        </button>
+
+      </div>
+
 
     </div>
 
-  </main>
+  </div>
+
+</main>
 
 
-  <!-- =====================================================
-       NAVIGATION MOBILE
-       ===================================================== -->
+<nav class="bottom-nav">
 
-  <nav
-    class="bottom-nav"
-    aria-label="Navigation mobile"
+  <a href="index.html">
+
+    <i class="fa-solid fa-house"></i>
+
+    <span>Accueil</span>
+
+  </a>
+
+
+  <a href="publier.html">
+
+    <i class="fa-solid fa-circle-plus"></i>
+
+    <span>Publier</span>
+
+  </a>
+
+
+  <a href="chat.html">
+
+    <i class="fa-solid fa-comments"></i>
+
+    <span>Chat</span>
+
+  </a>
+
+
+  <a
+    href="explorer.html"
+    class="active"
   >
 
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
+    <i class="fa-solid fa-compass"></i>
 
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
+    <span>Explorer</span>
 
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
+  </a>
 
-    <a href="explorer.html">
-      <i class="fa-solid fa-compass"></i>
-      <span>Explorer</span>
-    </a>
-
-  </nav>
+</nav>
 
 
-  <!-- =====================================================
-       APP FIREBASE
-       ===================================================== -->
+<script type="module">
 
-  <script type="module">
-
-    import {
-      obtenirProfil,
-      deconnexion
-    } from "./app.js";
+import {
+  auth,
+  deconnexion
+} from "./app.js";
 
 
-    /* =====================================================
-       ÉLÉMENTS
-       ===================================================== */
+const loading =
+  document.getElementById(
+    "profileLoading"
+  );
 
-    const loading =
-      document.getElementById("profileLoading");
+const errorBox =
+  document.getElementById(
+    "profileError"
+  );
 
-    const connected =
-      document.getElementById("profileConnected");
-
-    const disconnected =
-      document.getElementById("profileDisconnected");
-
-    const profileName =
-      document.getElementById("profileName");
-
-    const profileEmail =
-      document.getElementById("profileEmail");
-
-    const profileRole =
-      document.getElementById("profileRole");
-
-    const infoNom =
-      document.getElementById("infoNom");
-
-    const infoEmail =
-      document.getElementById("infoEmail");
-
-    const infoTelephone =
-      document.getElementById("infoTelephone");
-
-    const infoWhatsapp =
-      document.getElementById("infoWhatsapp");
-
-    const infoLocalisation =
-      document.getElementById("infoLocalisation");
-
-    const infoCreatedAt =
-      document.getElementById("infoCreatedAt");
-
-    const profileAvatar =
-      document.getElementById("profileAvatar");
-
-    const btnLogout =
-      document.getElementById("btnLogout");
+const profileCard =
+  document.getElementById(
+    "profileCard"
+  );
 
 
-    /* =====================================================
-       ÉCHAPPER HTML
-       ===================================================== */
+function afficherProfil(
+  user,
+  userData
+) {
 
-    function escapeHTML(value) {
+  loading.classList.add(
+    "hidden"
+  );
 
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  errorBox.classList.add(
+    "hidden"
+  );
 
+  profileCard.classList.remove(
+    "hidden"
+  );
+
+
+  const prenom =
+    userData?.prenom || "";
+
+  const nom =
+    userData?.nom || "";
+
+
+  const nomComplet =
+    `${prenom} ${nom}`.trim() ||
+    user.displayName ||
+    "Utilisateur CAMU";
+
+
+  document.getElementById(
+    "profileName"
+  ).textContent =
+    nomComplet;
+
+
+  document.getElementById(
+    "profileEmail"
+  ).textContent =
+    user.email || "-";
+
+
+  document.getElementById(
+    "profileFullName"
+  ).textContent =
+    nomComplet;
+
+
+  document.getElementById(
+    "profileEmailValue"
+  ).textContent =
+    user.email || "-";
+
+
+  document.getElementById(
+    "profilePhone"
+  ).textContent =
+    userData?.telephone ||
+    "Non renseigné";
+
+
+  document.getElementById(
+    "profileWhatsapp"
+  ).textContent =
+    userData?.whatsapp ||
+    "Non renseigné";
+
+
+  document.getElementById(
+    "profileLocation"
+  ).textContent =
+    userData?.localisation ||
+    "Non renseignée";
+
+
+  document.getElementById(
+    "profileRole"
+  ).textContent =
+    userData?.role ||
+    "client";
+
+
+  const photo =
+    document.getElementById(
+      "profilePhoto"
+    );
+
+  const avatar =
+    document.getElementById(
+      "defaultAvatar"
+    );
+
+
+  if (user.photoURL) {
+
+    photo.src =
+      user.photoURL;
+
+    photo.style.display =
+      "block";
+
+    avatar.style.display =
+      "none";
+
+  } else {
+
+    photo.style.display =
+      "none";
+
+    avatar.style.display =
+      "block";
+
+  }
+
+}
+
+
+/* =====================================================
+   ÉCOUTER FIREBASE
+   ===================================================== */
+
+document.addEventListener(
+  "camu-auth-changed",
+  (event) => {
+
+    const user =
+      event.detail?.user ||
+      null;
+
+    const userData =
+      event.detail?.userData ||
+      {};
+
+
+    if (!user) {
+
+      loading.classList.add(
+        "hidden"
+      );
+
+      profileCard.classList.add(
+        "hidden"
+      );
+
+      errorBox.classList.remove(
+        "hidden"
+      );
+
+      return;
     }
 
 
-    /* =====================================================
-       FORMATER DATE
-       ===================================================== */
+    afficherProfil(
+      user,
+      userData
+    );
 
-    function formatDate(value) {
+  }
+);
 
-      if (!value) {
-        return "—";
-      }
 
-      try {
+/* =====================================================
+   DÉCONNEXION
+   ===================================================== */
 
-        let date;
+document
+  .getElementById("btnLogout")
+  .addEventListener(
+    "click",
+    async () => {
 
-        if (
-          value &&
-          typeof value.toDate === "function"
-        ) {
-
-          date = value.toDate();
-
-        } else if (value instanceof Date) {
-
-          date = value;
-
-        } else {
-
-          date = new Date(value);
-
-        }
-
-        if (isNaN(date.getTime())) {
-          return "—";
-        }
-
-        return date.toLocaleDateString(
-          "fr-FR",
-          {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-          }
+      const confirmation =
+        confirm(
+          "Voulez-vous vraiment vous déconnecter ?"
         );
 
-      } catch (error) {
-
-        return "—";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       AFFICHER UTILISATEUR
-       ===================================================== */
-
-    async function afficherProfil(user) {
-
-      if (!user) {
-
-        loading.style.display = "none";
-
-        connected.style.display = "none";
-
-        disconnected.style.display = "block";
-
+      if (!confirmation) {
         return;
-
       }
 
+      await deconnexion();
 
-      try {
-
-        const resultat =
-          await obtenirProfil(user.uid);
-
-
-        let data = {};
-
-        if (resultat.success) {
-
-          data = resultat.data || {};
-
-        }
+    }
+  );
 
 
-        /* -----------------------------------------------
-           NOM
-           ----------------------------------------------- */
+/* =====================================================
+   SÉCURITÉ : CAS OÙ FIREBASE EST DÉJÀ CONNECTÉ
+   ===================================================== */
 
-        const nom =
+setTimeout(
+  () => {
 
-          data.prenom ||
-          data.nom
+    if (
+      auth.currentUser &&
+      profileCard.classList.contains(
+        "hidden"
+      )
+    ) {
 
-            ? `${data.prenom || ""} ${data.nom || ""}`.trim()
-
-            : user.displayName || "Utilisateur";
-
-
-        profileName.textContent = nom;
-
-        infoNom.textContent = nom;
-
-
-        /* -----------------------------------------------
-           EMAIL
-           ----------------------------------------------- */
-
-        const email =
-          data.email ||
-          user.email ||
-          "—";
-
-        profileEmail.textContent = email;
-
-        infoEmail.textContent = email;
-
-
-        /* -----------------------------------------------
-           ROLE
-           ----------------------------------------------- */
-
-        const role =
-          data.role || "client";
-
-        const roleNames = {
-
-          client: "Client",
-
-          vendeur: "Vendeur",
-
-          prestataire: "Prestataire",
-
-          admin: "Administrateur"
-
-        };
-
-        profileRole.textContent =
-          roleNames[role] || role;
-
-
-        /* -----------------------------------------------
-           TÉLÉPHONE
-           ----------------------------------------------- */
-
-        infoTelephone.textContent =
-          data.telephone ||
-          "Non renseigné";
-
-
-        /* -----------------------------------------------
-           WHATSAPP
-           ----------------------------------------------- */
-
-        infoWhatsapp.textContent =
-          data.whatsapp ||
-          data.telephone ||
-          "Non renseigné";
-
-
-        /* -----------------------------------------------
-           LOCALISATION
-           ----------------------------------------------- */
-
-        infoLocalisation.textContent =
-          data.localisation ||
-          "Non renseignée";
-
-
-        /* -----------------------------------------------
-           DATE
-           ----------------------------------------------- */
-
-        infoCreatedAt.textContent =
-          formatDate(data.createdAt);
-
-
-        /* -----------------------------------------------
-           PHOTO GOOGLE
-           ----------------------------------------------- */
-
-        if (user.photoURL) {
-
-          profileAvatar.innerHTML = `
-            <img
-              src="${escapeHTML(user.photoURL)}"
-              alt="Photo de profil"
-            >
-          `;
-
-        } else {
-
-          profileAvatar.innerHTML =
-            '<i class="fa-solid fa-user"></i>';
-
-        }
-
-
-        /* -----------------------------------------------
-           AFFICHAGE
-           ----------------------------------------------- */
-
-        loading.style.display = "none";
-
-        disconnected.style.display = "none";
-
-        connected.style.display = "block";
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur chargement profil :",
-          error
-        );
-
-        loading.style.display = "none";
-
-        disconnected.style.display = "block";
-
-      }
+      afficherProfil(
+        auth.currentUser,
+        {}
+      );
 
     }
 
+  },
+  1500
+);
 
-    /* =====================================================
-       ATTENDRE FIREBASE
-       ===================================================== */
-
-    document.addEventListener(
-      "camu-auth-changed",
-      function(event) {
-
-        const user =
-          event.detail?.user || null;
-
-        afficherProfil(user);
-
-      }
-    );
-
-
-    /* =====================================================
-       SÉCURITÉ : SI FIREBASE EST DÉJÀ PRÊT
-       ===================================================== */
-
-    function verifierUtilisateurInitial() {
-
-      if (
-        window.CAMU &&
-        window.CAMU.auth
-      ) {
-
-        const user =
-          window.CAMU.auth.currentUser;
-
-        if (user) {
-
-          afficherProfil(user);
-
-        }
-
-      }
-
-    }
-
-
-    /* =====================================================
-       DÉCONNEXION
-       ===================================================== */
-
-    btnLogout.addEventListener(
-      "click",
-      async function() {
-
-        const confirmation =
-          confirm(
-            "Voulez-vous vraiment vous déconnecter ?"
-          );
-
-        if (!confirmation) {
-          return;
-        }
-
-        btnLogout.disabled = true;
-
-        btnLogout.innerHTML = `
-          <i class="fa-solid fa-spinner fa-spin"></i>
-          Déconnexion...
-        `;
-
-        await deconnexion();
-
-      }
-    );
-
-
-    /* =====================================================
-       INITIALISATION
-       ===================================================== */
-
-    setTimeout(
-      verifierUtilisateurInitial,
-      500
-    );
-
-  </script>
+</script>
 
 </body>
 </html>
