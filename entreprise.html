@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Détail de l'entreprise — CAMU SERVICES">
+
+  <title>CAMU SERVICES — Détail de l'entreprise</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Styles spécifiques à la page entreprise -->
+  <style>
+    /* =====================================================
+       CARTE DÉTAIL
+       ===================================================== */
+    .detail-card {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .detail-image {
+      width: 100%;
+      height: 250px;
+      background: #eeeeee;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-image .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: #cccccc;
+      background: linear-gradient(135deg, #f0f0f0, #dddddd);
+    }
+
+    .detail-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #ff9800;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .detail-content {
+      padding: 20px;
+    }
+
+    .detail-category {
+      display: inline-block;
+      background: var(--red-light);
+      color: var(--red);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .detail-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .detail-description {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 15px;
+      white-space: pre-line;
+    }
+
+    .detail-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .detail-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg);
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+
+    .detail-info-item i {
+      color: var(--red);
+      font-size: 16px;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-whatsapp-large {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      background: var(--whatsapp);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-whatsapp-large:hover {
+      background: var(--whatsapp-dark);
+    }
+
+    .btn-whatsapp-large i {
+      font-size: 20px;
+    }
+
+    .btn-favorite-large {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      color: #555555;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 22px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-favorite-large:hover,
+    .btn-favorite-large.favorite-active {
+      color: var(--red);
+      background: var(--red-light);
+      border-color: #e6aaaa;
+    }
+
+    .btn-share {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      color: #555555;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-share:hover {
+      color: var(--red);
+      background: var(--red-light);
+      border-color: #e6aaaa;
+    }
+
+    /* =====================================================
+       SECTION AVIS
+       ===================================================== */
+    .reviews-section {
+      margin-top: 30px;
+    }
+
+    .reviews-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .review-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .review-user {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .review-date {
+      font-size: 11px;
+      color: #999999;
+    }
+
+    .review-stars {
+      color: #ff9800;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .review-comment {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .no-reviews {
+      text-align: center;
+      padding: 20px;
+      color: #999999;
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       ÉTAT CHARGEMENT / ERREUR
+       ===================================================== */
+    .loading-detail {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .loading-detail i {
+      font-size: 30px;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
+
+    .error-detail {
+      text-align: center;
+      padding: 30px 20px;
+      background: var(--red-light);
+      border-radius: var(--radius);
+      color: var(--red);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="top-bar">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
+      CAMU <span>SERVICES</span>
+    </a>
+
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
+      <i class="fa-solid fa-user"></i>
+    </a>
+  </header>
+
+  <!-- MENU LATÉRAL -->
+  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar-header">
+      CAMU SERVICES
+    </div>
+    <ul>
+      <li>
+        <a href="index.html">
+          <i class="fa-solid fa-house"></i>
+          <span>Accueil</span>
+        </a>
+      </li>
+      <li>
+        <a href="recherche.html">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Rechercher</span>
+        </a>
+      </li>
+      <li>
+        <a href="categories.html">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Catégories</span>
+        </a>
+      </li>
+      <li>
+        <a href="entreprises.html">
+          <i class="fa-solid fa-building"></i>
+          <span>Entreprises</span>
+        </a>
+      </li>
+      <li>
+        <a href="favoris.html">
+          <i class="fa-solid fa-heart"></i>
+          <span>Mes favoris</span>
+        </a>
+      </li>
+      <li>
+        <a href="communiques.html">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>Communiqués</span>
+        </a>
+      </li>
+      <li>
+        <a href="inscription-entreprise.html">
+          <i class="fa-solid fa-store"></i>
+          <span>Inscrire mon entreprise</span>
+        </a>
+      </li>
+      <li>
+        <a href="profil.html">
+          <i class="fa-solid fa-user"></i>
+          <span>Mon profil</span>
+        </a>
+      </li>
+      <li>
+        <a href="parametres.html">
+          <i class="fa-solid fa-gear"></i>
+          <span>Paramètres</span>
+        </a>
+      </li>
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" id="logoutSidebar" class="logout-link">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Déconnexion</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="container">
+
+    <!-- Zone de chargement -->
+    <div id="loadingContainer" class="loading-detail">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Chargement de l'entreprise...</p>
+    </div>
+
+    <!-- Zone d'erreur -->
+    <div id="errorContainer" class="error-detail" style="display: none;">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p id="errorMessage">Impossible de charger les informations.</p>
+    </div>
+
+    <!-- Détail de l'entreprise -->
+    <div id="detailContainer" style="display: none;">
+      <div class="detail-card">
+        <div class="detail-image" id="detailImage">
+          <!-- Rempli dynamiquement -->
+        </div>
+        <div class="detail-content">
+          <span class="detail-category" id="detailCategory">Catégorie</span>
+          <h1 class="detail-title" id="detailTitle">Titre</h1>
+          <p class="detail-description" id="detailDescription">Description</p>
+
+          <div class="detail-info">
+            <div class="detail-info-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span id="detailLocation">Localisation</span>
+            </div>
+            <div class="detail-info-item">
+              <i class="fa-solid fa-star"></i>
+              <span id="detailNote">4.8</span>
+            </div>
+            <div class="detail-info-item">
+              <i class="fa-solid fa-phone"></i>
+              <span id="detailPhone">Non renseigné</span>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <a href="#" id="whatsappButton" class="btn-whatsapp-large" target="_blank">
+              <i class="fa-brands fa-whatsapp"></i>
+              Contacter sur WhatsApp
+            </a>
+            <button id="favoriteButton" class="btn-favorite-large" title="Ajouter aux favoris">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <button id="shareButton" class="btn-share" title="Partager">
+              <i class="fa-solid fa-share-nodes"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section avis -->
+      <div class="reviews-section">
+        <div class="reviews-title">
+          <i class="fa-solid fa-comment-dots"></i>
+          Avis des clients
+        </div>
+        <div id="reviewsContainer">
+          <!-- Les avis seront chargés ici -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION MOBILE -->
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="explorer.html">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explorer</span>
+    </a>
+  </nav>
+
+  <!-- LOGIQUE FIREBASE -->
+  <script type="module">
+    import { 
+      auth, 
+      db, 
+      obtenirService, 
+      obtenirAvis, 
+      ajouterFavori, 
+      retirerFavori, 
+      obtenirFavoris, 
+      formaterNumeroWhatsApp, 
+      genererMessageWhatsApp, 
+      partagerSurWhatsApp,
+      onAuthStateChanged,
+      deconnexion
+    } from "./app.js";
+
+    // Récupérer l'ID du service depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceId = urlParams.get('id');
+
+    const loadingContainer = document.getElementById('loadingContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const detailContainer = document.getElementById('detailContainer');
+    const errorMessage = document.getElementById('errorMessage');
+
+    let serviceData = null; // Stocker les données du service
+    let isFavorite = false;
+
+    // Fonction d'affichage des erreurs
+    function afficherErreur(message) {
+      loadingContainer.style.display = 'none';
+      errorContainer.style.display = 'block';
+      detailContainer.style.display = 'none';
+      errorMessage.textContent = message;
+    }
+
+    // Fonction pour charger les données
+    async function chargerService() {
+      if (!serviceId) {
+        afficherErreur('Aucune entreprise spécifiée.');
+        return;
+      }
+
+      loadingContainer.style.display = 'block';
+      errorContainer.style.display = 'none';
+      detailContainer.style.display = 'none';
+
+      // Récupérer le service
+      const resultat = await obtenirService(serviceId);
+
+      if (!resultat.success) {
+        afficherErreur(resultat.error || 'Entreprise introuvable.');
+        return;
+      }
+
+      serviceData = resultat.data;
+
+      // Remplir les champs
+      document.getElementById('detailCategory').textContent = 
+        serviceData.categorie || serviceData.category || 'Service';
+      document.getElementById('detailTitle').textContent = 
+        serviceData.titre || serviceData.nom || serviceData.title || 'Sans titre';
+      document.getElementById('detailDescription').textContent = 
+        serviceData.description || 'Aucune description disponible.';
+      document.getElementById('detailLocation').textContent = 
+        serviceData.localisation || serviceData.location || 'Localisation non renseignée';
+      document.getElementById('detailNote').textContent = 
+        serviceData.note || serviceData.rating || '4.8';
+
+      // Afficher le téléphone
+      const phone = serviceData.whatsapp || serviceData.telephone || '';
+      document.getElementById('detailPhone').textContent = phone || 'Non renseigné';
+
+      // Image
+      const imageContainer = document.getElementById('detailImage');
+      const imageUrl = serviceData.imageUrl || serviceData.image || '';
+      if (imageUrl) {
+        imageContainer.innerHTML = `<img src="${imageUrl}" alt="${serviceData.titre || 'Entreprise'}">`;
+      } else {
+        imageContainer.innerHTML = `<div class="placeholder"><i class="fa-solid fa-store"></i></div>`;
+      }
+
+      // Bouton WhatsApp
+      const whatsappButton = document.getElementById('whatsappButton');
+      if (phone) {
+        const message = genererMessageWhatsApp(serviceData, 'contact');
+        const numeroFormate = formaterNumeroWhatsApp(phone);
+        if (numeroFormate) {
+          whatsappButton.href = `https://wa.me/${numeroFormate}?text=${encodeURIComponent(message)}`;
+          whatsappButton.style.display = 'inline-flex';
+        } else {
+          whatsappButton.style.display = 'none';
+        }
+      } else {
+        whatsappButton.style.display = 'none';
+      }
+
+      // Afficher la section détail
+      loadingContainer.style.display = 'none';
+      detailContainer.style.display = 'block';
+
+      // Charger les avis
+      chargerAvis();
+
+      // Vérifier l'état du favori
+      verifierFavori();
+    }
+
+    // Fonction pour charger les avis
+    async function chargerAvis() {
+      const reviewsContainer = document.getElementById('reviewsContainer');
+      if (!serviceId) return;
+
+      const resultat = await obtenirAvis(serviceId);
+      if (resultat.success && resultat.avis.length > 0) {
+        let html = '';
+        resultat.avis.forEach(avis => {
+          const initiale = avis.userName ? avis.userName.charAt(0).toUpperCase() : '?';
+          const date = avis.createdAt && typeof avis.createdAt.toDate === 'function' 
+            ? avis.createdAt.toDate().toLocaleDateString('fr-FR') 
+            : '';
+          html += `
+            <div class="review-box">
+              <div class="review-header">
+                <div class="review-avatar">${initiale}</div>
+                <div>
+                  <div class="review-user">${avis.userName || 'Utilisateur'}</div>
+                  <div class="review-date">${date}</div>
+                </div>
+              </div>
+              <div class="review-stars">
+                ${'★'.repeat(avis.note || 5)}${'☆'.repeat(5 - (avis.note || 5))}
+              </div>
+              <div class="review-comment">${avis.commentaire || 'Aucun commentaire.'}</div>
+            </div>
+          `;
+        });
+        reviewsContainer.innerHTML = html;
+      } else {
+        reviewsContainer.innerHTML = '<div class="no-reviews">Aucun avis pour le moment.</div>';
+      }
+    }
+
+    // Fonction pour vérifier si le service est en favori
+    async function verifierFavori() {
+      if (!auth.currentUser) return;
+      const resultat = await obtenirFavoris();
+      if (resultat.success) {
+        isFavorite = resultat.favoris.includes(serviceId);
+        const favButton = document.getElementById('favoriteButton');
+        const icon = favButton.querySelector('i');
+        if (isFavorite) {
+          favButton.classList.add('favorite-active');
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+        } else {
+          favButton.classList.remove('favorite-active');
+          icon.classList.add('fa-regular');
+          icon.classList.remove('fa-solid');
+        }
+      }
+    }
+
+    // Gestion du bouton favori
+    document.getElementById('favoriteButton').addEventListener('click', async () => {
+      if (!auth.currentUser) {
+        alert('Veuillez vous connecter pour ajouter des favoris.');
+        window.location.href = 'connexion.html';
+        return;
+      }
+
+      const favButton = document.getElementById('favoriteButton');
+      const icon = favButton.querySelector('i');
+
+      if (isFavorite) {
+        // Retirer des favoris
+        const resultat = await retirerFavori(serviceId);
+        if (resultat.success) {
+          isFavorite = false;
+          favButton.classList.remove('favorite-active');
+          icon.classList.add('fa-regular');
+          icon.classList.remove('fa-solid');
+        }
+      } else {
+        // Ajouter aux favoris
+        const resultat = await ajouterFavori(serviceId);
+        if (resultat.success) {
+          isFavorite = true;
+          favButton.classList.add('favorite-active');
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+        } else {
+          alert(resultat.error || 'Erreur lors de l\'ajout aux favoris.');
+        }
+      }
+    });
+
+    // Gestion du partage
+    document.getElementById('shareButton').addEventListener('click', () => {
+      if (serviceData) {
+        partagerSurWhatsApp(serviceData);
+      }
+    });
+
+    // Gestion du menu latéral et déconnexion
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', function () {
+        const opened = sidebar.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', !opened);
+          icon.classList.toggle('fa-xmark', opened);
+        }
+      });
+
+      sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          sidebar.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-xmark');
+          }
+        });
+      });
+    }
+
+    document.getElementById('logoutSidebar').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await deconnexion();
+      window.location.href = 'index.html';
+    });
+
+    // Lancer le chargement au démarrage
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('logoutMenuItem').style.display = 'block';
+      } else {
+        document.getElementById('logoutMenuItem').style.display = 'none';
+      }
+    });
+
+    // Appeler la fonction de chargement
+    chargerService();
+  </script>
+
+</body>
+</html>
