@@ -393,7 +393,7 @@
     </div>
 
     <!-- Section non connecté -->
-    <div id="notConnectedSection" class="not-connected" style="display: none;">
+    <div id="notConnectedSection" class="not-connected" style="display: block;">
       <i class="fa-solid fa-user-circle"></i>
       <h2>Vous n'êtes pas connecté</h2>
       <p>
@@ -435,8 +435,11 @@
 
   <!-- LOGIQUE FIREBASE -->
   <script type="module">
-    import { auth, obtenirProfil, deconnexion, formaterNumeroWhatsApp } from "./app.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    // Import depuis app.js (plus d'import CDN séparé)
+    import { auth, obtenirProfil, deconnexion, formaterNumeroWhatsApp, onAuthStateChanged } from "./app.js";
+
+    // Vérification de chargement du script
+    console.log("Script profil chargé !");
 
     const profileSection = document.getElementById("profileSection");
     const notConnectedSection = document.getElementById("notConnectedSection");
