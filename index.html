@@ -150,10 +150,7 @@
       background: #b71c1c;
     }
 
-    /* =====================================================
-       WHATSAPP
-       ===================================================== */
-
+    /* Bouton WhatsApp */
     .btn-whatsapp {
       background: #25D366;
       color: white;
@@ -176,11 +173,6 @@
     .btn-whatsapp i {
       font-size: 1.1rem;
     }
-
-
-    /* =====================================================
-       FAVORIS
-       ===================================================== */
 
     .annonce-card .favorite-btn {
       padding: 8px 10px;
@@ -206,11 +198,7 @@
       color: #d32f2f;
     }
 
-
-    /* =====================================================
-       BADGE
-       ===================================================== */
-
+    /* Badge sponsorisé */
     .featured-badge {
       position: absolute;
       top: 10px;
@@ -224,7 +212,6 @@
       align-items: center;
       gap: 4px;
     }
-
 
     /* =====================================================
        COMMUNIQUÉS
@@ -349,9 +336,8 @@
       margin: 6px 0 0;
     }
 
-
     /* =====================================================
-       WHATSAPP FLOTTANT
+       BOUTON WHATSAPP FLOTTANT
        ===================================================== */
 
     .whatsapp-float {
@@ -378,27 +364,11 @@
       box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6);
     }
 
-
-    /* =====================================================
-       INDICATEUR UTILISATEUR
-       ===================================================== */
-
-    .profile-btn {
-      transition: opacity 0.2s ease;
-    }
-
-    .profile-btn.auth-loading {
-      opacity: 0.6;
-      pointer-events: none;
-    }
-
-
     /* =====================================================
        MOBILE
        ===================================================== */
 
     @media (max-width: 600px) {
-
       .announcement-box {
         padding: 13px;
         gap: 10px;
@@ -430,7 +400,6 @@
         height: 50px;
         font-size: 24px;
       }
-
     }
 
   </style>
@@ -483,11 +452,10 @@
 
 
     <a
-      href="connexion.html"
-      class="profile-btn auth-loading"
-      id="profileButton"
-      aria-label="Connexion"
-      title="Vérification de la connexion..."
+      href="profil.html"
+      class="profile-btn"
+      aria-label="Mon profil"
+      title="Mon profil"
     >
 
       <i class="fa-solid fa-user"></i>
@@ -577,27 +545,12 @@
         </a>
       </li>
 
-
-      <!-- =================================================
-           DÉCONNEXION
-           ================================================= -->
-
-      <li
-        id="logoutMenuItem"
-        style="display: none;"
-      >
-
-        <a
-          href="#"
-          id="logoutLink"
-        >
-
+      <!-- Lien de déconnexion (visible uniquement si connecté) -->
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" onclick="CAMU.deconnexion(); return false;">
           <i class="fa-solid fa-right-from-bracket"></i>
-
           <span>Déconnexion</span>
-
         </a>
-
       </li>
 
     </ul>
@@ -621,31 +574,20 @@
       <div class="hero-content">
 
         <span class="hero-badge">
-
           <i class="fa-solid fa-location-dot"></i>
-
           Services locaux
-
         </span>
 
-
         <h1>
-
           Trouvez les meilleurs
-
           <span>services</span>
-
           près de chez vous.
-
         </h1>
 
-
         <p>
-
           CAMU SERVICES connecte directement les clients
           aux entreprises, commerçants, artisans et
           professionnels locaux.
-
         </p>
 
       </div>
@@ -663,14 +605,12 @@
 
         <i class="fa-solid fa-magnifying-glass"></i>
 
-
         <input
           type="search"
           id="searchInput"
           placeholder="Rechercher un service, une entreprise..."
           autocomplete="off"
         >
-
 
         <button
           type="button"
@@ -699,109 +639,45 @@
         Catégories
       </h2>
 
+      <div class="categories" id="categories">
 
-      <div
-        class="categories"
-        id="categories"
-      >
-
-        <button
-          class="cat-btn active"
-          type="button"
-          data-category="Toutes"
-        >
+        <button class="cat-btn active" type="button" data-category="Toutes">
           Toutes
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Construction"
-        >
-
+        <button class="cat-btn" type="button" data-category="Construction">
           <i class="fa-solid fa-helmet-safety"></i>
-
           Construction
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Transport"
-        >
-
+        <button class="cat-btn" type="button" data-category="Transport">
           <i class="fa-solid fa-car"></i>
-
           Transport
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Beauté"
-        >
-
+        <button class="cat-btn" type="button" data-category="Beauté">
           <i class="fa-solid fa-scissors"></i>
-
           Beauté
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Restaurant"
-        >
-
+        <button class="cat-btn" type="button" data-category="Restaurant">
           <i class="fa-solid fa-utensils"></i>
-
           Restaurant
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Informatique"
-        >
-
+        <button class="cat-btn" type="button" data-category="Informatique">
           <i class="fa-solid fa-laptop"></i>
-
           Informatique
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Commerce"
-        >
-
+        <button class="cat-btn" type="button" data-category="Commerce">
           <i class="fa-solid fa-shop"></i>
-
           Commerce
-
         </button>
 
-
-        <button
-          class="cat-btn"
-          type="button"
-          data-category="Services"
-        >
-
+        <button class="cat-btn" type="button" data-category="Services">
           <i class="fa-solid fa-briefcase"></i>
-
           Services
-
         </button>
 
       </div>
@@ -818,45 +694,36 @@
       <div class="section-heading">
 
         <h2 class="section-title">
-
           <i class="fa-solid fa-bullhorn"></i>
-
           Communiqués
-
         </h2>
 
-
-        <a
-          href="communiques.html"
-          class="see-all"
-        >
-
+        <a href="communiques.html" class="see-all">
           Voir tout
-
           <i class="fa-solid fa-arrow-right"></i>
-
         </a>
 
       </div>
 
+      <!--
+        IMPORTANT :
+        NE PAS METTRE DE COMMUNIQUÉ STATIQUE ICI.
+        app.js remplira automatiquement cette zone
+        avec les données de Firestore.
+      -->
 
       <div id="communiquesContainer">
-
         <div class="announcement-loading">
-
           <i class="fa-solid fa-spinner fa-spin"></i>
-
           Chargement des communiqués...
-
         </div>
-
       </div>
 
     </section>
 
 
     <!-- ===================================================
-         ENTREPRISES
+         ENTREPRISES MISES EN AVANT
          =================================================== -->
 
     <section id="services">
@@ -867,64 +734,36 @@
           Entreprises mises en avant
         </h2>
 
-
-        <a
-          href="entreprises.html"
-          class="see-all"
-        >
-
+        <a href="entreprises.html" class="see-all">
           Voir tout
-
           <i class="fa-solid fa-arrow-right"></i>
-
         </a>
 
       </div>
 
+      <!--
+        Les services Firebase seront injectés ici
+        automatiquement par app.js.
+      -->
 
-      <div
-        class="services-grid"
-        id="servicesContainer"
-      >
-
-        <div
-          style="
-            text-align:center;
-            grid-column:1/-1;
-            padding:20px;
-          "
-        >
-
+      <div class="services-grid" id="servicesContainer">
+        <div style="text-align:center; grid-column:1/-1; padding:20px;">
           <i class="fa-solid fa-spinner fa-spin"></i>
-
           Chargement des services...
-
         </div>
-
       </div>
-
 
       <!-- =================================================
            AUCUN RÉSULTAT
            ================================================= -->
 
-      <div
-        id="noResults"
-        class="empty-state"
-        hidden
-      >
-
+      <div id="noResults" class="empty-state" hidden>
         <i class="fa-solid fa-magnifying-glass"></i>
-
-        <h2>
-          Aucun résultat
-        </h2>
-
+        <h2>Aucun résultat</h2>
         <p>
           Aucun service ne correspond à votre recherche.
           Essayez un autre mot-clé ou une autre catégorie.
         </p>
-
       </div>
 
     </section>
@@ -936,49 +775,24 @@
 
     <footer class="footer">
 
-      <h3>
-        CAMU SERVICES
-      </h3>
-
+      <h3>CAMU SERVICES</h3>
 
       <p>
         La plateforme qui connecte les entreprises locales
         à leurs clients.
       </p>
 
-
       <div class="footer-links">
-
-        <a href="index.html">
-          Accueil
-        </a>
-
-        <a href="a-propos.html">
-          À propos
-        </a>
-
-        <a href="confidentialite.html">
-          Confidentialité
-        </a>
-
-        <a href="conditions.html">
-          Conditions
-        </a>
-
-        <a href="contact.html">
-          Contact
-        </a>
-
+        <a href="index.html">Accueil</a>
+        <a href="a-propos.html">À propos</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="conditions.html">Conditions</a>
+        <a href="contact.html">Contact</a>
       </div>
 
-
       <p class="copyright">
-
-        ©
-        <span id="currentYear"></span>
-        CAMU SERVICES.
+        © <span id="currentYear"></span> CAMU SERVICES.
         Tous droits réservés.
-
       </p>
 
     </footer>
@@ -990,75 +804,48 @@
        NAVIGATION MOBILE
        ===================================================== -->
 
-  <nav
-    class="bottom-nav"
-    aria-label="Navigation mobile"
-  >
+  <nav class="bottom-nav" aria-label="Navigation mobile">
 
-    <a
-      href="index.html"
-      class="active"
-    >
-
+    <a href="index.html" class="active">
       <i class="fa-solid fa-house"></i>
-
-      <span>
-        Accueil
-      </span>
-
+      <span>Accueil</span>
     </a>
 
-
-    <a href="publier.html">
-
-      <i class="fa-solid fa-circle-plus"></i>
-
-      <span>
-        Publier
-      </span>
-
+    <a href="recherche.html">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Recherche</span>
     </a>
 
-
-    <a href="chat.html">
-
-      <i class="fa-solid fa-comments"></i>
-
-      <span>
-        Chat
-      </span>
-
+    <a href="categories.html">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Catégories</span>
     </a>
 
+    <a href="favoris.html">
+      <i class="fa-regular fa-heart"></i>
+      <span>Favoris</span>
+    </a>
 
-    <a href="explorer.html">
-
-      <i class="fa-solid fa-compass"></i>
-
-      <span>
-        Explorer
-      </span>
-
+    <a href="profil.html">
+      <i class="fa-regular fa-user"></i>
+      <span>Profil</span>
     </a>
 
   </nav>
 
 
   <!-- =====================================================
-       WHATSAPP
+       BOUTON WHATSAPP FLOTTANT
        ===================================================== -->
 
   <a
     href="https://wa.me/2250000000000?text=Bonjour%20CAMU%20SERVICES%2C%20j%27ai%20besoin%20d%27aide."
     target="_blank"
-    rel="noopener noreferrer"
     class="whatsapp-float"
     aria-label="Contacter sur WhatsApp"
     title="Contacter sur WhatsApp"
   >
-
     <i class="fa-brands fa-whatsapp"></i>
-
   </a>
 
 
@@ -1068,629 +855,197 @@
 
   <script>
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
-
-
-        /* =================================================
-           ANNÉE
-           ================================================= */
-
-        const year =
-          document.getElementById("currentYear");
-
-        if (year) {
-          year.textContent =
-            new Date().getFullYear();
-        }
-
-
-        /* =================================================
-           MENU
-           ================================================= */
-
-        const menuToggle =
-          document.getElementById("menuToggle");
-
-        const sidebar =
-          document.getElementById("sidebar");
-
-
-        if (menuToggle && sidebar) {
-
-          menuToggle.addEventListener(
-            "click",
-            function () {
-
-              const opened =
-                sidebar.classList.toggle("open");
-
-              menuToggle.setAttribute(
-                "aria-expanded",
-                opened ? "true" : "false"
-              );
-
-
-              const icon =
-                menuToggle.querySelector("i");
-
-
-              if (icon) {
-
-                icon.classList.toggle(
-                  "fa-bars",
-                  !opened
-                );
-
-                icon.classList.toggle(
-                  "fa-xmark",
-                  opened
-                );
-
-              }
-
-            }
-          );
-
-
-          sidebar
-            .querySelectorAll("a")
-            .forEach(function (link) {
-
-              link.addEventListener(
-                "click",
-                function () {
-
-                  sidebar.classList.remove(
-                    "open"
-                  );
-
-                  menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                  );
-
-
-                  const icon =
-                    menuToggle.querySelector("i");
-
-
-                  if (icon) {
-
-                    icon.classList.add(
-                      "fa-bars"
-                    );
-
-                    icon.classList.remove(
-                      "fa-xmark"
-                    );
-
-                  }
-
-                }
-              );
-
-            });
-
-        }
-
-
-        /* =================================================
-           RECHERCHE
-           ================================================= */
-
-        const searchInput =
-          document.getElementById(
-            "searchInput"
-          );
-
-        const clearSearch =
-          document.getElementById(
-            "clearSearch"
-          );
-
-        const noResults =
-          document.getElementById(
-            "noResults"
-          );
-
-
-        let selectedCategory =
-          "Toutes";
-
-
-        function getCards() {
-
-          return Array.from(
-            document.querySelectorAll(
-              ".service-card"
-            )
-          );
-
-        }
-
-
-        function filterServices() {
-
-          const cards =
-            getCards();
-
-          const search =
-            (
-              searchInput?.value || ""
-            )
-              .trim()
-              .toLowerCase();
-
-
-          let visible = 0;
-
-
-          cards.forEach(
-            function (card) {
-
-              const category =
-                (
-                  card.dataset.category || ""
-                ).toLowerCase();
-
-
-              const searchable =
-                (
-                  card.dataset.search || ""
-                ).toLowerCase();
-
-
-              const title =
-                (
-                  card.querySelector("h3")
-                    ?.textContent || ""
-                ).toLowerCase();
-
-
-              const description =
-                (
-                  card.querySelector(
-                    ".service-description"
-                  )?.textContent || ""
-                ).toLowerCase();
-
-
-              const categoryMatch =
-                selectedCategory === "Toutes" ||
-                category ===
-                  selectedCategory.toLowerCase();
-
-
-              const searchMatch =
-                !search ||
-                searchable.includes(search) ||
-                title.includes(search) ||
-                description.includes(search) ||
-                category.includes(search);
-
-
-              const show =
-                categoryMatch &&
-                searchMatch;
-
-
-              card.style.display =
-                show ? "" : "none";
-
-
-              if (show) {
-                visible++;
-              }
-
-            }
-          );
-
-
-          if (noResults) {
-
-            noResults.hidden =
-              visible !== 0;
-
+    document.addEventListener("DOMContentLoaded", function () {
+
+      /* =================================================
+         ANNÉE
+         ================================================= */
+
+      const year = document.getElementById("currentYear");
+      if (year) {
+        year.textContent = new Date().getFullYear();
+      }
+
+      /* =================================================
+         MENU
+         ================================================= */
+
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", function () {
+          const opened = sidebar.classList.toggle("open");
+          menuToggle.setAttribute("aria-expanded", opened ? "true" : "false");
+
+          const icon = menuToggle.querySelector("i");
+          if (icon) {
+            icon.classList.toggle("fa-bars", !opened);
+            icon.classList.toggle("fa-xmark", opened);
           }
+        });
 
-        }
+        sidebar.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            sidebar.classList.remove("open");
+            menuToggle.setAttribute("aria-expanded", "false");
 
-
-        if (searchInput) {
-
-          searchInput.addEventListener(
-            "input",
-            filterServices
-          );
-
-        }
-
-
-        if (clearSearch) {
-
-          clearSearch.addEventListener(
-            "click",
-            function () {
-
-              if (searchInput) {
-
-                searchInput.value = "";
-
-                searchInput.focus();
-
-              }
-
-              filterServices();
-
+            const icon = menuToggle.querySelector("i");
+            if (icon) {
+              icon.classList.add("fa-bars");
+              icon.classList.remove("fa-xmark");
             }
-          );
+          });
+        });
+      }
 
+      /* =================================================
+         RECHERCHE ET FILTRES
+         ================================================= */
+
+      const searchInput = document.getElementById("searchInput");
+      const clearSearch = document.getElementById("clearSearch");
+      const noResults = document.getElementById("noResults");
+      let selectedCategory = "Toutes";
+
+      function getCards() {
+        return Array.from(document.querySelectorAll(".service-card"));
+      }
+
+      function filterServices() {
+        const cards = getCards();
+        const search = (searchInput?.value || "").trim().toLowerCase();
+        let visible = 0;
+
+        cards.forEach(function (card) {
+          const category = (card.dataset.category || "").toLowerCase();
+          const searchable = (card.dataset.search || "").toLowerCase();
+          const title = (card.querySelector("h3")?.textContent || "").toLowerCase();
+          const description = (card.querySelector(".service-description")?.textContent || "").toLowerCase();
+
+          const categoryMatch = selectedCategory === "Toutes" || category === selectedCategory.toLowerCase();
+          const searchMatch = !search || searchable.includes(search) || title.includes(search) || description.includes(search) || category.includes(search);
+
+          const show = categoryMatch && searchMatch;
+          card.style.display = show ? "" : "none";
+
+          if (show) {
+            visible++;
+          }
+        });
+
+        if (noResults) {
+          noResults.hidden = visible !== 0;
         }
+      }
 
+      if (searchInput) {
+        searchInput.addEventListener("input", filterServices);
+      }
 
-        /* =================================================
-           CATÉGORIES
-           ================================================= */
+      if (clearSearch) {
+        clearSearch.addEventListener("click", function () {
+          if (searchInput) {
+            searchInput.value = "";
+            searchInput.focus();
+          }
+          filterServices();
+        });
+      }
 
-        document
-          .querySelectorAll(".cat-btn")
-          .forEach(function (button) {
+      /* =================================================
+         CATÉGORIES
+         ================================================= */
 
-            button.addEventListener(
-              "click",
-              function () {
-
-                document
-                  .querySelectorAll(".cat-btn")
-                  .forEach(function (btn) {
-
-                    btn.classList.remove(
-                      "active"
-                    );
-
-                  });
-
-
-                button.classList.add(
-                  "active"
-                );
-
-
-                selectedCategory =
-                  button.dataset.category ||
-                  "Toutes";
-
-
-                filterServices();
-
-              }
-            );
-
+      document.querySelectorAll(".cat-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+          document.querySelectorAll(".cat-btn").forEach(function (btn) {
+            btn.classList.remove("active");
           });
 
-
-        /* =================================================
-           FAVORIS
-           ================================================= */
-
-        function activerFavoris() {
-
-          document
-            .querySelectorAll(".favorite-btn")
-            .forEach(function (button) {
-
-
-              if (
-                button.dataset.favoriteReady
-              ) {
-                return;
-              }
-
-
-              button.dataset.favoriteReady =
-                "true";
-
-
-              button.addEventListener(
-                "click",
-                async function () {
-
-
-                  const serviceId =
-                    button
-                      .closest(".service-card")
-                      ?.dataset.serviceId;
-
-
-                  if (!serviceId) {
-                    return;
-                  }
-
-
-                  if (
-                    !window.CAMU ||
-                    !window.CAMU.isUserConnected()
-                  ) {
-
-                    alert(
-                      "Veuillez vous connecter pour ajouter des favoris."
-                    );
-
-                    window.location.href =
-                      "connexion.html";
-
-                    return;
-
-                  }
-
-
-                  const icon =
-                    button.querySelector("i");
-
-
-                  const active =
-                    button.classList.toggle(
-                      "favorite-active"
-                    );
-
-
-                  if (icon) {
-
-                    icon.classList.toggle(
-                      "fa-regular",
-                      !active
-                    );
-
-                    icon.classList.toggle(
-                      "fa-solid",
-                      active
-                    );
-
-                  }
-
-
-                  try {
-
-                    if (active) {
-
-                      await window.CAMU
-                        .ajouterFavori(
-                          serviceId
-                        );
-
-                    } else {
-
-                      await window.CAMU
-                        .retirerFavori(
-                          serviceId
-                        );
-
-                    }
-
-                  } catch (error) {
-
-                    console.error(
-                      "Erreur favori :",
-                      error
-                    );
-
-                  }
-
-                }
-              );
-
-            });
-
-        }
-
-
-        activerFavoris();
-
-
-        document.addEventListener(
-          "camu-services-loaded",
-          function () {
-
-            filterServices();
-
-            activerFavoris();
-
-          }
-        );
-
-
-        /* =================================================
-           AUTHENTIFICATION
-           VERSION CORRIGÉE
-           ================================================= */
-
-        function mettreAJourInterfaceUtilisateur(
-          user
-        ) {
-
-          const profileButton =
-            document.getElementById(
-              "profileButton"
-            );
-
-
-          const logoutMenuItem =
-            document.getElementById(
-              "logoutMenuItem"
-            );
-
-
-          /* ---------------------------------------------
-             UTILISATEUR CONNECTÉ
-             --------------------------------------------- */
-
-          if (user) {
-
-            console.log(
-              "CAMU INDEX : utilisateur connecté",
-              user.email
-            );
-
-
-            if (profileButton) {
-
-              profileButton.href =
-                "profil.html";
-
-              profileButton.title =
-                "Mon profil";
-
-              profileButton.setAttribute(
-                "aria-label",
-                "Mon profil"
-              );
-
-              profileButton.classList.remove(
-                "auth-loading"
-              );
-
-            }
-
-
-            if (logoutMenuItem) {
-
-              logoutMenuItem.style.display =
-                "";
-
-            }
-
+          button.classList.add("active");
+          selectedCategory = button.dataset.category || "Toutes";
+          filterServices();
+        });
+      });
+
+      /* =================================================
+         FAVORIS (avec Firebase)
+         ================================================= */
+
+      function activerFavoris() {
+        document.querySelectorAll(".favorite-btn").forEach(function (button) {
+          if (button.dataset.favoriteReady) {
+            return;
           }
 
+          button.dataset.favoriteReady = "true";
 
-          /* ---------------------------------------------
-             UTILISATEUR NON CONNECTÉ
-             --------------------------------------------- */
+          button.addEventListener("click", async function () {
+            const serviceId = button.closest(".service-card")?.dataset.serviceId;
 
-          else {
-
-            console.log(
-              "CAMU INDEX : aucun utilisateur connecté"
-            );
-
-
-            if (profileButton) {
-
-              profileButton.href =
-                "connexion.html";
-
-              profileButton.title =
-                "Se connecter";
-
-              profileButton.setAttribute(
-                "aria-label",
-                "Se connecter";
-
-              profileButton.classList.remove(
-                "auth-loading"
-              );
-
+            if (!serviceId) {
+              return;
             }
 
-
-            if (logoutMenuItem) {
-
-              logoutMenuItem.style.display =
-                "none";
-
+            // Vérifier si l'utilisateur est connecté
+            if (!window.CAMU || !window.CAMU.isUserConnected()) {
+              alert("Veuillez vous connecter pour ajouter des favoris.");
+              window.location.href = "connexion.html";
+              return;
             }
 
-          }
+            const icon = button.querySelector("i");
+            const active = button.classList.toggle("favorite-active");
 
-        }
-
-
-        /* =================================================
-           RECEVOIR LA RÉPONSE DE FIREBASE
-           ================================================= */
-
-        document.addEventListener(
-          "camu-auth-changed",
-          function (event) {
-
-            const user =
-              event.detail?.user || null;
-
-
-            mettreAJourInterfaceUtilisateur(
-              user
-            );
-
-          }
-        );
-
-
-        /* =================================================
-           DÉCONNEXION
-           ================================================= */
-
-        const logoutLink =
-          document.getElementById(
-            "logoutLink"
-          );
-
-
-        if (logoutLink) {
-
-          logoutLink.addEventListener(
-            "click",
-            async function (event) {
-
-              event.preventDefault();
-
-
-              if (
-                window.CAMU &&
-                typeof window.CAMU.deconnexion ===
-                  "function"
-              ) {
-
-                await window.CAMU.deconnexion();
-
-              }
-
+            if (icon) {
+              icon.classList.toggle("fa-regular", !active);
+              icon.classList.toggle("fa-solid", active);
             }
-          );
 
-        }
-
-
-        /* =================================================
-           VÉRIFICATION IMMÉDIATE
-           ================================================= */
-
-        if (
-          window.CAMU &&
-          typeof window.CAMU.getCurrentUser ===
-            "function"
-        ) {
-
-          const currentUser =
-            window.CAMU.getCurrentUser();
-
-
-          if (currentUser) {
-
-            mettreAJourInterfaceUtilisateur(
-              currentUser
-            );
-
-          }
-
-        }
-
-
+            // Sauvegarder dans Firebase
+            if (active) {
+              await window.CAMU.ajouterFavori(serviceId);
+            } else {
+              await window.CAMU.retirerFavori(serviceId);
+            }
+          });
+        });
       }
-    );
+
+      activerFavoris();
+
+      /*
+       * Les services viennent de Firebase
+       * après le chargement initial.
+       */
+      document.addEventListener("camu-services-loaded", function () {
+        filterServices();
+        activerFavoris();
+      });
+
+      /* =================================================
+         AUTHENTIFICATION
+         ================================================= */
+
+      document.addEventListener("camu-auth-changed", function (event) {
+        const user = event.detail?.user || null;
+        const profileButtons = document.querySelectorAll(".profile-btn");
+        const logoutMenuItem = document.getElementById("logoutMenuItem");
+
+        profileButtons.forEach(function (button) {
+          button.title = user ? "Mon profil" : "Se connecter";
+        });
+
+        // Afficher/masquer le bouton de déconnexion
+        if (logoutMenuItem) {
+          logoutMenuItem.style.display = user ? "" : "none";
+        }
+      });
+
+    });
 
   </script>
-
 
 </body>
 
