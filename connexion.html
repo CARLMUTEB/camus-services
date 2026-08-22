@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Connexion à CAMU SERVICES">
-
   <title>CAMU SERVICES — Connexion</title>
 
   <!-- Font Awesome -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- CSS Principal -->
+  <!-- CSS principal -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Styles spécifiques à la page connexion -->
+  <!-- Styles spécifiques -->
   <style>
     .card-box {
       width: 100%;
@@ -140,7 +138,7 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="top-bar">
     <button class="back-btn" onclick="history.back()" aria-label="Retour">
       <i class="fa-solid fa-arrow-left"></i>
@@ -149,10 +147,9 @@
     <div class="spacer"></div>
   </header>
 
-  <!-- CONTENU PRINCIPAL -->
+  <!-- Contenu principal -->
   <main class="container">
     <div class="card-box">
-      <!-- En-tête -->
       <div style="text-align: center; margin-bottom: 24px;">
         <div style="width: 70px; height: 70px; background: var(--red-light); color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 28px; box-shadow: 0 4px 12px rgba(211,47,47,0.15);">
           <i class="fa-solid fa-user"></i>
@@ -161,7 +158,6 @@
         <p style="font-size: 13px; color: var(--muted); line-height: 1.4;">Connectez-vous pour accéder à votre espace CAMU SERVICES</p>
       </div>
 
-      <!-- Formulaire -->
       <form id="connexionForm">
         <div class="form-group">
           <label for="emailConnexion">Adresse Email</label>
@@ -190,10 +186,8 @@
         </button>
       </form>
 
-      <!-- Message -->
       <div id="messageConnexion" class="message-box"></div>
 
-      <!-- Lien inscription -->
       <div style="text-align: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted);">
         Vous n'avez pas encore de compte ?
         <a href="inscription.html" style="color: var(--red); font-weight: 800; text-decoration: none; margin-left: 4px;">Créer un compte</a>
@@ -201,7 +195,7 @@
     </div>
   </main>
 
-  <!-- NAVIGATION BAS -->
+  <!-- Navigation bas -->
   <nav class="bottom-nav" aria-label="Navigation mobile">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
     <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
@@ -209,7 +203,7 @@
     <a href="explorer.html"><i class="fa-solid fa-compass"></i><span>Explorer</span></a>
   </nav>
 
-  <!-- SCRIPT -->
+  <!-- Script -->
   <script type="module">
     import { connexionUtilisateur, connexionGoogle } from "./app.js";
 
@@ -246,7 +240,7 @@
 
       if (resultat.success) {
         afficherMessage("Connexion réussie. Bienvenue !");
-        setTimeout(() => window.location.href = "index.html", 800);
+        setTimeout(() => window.location.href = "index.html", 1500);
       } else {
         let texte = "Impossible de se connecter.";
         if (resultat.error.includes("invalid-credential") || resultat.error.includes("wrong-password") || resultat.error.includes("user-not-found")) {
@@ -270,7 +264,7 @@
       const resultat = await connexionGoogle();
       if (resultat.success) {
         afficherMessage("Connexion réussie. Bienvenue !");
-        setTimeout(() => window.location.href = "index.html", 800);
+        setTimeout(() => window.location.href = "index.html", 1500);
       } else {
         afficherMessage("Erreur lors de la connexion Google.", "error");
         btnGoogle.disabled = false;
