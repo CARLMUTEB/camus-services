@@ -1,8 +1,6 @@
 /* =========================================================
    CAMU SERVICES — APPLICATION PRINCIPALE
-   Version : 2.1 (avec intégration WhatsApp)
-   Description : Plateforme de mise en relation
-   clients, vendeurs et prestataires
+   Version : 2.2 (avec persistance et corrections)
    ========================================================= */
 
 /* =========================================================
@@ -19,7 +17,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  browserLocalPersistence,
+  setPersistence
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 import {
@@ -62,6 +62,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
+
+// Activer la persistance locale (rester connecté après rechargement)
+setPersistence(auth, browserLocalPersistence)
+  .then(() => console.log("Persistance Firebase activée."))
+  .catch((error) => console.error("Erreur de persistance :", error));
 
 // Rendre disponible globalement
 window.db = db;
@@ -133,44 +138,25 @@ function formaterDate(value) {
    FONCTIONS WHATSAPP
    ========================================================= */
 
-/**
- * Formater un numéro de téléphone pour WhatsApp
- * Exemple : +225 07 12 34 56 78 → 2250712345678
- */
 function formaterNumeroWhatsApp(numero) {
   if (!numero) return "";
-  
-  // Supprimer tous les caractères non numériques
   let numeroPropre = String(numero).replace(/\D/g, "");
-  
-  // Ajouter le préfixe international si absent
   if (!numeroPropre.startsWith("225") && numeroPropre.length === 10) {
     numeroPropre = "225" + numeroPropre;
   }
-  
   return numeroPropre;
 }
 
-/**
- * Créer un lien WhatsApp avec message pré-rempli
- */
 function creerLienWhatsApp(numero, message = "") {
   const numeroFormate = formaterNumeroWhatsApp(numero);
-  
   if (!numeroFormate) return "#";
-  
   let lien = `https://wa.me/${numeroFormate}`;
-  
   if (message) {
     lien += `?text=${encodeURIComponent(message)}`;
   }
-  
   return lien;
 }
 
-/**
- * Générer un message WhatsApp pour un service
- */
 function genererMessageWhatsApp(service, type = "contact") {
   const nomService = service.titre || service.nom || "Service";
   const prestataire = service.prestataire || service.proprietaire || "";
@@ -181,15 +167,12 @@ function genererMessageWhatsApp(service, type = "contact") {
     case "contact":
       message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe vous contacte depuis Camus Services concernant votre service : "${nomService}".\n\nJ'aimerais avoir plus d'informations.\n\nMerci.`;
       break;
-    
     case "devis":
       message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe souhaite un devis pour le service : "${nomService}" sur Camus Services.\n\nMerci de me communiquer vos tarifs et disponibilités.`;
       break;
-    
     case "commande":
       message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe souhaite commander le service : "${nomService}" via Camus Services.\n\nMerci de me confirmer la disponibilité.`;
       break;
-    
     default:
       message = `Bonjour, je vous contacte depuis Camus Services concernant "${nomService}".`;
   }
@@ -197,31 +180,20 @@ function genererMessageWhatsApp(service, type = "contact") {
   return message;
 }
 
-/**
- * Ouvrir WhatsApp avec un numéro et un message
- */
 function ouvrirWhatsApp(numero, message = "") {
   const lien = creerLienWhatsApp(numero, message);
-  
   if (lien === "#") {
     alert("Numéro WhatsApp non disponible pour ce service.");
     return;
   }
-  
   window.open(lien, "_blank");
 }
 
-/**
- * Partager un service sur WhatsApp
- */
 function partagerSurWhatsApp(service) {
   const urlPage = window.location.href;
   const nomService = service.titre || service.nom || "Service";
-  
   const message = `Découvrez ce service sur Camus Services : ${nomService}\n\n${urlPage}`;
-  
   const lien = `https://wa.me/?text=${encodeURIComponent(message)}`;
-  
   window.open(lien, "_blank");
 }
 
@@ -264,7 +236,7 @@ export async function inscriptionUtilisateur(email, password, profil = {}) {
       });
     }
     
-    // Créer le document utilisateur dans Firestore
+    // Créer le document utilisateur dans Firestore avec l'UID comme ID
     const userData = {
       uid: user.uid,
       email: email,
@@ -278,7 +250,8 @@ export async function inscriptionUtilisateur(email, password, profil = {}) {
       updatedAt: new Date()
     };
     
-    await addDoc(collection(db, COLLECTIONS.USERS), userData);
+    // Utiliser l'UID comme ID du document
+    await setDoc(doc(db, COLLECTIONS.USERS, user.uid), userData);
     
     return {
       success: true,
@@ -299,7 +272,7 @@ export async function connexionUtilisateur(email, password) {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     
-    // Récupérer les données utilisateur depuis Firestore
+    // Récupérer les données utilisateur depuis Firestore (par UID)
     const userDoc = await getDoc(doc(db, COLLECTIONS.USERS, userCredential.user.uid));
     
     return {
@@ -327,7 +300,7 @@ export async function connexionGoogle() {
     
     if (!userDoc.exists()) {
       // Créer le profil utilisateur
-      await addDoc(collection(db, COLLECTIONS.USERS), {
+      await setDoc(doc(db, COLLECTIONS.USERS, user.uid), {
         uid: user.uid,
         email: user.email,
         nom: user.displayName || "",
@@ -380,6 +353,7 @@ export function isUserConnected() {
    ========================================================= */
 
 onAuthStateChanged(auth, (user) => {
+  console.log("État d'authentification :", user ? user.email : "déconnecté");
   window.camuCurrentUser = user || null;
   
   document.dispatchEvent(new CustomEvent("camu-auth-changed", {
@@ -398,7 +372,7 @@ onAuthStateChanged(auth, (user) => {
 
 export async function creerProfilUtilisateur(uid, userData) {
   try {
-    await addDoc(collection(db, COLLECTIONS.USERS), {
+    await setDoc(doc(db, COLLECTIONS.USERS, uid), {
       ...userData,
       uid: uid,
       createdAt: new Date(),
@@ -413,21 +387,10 @@ export async function creerProfilUtilisateur(uid, userData) {
 
 export async function mettreAJourProfil(uid, updates) {
   try {
-    // Trouver le document utilisateur par UID
-    const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
-    const snapshot = await getDocs(q);
-    
-    if (snapshot.empty) {
-      throw new Error("Profil non trouvé");
-    }
-    
-    const userDoc = snapshot.docs[0];
-    
-    await updateDoc(userDoc.ref, {
+    await updateDoc(doc(db, COLLECTIONS.USERS, uid), {
       ...updates,
       updatedAt: new Date()
     });
-    
     return { success: true };
   } catch (error) {
     console.error("Erreur mise à jour profil :", error);
@@ -437,21 +400,12 @@ export async function mettreAJourProfil(uid, updates) {
 
 export async function obtenirProfil(uid) {
   try {
-    // Trouver le document utilisateur par UID
-    const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
-    const snapshot = await getDocs(q);
-    
-    if (snapshot.empty) {
-      return {
-        success: false,
-        error: "Profil non trouvé"
-      };
+    const userDoc = await getDoc(doc(db, COLLECTIONS.USERS, uid));
+    if (userDoc.exists()) {
+      return { success: true, data: userDoc.data() };
+    } else {
+      return { success: false, error: "Profil non trouvé" };
     }
-    
-    return {
-      success: true,
-      data: snapshot.docs[0].data()
-    };
   } catch (error) {
     console.error("Erreur récupération profil :", error);
     return { success: false, error: error.message };
@@ -466,11 +420,8 @@ export async function obtenirProfil(uid) {
 export async function creerService(serviceData) {
   try {
     const user = auth.currentUser;
-    if (!user) {
-      throw new Error("Utilisateur non connecté");
-    }
+    if (!user) throw new Error("Utilisateur non connecté");
     
-    // Récupérer le profil utilisateur pour avoir le numéro WhatsApp
     const profil = await obtenirProfil(user.uid);
     const whatsapp = profil.success ? profil.data.whatsapp || profil.data.telephone : "";
     
@@ -493,15 +444,8 @@ export async function creerService(serviceData) {
 export async function obtenirService(serviceId) {
   try {
     const serviceDoc = await getDoc(doc(db, COLLECTIONS.SERVICES, serviceId));
-    
     if (serviceDoc.exists()) {
-      return {
-        success: true,
-        data: {
-          id: serviceDoc.id,
-          ...serviceDoc.data()
-        }
-      };
+      return { success: true, data: { id: serviceDoc.id, ...serviceDoc.data() } };
     } else {
       return { success: false, error: "Service non trouvé" };
     }
@@ -536,21 +480,12 @@ export async function supprimerService(serviceId) {
 
 export async function obtenirServicesParUtilisateur(userId) {
   try {
-    const q = query(
-      collection(db, COLLECTIONS.SERVICES),
-      where("userId", "==", userId)
-    );
-    
+    const q = query(collection(db, COLLECTIONS.SERVICES), where("userId", "==", userId));
     const snapshot = await getDocs(q);
     const services = [];
-    
     snapshot.forEach((doc) => {
-      services.push({
-        id: doc.id,
-        ...doc.data()
-      });
+      services.push({ id: doc.id, ...doc.data() });
     });
-    
     return { success: true, services };
   } catch (error) {
     console.error("Erreur récupération services :", error);
@@ -558,27 +493,18 @@ export async function obtenirServicesParUtilisateur(userId) {
   }
 }
 
-// Charger les services avec pagination
 export async function chargerServicesPage(limite = 10, dernierDoc = null) {
   try {
     const servicesRef = collection(db, COLLECTIONS.SERVICES);
-    
     let q = query(servicesRef, orderBy("createdAt", "desc"), limit(limite));
-    
     if (dernierDoc) {
       q = query(servicesRef, orderBy("createdAt", "desc"), startAfter(dernierDoc), limit(limite));
     }
-    
     const snapshot = await getDocs(q);
     const services = [];
-    
     snapshot.forEach((doc) => {
-      services.push({
-        id: doc.id,
-        ...doc.data()
-      });
+      services.push({ id: doc.id, ...doc.data() });
     });
-    
     return {
       success: true,
       services,
@@ -600,13 +526,11 @@ export async function ajouterFavori(serviceId) {
     const user = auth.currentUser;
     if (!user) throw new Error("Utilisateur non connecté");
     
-    // Vérifier si déjà en favori
     const q = query(
       collection(db, COLLECTIONS.FAVORIS),
       where("userId", "==", user.uid),
       where("serviceId", "==", serviceId)
     );
-    
     const snapshot = await getDocs(q);
     
     if (!snapshot.empty) {
@@ -636,12 +560,13 @@ export async function retirerFavori(serviceId) {
       where("userId", "==", user.uid),
       where("serviceId", "==", serviceId)
     );
-    
     const snapshot = await getDocs(q);
     
-    snapshot.forEach(async (doc) => {
-      await deleteDoc(doc.ref);
+    const promises = [];
+    snapshot.forEach((doc) => {
+      promises.push(deleteDoc(doc.ref));
     });
+    await Promise.all(promises);
     
     return { success: true };
   } catch (error) {
@@ -659,10 +584,8 @@ export async function obtenirFavoris() {
       collection(db, COLLECTIONS.FAVORIS),
       where("userId", "==", user.uid)
     );
-    
     const snapshot = await getDocs(q);
     const favoris = [];
-    
     snapshot.forEach((doc) => {
       favoris.push(doc.data().serviceId);
     });
@@ -706,15 +629,10 @@ export async function obtenirAvis(serviceId) {
       where("serviceId", "==", serviceId),
       orderBy("createdAt", "desc")
     );
-    
     const snapshot = await getDocs(q);
     const avis = [];
-    
     snapshot.forEach((doc) => {
-      avis.push({
-        id: doc.id,
-        ...doc.data()
-      });
+      avis.push({ id: doc.id, ...doc.data() });
     });
     
     return { success: true, avis };
@@ -745,16 +663,11 @@ async function chargerCommuniquesFirebase() {
     let snapshot;
     
     try {
-      const q = query(
-        communiquesRef,
-        orderBy("date", "desc"),
-        limit(10)
-      );
+      const q = query(communiquesRef, orderBy("date", "desc"), limit(10));
       snapshot = await getDocs(q);
     } catch (error) {
       console.warn("Tri par date impossible, récupération simple :", error);
-      const q = query(communiquesRef, limit(10));
-      snapshot = await getDocs(q);
+      snapshot = await getDocs(query(communiquesRef, limit(10)));
     }
     
     if (snapshot.empty) {
@@ -831,17 +744,12 @@ async function chargerServicesFirebase(categorie = null) {
     let q;
     
     if (categorie && categorie !== "tous") {
-      q = query(
-        servicesRef,
-        where("categorie", "==", categorie),
-        orderBy("createdAt", "desc")
-      );
+      q = query(servicesRef, where("categorie", "==", categorie), orderBy("createdAt", "desc"));
     } else {
       q = query(servicesRef, orderBy("createdAt", "desc"));
     }
     
     let snapshot;
-    
     try {
       snapshot = await getDocs(q);
     } catch (error) {
