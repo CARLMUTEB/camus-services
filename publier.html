@@ -1,1507 +1,514 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Publier une annonce — CAMU SERVICES">
 
-<meta charset="UTF-8">
+  <title>CAMU SERVICES — Publier</title>
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<title>CAMU SERVICES — Publier</title>
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="style.css">
+  <!-- Styles spécifiques à la page publier -->
+  <style>
+    /* =====================================================
+       CARTE FORMULAIRE
+       ===================================================== */
+    .form-card {
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.4s ease;
+    }
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-<style>
+    .form-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-/* =========================================================
-   PUBLICATION
-   ========================================================= */
+    .form-header .icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 30px;
+      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+    }
 
-.publication-contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+    .form-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
 
-@media (max-width: 600px) {
-  .publication-contact-grid {
-    grid-template-columns: 1fr;
-  }
-}
+    .form-header p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
 
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-/* =========================================================
-   CARTE SERVICE
-   ========================================================= */
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
 
-.service-image {
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  background: #eee;
-}
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: var(--card);
+      color: var(--text);
+      transition: border-color 0.2s ease;
+    }
 
-.service-card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 13px;
-}
+    .form-group textarea {
+      padding-top: 12px;
+      resize: vertical;
+      min-height: 100px;
+    }
 
-.service-card-actions a,
-.service-card-actions button {
-  min-height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  text-decoration: none;
-}
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+    }
 
-.btn-whatsapp {
-  background: #25d366 !important;
-  color: #fff !important;
-  border-color: #25d366 !important;
-}
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #999999;
+    }
 
-.btn-call {
-  background: var(--red) !important;
-  color: #fff !important;
-  border-color: var(--red) !important;
-}
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      width: 100%;
+      margin-top: 5px;
+    }
 
-.btn-share {
-  background: var(--card);
-  color: var(--text);
-}
+    .btn-submit:hover {
+      background: var(--red-dark);
+    }
 
-.btn-favorite {
-  background: var(--card);
-  color: var(--text);
-}
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
 
-.btn-favorite.active {
-  color: #f9a825;
-  border-color: #f9a825;
-}
+    .message-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
 
-.btn-details {
-  grid-column: 1 / -1;
-  background: #111;
-  color: #fff !important;
-  border-color: #111 !important;
-}
+    .message-box.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
 
-body.dark-mode .btn-details {
-  background: #fff;
-  color: #111 !important;
-  border-color: #fff !important;
-}
+    .message-box.error {
+      background: var(--red-light);
+      color: var(--red);
+      border: 1px solid #f1c2c2;
+    }
 
-.service-owner {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 7px;
-}
+    .info-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
 
+    .info-note i {
+      color: var(--red);
+      margin-right: 4px;
+    }
 
-/* =========================================================
-   APERÇU
-   ========================================================= */
+    /* =====================================================
+       ÉTAT NON CONNECTÉ
+       ===================================================== */
+    .not-connected {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
 
-#previewContainer img {
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 12px;
-}
+    .not-connected i {
+      font-size: 50px;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
 
+    .not-connected h2 {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
 
-/* =========================================================
-   MENU
-   ========================================================= */
+    .not-connected p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
 
-.menu-toggle {
-  background: transparent;
-  border: none;
-  color: #fff;
-}
+    .btn-connect {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
-</style>
+    .btn-connect:hover {
+      background: var(--red-dark);
+    }
 
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 20px 15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-
-<!-- ======================================================
-     HEADER
-     ====================================================== -->
-
-<header class="top-bar">
-
-  <button
-    class="menu-toggle"
-    id="menuToggle"
-    aria-label="Menu">
-
-    <i class="fa-solid fa-bars"></i>
-
-  </button>
-
-  <div class="logo-text">
-
-    CAMU <span>SERVICES</span>
-
-  </div>
-
-  <a href="profil.html"
-     aria-label="Profil">
-
-    <i class="fa-solid fa-user"></i>
-
-  </a>
-
-</header>
-
-
-<!-- ======================================================
-     MENU
-     ====================================================== -->
-
-<aside class="sidebar-vertical">
-
-  <div class="sidebar-header">
-    Navigation
-  </div>
-
-  <ul>
-
-    <li>
-      <a href="index.html">
-        <i class="fa-solid fa-house"></i>
-        Accueil
-      </a>
-    </li>
-
-    <li>
-      <a href="publier.html"
-         class="active-link">
-
-        <i class="fa-solid fa-circle-plus"></i>
-        Publier
-
-      </a>
-    </li>
-
-    <li>
-      <a href="chat.html">
-
-        <i class="fa-solid fa-comments"></i>
-        Chat
-
-      </a>
-    </li>
-
-    <li>
-      <a href="conditions.html">
-
-        <i class="fa-solid fa-file-contract"></i>
-        Conditions
-
-      </a>
-    </li>
-
-    <li>
-      <a href="profil.html">
-
-        <i class="fa-solid fa-user"></i>
-        Mon Profil
-
-      </a>
-    </li>
-
-  </ul>
-
-</aside>
-
-
-<!-- ======================================================
-     CONTENU
-     ====================================================== -->
-
-<main class="container">
-
-
-<section class="hero">
-
-  <h1>
-    Publiez votre <span>service.</span>
-  </h1>
-
-  <p>
-    Présentez votre activité et permettez aux clients
-    de vous contacter directement par téléphone ou WhatsApp.
-  </p>
-
-</section>
-
-
-<!-- ======================================================
-     FORMULAIRE
-     ====================================================== -->
-
-<section class="card-box">
-
-  <h2 style="font-size:18px;margin-bottom:7px;">
-
-    <i class="fa-solid fa-circle-plus"
-       style="color:var(--red);"></i>
-
-    Nouvelle publication
-
-  </h2>
-
-  <p class="help"
-     style="margin-bottom:20px;">
-
-    Votre publication sera vérifiée par l'administration
-    avant sa mise en ligne.
-
-  </p>
-
-
-<form id="publierForm">
-
-
-<!-- TITRE -->
-
-<div class="form-group">
-
-  <label for="titreService">
-    Titre du service *
-  </label>
-
-  <input
-    type="text"
-    id="titreService"
-    maxlength="100"
-    placeholder="Ex : Installation électrique"
-    required>
-
-</div>
-
-
-<!-- CATÉGORIE -->
-
-<div class="form-group">
-
-  <label for="categorieService">
-    Catégorie *
-  </label>
-
-  <select id="categorieService" required>
-
-    <option value="">
-      Sélectionner une catégorie
-    </option>
-
-    <option>Technique & Maintenance</option>
-
-    <option>BTP & Construction</option>
-
-    <option>Informatique & Numérique</option>
-
-    <option>Électricité</option>
-
-    <option>Transport</option>
-
-    <option>Agriculture & Élevage</option>
-
-    <option>Maison & Immobilier</option>
-
-    <option>Commerce</option>
-
-    <option>Beauté & Bien-être</option>
-
-    <option>Formation & Éducation</option>
-
-    <option>Divers & Services</option>
-
-  </select>
-
-</div>
-
-
-<!-- VILLE -->
-
-<div class="form-group">
-
-  <label for="villeService">
-    Ville / Localisation *
-  </label>
-
-  <input
-    type="text"
-    id="villeService"
-    maxlength="100"
-    placeholder="Ex : Lubumbashi"
-    required>
-
-</div>
-
-
-<!-- PRIX -->
-
-<div class="form-group">
-
-  <label for="prixService">
-    Prix *
-  </label>
-
-  <input
-    type="text"
-    id="prixService"
-    maxlength="50"
-    placeholder="Ex : 50 $ ou Sur devis"
-    required>
-
-</div>
-
-
-<!-- CONTACT -->
-
-<div class="publication-contact-grid">
-
-  <div class="form-group">
-
-    <label for="telephoneService">
-      Téléphone *
-    </label>
-
-    <input
-      type="tel"
-      id="telephoneService"
-      maxlength="30"
-      placeholder="Ex : +243 8XX XXX XXX"
-      required>
-
-  </div>
-
-
-  <div class="form-group">
-
-    <label for="whatsappService">
-      WhatsApp
-    </label>
-
-    <input
-      type="tel"
-      id="whatsappService"
-      maxlength="30"
-      placeholder="Même numéro si WhatsApp">
-
-  </div>
-
-</div>
-
-
-<p class="help"
-   style="margin-top:-5px;margin-bottom:15px;">
-
-  Le numéro WhatsApp permettra aux clients de vous contacter
-  directement depuis votre carte.
-
-</p>
-
-
-<!-- IMAGE -->
-
-<div class="form-group">
-
-  <label for="mediaService">
-    Photo ou illustration
-  </label>
-
-  <input
-    type="file"
-    id="mediaService"
-    accept="image/*">
-
-  <div id="previewContainer"
-       style="display:none;margin-top:10px;">
-
-    <img id="imagePreview"
-         src=""
-         alt="Aperçu">
-
-  </div>
-
-</div>
-
-
-<!-- DESCRIPTION -->
-
-<div class="form-group">
-
-  <label for="descService">
-    Description *
-  </label>
-
-  <textarea
-    id="descService"
-    maxlength="1000"
-    placeholder="Décrivez clairement votre service..."
-    required></textarea>
-
-  <p class="help">
-
-    Présentez vos compétences, vos prestations
-    et les informations importantes pour le client.
-
-  </p>
-
-</div>
-
-
-<button
-  type="submit"
-  id="btnPublier"
-  class="btn-submit"
-  style="width:100%;">
-
-  <i class="fa-solid fa-paper-plane"></i>
-
-  Envoyer pour validation
-
-</button>
-
-
-</form>
-
-
-<div id="messagePublication"
-     style="display:none;margin-top:15px;padding:12px;border-radius:10px;text-align:center;font-size:12px;font-weight:bold;">
-</div>
-
-
-</section>
-
-
-<!-- ======================================================
-     SERVICES
-     ====================================================== -->
-
-<div class="section-title">
-
-  <i class="fa-solid fa-list"
-     style="color:var(--red);"></i>
-
-  Services disponibles
-
-</div>
-
-
-<div id="publicAdsContainer">
-
-  <div class="empty-state">
-
-    <i class="fa-solid fa-spinner fa-spin"></i>
-
-    <p>Chargement...</p>
-
-  </div>
-
-</div>
-
-
-<!-- ======================================================
-     FOOTER
-     ====================================================== -->
-
-<footer class="footer">
-
-  <h3>CAMU SERVICES</h3>
-
-  <p>
-    Votre marketplace locale de services.
-  </p>
-
-  <div class="footer-links">
-
-    <a href="a-propos.html">
-      À propos
+  <!-- HEADER -->
+  <header class="top-bar">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
+      CAMU <span>SERVICES</span>
     </a>
 
-    <a href="conditions.html">
-      Conditions
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
+      <i class="fa-solid fa-user"></i>
     </a>
+  </header>
 
-    <a href="contact.html">
-      Contact
+  <!-- MENU LATÉRAL -->
+  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar-header">
+      CAMU SERVICES
+    </div>
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
+      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
+      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
+      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
+      <li><a href="favoris.html"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
+      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
+      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
+      <li><a href="profil.html"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
+      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="container">
+
+    <!-- ÉTAT NON CONNECTÉ -->
+    <div id="notConnectedSection" class="not-connected" style="display: block;">
+      <i class="fa-solid fa-user-circle"></i>
+      <h2>Vous n'êtes pas connecté</h2>
+      <p>
+        Pour publier une annonce, vous devez d'abord vous connecter ou créer un compte.
+      </p>
+      <a href="connexion.html" class="btn-connect">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Se connecter
+      </a>
+      <div style="margin-top: 12px;">
+        <a href="inscription.html" style="color: var(--red); font-weight: 800;">
+          Créer un compte
+        </a>
+      </div>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <div id="formSection" style="display: none;">
+      <div class="form-card">
+        <div class="form-header">
+          <div class="icon">
+            <i class="fa-solid fa-circle-plus"></i>
+          </div>
+          <h1>Publier une annonce</h1>
+          <p>
+            Renseignez les informations de votre service ou de votre entreprise.
+          </p>
+        </div>
+
+        <form id="publierForm">
+          <div class="form-group">
+            <label for="titreAnnonce">Titre de l'annonce <span style="color: var(--red);">*</span></label>
+            <input type="text" id="titreAnnonce" placeholder="Ex : Service de couture sur mesure" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categorieAnnonce">Catégorie <span style="color: var(--red);">*</span></label>
+            <select id="categorieAnnonce" required>
+              <option value="">Choisir une catégorie...</option>
+              <option value="Construction">Construction</option>
+              <option value="Transport">Transport</option>
+              <option value="Beauté">Beauté</option>
+              <option value="Restaurant">Restaurant</option>
+              <option value="Informatique">Informatique</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Services">Services</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="descriptionAnnonce">Description <span style="color: var(--red);">*</span></label>
+            <textarea id="descriptionAnnonce" placeholder="Décrivez votre service, vos horaires, votre expérience..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="localisationAnnonce">Localisation</label>
+            <input type="text" id="localisationAnnonce" placeholder="Ville, quartier, adresse...">
+          </div>
+
+          <div class="form-group">
+            <label for="telephoneAnnonce">Téléphone / WhatsApp <span style="color: var(--red);">*</span></label>
+            <input type="tel" id="telephoneAnnonce" placeholder="Ex : +225 07 00 00 00 00" required>
+            <div class="info-note">
+              <i class="fa-solid fa-circle-info"></i>
+              Ce numéro sera utilisé pour le bouton WhatsApp de contact.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="imageAnnonce">URL de l'image (optionnel)</label>
+            <input type="url" id="imageAnnonce" placeholder="https://exemple.com/image.jpg">
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSubmit">
+            <i class="fa-solid fa-paper-plane"></i>
+            Publier mon annonce
+          </button>
+
+          <div id="messageBox" class="message-box"></div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION MOBILE -->
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
     </a>
-
-    <a href="politique.html">
-      Politique d'utilisation
+    <a href="publier.html" class="active">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
     </a>
-
-  </div>
-
-  <p>
-    © 2026 CAMU SERVICES
-  </p>
-
-</footer>
-
-
-</main>
-
-
-<!-- ======================================================
-     NAVIGATION BAS
-     ====================================================== -->
-
-<nav class="bottom-nav">
-
-  <a href="index.html">
-
-    <i class="fa-solid fa-house"></i>
-
-    <span>Accueil</span>
-
-  </a>
-
-  <a href="publier.html"
-     class="active">
-
-    <i class="fa-solid fa-circle-plus"></i>
-
-    <span>Publier</span>
-
-  </a>
-
-  <a href="chat.html">
-
-    <i class="fa-solid fa-comments"></i>
-
-    <span>Chat</span>
-
-  </a>
-
-  <a href="profil.html">
-
-    <i class="fa-solid fa-user"></i>
-
-    <span>Profil</span>
-
-  </a>
-
-</nav>
-
-
-<!-- ======================================================
-     MENU JAVASCRIPT
-     ====================================================== -->
-
-<script>
-
-const menuToggle =
-  document.getElementById("menuToggle");
-
-const sidebar =
-  document.querySelector(".sidebar-vertical");
-
-
-if (menuToggle && sidebar) {
-
-  menuToggle.addEventListener("click", (event) => {
-
-    event.stopPropagation();
-
-    sidebar.classList.toggle("open");
-
-  });
-
-
-  document.addEventListener("click", (event) => {
-
-    if (
-      !sidebar.contains(event.target) &&
-      !menuToggle.contains(event.target)
-    ) {
-
-      sidebar.classList.remove("open");
-
-    }
-
-  });
-
-}
-
-</script>
-
-
-<!-- ======================================================
-     FIREBASE
-     ====================================================== -->
-
-<script type="module">
-
-import {
-
-  db,
-  auth,
-  collection,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-  onAuthStateChanged,
-  escapeHTML,
-  creerLienWhatsApp,
-  creerLienTelephone,
-  afficherNotification
-
-} from "./app.js";
-
-
-let currentUser = null;
-
-let base64Image = "";
-
-
-const form =
-  document.getElementById("publierForm");
-
-const button =
-  document.getElementById("btnPublier");
-
-const message =
-  document.getElementById("messagePublication");
-
-const container =
-  document.getElementById("publicAdsContainer");
-
-const mediaInput =
-  document.getElementById("mediaService");
-
-const previewContainer =
-  document.getElementById("previewContainer");
-
-const imagePreview =
-  document.getElementById("imagePreview");
-
-
-/* ======================================================
-   APERÇU IMAGE
-   ====================================================== */
-
-mediaInput.addEventListener("change", (event) => {
-
-  const file =
-    event.target.files[0];
-
-  if (!file) {
-
-    base64Image = "";
-
-    previewContainer.style.display =
-      "none";
-
-    imagePreview.src = "";
-
-    return;
-
-  }
-
-
-  if (!file.type.startsWith("image/")) {
-
-    afficherNotification(
-      "Veuillez sélectionner une image.",
-      "error"
-    );
-
-    mediaInput.value = "";
-
-    return;
-
-  }
-
-
-  if (file.size > 2 * 1024 * 1024) {
-
-    afficherNotification(
-      "L'image ne doit pas dépasser 2 Mo.",
-      "error"
-    );
-
-    mediaInput.value = "";
-
-    return;
-
-  }
-
-
-  const reader =
-    new FileReader();
-
-
-  reader.onload = (e) => {
-
-    base64Image =
-      e.target.result;
-
-    imagePreview.src =
-      base64Image;
-
-    previewContainer.style.display =
-      "block";
-
-  };
-
-
-  reader.readAsDataURL(file);
-
-});
-
-
-/* ======================================================
-   AUTHENTIFICATION
-   ====================================================== */
-
-onAuthStateChanged(auth, async (user) => {
-
-  if (!user) {
-
-    currentUser = null;
-
-    window.location.href =
-      "connexion.html";
-
-    return;
-
-  }
-
-  currentUser = user;
-
-  await loadPublicAds();
-
-});
-
-
-/* ======================================================
-   CHARGEMENT DES SERVICES
-   ====================================================== */
-
-async function loadPublicAds() {
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(db, "services")
-      );
-
-
-    let html = "";
-
-    let count = 0;
-
-
-    snapshot.forEach((docSnap) => {
-
-      const service =
-        docSnap.data();
-
-
-      if (service.valide !== true) {
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="explorer.html">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explorer</span>
+    </a>
+  </nav>
+
+  <!-- LOGIQUE FIREBASE -->
+  <script type="module">
+    import { auth, creerService, deconnexion, onAuthStateChanged } from "./app.js";
+
+    console.log("Script publier chargé !");
+
+    const notConnectedSection = document.getElementById('notConnectedSection');
+    const formSection = document.getElementById('formSection');
+    const form = document.getElementById('publierForm');
+    const messageBox = document.getElementById('messageBox');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const logoutMenuItem = document.getElementById('logoutMenuItem');
+    const logoutSidebar = document.getElementById('logoutSidebar');
+
+    // Vérifier l'état de connexion
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        notConnectedSection.style.display = 'none';
+        formSection.style.display = 'block';
+        if (logoutMenuItem) logoutMenuItem.style.display = 'block';
+      } else {
+        notConnectedSection.style.display = 'block';
+        formSection.style.display = 'none';
+        if (logoutMenuItem) logoutMenuItem.style.display = 'none';
+      }
+    });
+
+    // Soumission du formulaire
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const titre = document.getElementById('titreAnnonce').value.trim();
+      const categorie = document.getElementById('categorieAnnonce').value;
+      const description = document.getElementById('descriptionAnnonce').value.trim();
+      const localisation = document.getElementById('localisationAnnonce').value.trim();
+      const telephone = document.getElementById('telephoneAnnonce').value.trim();
+      const imageUrl = document.getElementById('imageAnnonce').value.trim();
+
+      if (!titre || !categorie || !description || !telephone) {
+        afficherMessage('Veuillez remplir tous les champs obligatoires.', 'error');
         return;
       }
 
-
-      count++;
-
-
-      const id =
-        docSnap.id;
-
-
-      const titre =
-        escapeHTML(
-          service.titre || "Service"
-        );
-
-
-      const categorie =
-        escapeHTML(
-          service.categorie || "Service"
-        );
-
-
-      const ville =
-        escapeHTML(
-          service.ville || "RDC"
-        );
-
-
-      const prix =
-        escapeHTML(
-          service.prix || "Sur devis"
-        );
-
-
-      const description =
-        escapeHTML(
-          service.description || ""
-        );
-
-
-      const telephone =
-        service.telephone ||
-        service.whatsapp ||
-        "";
-
-
-      const whatsapp =
-        service.whatsapp ||
-        service.telephone ||
-        "";
-
-
-      const whatsappLink =
-        creerLienWhatsApp(
-          whatsapp,
-          `Bonjour, je viens de voir votre service "${service.titre || "Service"}" sur CAMU SERVICES.`
-        );
-
-
-      const telephoneLink =
-        creerLienTelephone(
-          telephone
-        );
-
-
-      html += `
-
-<article
-  class="annonce-card"
-  data-service-id="${escapeHTML(id)}">
-
-  ${
-    service.image
-      ? `
-        <img
-          class="service-image"
-          src="${service.image}"
-          alt="${titre}"
-          loading="lazy">
-      `
-      : ""
-  }
-
-
-  <span class="badge-cat">
-    ${categorie}
-  </span>
-
-
-  <h3>
-    ${titre}
-  </h3>
-
-
-  <div class="location">
-
-    <i class="fa-solid fa-location-dot"></i>
-
-    ${ville}
-
-  </div>
-
-
-  <p
-    style="
-      font-size:13px;
-      line-height:1.55;
-      color:var(--muted);
-      margin-top:8px;
-    ">
-
-    ${description}
-
-  </p>
-
-
-  <div class="prix">
-
-    ${prix}
-
-  </div>
-
-
-  ${
-    telephone
-      ? `
-        <div class="service-owner">
-
-          <i class="fa-solid fa-phone"></i>
-
-          ${escapeHTML(telephone)}
-
-        </div>
-      `
-      : ""
-  }
-
-
-  <div class="service-card-actions">
-
-    ${
-      whatsapp
-        ? `
-          <a
-            class="btn-whatsapp"
-            href="${whatsappLink}"
-            target="_blank"
-            rel="noopener">
-
-            <i class="fa-brands fa-whatsapp"></i>
-
-            WhatsApp
-
-          </a>
-        `
-        : `
-          <button
-            type="button"
-            disabled
-            style="opacity:.5;">
-
-            <i class="fa-brands fa-whatsapp"></i>
-
-            WhatsApp
-
-          </button>
-        `
-    }
-
-
-    ${
-      telephone
-        ? `
-          <a
-            class="btn-call"
-            href="${telephoneLink}">
-
-            <i class="fa-solid fa-phone"></i>
-
-            Appeler
-
-          </a>
-        `
-        : `
-          <button
-            type="button"
-            disabled
-            style="opacity:.5;">
-
-            <i class="fa-solid fa-phone"></i>
-
-            Appeler
-
-          </button>
-        `
-    }
-
-
-    <button
-      type="button"
-      class="btn-share"
-      data-share-id="${escapeHTML(id)}"
-      data-share-title="${titre}">
-
-      <i class="fa-solid fa-share-nodes"></i>
-
-      Partager
-
-    </button>
-
-
-    <button
-      type="button"
-      class="btn-favorite"
-      data-favorite-id="${escapeHTML(id)}">
-
-      <i class="fa-regular fa-star"></i>
-
-      Favori
-
-    </button>
-
-
-    <a
-      href="service.html?id=${encodeURIComponent(id)}"
-      class="btn-details">
-
-      <i class="fa-solid fa-eye"></i>
-
-      Voir le service
-
-    </a>
-
-  </div>
-
-</article>
-
-`;
-
-    });
-
-
-    if (count === 0) {
-
-      container.innerHTML = `
-
-        <div class="empty-state">
-
-          <i class="fa-solid fa-folder-open"></i>
-
-          <h2>
-            Aucun service disponible
-          </h2>
-
-          <p>
-            Aucun service n'a encore été validé.
-          </p>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    container.innerHTML =
-      html;
-
-
-    activerBoutonsCartes();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Erreur services :",
-      error
-    );
-
-
-    container.innerHTML = `
-
-      <div class="empty-state">
-
-        <i class="fa-solid fa-triangle-exclamation"></i>
-
-        <h2>
-          Erreur
-        </h2>
-
-        <p>
-          Impossible de charger les services.
-        </p>
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* ======================================================
-   BOUTONS DES CARTES
-   ====================================================== */
-
-function activerBoutonsCartes() {
-
-
-  /* PARTAGE */
-
-  document
-    .querySelectorAll("[data-share-id]")
-    .forEach((button) => {
-
-      button.addEventListener("click", async () => {
-
-        const title =
-          button.dataset.shareTitle ||
-          "Service CAMU SERVICES";
-
-
-        const url =
-          `${window.location.origin}${window.location.pathname.replace("publier.html", "")}service.html?id=${button.dataset.shareId}`;
-
-
-        if (navigator.share) {
-
-          try {
-
-            await navigator.share({
-
-              title:
-                title,
-
-              text:
-                `Découvrez ce service sur CAMU SERVICES : ${title}`,
-
-              url
-
-            });
-
-          }
-
-          catch (error) {
-
-            if (error.name !== "AbortError") {
-
-              console.error(error);
-
-            }
-
-          }
-
-        } else {
-
-          try {
-
-            await navigator.clipboard.writeText(url);
-
-            afficherNotification(
-              "Lien copié.",
-              "success"
-            );
-
-          }
-
-          catch {
-
-            afficherNotification(
-              "Impossible de copier le lien.",
-              "error"
-            );
-
-          }
-
-        }
-
-      });
-
-    });
-
-
-  /* FAVORIS */
-
-  document
-    .querySelectorAll("[data-favorite-id]")
-    .forEach((button) => {
-
-      const id =
-        button.dataset.favoriteId;
-
-
-      const key =
-        `camu_favorite_${id}`;
-
-
-      if (localStorage.getItem(key) === "true") {
-
-        button.classList.add("active");
-
-        button.innerHTML =
-          '<i class="fa-solid fa-star"></i> Favori';
-
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publication en cours...';
+      masquerMessage();
+
+      const serviceData = {
+        titre: titre,
+        nom: titre, // pour compatibilité
+        categorie: categorie,
+        description: description,
+        localisation: localisation || 'Disponible localement',
+        telephone: telephone,
+        whatsapp: telephone,
+        imageUrl: imageUrl || '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      const resultat = await creerService(serviceData);
+
+      if (resultat.success) {
+        afficherMessage('Annonce publiée avec succès ! Redirection...');
+        setTimeout(() => {
+          window.location.href = 'entreprise.html?id=' + resultat.id;
+        }, 1500);
+      } else {
+        afficherMessage("Erreur lors de la publication. Veuillez réessayer.", 'error');
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publier mon annonce';
       }
-
-
-      button.addEventListener("click", () => {
-
-        const active =
-          button.classList.toggle("active");
-
-
-        localStorage.setItem(
-          key,
-          active ? "true" : "false"
-        );
-
-
-        button.innerHTML =
-          active
-            ? '<i class="fa-solid fa-star"></i> Favori'
-            : '<i class="fa-regular fa-star"></i> Favori';
-
-
-        afficherNotification(
-          active
-            ? "Service ajouté aux favoris."
-            : "Service retiré des favoris.",
-          "success"
-        );
-
-      });
-
     });
 
-}
-
-
-/* ======================================================
-   PUBLICATION
-   ====================================================== */
-
-form.addEventListener(
-  "submit",
-  async (event) => {
-
-    event.preventDefault();
-
-
-    if (!currentUser) {
-
-      window.location.href =
-        "connexion.html";
-
-      return;
-
+    // Fonctions d'affichage des messages
+    function afficherMessage(texte, type = 'success') {
+      messageBox.style.display = 'block';
+      messageBox.textContent = texte;
+      messageBox.className = 'message-box ' + type;
     }
 
-
-    const titre =
-      document
-        .getElementById("titreService")
-        .value
-        .trim();
-
-
-    const categorie =
-      document
-        .getElementById("categorieService")
-        .value;
-
-
-    const ville =
-      document
-        .getElementById("villeService")
-        .value
-        .trim();
-
-
-    const prix =
-      document
-        .getElementById("prixService")
-        .value
-        .trim();
-
-
-    const telephone =
-      document
-        .getElementById("telephoneService")
-        .value
-        .trim();
-
-
-    let whatsapp =
-      document
-        .getElementById("whatsappService")
-        .value
-        .trim();
-
-
-    const description =
-      document
-        .getElementById("descService")
-        .value
-        .trim();
-
-
-    if (!whatsapp) {
-
-      whatsapp =
-        telephone;
-
+    function masquerMessage() {
+      messageBox.style.display = 'none';
     }
 
-
-    if (
-      !titre ||
-      !categorie ||
-      !ville ||
-      !prix ||
-      !telephone ||
-      !description
-    ) {
-
-      afficherMessage(
-        "Veuillez remplir tous les champs obligatoires.",
-        false
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      button.disabled =
-        true;
-
-
-      button.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-
-
-      await addDoc(
-        collection(db, "services"),
-        {
-
-          titre,
-
-          categorie,
-
-          ville,
-
-          prix,
-
-          telephone,
-
-          whatsapp,
-
-          description,
-
-          image:
-            base64Image || "",
-
-          ownerId:
-            currentUser.uid,
-
-          ownerEmail:
-            currentUser.email || "",
-
-          valide:
-            false,
-
-          status:
-            "en_attente",
-
-          createdAt:
-            serverTimestamp()
-
+    // Gestion du menu latéral
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', function() {
+        const opened = sidebar.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', !opened);
+          icon.classList.toggle('fa-xmark', opened);
         }
-      );
+      });
 
-
-      afficherMessage(
-        "Publication envoyée avec succès. Elle sera visible après validation.",
-        true
-      );
-
-
-      form.reset();
-
-
-      base64Image =
-        "";
-
-
-      previewContainer.style.display =
-        "none";
-
-
-      imagePreview.src =
-        "";
-
-
-      afficherNotification(
-        "Publication envoyée pour validation.",
-        "success"
-      );
-
-
-      await loadPublicAds();
-
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          sidebar.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-xmark');
+          }
+        });
+      });
     }
 
-    catch (error) {
-
-      console.error(error);
-
-
-      afficherMessage(
-        "Erreur lors de la publication. Vérifiez votre connexion et réessayez.",
-        false
-      );
-
+    // Déconnexion
+    if (logoutSidebar) {
+      logoutSidebar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await deconnexion();
+        window.location.href = 'index.html';
+      });
     }
-
-
-    button.disabled =
-      false;
-
-
-    button.innerHTML =
-      '<i class="fa-solid fa-paper-plane"></i> Envoyer pour validation';
-
-  }
-);
-
-
-/* ======================================================
-   MESSAGE
-   ====================================================== */
-
-function afficherMessage(
-  texte,
-  succes
-) {
-
-  message.style.display =
-    "block";
-
-
-  message.style.background =
-    succes
-      ? "#e8f5e9"
-      : "#ffebee";
-
-
-  message.style.color =
-    succes
-      ? "#2e7d32"
-      : "#c62828";
-
-
-  message.textContent =
-    texte;
-
-}
-
-</script>
+  </script>
 
 </body>
 </html>
