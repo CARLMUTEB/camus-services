@@ -1,16 +1,8 @@
 /* =========================================================
-   CAMU SERVICES — APPLICATION PRINCIPALE
-   Firebase Authentication + Firestore
-   Version : 3.0
+   CAMU SERVICES — FIREBASE / AUTHENTIFICATION
    ========================================================= */
 
-/* =========================================================
-   IMPORTS FIREBASE
-   ========================================================= */
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
 import {
   getAuth,
@@ -62,14 +54,16 @@ const firebaseConfig = {
    ========================================================= */
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 
 
 /* =========================================================
-   PERSISTANCE AUTHENTIFICATION
+   PERSISTANCE FIREBASE
    ========================================================= */
 
 let persistenceReady = false;
@@ -80,97 +74,26 @@ const persistencePromise = setPersistence(
 )
   .then(() => {
     persistenceReady = true;
-    console.log("CAMU SERVICES : persistance locale Firebase activée.");
+    console.log("CAMU SERVICES : persistance locale activée.");
   })
   .catch((error) => {
     console.error(
-      "CAMU SERVICES : erreur persistance Firebase :",
+      "CAMU SERVICES : erreur de persistance :",
       error
     );
   });
 
 
 /* =========================================================
-   ÉTAT AUTHENTIFICATION
-   ========================================================= */
-
-let currentAuthUser = null;
-let authInitialized = false;
-let authReadyResolve;
-
-const authReadyPromise = new Promise((resolve) => {
-  authReadyResolve = resolve;
-});
-
-
-/*
- * Firebase appelle cette fonction dès qu'il connaît
- * réellement l'état de connexion.
- */
-onAuthStateChanged(auth, (user) => {
-
-  currentAuthUser = user || null;
-  authInitialized = true;
-
-  window.camuCurrentUser = currentAuthUser;
-
-  console.log(
-    "CAMU SERVICES — état authentification :",
-    user ? user.email : "déconnecté"
-  );
-
-  if (authReadyResolve) {
-    authReadyResolve(currentAuthUser);
-    authReadyResolve = null;
-  }
-
-  document.dispatchEvent(
-    new CustomEvent("camu-auth-changed", {
-      detail: {
-        user: currentAuthUser
-      }
-    })
-  );
-
-  document.dispatchEvent(
-    new CustomEvent("camu-user-ready", {
-      detail: {
-        user: currentAuthUser
-      }
-    })
-  );
-});
-
-
-/* =========================================================
-   ATTENDRE QUE FIREBASE SOIT PRÊT
-   ========================================================= */
-
-export async function attendreAuthentification() {
-
-  /*
-   * On attend d'abord que la persistance soit configurée.
-   */
-  await persistencePromise;
-
-  /*
-   * Ensuite on attend que Firebase ait déterminé
-   * l'utilisateur réellement connecté.
-   */
-  if (!authInitialized) {
-    await authReadyPromise;
-  }
-
-  return currentAuthUser;
-}
-
-
-/* =========================================================
-   RENDRE DISPONIBLE GLOBALEMENT
+   VARIABLES GLOBALES
    ========================================================= */
 
 window.db = db;
 window.auth = auth;
+
+window.camuCurrentUser = null;
+
+window.camuAuthReady = false;
 
 
 /* =========================================================
@@ -198,7 +121,6 @@ const ROLES = {
    ========================================================= */
 
 function escapeHTML(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -220,16 +142,21 @@ function formaterDate(value) {
       value &&
       typeof value.toDate === "function"
     ) {
+
       date = value.toDate();
 
     } else if (value instanceof Date) {
+
       date = value;
 
     } else if (typeof value === "number") {
+
       date = new Date(value);
 
     } else {
+
       date = new Date(value);
+
     }
 
     if (isNaN(date.getTime())) {
@@ -248,7 +175,9 @@ function formaterDate(value) {
   } catch (error) {
 
     return "";
+
   }
+
 }
 
 
@@ -260,17 +189,20 @@ function formaterNumeroWhatsApp(numero) {
 
   if (!numero) return "";
 
-  let numeroPropre = String(numero)
-    .replace(/\D/g, "");
+  let numeroPropre =
+    String(numero).replace(/\D/g, "");
 
   if (
     !numeroPropre.startsWith("225") &&
     numeroPropre.length === 10
   ) {
+
     numeroPropre = "225" + numeroPropre;
+
   }
 
   return numeroPropre;
+
 }
 
 
@@ -290,11 +222,14 @@ function creerLienWhatsApp(
     `https://wa.me/${numeroFormate}`;
 
   if (message) {
+
     lien +=
       `?text=${encodeURIComponent(message)}`;
+
   }
 
   return lien;
+
 }
 
 
@@ -321,7 +256,7 @@ function genererMessageWhatsApp(
 
       message =
         `Bonjour${prestataire ? " " + prestataire : ""},\n\n` +
-        `Je vous contacte depuis Camus Services concernant votre service : "${nomService}".\n\n` +
+        `Je vous contacte depuis Camu Services concernant votre service : "${nomService}".\n\n` +
         `J'aimerais avoir plus d'informations.\n\n` +
         `Merci.`;
 
@@ -331,7 +266,7 @@ function genererMessageWhatsApp(
 
       message =
         `Bonjour${prestataire ? " " + prestataire : ""},\n\n` +
-        `Je souhaite un devis pour le service : "${nomService}" sur Camus Services.\n\n` +
+        `Je souhaite un devis pour le service : "${nomService}" sur Camu Services.\n\n` +
         `Merci de me communiquer vos tarifs et disponibilités.`;
 
       break;
@@ -340,7 +275,7 @@ function genererMessageWhatsApp(
 
       message =
         `Bonjour${prestataire ? " " + prestataire : ""},\n\n` +
-        `Je souhaite commander le service : "${nomService}" via Camus Services.\n\n` +
+        `Je souhaite commander le service : "${nomService}" via Camu Services.\n\n` +
         `Merci de me confirmer la disponibilité.`;
 
       break;
@@ -348,10 +283,12 @@ function genererMessageWhatsApp(
     default:
 
       message =
-        `Bonjour, je vous contacte depuis Camus Services concernant "${nomService}".`;
+        `Bonjour, je vous contacte depuis Camu Services concernant "${nomService}".`;
+
   }
 
   return message;
+
 }
 
 
@@ -370,12 +307,11 @@ function ouvrirWhatsApp(
     );
 
     return;
+
   }
 
-  window.open(
-    lien,
-    "_blank"
-  );
+  window.open(lien, "_blank");
+
 }
 
 
@@ -390,20 +326,18 @@ function partagerSurWhatsApp(service) {
     "Service";
 
   const message =
-    `Découvrez ce service sur Camus Services : ${nomService}\n\n${urlPage}`;
+    `Découvrez ce service sur Camu Services : ${nomService}\n\n${urlPage}`;
 
   const lien =
     `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-  window.open(
-    lien,
-    "_blank"
-  );
+  window.open(lien, "_blank");
+
 }
 
 
 /* =========================================================
-   THÈME ET LANGUE
+   THÈME
    ========================================================= */
 
 function appliquerTheme() {
@@ -422,7 +356,9 @@ function appliquerTheme() {
     document.documentElement.classList.remove(
       "dark-mode"
     );
+
   }
+
 }
 
 
@@ -433,11 +369,118 @@ function appliquerLangue() {
 
   document.documentElement.lang =
     language || "fr";
+
 }
 
 
 appliquerTheme();
 appliquerLangue();
+
+
+/* =========================================================
+   AUTHENTIFICATION
+   ========================================================= */
+
+
+/*
+ * IMPORTANT :
+ * On attend que la persistance soit prête
+ * AVANT de connecter l'utilisateur.
+ */
+
+export async function connexionUtilisateur(
+  email,
+  password
+) {
+
+  try {
+
+    await persistencePromise;
+
+    const userCredential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    const user =
+      userCredential.user;
+
+    console.log(
+      "CAMU SERVICES : connexion Firebase réussie.",
+      user.uid
+    );
+
+
+    /*
+     * Récupération du profil Firestore.
+     * Si le profil n'existe pas, la connexion
+     * Firebase reste quand même valide.
+     */
+
+    let userData = {};
+
+    try {
+
+      const userDoc =
+        await getDoc(
+          doc(
+            db,
+            COLLECTIONS.USERS,
+            user.uid
+          )
+        );
+
+      if (userDoc.exists()) {
+
+        userData =
+          userDoc.data();
+
+      }
+
+    } catch (firestoreError) {
+
+      console.warn(
+        "Profil Firestore non récupéré :",
+        firestoreError
+      );
+
+    }
+
+
+    return {
+
+      success: true,
+
+      user: user,
+
+      userData: userData
+
+    };
+
+
+  } catch (error) {
+
+    console.error(
+      "Erreur connexion :",
+      error
+    );
+
+    return {
+
+      success: false,
+
+      error:
+        error.code ||
+        error.message ||
+        "Erreur inconnue"
+
+    };
+
+  }
+
+}
 
 
 /* =========================================================
@@ -464,6 +507,7 @@ export async function inscriptionUtilisateur(
     const user =
       userCredential.user;
 
+
     if (
       profil.prenom &&
       profil.nom
@@ -476,7 +520,9 @@ export async function inscriptionUtilisateur(
             `${profil.prenom} ${profil.nom}`
         }
       );
+
     }
+
 
     const userData = {
 
@@ -484,17 +530,17 @@ export async function inscriptionUtilisateur(
 
       email: email,
 
-      nom:
-        profil.nom || "",
+      nom: profil.nom || "",
 
-      prenom:
-        profil.prenom || "",
+      prenom: profil.prenom || "",
 
       role:
-        profil.role || ROLES.CLIENT,
+        profil.role ||
+        ROLES.CLIENT,
 
       telephone:
-        profil.telephone || "",
+        profil.telephone ||
+        "",
 
       whatsapp:
         profil.whatsapp ||
@@ -502,13 +548,13 @@ export async function inscriptionUtilisateur(
         "",
 
       localisation:
-        profil.localisation || "",
+        profil.localisation ||
+        "",
 
-      createdAt:
-        new Date(),
+      createdAt: new Date(),
 
-      updatedAt:
-        new Date()
+      updatedAt: new Date()
+
     };
 
 
@@ -529,6 +575,7 @@ export async function inscriptionUtilisateur(
       user: user,
 
       userData: userData
+
     };
 
 
@@ -543,98 +590,19 @@ export async function inscriptionUtilisateur(
 
       success: false,
 
-      error: error.message
-    };
-  }
-}
-
-
-/* =========================================================
-   CONNEXION EMAIL / MOT DE PASSE
-   ========================================================= */
-
-export async function connexionUtilisateur(
-  email,
-  password
-) {
-
-  try {
-
-    /*
-     * IMPORTANT :
-     * on attend que la persistance locale soit prête
-     * avant de créer la session.
-     */
-    await persistencePromise;
-
-
-    const userCredential =
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    const user =
-      userCredential.user;
-
-
-    /*
-     * Récupération du profil Firestore.
-     */
-    const userDoc =
-      await getDoc(
-        doc(
-          db,
-          COLLECTIONS.USERS,
-          user.uid
-        )
-      );
-
-
-    /*
-     * On attend que Firebase confirme
-     * l'utilisateur.
-     */
-    await attendreAuthentification();
-
-
-    return {
-
-      success: true,
-
-      user: user,
-
-      userData:
-        userDoc.exists()
-          ? userDoc.data()
-          : {}
-    };
-
-
-  } catch (error) {
-
-    console.error(
-      "Erreur connexion :",
-      error
-    );
-
-    return {
-
-      success: false,
-
       error:
-        error?.code ||
-        error?.message ||
-        "Erreur inconnue"
+        error.code ||
+        error.message
+
     };
+
   }
+
 }
 
 
 /* =========================================================
-   CONNEXION GOOGLE
+   GOOGLE
    ========================================================= */
 
 export async function connexionGoogle() {
@@ -643,13 +611,11 @@ export async function connexionGoogle() {
 
     await persistencePromise;
 
-
     const result =
       await signInWithPopup(
         auth,
         googleProvider
       );
-
 
     const user =
       result.user;
@@ -661,7 +627,6 @@ export async function connexionGoogle() {
         COLLECTIONS.USERS,
         user.uid
       );
-
 
     const userDoc =
       await getDoc(userRef);
@@ -675,35 +640,27 @@ export async function connexionGoogle() {
 
           uid: user.uid,
 
-          email:
-            user.email || "",
+          email: user.email || "",
 
           nom:
             user.displayName || "",
 
-          prenom:
-            "",
+          prenom: "",
 
-          role:
-            ROLES.CLIENT,
+          role: ROLES.CLIENT,
 
-          telephone:
-            "",
+          telephone: "",
 
-          whatsapp:
-            "",
+          whatsapp: "",
 
-          createdAt:
-            new Date(),
+          createdAt: new Date(),
 
-          updatedAt:
-            new Date()
+          updatedAt: new Date()
+
         }
       );
+
     }
-
-
-    await attendreAuthentification();
 
 
     return {
@@ -711,6 +668,7 @@ export async function connexionGoogle() {
       success: true,
 
       user: user
+
     };
 
 
@@ -726,11 +684,13 @@ export async function connexionGoogle() {
       success: false,
 
       error:
-        error?.code ||
-        error?.message ||
-        "Erreur inconnue"
+        error.code ||
+        error.message
+
     };
+
   }
+
 }
 
 
@@ -748,12 +708,8 @@ export async function deconnexion() {
       "CAMU SERVICES : utilisateur déconnecté."
     );
 
-    /*
-     * On revient à l'accueil après déconnexion.
-     */
     window.location.href =
       "index.html";
-
 
   } catch (error) {
 
@@ -763,42 +719,84 @@ export async function deconnexion() {
     );
 
     alert(
-      "Impossible de se déconnecter. Veuillez réessayer."
+      "Impossible de se déconnecter."
     );
+
   }
+
 }
 
 
 /* =========================================================
-   UTILISATEUR COURANT
+   UTILISATEUR ACTUEL
    ========================================================= */
 
 export function getCurrentUser() {
 
-  return currentAuthUser ||
-    auth.currentUser ||
-    null;
-}
+  return auth.currentUser;
 
-
-export async function getCurrentUserReady() {
-
-  return await attendreAuthentification();
 }
 
 
 export function isUserConnected() {
 
-  /*
-   * Cette fonction utilise maintenant
-   * l'état synchronisé par onAuthStateChanged.
-   */
-  return !!currentAuthUser;
+  return !!auth.currentUser;
+
 }
 
 
 /* =========================================================
-   GESTION DES UTILISATEURS
+   ÉTAT AUTHENTIFICATION GLOBAL
+   ========================================================= */
+
+onAuthStateChanged(
+  auth,
+  (user) => {
+
+    window.camuCurrentUser =
+      user || null;
+
+    window.camuAuthReady =
+      true;
+
+
+    console.log(
+      "CAMU AUTH :",
+      user
+        ? `CONNECTÉ — ${user.email}`
+        : "DÉCONNECTÉ"
+    );
+
+
+    document.dispatchEvent(
+      new CustomEvent(
+        "camu-auth-changed",
+        {
+          detail: {
+            user: user || null
+          }
+        }
+      )
+    );
+
+
+    document.dispatchEvent(
+      new CustomEvent(
+        "camu-user-ready",
+        {
+          detail: {
+            user: user || null
+          }
+        }
+      )
+    );
+
+  }
+);
+
+
+/* =========================================================
+   PROFIL UTILISATEUR
    ========================================================= */
 
 export async function creerProfilUtilisateur(
@@ -825,14 +823,13 @@ export async function creerProfilUtilisateur(
 
         updatedAt:
           new Date()
+
       }
     );
-
 
     return {
       success: true
     };
-
 
   } catch (error) {
 
@@ -847,8 +844,62 @@ export async function creerProfilUtilisateur(
 
       error:
         error.message
+
     };
+
   }
+
+}
+
+
+export async function obtenirProfil(uid) {
+
+  try {
+
+    const userDoc =
+      await getDoc(
+        doc(
+          db,
+          COLLECTIONS.USERS,
+          uid
+        )
+      );
+
+    if (userDoc.exists()) {
+
+      return {
+
+        success: true,
+
+        data:
+          userDoc.data()
+
+      };
+
+    }
+
+    return {
+
+      success: false,
+
+      error:
+        "Profil non trouvé"
+
+    };
+
+  } catch (error) {
+
+    return {
+
+      success: false,
+
+      error:
+        error.message
+
+    };
+
+  }
+
 }
 
 
@@ -871,21 +922,15 @@ export async function mettreAJourProfil(
 
         updatedAt:
           new Date()
+
       }
     );
-
 
     return {
       success: true
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur mise à jour profil :",
-      error
-    );
 
     return {
 
@@ -893,62 +938,11 @@ export async function mettreAJourProfil(
 
       error:
         error.message
+
     };
+
   }
-}
 
-
-export async function obtenirProfil(uid) {
-
-  try {
-
-    const userDoc =
-      await getDoc(
-        doc(
-          db,
-          COLLECTIONS.USERS,
-          uid
-        )
-      );
-
-
-    if (userDoc.exists()) {
-
-      return {
-
-        success: true,
-
-        data:
-          userDoc.data()
-      };
-
-    }
-
-
-    return {
-
-      success: false,
-
-      error:
-        "Profil non trouvé"
-    };
-
-
-  } catch (error) {
-
-    console.error(
-      "Erreur récupération profil :",
-      error
-    );
-
-    return {
-
-      success: false,
-
-      error:
-        error.message
-    };
-  }
 }
 
 
@@ -963,22 +957,20 @@ export async function creerService(
   try {
 
     const user =
-      await attendreAuthentification();
-
+      auth.currentUser;
 
     if (!user) {
 
       throw new Error(
         "Utilisateur non connecté"
       );
-    }
 
+    }
 
     const profil =
       await obtenirProfil(
         user.uid
       );
-
 
     const whatsapp =
       profil.success
@@ -1014,6 +1006,7 @@ export async function creerService(
 
           status:
             "actif"
+
         }
       );
 
@@ -1024,15 +1017,10 @@ export async function creerService(
 
       id:
         docRef.id
+
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur création service :",
-      error
-    );
 
     return {
 
@@ -1040,10 +1028,17 @@ export async function creerService(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
+
+/* =========================================================
+   SERVICES - LECTURE
+   ========================================================= */
 
 export async function obtenirService(
   serviceId
@@ -1060,39 +1055,35 @@ export async function obtenirService(
         )
       );
 
-
-    if (serviceDoc.exists()) {
+    if (!serviceDoc.exists()) {
 
       return {
 
-        success: true,
+        success: false,
 
-        data: {
+        error:
+          "Service non trouvé"
 
-          id:
-            serviceDoc.id,
-
-          ...serviceDoc.data()
-        }
       };
-    }
 
+    }
 
     return {
 
-      success: false,
+      success: true,
 
-      error:
-        "Service non trouvé"
+      data: {
+
+        id:
+          serviceDoc.id,
+
+        ...serviceDoc.data()
+
+      }
+
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur récupération service :",
-      error
-    );
 
     return {
 
@@ -1100,8 +1091,11 @@ export async function obtenirService(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1124,21 +1118,15 @@ export async function mettreAJourService(
 
         updatedAt:
           new Date()
+
       }
     );
-
 
     return {
       success: true
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur mise à jour service :",
-      error
-    );
 
     return {
 
@@ -1146,8 +1134,11 @@ export async function mettreAJourService(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1165,18 +1156,11 @@ export async function supprimerService(
       )
     );
 
-
     return {
       success: true
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur suppression service :",
-      error
-    );
 
     return {
 
@@ -1184,10 +1168,17 @@ export async function supprimerService(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
+
+/* =========================================================
+   SERVICES UTILISATEUR
+   ========================================================= */
 
 export async function obtenirServicesParUtilisateur(
   userId
@@ -1208,13 +1199,10 @@ export async function obtenirServicesParUtilisateur(
         )
       );
 
-
     const snapshot =
       await getDocs(q);
 
-
     const services = [];
-
 
     snapshot.forEach(
       (docSnap) => {
@@ -1225,7 +1213,9 @@ export async function obtenirServicesParUtilisateur(
             docSnap.id,
 
           ...docSnap.data()
+
         });
+
       }
     );
 
@@ -1234,16 +1224,12 @@ export async function obtenirServicesParUtilisateur(
 
       success: true,
 
-      services
+      services:
+        services
+
     };
 
-
   } catch (error) {
-
-    console.error(
-      "Erreur récupération services :",
-      error
-    );
 
     return {
 
@@ -1251,10 +1237,17 @@ export async function obtenirServicesParUtilisateur(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
+
+/* =========================================================
+   SERVICES PAGINÉS
+   ========================================================= */
 
 export async function chargerServicesPage(
   limite = 10,
@@ -1295,12 +1288,12 @@ export async function chargerServicesPage(
           ),
           limit(limite)
         );
+
     }
 
 
     const snapshot =
       await getDocs(q);
-
 
     const services = [];
 
@@ -1314,7 +1307,9 @@ export async function chargerServicesPage(
             docSnap.id,
 
           ...docSnap.data()
+
         });
+
       }
     );
 
@@ -1323,21 +1318,18 @@ export async function chargerServicesPage(
 
       success: true,
 
-      services,
+      services:
+        services,
 
       dernierDoc:
         snapshot.docs[
           snapshot.docs.length - 1
         ] || null
+
     };
 
 
   } catch (error) {
-
-    console.error(
-      "Erreur chargement services :",
-      error
-    );
 
     return {
 
@@ -1345,8 +1337,11 @@ export async function chargerServicesPage(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1361,14 +1356,14 @@ export async function ajouterFavori(
   try {
 
     const user =
-      await attendreAuthentification();
-
+      auth.currentUser;
 
     if (!user) {
 
       throw new Error(
         "Utilisateur non connecté"
       );
+
     }
 
 
@@ -1403,7 +1398,9 @@ export async function ajouterFavori(
 
         error:
           "Déjà dans vos favoris"
+
       };
+
     }
 
 
@@ -1422,6 +1419,7 @@ export async function ajouterFavori(
 
         createdAt:
           new Date()
+
       }
     );
 
@@ -1433,19 +1431,17 @@ export async function ajouterFavori(
 
   } catch (error) {
 
-    console.error(
-      "Erreur ajout favori :",
-      error
-    );
-
     return {
 
       success: false,
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1456,14 +1452,14 @@ export async function retirerFavori(
   try {
 
     const user =
-      await attendreAuthentification();
-
+      auth.currentUser;
 
     if (!user) {
 
       throw new Error(
         "Utilisateur non connecté"
       );
+
     }
 
 
@@ -1501,6 +1497,7 @@ export async function retirerFavori(
             docSnap.ref
           )
         );
+
       }
     );
 
@@ -1517,19 +1514,17 @@ export async function retirerFavori(
 
   } catch (error) {
 
-    console.error(
-      "Erreur retrait favori :",
-      error
-    );
-
     return {
 
       success: false,
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1538,14 +1533,14 @@ export async function obtenirFavoris() {
   try {
 
     const user =
-      await attendreAuthentification();
-
+      auth.currentUser;
 
     if (!user) {
 
       throw new Error(
         "Utilisateur non connecté"
       );
+
     }
 
 
@@ -1566,7 +1561,6 @@ export async function obtenirFavoris() {
     const snapshot =
       await getDocs(q);
 
-
     const favoris = [];
 
 
@@ -1576,6 +1570,7 @@ export async function obtenirFavoris() {
         favoris.push(
           docSnap.data().serviceId
         );
+
       }
     );
 
@@ -1584,16 +1579,13 @@ export async function obtenirFavoris() {
 
       success: true,
 
-      favoris
+      favoris:
+        favoris
+
     };
 
 
   } catch (error) {
-
-    console.error(
-      "Erreur récupération favoris :",
-      error
-    );
 
     return {
 
@@ -1601,8 +1593,11 @@ export async function obtenirFavoris() {
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1619,14 +1614,14 @@ export async function ajouterAvis(
   try {
 
     const user =
-      await attendreAuthentification();
-
+      auth.currentUser;
 
     if (!user) {
 
       throw new Error(
         "Utilisateur non connecté"
       );
+
     }
 
 
@@ -1651,6 +1646,7 @@ export async function ajouterAvis(
 
         createdAt:
           new Date()
+
       }
     );
 
@@ -1662,19 +1658,17 @@ export async function ajouterAvis(
 
   } catch (error) {
 
-    console.error(
-      "Erreur ajout avis :",
-      error
-    );
-
     return {
 
       success: false,
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1705,7 +1699,6 @@ export async function obtenirAvis(
     const snapshot =
       await getDocs(q);
 
-
     const avis = [];
 
 
@@ -1718,7 +1711,9 @@ export async function obtenirAvis(
             docSnap.id,
 
           ...docSnap.data()
+
         });
+
       }
     );
 
@@ -1727,16 +1722,13 @@ export async function obtenirAvis(
 
       success: true,
 
-      avis
+      avis:
+        avis
+
     };
 
 
   } catch (error) {
-
-    console.error(
-      "Erreur récupération avis :",
-      error
-    );
 
     return {
 
@@ -1744,8 +1736,11 @@ export async function obtenirAvis(
 
       error:
         error.message
+
     };
+
   }
+
 }
 
 
@@ -1760,21 +1755,20 @@ async function chargerCommuniquesFirebase() {
       "communiquesContainer"
     );
 
-
   if (!container) {
     return;
   }
 
 
-  container.innerHTML = `
-    <div class="announcement-loading">
-      <i class="fa-solid fa-spinner fa-spin"></i>
-      Chargement des communiqués...
-    </div>
-  `;
-
-
   try {
+
+    container.innerHTML = `
+      <div class="announcement-loading">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Chargement des communiqués...
+      </div>
+    `;
+
 
     const communiquesRef =
       collection(
@@ -1798,18 +1792,11 @@ async function chargerCommuniquesFirebase() {
           limit(10)
         );
 
-
       snapshot =
         await getDocs(q);
 
 
     } catch (error) {
-
-      console.warn(
-        "Tri par date impossible, récupération simple :",
-        error
-      );
-
 
       snapshot =
         await getDocs(
@@ -1818,6 +1805,7 @@ async function chargerCommuniquesFirebase() {
             limit(10)
           )
         );
+
     }
 
 
@@ -1832,6 +1820,7 @@ async function chargerCommuniquesFirebase() {
       `;
 
       return;
+
     }
 
 
@@ -1903,8 +1892,11 @@ async function chargerCommuniquesFirebase() {
                 date
                   ? `
                     <div class="announcement-date">
+
                       <i class="fa-regular fa-calendar"></i>
+
                       ${escapeHTML(date)}
+
                     </div>
                   `
                   : ""
@@ -1913,7 +1905,9 @@ async function chargerCommuniquesFirebase() {
             </div>
 
           </article>
+
         `;
+
       }
     );
 
@@ -1932,7 +1926,7 @@ async function chargerCommuniquesFirebase() {
   } catch (error) {
 
     console.error(
-      "Erreur chargement communiqués :",
+      "Erreur communiqués :",
       error
     );
 
@@ -1952,7 +1946,9 @@ async function chargerCommuniquesFirebase() {
 
       </div>
     `;
+
   }
+
 }
 
 
@@ -1969,24 +1965,19 @@ async function chargerServicesFirebase(
       "servicesContainer"
     );
 
-
   if (!container) {
     return;
   }
 
 
-  container.innerHTML = `
-    <p style="
-      text-align:center;
-      grid-column:1/-1;
-      padding:20px;
-    ">
-      Chargement des services...
-    </p>
-  `;
-
-
   try {
+
+    container.innerHTML = `
+      <p style="text-align:center;grid-column:1/-1;padding:20px;">
+        Chargement des services...
+      </p>
+    `;
+
 
     const servicesRef =
       collection(
@@ -2027,6 +2018,7 @@ async function chargerServicesFirebase(
             "desc"
           )
         );
+
     }
 
 
@@ -2040,33 +2032,21 @@ async function chargerServicesFirebase(
 
     } catch (error) {
 
-      console.warn(
-        "Tri des services impossible, récupération simple :",
-        error
-      );
-
-
       snapshot =
         await getDocs(
-          query(
-            servicesRef
-          )
+          query(servicesRef)
         );
+
     }
 
 
     if (snapshot.empty) {
 
       container.innerHTML = `
-        <p style="
-          text-align:center;
-          grid-column:1/-1;
-          padding:20px;
-        ">
+        <p style="text-align:center;grid-column:1/-1;padding:20px;">
           Aucune annonce pour le moment.
         </p>
       `;
-
 
       document.dispatchEvent(
         new CustomEvent(
@@ -2074,8 +2054,8 @@ async function chargerServicesFirebase(
         )
       );
 
-
       return;
+
     }
 
 
@@ -2131,8 +2111,7 @@ async function chargerServicesFirebase(
 
 
         const searchText =
-          `${categorie} ${titre} ${description} ${localisation}`
-            .toLowerCase();
+          `${categorie} ${titre} ${description} ${localisation}`.toLowerCase();
 
 
         const messageContact =
@@ -2146,11 +2125,8 @@ async function chargerServicesFirebase(
 
           <article
             class="annonce-card service-card"
-
             data-category="${escapeHTML(categorie)}"
-
             data-search="${escapeHTML(searchText)}"
-
             data-service-id="${escapeHTML(docSnap.id)}"
           >
 
@@ -2162,11 +2138,7 @@ async function chargerServicesFirebase(
                     <img
                       src="${escapeHTML(imageUrl)}"
                       alt="${escapeHTML(titre)}"
-                      style="
-                        width:100%;
-                        height:100%;
-                        object-fit:cover;
-                      "
+                      style="width:100%;height:100%;object-fit:cover;"
                       loading="lazy"
                     >
                   `
@@ -2176,7 +2148,6 @@ async function chargerServicesFirebase(
                     </div>
                   `
               }
-
 
               <span class="featured-badge">
 
@@ -2200,16 +2171,13 @@ async function chargerServicesFirebase(
                 ${escapeHTML(categorie)}
               </span>
 
-
               <h3>
                 ${escapeHTML(titre)}
               </h3>
 
-
               <p class="service-description">
                 ${escapeHTML(description)}
               </p>
-
 
               <p class="location">
 
@@ -2229,7 +2197,6 @@ async function chargerServicesFirebase(
                   Disponible
 
                 </span>
-
 
                 <span class="rating">
 
@@ -2256,13 +2223,9 @@ async function chargerServicesFirebase(
                   whatsapp
                     ? `
                       <a
-                        href="${creerLienWhatsApp(
-                          whatsapp,
-                          messageContact
-                        )}"
+                        href="${creerLienWhatsApp(whatsapp, messageContact)}"
                         target="_blank"
                         class="btn-whatsapp"
-                        title="Contacter sur WhatsApp"
                       >
 
                         <i class="fa-brands fa-whatsapp"></i>
@@ -2279,8 +2242,7 @@ async function chargerServicesFirebase(
                   type="button"
                   class="favorite-btn"
                   aria-label="Ajouter aux favoris"
-                  title="Ajouter aux favoris"
-                  data-service-id="${escapeHTML(docSnap.id)}"
+                  onclick="ajouterAuxFavoris('${escapeHTML(docSnap.id)}')"
                 >
 
                   <i class="fa-regular fa-heart"></i>
@@ -2292,7 +2254,9 @@ async function chargerServicesFirebase(
             </div>
 
           </article>
+
         `;
+
       }
     );
 
@@ -2311,21 +2275,19 @@ async function chargerServicesFirebase(
   } catch (error) {
 
     console.error(
-      "Erreur chargement annonces Firebase :",
+      "Erreur services :",
       error
     );
 
 
     container.innerHTML = `
-      <p style="
-        text-align:center;
-        grid-column:1/-1;
-        padding:20px;
-      ">
+      <p style="text-align:center;grid-column:1/-1;padding:20px;">
         Erreur de chargement des données.
       </p>
     `;
+
   }
+
 }
 
 
@@ -2341,16 +2303,9 @@ window.CAMU = {
 
   db,
 
-
-  /* Auth */
-
   getCurrentUser,
 
-  getCurrentUserReady,
-
   isUserConnected,
-
-  attendreAuthentification,
 
   inscriptionUtilisateur,
 
@@ -2363,17 +2318,11 @@ window.CAMU = {
   logout:
     deconnexion,
 
-
-  /* Utilisateurs */
-
   creerProfilUtilisateur,
 
   mettreAJourProfil,
 
   obtenirProfil,
-
-
-  /* Services */
 
   creerService,
 
@@ -2390,24 +2339,15 @@ window.CAMU = {
 
   chargerServicesPage,
 
-
-  /* Favoris */
-
   ajouterFavori,
 
   retirerFavori,
 
   obtenirFavoris,
 
-
-  /* Avis */
-
   ajouterAvis,
 
   obtenirAvis,
-
-
-  /* WhatsApp */
 
   creerLienWhatsApp,
 
@@ -2419,23 +2359,18 @@ window.CAMU = {
 
   formaterNumeroWhatsApp,
 
-
-  /* Communiqués */
-
   chargerCommuniques:
     chargerCommuniquesFirebase,
-
-
-  /* Constantes */
 
   ROLES,
 
   COLLECTIONS
+
 };
 
 
 /* =========================================================
-   THÈME
+   THÈME / LANGUE
    ========================================================= */
 
 window.camuSetTheme =
@@ -2445,18 +2380,17 @@ window.camuSetTheme =
       theme !== "dark" &&
       theme !== "light"
     ) {
-      return;
-    }
 
+      return;
+
+    }
 
     localStorage.setItem(
       "camu_theme",
       theme
     );
 
-
     appliquerTheme();
-
 
     document.dispatchEvent(
       new CustomEvent(
@@ -2468,12 +2402,9 @@ window.camuSetTheme =
         }
       )
     );
+
   };
 
-
-/* =========================================================
-   LANGUE
-   ========================================================= */
 
 window.camuSetLanguage =
   function(language) {
@@ -2482,15 +2413,12 @@ window.camuSetLanguage =
       return;
     }
 
-
     localStorage.setItem(
       "camu_language",
       language
     );
 
-
     appliquerLangue();
-
 
     document.dispatchEvent(
       new CustomEvent(
@@ -2502,6 +2430,7 @@ window.camuSetLanguage =
         }
       )
     );
+
   };
 
 
@@ -2515,7 +2444,7 @@ window.ajouterAuxFavoris =
     try {
 
       const user =
-        await attendreAuthentification();
+        auth.currentUser;
 
 
       if (!user) {
@@ -2528,6 +2457,7 @@ window.ajouterAuxFavoris =
           "connexion.html";
 
         return;
+
       }
 
 
@@ -2549,22 +2479,21 @@ window.ajouterAuxFavoris =
           "Erreur : " +
           resultat.error
         );
+
       }
 
 
     } catch (error) {
 
       console.error(
-        "Erreur ajout favori :",
+        "Erreur favori :",
         error
       );
+
     }
+
   };
 
-
-/* =========================================================
-   WHATSAPP GLOBAL
-   ========================================================= */
 
 window.contacterSurWhatsApp =
   function(numero, service) {
@@ -2579,6 +2508,7 @@ window.contacterSurWhatsApp =
       numero,
       message
     );
+
   };
 
 
@@ -2595,6 +2525,7 @@ window.demanderDevisSurWhatsApp =
       numero,
       message
     );
+
   };
 
 
@@ -2611,6 +2542,7 @@ window.commanderSurWhatsApp =
       numero,
       message
     );
+
   };
 
 
@@ -2619,7 +2551,7 @@ window.partagerSurWhatsApp =
 
 
 /* =========================================================
-   INITIALISATION DES DONNÉES
+   CHARGEMENT
    ========================================================= */
 
 document.addEventListener(
@@ -2633,10 +2565,6 @@ document.addEventListener(
       chargerServicesFirebase()
 
     ]);
+
   }
 );
-
-
-/* =========================================================
-   FIN APP.JS
-   ========================================================= */
