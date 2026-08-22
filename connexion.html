@@ -1,200 +1,164 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+  <title>CAMU SERVICES — Connexion</title>
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  >
 
-<title>CAMU SERVICES — Connexion</title>
+  <link rel="stylesheet" href="style.css">
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
->
+  <style>
+    .card-box {
+      width: 100%;
+      max-width: 450px;
+      margin: 30px auto;
+      background: var(--card, #fff);
+      border: 1px solid var(--border, #ddd);
+      border-radius: 14px;
+      padding: 30px 20px;
+      box-shadow: var(--shadow, 0 5px 20px rgba(0,0,0,.08));
+    }
 
-<link rel="stylesheet" href="style.css">
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-<style>
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text, #222);
+    }
 
-.login-container {
-  min-height: calc(100vh - 130px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 15px;
-}
+    .form-group input {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px 0 42px;
+      border: 1px solid var(--border, #ddd);
+      border-radius: 10px;
+      background: var(--card, #fff);
+      color: var(--text, #222);
+      font-size: 14px;
+      box-sizing: border-box;
+    }
 
-.login-card {
-  width: 100%;
-  max-width: 440px;
-  background: var(--card, #fff);
-  border: 1px solid var(--border, #ddd);
-  border-radius: 16px;
-  padding: 30px 24px;
-  box-shadow: 0 8px 30px rgba(0,0,0,.08);
-}
+    .form-group input:focus {
+      outline: none;
+      border-color: #d32f2f;
+      box-shadow: 0 0 0 3px rgba(211,47,47,.10);
+    }
 
-.login-icon {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffebee;
-  color: #d32f2f;
-  font-size: 28px;
-}
+    .input-wrapper {
+      position: relative;
+    }
 
-.login-card h1 {
-  text-align: center;
-  margin: 0 0 8px;
-  font-size: 23px;
-}
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
 
-.login-subtitle {
-  text-align: center;
-  color: #777;
-  font-size: 13px;
-  margin-bottom: 25px;
-}
+    .btn-submit,
+    .btn-google {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-sizing: border-box;
+    }
 
-.form-group {
-  margin-bottom: 18px;
-}
+    .btn-submit {
+      border: none;
+      background: #d32f2f;
+      color: white;
+    }
 
-.form-group label {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 13px;
-  font-weight: 700;
-}
+    .btn-submit:hover {
+      background: #b71c1c;
+    }
 
-.input-box {
-  position: relative;
-}
+    .btn-submit:disabled,
+    .btn-google:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
 
-.input-box i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-}
+    .btn-google {
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #333;
+    }
 
-.input-box input {
-  width: 100%;
-  height: 48px;
-  padding: 0 14px 0 42px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
+    .btn-google i {
+      color: #4285f4;
+    }
 
-.input-box input:focus {
-  outline: none;
-  border-color: #d32f2f;
-}
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+      color: #888;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-.btn-login,
-.btn-google {
-  width: 100%;
-  min-height: 48px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 800;
-  font-size: 14px;
-}
+    .separator::before,
+    .separator::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
 
-.btn-login {
-  background: #d32f2f;
-  color: white;
-}
+    .message-box {
+      display: none;
+      margin-top: 15px;
+      padding: 13px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
-.btn-login:hover {
-  background: #b71c1c;
-}
+    .message-box.success {
+      display: block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
 
-.btn-login:disabled,
-.btn-google:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
+    .message-box.error {
+      display: block;
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
 
-.separator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-  color: #888;
-  font-size: 12px;
-}
-
-.separator::before,
-.separator::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: #ddd;
-}
-
-.btn-google {
-  background: white;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.btn-google i {
-  color: #4285f4;
-  margin-right: 7px;
-}
-
-.message {
-  display: none;
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.message.success {
-  display: block;
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.message.error {
-  display: block;
-  background: #ffebee;
-  color: #c62828;
-}
-
-.register-link {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid #ddd;
-  text-align: center;
-  font-size: 13px;
-}
-
-.register-link a {
-  color: #d32f2f;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-</style>
-
+    .loading-login {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+      color: #777;
+      font-size: 13px;
+    }
+  </style>
 </head>
 
 <body>
@@ -205,6 +169,7 @@
     class="back-btn"
     type="button"
     onclick="history.back()"
+    aria-label="Retour"
   >
     <i class="fa-solid fa-arrow-left"></i>
   </button>
@@ -218,19 +183,44 @@
 </header>
 
 
-<main class="login-container">
+<main class="container">
 
-  <div class="login-card">
+  <div class="card-box">
 
-    <div class="login-icon">
-      <i class="fa-solid fa-user"></i>
+    <div style="text-align:center; margin-bottom:25px;">
+
+      <div style="
+        width:70px;
+        height:70px;
+        margin:0 auto 14px;
+        border-radius:50%;
+        background:#ffebee;
+        color:#d32f2f;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;
+      ">
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <h2 style="
+        margin:0 0 7px;
+        font-size:21px;
+        color:var(--text,#222);
+      ">
+        Bon retour !
+      </h2>
+
+      <p style="
+        margin:0;
+        font-size:13px;
+        color:var(--muted,#777);
+      ">
+        Connectez-vous à votre compte CAMU SERVICES
+      </p>
+
     </div>
-
-    <h1>Bon retour !</h1>
-
-    <p class="login-subtitle">
-      Connectez-vous à votre compte CAMU SERVICES
-    </p>
 
 
     <form id="connexionForm">
@@ -241,7 +231,7 @@
           Adresse Email
         </label>
 
-        <div class="input-box">
+        <div class="input-wrapper">
 
           <i class="fa-solid fa-envelope"></i>
 
@@ -264,7 +254,7 @@
           Mot de passe
         </label>
 
-        <div class="input-box">
+        <div class="input-wrapper">
 
           <i class="fa-solid fa-lock"></i>
 
@@ -283,14 +273,11 @@
 
       <button
         type="submit"
+        class="btn-submit"
         id="btnConnexion"
-        class="btn-login"
       >
-
         <i class="fa-solid fa-right-to-bracket"></i>
-
         Se connecter
-
       </button>
 
 
@@ -301,14 +288,11 @@
 
       <button
         type="button"
-        id="btnGoogle"
         class="btn-google"
+        id="btnGoogle"
       >
-
         <i class="fa-brands fa-google"></i>
-
         Continuer avec Google
-
       </button>
 
     </form>
@@ -316,15 +300,39 @@
 
     <div
       id="messageConnexion"
-      class="message"
+      class="message-box"
     ></div>
 
 
-    <div class="register-link">
+    <div
+      id="loadingLogin"
+      class="loading-login"
+    >
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      Vérification de votre connexion...
+    </div>
+
+
+    <div style="
+      text-align:center;
+      margin-top:23px;
+      padding-top:18px;
+      border-top:1px solid var(--border,#ddd);
+      font-size:13px;
+      color:var(--muted,#777);
+    ">
 
       Vous n'avez pas encore de compte ?
 
-      <a href="inscription.html">
+      <a
+        href="inscription.html"
+        style="
+          color:#d32f2f;
+          font-weight:800;
+          text-decoration:none;
+          margin-left:4px;
+        "
+      >
         Créer un compte
       </a>
 
@@ -335,7 +343,7 @@
 </main>
 
 
-<nav class="bottom-nav">
+<nav class="bottom-nav" aria-label="Navigation mobile">
 
   <a href="index.html">
     <i class="fa-solid fa-house"></i>
@@ -362,82 +370,73 @@
 
 <script type="module">
 
-import {
-  connexionUtilisateur,
-  connexionGoogle
-} from "./app.js";
+  import {
+    connexionUtilisateur,
+    connexionGoogle,
+    attendreUtilisateurConnecte
+  } from "./app.js";
 
 
-const form =
-  document.getElementById(
-    "connexionForm"
-  );
+  const form = document.getElementById("connexionForm");
+  const emailInput = document.getElementById("emailConnexion");
+  const passwordInput = document.getElementById("motDePasseConnexion");
 
-const emailInput =
-  document.getElementById(
-    "emailConnexion"
-  );
+  const button = document.getElementById("btnConnexion");
+  const googleButton = document.getElementById("btnGoogle");
 
-const passwordInput =
-  document.getElementById(
-    "motDePasseConnexion"
-  );
-
-const button =
-  document.getElementById(
-    "btnConnexion"
-  );
-
-const googleButton =
-  document.getElementById(
-    "btnGoogle"
-  );
-
-const message =
-  document.getElementById(
-    "messageConnexion"
-  );
+  const message = document.getElementById("messageConnexion");
+  const loading = document.getElementById("loadingLogin");
 
 
-function afficherMessage(
-  texte,
-  type
-) {
+  function afficherMessage(texte, type) {
 
-  message.textContent = texte;
+    message.textContent = texte;
 
-  message.className =
-    "message " + type;
+    message.className = "message-box " + type;
 
-}
+  }
 
 
-function boutonNormal() {
+  function cacherMessage() {
 
-  button.disabled = false;
+    message.textContent = "";
+    message.className = "message-box";
 
-  button.innerHTML =
-    '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
-}
+  }
 
 
-/* =====================================================
-   CONNEXION EMAIL
-   ===================================================== */
+  function activerBoutons() {
 
-form.addEventListener(
-  "submit",
-  async (event) => {
+    button.disabled = false;
+    googleButton.disabled = false;
+
+    button.innerHTML =
+      '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+
+    googleButton.innerHTML =
+      '<i class="fa-brands fa-google"></i> Continuer avec Google';
+
+  }
+
+
+  function desactiverBoutons() {
+
+    button.disabled = true;
+    googleButton.disabled = true;
+
+  }
+
+
+  /* =====================================================
+     CONNEXION EMAIL / MOT DE PASSE
+     ===================================================== */
+
+  form.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    const email =
-      emailInput.value.trim();
-
-    const password =
-      passwordInput.value;
-
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
     if (!email || !password) {
 
@@ -447,209 +446,252 @@ form.addEventListener(
       );
 
       return;
+
     }
 
 
-    button.disabled = true;
+    cacherMessage();
+    desactiverBoutons();
 
     button.innerHTML =
       '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
 
+    loading.style.display = "block";
+
 
     try {
 
+      console.log("Tentative de connexion :", email);
+
+
       const resultat =
-        await connexionUtilisateur(
-          email,
-          password
-        );
+        await connexionUtilisateur(email, password);
+
+
+      console.log("Résultat Firebase :", resultat);
 
 
       if (!resultat.success) {
 
-        let texte =
-          "Impossible de se connecter.";
+        let texte = "Impossible de se connecter.";
+
+        const erreur = resultat.error || "";
 
 
         if (
-          resultat.error.includes(
-            "invalid-credential"
-          ) ||
-          resultat.error.includes(
-            "wrong-password"
-          ) ||
-          resultat.error.includes(
-            "user-not-found"
-          )
+          erreur.includes("invalid-credential") ||
+          erreur.includes("wrong-password") ||
+          erreur.includes("user-not-found")
         ) {
 
           texte =
             "Email ou mot de passe incorrect.";
 
         } else if (
-          resultat.error.includes(
-            "invalid-email"
-          )
+          erreur.includes("invalid-email")
         ) {
 
           texte =
             "Adresse email invalide.";
 
         } else if (
-          resultat.error.includes(
-            "too-many-requests"
-          )
+          erreur.includes("too-many-requests")
         ) {
 
           texte =
             "Trop de tentatives. Réessayez plus tard.";
 
+        } else if (
+          erreur.includes("network-request-failed")
+        ) {
+
+          texte =
+            "Problème de connexion Internet.";
+
         }
 
 
-        afficherMessage(
-          texte,
-          "error"
-        );
+        afficherMessage(texte, "error");
 
-        boutonNormal();
+        loading.style.display = "none";
+
+        activerBoutons();
 
         return;
+
       }
 
 
       afficherMessage(
-        "Connexion réussie. Ouverture de votre espace...",
+        "Connexion réussie. Vérification du compte...",
         "success"
       );
 
 
       /*
-       * IMPORTANT :
-       * On attend un peu puis on vérifie
-       * que Firebase possède bien l'utilisateur.
+       * TRÈS IMPORTANT :
+       * On attend que Firebase confirme réellement
+       * que auth.currentUser existe.
        */
 
-      setTimeout(
-        () => {
-
-          if (window.CAMU?.isUserConnected()) {
-
-            window.location.replace(
-              "profil.html"
-            );
-
-          } else {
-
-            afficherMessage(
-              "La session Firebase n'a pas été conservée.",
-              "error"
-            );
-
-            boutonNormal();
-
-          }
-
-        },
-        800
-      );
+      const utilisateur =
+        await attendreUtilisateurConnecte(10000);
 
 
-    } catch (error) {
+      if (!utilisateur) {
 
-      console.error(
-        "Erreur page connexion :",
-        error
-      );
-
-      afficherMessage(
-        "Une erreur inattendue est survenue.",
-        "error"
-      );
-
-      boutonNormal();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   GOOGLE
-   ===================================================== */
-
-googleButton.addEventListener(
-  "click",
-  async () => {
-
-    googleButton.disabled = true;
-
-    googleButton.innerHTML =
-      '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-
-    try {
-
-      const resultat =
-        await connexionGoogle();
-
-
-      if (!resultat.success) {
+        loading.style.display = "none";
 
         afficherMessage(
-          "Erreur lors de la connexion Google.",
+          "Firebase n'a pas confirmé la connexion. Réessayez.",
           "error"
         );
 
-        googleButton.disabled = false;
-
-        googleButton.innerHTML =
-          '<i class="fa-brands fa-google"></i> Continuer avec Google';
+        activerBoutons();
 
         return;
+
       }
 
 
+      console.log(
+        "UTILISATEUR CONNECTÉ :",
+        utilisateur.uid,
+        utilisateur.email
+      );
+
+
       afficherMessage(
-        "Connexion réussie. Ouverture de votre espace...",
+        "Connexion confirmée. Ouverture de votre compte...",
         "success"
       );
 
 
-      setTimeout(
-        () => {
+      /*
+       * Petite attente pour laisser Firebase
+       * enregistrer la session localement.
+       */
 
-          window.location.replace(
-            "profil.html"
-          );
+      setTimeout(function() {
 
-        },
-        800
-      );
+        window.location.replace("profil.html");
+
+      }, 500);
 
 
     } catch (error) {
 
       console.error(
-        "Google :",
+        "Erreur complète connexion :",
         error
       );
 
+      loading.style.display = "none";
+
       afficherMessage(
-        "Impossible de se connecter avec Google.",
+        error.message || "Une erreur est survenue.",
         "error"
       );
 
-      googleButton.disabled = false;
-
-      googleButton.innerHTML =
-        '<i class="fa-brands fa-google"></i> Continuer avec Google';
+      activerBoutons();
 
     }
 
-  }
-);
+  });
+
+
+  /* =====================================================
+     CONNEXION GOOGLE
+     ===================================================== */
+
+  googleButton.addEventListener(
+    "click",
+    async function() {
+
+      cacherMessage();
+      desactiverBoutons();
+
+      googleButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+      loading.style.display = "block";
+
+
+      try {
+
+        const resultat =
+          await connexionGoogle();
+
+
+        if (!resultat.success) {
+
+          afficherMessage(
+            resultat.error || "Erreur Google.",
+            "error"
+          );
+
+          loading.style.display = "none";
+
+          activerBoutons();
+
+          return;
+
+        }
+
+
+        const utilisateur =
+          await attendreUtilisateurConnecte(10000);
+
+
+        if (!utilisateur) {
+
+          afficherMessage(
+            "La connexion Google n'a pas été confirmée.",
+            "error"
+          );
+
+          loading.style.display = "none";
+
+          activerBoutons();
+
+          return;
+
+        }
+
+
+        afficherMessage(
+          "Connexion Google réussie.",
+          "success"
+        );
+
+
+        setTimeout(function() {
+
+          window.location.replace("profil.html");
+
+        }, 500);
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur Google :",
+          error
+        );
+
+        loading.style.display = "none";
+
+        afficherMessage(
+          error.message || "Erreur lors de la connexion Google.",
+          "error"
+        );
+
+        activerBoutons();
+
+      }
+
+    }
+  );
 
 </script>
 
