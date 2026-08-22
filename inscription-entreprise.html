@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inscrire mon entreprise — CAMU SERVICES">
+
+  <title>CAMU SERVICES — Inscrire mon entreprise</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Styles spécifiques à la page inscription entreprise -->
+  <style>
+    /* =====================================================
+       CARTE FORMULAIRE
+       ===================================================== */
+    .form-card {
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-header .icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--red-light);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 30px;
+      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+    }
+
+    .form-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: var(--card);
+      color: var(--text);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group textarea {
+      padding-top: 12px;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #999999;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .btn-submit:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .message-box {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .message-box.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+
+    .message-box.error {
+      background: var(--red-light);
+      color: var(--red);
+      border: 1px solid #f1c2c2;
+    }
+
+    .info-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+
+    .info-note i {
+      color: var(--red);
+      margin-right: 4px;
+    }
+
+    /* =====================================================
+       ÉTAT NON CONNECTÉ
+       ===================================================== */
+    .not-connected {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .not-connected i {
+      font-size: 50px;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
+
+    .not-connected h2 {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .not-connected p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .btn-connect {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 20px;
+      background: var(--red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-connect:hover {
+      background: var(--red-dark);
+    }
+
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="top-bar">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
+      CAMU <span>SERVICES</span>
+    </a>
+
+    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
+      <i class="fa-solid fa-user"></i>
+    </a>
+  </header>
+
+  <!-- MENU LATÉRAL -->
+  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar-header">
+      CAMU SERVICES
+    </div>
+    <ul>
+      <li>
+        <a href="index.html">
+          <i class="fa-solid fa-house"></i>
+          <span>Accueil</span>
+        </a>
+      </li>
+      <li>
+        <a href="recherche.html">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Rechercher</span>
+        </a>
+      </li>
+      <li>
+        <a href="categories.html">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Catégories</span>
+        </a>
+      </li>
+      <li>
+        <a href="entreprises.html">
+          <i class="fa-solid fa-building"></i>
+          <span>Entreprises</span>
+        </a>
+      </li>
+      <li>
+        <a href="favoris.html">
+          <i class="fa-solid fa-heart"></i>
+          <span>Mes favoris</span>
+        </a>
+      </li>
+      <li>
+        <a href="communiques.html">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>Communiqués</span>
+        </a>
+      </li>
+      <li>
+        <a href="inscription-entreprise.html" class="active-link">
+          <i class="fa-solid fa-store"></i>
+          <span>Inscrire mon entreprise</span>
+        </a>
+      </li>
+      <li>
+        <a href="profil.html">
+          <i class="fa-solid fa-user"></i>
+          <span>Mon profil</span>
+        </a>
+      </li>
+      <li>
+        <a href="parametres.html">
+          <i class="fa-solid fa-gear"></i>
+          <span>Paramètres</span>
+        </a>
+      </li>
+      <li id="logoutMenuItem" style="display: none;">
+        <a href="#" id="logoutSidebar" class="logout-link">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Déconnexion</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="container">
+
+    <!-- État non connecté -->
+    <div id="notConnectedSection" class="not-connected" style="display: block;">
+      <i class="fa-solid fa-user-circle"></i>
+      <h2>Vous n'êtes pas connecté</h2>
+      <p>
+        Pour inscrire votre entreprise, vous devez d'abord vous connecter ou créer un compte.
+      </p>
+      <a href="connexion.html" class="btn-connect">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Se connecter
+      </a>
+      <div style="margin-top: 12px;">
+        <a href="inscription.html" style="color: var(--red); font-weight: 800;">
+          Créer un compte
+        </a>
+      </div>
+    </div>
+
+    <!-- Formulaire -->
+    <div id="formSection" style="display: none;">
+      <div class="form-card">
+        <div class="form-header">
+          <div class="icon">
+            <i class="fa-solid fa-store"></i>
+          </div>
+          <h1>Inscrire mon entreprise</h1>
+          <p>
+            Publiez votre service sur CAMU SERVICES et soyez contacté directement par des clients.
+          </p>
+        </div>
+
+        <form id="entrepriseForm">
+          <div class="form-group">
+            <label for="nomEntreprise">Nom de l'entreprise / du service <span style="color: var(--red);">*</span></label>
+            <input type="text" id="nomEntreprise" placeholder="Ex : Chez Marie Couture" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categorie">Catégorie <span style="color: var(--red);">*</span></label>
+            <select id="categorie" required>
+              <option value="">Choisir une catégorie...</option>
+              <option value="Construction">Construction</option>
+              <option value="Transport">Transport</option>
+              <option value="Beauté">Beauté</option>
+              <option value="Restaurant">Restaurant</option>
+              <option value="Informatique">Informatique</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Services">Services</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description <span style="color: var(--red);">*</span></label>
+            <textarea id="description" placeholder="Décrivez vos services, vos horaires, votre expérience..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="localisation">Localisation</label>
+            <input type="text" id="localisation" placeholder="Ville, quartier, adresse...">
+          </div>
+
+          <div class="form-group">
+            <label for="telephone">Téléphone / WhatsApp <span style="color: var(--red);">*</span></label>
+            <input type="tel" id="telephone" placeholder="Ex : +225 07 00 00 00 00" required>
+            <div class="info-note">
+              <i class="fa-solid fa-circle-info"></i>
+              Ce numéro sera utilisé pour le bouton WhatsApp de contact.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">URL de l'image (optionnel)</label>
+            <input type="url" id="imageUrl" placeholder="https://exemple.com/image.jpg">
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSubmit">
+            <i class="fa-solid fa-paper-plane"></i>
+            Publier mon entreprise
+          </button>
+
+          <div id="messageBox" class="message-box"></div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION MOBILE -->
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="publier.html">
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>Publier</span>
+    </a>
+    <a href="chat.html">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="explorer.html">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explorer</span>
+    </a>
+  </nav>
+
+  <!-- LOGIQUE FIREBASE -->
+  <script type="module">
+    import { auth, creerService, deconnexion, onAuthStateChanged } from "./app.js";
+
+    console.log("Script inscription-entreprise chargé !");
+
+    const notConnectedSection = document.getElementById('notConnectedSection');
+    const formSection = document.getElementById('formSection');
+    const form = document.getElementById('entrepriseForm');
+    const messageBox = document.getElementById('messageBox');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const logoutMenuItem = document.getElementById('logoutMenuItem');
+    const logoutSidebar = document.getElementById('logoutSidebar');
+
+    // Vérifier l'état de connexion
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        notConnectedSection.style.display = 'none';
+        formSection.style.display = 'block';
+        if (logoutMenuItem) logoutMenuItem.style.display = 'block';
+      } else {
+        notConnectedSection.style.display = 'block';
+        formSection.style.display = 'none';
+        if (logoutMenuItem) logoutMenuItem.style.display = 'none';
+      }
+    });
+
+    // Soumission du formulaire
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const nom = document.getElementById('nomEntreprise').value.trim();
+      const categorie = document.getElementById('categorie').value;
+      const description = document.getElementById('description').value.trim();
+      const localisation = document.getElementById('localisation').value.trim();
+      const telephone = document.getElementById('telephone').value.trim();
+      const imageUrl = document.getElementById('imageUrl').value.trim();
+
+      if (!nom || !categorie || !description || !telephone) {
+        afficherMessage('Veuillez remplir tous les champs obligatoires.', 'error');
+        return;
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publication en cours...';
+      masquerMessage();
+
+      // Préparer les données du service
+      const serviceData = {
+        titre: nom,
+        nom: nom, // pour compatibilité
+        categorie: categorie,
+        description: description,
+        localisation: localisation || 'Disponible localement',
+        telephone: telephone,
+        whatsapp: telephone, // Champ explicite pour WhatsApp
+        imageUrl: imageUrl || '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      // Appel à la fonction creerService (dans app.js)
+      const resultat = await creerService(serviceData);
+
+      if (resultat.success) {
+        afficherMessage('Entreprise publiée avec succès ! Vous allez être redirigé...');
+        setTimeout(() => {
+          window.location.href = 'entreprise.html?id=' + resultat.id;
+        }, 1500);
+      } else {
+        let texte = 'Erreur lors de la publication.';
+        if (resultat.error.includes('not-connected')) {
+          texte = 'Vous devez être connecté.';
+        } else if (resultat.error.includes('permission')) {
+          texte = 'Vous n\'avez pas les droits nécessaires.';
+        }
+        afficherMessage(texte, 'error');
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publier mon entreprise';
+      }
+    });
+
+    // Fonctions d'affichage des messages
+    function afficherMessage(texte, type = 'success') {
+      messageBox.style.display = 'block';
+      messageBox.textContent = texte;
+      messageBox.className = 'message-box ' + type;
+    }
+
+    function masquerMessage() {
+      messageBox.style.display = 'none';
+    }
+
+    // Gestion du menu latéral
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', function () {
+        const opened = sidebar.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('fa-bars', !opened);
+          icon.classList.toggle('fa-xmark', opened);
+        }
+      });
+
+      sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          sidebar.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-xmark');
+          }
+        });
+      });
+    }
+
+    // Déconnexion
+    if (logoutSidebar) {
+      logoutSidebar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await deconnexion();
+        window.location.href = 'index.html';
+      });
+    }
+  </script>
+
+</body>
+</html>
