@@ -1,25 +1,41 @@
 /* =========================================================
-   CAMU SERVICES — FIREBASE
-   Configuration centrale de l'application
+   CAMU SERVICES — APPLICATION PRINCIPALE
+   Version : 2.1 (avec intégration WhatsApp)
+   Description : Plateforme de mise en relation
+   clients, vendeurs et prestataires
    ========================================================= */
 
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+/* =========================================================
+   IMPORTS FIREBASE
+   ========================================================= */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
 import {
   getAuth,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
   query,
   orderBy,
-  limit
+  limit,
+  where,
+  startAfter
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
@@ -42,112 +58,320 @@ const firebaseConfig = {
    ========================================================= */
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
+const googleProvider = new GoogleAuthProvider();
+
+// Rendre disponible globalement
+window.db = db;
+window.auth = auth;
+
 
 /* =========================================================
-   RENDRE FIREBASE DISPONIBLE PARTOUT
+   CONSTANTES
    ========================================================= */
 
-window.db = db;
+const COLLECTIONS = {
+  USERS: "users",
+  SERVICES: "services",
+  COMMUNIQUES: "communiques",
+  FAVORIS: "favoris",
+  AVIS: "avis"
+};
+
+const ROLES = {
+  CLIENT: "client",
+  VENDEUR: "vendeur",
+  PRESTATAIRE: "prestataire",
+  ADMIN: "admin"
+};
 
 
 /* =========================================================
-   UTILITAIRE — PROTECTION HTML
+   UTILITAIRES
    ========================================================= */
 
 function escapeHTML(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-
 }
 
+function formaterDate(value) {
+  if (!value) return "";
+  
+  try {
+    let date;
+    
+    if (value && typeof value.toDate === "function") {
+      date = value.toDate();
+    } else if (value instanceof Date) {
+      date = value;
+    } else if (typeof value === "number") {
+      date = new Date(value);
+    } else {
+      date = new Date(value);
+    }
+    
+    if (isNaN(date.getTime())) return "";
+    
+    return date.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+  } catch (error) {
+    return "";
+  }
+}
 
 /* =========================================================
-   EXPORTS
+   FONCTIONS WHATSAPP
    ========================================================= */
 
-export {
-  app,
-  auth,
-  db,
-  signOut,
-  onAuthStateChanged
-};
+/**
+ * Formater un numéro de téléphone pour WhatsApp
+ * Exemple : +225 07 12 34 56 78 → 2250712345678
+ */
+function formaterNumeroWhatsApp(numero) {
+  if (!numero) return "";
+  
+  // Supprimer tous les caractères non numériques
+  let numeroPropre = String(numero).replace(/\D/g, "");
+  
+  // Ajouter le préfixe international si absent
+  if (!numeroPropre.startsWith("225") && numeroPropre.length === 10) {
+    numeroPropre = "225" + numeroPropre;
+  }
+  
+  return numeroPropre;
+}
 
+/**
+ * Créer un lien WhatsApp avec message pré-rempli
+ */
+function creerLienWhatsApp(numero, message = "") {
+  const numeroFormate = formaterNumeroWhatsApp(numero);
+  
+  if (!numeroFormate) return "#";
+  
+  let lien = `https://wa.me/${numeroFormate}`;
+  
+  if (message) {
+    lien += `?text=${encodeURIComponent(message)}`;
+  }
+  
+  return lien;
+}
+
+/**
+ * Générer un message WhatsApp pour un service
+ */
+function genererMessageWhatsApp(service, type = "contact") {
+  const nomService = service.titre || service.nom || "Service";
+  const prestataire = service.prestataire || service.proprietaire || "";
+  
+  let message = "";
+  
+  switch (type) {
+    case "contact":
+      message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe vous contacte depuis Camus Services concernant votre service : "${nomService}".\n\nJ'aimerais avoir plus d'informations.\n\nMerci.`;
+      break;
+    
+    case "devis":
+      message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe souhaite un devis pour le service : "${nomService}" sur Camus Services.\n\nMerci de me communiquer vos tarifs et disponibilités.`;
+      break;
+    
+    case "commande":
+      message = `Bonjour${prestataire ? " " + prestataire : ""},\n\nJe souhaite commander le service : "${nomService}" via Camus Services.\n\nMerci de me confirmer la disponibilité.`;
+      break;
+    
+    default:
+      message = `Bonjour, je vous contacte depuis Camus Services concernant "${nomService}".`;
+  }
+  
+  return message;
+}
+
+/**
+ * Ouvrir WhatsApp avec un numéro et un message
+ */
+function ouvrirWhatsApp(numero, message = "") {
+  const lien = creerLienWhatsApp(numero, message);
+  
+  if (lien === "#") {
+    alert("Numéro WhatsApp non disponible pour ce service.");
+    return;
+  }
+  
+  window.open(lien, "_blank");
+}
+
+/**
+ * Partager un service sur WhatsApp
+ */
+function partagerSurWhatsApp(service) {
+  const urlPage = window.location.href;
+  const nomService = service.titre || service.nom || "Service";
+  
+  const message = `Découvrez ce service sur Camus Services : ${nomService}\n\n${urlPage}`;
+  
+  const lien = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  
+  window.open(lien, "_blank");
+}
 
 /* =========================================================
-   THÈME
+   THÈME ET LANGUE
    ========================================================= */
 
 function appliquerTheme() {
-
-  const theme =
-    localStorage.getItem("camu_theme");
-
+  const theme = localStorage.getItem("camu_theme");
   if (theme === "dark") {
-
-    document.documentElement.classList.add(
-      "dark-mode"
-    );
-
+    document.documentElement.classList.add("dark-mode");
   } else {
-
-    document.documentElement.classList.remove(
-      "dark-mode"
-    );
-
+    document.documentElement.classList.remove("dark-mode");
   }
+}
 
+function appliquerLangue() {
+  const language = localStorage.getItem("camu_language");
+  document.documentElement.lang = language || "fr";
 }
 
 appliquerTheme();
-
-
-/* =========================================================
-   LANGUE
-   ========================================================= */
-
-function appliquerLangue() {
-
-  const language =
-    localStorage.getItem("camu_language");
-
-  document.documentElement.lang =
-    language || "fr";
-
-}
-
 appliquerLangue();
 
 
 /* =========================================================
-   UTILISATEUR CONNECTÉ
+   AUTHENTIFICATION
    ========================================================= */
 
-export function getCurrentUser() {
-
-  return auth.currentUser;
-
+// Inscription avec email/password
+export async function inscriptionUtilisateur(email, password, profil = {}) {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    // Mettre à jour le profil
+    if (profil.prenom && profil.nom) {
+      await updateProfile(user, {
+        displayName: `${profil.prenom} ${profil.nom}`
+      });
+    }
+    
+    // Créer le document utilisateur dans Firestore
+    const userData = {
+      uid: user.uid,
+      email: email,
+      nom: profil.nom || "",
+      prenom: profil.prenom || "",
+      role: profil.role || ROLES.CLIENT,
+      telephone: profil.telephone || "",
+      whatsapp: profil.whatsapp || profil.telephone || "",
+      localisation: profil.localisation || "",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    await addDoc(collection(db, COLLECTIONS.USERS), userData);
+    
+    return {
+      success: true,
+      user: user,
+      userData: userData
+    };
+  } catch (error) {
+    console.error("Erreur inscription :", error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
 }
 
+// Connexion avec email/password
+export async function connexionUtilisateur(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    // Récupérer les données utilisateur depuis Firestore
+    const userDoc = await getDoc(doc(db, COLLECTIONS.USERS, userCredential.user.uid));
+    
+    return {
+      success: true,
+      user: userCredential.user,
+      userData: userDoc.data() || {}
+    };
+  } catch (error) {
+    console.error("Erreur connexion :", error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
 
-/* =========================================================
-   VÉRIFIER LA CONNEXION
-   ========================================================= */
+// Connexion avec Google
+export async function connexionGoogle() {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    // Vérifier si l'utilisateur existe déjà
+    const userDoc = await getDoc(doc(db, COLLECTIONS.USERS, user.uid));
+    
+    if (!userDoc.exists()) {
+      // Créer le profil utilisateur
+      await addDoc(collection(db, COLLECTIONS.USERS), {
+        uid: user.uid,
+        email: user.email,
+        nom: user.displayName || "",
+        prenom: "",
+        role: ROLES.CLIENT,
+        telephone: "",
+        whatsapp: "",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+    }
+    
+    return {
+      success: true,
+      user: user
+    };
+  } catch (error) {
+    console.error("Erreur connexion Google :", error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+// Déconnexion
+export async function deconnexion() {
+  try {
+    await signOut(auth);
+    console.log("CAMU SERVICES : utilisateur déconnecté.");
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("Erreur déconnexion :", error);
+    alert("Impossible de se déconnecter. Veuillez réessayer.");
+  }
+}
+
+// Vérifier l'état de connexion
+export function getCurrentUser() {
+  return auth.currentUser;
+}
 
 export function isUserConnected() {
-
   return !!auth.currentUser;
-
 }
 
 
@@ -155,702 +379,583 @@ export function isUserConnected() {
    ÉTAT D'AUTHENTIFICATION GLOBAL
    ========================================================= */
 
-onAuthStateChanged(
-  auth,
-  (user) => {
-
-    window.camuCurrentUser =
-      user || null;
-
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-auth-changed",
-        {
-          detail: {
-            user: user || null
-          }
-        }
-      )
-    );
-
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-user-ready",
-        {
-          detail: {
-            user: user || null
-          }
-        }
-      )
-    );
-
-  }
-);
+onAuthStateChanged(auth, (user) => {
+  window.camuCurrentUser = user || null;
+  
+  document.dispatchEvent(new CustomEvent("camu-auth-changed", {
+    detail: { user: user || null }
+  }));
+  
+  document.dispatchEvent(new CustomEvent("camu-user-ready", {
+    detail: { user: user || null }
+  }));
+});
 
 
 /* =========================================================
-   DÉCONNEXION
+   GESTION DES UTILISATEURS
    ========================================================= */
 
-window.camuLogout = async function () {
-
+export async function creerProfilUtilisateur(uid, userData) {
   try {
-
-    await signOut(auth);
-
-    console.log(
-      "CAMU SERVICES : utilisateur déconnecté."
-    );
-
-    window.location.href =
-      "profil.html";
-
+    await addDoc(collection(db, COLLECTIONS.USERS), {
+      ...userData,
+      uid: uid,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+    return { success: true };
   } catch (error) {
-
-    console.error(
-      "Erreur déconnexion :",
-      error
-    );
-
-    alert(
-      "Impossible de se déconnecter. Veuillez réessayer."
-    );
-
+    console.error("Erreur création profil :", error);
+    return { success: false, error: error.message };
   }
+}
 
-};
-
-
-/* =========================================================
-   FORMATAGE DATE
-   ========================================================= */
-
-function formaterDate(value) {
-
-  if (!value) {
-    return "";
-  }
-
+export async function mettreAJourProfil(uid, updates) {
   try {
-
-    let date;
-
-    if (
-      value &&
-      typeof value.toDate === "function"
-    ) {
-
-      date = value.toDate();
-
-    } else if (
-      value instanceof Date
-    ) {
-
-      date = value;
-
-    } else if (
-      typeof value === "number"
-    ) {
-
-      date = new Date(value);
-
-    } else {
-
-      date = new Date(value);
-
+    // Trouver le document utilisateur par UID
+    const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
+    const snapshot = await getDocs(q);
+    
+    if (snapshot.empty) {
+      throw new Error("Profil non trouvé");
     }
-
-    if (isNaN(date.getTime())) {
-      return "";
-    }
-
-    return date.toLocaleDateString(
-      "fr-FR",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      }
-    );
-
+    
+    const userDoc = snapshot.docs[0];
+    
+    await updateDoc(userDoc.ref, {
+      ...updates,
+      updatedAt: new Date()
+    });
+    
+    return { success: true };
   } catch (error) {
-
-    return "";
-
+    console.error("Erreur mise à jour profil :", error);
+    return { success: false, error: error.message };
   }
+}
 
+export async function obtenirProfil(uid) {
+  try {
+    // Trouver le document utilisateur par UID
+    const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
+    const snapshot = await getDocs(q);
+    
+    if (snapshot.empty) {
+      return {
+        success: false,
+        error: "Profil non trouvé"
+      };
+    }
+    
+    return {
+      success: true,
+      data: snapshot.docs[0].data()
+    };
+  } catch (error) {
+    console.error("Erreur récupération profil :", error);
+    return { success: false, error: error.message };
+  }
 }
 
 
 /* =========================================================
-   CHARGEMENT DES COMMUNIQUÉS FIREBASE
+   GESTION DES SERVICES
+   ========================================================= */
+
+export async function creerService(serviceData) {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("Utilisateur non connecté");
+    }
+    
+    // Récupérer le profil utilisateur pour avoir le numéro WhatsApp
+    const profil = await obtenirProfil(user.uid);
+    const whatsapp = profil.success ? profil.data.whatsapp || profil.data.telephone : "";
+    
+    const docRef = await addDoc(collection(db, COLLECTIONS.SERVICES), {
+      ...serviceData,
+      userId: user.uid,
+      whatsapp: whatsapp,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      status: "actif"
+    });
+    
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error("Erreur création service :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function obtenirService(serviceId) {
+  try {
+    const serviceDoc = await getDoc(doc(db, COLLECTIONS.SERVICES, serviceId));
+    
+    if (serviceDoc.exists()) {
+      return {
+        success: true,
+        data: {
+          id: serviceDoc.id,
+          ...serviceDoc.data()
+        }
+      };
+    } else {
+      return { success: false, error: "Service non trouvé" };
+    }
+  } catch (error) {
+    console.error("Erreur récupération service :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function mettreAJourService(serviceId, updates) {
+  try {
+    await updateDoc(doc(db, COLLECTIONS.SERVICES, serviceId), {
+      ...updates,
+      updatedAt: new Date()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur mise à jour service :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function supprimerService(serviceId) {
+  try {
+    await deleteDoc(doc(db, COLLECTIONS.SERVICES, serviceId));
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur suppression service :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function obtenirServicesParUtilisateur(userId) {
+  try {
+    const q = query(
+      collection(db, COLLECTIONS.SERVICES),
+      where("userId", "==", userId)
+    );
+    
+    const snapshot = await getDocs(q);
+    const services = [];
+    
+    snapshot.forEach((doc) => {
+      services.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    return { success: true, services };
+  } catch (error) {
+    console.error("Erreur récupération services :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+// Charger les services avec pagination
+export async function chargerServicesPage(limite = 10, dernierDoc = null) {
+  try {
+    const servicesRef = collection(db, COLLECTIONS.SERVICES);
+    
+    let q = query(servicesRef, orderBy("createdAt", "desc"), limit(limite));
+    
+    if (dernierDoc) {
+      q = query(servicesRef, orderBy("createdAt", "desc"), startAfter(dernierDoc), limit(limite));
+    }
+    
+    const snapshot = await getDocs(q);
+    const services = [];
+    
+    snapshot.forEach((doc) => {
+      services.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    return {
+      success: true,
+      services,
+      dernierDoc: snapshot.docs[snapshot.docs.length - 1] || null
+    };
+  } catch (error) {
+    console.error("Erreur chargement services :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+/* =========================================================
+   GESTION DES FAVORIS
+   ========================================================= */
+
+export async function ajouterFavori(serviceId) {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Utilisateur non connecté");
+    
+    // Vérifier si déjà en favori
+    const q = query(
+      collection(db, COLLECTIONS.FAVORIS),
+      where("userId", "==", user.uid),
+      where("serviceId", "==", serviceId)
+    );
+    
+    const snapshot = await getDocs(q);
+    
+    if (!snapshot.empty) {
+      return { success: false, error: "Déjà dans vos favoris" };
+    }
+    
+    await addDoc(collection(db, COLLECTIONS.FAVORIS), {
+      userId: user.uid,
+      serviceId: serviceId,
+      createdAt: new Date()
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur ajout favori :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function retirerFavori(serviceId) {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Utilisateur non connecté");
+    
+    const q = query(
+      collection(db, COLLECTIONS.FAVORIS),
+      where("userId", "==", user.uid),
+      where("serviceId", "==", serviceId)
+    );
+    
+    const snapshot = await getDocs(q);
+    
+    snapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur retrait favori :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function obtenirFavoris() {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Utilisateur non connecté");
+    
+    const q = query(
+      collection(db, COLLECTIONS.FAVORIS),
+      where("userId", "==", user.uid)
+    );
+    
+    const snapshot = await getDocs(q);
+    const favoris = [];
+    
+    snapshot.forEach((doc) => {
+      favoris.push(doc.data().serviceId);
+    });
+    
+    return { success: true, favoris };
+  } catch (error) {
+    console.error("Erreur récupération favoris :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+/* =========================================================
+   GESTION DES AVIS
+   ========================================================= */
+
+export async function ajouterAvis(serviceId, note, commentaire) {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Utilisateur non connecté");
+    
+    await addDoc(collection(db, COLLECTIONS.AVIS), {
+      serviceId: serviceId,
+      userId: user.uid,
+      note: note,
+      commentaire: commentaire,
+      createdAt: new Date()
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur ajout avis :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function obtenirAvis(serviceId) {
+  try {
+    const q = query(
+      collection(db, COLLECTIONS.AVIS),
+      where("serviceId", "==", serviceId),
+      orderBy("createdAt", "desc")
+    );
+    
+    const snapshot = await getDocs(q);
+    const avis = [];
+    
+    snapshot.forEach((doc) => {
+      avis.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    return { success: true, avis };
+  } catch (error) {
+    console.error("Erreur récupération avis :", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
+/* =========================================================
+   CHARGEMENT DES COMMUNIQUÉS
    ========================================================= */
 
 async function chargerCommuniquesFirebase() {
-
-  const container =
-    document.getElementById(
-      "communiquesContainer"
-    );
-
-  if (!container) {
-    return;
-  }
-
-
+  const container = document.getElementById("communiquesContainer");
+  if (!container) return;
+  
   container.innerHTML = `
     <div class="announcement-loading">
       <i class="fa-solid fa-spinner fa-spin"></i>
       Chargement des communiqués...
     </div>
   `;
-
-
+  
   try {
-
-    const communiquesRef =
-      collection(
-        db,
-        "communiques"
-      );
-
-
+    const communiquesRef = collection(db, COLLECTIONS.COMMUNIQUES);
     let snapshot;
-
-
-    /*
-     * Première tentative :
-     * tri par date décroissante.
-     */
-
+    
     try {
-
-      const q =
-        query(
-          communiquesRef,
-          orderBy("date", "desc"),
-          limit(10)
-        );
-
-      snapshot =
-        await getDocs(q);
-
-    } catch (error) {
-
-      /*
-       * Si certains documents n'ont pas de champ date
-       * ou si l'index Firestore manque, on récupère
-       * simplement les documents.
-       */
-
-      console.warn(
-        "Tri par date impossible, récupération simple :",
-        error
+      const q = query(
+        communiquesRef,
+        orderBy("date", "desc"),
+        limit(10)
       );
-
-      const q =
-        query(
-          communiquesRef,
-          limit(10)
-        );
-
-      snapshot =
-        await getDocs(q);
-
+      snapshot = await getDocs(q);
+    } catch (error) {
+      console.warn("Tri par date impossible, récupération simple :", error);
+      const q = query(communiquesRef, limit(10));
+      snapshot = await getDocs(q);
     }
-
-
-    /* =====================================================
-       AUCUN COMMUNIQUÉ
-       ===================================================== */
-
+    
     if (snapshot.empty) {
-
       container.innerHTML = `
         <div class="announcement-empty">
-
           <i class="fa-solid fa-bullhorn"></i>
-
-          <h3>
-            Aucun communiqué
-          </h3>
-
-          <p>
-            Aucun communiqué n'est disponible pour le moment.
-          </p>
-
+          <h3>Aucun communiqué</h3>
+          <p>Aucun communiqué n'est disponible pour le moment.</p>
         </div>
       `;
-
       return;
-
     }
-
-
-    /* =====================================================
-       CRÉATION DES CARTES
-       ===================================================== */
-
+    
     let html = "";
-
-
-    snapshot.forEach(
-      (docSnap) => {
-
-        const data =
-          docSnap.data();
-
-
-        const titre =
-          data.titre ||
-          data.title ||
-          data.nom ||
-          "Communiqué";
-
-
-        const contenu =
-          data.contenu ||
-          data.message ||
-          data.description ||
-          data.texte ||
-          "";
-
-
-        const type =
-          data.type ||
-          data.categorie ||
-          "Information";
-
-
-        const date =
-          formaterDate(
-            data.date ||
-            data.createdAt ||
-            data.timestamp
-          );
-
-
-        html += `
-
-          <article
-            class="announcement-box"
-            data-communique-id="${escapeHTML(docSnap.id)}"
-          >
-
-            <div class="announcement-icon">
-
-              <i class="fa-solid fa-bullhorn"></i>
-
-            </div>
-
-
-            <div class="announcement-content">
-
-              <span class="announcement-label">
-                ${escapeHTML(type)}
-              </span>
-
-
-              <h3>
-                ${escapeHTML(titre)}
-              </h3>
-
-
-              <p>
-                ${escapeHTML(contenu)}
-              </p>
-
-
-              ${
-                date
-                  ? `
-                    <div class="announcement-date">
-
-                      <i class="fa-regular fa-calendar"></i>
-
-                      ${escapeHTML(date)}
-
-                    </div>
-                  `
-                  : ""
-              }
-
-            </div>
-
-          </article>
-
-        `;
-
-      }
-    );
-
-
-    container.innerHTML =
-      html;
-
-
-    /*
-     * Informe index.html que les communiqués
-     * sont maintenant disponibles.
-     */
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-communiques-loaded"
-      )
-    );
-
-
+    
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const titre = data.titre || data.title || data.nom || "Communiqué";
+      const contenu = data.contenu || data.message || data.description || data.texte || "";
+      const type = data.type || data.categorie || "Information";
+      const date = formaterDate(data.date || data.createdAt || data.timestamp);
+      
+      html += `
+        <article class="announcement-box" data-communique-id="${escapeHTML(docSnap.id)}">
+          <div class="announcement-icon">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+          <div class="announcement-content">
+            <span class="announcement-label">${escapeHTML(type)}</span>
+            <h3>${escapeHTML(titre)}</h3>
+            <p>${escapeHTML(contenu)}</p>
+            ${date ? `
+              <div class="announcement-date">
+                <i class="fa-regular fa-calendar"></i>
+                ${escapeHTML(date)}
+              </div>
+            ` : ""}
+          </div>
+        </article>
+      `;
+    });
+    
+    container.innerHTML = html;
+    document.dispatchEvent(new CustomEvent("camu-communiques-loaded"));
   } catch (error) {
-
-    console.error(
-      "Erreur lors du chargement des communiqués :",
-      error
-    );
-
-
+    console.error("Erreur lors du chargement des communiqués :", error);
     container.innerHTML = `
-
       <div class="announcement-error">
-
         <i class="fa-solid fa-triangle-exclamation"></i>
-
-        <strong>
-          Impossible de charger les communiqués.
-        </strong>
-
-        <p>
-          Vérifiez la connexion à Firebase
-          et les règles Firestore.
-        </p>
-
+        <strong>Impossible de charger les communiqués.</strong>
+        <p>Vérifiez la connexion à Firebase et les règles Firestore.</p>
       </div>
-
     `;
-
   }
-
 }
 
 
 /* =========================================================
-   CHARGEMENT DES SERVICES / ENTREPRISES
+   CHARGEMENT DES SERVICES
    ========================================================= */
 
-async function chargerAnnoncesFirebase() {
-
-  const container =
-    document.getElementById(
-      "servicesContainer"
-    );
-
-  if (!container) {
-    return;
-  }
-
-
+async function chargerServicesFirebase(categorie = null) {
+  const container = document.getElementById("servicesContainer");
+  if (!container) return;
+  
+  container.innerHTML = `
+    <p style="text-align:center; grid-column:1/-1; padding:20px;">
+      Chargement des services...
+    </p>
+  `;
+  
   try {
-
-    const servicesRef =
-      collection(
-        db,
-        "services"
+    const servicesRef = collection(db, COLLECTIONS.SERVICES);
+    let q;
+    
+    if (categorie && categorie !== "tous") {
+      q = query(
+        servicesRef,
+        where("categorie", "==", categorie),
+        orderBy("createdAt", "desc")
       );
-
-
-    let snapshot;
-
-
-    try {
-
-      const q =
-        query(
-          servicesRef,
-          orderBy(
-            "createdAt",
-            "desc"
-          )
-        );
-
-      snapshot =
-        await getDocs(q);
-
-    } catch (error) {
-
-      console.warn(
-        "Tri des services impossible, récupération simple :",
-        error
-      );
-
-      const q =
-        query(
-          servicesRef
-        );
-
-      snapshot =
-        await getDocs(q);
-
+    } else {
+      q = query(servicesRef, orderBy("createdAt", "desc"));
     }
-
-
+    
+    let snapshot;
+    
+    try {
+      snapshot = await getDocs(q);
+    } catch (error) {
+      console.warn("Tri des services impossible, récupération simple :", error);
+      snapshot = await getDocs(query(servicesRef));
+    }
+    
     if (snapshot.empty) {
-
       container.innerHTML = `
-        <p
-          style="
-            text-align:center;
-            grid-column:1/-1;
-            padding:20px;
-          "
-        >
+        <p style="text-align:center; grid-column:1/-1; padding:20px;">
           Aucune annonce pour le moment.
         </p>
       `;
-
-      document.dispatchEvent(
-        new CustomEvent(
-          "camu-services-loaded"
-        )
-      );
-
+      document.dispatchEvent(new CustomEvent("camu-services-loaded"));
       return;
-
     }
-
-
-    let htmlContent =
-      "";
-
-
-    snapshot.forEach(
-      (docSnap) => {
-
-        const data =
-          docSnap.data();
-
-
-        const categorie =
-          data.categorie ||
-          data.category ||
-          "Services";
-
-
-        const titre =
-          data.titre ||
-          data.nom ||
-          data.title ||
-          "Nom de l'entreprise";
-
-
-        const description =
-          data.description ||
-          "Aucune description disponible.";
-
-
-        const localisation =
-          data.localisation ||
-          data.location ||
-          "Disponible localement";
-
-
-        const note =
-          data.note ||
-          data.rating ||
-          "4.8";
-
-
-        const imageUrl =
-          data.imageUrl ||
-          data.image ||
-          "";
-
-
-        const searchText =
-          `
-            ${categorie}
-            ${titre}
-            ${description}
-            ${localisation}
-          `
-            .toLowerCase();
-
-
-        htmlContent += `
-
-          <article
-            class="annonce-card service-card"
-            data-category="${escapeHTML(categorie)}"
-            data-search="${escapeHTML(searchText)}"
-          >
-
-            <div class="service-image">
-
-              ${
-                imageUrl
-                  ? `
-                    <img
-                      src="${escapeHTML(imageUrl)}"
-                      alt="${escapeHTML(titre)}"
-                      style="
-                        width:100%;
-                        height:100%;
-                        object-fit:cover;
-                      "
-                      loading="lazy"
-                    >
-                  `
-                  : `
-                    <div class="service-placeholder">
-                      <i class="fa-solid fa-store"></i>
-                    </div>
-                  `
-              }
-
-
-              <span class="featured-badge">
-
+    
+    let htmlContent = "";
+    
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const categorie = data.categorie || data.category || "Services";
+      const titre = data.titre || data.nom || data.title || "Nom de l'entreprise";
+      const description = data.description || "Aucune description disponible.";
+      const localisation = data.localisation || data.location || "Disponible localement";
+      const note = data.note || data.rating || "4.8";
+      const imageUrl = data.imageUrl || data.image || "";
+      const whatsapp = data.whatsapp || "";
+      const searchText = `${categorie} ${titre} ${description} ${localisation}`.toLowerCase();
+      
+      const messageContact = genererMessageWhatsApp(data, "contact");
+      
+      htmlContent += `
+        <article class="annonce-card service-card" 
+                 data-category="${escapeHTML(categorie)}"
+                 data-search="${escapeHTML(searchText)}"
+                 data-service-id="${escapeHTML(docSnap.id)}">
+          <div class="service-image">
+            ${imageUrl ? `
+              <img src="${escapeHTML(imageUrl)}" 
+                   alt="${escapeHTML(titre)}"
+                   style="width:100%; height:100%; object-fit:cover;"
+                   loading="lazy">
+            ` : `
+              <div class="service-placeholder">
+                <i class="fa-solid fa-store"></i>
+              </div>
+            `}
+            <span class="featured-badge">
+              <i class="fa-solid fa-star"></i>
+              ${data.featured || data.sponsorise ? "Sponsorisé" : "Service"}
+            </span>
+          </div>
+          
+          <div class="service-card-content">
+            <span class="badge-cat">${escapeHTML(categorie)}</span>
+            <h3>${escapeHTML(titre)}</h3>
+            <p class="service-description">${escapeHTML(description)}</p>
+            
+            <p class="location">
+              <i class="fa-solid fa-location-dot"></i>
+              ${escapeHTML(localisation)}
+            </p>
+            
+            <div class="service-footer">
+              <span class="service-status">
+                <i class="fa-solid fa-circle"></i>
+                Disponible
+              </span>
+              <span class="rating">
                 <i class="fa-solid fa-star"></i>
-
-                ${
-                  data.featured ||
-                  data.sponsorise
-                    ? "Sponsorisé"
-                    : "Service"
-                }
-
+                ${escapeHTML(note)}
               </span>
-
             </div>
-
-
-            <div class="service-card-content">
-
-              <span class="badge-cat">
-
-                ${escapeHTML(categorie)}
-
-              </span>
-
-
-              <h3>
-
-                ${escapeHTML(titre)}
-
-              </h3>
-
-
-              <p class="service-description">
-
-                ${escapeHTML(description)}
-
-              </p>
-
-
-              <p class="location">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-                ${escapeHTML(localisation)}
-
-              </p>
-
-
-              <div class="service-footer">
-
-                <span class="service-status">
-
-                  <i class="fa-solid fa-circle"></i>
-
-                  Disponible
-
-                </span>
-
-
-                <span class="rating">
-
-                  <i class="fa-solid fa-star"></i>
-
-                  ${escapeHTML(note)}
-
-                </span>
-
-              </div>
-
-
-              <div class="card-actions">
-
-                <a
-                  href="entreprise.html?id=${encodeURIComponent(docSnap.id)}"
-                  class="btn-primary"
-                >
-                  Voir le profil
+            
+            <div class="card-actions">
+              <a href="entreprise.html?id=${encodeURIComponent(docSnap.id)}" 
+                 class="btn-primary">
+                Voir le profil
+              </a>
+              
+              ${whatsapp ? `
+                <a href="${creerLienWhatsApp(whatsapp, messageContact)}" 
+                   target="_blank"
+                   class="btn-whatsapp"
+                   title="Contacter sur WhatsApp">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  WhatsApp
                 </a>
-
-
-                <button
-                  type="button"
-                  class="favorite-btn"
-                  aria-label="Ajouter aux favoris"
-                  title="Ajouter aux favoris"
-                >
-
-                  <i class="fa-regular fa-heart"></i>
-
-                </button>
-
-              </div>
-
+              ` : ""}
+              
+              <button type="button" 
+                      class="favorite-btn" 
+                      aria-label="Ajouter aux favoris"
+                      title="Ajouter aux favoris"
+                      onclick="ajouterAuxFavoris('${escapeHTML(docSnap.id)}')">
+                <i class="fa-regular fa-heart"></i>
+              </button>
             </div>
-
-          </article>
-
-        `;
-
-      }
-    );
-
-
-    container.innerHTML =
-      htmlContent;
-
-
-    /*
-     * Informe index.html que les services
-     * sont maintenant disponibles.
-     */
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-services-loaded"
-      )
-    );
-
+          </div>
+        </article>
+      `;
+    });
+    
+    container.innerHTML = htmlContent;
+    document.dispatchEvent(new CustomEvent("camu-services-loaded"));
   } catch (error) {
-
-    console.error(
-      "Erreur lors du chargement des annonces Firebase :",
-      error
-    );
-
-
+    console.error("Erreur lors du chargement des annonces Firebase :", error);
     container.innerHTML = `
-
-      <p
-        style="
-          text-align:center;
-          grid-column:1/-1;
-          padding:20px;
-        "
-      >
+      <p style="text-align:center; grid-column:1/-1; padding:20px;">
         Erreur de chargement des données.
       </p>
-
     `;
-
   }
-
 }
 
 
@@ -859,129 +964,138 @@ async function chargerAnnoncesFirebase() {
    ========================================================= */
 
 window.CAMU = {
-
   app,
-
   auth,
-
   db,
-
+  
+  // Authentification
   getCurrentUser,
-
   isUserConnected,
-
-  logout:
-    window.camuLogout,
-
-  chargerCommuniques:
-    chargerCommuniquesFirebase,
-
-  chargerServices:
-    chargerAnnoncesFirebase
-
+  inscriptionUtilisateur,
+  connexionUtilisateur,
+  connexionGoogle,
+  deconnexion,
+  logout: deconnexion,
+  
+  // Utilisateurs
+  creerProfilUtilisateur,
+  mettreAJourProfil,
+  obtenirProfil,
+  
+  // Services
+  creerService,
+  obtenirService,
+  mettreAJourService,
+  supprimerService,
+  obtenirServicesParUtilisateur,
+  chargerServices: chargerServicesFirebase,
+  chargerServicesPage,
+  
+  // Favoris
+  ajouterFavori,
+  retirerFavori,
+  obtenirFavoris,
+  
+  // Avis
+  ajouterAvis,
+  obtenirAvis,
+  
+  // WhatsApp
+  creerLienWhatsApp,
+  genererMessageWhatsApp,
+  ouvrirWhatsApp,
+  partagerSurWhatsApp,
+  formaterNumeroWhatsApp,
+  
+  // Communiqués
+  chargerCommuniques: chargerCommuniquesFirebase,
+  
+  // Utilitaires
+  ROLES,
+  COLLECTIONS
 };
 
 
 /* =========================================================
-   FONCTIONS THÈME
+   FONCTIONS THÈME ET LANGUE
    ========================================================= */
 
-window.camuSetTheme =
-  function(theme) {
+window.camuSetTheme = function(theme) {
+  if (theme !== "dark" && theme !== "light") return;
+  
+  localStorage.setItem("camu_theme", theme);
+  appliquerTheme();
+  
+  document.dispatchEvent(new CustomEvent("camu-theme-changed", {
+    detail: { theme }
+  }));
+};
 
-    if (
-      theme !== "dark" &&
-      theme !== "light"
-    ) {
-
-      return;
-
-    }
-
-
-    localStorage.setItem(
-      "camu_theme",
-      theme
-    );
-
-
-    appliquerTheme();
-
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-theme-changed",
-        {
-          detail: {
-            theme
-          }
-        }
-      )
-    );
-
-  };
+window.camuSetLanguage = function(language) {
+  if (!language) return;
+  
+  localStorage.setItem("camu_language", language);
+  appliquerLangue();
+  
+  document.dispatchEvent(new CustomEvent("camu-language-changed", {
+    detail: { language }
+  }));
+};
 
 
 /* =========================================================
-   FONCTIONS LANGUE
+   FONCTIONS GLOBALES POUR LES FAVORIS ET WHATSAPP
    ========================================================= */
 
-window.camuSetLanguage =
-  function(language) {
-
-    if (!language) {
-
+window.ajouterAuxFavoris = async function(serviceId) {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Veuillez vous connecter pour ajouter des favoris.");
+      window.location.href = "connexion.html";
       return;
-
     }
-
-
-    localStorage.setItem(
-      "camu_language",
-      language
-    );
-
-
-    appliquerLangue();
-
-
-    document.dispatchEvent(
-      new CustomEvent(
-        "camu-language-changed",
-        {
-          detail: {
-            language
-          }
-        }
-      )
-    );
-
-  };
-
-
-/* =========================================================
-   CHARGEMENT DES DONNÉES
-   ========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  async function() {
-
-    /*
-     * Les deux chargements peuvent fonctionner
-     * en parallèle.
-     */
-
-    await Promise.allSettled([
-
-      chargerCommuniquesFirebase(),
-
-      chargerAnnoncesFirebase()
-
-    ]);
-
+    
+    const resultat = await ajouterFavori(serviceId);
+    
+    if (resultat.success) {
+      alert("Service ajouté aux favoris !");
+    } else {
+      alert("Erreur : " + resultat.error);
+    }
+  } catch (error) {
+    console.error("Erreur ajout favori :", error);
   }
-);
+};
+
+window.contacterSurWhatsApp = function(numero, service) {
+  const message = genererMessageWhatsApp(service, "contact");
+  ouvrirWhatsApp(numero, message);
+};
+
+window.demanderDevisSurWhatsApp = function(numero, service) {
+  const message = genererMessageWhatsApp(service, "devis");
+  ouvrirWhatsApp(numero, message);
+};
+
+window.commanderSurWhatsApp = function(numero, service) {
+  const message = genererMessageWhatsApp(service, "commande");
+  ouvrirWhatsApp(numero, message);
+};
+
+window.partagerSurWhatsApp = partagerSurWhatsApp;
+
+
+/* =========================================================
+   INITIALISATION AU CHARGEMENT
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", async function() {
+  await Promise.allSettled([
+    chargerCommuniquesFirebase(),
+    chargerServicesFirebase()
+  ]);
+});
 
 
 /* =========================================================
