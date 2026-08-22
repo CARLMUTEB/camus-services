@@ -1,479 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>CAMU SERVICES — Connexion</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.login-container {
+  min-height: calc(100vh - 130px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card, #fff);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 16px;
+  padding: 30px 24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+.login-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffebee;
+  color: #d32f2f;
+  font-size: 28px;
+}
+
+.login-card h1 {
+  text-align: center;
+  margin: 0 0 8px;
+  font-size: 23px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.input-box {
+  position: relative;
+}
+
+.input-box i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.input-box input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px 0 42px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input-box input:focus {
+  outline: none;
+  border-color: #d32f2f;
+}
+
+.btn-login,
+.btn-google {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.btn-login {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn-login:hover {
+  background: #b71c1c;
+}
+
+.btn-login:disabled,
+.btn-google:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  color: #888;
+  font-size: 12px;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #ddd;
+}
+
+.btn-google {
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-google i {
+  color: #4285f4;
+  margin-right: 7px;
+}
+
+.message {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.message.success {
+  display: block;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.message.error {
+  display: block;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.register-link {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  font-size: 13px;
+}
+
+.register-link a {
+  color: #d32f2f;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="top-bar">
+
+  <button
+    class="back-btn"
+    type="button"
+    onclick="history.back()"
+  >
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+
+  <div class="logo-text">
+    CAMU <span>SERVICES</span>
+  </div>
+
+  <div class="spacer"></div>
+
+</header>
+
+
+<main class="login-container">
+
+  <div class="login-card">
+
+    <div class="login-icon">
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+    <h1>Bon retour !</h1>
+
+    <p class="login-subtitle">
+      Connectez-vous à votre compte CAMU SERVICES
+    </p>
+
+
+    <form id="connexionForm">
+
+      <div class="form-group">
+
+        <label for="emailConnexion">
+          Adresse Email
+        </label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <input
+            type="email"
+            id="emailConnexion"
+            placeholder="exemple@email.com"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="motDePasseConnexion">
+          Mot de passe
+        </label>
+
+        <div class="input-box">
+
+          <i class="fa-solid fa-lock"></i>
+
+          <input
+            type="password"
+            id="motDePasseConnexion"
+            placeholder="Votre mot de passe"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="submit"
+        id="btnConnexion"
+        class="btn-login"
+      >
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        Se connecter
+
+      </button>
+
+
+      <div class="separator">
+        OU
+      </div>
+
+
+      <button
+        type="button"
+        id="btnGoogle"
+        class="btn-google"
+      >
+
+        <i class="fa-brands fa-google"></i>
+
+        Continuer avec Google
+
+      </button>
+
+    </form>
+
+
+    <div
+      id="messageConnexion"
+      class="message"
+    ></div>
+
+
+    <div class="register-link">
+
+      Vous n'avez pas encore de compte ?
+
+      <a href="inscription.html">
+        Créer un compte
+      </a>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+  <a href="index.html">
+    <i class="fa-solid fa-house"></i>
+    <span>Accueil</span>
+  </a>
+
+  <a href="publier.html">
+    <i class="fa-solid fa-circle-plus"></i>
+    <span>Publier</span>
+  </a>
+
+  <a href="chat.html">
+    <i class="fa-solid fa-comments"></i>
+    <span>Chat</span>
+  </a>
+
+  <a href="explorer.html">
+    <i class="fa-solid fa-compass"></i>
+    <span>Explorer</span>
+  </a>
+
+</nav>
+
+
 <script type="module">
 
-  import {
-    connexionUtilisateur,
-    connexionGoogle
-  } from "./app.js";
-
-
-  const form =
-    document.getElementById(
-      "connexionForm"
-    );
-
-  const message =
-    document.getElementById(
-      "messageConnexion"
-    );
-
-  const button =
-    document.getElementById(
-      "btnConnexion"
-    );
-
-  const btnGoogle =
-    document.getElementById(
-      "btnGoogle"
-    );
-
-
-  function afficherMessage(
-    texte,
-    type = "success"
-  ) {
-
-    message.style.display =
-      "block";
-
-    message.textContent =
-      texte;
-
-    message.className =
-      "message-box " + type;
-
-  }
-
-
-  function masquerMessage() {
-
-    message.style.display =
-      "none";
-
-  }
-
-
-  /* =====================================================
-     CONNEXION EMAIL / MOT DE PASSE
-     ===================================================== */
-
-  form.addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-
-      const email =
-        document
-          .getElementById(
-            "emailConnexion"
-          )
-          .value
-          .trim();
-
-
-      const password =
-        document
-          .getElementById(
-            "motDePasseConnexion"
-          )
-          .value;
-
-
-      if (!email || !password) {
-
-        afficherMessage(
-          "Veuillez remplir tous les champs.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      button.disabled =
-        true;
-
-      button.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-      masquerMessage();
-
-
-      try {
-
-        const resultat =
-          await connexionUtilisateur(
-            email,
-            password
-          );
-
-
-        if (!resultat.success) {
-
-          let texte =
-            "Impossible de se connecter.";
-
-
-          const erreur =
-            String(
-              resultat.error || ""
-            ).toLowerCase();
-
-
-          if (
-            erreur.includes(
-              "invalid-credential"
-            ) ||
-            erreur.includes(
-              "wrong-password"
-            ) ||
-            erreur.includes(
-              "user-not-found"
-            )
-          ) {
-
-            texte =
-              "Email ou mot de passe incorrect.";
-
-          } else if (
-            erreur.includes(
-              "invalid-email"
-            )
-          ) {
-
-            texte =
-              "Adresse email invalide.";
-
-          } else if (
-            erreur.includes(
-              "too-many-requests"
-            )
-          ) {
-
-            texte =
-              "Trop de tentatives. Réessayez plus tard.";
-
-          }
-
-
-          afficherMessage(
-            texte,
-            "error"
-          );
-
-
-          button.disabled =
-            false;
-
-          button.innerHTML =
-            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
-
-          return;
-
-        }
-
-
-        /* ================================================
-           CONNEXION FIREBASE CONFIRMÉE
-           ================================================ */
-
-        afficherMessage(
-          "Connexion réussie. Vérification de votre session..."
-        );
-
-
-        /*
-         * IMPORTANT :
-         * On attend que Firebase confirme réellement
-         * l'état de connexion avec onAuthStateChanged.
-         */
-
-        const attendreUtilisateur =
-          new Promise(
-            (resolve) => {
-
-              let termine =
-                false;
-
-
-              const timeout =
-                setTimeout(
-                  () => {
-
-                    if (!termine) {
-
-                      termine =
-                        true;
-
-                      resolve(
-                        null
-                      );
-
-                    }
-
-                  },
-                  5000
-                );
-
-
-              document.addEventListener(
-                "camu-auth-changed",
-                function handler(event) {
-
-                  const user =
-                    event.detail?.user ||
-                    null;
-
-
-                  if (
-                    user &&
-                    !termine
-                  ) {
-
-                    termine =
-                      true;
-
-                    clearTimeout(
-                      timeout
-                    );
-
-                    document.removeEventListener(
-                      "camu-auth-changed",
-                      handler
-                    );
-
-                    resolve(
-                      user
-                    );
-
-                  }
-
-                }
-              );
-
-
-              /*
-               * Si Firebase a déjà terminé
-               * avant l'installation du listener.
-               */
-
-              if (
-                window.camuCurrentUser
-              ) {
-
-                termine =
-                  true;
-
-                clearTimeout(
-                  timeout
-                );
-
-                resolve(
-                  window.camuCurrentUser
-                );
-
-              }
-
-            }
-          );
-
-
-        const utilisateur =
-          await attendreUtilisateur;
-
-
-        if (utilisateur) {
-
-          console.log(
-            "CAMU : utilisateur confirmé :",
-            utilisateur.email
-          );
-
-
-          afficherMessage(
-            "Connexion réussie. Bienvenue !"
-          );
-
-
-          setTimeout(
-            () => {
-
-              window.location.replace(
-                "index.html"
-              );
-
-            },
-            700
-          );
-
-
-        } else {
-
-          afficherMessage(
-            "Connexion effectuée, mais Firebase n'a pas encore confirmé la session. Veuillez patienter.",
-            "error"
-          );
-
-
-          button.disabled =
-            false;
-
-          button.innerHTML =
-            '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur connexion :",
-          error
-        );
-
-
-        afficherMessage(
-          "Une erreur est survenue pendant la connexion.",
-          "error"
-        );
-
-
-        button.disabled =
-          false;
-
-        button.innerHTML =
-          '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
-      }
-
-    }
+import {
+  connexionUtilisateur,
+  connexionGoogle
+} from "./app.js";
+
+
+const form =
+  document.getElementById(
+    "connexionForm"
+  );
+
+const emailInput =
+  document.getElementById(
+    "emailConnexion"
+  );
+
+const passwordInput =
+  document.getElementById(
+    "motDePasseConnexion"
+  );
+
+const button =
+  document.getElementById(
+    "btnConnexion"
+  );
+
+const googleButton =
+  document.getElementById(
+    "btnGoogle"
+  );
+
+const message =
+  document.getElementById(
+    "messageConnexion"
   );
 
 
-  /* =====================================================
-     CONNEXION GOOGLE
-     ===================================================== */
+function afficherMessage(
+  texte,
+  type
+) {
 
-  btnGoogle.addEventListener(
-    "click",
-    async function() {
+  message.textContent = texte;
 
-      btnGoogle.disabled =
-        true;
+  message.className =
+    "message " + type;
 
-      btnGoogle.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-      masquerMessage();
+}
 
 
-      try {
+function boutonNormal() {
 
-        const resultat =
-          await connexionGoogle();
+  button.disabled = false;
 
+  button.innerHTML =
+    '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
 
-        if (!resultat.success) {
-
-          afficherMessage(
-            "Erreur lors de la connexion Google.",
-            "error"
-          );
+}
 
 
-          btnGoogle.disabled =
-            false;
+/* =====================================================
+   CONNEXION EMAIL
+   ===================================================== */
 
-          btnGoogle.innerHTML =
-            '<i class="fa-brands fa-google"></i> Continuer avec Google';
+form.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+    const email =
+      emailInput.value.trim();
+
+    const password =
+      passwordInput.value;
 
 
-          return;
+    if (!email || !password) {
+
+      afficherMessage(
+        "Veuillez remplir tous les champs.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+
+    try {
+
+      const resultat =
+        await connexionUtilisateur(
+          email,
+          password
+        );
+
+
+      if (!resultat.success) {
+
+        let texte =
+          "Impossible de se connecter.";
+
+
+        if (
+          resultat.error.includes(
+            "invalid-credential"
+          ) ||
+          resultat.error.includes(
+            "wrong-password"
+          ) ||
+          resultat.error.includes(
+            "user-not-found"
+          )
+        ) {
+
+          texte =
+            "Email ou mot de passe incorrect.";
+
+        } else if (
+          resultat.error.includes(
+            "invalid-email"
+          )
+        ) {
+
+          texte =
+            "Adresse email invalide.";
+
+        } else if (
+          resultat.error.includes(
+            "too-many-requests"
+          )
+        ) {
+
+          texte =
+            "Trop de tentatives. Réessayez plus tard.";
 
         }
 
 
         afficherMessage(
-          "Connexion Google réussie. Vérification..."
+          texte,
+          "error"
         );
 
+        boutonNormal();
 
-        /*
-         * Firebase doit avoir un utilisateur.
-         */
-
-        let verification =
-          0;
+        return;
+      }
 
 
-        while (
-          !window.camuCurrentUser &&
-          verification < 20
-        ) {
-
-          await new Promise(
-            resolve =>
-              setTimeout(
-                resolve,
-                100
-              )
-          );
-
-          verification++;
-
-        }
+      afficherMessage(
+        "Connexion réussie. Ouverture de votre espace...",
+        "success"
+      );
 
 
-        if (
-          window.camuCurrentUser
-        ) {
+      /*
+       * IMPORTANT :
+       * On attend un peu puis on vérifie
+       * que Firebase possède bien l'utilisateur.
+       */
 
-          window.location.replace(
-            "index.html"
-          );
+      setTimeout(
+        () => {
 
-        } else {
+          if (window.CAMU?.isUserConnected()) {
 
-          afficherMessage(
-            "La connexion Google n'a pas pu être confirmée.",
-            "error"
-          );
+            window.location.replace(
+              "profil.html"
+            );
 
-          btnGoogle.disabled =
-            false;
+          } else {
 
-          btnGoogle.innerHTML =
-            '<i class="fa-brands fa-google"></i> Continuer avec Google';
+            afficherMessage(
+              "La session Firebase n'a pas été conservée.",
+              "error"
+            );
 
-        }
+            boutonNormal();
+
+          }
+
+        },
+        800
+      );
 
 
-      } catch (error) {
+    } catch (error) {
 
-        console.error(
-          "Erreur Google :",
-          error
-        );
+      console.error(
+        "Erreur page connexion :",
+        error
+      );
 
+      afficherMessage(
+        "Une erreur inattendue est survenue.",
+        "error"
+      );
+
+      boutonNormal();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   GOOGLE
+   ===================================================== */
+
+googleButton.addEventListener(
+  "click",
+  async () => {
+
+    googleButton.disabled = true;
+
+    googleButton.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+
+    try {
+
+      const resultat =
+        await connexionGoogle();
+
+
+      if (!resultat.success) {
 
         afficherMessage(
           "Erreur lors de la connexion Google.",
           "error"
         );
 
+        googleButton.disabled = false;
 
-        btnGoogle.disabled =
-          false;
-
-        btnGoogle.innerHTML =
+        googleButton.innerHTML =
           '<i class="fa-brands fa-google"></i> Continuer avec Google';
 
+        return;
       }
 
+
+      afficherMessage(
+        "Connexion réussie. Ouverture de votre espace...",
+        "success"
+      );
+
+
+      setTimeout(
+        () => {
+
+          window.location.replace(
+            "profil.html"
+          );
+
+        },
+        800
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Google :",
+        error
+      );
+
+      afficherMessage(
+        "Impossible de se connecter avec Google.",
+        "error"
+      );
+
+      googleButton.disabled = false;
+
+      googleButton.innerHTML =
+        '<i class="fa-brands fa-google"></i> Continuer avec Google';
+
     }
-  );
+
+  }
+);
 
 </script>
+
+</body>
+</html>
