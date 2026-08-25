@@ -1,3 +1,7 @@
+// =========================================================
+// CAMU SERVICES — AUTHENTIFICATION
+// =========================================================
+
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -5,25 +9,24 @@ import {
     sendPasswordResetEmail,
     onAuthStateChanged,
     updateProfile
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
     doc,
     setDoc,
     getDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-    auth,
-    db
-} from "../config/firebase.js";
+import { auth, db } from "../config/firebase.js";
+import { setUser, addListener } from "./store.js";
 
-import {
-    setUser,
-    addListener
-} from "./store.js";
 
+// =========================================================
+// INSCRIPTION
+// =========================================================
 
 export async function signUp(
     email,
@@ -31,178 +34,92 @@ export async function signUp(
     displayName,
     phone = ""
 ) {
-
     try {
 
         const credential =
             await createUserWithEmailAndPassword(
                 auth,
-                email,
+                email.trim(),
                 password
             );
 
         const user = credential.user;
 
-
-        if (displayName) {
-
-            await updateProfile(user, {
-                displayName: displayName
-            });
-
-        }
-
+        await updateProfile(user, {
+            displayName: displayName || ""
+        });
 
         await setDoc(
             doc(db, "users", user.uid),
             {
-
                 uid: user.uid,
-
                 email: user.email,
-
                 displayName: displayName || "",
-
                 phoneNumber: phone || "",
-
                 photoURL: "",
-
                 role: "client",
-
                 isActive: true,
-
                 createdAt: serverTimestamp(),
-
                 updatedAt: serverTimestamp()
-
             }
         );
 
-
-        const data = await fetchUserData(
-            user.uid
-        );
-
+        await fetchUserData(user.uid);
 
         return {
-
             success: true,
-
-            user: user,
-
-            data: data
-
+            user
         };
-
 
     } catch (error) {
 
-        console.error(
-            "Erreur inscription:",
-            error
-        );
+        console.error("Erreur inscription :", error);
 
         return {
-
             success: false,
-
-            error: translateFirebaseError(
-                error
-            )
-
+            error: translateFirebaseError(error.code)
         };
-
     }
-
 }
 
 
-export async function signIn(
-    email,
-    password
-) {
+// =========================================================
+// CONNEXION
+// =========================================================
+
+export async function signIn(email, password) {
 
     try {
 
         const credential =
             await signInWithEmailAndPassword(
                 auth,
-                email,
+                email.trim(),
                 password
             );
 
-        const user = credential.user;
-
-        const data =
-            await fetchUserData(user.uid);
-
-
-        if (!data) {
-
-            await setDoc(
-                doc(db, "users", user.uid),
-                {
-
-                    uid: user.uid,
-
-                    email: user.email,
-
-                    displayName:
-                        user.displayName || "",
-
-                    phoneNumber: "",
-
-                    photoURL:
-                        user.photoURL || "",
-
-                    role: "client",
-
-                    isActive: true,
-
-                    createdAt:
-                        serverTimestamp(),
-
-                    updatedAt:
-                        serverTimestamp()
-
-                }
-            );
-
-        }
-
+        await fetchUserData(credential.user.uid);
 
         return {
-
             success: true,
-
-            user: user,
-
-            data: data
-
+            user: credential.user
         };
-
 
     } catch (error) {
 
-        console.error(
-            "Erreur connexion:",
-            error
-        );
+        console.error("Erreur connexion :", error);
 
         return {
-
             success: false,
-
-            error: translateFirebaseError(
-                error
-            )
-
+            error: translateFirebaseError(error.code)
         };
-
     }
-
 }
 
+
+// =========================================================
+// DÉCONNEXION
+// =========================================================
 
 export async function signOutUser() {
 
@@ -219,29 +136,24 @@ export async function signOutUser() {
     } catch (error) {
 
         return {
-
             success: false,
-
-            error: translateFirebaseError(
-                error
-            )
-
+            error: error.message
         };
-
     }
-
 }
 
 
-export async function resetPassword(
-    email
-) {
+// =========================================================
+// MOT DE PASSE OUBLIÉ
+// =========================================================
+
+export async function resetPassword(email) {
 
     try {
 
         await sendPasswordResetEmail(
             auth,
-            email
+            email.trim()
         );
 
         return {
@@ -251,64 +163,55 @@ export async function resetPassword(
     } catch (error) {
 
         return {
-
             success: false,
-
-            error: translateFirebaseError(
-                error
-            )
-
+            error: translateFirebaseError(error.code)
         };
-
     }
-
 }
 
+
+// =========================================================
+// RÉCUPÉRATION DES DONNÉES FIRESTORE
+// =========================================================
 
 export async function fetchUserData(uid) {
 
     try {
 
-        const ref =
-            doc(db, "users", uid);
+        const ref = doc(db, "users", uid);
 
-        const snapshot =
-            await getDoc(ref);
+        const snapshot = await getDoc(ref);
 
+        if (snapshot.exists()) {
 
-        if (!snapshot.exists()) {
-            return null;
+            const data = snapshot.data();
+
+            setUser(auth.currentUser, data);
+
+            return data;
         }
 
-
-        const data = snapshot.data();
-
-        setUser(
-            auth.currentUser,
-            data
-        );
-
-
-        return data;
-
+        return null;
 
     } catch (error) {
 
         console.error(
-            "Erreur Firestore:",
+            "Erreur récupération utilisateur :",
             error
         );
 
         return null;
-
     }
-
 }
 
 
+// =========================================================
+// SURVEILLANCE AUTHENTIFICATION
+// =========================================================
+
 export function initAuth() {
 
-    onAuthStateChanged(
+    return onAuthStateChanged(
         auth,
         async user => {
 
@@ -317,56 +220,36 @@ export function initAuth() {
                 setUser(null, null);
 
                 return;
-
             }
 
-
             const data =
-                await fetchUserData(
-                    user.uid
-                );
-
+                await fetchUserData(user.uid);
 
             if (data) {
 
-                setUser(
-                    user,
-                    data
-                );
+                setUser(user, data);
 
             } else {
 
-                setUser(
-                    user,
-                    {
-
-                        uid: user.uid,
-
-                        email: user.email,
-
-                        displayName:
-                            user.displayName || "",
-
-                        role: "client"
-
-                    }
-                );
-
+                setUser(user, {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName || "",
+                    role: "client"
+                });
             }
-
         }
     );
-
 }
 
 
-function translateFirebaseError(
-    error
-) {
+// =========================================================
+// TRADUCTION DES ERREURS FIREBASE
+// =========================================================
 
-    const code = error?.code || "";
+function translateFirebaseError(code) {
 
-    const messages = {
+    const errors = {
 
         "auth/invalid-email":
             "Adresse email invalide.",
@@ -386,22 +269,14 @@ function translateFirebaseError(
         "auth/weak-password":
             "Le mot de passe doit contenir au moins 6 caractères.",
 
-        "auth/too-many-requests":
-            "Trop de tentatives. Réessayez plus tard.",
-
         "auth/network-request-failed":
-            "Problème de connexion Internet."
+            "Problème de connexion Internet.",
 
+        "auth/too-many-requests":
+            "Trop de tentatives. Réessayez plus tard."
     };
 
-
-    return messages[code]
-        || error?.message
-        || "Une erreur est survenue.";
-
+    return errors[code] || "Une erreur est survenue.";
 }
 
-
-export {
-    addListener
-};
+export { addListener };
