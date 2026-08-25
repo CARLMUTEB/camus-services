@@ -1,68 +1,276 @@
-// js/components/Sidebar.js
-import { addListener, signOutUser } from "../core/auth.js";
+import {
+    addListener
+} from "../core/store.js";
+
+import {
+    signOutUser
+} from "../core/auth.js";
+
 
 export function initSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    const menuToggle = document.getElementById('menu-toggle');
-    const logoutBtn = document.getElementById('sidebar-logout');
 
-    // Ouvrir / fermer
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById(
+            "sidebar-overlay"
+        );
+
+    const menu =
+        document.getElementById(
+            "menu-toggle"
+        );
+
+    const logout =
+        document.getElementById(
+            "sidebar-logout"
+        );
+
+
     function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('open');
-    }
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-    }
 
-    menuToggle.addEventListener('click', openSidebar);
-    overlay.addEventListener('click', closeSidebar);
+        if (!sidebar) return;
 
-    // Mettre à jour les infos utilisateur
-    addListener((store) => {
-        const avatarImg = document.getElementById('sidebar-avatar-img');
-        const displayName = document.getElementById('sidebar-displayName');
-        const roleBadge = document.getElementById('sidebar-role');
-        const proLink = document.getElementById('sidebar-pro-link');
-        const adminLink = document.getElementById('sidebar-admin-link');
+        sidebar.classList.add("open");
 
-        if (store.isAuthenticated && store.userData) {
-            const data = store.userData;
-            avatarImg.src = data.photoURL || 'assets/default-avatar.png';
-            displayName.textContent = data.displayName || 'Utilisateur';
-            roleBadge.textContent = data.role || 'Client';
-            // Afficher les liens selon le rôle
-            if (data.role === 'professional') {
-                proLink.style.display = 'block';
-            } else {
-                proLink.style.display = 'none';
-            }
-            if (data.role === 'admin') {
-                adminLink.style.display = 'block';
-            } else {
-                adminLink.style.display = 'none';
-            }
-            logoutBtn.style.display = 'flex';
-        } else {
-            avatarImg.src = 'assets/default-avatar.png';
-            displayName.textContent = 'Invité';
-            roleBadge.textContent = 'Visiteur';
-            proLink.style.display = 'none';
-            adminLink.style.display = 'none';
-            logoutBtn.style.display = 'none';
+        if (overlay) {
+            overlay.classList.add("open");
         }
+
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) return;
+
+        sidebar.classList.remove("open");
+
+        if (overlay) {
+            overlay.classList.remove("open");
+        }
+
+    }
+
+
+    if (menu) {
+
+        menu.addEventListener(
+            "click",
+            openSidebar
+        );
+
+    }
+
+
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Escape") {
+                closeSidebar();
+            }
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(
+            ".sidebar a"
+        )
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                closeSidebar
+            );
+
+        });
+
+
+    if (logout) {
+
+        logout.addEventListener(
+            "click",
+            async () => {
+
+                const result =
+                    await signOutUser();
+
+
+                if (result.success) {
+
+                    closeSidebar();
+
+                    window.location.href =
+                        "index.html";
+
+                } else {
+
+                    alert(
+                        result.error
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    addListener(state => {
+
+        const name =
+            document.getElementById(
+                "sidebar-displayName"
+            );
+
+        const role =
+            document.getElementById(
+                "sidebar-role"
+            );
+
+        const avatar =
+            document.getElementById(
+                "sidebar-avatar-img"
+            );
+
+        const pro =
+            document.getElementById(
+                "sidebar-pro-link"
+            );
+
+        const admin =
+            document.getElementById(
+                "sidebar-admin-link"
+            );
+
+
+        if (
+            state.isAuthenticated &&
+            state.userData
+        ) {
+
+            if (name) {
+
+                name.textContent =
+                    state.userData.displayName
+                    || state.user?.email
+                    || "Utilisateur";
+
+            }
+
+
+            const userRole =
+                state.userData.role
+                || "client";
+
+
+            if (role) {
+
+                const labels = {
+
+                    client: "Client",
+
+                    professional:
+                        "Professionnel",
+
+                    admin:
+                        "Administrateur"
+
+                };
+
+                role.textContent =
+                    labels[userRole]
+                    || "Utilisateur";
+
+            }
+
+
+            if (
+                avatar &&
+                state.userData.photoURL
+            ) {
+
+                avatar.src =
+                    state.userData.photoURL;
+
+            }
+
+
+            if (pro) {
+
+                pro.classList.toggle(
+                    "hidden",
+                    userRole !==
+                    "professional" &&
+                    userRole !== "admin"
+                );
+
+            }
+
+
+            if (admin) {
+
+                admin.classList.toggle(
+                    "hidden",
+                    userRole !== "admin"
+                );
+
+            }
+
+
+            if (logout) {
+                logout.style.display =
+                    "flex";
+            }
+
+
+        } else {
+
+            if (name) {
+                name.textContent =
+                    "Invité";
+            }
+
+            if (role) {
+                role.textContent =
+                    "Visiteur";
+            }
+
+            if (avatar) {
+                avatar.src =
+                    "assets/default-avatar.png";
+            }
+
+            if (pro) {
+                pro.classList.add("hidden");
+            }
+
+            if (admin) {
+                admin.classList.add("hidden");
+            }
+
+            if (logout) {
+                logout.style.display =
+                    "none";
+            }
+
+        }
+
     });
 
-    // Déconnexion
-    logoutBtn.addEventListener('click', async () => {
-        await signOutUser();
-        closeSidebar();
-    });
-
-    // Fermer le sidebar lors du clic sur un lien
-    document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.addEventListener('click', closeSidebar);
-    });
 }
