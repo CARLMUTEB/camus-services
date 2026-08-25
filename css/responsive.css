@@ -1,24 +1,43 @@
+```css
 /* =========================================================
    CAMU SERVICES — RESPONSIVE
    ========================================================= */
 
-@media (min-width: 600px) {
+@media (max-width: 599px) {
 
-    .category-grid {
-        grid-template-columns:
-            repeat(3, 1fr);
+    .hero h1 {
+        font-size: 1.6rem;
     }
 
-
-    .annonces-grid {
-        grid-template-columns:
-            repeat(3, 1fr);
+    .hero p {
+        font-size: 0.85rem;
     }
-
 
     .quick-filters {
-        flex-wrap:
-            nowrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .quick-filters select,
+    .quick-filters input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .sidebar {
+        width: min(280px, 85vw);
+    }
+
+    .auth-page {
+        margin-top: 30px;
+    }
+}
+
+
+@media (min-width: 600px) {
+
+    .hero {
+        padding-top: 40px;
     }
 
 }
@@ -26,66 +45,17 @@
 
 @media (min-width: 1024px) {
 
-    .app-container {
-
-        max-width:
-            1200px;
-
-        margin:
-            0 auto;
+    .hero {
+        padding-top: 50px;
     }
 
-
-    .category-grid {
-
-        grid-template-columns:
-            repeat(6, 1fr);
-    }
-
-
-    .annonces-grid {
-
-        grid-template-columns:
-            repeat(4, 1fr);
-    }
-
-
-    .hero h1 {
-
-        font-size:
-            2.8rem;
-    }
-
-
-    .bottom-nav {
-
-        display:
-            none;
-    }
-
-
-    .top-bar {
-
-        padding:
-            16px 32px;
+    .search-section,
+    .communique-bloc,
+    .categories-section,
+    .annonces-section {
+        padding-left: 32px;
+        padding-right: 32px;
     }
 
 }
-
-
-@media (max-width: 599px) {
-
-    .auth-page {
-
-        margin:
-            30px 15px;
-    }
-
-
-    .profile-page {
-
-        margin:
-            15px auto;
-    }
-
-}
+```
