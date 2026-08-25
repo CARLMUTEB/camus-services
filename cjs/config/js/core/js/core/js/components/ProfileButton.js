@@ -1,63 +1,105 @@
-export function initBottomNav() {
+import {
+    addListener
+} from "../core/store.js";
 
-    const links =
-        document.querySelectorAll(
-            ".bottom-nav a"
+import {
+    router
+} from "../core/router.js";
+
+
+export function initProfileButton() {
+
+    const button =
+        document.getElementById(
+            "profile-btn"
         );
 
 
-    if (!links.length) {
+    if (!button) {
         return;
     }
 
 
-    const current =
-        window.location.pathname
-            .split("/")
-            .pop()
-            || "index.html";
+    addListener(state => {
+
+        if (
+            state.isAuthenticated &&
+            state.userData
+        ) {
+
+            const name =
+                state.userData.displayName
+                || "Profil";
 
 
-    links.forEach(link => {
-
-        const href =
-            link.getAttribute("href");
-
-
-        if (href === current) {
-
-            link.classList.add(
-                "active"
-            );
+            button.innerHTML =
+                `<i class="fas fa-user"></i>
+                 <span>${escapeHtml(name)}</span>`;
 
         } else {
 
-            link.classList.remove(
-                "active"
-            );
+            button.innerHTML =
+                `<i class="fas fa-user"></i>
+                 <span>Profil</span>`;
 
         }
 
+    });
 
-        link.addEventListener(
-            "click",
-            () => {
 
-                links.forEach(item => {
+    button.addEventListener(
+        "click",
+        () => {
 
-                    item.classList.remove(
-                        "active"
-                    );
+            const state =
+                getCurrentState();
 
-                });
 
-                link.classList.add(
-                    "active"
+            if (state.isAuthenticated) {
+
+                router.navigate(
+                    "profil.html"
+                );
+
+            } else {
+
+                router.navigate(
+                    "connexion.html"
                 );
 
             }
+
+        }
+    );
+
+}
+
+
+function getCurrentState() {
+
+    const user =
+        localStorage.getItem(
+            "camu_authenticated"
         );
 
-    });
+
+    return {
+
+        isAuthenticated:
+            user === "true"
+
+    };
+
+}
+
+
+function escapeHtml(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
