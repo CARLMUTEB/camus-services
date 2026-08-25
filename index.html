@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -13,10 +15,20 @@
     content="CAMU SERVICES — Trouvez, achetez et réservez des services locaux."
   >
 
+  <meta
+    name="theme-color"
+    content="#d32f2f"
+  >
+
   <title>CAMU SERVICES</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
 </head>
+
 
 <body>
 
@@ -26,19 +38,43 @@
 
   <header class="topbar">
 
-    <a href="index.html" class="brand">
-      CAMU <span>SERVICES</span>
+    <a
+      href="index.html"
+      class="brand"
+    >
+      CAMU
+      <span>SERVICES</span>
     </a>
 
-    <a href="profil.html" class="account-link">
-      👤
-    </a>
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        id="themeButton"
+        class="icon-button"
+        aria-label="Changer le thème"
+        title="Changer le thème"
+      >
+        🌙
+      </button>
+
+
+      <a
+        href="profil.html"
+        class="account-link"
+        aria-label="Mon profil"
+      >
+        👤
+      </a>
+
+    </div>
 
   </header>
 
 
   <!-- =====================================================
-       CONTENU PRINCIPAL
+       CONTENU
        ===================================================== -->
 
   <main class="container">
@@ -54,38 +90,47 @@
         📍 Services locaux
       </div>
 
+
       <h1>
         Trouvez les meilleurs
         services près de chez vous.
       </h1>
 
+
       <p>
-        CAMU SERVICES connecte directement les clients
-        aux entreprises, commerçants, artisans et
+        CAMU SERVICES connecte directement
+        les clients aux entreprises,
+        commerçants, artisans et
         professionnels locaux.
       </p>
 
 
       <!-- RECHERCHE -->
 
-      <div class="search-box">
+      <form
+        class="search-box"
+        id="searchForm"
+      >
 
         <input
-          type="text"
+          type="search"
           id="searchInput"
           placeholder="Rechercher un service..."
           autocomplete="off"
+          aria-label="Rechercher un service"
         >
 
+
         <button
-          type="button"
+          type="submit"
           id="searchButton"
           class="search-button"
+          aria-label="Rechercher"
         >
           🔍
         </button>
 
-      </div>
+      </form>
 
     </section>
 
@@ -98,7 +143,10 @@
 
       <div class="section-header">
 
-        <h2>Catégories</h2>
+        <h2>
+          Catégories
+        </h2>
+
 
         <a href="explorer.html">
           Voir tout →
@@ -110,55 +158,70 @@
       <div class="categories">
 
         <button
+          type="button"
           class="category-btn active"
           data-category="Toutes"
         >
           Toutes
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Construction"
         >
           🏗️ Construction
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Transport"
         >
           🚗 Transport
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Beauté"
         >
           ✂️ Beauté
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Restaurant"
         >
           🍴 Restaurant
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Informatique"
         >
           💻 Informatique
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Commerce"
         >
           🏪 Commerce
         </button>
 
+
         <button
+          type="button"
           class="category-btn"
           data-category="Services"
         >
@@ -178,7 +241,10 @@
 
       <div class="section-header">
 
-        <h2>Services disponibles</h2>
+        <h2>
+          Services disponibles
+        </h2>
+
 
         <a href="explorer.html">
           Voir tout →
@@ -193,8 +259,11 @@
       >
 
         <div class="loading">
+
           <span class="spinner"></span>
+
           Chargement des services...
+
         </div>
 
       </div>
@@ -210,7 +279,10 @@
 
       <div class="section-header">
 
-        <h2>📢 Communiqués</h2>
+        <h2>
+          📢 Communiqués
+        </h2>
+
 
         <a href="communiques.html">
           Voir tout →
@@ -225,8 +297,11 @@
       >
 
         <div class="loading">
+
           <span class="spinner"></span>
+
           Chargement des communiqués...
+
         </div>
 
       </div>
@@ -235,14 +310,17 @@
 
 
     <!-- ===================================================
-         ENTREPRISES
+         ENTREPRISES MISES EN AVANT
          =================================================== -->
 
     <section class="section">
 
       <div class="section-header">
 
-        <h2>Entreprises mises en avant</h2>
+        <h2>
+          Entreprises mises en avant
+        </h2>
+
 
         <a href="explorer.html">
           Voir tout →
@@ -257,8 +335,11 @@
       >
 
         <div class="loading">
+
           <span class="spinner"></span>
+
           Chargement des services...
+
         </div>
 
       </div>
@@ -272,30 +353,65 @@
 
     <section class="about-card">
 
-      <h2>
-        CAMU SERVICES
-      </h2>
+      <div class="about-content">
 
-      <p>
-        La plateforme qui connecte les entreprises
-        locales à leurs clients.
-      </p>
+        <span class="about-label">
+          CAMU SERVICES
+        </span>
+
+
+        <h2>
+          Trouver. Acheter. Réserver.
+        </h2>
+
+
+        <p>
+          Une plateforme conçue pour
+          connecter les entreprises locales
+          à leurs clients.
+        </p>
+
+      </div>
+
 
       <div class="about-actions">
 
-        <a href="index.html">
-          Accueil
+        <a
+          href="explorer.html"
+          class="about-link"
+        >
+          Explorer
         </a>
 
-        <a href="conditions.html">
+
+        <a
+          href="publier.html"
+          class="about-link"
+        >
+          Publier un service
+        </a>
+
+
+        <a
+          href="conditions.html"
+          class="about-link"
+        >
           Conditions
         </a>
 
-        <a href="parametres.html">
+
+        <a
+          href="parametres.html"
+          class="about-link"
+        >
           Paramètres
         </a>
 
-        <a href="profil.html">
+
+        <a
+          href="profil.html"
+          class="about-link"
+        >
           Mon profil
         </a>
 
@@ -313,13 +429,16 @@
   <footer class="footer">
 
     <div class="footer-brand">
-      CAMU SERVICES
+      CAMU
+      <span>SERVICES</span>
     </div>
 
+
     <p>
-      La plateforme qui connecte les entreprises
-      locales à leurs clients.
+      La plateforme qui connecte les
+      entreprises locales à leurs clients.
     </p>
+
 
     <div class="footer-links">
 
@@ -327,22 +446,42 @@
         Accueil
       </a>
 
-      <a href="conditions.html">
-        Conditions
+
+      <a href="explorer.html">
+        Explorer
       </a>
+
+
+      <a href="publier.html">
+        Publier
+      </a>
+
+
+      <a href="favoris.html">
+        Favoris
+      </a>
+
 
       <a href="profil.html">
         Profil
       </a>
 
+
       <a href="parametres.html">
         Paramètres
       </a>
 
+
+      <a href="conditions.html">
+        Conditions
+      </a>
+
     </div>
 
+
     <p class="copyright">
-      © 2026 CAMU SERVICES. Tous droits réservés.
+      © 2026 CAMU SERVICES.
+      Tous droits réservés.
     </p>
 
   </footer>
@@ -358,94 +497,158 @@
       href="index.html"
       class="bottom-nav-item active"
     >
+
       <span>⌂</span>
-      <small>Accueil</small>
+
+      <small>
+        Accueil
+      </small>
+
     </a>
+
 
     <a
       href="publier.html"
       class="bottom-nav-item"
     >
+
       <span>＋</span>
-      <small>Publier</small>
+
+      <small>
+        Publier
+      </small>
+
     </a>
+
 
     <a
       href="explorer.html"
       class="bottom-nav-item"
     >
+
       <span>⌕</span>
-      <small>Explorer</small>
+
+      <small>
+        Explorer
+      </small>
+
     </a>
+
 
     <a
       href="favoris.html"
       class="bottom-nav-item"
     >
+
       <span>♡</span>
-      <small>Favoris</small>
+
+      <small>
+        Favoris
+      </small>
+
     </a>
+
 
     <a
       href="profil.html"
       class="bottom-nav-item"
     >
+
       <span>♙</span>
-      <small>Profil</small>
+
+      <small>
+        Profil
+      </small>
+
     </a>
 
   </nav>
 
 
   <!-- =====================================================
-       WHATSAPP
+       BOUTON WHATSAPP
        ===================================================== -->
 
   <a
     href="https://wa.me/"
     target="_blank"
-    rel="noopener"
+    rel="noopener noreferrer"
     class="whatsapp-button"
     aria-label="WhatsApp"
+    title="WhatsApp"
   >
     ☎
   </a>
 
 
   <!-- =====================================================
-       JAVASCRIPT
-       IMPORTANT : app.js V2
+       JAVASCRIPT INDEX
        ===================================================== -->
 
   <script type="module">
 
     import {
+
       listApprovedServices,
+
       listCommuniques,
+
       escapeHTML,
+
       whatsappUrl,
-      serviceWhatsAppMessage
+
+      serviceWhatsAppMessage,
+
+      applyTheme,
+
+      toggleTheme
+
     } from "./js/app.js";
+
+
+    /* =====================================================
+       ÉLÉMENTS
+       ===================================================== */
+
+    const servicesContainer =
+      document.getElementById(
+        "services"
+      );
+
+
+    const featuredContainer =
+      document.getElementById(
+        "featuredServices"
+      );
+
+
+    const communiquesContainer =
+      document.getElementById(
+        "communiques"
+      );
+
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+
+    const searchForm =
+      document.getElementById(
+        "searchForm"
+      );
+
+
+    const themeButton =
+      document.getElementById(
+        "themeButton"
+      );
 
 
     /* =====================================================
        VARIABLES
        ===================================================== */
-
-    const servicesContainer =
-      document.getElementById("services");
-
-    const featuredContainer =
-      document.getElementById("featuredServices");
-
-    const communiquesContainer =
-      document.getElementById("communiques");
-
-    const searchInput =
-      document.getElementById("searchInput");
-
-    const searchButton =
-      document.getElementById("searchButton");
 
     let allServices = [];
 
@@ -453,13 +656,63 @@
 
 
     /* =====================================================
+       THÈME
+       ===================================================== */
+
+    function updateThemeButton() {
+
+      const dark =
+        document.documentElement
+          .classList.contains("dark");
+
+
+      themeButton.textContent =
+        dark
+          ? "☀️"
+          : "🌙";
+
+
+      themeButton.setAttribute(
+        "aria-label",
+        dark
+          ? "Activer le mode clair"
+          : "Activer le mode sombre"
+      );
+
+    }
+
+
+    themeButton.addEventListener(
+      "click",
+      () => {
+
+        toggleTheme();
+
+        updateThemeButton();
+
+      }
+    );
+
+
+    applyTheme();
+
+    updateThemeButton();
+
+
+    /* =====================================================
        CARTE SERVICE
        ===================================================== */
 
-    function serviceCard(service) {
+    function serviceCard(
+      service
+    ) {
 
       const title =
-        escapeHTML(service.titre || "Service");
+        escapeHTML(
+          service.titre ||
+          "Service"
+        );
+
 
       const description =
         escapeHTML(
@@ -467,11 +720,13 @@
           "Aucune description disponible."
         );
 
+
       const category =
         escapeHTML(
           service.categorie ||
           "Services"
         );
+
 
       const location =
         escapeHTML(
@@ -480,31 +735,104 @@
         );
 
 
-      let whatsapp = "";
+      const price =
+        escapeHTML(
+          service.prix ||
+          ""
+        );
+
+
+      /* ---------------------------------------------------
+         IMAGE
+         --------------------------------------------------- */
+
+      let image = "";
+
 
       if (
-        service.whatsapp ||
-        service.telephone
+        service.imageUrl &&
+        service.imageUrl.trim()
       ) {
+
+        image = `
+
+          <div class="service-image">
+
+            <img
+              src="${escapeHTML(
+                service.imageUrl
+              )}"
+              alt="${title}"
+              loading="lazy"
+              onerror="this.parentElement.classList.add('image-error'); this.remove();"
+            >
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* ---------------------------------------------------
+         PRIX
+         --------------------------------------------------- */
+
+      let priceHTML = "";
+
+
+      if (price) {
+
+        priceHTML = `
+
+          <div class="service-price">
+
+            ${price}
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* ---------------------------------------------------
+         WHATSAPP
+         --------------------------------------------------- */
+
+      let whatsapp = "";
+
+
+      const phone =
+        service.whatsapp ||
+        service.telephone ||
+        "";
+
+
+      if (phone) {
 
         const url =
           whatsappUrl(
-            service.whatsapp ||
-            service.telephone,
-            serviceWhatsAppMessage(service)
+            phone,
+            serviceWhatsAppMessage(
+              service
+            )
           );
+
 
         if (url) {
 
           whatsapp = `
+
             <a
               href="${url}"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               class="btn green"
             >
               WhatsApp
             </a>
+
           `;
 
         }
@@ -512,55 +840,61 @@
       }
 
 
-      let image = "";
-
-      if (service.imageUrl) {
-
-        image = `
-          <div class="service-image">
-            <img
-              src="${escapeHTML(service.imageUrl)}"
-              alt="${title}"
-              loading="lazy"
-            >
-          </div>
-        `;
-
-      }
-
+      /* ---------------------------------------------------
+         CARTE
+         --------------------------------------------------- */
 
       return `
 
-        <article class="service-card">
+        <article
+          class="service-card"
+          data-service-id="${escapeHTML(
+            service.id
+          )}"
+        >
 
           ${image}
 
+
           <div class="service-content">
 
-            <span class="badge">
-              ${category}
-            </span>
+            <div class="service-top">
+
+              <span class="badge">
+                ${category}
+              </span>
+
+              ${priceHTML}
+
+            </div>
+
 
             <h3>
               ${title}
             </h3>
 
+
             <p class="service-description">
               ${description}
             </p>
+
 
             <p class="service-location">
               📍 ${location}
             </p>
 
+
             <div class="service-actions">
 
               <a
-                href="service.html?id=${encodeURIComponent(service.id)}"
+                href="service.html?id=${encodeURIComponent(
+                  service.id
+                )}"
                 class="btn secondary"
               >
                 Voir
               </a>
+
 
               ${whatsapp}
 
@@ -588,36 +922,45 @@
 
 
       const filtered =
-        allServices.filter(service => {
+        allServices.filter(
+          service => {
 
-          const categoryOK =
-            selectedCategory === "Toutes" ||
-            service.categorie === selectedCategory;
-
-
-          const text = [
-
-            service.titre || "",
-
-            service.description || "",
-
-            service.localisation || "",
-
-            service.categorie || ""
-
-          ]
-            .join(" ")
-            .toLowerCase();
+            const categoryOK =
+              selectedCategory ===
+                "Toutes" ||
+              service.categorie ===
+                selectedCategory;
 
 
-          const searchOK =
-            !search ||
-            text.includes(search);
+            const text = [
+
+              service.titre || "",
+
+              service.description || "",
+
+              service.localisation || "",
+
+              service.categorie || "",
+
+              service.prix || ""
+
+            ]
+              .join(" ")
+              .toLowerCase();
 
 
-          return categoryOK && searchOK;
+            const searchOK =
+              !search ||
+              text.includes(search);
 
-        });
+
+            return (
+              categoryOK &&
+              searchOK
+            );
+
+          }
+        );
 
 
       if (!filtered.length) {
@@ -630,12 +973,15 @@
               🔍
             </div>
 
+
             <h3>
               Aucun service trouvé
             </h3>
 
+
             <p>
-              Essayez une autre recherche ou catégorie.
+              Essayez une autre recherche
+              ou une autre catégorie.
             </p>
 
           </div>
@@ -662,23 +1008,50 @@
 
     async function loadServices() {
 
+      servicesContainer.innerHTML = `
+
+        <div class="loading">
+
+          <span class="spinner"></span>
+
+          Chargement des services...
+
+        </div>
+
+      `;
+
+
       try {
 
         const result =
-          await listApprovedServices(50);
+          await listApprovedServices(
+            50
+          );
 
 
-        if (!result.success) {
+        if (
+          !result.success
+        ) {
 
           servicesContainer.innerHTML = `
 
             <div class="error-state">
 
-              Impossible de charger les services.
+              <strong>
+                Impossible de charger les services.
+              </strong>
+
+              <p>
+                ${escapeHTML(
+                  result.error ||
+                  "Erreur Firebase."
+                )}
+              </p>
 
             </div>
 
           `;
+
 
           featuredContainer.innerHTML = "";
 
@@ -694,17 +1067,16 @@
         renderServices();
 
 
-        /*
-         * Entreprises mises en avant
-         * On prend simplement les premiers services
-         * approuvés pour la V2.
-         */
-
         const featured =
-          allServices.slice(0, 3);
+          allServices.slice(
+            0,
+            3
+          );
 
 
-        if (featured.length) {
+        if (
+          featured.length
+        ) {
 
           featuredContainer.innerHTML =
             featured
@@ -717,14 +1089,24 @@
 
             <div class="empty-state">
 
-              Aucun service disponible.
+              <div class="empty-icon">
+                🏢
+              </div>
+
+              <h3>
+                Aucune entreprise disponible
+              </h3>
+
+              <p>
+                Les services approuvés
+                apparaîtront ici.
+              </p>
 
             </div>
 
           `;
 
         }
-
 
       } catch (error) {
 
@@ -739,7 +1121,7 @@
           <div class="error-state">
 
             Une erreur est survenue
-            pendant le chargement.
+            pendant le chargement des services.
 
           </div>
 
@@ -756,10 +1138,25 @@
 
     async function loadCommuniques() {
 
+      communiquesContainer.innerHTML = `
+
+        <div class="loading">
+
+          <span class="spinner"></span>
+
+          Chargement des communiqués...
+
+        </div>
+
+      `;
+
+
       try {
 
         const result =
-          await listCommuniques(6);
+          await listCommuniques(
+            6
+          );
 
 
         if (
@@ -776,12 +1173,15 @@
                 📢
               </div>
 
+
               <h3>
                 Aucun communiqué
               </h3>
 
+
               <p>
-                Aucun communiqué publié pour le moment.
+                Aucun communiqué publié
+                pour le moment.
               </p>
 
             </div>
@@ -796,36 +1196,41 @@
         communiquesContainer.innerHTML =
           result.data
             .slice(0, 3)
-            .map(communique => `
+            .map(
+              communique => `
 
-              <article class="communique-card">
+                <article
+                  class="communique-card"
+                >
 
-                <span class="badge">
-                  ${escapeHTML(
-                    communique.type ||
-                    "Information"
-                  )}
-                </span>
+                  <span class="badge">
+                    ${escapeHTML(
+                      communique.type ||
+                      "Information"
+                    )}
+                  </span>
 
-                <h3>
-                  ${escapeHTML(
-                    communique.titre ||
-                    "Communiqué"
-                  )}
-                </h3>
 
-                <p>
-                  ${escapeHTML(
-                    communique.description ||
-                    ""
-                  )}
-                </p>
+                  <h3>
+                    ${escapeHTML(
+                      communique.titre ||
+                      "Communiqué"
+                    )}
+                  </h3>
 
-              </article>
 
-            `)
+                  <p>
+                    ${escapeHTML(
+                      communique.description ||
+                      ""
+                    )}
+                  </p>
+
+                </article>
+
+              `
+            )
             .join("");
-
 
       } catch (error) {
 
@@ -855,37 +1260,48 @@
        ===================================================== */
 
     document
-      .querySelectorAll(".category-btn")
-      .forEach(button => {
+      .querySelectorAll(
+        ".category-btn"
+      )
+      .forEach(
+        button => {
 
-        button.addEventListener(
-          "click",
-          () => {
+          button.addEventListener(
+            "click",
+            () => {
 
-            document
-              .querySelectorAll(".category-btn")
-              .forEach(btn =>
-                btn.classList.remove("active")
+              document
+                .querySelectorAll(
+                  ".category-btn"
+                )
+                .forEach(
+                  btn =>
+                    btn.classList.remove(
+                      "active"
+                    )
+                );
+
+
+              button.classList.add(
+                "active"
               );
 
 
-            button.classList.add("active");
+              selectedCategory =
+                button.dataset.category;
 
 
-            selectedCategory =
-              button.dataset.category;
+              renderServices();
 
+            }
+          );
 
-            renderServices();
-
-          }
-        );
-
-      });
+        }
+      );
 
 
     /* =====================================================
-       RECHERCHE
+       RECHERCHE EN DIRECT
        ===================================================== */
 
     searchInput.addEventListener(
@@ -894,21 +1310,36 @@
     );
 
 
-    searchButton.addEventListener(
-      "click",
-      () => {
+    /* =====================================================
+       RECHERCHE
+       ===================================================== */
+
+    searchForm.addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
 
         const value =
-          searchInput.value.trim();
+          searchInput.value
+            .trim();
 
 
-        if (value) {
+        if (!value) {
 
-          window.location.href =
-            "explorer.html?q=" +
-            encodeURIComponent(value);
+          searchInput.focus();
+
+          return;
 
         }
+
+
+        window.location.href =
+          "explorer.html?q=" +
+          encodeURIComponent(
+            value
+          );
 
       }
     );
@@ -925,4 +1356,5 @@
   </script>
 
 </body>
+
 </html>
