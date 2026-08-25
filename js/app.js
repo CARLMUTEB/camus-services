@@ -3,143 +3,56 @@
 // =========================================================
 
 import { initAuth } from "./core/auth.js";
-import { router } from "./core/router.js";
+import { initSidebar } from "./components/Sidebar.js";
 
-import { initSidebar }
-from "./components/Sidebar.js";
+// =========================================================
+// INITIALISATION
+// =========================================================
 
-import { initBottomNav }
-from "./components/BottomNav.js";
+document.addEventListener("DOMContentLoaded", () => {
 
-import { initProfileButton }
-from "./components/ProfileButton.js";
+    console.log("🚀 CAMU SERVICES — démarrage...");
 
-import { loadCategories }
-from "./services/categories.js";
+    // -----------------------------------------------------
+    // AUTHENTIFICATION
+    // -----------------------------------------------------
 
-import { loadRecentListings }
-from "./services/annonces.js";
+    try {
 
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
-
-        console.log(
-            "🚀 CAMU SERVICES démarrage..."
-        );
-
-
-        // ROUTER
-        router.init();
-
-
-        // AUTHENTIFICATION
         initAuth();
 
+        console.log("✅ Authentification initialisée");
 
-        // SIDEBAR
+    } catch (error) {
+
+        console.error(
+            "❌ Erreur Authentification :",
+            error
+        );
+    }
+
+
+    // -----------------------------------------------------
+    // SIDEBAR
+    // -----------------------------------------------------
+
+    try {
+
         initSidebar();
 
+        console.log("✅ Sidebar initialisée");
 
-        // NAVIGATION MOBILE
-        initBottomNav();
+    } catch (error) {
 
-
-        // BOUTON PROFIL
-        initProfileButton();
-
-
-        // CATÉGORIES
-        loadCategories();
-
-
-        // ANNONCES
-        await loadRecentListings();
-
-
-        // RECHERCHE
-        initSearch();
-
-
-        console.log(
-            "✅ CAMU SERVICES opérationnel"
-        );
-    }
-);
-
-
-// =========================================================
-// RECHERCHE
-// =========================================================
-
-function initSearch() {
-
-    const button =
-        document.getElementById(
-            "search-btn"
-        );
-
-    const input =
-        document.getElementById(
-            "search-input"
-        );
-
-
-    if (!button || !input) return;
-
-
-    function performSearch() {
-
-        const value =
-            input.value.trim();
-
-
-        if (!value) {
-
-            alert(
-                "Veuillez saisir ce que vous recherchez."
-            );
-
-            input.focus();
-
-            return;
-        }
-
-
-        console.log(
-            "Recherche :",
-            value
-        );
-
-
-        window.dispatchEvent(
-            new CustomEvent(
-                "camu-search",
-                {
-                    detail: value
-                }
-            )
+        console.error(
+            "❌ Erreur Sidebar :",
+            error
         );
     }
 
 
-    button.addEventListener(
-        "click",
-        performSearch
+    console.log(
+        "✅ CAMU SERVICES — application chargée"
     );
 
-
-    input.addEventListener(
-        "keydown",
-        event => {
-
-            if (event.key === "Enter") {
-
-                event.preventDefault();
-
-                performSearch();
-            }
-        }
-    );
-}
+});
