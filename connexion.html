@@ -1,699 +1,110 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>CAMU SERVICES — Connexion</title>
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  >
-
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    .card-box {
-      width: 100%;
-      max-width: 450px;
-      margin: 30px auto;
-      background: var(--card, #fff);
-      border: 1px solid var(--border, #ddd);
-      border-radius: 14px;
-      padding: 30px 20px;
-      box-shadow: var(--shadow, 0 5px 20px rgba(0,0,0,.08));
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text, #222);
-    }
-
-    .form-group input {
-      width: 100%;
-      height: 48px;
-      padding: 0 14px 0 42px;
-      border: 1px solid var(--border, #ddd);
-      border-radius: 10px;
-      background: var(--card, #fff);
-      color: var(--text, #222);
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #d32f2f;
-      box-shadow: 0 0 0 3px rgba(211,47,47,.10);
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-wrapper i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-    }
-
-    .btn-submit,
-    .btn-google {
-      width: 100%;
-      min-height: 48px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      box-sizing: border-box;
-    }
-
-    .btn-submit {
-      border: none;
-      background: #d32f2f;
-      color: white;
-    }
-
-    .btn-submit:hover {
-      background: #b71c1c;
-    }
-
-    .btn-submit:disabled,
-    .btn-google:disabled {
-      opacity: .65;
-      cursor: not-allowed;
-    }
-
-    .btn-google {
-      margin-top: 10px;
-      border: 1px solid #ddd;
-      background: white;
-      color: #333;
-    }
-
-    .btn-google i {
-      color: #4285f4;
-    }
-
-    .separator {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0;
-      color: #888;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .separator::before,
-    .separator::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #ddd;
-    }
-
-    .message-box {
-      display: none;
-      margin-top: 15px;
-      padding: 13px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .message-box.success {
-      display: block;
-      background: #e8f5e9;
-      color: #2e7d32;
-      border: 1px solid #c8e6c9;
-    }
-
-    .message-box.error {
-      display: block;
-      background: #ffebee;
-      color: #c62828;
-      border: 1px solid #ffcdd2;
-    }
-
-    .loading-login {
-      display: none;
-      text-align: center;
-      margin-top: 15px;
-      color: #777;
-      font-size: 13px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — CAMU SERVICES</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="module" src="js/app.js"></script>
+    <style>
+        .auth-page {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        .auth-page h1 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        .auth-page input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            font-size: 1rem;
+        }
+        .auth-page button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .auth-page button:hover {
+            background: var(--primary-dark);
+        }
+        .auth-page .link {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .auth-page .link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
-
 <body>
-
-<header class="top-bar">
-
-  <button
-    class="back-btn"
-    type="button"
-    onclick="history.back()"
-    aria-label="Retour"
-  >
-    <i class="fa-solid fa-arrow-left"></i>
-  </button>
-
-  <div class="logo-text">
-    CAMU <span>SERVICES</span>
-  </div>
-
-  <div class="spacer"></div>
-
-</header>
-
-
-<main class="container">
-
-  <div class="card-box">
-
-    <div style="text-align:center; margin-bottom:25px;">
-
-      <div style="
-        width:70px;
-        height:70px;
-        margin:0 auto 14px;
-        border-radius:50%;
-        background:#ffebee;
-        color:#d32f2f;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:28px;
-      ">
-        <i class="fa-solid fa-user"></i>
-      </div>
-
-      <h2 style="
-        margin:0 0 7px;
-        font-size:21px;
-        color:var(--text,#222);
-      ">
-        Bon retour !
-      </h2>
-
-      <p style="
-        margin:0;
-        font-size:13px;
-        color:var(--muted,#777);
-      ">
-        Connectez-vous à votre compte CAMU SERVICES
-      </p>
-
-    </div>
-
-
-    <form id="connexionForm">
-
-      <div class="form-group">
-
-        <label for="emailConnexion">
-          Adresse Email
-        </label>
-
-        <div class="input-wrapper">
-
-          <i class="fa-solid fa-envelope"></i>
-
-          <input
-            type="email"
-            id="emailConnexion"
-            placeholder="exemple@email.com"
-            autocomplete="email"
-            required
-          >
-
+    <div class="auth-page">
+        <h1>🔐 Connexion</h1>
+        <div id="login-error" class="error"></div>
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Mot de passe" required>
+        <button id="login-btn">Se connecter</button>
+        <div class="link">
+            <a href="/inscription" data-link>Pas encore de compte ? Inscrivez-vous</a><br>
+            <a href="#" id="forgot-password">Mot de passe oublié ?</a>
         </div>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="motDePasseConnexion">
-          Mot de passe
-        </label>
-
-        <div class="input-wrapper">
-
-          <i class="fa-solid fa-lock"></i>
-
-          <input
-            type="password"
-            id="motDePasseConnexion"
-            placeholder="Votre mot de passe"
-            autocomplete="current-password"
-            required
-          >
-
-        </div>
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn-submit"
-        id="btnConnexion"
-      >
-        <i class="fa-solid fa-right-to-bracket"></i>
-        Se connecter
-      </button>
-
-
-      <div class="separator">
-        OU
-      </div>
-
-
-      <button
-        type="button"
-        class="btn-google"
-        id="btnGoogle"
-      >
-        <i class="fa-brands fa-google"></i>
-        Continuer avec Google
-      </button>
-
-    </form>
-
-
-    <div
-      id="messageConnexion"
-      class="message-box"
-    ></div>
-
-
-    <div
-      id="loadingLogin"
-      class="loading-login"
-    >
-      <i class="fa-solid fa-spinner fa-spin"></i>
-      Vérification de votre connexion...
     </div>
 
-
-    <div style="
-      text-align:center;
-      margin-top:23px;
-      padding-top:18px;
-      border-top:1px solid var(--border,#ddd);
-      font-size:13px;
-      color:var(--muted,#777);
-    ">
-
-      Vous n'avez pas encore de compte ?
-
-      <a
-        href="inscription.html"
-        style="
-          color:#d32f2f;
-          font-weight:800;
-          text-decoration:none;
-          margin-left:4px;
-        "
-      >
-        Créer un compte
-      </a>
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<nav class="bottom-nav" aria-label="Navigation mobile">
-
-  <a href="index.html">
-    <i class="fa-solid fa-house"></i>
-    <span>Accueil</span>
-  </a>
-
-  <a href="publier.html">
-    <i class="fa-solid fa-circle-plus"></i>
-    <span>Publier</span>
-  </a>
-
-  <a href="chat.html">
-    <i class="fa-solid fa-comments"></i>
-    <span>Chat</span>
-  </a>
-
-  <a href="explorer.html">
-    <i class="fa-solid fa-compass"></i>
-    <span>Explorer</span>
-  </a>
-
-</nav>
-
-
-<script type="module">
-
-  import {
-    connexionUtilisateur,
-    connexionGoogle,
-    attendreUtilisateurConnecte
-  } from "./app.js";
-
-
-  const form = document.getElementById("connexionForm");
-  const emailInput = document.getElementById("emailConnexion");
-  const passwordInput = document.getElementById("motDePasseConnexion");
-
-  const button = document.getElementById("btnConnexion");
-  const googleButton = document.getElementById("btnGoogle");
-
-  const message = document.getElementById("messageConnexion");
-  const loading = document.getElementById("loadingLogin");
-
-
-  function afficherMessage(texte, type) {
-
-    message.textContent = texte;
-
-    message.className = "message-box " + type;
-
-  }
-
-
-  function cacherMessage() {
-
-    message.textContent = "";
-    message.className = "message-box";
-
-  }
-
-
-  function activerBoutons() {
-
-    button.disabled = false;
-    googleButton.disabled = false;
-
-    button.innerHTML =
-      '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
-
-    googleButton.innerHTML =
-      '<i class="fa-brands fa-google"></i> Continuer avec Google';
-
-  }
-
-
-  function desactiverBoutons() {
-
-    button.disabled = true;
-    googleButton.disabled = true;
-
-  }
-
-
-  /* =====================================================
-     CONNEXION EMAIL / MOT DE PASSE
-     ===================================================== */
-
-  form.addEventListener("submit", async function(event) {
-
-    event.preventDefault();
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    if (!email || !password) {
-
-      afficherMessage(
-        "Veuillez remplir tous les champs.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    cacherMessage();
-    desactiverBoutons();
-
-    button.innerHTML =
-      '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-    loading.style.display = "block";
-
-
-    try {
-
-      console.log("Tentative de connexion :", email);
-
-
-      const resultat =
-        await connexionUtilisateur(email, password);
-
-
-      console.log("Résultat Firebase :", resultat);
-
-
-      if (!resultat.success) {
-
-        let texte = "Impossible de se connecter.";
-
-        const erreur = resultat.error || "";
-
-
-        if (
-          erreur.includes("invalid-credential") ||
-          erreur.includes("wrong-password") ||
-          erreur.includes("user-not-found")
-        ) {
-
-          texte =
-            "Email ou mot de passe incorrect.";
-
-        } else if (
-          erreur.includes("invalid-email")
-        ) {
-
-          texte =
-            "Adresse email invalide.";
-
-        } else if (
-          erreur.includes("too-many-requests")
-        ) {
-
-          texte =
-            "Trop de tentatives. Réessayez plus tard.";
-
-        } else if (
-          erreur.includes("network-request-failed")
-        ) {
-
-          texte =
-            "Problème de connexion Internet.";
-
-        }
-
-
-        afficherMessage(texte, "error");
-
-        loading.style.display = "none";
-
-        activerBoutons();
-
-        return;
-
-      }
-
-
-      afficherMessage(
-        "Connexion réussie. Vérification du compte...",
-        "success"
-      );
-
-
-      /*
-       * TRÈS IMPORTANT :
-       * On attend que Firebase confirme réellement
-       * que auth.currentUser existe.
-       */
-
-      const utilisateur =
-        await attendreUtilisateurConnecte(10000);
-
-
-      if (!utilisateur) {
-
-        loading.style.display = "none";
-
-        afficherMessage(
-          "Firebase n'a pas confirmé la connexion. Réessayez.",
-          "error"
-        );
-
-        activerBoutons();
-
-        return;
-
-      }
-
-
-      console.log(
-        "UTILISATEUR CONNECTÉ :",
-        utilisateur.uid,
-        utilisateur.email
-      );
-
-
-      afficherMessage(
-        "Connexion confirmée. Ouverture de votre compte...",
-        "success"
-      );
-
-
-      /*
-       * Petite attente pour laisser Firebase
-       * enregistrer la session localement.
-       */
-
-      setTimeout(function() {
-
-        window.location.replace("profil.html");
-
-      }, 500);
-
-
-    } catch (error) {
-
-      console.error(
-        "Erreur complète connexion :",
-        error
-      );
-
-      loading.style.display = "none";
-
-      afficherMessage(
-        error.message || "Une erreur est survenue.",
-        "error"
-      );
-
-      activerBoutons();
-
-    }
-
-  });
-
-
-  /* =====================================================
-     CONNEXION GOOGLE
-     ===================================================== */
-
-  googleButton.addEventListener(
-    "click",
-    async function() {
-
-      cacherMessage();
-      desactiverBoutons();
-
-      googleButton.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-      loading.style.display = "block";
-
-
-      try {
-
-        const resultat =
-          await connexionGoogle();
-
-
-        if (!resultat.success) {
-
-          afficherMessage(
-            resultat.error || "Erreur Google.",
-            "error"
-          );
-
-          loading.style.display = "none";
-
-          activerBoutons();
-
-          return;
-
-        }
-
-
-        const utilisateur =
-          await attendreUtilisateurConnecte(10000);
-
-
-        if (!utilisateur) {
-
-          afficherMessage(
-            "La connexion Google n'a pas été confirmée.",
-            "error"
-          );
-
-          loading.style.display = "none";
-
-          activerBoutons();
-
-          return;
-
-        }
-
-
-        afficherMessage(
-          "Connexion Google réussie.",
-          "success"
-        );
-
-
-        setTimeout(function() {
-
-          window.location.replace("profil.html");
-
-        }, 500);
-
-
-      } catch (error) {
-
-        console.error(
-          "Erreur Google :",
-          error
-        );
-
-        loading.style.display = "none";
-
-        afficherMessage(
-          error.message || "Erreur lors de la connexion Google.",
-          "error"
-        );
-
-        activerBoutons();
-
-      }
-
-    }
-  );
-
-</script>
-
+    <script type="module">
+        import { signIn, resetPassword } from './js/core/auth.js';
+        import { router } from './js/core/router.js';
+
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.textContent = '';
+
+            const result = await signIn(email, password);
+            if (result.success) {
+                router.navigate('/');
+            } else {
+                errorEl.textContent = result.error;
+            }
+        });
+
+        document.getElementById('forgot-password').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            if (!email) {
+                alert('Veuillez entrer votre email.');
+                return;
+            }
+            const result = await resetPassword(email);
+            if (result.success) {
+                alert('Un email de réinitialisation a été envoyé.');
+            } else {
+                alert('Erreur: ' + result.error);
+            }
+        });
+    </script>
 </body>
 </html>
