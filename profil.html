@@ -12,32 +12,74 @@
 
 <title>Mon profil — CAMU SERVICES</title>
 
-<link rel="stylesheet" href="css/main.css">
+<link
+    rel="stylesheet"
+    href="css/main.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/responsive.css"
+>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+>
 
 </head>
 
 <body>
 
-<main class="auth-page">
+<main class="profile-page">
 
-    <h1>Mon profil</h1>
-
-    <div id="profile-content">
-        Chargement...
-    </div>
-
-    <button
-        id="logout-profile"
-        style="margin-top:20px;"
+    <a
+        href="index.html"
+        class="back-link"
     >
-        Déconnexion
-    </button>
+        <i class="fas fa-arrow-left"></i>
+        Accueil
+    </a>
 
-    <div class="auth-links">
 
-        <a href="index.html">
-            ← Accueil
-        </a>
+    <div class="profile-card">
+
+        <img
+            id="profile-avatar"
+            src="assets/default-avatar.png"
+            alt="Profil"
+        >
+
+
+        <h1 id="profile-name">
+            Chargement...
+        </h1>
+
+
+        <p id="profile-email">
+            ...
+        </p>
+
+
+        <span
+            id="profile-role"
+            class="badge"
+        >
+            Client
+        </span>
+
+
+        <div class="profile-actions">
+
+            <button
+                id="logout-btn"
+                class="danger-btn"
+            >
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+
+        </div>
 
     </div>
 
@@ -51,21 +93,23 @@ import {
     db
 } from "./js/config/firebase.js";
 
+
 import {
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import {
     doc,
     getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-const content =
-    document.getElementById(
-        "profile-content"
-    );
+import {
+    signOutUser
+} from "./js/core/auth.js";
 
 
 onAuthStateChanged(
@@ -78,7 +122,6 @@ onAuthStateChanged(
                 "connexion.html";
 
             return;
-
         }
 
 
@@ -98,35 +141,33 @@ onAuthStateChanged(
                 : {};
 
 
-        content.innerHTML = `
+        document.getElementById(
+            "profile-name"
+        ).textContent =
+            data.displayName ||
+            user.displayName ||
+            "Utilisateur";
 
-            <p><strong>Nom :</strong>
-                ${escapeHtml(
-                    data.displayName ||
-                    user.displayName ||
-                    ""
-                )}
-            </p>
 
-            <p><strong>Email :</strong>
-                ${escapeHtml(
-                    user.email || ""
-                )}
-            </p>
+        document.getElementById(
+            "profile-email"
+        ).textContent =
+            user.email || "";
 
-            <p><strong>Téléphone :</strong>
-                ${escapeHtml(
-                    data.phoneNumber || ""
-                )}
-            </p>
 
-            <p><strong>Rôle :</strong>
-                ${escapeHtml(
-                    data.role || "client"
-                )}
-            </p>
+        document.getElementById(
+            "profile-role"
+        ).textContent =
+            data.role || "client";
 
-        `;
+
+        if (data.photoURL) {
+
+            document.getElementById(
+                "profile-avatar"
+            ).src =
+                data.photoURL;
+        }
 
     }
 );
@@ -134,31 +175,23 @@ onAuthStateChanged(
 
 document
     .getElementById(
-        "logout-profile"
+        "logout-btn"
     )
     .addEventListener(
         "click",
         async () => {
 
-            await signOut(auth);
+            const result =
+                await signOutUser();
 
-            window.location.href =
-                "index.html";
+            if (result.success) {
+
+                window.location.href =
+                    "connexion.html";
+            }
 
         }
     );
-
-
-function escapeHtml(text) {
-
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
 
 </script>
 
