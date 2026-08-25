@@ -1,27 +1,28 @@
+```javascript
 // =========================================================
 // CAMU SERVICES — SIDEBAR
+// Version compatible Firebase + Store + navigation classique
 // =========================================================
 
 import { addListener } from "../core/store.js";
 import { signOutUser } from "../core/auth.js";
-import { router } from "../core/router.js";
 
 export function initSidebar() {
 
-    const sidebar =
-        document.getElementById("sidebar");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
+    const menu = document.getElementById("menu-toggle");
+    const logout = document.getElementById("sidebar-logout");
 
-    const overlay =
-        document.getElementById("sidebar-overlay");
+    if (!sidebar) {
+        console.warn("CAMU SERVICES : sidebar introuvable.");
+        return;
+    }
 
-    const menu =
-        document.getElementById("menu-toggle");
 
-    const logout =
-        document.getElementById("sidebar-logout");
-
-    if (!sidebar) return;
-
+    // =====================================================
+    // OUVRIR SIDEBAR
+    // =====================================================
 
     function openSidebar() {
 
@@ -35,6 +36,10 @@ export function initSidebar() {
     }
 
 
+    // =====================================================
+    // FERMER SIDEBAR
+    // =====================================================
+
     function closeSidebar() {
 
         sidebar.classList.remove("open");
@@ -47,65 +52,117 @@ export function initSidebar() {
     }
 
 
+    // =====================================================
+    // BOUTON MENU
+    // =====================================================
+
     if (menu) {
-        menu.addEventListener(
-            "click",
-            openSidebar
-        );
+
+        menu.addEventListener("click", (event) => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (sidebar.classList.contains("open")) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+
+        });
     }
 
+
+    // =====================================================
+    // OVERLAY
+    // =====================================================
 
     if (overlay) {
-        overlay.addEventListener(
-            "click",
-            closeSidebar
-        );
+
+        overlay.addEventListener("click", () => {
+            closeSidebar();
+        });
     }
 
 
-    document.addEventListener(
-        "keydown",
-        event => {
+    // =====================================================
+    // TOUCHE ESC
+    // =====================================================
 
-            if (event.key === "Escape") {
-                closeSidebar();
-            }
+    document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape") {
+            closeSidebar();
         }
-    );
 
+    });
+
+
+    // =====================================================
+    // LIENS SIDEBAR
+    // =====================================================
 
     sidebar
         .querySelectorAll("[data-link]")
         .forEach(link => {
 
-            link.addEventListener(
-                "click",
-                closeSidebar
-            );
+            link.addEventListener("click", () => {
+                closeSidebar();
+            });
+
         });
 
 
+    // =====================================================
+    // DÉCONNEXION
+    // =====================================================
+
     if (logout) {
 
-        logout.addEventListener(
-            "click",
-            async () => {
+        logout.addEventListener("click", async () => {
 
-                const result =
-                    await signOutUser();
+            logout.disabled = true;
 
-                if (result.success) {
+            const oldText = logout.innerHTML;
 
-                    closeSidebar();
+            logout.innerHTML =
+                '<i class="fas fa-spinner fa-spin"></i> Déconnexion...';
 
-                    router.navigate(
-                        "/connexion"
-                    );
-                }
+
+            const result = await signOutUser();
+
+
+            if (result.success) {
+
+                closeSidebar();
+
+                // Navigation classique volontairement utilisée
+                // pour éviter les problèmes du router actuel.
+                window.location.href = "connexion.html";
+
+            } else {
+
+                console.error(
+                    "Erreur déconnexion :",
+                    result.error
+                );
+
+                alert(
+                    result.error ||
+                    "Impossible de vous déconnecter."
+                );
+
+                logout.disabled = false;
+                logout.innerHTML = oldText;
             }
-        );
+
+        });
     }
 
+
+    // =====================================================
+    // ÉTAT UTILISATEUR
+    // =====================================================
 
     addListener(state => {
 
@@ -135,11 +192,19 @@ export function initSidebar() {
             );
 
 
+        // -------------------------------------------------
+        // VISITEUR
+        // -------------------------------------------------
+
         if (!state.isAuthenticated) {
 
-            if (name) name.textContent = "Invité";
+            if (name) {
+                name.textContent = "Invité";
+            }
 
-            if (role) role.textContent = "Visiteur";
+            if (role) {
+                role.textContent = "Visiteur";
+            }
 
             if (avatar) {
                 avatar.src =
@@ -158,37 +223,69 @@ export function initSidebar() {
         }
 
 
+        // -------------------------------------------------
+        // UTILISATEUR CONNECTÉ
+        // -------------------------------------------------
+
         const data =
             state.userData || {};
+
+        const user =
+            state.user || {};
+
 
         if (name) {
 
             name.textContent =
                 data.displayName ||
-                state.user?.displayName ||
+                user.displayName ||
                 "Utilisateur";
         }
 
+
+        // -------------------------------------------------
+        // RÔLE
+        // -------------------------------------------------
 
         if (role) {
 
             const userRole =
                 data.role || "client";
 
-            role.textContent =
-                userRole === "admin"
-                    ? "Administrateur"
-                    : userRole === "professional"
-                    ? "Professionnel"
-                    : "Client";
+            if (userRole === "admin") {
+
+                role.textContent =
+                    "Administrateur";
+
+            } else if (userRole === "professional") {
+
+                role.textContent =
+                    "Professionnel";
+
+            } else {
+
+                role.textContent =
+                    "Client";
+            }
         }
 
 
-        if (avatar && data.photoURL) {
+        // -------------------------------------------------
+        // PHOTO
+        // -------------------------------------------------
 
-            avatar.src = data.photoURL;
+        if (avatar) {
+
+            avatar.src =
+                data.photoURL ||
+                user.photoURL ||
+                "assets/default-avatar.png";
         }
 
+
+        // -------------------------------------------------
+        // ESPACE PROFESSIONNEL
+        // -------------------------------------------------
 
         if (professional) {
 
@@ -200,6 +297,10 @@ export function initSidebar() {
         }
 
 
+        // -------------------------------------------------
+        // ADMINISTRATION
+        // -------------------------------------------------
+
         if (admin) {
 
             admin.style.display =
@@ -209,4 +310,10 @@ export function initSidebar() {
         }
 
     });
+
+
+    console.log(
+        "✅ CAMU SERVICES — Sidebar initialisée"
+    );
 }
+```
