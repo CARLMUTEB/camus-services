@@ -1,30 +1,63 @@
-// js/components/ProfileButton.js
-import { addListener } from "../core/auth.js";
-import { router } from "../core/router.js";
+export function initBottomNav() {
 
-export function initProfileButton() {
-    const btn = document.getElementById('profile-btn');
-    if (!btn) return;
+    const links =
+        document.querySelectorAll(
+            ".bottom-nav a"
+        );
 
-    // Mise à jour du texte en fonction de l'état
-    addListener((store) => {
-        if (store.isAuthenticated) {
-            const name = store.userData?.displayName || 'Profil';
-            btn.innerHTML = `<i class="fas fa-user"></i> ${name}`;
+
+    if (!links.length) {
+        return;
+    }
+
+
+    const current =
+        window.location.pathname
+            .split("/")
+            .pop()
+            || "index.html";
+
+
+    links.forEach(link => {
+
+        const href =
+            link.getAttribute("href");
+
+
+        if (href === current) {
+
+            link.classList.add(
+                "active"
+            );
+
         } else {
-            btn.innerHTML = `<i class="fas fa-user"></i> Profil`;
+
+            link.classList.remove(
+                "active"
+            );
+
         }
+
+
+        link.addEventListener(
+            "click",
+            () => {
+
+                links.forEach(item => {
+
+                    item.classList.remove(
+                        "active"
+                    );
+
+                });
+
+                link.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
     });
 
-    btn.addEventListener('click', () => {
-        // Vérifier l'état via le store (mais on peut aussi utiliser auth.currentUser)
-        // On va utiliser une fonction pour vérifier
-        import("../core/auth.js").then(({ auth }) => {
-            if (auth.currentUser) {
-                router.navigate('/profil');
-            } else {
-                router.navigate('/connexion');
-            }
-        });
-    });
 }
