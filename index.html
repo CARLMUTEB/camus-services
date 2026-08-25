@@ -1,134 +1,369 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>CAMU SERVICES — Accueil</title>
-    <!-- Firebase (module) -->
-    <script type="module" src="js/app.js"></script>
+
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script type="module" src="js/app.js"></script>
 </head>
+
 <body>
 
-    <!-- OVERLAY SIDEBAR -->
-    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+<div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-    <!-- ===== SIDEBAR ===== -->
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-avatar" id="sidebar-avatar">
-                <img src="assets/default-avatar.png" alt="Avatar" id="sidebar-avatar-img">
-            </div>
-            <div class="sidebar-user-info">
-                <span id="sidebar-displayName">Invité</span>
-                <span id="sidebar-role" class="badge">Visiteur</span>
-            </div>
+<!-- SIDEBAR -->
+<aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-avatar">
+            <img
+                src="assets/default-avatar.png"
+                alt="Avatar"
+                id="sidebar-avatar-img"
+            >
         </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="/" data-link><i class="fas fa-home"></i> Accueil</a></li>
-                <li><a href="/recherche" data-link><i class="fas fa-search"></i> Rechercher</a></li>
-                <li><a href="/categories" data-link><i class="fas fa-th-large"></i> Catégories</a></li>
-                <li><a href="/chat" data-link><i class="fas fa-comment-dots"></i> Chat</a></li>
-                <li><a href="/publier" data-link><i class="fas fa-plus-circle"></i> Publier</a></li>
-                <li><a href="/favoris" data-link><i class="fas fa-heart"></i> Favoris</a></li>
-                <li><a href="/reservations" data-link><i class="fas fa-calendar-check"></i> Réservations</a></li>
-                <li><a href="/notifications" data-link><i class="fas fa-bell"></i> Notifications</a></li>
-                <li><a href="/profil" data-link><i class="fas fa-user"></i> Mon profil</a></li>
-                <li><a href="/parametres" data-link><i class="fas fa-cog"></i> Paramètres</a></li>
-                <!-- Dynamique -->
-                <li id="sidebar-pro-link" style="display:none;"><a href="/professionnel/dashboard" data-link><i class="fas fa-briefcase"></i> Espace professionnel</a></li>
-                <li id="sidebar-admin-link" style="display:none;"><a href="/admin" data-link><i class="fas fa-shield-alt"></i> Administration</a></li>
-            </ul>
-        </nav>
-        <div class="sidebar-footer">
-            <button id="sidebar-logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+
+        <div class="sidebar-user-info">
+            <span id="sidebar-displayName">Invité</span>
+            <span id="sidebar-role" class="badge">Visiteur</span>
         </div>
-    </aside>
-
-    <!-- ===== APPLICATION ===== -->
-    <div class="app-container">
-
-        <!-- TOP BAR -->
-        <header class="top-bar">
-            <button id="menu-toggle" class="menu-btn"><i class="fas fa-bars"></i></button>
-            <div class="logo">CAMU SERVICES</div>
-            <button id="profile-btn" class="profile-btn">
-                <i class="fas fa-user"></i> Profil
-            </button>
-        </header>
-
-        <!-- MAIN CONTENT -->
-        <main id="main-content">
-
-            <!-- HERO : Slogan seul -->
-            <section class="hero">
-                <h1>SOYEZ LES BIENVENUS</h1>
-            </section>
-
-            <!-- BARRE DE RECHERCHE -->
-            <section class="search-section">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="search-input" placeholder="Que recherchez-vous ? (maison, voiture, service...)" />
-                    <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
-                </div>
-                <div class="quick-filters">
-                    <select id="filter-category"><option value="">Catégorie</option></select>
-                    <input type="text" id="filter-city" placeholder="VILLE" />
-                    <input type="number" id="filter-price-min" placeholder="Prix min" />
-                    <input type="number" id="filter-price-max" placeholder="Prix max" />
-                </div>
-            </section>
-
-            <!-- COMMUNIQUÉ (bloc) -->
-            <section class="communique-bloc">
-                <div class="communique-banner" id="communique-banner">
-                    <i class="fas fa-bullhorn"></i>
-                    <span id="communique-text">Chargement du communiqué...</span>
-                </div>
-            </section>
-
-            <!-- CATÉGORIES -->
-            <section class="categories-section">
-                <h2>Catégories</h2>
-                <div class="category-grid" id="category-grid">
-                    <!-- Chargé dynamiquement -->
-                </div>
-            </section>
-
-            <!-- ANNONCES RÉCENTES -->
-            <section class="annonces-section">
-                <h2>Annonces récentes</h2>
-                <div id="annonces-recentes" class="annonces-grid">
-                    <!-- Chargé dynamiquement -->
-                </div>
-            </section>
-
-        </main>
-
-        <!-- ===== PIED DE PAGE (liens) ===== -->
-        <footer class="app-footer">
-            <ul class="footer-links">
-                <li><a href="/a-propos" data-link>À-PROPOS</a></li>
-                <li><a href="/conditions" data-link>CONDITIONNALITÉ</a></li>
-                <li><a href="/confidentialite" data-link>CONFIDENTIALITÉ</a></li>
-                <li><a href="/contacts" data-link>CONTACTS</a></li>
-            </ul>
-        </footer>
-
-        <!-- ===== BOTTOM NAV (4 icônes) ===== -->
-        <nav class="bottom-nav">
-            <a href="/" data-link class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
-            <a href="/chat" data-link><i class="fas fa-comment-dots"></i><span>Chat</span></a>
-            <a href="/publier" data-link><i class="fas fa-plus-circle"></i><span>Publier</span></a>
-            <a href="/favoris" data-link><i class="fas fa-heart"></i><span>Favoris</span></a>
-        </nav>
 
     </div>
+
+    <nav class="sidebar-nav">
+
+        <ul>
+
+            <li>
+                <a href="index.html" data-link>
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="recherche.html" data-link>
+                    <i class="fas fa-search"></i>
+                    <span>Rechercher</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="categories.html" data-link>
+                    <i class="fas fa-th-large"></i>
+                    <span>Catégories</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="chat.html" data-link>
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Chat</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="publier.html" data-link>
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Publier</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="favoris.html" data-link>
+                    <i class="fas fa-heart"></i>
+                    <span>Favoris</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="reservations.html" data-link>
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Réservations</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="notifications.html" data-link>
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="profil.html" data-link>
+                    <i class="fas fa-user"></i>
+                    <span>Mon profil</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="parametres.html" data-link>
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </a>
+            </li>
+
+            <li id="sidebar-pro-link" class="hidden">
+                <a href="professionnel-dashboard.html" data-link>
+                    <i class="fas fa-briefcase"></i>
+                    <span>Espace professionnel</span>
+                </a>
+            </li>
+
+            <li id="sidebar-admin-link" class="hidden">
+                <a href="admin.html" data-link>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Administration</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <button id="sidebar-logout" class="btn-logout">
+            <i class="fas fa-sign-out-alt"></i>
+            Déconnexion
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- APPLICATION -->
+<div class="app-container">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+
+        <button id="menu-toggle" class="menu-btn" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="logo">
+            CAMU SERVICES
+        </div>
+
+        <button id="profile-btn" class="profile-btn">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </button>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main id="main-content">
+
+        <section class="hero">
+            <h1>SOYEZ LES BIENVENUS</h1>
+            <p>Trouvez facilement ce dont vous avez besoin.</p>
+        </section>
+
+
+        <!-- RECHERCHE -->
+        <section class="search-section">
+
+            <div class="search-bar">
+
+                <i class="fas fa-search"></i>
+
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Que recherchez-vous ?"
+                >
+
+                <button id="search-btn">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+            </div>
+
+            <div class="quick-filters">
+
+                <select id="filter-category">
+                    <option value="">Catégorie</option>
+                    <option value="Maison">Maison</option>
+                    <option value="Voiture">Voiture</option>
+                    <option value="Service">Service</option>
+                    <option value="Commerce">Commerce</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="filter-city"
+                    placeholder="VILLE"
+                >
+
+                <input
+                    type="number"
+                    id="filter-price-min"
+                    placeholder="Prix min"
+                >
+
+                <input
+                    type="number"
+                    id="filter-price-max"
+                    placeholder="Prix max"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- COMMUNIQUÉ -->
+        <section class="communique-bloc">
+
+            <div class="communique-banner" id="communique-banner">
+
+                <i class="fas fa-bullhorn"></i>
+
+                <span id="communique-text">
+                    Bienvenue sur CAMU SERVICES.
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- CATÉGORIES -->
+        <section class="categories-section">
+
+            <h2>Catégories</h2>
+
+            <div
+                class="category-grid"
+                id="category-grid"
+            >
+
+                <div class="category-item">
+                    <i class="fas fa-home"></i>
+                    <span>Maisons</span>
+                </div>
+
+                <div class="category-item">
+                    <i class="fas fa-car"></i>
+                    <span>Voitures</span>
+                </div>
+
+                <div class="category-item">
+                    <i class="fas fa-tools"></i>
+                    <span>Services</span>
+                </div>
+
+                <div class="category-item">
+                    <i class="fas fa-store"></i>
+                    <span>Commerces</span>
+                </div>
+
+                <div class="category-item">
+                    <i class="fas fa-building"></i>
+                    <span>Immobilier</span>
+                </div>
+
+                <div class="category-item">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span>Autres</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ANNONCES -->
+        <section class="annonces-section">
+
+            <h2>Annonces récentes</h2>
+
+            <div
+                id="annonces-recentes"
+                class="annonces-grid"
+            >
+
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>Aucune annonce disponible pour le moment.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+
+        <ul class="footer-links">
+
+            <li>
+                <a href="a-propos.html">À-PROPOS</a>
+            </li>
+
+            <li>
+                <a href="conditions.html">CONDITIONS</a>
+            </li>
+
+            <li>
+                <a href="confidentialite.html">CONFIDENTIALITÉ</a>
+            </li>
+
+            <li>
+                <a href="contacts.html">CONTACTS</a>
+            </li>
+
+        </ul>
+
+    </footer>
+
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+
+        <a href="index.html" data-link class="active">
+            <i class="fas fa-home"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="chat.html" data-link>
+            <i class="fas fa-comment-dots"></i>
+            <span>Chat</span>
+        </a>
+
+        <a href="publier.html" data-link>
+            <i class="fas fa-plus-circle"></i>
+            <span>Publier</span>
+        </a>
+
+        <a href="favoris.html" data-link>
+            <i class="fas fa-heart"></i>
+            <span>Favoris</span>
+        </a>
+
+    </nav>
+
+</div>
 
 </body>
 </html>
