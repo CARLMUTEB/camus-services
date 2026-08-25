@@ -4,416 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAMU SERVICES - Trouvez tout près de chez vous</title>
-  <style>
-    /* ===== RESET & BASE ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --orange: #F97316;
-      --orange-dark: #EA580C;
-      --green-whatsapp: #25D366;
-      --bg-light: #FAFAFA;
-      --text-dark: #1F2937;
-      --text-light: #6B7280;
-      --border: #E5E7EB;
-      --card-bg: #FFFFFF;
-      --shadow: 0 1px 3px rgba(0,0,0,0.1);
-      --radius: 12px;
-    }
-
-    body {
-      font-family: 'Inter', 'Roboto', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.5;
-      padding-bottom: 70px; /* espace pour nav mobile */
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      cursor: pointer;
-      font-family: inherit;
-      border: none;
-      background: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    /* ===== HEADER ===== */
-    header {
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 10px 16px;
-    }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--orange);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .logo span {
-      font-size: 1.8rem;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #F3F4F6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: background 0.2s;
-    }
-
-    .icon-btn:hover {
-      background: #E5E7EB;
-    }
-
-    .search-bar {
-      display: flex;
-      gap: 8px;
-    }
-
-    .search-bar input {
-      flex: 1;
-      padding: 10px 15px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .search-bar button {
-      background: var(--orange);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      transition: background 0.2s;
-    }
-
-    .search-bar button:hover {
-      background: var(--orange-dark);
-    }
-
-    /* ===== SECTIONS ===== */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 20px 0 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .section-title a {
-      color: var(--orange);
-      font-size: 0.9rem;
-    }
-
-    /* ===== COMMUNIQUÉS ===== */
-    .communiques {
-      background: #FFF7ED;
-      border-left: 4px solid var(--orange);
-      padding: 10px 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .communiques h3 {
-      font-size: 0.9rem;
-      color: var(--orange-dark);
-      margin-bottom: 5px;
-    }
-
-    .communique-item {
-      font-size: 0.9rem;
-      margin: 5px 0;
-    }
-
-    /* ===== CATÉGORIES ===== */
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .categorie-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 15px 8px;
-      text-align: center;
-      transition: transform 0.2s;
-      cursor: pointer;
-    }
-
-    .categorie-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .categorie-icon {
-      font-size: 2rem;
-      margin-bottom: 6px;
-    }
-
-    .categorie-name {
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    /* ===== ANNONCES ===== */
-    .annonces-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .annonce-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: transform 0.2s;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .annonce-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .annonce-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      background: #E5E7EB;
-    }
-
-    .annonce-body {
-      padding: 10px 12px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .annonce-type {
-      font-size: 0.7rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 4px;
-    }
-
-    .annonce-titre {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
-
-    .annonce-prix {
-      font-weight: bold;
-      color: var(--text-dark);
-      margin: 4px 0;
-    }
-
-    .annonce-localisation {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .annonce-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-    }
-
-    .btn-whatsapp {
-      background: var(--green-whatsapp);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-detail {
-      color: var(--orange);
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    .btn-favori {
-      font-size: 1.2rem;
-      color: #9CA3AF;
-    }
-
-    .btn-favori.active {
-      color: #EF4444;
-    }
-
-    /* ===== NAVIGATION MOBILE ===== */
-    .mobile-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 8px 0;
-      z-index: 200;
-    }
-
-    .mobile-nav a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.7rem;
-      color: var(--text-light);
-      gap: 2px;
-    }
-
-    .mobile-nav a.active {
-      color: var(--orange);
-      font-weight: 600;
-    }
-
-    .mobile-nav .nav-icon {
-      font-size: 1.3rem;
-    }
-
-    .nav-publish {
-      background: var(--orange);
-      color: white !important;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: -20px;
-      font-size: 1.5rem !important;
-      box-shadow: 0 4px 10px rgba(249,115,22,0.4);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (min-width: 768px) {
-      body {
-        padding-bottom: 0;
-      }
-
-      .mobile-nav {
-        display: none;
-      }
-
-      .annonces-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .categories-grid {
-        grid-template-columns: repeat(7, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .annonces-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (min-width: 1200px) {
-      .annonces-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* ===== MODE SOMBRE ===== */
-    .dark {
-      --bg-light: #111827;
-      --text-dark: #F9FAFB;
-      --text-light: #9CA3AF;
-      --border: #374151;
-      --card-bg: #1F2937;
-      --shadow: 0 1px 3px rgba(255,255,255,0.05);
-    }
-
-    .dark .communiques {
-      background: #1F2937;
-      border-left-color: var(--orange);
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <!-- HEADER -->
-  <header>
-    <div class="header-top">
-      <a href="index.html" class="logo">
-        <span>🛠️</span> CAMU SERVICES
-      </a>
-      <div class="header-actions">
-        <button class="icon-btn" id="theme-toggle" title="Basculer le thème">🌙</button>
-        <div id="auth-buttons"></div>
-      </div>
+  <header class="header">
+    <button class="icon-btn" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
+    <a href="index.html" class="logo">
+      <span>🛠️</span> CAMU SERVICES
+    </a>
+    <div class="header-actions">
+      <button class="icon-btn" id="theme-toggle" title="Basculer le thème">🌙</button>
+      <div id="auth-buttons"></div>
     </div>
+  </header>
+
+  <!-- MENU LATÉRAL (DRAWER) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-header">
+      <span class="logo">CAMU SERVICES</span>
+      <button class="icon-btn" id="drawer-close">✕</button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html" class="active">🏠 Accueil</a>
+      <a href="explorer.html">🔍 Explorer</a>
+      <a href="publier.html">＋ Publier</a>
+      <a href="favoris.html">❤️ Favoris</a>
+      <a href="chat.html">💬 Chat</a>
+      <a href="profil.html">👤 Profil</a>
+      <a href="devenir-entreprise.html">🏢 Devenir entreprise</a>
+      <a href="parametres.html">⚙️ Paramètres</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="conditions.html">Conditions</a>
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </aside>
+
+  <!-- BARRE DE RECHERCHE -->
+  <div class="search-container">
     <div class="search-bar">
       <input type="search" id="search-input" placeholder="Rechercher un service, une maison, un véhicule...">
       <button id="search-btn">Rechercher</button>
     </div>
-  </header>
+  </div>
 
   <!-- MAIN -->
-  <main>
+  <main class="main-container">
     <!-- Communiqués -->
     <div class="communiques" id="communiques-container">
       <h3>📢 Communiqués</h3>
@@ -434,6 +74,37 @@
     </div>
     <div class="annonces-grid" id="annonces-grid"></div>
   </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo">CAMU SERVICES</span>
+        <p>La plateforme de confiance pour trouver et publier des annonces locales.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="explorer.html">Explorer</a>
+        <a href="publier.html">Publier</a>
+        <a href="profil.html">Profil</a>
+      </div>
+      <div class="footer-links">
+        <h4>Informations</h4>
+        <a href="a-propos.html">À propos</a>
+        <a href="conditions.html">Conditions d'utilisation</a>
+        <a href="confidentialite.html">Politique de confidentialité</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <a href="contact.html">Page de contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 CAMU SERVICES. Tous droits réservés.
+    </div>
+  </footer>
 
   <!-- NAVIGATION MOBILE -->
   <nav class="mobile-nav">
@@ -477,14 +148,26 @@
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     applyTheme();
 
+    // ===== MENU LATÉRAL =====
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      drawer.classList.add('open');
+      overlay.classList.add('active');
+    });
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+    document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
     // ===== AUTH BUTTONS =====
     const authButtons = document.getElementById('auth-buttons');
     async function updateAuthUI() {
       const user = await waitForAuth();
       if (user) {
-        authButtons.innerHTML = `
-          <a href="profil.html" class="icon-btn" title="Mon profil">👤</a>
-        `;
+        authButtons.innerHTML = `<a href="profil.html" class="icon-btn" title="Mon profil">👤</a>`;
       } else {
         authButtons.innerHTML = `
           <a href="connexion.html" style="color:var(--orange); font-weight:500;">Connexion</a>
@@ -497,14 +180,10 @@
     // ===== RECHERCHE =====
     document.getElementById('search-btn').addEventListener('click', () => {
       const query = document.getElementById('search-input').value.trim();
-      if (query) {
-        window.location.href = `explorer.html?q=${encodeURIComponent(query)}`;
-      }
+      if (query) window.location.href = `explorer.html?q=${encodeURIComponent(query)}`;
     });
     document.getElementById('search-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        document.getElementById('search-btn').click();
-      }
+      if (e.key === 'Enter') document.getElementById('search-btn').click();
     });
 
     // ===== CATÉGORIES =====
