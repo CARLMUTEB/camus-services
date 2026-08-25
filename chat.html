@@ -1,477 +1,1217 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Chat avec les prestataires — CAMU SERVICES">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CAMU SERVICES — Chat</title>
+    <title>Chat — CAMU SERVICES</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- CSS Principal -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Styles spécifiques à la page chat -->
-  <style>
-    /* =====================================================
-       LISTE DES CONVERSATIONS
-       ===================================================== */
-    .chat-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .chat-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 15px;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .chat-item:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .chat-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-
-    .chat-avatar img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .chat-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .chat-info h3 {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .chat-info p {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .btn-chat-whatsapp {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      padding: 8px 15px;
-      background: var(--whatsapp);
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .btn-chat-whatsapp:hover {
-      background: var(--whatsapp-dark);
-    }
-
-    .btn-chat-whatsapp i {
-      font-size: 16px;
-    }
-
-    /* =====================================================
-       ÉTATS
-       ===================================================== */
-    .loading-state,
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      color: var(--muted);
-      margin-top: 20px;
-    }
-
-    .loading-state i,
-    .empty-state i {
-      font-size: 40px;
-      color: #cccccc;
-      margin-bottom: 15px;
-    }
-
-    .empty-state h2 {
-      font-size: 18px;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .empty-state p {
-      font-size: 13px;
-    }
-
-    .btn-connect {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 20px;
-      background: var(--red);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      text-decoration: none;
-      margin-top: 15px;
-    }
-
-    .btn-connect:hover {
-      background: var(--red-dark);
-    }
-
-    /* =====================================================
-       EN-TÊTE DE PAGE
-       ===================================================== */
-    .page-header {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .page-header .icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: var(--red-light);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 30px;
-      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
-    }
-
-    .page-header h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .page-header p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-  </style>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    >
 </head>
 
 <body>
 
-  <!-- HEADER -->
-  <header class="top-bar">
-    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+<div class="chat-page">
 
-    <a href="index.html" class="logo-text" aria-label="CAMU SERVICES">
-      CAMU <span>SERVICES</span>
-    </a>
+    <!-- HEADER -->
+    <header class="chat-header">
 
-    <a href="profil.html" class="profile-btn" aria-label="Mon profil" title="Mon profil">
-      <i class="fa-solid fa-user"></i>
-    </a>
-  </header>
+        <button id="back-btn" class="chat-header-btn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
 
-  <!-- MENU LATÉRAL -->
-  <aside class="sidebar-vertical" id="sidebar" aria-label="Menu principal">
-    <div class="sidebar-header">
-      CAMU SERVICES
-    </div>
-    <ul>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a></li>
-      <li><a href="recherche.html"><i class="fa-solid fa-magnifying-glass"></i><span>Rechercher</span></a></li>
-      <li><a href="categories.html"><i class="fa-solid fa-layer-group"></i><span>Catégories</span></a></li>
-      <li><a href="entreprises.html"><i class="fa-solid fa-building"></i><span>Entreprises</span></a></li>
-      <li><a href="favoris.html"><i class="fa-solid fa-heart"></i><span>Mes favoris</span></a></li>
-      <li><a href="communiques.html"><i class="fa-solid fa-bullhorn"></i><span>Communiqués</span></a></li>
-      <li><a href="inscription-entreprise.html"><i class="fa-solid fa-store"></i><span>Inscrire mon entreprise</span></a></li>
-      <li><a href="profil.html"><i class="fa-solid fa-user"></i><span>Mon profil</span></a></li>
-      <li><a href="parametres.html"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a></li>
-      <li id="logoutMenuItem" style="display: none;">
-        <a href="#" id="logoutSidebar" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
-      </li>
-    </ul>
-  </aside>
+        <div class="chat-title">
+            <strong id="chat-title">Chat</strong>
+            <span id="chat-status">CAMU SERVICES</span>
+        </div>
 
-  <!-- CONTENU PRINCIPAL -->
-  <main class="container">
+        <button id="refresh-btn" class="chat-header-btn">
+            <i class="fas fa-sync-alt"></i>
+        </button>
 
-    <!-- EN-TÊTE DE PAGE -->
-    <div class="page-header">
-      <div class="icon">
-        <i class="fa-brands fa-whatsapp"></i>
-      </div>
-      <h1>Discutez avec les prestataires</h1>
-      <p>
-        Utilisez WhatsApp pour contacter directement les services que vous avez enregistrés.
-      </p>
-    </div>
+    </header>
 
-    <!-- ÉTAT CHARGEMENT -->
-    <div id="loadingState" class="loading-state">
-      <i class="fa-solid fa-spinner fa-spin"></i>
-      <p>Chargement de vos contacts...</p>
-    </div>
 
-    <!-- ÉTAT VIDE / NON CONNECTÉ -->
-    <div id="emptyState" class="empty-state" style="display: none;">
-      <i class="fa-regular fa-comments"></i>
-      <h2 id="emptyTitle">Aucun contact</h2>
-      <p id="emptyText">Ajoutez des services à vos favoris pour démarrer une conversation.</p>
-      <a href="recherche.html" class="btn-connect" id="btnBrowse">
-        <i class="fa-solid fa-magnifying-glass"></i> Découvrir des services
-      </a>
-    </div>
+    <!-- LISTE DES CONVERSATIONS -->
+    <section id="conversation-section" class="conversation-section">
 
-    <!-- LISTE DES CONTACTS -->
-    <div id="chatList" class="chat-list">
-      <!-- Les contacts seront injectés ici -->
-    </div>
+        <div class="conversation-header">
+            <h2>Mes conversations</h2>
 
-  </main>
+            <button id="new-chat-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
 
-  <!-- NAVIGATION MOBILE -->
-  <nav class="bottom-nav" aria-label="Navigation mobile">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html" class="active">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="explorer.html">
-      <i class="fa-solid fa-compass"></i>
-      <span>Explorer</span>
-    </a>
-  </nav>
+        <div id="conversation-list" class="conversation-list">
 
-  <!-- LOGIQUE FIREBASE -->
-  <script type="module">
-    import { auth, db, obtenirFavoris, deconnexion, onAuthStateChanged, formaterNumeroWhatsApp, genererMessageWhatsApp } from "./app.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+            <div class="chat-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Chargement des conversations...
+            </div>
 
-    console.log("Script chat chargé !");
+        </div>
 
-    // Éléments DOM
-    const loadingState = document.getElementById('loadingState');
-    const emptyState = document.getElementById('emptyState');
-    const chatList = document.getElementById('chatList');
-    const emptyTitle = document.getElementById('emptyTitle');
-    const emptyText = document.getElementById('emptyText');
-    const btnBrowse = document.getElementById('btnBrowse');
-    const logoutMenuItem = document.getElementById('logoutMenuItem');
-    const logoutSidebar = document.getElementById('logoutSidebar');
+    </section>
 
-    // Fonction pour charger les contacts (services favoris)
-    async function loadChatContacts() {
-      loadingState.style.display = 'block';
-      chatList.innerHTML = '';
-      emptyState.style.display = 'none';
 
-      try {
-        const user = auth.currentUser;
-        if (!user) {
-          loadingState.style.display = 'none';
-          emptyTitle.textContent = "Vous n'êtes pas connecté";
-          emptyText.textContent = "Connectez-vous pour voir vos contacts et discuter avec les prestataires.";
-          btnBrowse.textContent = "Se connecter";
-          btnBrowse.href = "connexion.html";
-          emptyState.style.display = 'block';
-          return;
-        }
+    <!-- ZONE CHAT -->
+    <section id="chat-section" class="chat-section hidden">
 
-        // Récupérer les favoris de l'utilisateur
-        const favResult = await obtenirFavoris();
-        if (!favResult.success) {
-          throw new Error(favResult.error || "Erreur lors de la récupération des favoris");
-        }
+        <div id="messages" class="messages">
 
-        const favorisIds = favResult.favoris;
-        if (favorisIds.length === 0) {
-          loadingState.style.display = 'none';
-          emptyTitle.textContent = "Aucun contact";
-          emptyText.textContent = "Ajoutez des services à vos favoris pour démarrer une conversation.";
-          btnBrowse.textContent = "Découvrir des services";
-          btnBrowse.href = "recherche.html";
-          emptyState.style.display = 'block';
-          return;
-        }
+            <div class="empty-chat">
+                <i class="fas fa-comments"></i>
+                <p>Aucun message</p>
+                <small>Envoyez votre premier message.</small>
+            </div>
 
-        // Récupérer les détails de chaque service
-        const servicesPromises = favorisIds.map(id => getDoc(doc(db, 'services', id)));
-        const servicesSnapshots = await Promise.all(servicesPromises);
+        </div>
 
-        let html = '';
-        let contactsExistants = false;
 
-        servicesSnapshots.forEach(snap => {
-          if (snap.exists()) {
-            const service = { id: snap.id, ...snap.data() };
-            contactsExistants = true;
+        <!-- INDICATEUR -->
+        <div id="typing-indicator" class="typing-indicator hidden">
+            En train d'écrire...
+        </div>
 
-            const titre = service.titre || service.nom || service.title || 'Sans titre';
-            const description = service.description || 'Aucune description disponible.';
-            const imageUrl = service.imageUrl || service.image || '';
-            const whatsapp = service.whatsapp || service.telephone || '';
 
-            let whatsappLink = '#';
-            if (whatsapp) {
-              const message = genererMessageWhatsApp(service, 'contact');
-              const numeroFormate = formaterNumeroWhatsApp(whatsapp);
-              if (numeroFormate) {
-                whatsappLink = `https://wa.me/${numeroFormate}?text=${encodeURIComponent(message)}`;
-              }
+        <!-- FORMULAIRE MESSAGE -->
+        <form id="message-form" class="message-form">
+
+            <button
+                type="button"
+                id="emoji-btn"
+                class="message-action"
+                title="Emoji"
+            >
+                <i class="far fa-smile"></i>
+            </button>
+
+            <input
+                type="text"
+                id="message-input"
+                placeholder="Écrire un message..."
+                autocomplete="off"
+                maxlength="1000"
+            >
+
+            <button
+                type="submit"
+                id="send-btn"
+                class="send-btn"
+            >
+                <i class="fas fa-paper-plane"></i>
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- EMOJIS -->
+<div id="emoji-panel" class="emoji-panel hidden">
+
+    <button>😀</button>
+    <button>😂</button>
+    <button>😍</button>
+    <button>👍</button>
+    <button>❤️</button>
+    <button>🙏</button>
+    <button>🔥</button>
+    <button>👏</button>
+    <button>😊</button>
+    <button>😎</button>
+
+</div>
+
+
+<style>
+
+/* ================================
+   CHAT
+================================ */
+
+.chat-page {
+    min-height: 100vh;
+    background: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* HEADER */
+
+.chat-header {
+    height: 64px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.chat-header-btn {
+    border: none;
+    background: transparent;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    color: #1a73e8;
+}
+
+.chat-header-btn:hover {
+    background: #eef4ff;
+}
+
+.chat-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat-title strong {
+    font-size: 17px;
+}
+
+.chat-title span {
+    font-size: 11px;
+    color: #777;
+}
+
+
+/* CONVERSATIONS */
+
+.conversation-section {
+    padding: 18px;
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.conversation-header h2 {
+    font-size: 20px;
+}
+
+#new-chat-btn {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #1a73e8;
+    color: white;
+
+    cursor: pointer;
+}
+
+
+.conversation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+/* CONVERSATION */
+
+.conversation-item {
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.conversation-item:hover {
+    background: #f1f6ff;
+}
+
+.conversation-avatar {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    background: #eee;
+}
+
+.conversation-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.conversation-name {
+    font-weight: 600;
+}
+
+.conversation-last-message {
+    color: #777;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.conversation-time {
+    font-size: 11px;
+    color: #999;
+}
+
+
+/* CHAT */
+
+.chat-section {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: calc(100vh - 64px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* MESSAGES */
+
+.messages {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px 15px 90px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* MESSAGE */
+
+.message {
+    max-width: 78%;
+
+    padding: 10px 13px;
+
+    border-radius: 15px;
+
+    font-size: 14px;
+
+    position: relative;
+
+    word-break: break-word;
+}
+
+.message.me {
+    align-self: flex-end;
+
+    background: #1a73e8;
+
+    color: white;
+
+    border-bottom-right-radius: 4px;
+}
+
+.message.other {
+    align-self: flex-start;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-bottom-left-radius: 4px;
+}
+
+.message-time {
+    display: block;
+
+    font-size: 9px;
+
+    opacity: 0.7;
+
+    margin-top: 4px;
+
+    text-align: right;
+}
+
+
+/* FORMULAIRE */
+
+.message-form {
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    background: white;
+
+    border-top: 1px solid #ddd;
+
+    padding: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    z-index: 200;
+}
+
+.message-form input {
+    flex: 1;
+
+    border: 1px solid #ddd;
+
+    border-radius: 25px;
+
+    padding: 12px 15px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.message-form input:focus {
+    border-color: #1a73e8;
+}
+
+.message-action,
+.send-btn {
+    border: none;
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+.message-action {
+    background: transparent;
+
+    color: #777;
+
+    font-size: 18px;
+}
+
+.send-btn {
+    background: #1a73e8;
+
+    color: white;
+
+    font-size: 16px;
+}
+
+
+/* EMOJI */
+
+.emoji-panel {
+    position: fixed;
+
+    bottom: 70px;
+
+    left: 10px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    padding: 10px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    width: 220px;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+    z-index: 300;
+}
+
+.emoji-panel button {
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    padding: 5px;
+}
+
+
+/* EMPTY */
+
+.empty-chat,
+.chat-loading {
+    text-align: center;
+
+    color: #777;
+
+    padding: 40px 20px;
+}
+
+.empty-chat i {
+    font-size: 40px;
+
+    color: #aaa;
+
+    margin-bottom: 10px;
+}
+
+
+/* TYPING */
+
+.typing-indicator {
+    font-size: 11px;
+
+    color: #777;
+
+    padding: 5px 15px;
+}
+
+
+/* DESKTOP */
+
+@media (min-width: 768px) {
+
+    .chat-page {
+        max-width: 800px;
+
+        margin: auto;
+
+        background: #f5f7fa;
+    }
+
+    .message-form {
+        max-width: 800px;
+
+        left: 50%;
+
+        transform: translateX(-50%);
+    }
+
+}
+
+</style>
+
+
+<!-- JAVASCRIPT FIREBASE -->
+
+<script type="module">
+
+import { auth, db } from "./js/config/firebase.js";
+
+import {
+    collection,
+    addDoc,
+    query,
+    where,
+    orderBy,
+    onSnapshot,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+
+let currentUser = null;
+let currentConversation = null;
+
+let unsubscribeMessages = null;
+let unsubscribeConversations = null;
+
+
+/* =================================
+   AUTHENTIFICATION
+================================= */
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        alert("Vous devez être connecté pour utiliser le chat.");
+
+        window.location.href = "connexion.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    loadConversations();
+
+});
+
+
+/* =================================
+   CONVERSATIONS
+================================= */
+
+function loadConversations() {
+
+    const list = document.getElementById("conversation-list");
+
+    const q = query(
+        collection(db, "conversations"),
+        where("participants", "array-contains", currentUser.uid),
+        orderBy("updatedAt", "desc")
+    );
+
+    unsubscribeConversations = onSnapshot(
+        q,
+        async (snapshot) => {
+
+            list.innerHTML = "";
+
+            if (snapshot.empty) {
+
+                list.innerHTML = `
+                    <div class="empty-chat">
+                        <i class="fas fa-comments"></i>
+                        <p>Aucune conversation</p>
+                        <small>Commencez une nouvelle conversation.</small>
+                    </div>
+                `;
+
+                return;
             }
 
-            html += `
-              <div class="chat-item">
-                <div class="chat-avatar">
-                  ${imageUrl ? `<img src="${imageUrl}" alt="${titre}">` : `<i class="fa-solid fa-store"></i>`}
+
+            for (const conversationDoc of snapshot.docs) {
+
+                const conversation = conversationDoc.data();
+
+                const otherUserId =
+                    conversation.participants.find(
+                        uid => uid !== currentUser.uid
+                    );
+
+
+                let userData = {};
+
+                try {
+
+                    const userDoc = await getDoc(
+                        doc(db, "users", otherUserId)
+                    );
+
+                    if (userDoc.exists()) {
+                        userData = userDoc.data();
+                    }
+
+                } catch (error) {
+
+                    console.error(error);
+
+                }
+
+
+                const item = document.createElement("div");
+
+                item.className = "conversation-item";
+
+                item.innerHTML = `
+
+                    <img
+                        class="conversation-avatar"
+                        src="${userData.photoURL || 'assets/default-avatar.png'}"
+                    >
+
+                    <div class="conversation-info">
+
+                        <div class="conversation-name">
+                            ${escapeHTML(
+                                userData.displayName || "Utilisateur"
+                            )}
+                        </div>
+
+                        <div class="conversation-last-message">
+                            ${escapeHTML(
+                                conversation.lastMessage || "Aucun message"
+                            )}
+                        </div>
+
+                    </div>
+
+                    <div class="conversation-time">
+                        ${formatDate(conversation.updatedAt)}
+                    </div>
+
+                `;
+
+
+                item.addEventListener("click", () => {
+
+                    openConversation(
+                        conversationDoc.id,
+                        otherUserId,
+                        userData.displayName || "Utilisateur"
+                    );
+
+                });
+
+
+                list.appendChild(item);
+
+            }
+
+        },
+        (error) => {
+
+            console.error(
+                "Erreur conversations:",
+                error
+            );
+
+            list.innerHTML = `
+                <div class="empty-chat">
+                    Impossible de charger les conversations.
                 </div>
-                <div class="chat-info">
-                  <h3>${titre}</h3>
-                  <p>${description}</p>
-                </div>
-                <a href="${whatsappLink}" target="_blank" class="btn-chat-whatsapp">
-                  <i class="fa-brands fa-whatsapp"></i>
-                  Discuter
-                </a>
-              </div>
             `;
-          }
-        });
 
-        if (!contactsExistants) {
-          loadingState.style.display = 'none';
-          emptyTitle.textContent = "Aucun contact valide";
-          emptyText.textContent = "Les services de vos favoris ne sont plus disponibles.";
-          btnBrowse.textContent = "Découvrir des services";
-          btnBrowse.href = "recherche.html";
-          emptyState.style.display = 'block';
-          return;
         }
+    );
 
-        chatList.innerHTML = html;
-        loadingState.style.display = 'none';
-        emptyState.style.display = 'none';
-      } catch (error) {
-        console.error("Erreur chargement chat :", error);
-        loadingState.style.display = 'none';
-        emptyTitle.textContent = "Erreur";
-        emptyText.textContent = "Impossible de charger vos contacts.";
-        btnBrowse.textContent = "Réessayer";
-        btnBrowse.href = "chat.html";
-        emptyState.style.display = 'block';
-      }
+}
+
+
+/* =================================
+   OUVRIR CONVERSATION
+================================= */
+
+function openConversation(
+    conversationId,
+    otherUserId,
+    otherName
+) {
+
+    currentConversation = conversationId;
+
+    document.getElementById(
+        "conversation-section"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "chat-section"
+    ).classList.remove("hidden");
+
+    document.getElementById(
+        "chat-title"
+    ).textContent = otherName;
+
+    loadMessages(conversationId);
+
+}
+
+
+/* =================================
+   MESSAGES
+================================= */
+
+function loadMessages(conversationId) {
+
+    const messagesContainer =
+        document.getElementById("messages");
+
+
+    if (unsubscribeMessages) {
+        unsubscribeMessages();
     }
 
-    // Gestion de l'authentification
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        logoutMenuItem.style.display = 'block';
-        loadChatContacts();
-      } else {
-        logoutMenuItem.style.display = 'none';
-        loadingState.style.display = 'none';
-        emptyTitle.textContent = "Vous n'êtes pas connecté";
-        emptyText.textContent = "Connectez-vous pour voir vos contacts et discuter avec les prestataires.";
-        btnBrowse.textContent = "Se connecter";
-        btnBrowse.href = "connexion.html";
-        emptyState.style.display = 'block';
-        chatList.innerHTML = '';
-      }
+
+    const q = query(
+
+        collection(
+            db,
+            "conversations",
+            conversationId,
+            "messages"
+        ),
+
+        orderBy("createdAt", "asc")
+
+    );
+
+
+    unsubscribeMessages = onSnapshot(
+
+        q,
+
+        (snapshot) => {
+
+            messagesContainer.innerHTML = "";
+
+
+            if (snapshot.empty) {
+
+                messagesContainer.innerHTML = `
+                    <div class="empty-chat">
+                        <i class="fas fa-comment"></i>
+                        <p>Aucun message</p>
+                        <small>Envoyez votre premier message.</small>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            snapshot.forEach((messageDoc) => {
+
+                const message =
+                    messageDoc.data();
+
+
+                const div =
+                    document.createElement("div");
+
+
+                const isMe =
+                    message.senderId === currentUser.uid;
+
+
+                div.className =
+                    "message " +
+                    (isMe ? "me" : "other");
+
+
+                div.innerHTML = `
+
+                    ${escapeHTML(message.text)}
+
+                    <span class="message-time">
+                        ${formatDate(message.createdAt)}
+                    </span>
+
+                `;
+
+
+                messagesContainer.appendChild(div);
+
+            });
+
+
+            messagesContainer.scrollTop =
+                messagesContainer.scrollHeight;
+
+        },
+
+        (error) => {
+
+            console.error(
+                "Erreur messages:",
+                error
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =================================
+   ENVOYER MESSAGE
+================================= */
+
+document
+    .getElementById("message-form")
+    .addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+
+
+        if (!currentUser) {
+            return;
+        }
+
+
+        if (!currentConversation) {
+
+            alert(
+                "Sélectionnez d'abord une conversation."
+            );
+
+            return;
+
+        }
+
+
+        const input =
+            document.getElementById(
+                "message-input"
+            );
+
+
+        const text =
+            input.value.trim();
+
+
+        if (!text) {
+            return;
+        }
+
+
+        const sendButton =
+            document.getElementById(
+                "send-btn"
+            );
+
+
+        sendButton.disabled = true;
+
+
+        try {
+
+            await addDoc(
+
+                collection(
+                    db,
+                    "conversations",
+                    currentConversation,
+                    "messages"
+                ),
+
+                {
+                    senderId: currentUser.uid,
+                    text: text,
+                    createdAt: serverTimestamp()
+                }
+
+            );
+
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "conversations",
+                    currentConversation
+                ),
+
+                {
+                    lastMessage: text,
+                    updatedAt: serverTimestamp()
+                },
+
+                {
+                    merge: true
+                }
+
+            );
+
+
+            input.value = "";
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Impossible d'envoyer le message."
+            );
+
+        }
+
+        finally {
+
+            sendButton.disabled = false;
+
+            input.focus();
+
+        }
+
     });
 
-    // Déconnexion
-    if (logoutSidebar) {
-      logoutSidebar.addEventListener('click', async (e) => {
-        e.preventDefault();
-        await deconnexion();
-        window.location.href = 'index.html';
-      });
-    }
 
-    // Gestion du menu latéral
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    if (menuToggle && sidebar) {
-      menuToggle.addEventListener('click', function() {
-        const opened = sidebar.classList.toggle('open');
-        menuToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
-        const icon = menuToggle.querySelector('i');
-        if (icon) {
-          icon.classList.toggle('fa-bars', !opened);
-          icon.classList.toggle('fa-xmark', opened);
+/* =================================
+   NOUVELLE CONVERSATION
+================================= */
+
+document
+    .getElementById("new-chat-btn")
+    .addEventListener("click", async () => {
+
+        const userId =
+            prompt(
+                "Entrez l'identifiant UID de l'utilisateur avec qui vous voulez discuter :"
+            );
+
+
+        if (!userId) {
+            return;
         }
-      });
 
-      sidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          sidebar.classList.remove('open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          const icon = menuToggle.querySelector('i');
-          if (icon) {
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-xmark');
-          }
-        });
-      });
+
+        if (userId === currentUser.uid) {
+
+            alert(
+                "Vous ne pouvez pas discuter avec vous-même."
+            );
+
+            return;
+
+        }
+
+
+        const participants =
+            [
+                currentUser.uid,
+                userId
+            ].sort();
+
+
+        const conversationId =
+            participants.join("_");
+
+
+        await setDoc(
+
+            doc(
+                db,
+                "conversations",
+                conversationId
+            ),
+
+            {
+                participants: participants,
+
+                lastMessage: "",
+
+                updatedAt: serverTimestamp(),
+
+                createdAt: serverTimestamp()
+
+            },
+
+            {
+                merge: true
+            }
+
+        );
+
+
+        openConversation(
+            conversationId,
+            userId,
+            "Utilisateur"
+        );
+
+    });
+
+
+/* =================================
+   RETOUR
+================================= */
+
+document
+    .getElementById("back-btn")
+    .addEventListener("click", () => {
+
+        if (
+            !document
+                .getElementById("chat-section")
+                .classList.contains("hidden")
+        ) {
+
+            document
+                .getElementById("chat-section")
+                .classList.add("hidden");
+
+            document
+                .getElementById("conversation-section")
+                .classList.remove("hidden");
+
+            document.getElementById(
+                "chat-title"
+            ).textContent = "Chat";
+
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+
+            currentConversation = null;
+
+            return;
+
+        }
+
+
+        window.location.href = "index.html";
+
+    });
+
+
+/* =================================
+   RAFRAÎCHIR
+================================= */
+
+document
+    .getElementById("refresh-btn")
+    .addEventListener("click", () => {
+
+        window.location.reload();
+
+    });
+
+
+/* =================================
+   EMOJIS
+================================= */
+
+const emojiPanel =
+    document.getElementById("emoji-panel");
+
+
+document
+    .getElementById("emoji-btn")
+    .addEventListener("click", () => {
+
+        emojiPanel.classList.toggle(
+            "hidden"
+        );
+
+    });
+
+
+emojiPanel
+    .querySelectorAll("button")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const input =
+                    document.getElementById(
+                        "message-input"
+                    );
+
+                input.value +=
+                    button.textContent;
+
+                input.focus();
+
+            }
+        );
+
+    });
+
+
+/* =================================
+   OUTILS
+================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text || "";
+
+    return div.innerHTML;
+
+}
+
+
+function formatDate(timestamp) {
+
+    if (!timestamp) {
+        return "";
     }
-  </script>
+
+
+    const date =
+        timestamp.toDate
+            ? timestamp.toDate()
+            : new Date(timestamp);
+
+
+    return date.toLocaleTimeString(
+        "fr-FR",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+</script>
 
 </body>
 </html>
