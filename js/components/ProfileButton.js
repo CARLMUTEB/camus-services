@@ -19,25 +19,19 @@ export function initProfileButton() {
     addListener(
         state => {
 
-            if (
+            button.innerHTML =
                 state.isAuthenticated
-            ) {
+                    ? `<i class="fas fa-user"></i> ${
+                        state.userData?.displayName ||
+                        state.user?.displayName ||
+                        "Profil"
+                    }`
+                    : '<i class="fas fa-user"></i> Profil';
 
-                const name =
-                    state.userData?.displayName ||
-                    state.user?.displayName ||
-                    "Profil";
-
-
-                button.innerHTML =
-                    `<i class="fas fa-user"></i> ${escapeHTML(name)}`;
-
-            } else {
-
-                button.innerHTML =
-                    '<i class="fas fa-user"></i> Profil';
-            }
-
+            button.dataset.authenticated =
+                state.isAuthenticated
+                    ? "true"
+                    : "false";
         }
     );
 
@@ -46,73 +40,20 @@ export function initProfileButton() {
         "click",
         () => {
 
-            window.location.href =
-                stateIsConnected()
-                    ? "profil.html"
-                    : "connexion.html";
+            if (
+                button.dataset.authenticated ===
+                "true"
+            ) {
+
+                window.location.href =
+                    "profil.html";
+
+            } else {
+
+                window.location.href =
+                    "connexion.html";
+            }
         }
     );
-}
-
-
-// =========================================================
-// VÉRIFICATION SIMPLE
-// =========================================================
-
-function stateIsConnected() {
-
-    return (
-        document
-            .getElementById(
-                "profile-btn"
-            )
-            ?.dataset.authenticated ===
-        "true"
-    );
-}
-
-
-// =========================================================
-// STORE → DATASET
-// =========================================================
-
-import {
-    getState
-} from "../core/store.js";
-
-
-const originalInit =
-    initProfileButton;
-
-
-export function setupProfileButton() {
-
-    const button =
-        document.getElementById(
-            "profile-btn"
-        );
-
-    if (!button) return;
-
-
-    const update =
-        state => {
-
-            button.dataset.authenticated =
-                state.isAuthenticated
-                    ? "true"
-                    : "false";
-        };
-
-
-    update(
-        getState()
-    );
-
-    addListener(
-        update
-    );
-
-    originalInit();
 }
 ```
