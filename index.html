@@ -1,1360 +1,586 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMU SERVICES - Trouvez tout près de chez vous</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    :root {
+      --orange: #F97316;
+      --orange-dark: #EA580C;
+      --green-whatsapp: #25D366;
+      --bg-light: #FAFAFA;
+      --text-dark: #1F2937;
+      --text-light: #6B7280;
+      --border: #E5E7EB;
+      --card-bg: #FFFFFF;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1);
+      --radius: 12px;
+    }
 
-  <meta
-    name="description"
-    content="CAMU SERVICES — Trouvez, achetez et réservez des services locaux."
-  >
+    body {
+      font-family: 'Inter', 'Roboto', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.5;
+      padding-bottom: 70px; /* espace pour nav mobile */
+    }
 
-  <meta
-    name="theme-color"
-    content="#d32f2f"
-  >
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-  <title>CAMU SERVICES</title>
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
 
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  >
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
+    /* ===== HEADER ===== */
+    header {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 10px 16px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo span {
+      font-size: 1.8rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #F3F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: #E5E7EB;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-bar button {
+      background: var(--orange);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .search-bar button:hover {
+      background: var(--orange-dark);
+    }
+
+    /* ===== SECTIONS ===== */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 20px 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title a {
+      color: var(--orange);
+      font-size: 0.9rem;
+    }
+
+    /* ===== COMMUNIQUÉS ===== */
+    .communiques {
+      background: #FFF7ED;
+      border-left: 4px solid var(--orange);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .communiques h3 {
+      font-size: 0.9rem;
+      color: var(--orange-dark);
+      margin-bottom: 5px;
+    }
+
+    .communique-item {
+      font-size: 0.9rem;
+      margin: 5px 0;
+    }
+
+    /* ===== CATÉGORIES ===== */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .categorie-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 15px 8px;
+      text-align: center;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .categorie-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .categorie-icon {
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+
+    .categorie-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* ===== ANNONCES ===== */
+    .annonces-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .annonce-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .annonce-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .annonce-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background: #E5E7EB;
+    }
+
+    .annonce-body {
+      padding: 10px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .annonce-type {
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+
+    .annonce-titre {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .annonce-prix {
+      font-weight: bold;
+      color: var(--text-dark);
+      margin: 4px 0;
+    }
+
+    .annonce-localisation {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .annonce-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .btn-whatsapp {
+      background: var(--green-whatsapp);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-detail {
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .btn-favori {
+      font-size: 1.2rem;
+      color: #9CA3AF;
+    }
+
+    .btn-favori.active {
+      color: #EF4444;
+    }
+
+    /* ===== NAVIGATION MOBILE ===== */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 200;
+    }
+
+    .mobile-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      gap: 2px;
+    }
+
+    .mobile-nav a.active {
+      color: var(--orange);
+      font-weight: 600;
+    }
+
+    .mobile-nav .nav-icon {
+      font-size: 1.3rem;
+    }
+
+    .nav-publish {
+      background: var(--orange);
+      color: white !important;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -20px;
+      font-size: 1.5rem !important;
+      box-shadow: 0 4px 10px rgba(249,115,22,0.4);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 0;
+      }
+
+      .mobile-nav {
+        display: none;
+      }
+
+      .annonces-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .annonces-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .annonces-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* ===== MODE SOMBRE ===== */
+    .dark {
+      --bg-light: #111827;
+      --text-dark: #F9FAFB;
+      --text-light: #9CA3AF;
+      --border: #374151;
+      --card-bg: #1F2937;
+      --shadow: 0 1px 3px rgba(255,255,255,0.05);
+    }
+
+    .dark .communiques {
+      background: #1F2937;
+      border-left-color: var(--orange);
+    }
+  </style>
 </head>
-
-
 <body>
 
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
-
-  <header class="topbar">
-
-    <a
-      href="index.html"
-      class="brand"
-    >
-      CAMU
-      <span>SERVICES</span>
-    </a>
-
-
-    <div class="header-actions">
-
-      <button
-        type="button"
-        id="themeButton"
-        class="icon-button"
-        aria-label="Changer le thème"
-        title="Changer le thème"
-      >
-        🌙
-      </button>
-
-
-      <a
-        href="profil.html"
-        class="account-link"
-        aria-label="Mon profil"
-      >
-        👤
+  <!-- HEADER -->
+  <header>
+    <div class="header-top">
+      <a href="index.html" class="logo">
+        <span>🛠️</span> CAMU SERVICES
       </a>
-
+      <div class="header-actions">
+        <button class="icon-btn" id="theme-toggle" title="Basculer le thème">🌙</button>
+        <div id="auth-buttons"></div>
+      </div>
     </div>
-
+    <div class="search-bar">
+      <input type="search" id="search-input" placeholder="Rechercher un service, une maison, un véhicule...">
+      <button id="search-btn">Rechercher</button>
+    </div>
   </header>
 
-
-  <!-- =====================================================
-       CONTENU
-       ===================================================== -->
-
-  <main class="container">
-
-
-    <!-- ===================================================
-         HERO
-         =================================================== -->
-
-    <section class="hero">
-
-      <div class="hero-location">
-        📍 Services locaux
-      </div>
-
-
-      <h1>
-        Trouvez les meilleurs
-        services près de chez vous.
-      </h1>
-
-
-      <p>
-        CAMU SERVICES connecte directement
-        les clients aux entreprises,
-        commerçants, artisans et
-        professionnels locaux.
-      </p>
-
-
-      <!-- RECHERCHE -->
-
-      <form
-        class="search-box"
-        id="searchForm"
-      >
-
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Rechercher un service..."
-          autocomplete="off"
-          aria-label="Rechercher un service"
-        >
-
-
-        <button
-          type="submit"
-          id="searchButton"
-          class="search-button"
-          aria-label="Rechercher"
-        >
-          🔍
-        </button>
-
-      </form>
-
-    </section>
-
-
-    <!-- ===================================================
-         CATÉGORIES
-         =================================================== -->
-
-    <section class="section">
-
-      <div class="section-header">
-
-        <h2>
-          Catégories
-        </h2>
-
-
-        <a href="explorer.html">
-          Voir tout →
-        </a>
-
-      </div>
-
-
-      <div class="categories">
-
-        <button
-          type="button"
-          class="category-btn active"
-          data-category="Toutes"
-        >
-          Toutes
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Construction"
-        >
-          🏗️ Construction
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Transport"
-        >
-          🚗 Transport
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Beauté"
-        >
-          ✂️ Beauté
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Restaurant"
-        >
-          🍴 Restaurant
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Informatique"
-        >
-          💻 Informatique
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Commerce"
-        >
-          🏪 Commerce
-        </button>
-
-
-        <button
-          type="button"
-          class="category-btn"
-          data-category="Services"
-        >
-          💼 Services
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         SERVICES
-         =================================================== -->
-
-    <section class="section">
-
-      <div class="section-header">
-
-        <h2>
-          Services disponibles
-        </h2>
-
-
-        <a href="explorer.html">
-          Voir tout →
-        </a>
-
-      </div>
-
-
-      <div
-        id="services"
-        class="services-grid"
-      >
-
-        <div class="loading">
-
-          <span class="spinner"></span>
-
-          Chargement des services...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         COMMUNIQUÉS
-         =================================================== -->
-
-    <section class="section">
-
-      <div class="section-header">
-
-        <h2>
-          📢 Communiqués
-        </h2>
-
-
-        <a href="communiques.html">
-          Voir tout →
-        </a>
-
-      </div>
-
-
-      <div
-        id="communiques"
-        class="communiques-grid"
-      >
-
-        <div class="loading">
-
-          <span class="spinner"></span>
-
-          Chargement des communiqués...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         ENTREPRISES MISES EN AVANT
-         =================================================== -->
-
-    <section class="section">
-
-      <div class="section-header">
-
-        <h2>
-          Entreprises mises en avant
-        </h2>
-
-
-        <a href="explorer.html">
-          Voir tout →
-        </a>
-
-      </div>
-
-
-      <div
-        id="featuredServices"
-        class="services-grid"
-      >
-
-        <div class="loading">
-
-          <span class="spinner"></span>
-
-          Chargement des services...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         PRÉSENTATION
-         =================================================== -->
-
-    <section class="about-card">
-
-      <div class="about-content">
-
-        <span class="about-label">
-          CAMU SERVICES
-        </span>
-
-
-        <h2>
-          Trouver. Acheter. Réserver.
-        </h2>
-
-
-        <p>
-          Une plateforme conçue pour
-          connecter les entreprises locales
-          à leurs clients.
-        </p>
-
-      </div>
-
-
-      <div class="about-actions">
-
-        <a
-          href="explorer.html"
-          class="about-link"
-        >
-          Explorer
-        </a>
-
-
-        <a
-          href="publier.html"
-          class="about-link"
-        >
-          Publier un service
-        </a>
-
-
-        <a
-          href="conditions.html"
-          class="about-link"
-        >
-          Conditions
-        </a>
-
-
-        <a
-          href="parametres.html"
-          class="about-link"
-        >
-          Paramètres
-        </a>
-
-
-        <a
-          href="profil.html"
-          class="about-link"
-        >
-          Mon profil
-        </a>
-
-      </div>
-
-    </section>
-
+  <!-- MAIN -->
+  <main>
+    <!-- Communiqués -->
+    <div class="communiques" id="communiques-container">
+      <h3>📢 Communiqués</h3>
+      <div id="communiques-list"></div>
+    </div>
+
+    <!-- Catégories -->
+    <div class="section-title">
+      <h2>Catégories populaires</h2>
+      <a href="explorer.html">Voir tout</a>
+    </div>
+    <div class="categories-grid" id="categories-grid"></div>
+
+    <!-- Dernières annonces -->
+    <div class="section-title">
+      <h2>Dernières annonces</h2>
+      <a href="explorer.html">Voir tout</a>
+    </div>
+    <div class="annonces-grid" id="annonces-grid"></div>
   </main>
 
-
-  <!-- =====================================================
-       FOOTER
-       ===================================================== -->
-
-  <footer class="footer">
-
-    <div class="footer-brand">
-      CAMU
-      <span>SERVICES</span>
-    </div>
-
-
-    <p>
-      La plateforme qui connecte les
-      entreprises locales à leurs clients.
-    </p>
-
-
-    <div class="footer-links">
-
-      <a href="index.html">
-        Accueil
-      </a>
-
-
-      <a href="explorer.html">
-        Explorer
-      </a>
-
-
-      <a href="publier.html">
-        Publier
-      </a>
-
-
-      <a href="favoris.html">
-        Favoris
-      </a>
-
-
-      <a href="profil.html">
-        Profil
-      </a>
-
-
-      <a href="parametres.html">
-        Paramètres
-      </a>
-
-
-      <a href="conditions.html">
-        Conditions
-      </a>
-
-    </div>
-
-
-    <p class="copyright">
-      © 2026 CAMU SERVICES.
-      Tous droits réservés.
-    </p>
-
-  </footer>
-
-
-  <!-- =====================================================
-       NAVIGATION MOBILE
-       ===================================================== -->
-
-  <nav class="bottom-nav">
-
-    <a
-      href="index.html"
-      class="bottom-nav-item active"
-    >
-
-      <span>⌂</span>
-
-      <small>
-        Accueil
-      </small>
-
+  <!-- NAVIGATION MOBILE -->
+  <nav class="mobile-nav">
+    <a href="index.html" class="active">
+      <span class="nav-icon">🏠</span>
+      Accueil
     </a>
-
-
-    <a
-      href="publier.html"
-      class="bottom-nav-item"
-    >
-
-      <span>＋</span>
-
-      <small>
-        Publier
-      </small>
-
+    <a href="explorer.html">
+      <span class="nav-icon">🔍</span>
+      Explorer
     </a>
-
-
-    <a
-      href="explorer.html"
-      class="bottom-nav-item"
-    >
-
-      <span>⌕</span>
-
-      <small>
-        Explorer
-      </small>
-
+    <a href="publier.html" class="nav-publish">
+      <span class="nav-icon">＋</span>
     </a>
-
-
-    <a
-      href="favoris.html"
-      class="bottom-nav-item"
-    >
-
-      <span>♡</span>
-
-      <small>
-        Favoris
-      </small>
-
+    <a href="favoris.html">
+      <span class="nav-icon">❤️</span>
+      Favoris
     </a>
-
-
-    <a
-      href="profil.html"
-      class="bottom-nav-item"
-    >
-
-      <span>♙</span>
-
-      <small>
-        Profil
-      </small>
-
+    <a href="profil.html">
+      <span class="nav-icon">👤</span>
+      Profil
     </a>
-
   </nav>
 
-
-  <!-- =====================================================
-       BOUTON WHATSAPP
-       ===================================================== -->
-
-  <a
-    href="https://wa.me/"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="whatsapp-button"
-    aria-label="WhatsApp"
-    title="WhatsApp"
-  >
-    ☎
-  </a>
-
-
-  <!-- =====================================================
-       JAVASCRIPT INDEX
-       ===================================================== -->
-
+  <!-- SCRIPT MODULE -->
   <script type="module">
-
     import {
-
       listApprovedServices,
-
       listCommuniques,
-
-      escapeHTML,
-
-      whatsappUrl,
-
-      serviceWhatsAppMessage,
-
+      getCurrentUser,
+      waitForAuth,
+      toggleTheme,
       applyTheme,
+      escapeHTML,
+      whatsappUrl,
+      serviceWhatsAppMessage,
+      CATEGORIES
+    } from './js/app.js';
 
-      toggleTheme
-
-    } from "./js/app.js";
-
-
-    /* =====================================================
-       ÉLÉMENTS
-       ===================================================== */
-
-    const servicesContainer =
-      document.getElementById(
-        "services"
-      );
-
-
-    const featuredContainer =
-      document.getElementById(
-        "featuredServices"
-      );
-
-
-    const communiquesContainer =
-      document.getElementById(
-        "communiques"
-      );
-
-
-    const searchInput =
-      document.getElementById(
-        "searchInput"
-      );
-
-
-    const searchForm =
-      document.getElementById(
-        "searchForm"
-      );
-
-
-    const themeButton =
-      document.getElementById(
-        "themeButton"
-      );
-
-
-    /* =====================================================
-       VARIABLES
-       ===================================================== */
-
-    let allServices = [];
-
-    let selectedCategory = "Toutes";
-
-
-    /* =====================================================
-       THÈME
-       ===================================================== */
-
-    function updateThemeButton() {
-
-      const dark =
-        document.documentElement
-          .classList.contains("dark");
-
-
-      themeButton.textContent =
-        dark
-          ? "☀️"
-          : "🌙";
-
-
-      themeButton.setAttribute(
-        "aria-label",
-        dark
-          ? "Activer le mode clair"
-          : "Activer le mode sombre"
-      );
-
-    }
-
-
-    themeButton.addEventListener(
-      "click",
-      () => {
-
-        toggleTheme();
-
-        updateThemeButton();
-
-      }
-    );
-
-
+    // ===== THÈME =====
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     applyTheme();
 
-    updateThemeButton();
-
-
-    /* =====================================================
-       CARTE SERVICE
-       ===================================================== */
-
-    function serviceCard(
-      service
-    ) {
-
-      const title =
-        escapeHTML(
-          service.titre ||
-          "Service"
-        );
-
-
-      const description =
-        escapeHTML(
-          service.description ||
-          "Aucune description disponible."
-        );
-
-
-      const category =
-        escapeHTML(
-          service.categorie ||
-          "Services"
-        );
-
-
-      const location =
-        escapeHTML(
-          service.localisation ||
-          "Localisation non précisée"
-        );
-
-
-      const price =
-        escapeHTML(
-          service.prix ||
-          ""
-        );
-
-
-      /* ---------------------------------------------------
-         IMAGE
-         --------------------------------------------------- */
-
-      let image = "";
-
-
-      if (
-        service.imageUrl &&
-        service.imageUrl.trim()
-      ) {
-
-        image = `
-
-          <div class="service-image">
-
-            <img
-              src="${escapeHTML(
-                service.imageUrl
-              )}"
-              alt="${title}"
-              loading="lazy"
-              onerror="this.parentElement.classList.add('image-error'); this.remove();"
-            >
-
-          </div>
-
+    // ===== AUTH BUTTONS =====
+    const authButtons = document.getElementById('auth-buttons');
+    async function updateAuthUI() {
+      const user = await waitForAuth();
+      if (user) {
+        authButtons.innerHTML = `
+          <a href="profil.html" class="icon-btn" title="Mon profil">👤</a>
         `;
-
-      }
-
-
-      /* ---------------------------------------------------
-         PRIX
-         --------------------------------------------------- */
-
-      let priceHTML = "";
-
-
-      if (price) {
-
-        priceHTML = `
-
-          <div class="service-price">
-
-            ${price}
-
-          </div>
-
+      } else {
+        authButtons.innerHTML = `
+          <a href="connexion.html" style="color:var(--orange); font-weight:500;">Connexion</a>
+          <a href="inscription.html" style="background:var(--orange); color:white; padding:8px 16px; border-radius:20px; font-weight:500;">S'inscrire</a>
         `;
-
       }
+    }
+    updateAuthUI();
 
-
-      /* ---------------------------------------------------
-         WHATSAPP
-         --------------------------------------------------- */
-
-      let whatsapp = "";
-
-
-      const phone =
-        service.whatsapp ||
-        service.telephone ||
-        "";
-
-
-      if (phone) {
-
-        const url =
-          whatsappUrl(
-            phone,
-            serviceWhatsAppMessage(
-              service
-            )
-          );
-
-
-        if (url) {
-
-          whatsapp = `
-
-            <a
-              href="${url}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn green"
-            >
-              WhatsApp
-            </a>
-
-          `;
-
-        }
-
+    // ===== RECHERCHE =====
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const query = document.getElementById('search-input').value.trim();
+      if (query) {
+        window.location.href = `explorer.html?q=${encodeURIComponent(query)}`;
       }
+    });
+    document.getElementById('search-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('search-btn').click();
+      }
+    });
 
+    // ===== CATÉGORIES =====
+    const categoriesGrid = document.getElementById('categories-grid');
+    const categoryIcons = {
+      "Construction": "🏗️",
+      "Transport": "🚚",
+      "Beauté": "💅",
+      "Restaurant": "🍽️",
+      "Informatique": "💻",
+      "Commerce": "🛍️",
+      "Services": "🛠️",
+      "Immobilier": "🏠",
+      "Véhicules": "🚗",
+      "Hôtels": "🏨",
+      "Événements": "🎪"
+    };
 
-      /* ---------------------------------------------------
-         CARTE
-         --------------------------------------------------- */
-
-      return `
-
-        <article
-          class="service-card"
-          data-service-id="${escapeHTML(
-            service.id
-          )}"
-        >
-
-          ${image}
-
-
-          <div class="service-content">
-
-            <div class="service-top">
-
-              <span class="badge">
-                ${category}
-              </span>
-
-              ${priceHTML}
-
-            </div>
-
-
-            <h3>
-              ${title}
-            </h3>
-
-
-            <p class="service-description">
-              ${description}
-            </p>
-
-
-            <p class="service-location">
-              📍 ${location}
-            </p>
-
-
-            <div class="service-actions">
-
-              <a
-                href="service.html?id=${encodeURIComponent(
-                  service.id
-                )}"
-                class="btn secondary"
-              >
-                Voir
-              </a>
-
-
-              ${whatsapp}
-
-            </div>
-
-          </div>
-
-        </article>
-
+    CATEGORIES.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'categorie-card';
+      card.innerHTML = `
+        <div class="categorie-icon">${categoryIcons[cat] || '📦'}</div>
+        <div class="categorie-name">${escapeHTML(cat)}</div>
       `;
-
-    }
-
-
-    /* =====================================================
-       AFFICHER SERVICES
-       ===================================================== */
-
-    function renderServices() {
-
-      const search =
-        searchInput.value
-          .toLowerCase()
-          .trim();
-
-
-      const filtered =
-        allServices.filter(
-          service => {
-
-            const categoryOK =
-              selectedCategory ===
-                "Toutes" ||
-              service.categorie ===
-                selectedCategory;
-
-
-            const text = [
-
-              service.titre || "",
-
-              service.description || "",
-
-              service.localisation || "",
-
-              service.categorie || "",
-
-              service.prix || ""
-
-            ]
-              .join(" ")
-              .toLowerCase();
-
-
-            const searchOK =
-              !search ||
-              text.includes(search);
-
-
-            return (
-              categoryOK &&
-              searchOK
-            );
-
-          }
-        );
-
-
-      if (!filtered.length) {
-
-        servicesContainer.innerHTML = `
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              🔍
-            </div>
-
-
-            <h3>
-              Aucun service trouvé
-            </h3>
-
-
-            <p>
-              Essayez une autre recherche
-              ou une autre catégorie.
-            </p>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      servicesContainer.innerHTML =
-        filtered
-          .slice(0, 9)
-          .map(serviceCard)
-          .join("");
-
-    }
-
-
-    /* =====================================================
-       CHARGER SERVICES
-       ===================================================== */
-
-    async function loadServices() {
-
-      servicesContainer.innerHTML = `
-
-        <div class="loading">
-
-          <span class="spinner"></span>
-
-          Chargement des services...
-
-        </div>
-
-      `;
-
-
-      try {
-
-        const result =
-          await listApprovedServices(
-            50
-          );
-
-
-        if (
-          !result.success
-        ) {
-
-          servicesContainer.innerHTML = `
-
-            <div class="error-state">
-
-              <strong>
-                Impossible de charger les services.
-              </strong>
-
-              <p>
-                ${escapeHTML(
-                  result.error ||
-                  "Erreur Firebase."
-                )}
-              </p>
-
-            </div>
-
-          `;
-
-
-          featuredContainer.innerHTML = "";
-
-          return;
-
-        }
-
-
-        allServices =
-          result.data || [];
-
-
-        renderServices();
-
-
-        const featured =
-          allServices.slice(
-            0,
-            3
-          );
-
-
-        if (
-          featured.length
-        ) {
-
-          featuredContainer.innerHTML =
-            featured
-              .map(serviceCard)
-              .join("");
-
-        } else {
-
-          featuredContainer.innerHTML = `
-
-            <div class="empty-state">
-
-              <div class="empty-icon">
-                🏢
-              </div>
-
-              <h3>
-                Aucune entreprise disponible
-              </h3>
-
-              <p>
-                Les services approuvés
-                apparaîtront ici.
-              </p>
-
-            </div>
-
-          `;
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Erreur chargement services :",
-          error
-        );
-
-
-        servicesContainer.innerHTML = `
-
-          <div class="error-state">
-
-            Une erreur est survenue
-            pendant le chargement des services.
-
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       CHARGER COMMUNIQUÉS
-       ===================================================== */
-
+      card.addEventListener('click', () => {
+        window.location.href = `explorer.html?categorie=${encodeURIComponent(cat)}`;
+      });
+      categoriesGrid.appendChild(card);
+    });
+
+    // ===== COMMUMIQUÉS =====
     async function loadCommuniques() {
-
-      communiquesContainer.innerHTML = `
-
-        <div class="loading">
-
-          <span class="spinner"></span>
-
-          Chargement des communiqués...
-
-        </div>
-
-      `;
-
-
-      try {
-
-        const result =
-          await listCommuniques(
-            6
-          );
-
-
-        if (
-          !result.success ||
-          !result.data ||
-          !result.data.length
-        ) {
-
-          communiquesContainer.innerHTML = `
-
-            <div class="empty-state">
-
-              <div class="empty-icon">
-                📢
-              </div>
-
-
-              <h3>
-                Aucun communiqué
-              </h3>
-
-
-              <p>
-                Aucun communiqué publié
-                pour le moment.
-              </p>
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        communiquesContainer.innerHTML =
-          result.data
-            .slice(0, 3)
-            .map(
-              communique => `
-
-                <article
-                  class="communique-card"
-                >
-
-                  <span class="badge">
-                    ${escapeHTML(
-                      communique.type ||
-                      "Information"
-                    )}
-                  </span>
-
-
-                  <h3>
-                    ${escapeHTML(
-                      communique.titre ||
-                      "Communiqué"
-                    )}
-                  </h3>
-
-
-                  <p>
-                    ${escapeHTML(
-                      communique.description ||
-                      ""
-                    )}
-                  </p>
-
-                </article>
-
-              `
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          "Erreur communiqués :",
-          error
-        );
-
-
-        communiquesContainer.innerHTML = `
-
-          <div class="error-state">
-
-            Impossible de charger les communiqués.
-
+      const container = document.getElementById('communiques-list');
+      const result = await listCommuniques(5);
+      if (result.success && result.data.length > 0) {
+        container.innerHTML = result.data.map(com => `
+          <div class="communique-item">
+            <strong>${escapeHTML(com.titre)}</strong> : ${escapeHTML(com.description)}
           </div>
-
-        `;
-
+        `).join('');
+      } else {
+        document.getElementById('communiques-container').style.display = 'none';
       }
-
     }
-
-
-    /* =====================================================
-       CATÉGORIES
-       ===================================================== */
-
-    document
-      .querySelectorAll(
-        ".category-btn"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              document
-                .querySelectorAll(
-                  ".category-btn"
-                )
-                .forEach(
-                  btn =>
-                    btn.classList.remove(
-                      "active"
-                    )
-                );
-
-
-              button.classList.add(
-                "active"
-              );
-
-
-              selectedCategory =
-                button.dataset.category;
-
-
-              renderServices();
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =====================================================
-       RECHERCHE EN DIRECT
-       ===================================================== */
-
-    searchInput.addEventListener(
-      "input",
-      renderServices
-    );
-
-
-    /* =====================================================
-       RECHERCHE
-       ===================================================== */
-
-    searchForm.addEventListener(
-      "submit",
-      event => {
-
-        event.preventDefault();
-
-
-        const value =
-          searchInput.value
-            .trim();
-
-
-        if (!value) {
-
-          searchInput.focus();
-
-          return;
-
-        }
-
-
-        window.location.href =
-          "explorer.html?q=" +
-          encodeURIComponent(
-            value
-          );
-
-      }
-    );
-
-
-    /* =====================================================
-       INITIALISATION
-       ===================================================== */
-
-    loadServices();
-
     loadCommuniques();
 
+    // ===== ANNONCES RÉCENTES =====
+    async function loadAnnonces() {
+      const grid = document.getElementById('annonces-grid');
+      const result = await listApprovedServices({ max: 8, sortBy: 'recent' });
+      if (result.success && result.data.length > 0) {
+        grid.innerHTML = result.data.map(service => {
+          const image = service.imageUrl || 'https://via.placeholder.com/300x160?text=Pas+d%27image';
+          const whatsapp = whatsappUrl(service.whatsapp || service.telephone, serviceWhatsAppMessage(service));
+          return `
+            <div class="annonce-card">
+              <img src="${escapeHTML(image)}" alt="${escapeHTML(service.titre)}" class="annonce-image" loading="lazy">
+              <div class="annonce-body">
+                <span class="annonce-type">${escapeHTML(service.typeAnnonce || 'Service')}</span>
+                <h3 class="annonce-titre">${escapeHTML(service.titre)}</h3>
+                ${service.prix ? `<p class="annonce-prix">${escapeHTML(service.prix)}</p>` : ''}
+                <p class="annonce-localisation">📍 ${escapeHTML(service.localisation || 'Non spécifié')}</p>
+                <div class="annonce-actions">
+                  <a href="${whatsapp}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+                  <a href="detail.html?id=${service.id}" class="btn-detail">Voir détails</a>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        grid.innerHTML = '<p>Aucune annonce approuvée pour le moment.</p>';
+      }
+    }
+    loadAnnonces();
   </script>
-
 </body>
-
 </html>
