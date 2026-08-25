@@ -1,457 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Créer un compte CAMU SERVICES">
-
-  <title>CAMU SERVICES — Inscription</title>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- CSS Principal -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Styles spécifiques à la page inscription -->
-  <style>
-    /* =====================================================
-       CARTE DE FORMULAIRE
-       ===================================================== */
-    .card-box {
-      width: 100%;
-      max-width: 480px;
-      margin: 0 auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px 20px;
-      box-shadow: var(--shadow);
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* =====================================================
-       GROUPES DE FORMULAIRE
-       ===================================================== */
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      min-height: 46px;
-      padding: 0 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 14px;
-      background: var(--card);
-      color: var(--text);
-      transition: border-color 0.2s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #999999;
-    }
-
-    .form-group textarea {
-      padding-top: 12px;
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    /* =====================================================
-       GRILLE DE DEUX CHAMPS
-       ===================================================== */
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 480px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* =====================================================
-       BOUTON SOUMETTRE
-       ===================================================== */
-    .btn-submit {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 10px 20px;
-      background: var(--red);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .btn-submit:hover {
-      background: var(--red-dark);
-    }
-
-    .btn-submit:active {
-      transform: scale(0.98);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    /* =====================================================
-       MESSAGE
-       ===================================================== */
-    .message-box {
-      display: none;
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .message-box.success {
-      background: #e8f5e9;
-      color: #2e7d32;
-      border: 1px solid #c8e6c9;
-    }
-
-    .message-box.error {
-      background: var(--red-light);
-      color: var(--red);
-      border: 1px solid #f1c2c2;
-    }
-
-    /* =====================================================
-       SÉPARATEUR
-       ===================================================== */
-    .separator {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .separator::before,
-    .separator::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* =====================================================
-       BOUTON GOOGLE
-       ===================================================== */
-    .btn-google {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 10px 20px;
-      background: #ffffff;
-      color: #333333;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      width: 100%;
-    }
-
-    .btn-google:hover {
-      background: #f5f5f5;
-    }
-
-    .btn-google i {
-      color: #4285F4;
-      font-size: 16px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription — CAMU SERVICES</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="module" src="js/app.js"></script>
+    <style>
+        .auth-page { max-width: 400px; margin: 60px auto; padding: 20px; background: #fff; border-radius: 16px; box-shadow: var(--shadow); }
+        .auth-page h1 { text-align: center; margin-bottom: 24px; font-size: 1.8rem; color: var(--primary); }
+        .auth-page input { width: 100%; padding: 14px; margin-bottom: 16px; border: 1px solid var(--border); border-radius: 30px; font-size: 1rem; }
+        .auth-page button { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; }
+        .auth-page button:hover { background: var(--primary-dark); }
+        .auth-page .link { text-align: center; margin-top: 16px; }
+        .auth-page .link a { color: var(--primary); text-decoration: none; }
+        .error { color: #d32f2f; text-align: center; margin-bottom: 12px; }
+    </style>
 </head>
-
 <body>
-
-  <!-- HEADER -->
-  <header class="top-bar">
-    <button class="back-btn" onclick="history.back()" aria-label="Retour">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-
-    <div class="logo-text">
-      CAMU <span>SERVICES</span>
+    <div class="auth-page">
+        <h1>📝 Inscription</h1>
+        <div id="register-error" class="error"></div>
+        <input type="text" id="register-name" placeholder="Nom complet" required>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Mot de passe (6 caractères min.)" required>
+        <input type="tel" id="register-phone" placeholder="Téléphone (optionnel)">
+        <button id="register-btn">S'inscrire</button>
+        <div class="link">
+            <a href="/connexion" data-link>Déjà un compte ? Connectez-vous</a>
+        </div>
     </div>
 
-    <div class="spacer"></div>
-  </header>
+    <script type="module">
+        import { signUp } from './js/core/auth.js';
+        import { router } from './js/core/router.js';
 
-  <!-- CONTENU PRINCIPAL -->
-  <main class="container">
+        document.getElementById('register-btn').addEventListener('click', async () => {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const phone = document.getElementById('register-phone').value;
+            const errorEl = document.getElementById('register-error');
+            errorEl.textContent = '';
 
-    <div class="card-box">
+            if (password.length < 6) {
+                errorEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.';
+                return;
+            }
 
-      <!-- EN-TÊTE DU FORMULAIRE -->
-      <div style="text-align: center; margin-bottom: 24px;">
-        <div style="
-          width: 70px;
-          height: 70px;
-          background: var(--red-light);
-          color: var(--red);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 14px;
-          font-size: 28px;
-          box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
-        ">
-          <i class="fa-solid fa-user-plus"></i>
-        </div>
-
-        <h2 style="font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px;">
-          Créer un compte
-        </h2>
-
-        <p style="font-size: 13px; color: var(--muted); line-height: 1.4;">
-          Rejoignez CAMU SERVICES et connectez-vous aux entreprises locales
-        </p>
-      </div>
-
-      <!-- FORMULAIRE -->
-      <form id="inscriptionForm">
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" placeholder="Votre prénom" required>
-          </div>
-
-          <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" id="nom" placeholder="Votre nom" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="emailInscription">Adresse Email</label>
-          <input type="email" id="emailInscription" placeholder="exemple@email.com" required>
-        </div>
-
-        <div class="form-group">
-          <label for="telephone">Téléphone</label>
-          <input type="tel" id="telephone" placeholder="+225 07 00 00 00 00">
-        </div>
-
-        <div class="form-group">
-          <label for="motDePasseInscription">Mot de passe</label>
-          <input type="password" id="motDePasseInscription" placeholder="Minimum 6 caractères" required minlength="6">
-        </div>
-
-        <div class="form-group">
-          <label for="role">Vous êtes ?</label>
-          <select id="role" required>
-            <option value="client">Client</option>
-            <option value="vendeur">Vendeur</option>
-            <option value="prestataire">Prestataire</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnInscription" style="width: 100%; margin-top: 5px; font-size: 14px;">
-          <i class="fa-solid fa-user-plus"></i>
-          Créer mon compte
-        </button>
-
-        <!-- Séparateur -->
-        <div class="separator">
-          ou
-        </div>
-
-        <!-- Inscription avec Google -->
-        <button type="button" class="btn-google" id="btnGoogle">
-          <i class="fa-brands fa-google"></i>
-          Continuer avec Google
-        </button>
-
-      </form>
-
-      <!-- MESSAGE DE RETOUR -->
-      <div id="messageInscription" class="message-box"></div>
-
-      <!-- LIEN CONNEXION -->
-      <div style="
-        text-align: center;
-        margin-top: 22px;
-        padding-top: 18px;
-        border-top: 1px solid var(--border);
-        font-size: 13px;
-        color: var(--muted);
-      ">
-        Vous avez déjà un compte ?
-        <a href="connexion.html" style="
-          color: var(--red);
-          font-weight: 800;
-          text-decoration: none;
-          margin-left: 4px;
-        ">
-          Se connecter
-        </a>
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- NAVIGATION DU BAS -->
-  <nav class="bottom-nav" aria-label="Navigation mobile">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="publier.html">
-      <i class="fa-solid fa-circle-plus"></i>
-      <span>Publier</span>
-    </a>
-    <a href="chat.html">
-      <i class="fa-solid fa-comments"></i>
-      <span>Chat</span>
-    </a>
-    <a href="explorer.html">
-      <i class="fa-solid fa-compass"></i>
-      <span>Explorer</span>
-    </a>
-  </nav>
-
-  <!-- LOGIQUE FIREBASE -->
-  <script type="module">
-    import { inscriptionUtilisateur, connexionGoogle } from "./app.js";
-
-    const form = document.getElementById("inscriptionForm");
-    const message = document.getElementById("messageInscription");
-    const button = document.getElementById("btnInscription");
-    const btnGoogle = document.getElementById("btnGoogle");
-
-    function afficherMessage(texte, type = "success") {
-      message.style.display = "block";
-      message.textContent = texte;
-      message.className = "message-box " + type;
-    }
-
-    function masquerMessage() {
-      message.style.display = "none";
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const prenom = document.getElementById("prenom").value.trim();
-      const nom = document.getElementById("nom").value.trim();
-      const email = document.getElementById("emailInscription").value.trim();
-      const telephone = document.getElementById("telephone").value.trim();
-      const password = document.getElementById("motDePasseInscription").value;
-      const role = document.getElementById("role").value;
-
-      if (!prenom || !nom || !email || !password) {
-        afficherMessage("Veuillez remplir tous les champs obligatoires.", "error");
-        return;
-      }
-
-      button.disabled = true;
-      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création en cours...';
-      masquerMessage();
-
-      const resultat = await inscriptionUtilisateur(email, password, {
-        prenom: prenom,
-        nom: nom,
-        telephone: telephone,
-        role: role
-      });
-
-      if (resultat.success) {
-        afficherMessage("Compte créé avec succès ! Bienvenue sur CAMU SERVICES.");
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1200);
-      } else {
-        let texte = "Erreur lors de l'inscription.";
-        if (resultat.error.includes("email-already-in-use")) {
-          texte = "Cet email est déjà utilisé.";
-        } else if (resultat.error.includes("invalid-email")) {
-          texte = "Adresse email invalide.";
-        } else if (resultat.error.includes("weak-password")) {
-          texte = "Le mot de passe est trop faible.";
-        }
-        afficherMessage(texte, "error");
-        button.disabled = false;
-        button.innerHTML = '<i class="fa-solid fa-user-plus"></i> Créer mon compte';
-      }
-    });
-
-    // Inscription avec Google
-    btnGoogle.addEventListener("click", async () => {
-      btnGoogle.disabled = true;
-      btnGoogle.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-      masquerMessage();
-
-      const resultat = await connexionGoogle();
-
-      if (resultat.success) {
-        afficherMessage("Connexion réussie. Bienvenue sur CAMU SERVICES !");
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 800);
-      } else {
-        afficherMessage("Erreur lors de la connexion Google.", "error");
-        btnGoogle.disabled = false;
-        btnGoogle.innerHTML = '<i class="fa-brands fa-google"></i> Continuer avec Google';
-      }
-    });
-  </script>
-
+            const result = await signUp(email, password, name, phone);
+            if (result.success) {
+                router.navigate('/');
+            } else {
+                errorEl.textContent = result.error;
+            }
+        });
+    </script>
 </body>
 </html>
