@@ -1,60 +1,245 @@
-```css
 /* =========================================================
    CAMU SERVICES — RESPONSIVE
    ========================================================= */
 
-@media (max-width: 599px) {
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .quick-filters {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .category-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .annonces-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    :root {
+        --header-height: 58px;
+        --sidebar-width: 285px;
+    }
+
+
+    /* HEADER */
+
+    .top-bar {
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .profile-btn {
+        font-size: 0;
+        padding: 0;
+    }
+
+    .profile-btn i {
+        font-size: 1.05rem;
+    }
+
+
+    /* MAIN */
+
+    #main-content {
+        padding:
+            0 12px 30px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+        margin-top: 15px;
+
+        min-height: 190px;
+
+        padding: 30px 15px;
+
+        border-radius: 16px;
+    }
 
     .hero h1 {
         font-size: 1.6rem;
     }
 
-    .hero p {
-        font-size: 0.85rem;
+
+    /* SEARCH */
+
+    .search-section {
+        margin-top: -18px;
     }
+
+    .search-bar {
+        min-height: 54px;
+
+        padding-left: 15px;
+    }
+
+    .search-bar button {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    /* FILTRES */
 
     .quick-filters {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
     }
 
-    .quick-filters select,
-    .quick-filters input {
-        width: 100%;
-        min-width: 0;
+
+    /* COMMUNIQUÉ */
+
+    .communique-banner {
+        font-size: .9rem;
     }
+
+
+    /* CATEGORIES */
+
+    .category-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .category-card {
+        padding: 15px 10px;
+    }
+
+
+    /* ANNONCES */
+
+    .annonces-grid {
+        grid-template-columns:
+            1fr;
+
+        gap: 14px;
+    }
+
+
+    /* FOOTER */
+
+    .app-footer {
+        padding-bottom: 90px;
+    }
+
+    .footer-links {
+        gap: 12px 20px;
+    }
+
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+        position: fixed;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        height: 64px;
+
+        background: white;
+
+        border-top: 1px solid var(--border);
+
+        z-index: 1000;
+
+        box-shadow:
+            0 -4px 15px rgba(0,0,0,.08);
+    }
+
+    .bottom-nav a {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 4px;
+
+        color: #777;
+
+        font-size: .72rem;
+
+        transition: .2s ease;
+    }
+
+    .bottom-nav a i {
+        font-size: 1.1rem;
+    }
+
+    .bottom-nav a.active,
+    .bottom-nav a:hover {
+        color: var(--primary);
+    }
+
+
+    /* SIDEBAR */
 
     .sidebar {
-        width: min(280px, 85vw);
+        width: 285px;
+    }
+
+}
+
+
+/* =========================================================
+   PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .quick-filters {
+        grid-template-columns:
+            1fr;
+    }
+
+    .hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .hero p {
+        font-size: .85rem;
     }
 
     .auth-page {
         margin-top: 30px;
-    }
-}
 
-
-@media (min-width: 600px) {
-
-    .hero {
-        padding-top: 40px;
-    }
-
-}
-
-
-@media (min-width: 1024px) {
-
-    .hero {
-        padding-top: 50px;
-    }
-
-    .search-section,
-    .communique-bloc,
-    .categories-section,
-    .annonces-section {
-        padding-left: 32px;
-        padding-right: 32px;
+        padding: 22px;
     }
 
 }
