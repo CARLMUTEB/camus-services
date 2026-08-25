@@ -1,55 +1,166 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon profil — CAMU SERVICES</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script type="module" src="js/app.js"></script>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Mon profil — CAMU SERVICES</title>
+
+<link rel="stylesheet" href="css/main.css">
+
 </head>
+
 <body>
-    <div style="max-width:600px; margin:40px auto; padding:20px;">
-        <h1>👤 Mon profil</h1>
-        <div id="profile-info">
-            <p><strong>Nom :</strong> <span id="p-name">Chargement...</span></p>
-            <p><strong>Email :</strong> <span id="p-email">Chargement...</span></p>
-            <p><strong>Téléphone :</strong> <span id="p-phone">Non renseigné</span></p>
-            <p><strong>Rôle :</strong> <span id="p-role">Chargement...</span></p>
-            <button id="p-logout" style="margin-top:20px; padding:10px 24px; background:#d32f2f; color:#fff; border:none; border-radius:30px; cursor:pointer;">Déconnexion</button>
-        </div>
-        <p><a href="/" data-link>← Retour à l'accueil</a></p>
+
+<main class="auth-page">
+
+    <h1>Mon profil</h1>
+
+    <div id="profile-content">
+        Chargement...
     </div>
 
-    <script type="module">
-        import { addListener, signOutUser } from './js/core/auth.js';
-        import { router } from './js/core/router.js';
+    <button
+        id="logout-profile"
+        style="margin-top:20px;"
+    >
+        Déconnexion
+    </button>
 
-        const nameEl = document.getElementById('p-name');
-        const emailEl = document.getElementById('p-email');
-        const phoneEl = document.getElementById('p-phone');
-        const roleEl = document.getElementById('p-role');
+    <div class="auth-links">
 
-        addListener((store) => {
-            if (store.isAuthenticated && store.userData) {
-                const data = store.userData;
-                nameEl.textContent = data.displayName || 'Non renseigné';
-                emailEl.textContent = store.user.email || 'Non renseigné';
-                phoneEl.textContent = data.phoneNumber || 'Non renseigné';
-                roleEl.textContent = data.role || 'client';
-            } else {
-                nameEl.textContent = 'Non connecté';
-                emailEl.textContent = '—';
-                phoneEl.textContent = '—';
-                roleEl.textContent = '—';
-            }
-        });
+        <a href="index.html">
+            ← Accueil
+        </a>
 
-        document.getElementById('p-logout').addEventListener('click', async () => {
-            await signOutUser();
-            router.navigate('/');
-        });
-    </script>
+    </div>
+
+</main>
+
+
+<script type="module">
+
+import {
+    auth,
+    db
+} from "./js/config/firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const content =
+    document.getElementById(
+        "profile-content"
+    );
+
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        const snapshot =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
+
+
+        const data =
+            snapshot.exists()
+                ? snapshot.data()
+                : {};
+
+
+        content.innerHTML = `
+
+            <p><strong>Nom :</strong>
+                ${escapeHtml(
+                    data.displayName ||
+                    user.displayName ||
+                    ""
+                )}
+            </p>
+
+            <p><strong>Email :</strong>
+                ${escapeHtml(
+                    user.email || ""
+                )}
+            </p>
+
+            <p><strong>Téléphone :</strong>
+                ${escapeHtml(
+                    data.phoneNumber || ""
+                )}
+            </p>
+
+            <p><strong>Rôle :</strong>
+                ${escapeHtml(
+                    data.role || "client"
+                )}
+            </p>
+
+        `;
+
+    }
+);
+
+
+document
+    .getElementById(
+        "logout-profile"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await signOut(auth);
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+function escapeHtml(text) {
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
 </body>
 </html>
