@@ -1,58 +1,113 @@
 // =========================================================
-// CAMU SERVICES — APPLICATION PRINCIPALE
+// CAMU SERVICES — APPLICATION
 // =========================================================
 
-import { initAuth } from "./core/auth.js";
-import { initSidebar } from "./components/Sidebar.js";
+import {
+    initAuth
+} from "./core/auth.js";
+
+import {
+    initSidebar
+} from "./components/Sidebar.js";
+
+import {
+    initBottomNav
+} from "./components/BottomNav.js";
+
+import {
+    initProfileButton
+} from "./components/ProfileButton.js";
+
 
 // =========================================================
-// INITIALISATION
+// DÉMARRAGE
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    console.log("🚀 CAMU SERVICES — démarrage...");
-
-    // -----------------------------------------------------
-    // AUTHENTIFICATION
-    // -----------------------------------------------------
-
-    try {
-
-        initAuth();
-
-        console.log("✅ Authentification initialisée");
-
-    } catch (error) {
-
-        console.error(
-            "❌ Erreur Authentification :",
-            error
+        console.log(
+            "🚀 CAMU SERVICES — démarrage"
         );
-    }
 
 
-    // -----------------------------------------------------
-    // SIDEBAR
-    // -----------------------------------------------------
+        // AUTH
+        try {
 
-    try {
+            initAuth();
 
-        initSidebar();
+            console.log(
+                "✅ Authentification OK"
+            );
 
-        console.log("✅ Sidebar initialisée");
+        } catch (error) {
 
-    } catch (error) {
+            console.error(
+                "❌ Authentification :",
+                error
+            );
+        }
 
-        console.error(
-            "❌ Erreur Sidebar :",
-            error
+
+        // SIDEBAR
+        try {
+
+            initSidebar();
+
+            console.log(
+                "✅ Sidebar OK"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ Sidebar :",
+                error
+            );
+        }
+
+
+        // PROFIL
+        try {
+
+            initProfileButton();
+
+            console.log(
+                "✅ Profil OK"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ Profil :",
+                error
+            );
+        }
+
+
+        // NAVIGATION BASSE
+        try {
+
+            initBottomNav();
+
+            console.log(
+                "✅ Navigation mobile OK"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ Navigation :",
+                error
+            );
+        }
+
+
+        console.log(
+            "✅ CAMU SERVICES — prêt"
         );
+
     }
-
-
-    console.log(
-        "✅ CAMU SERVICES — application chargée"
-    );
-
-});
+);
+```
