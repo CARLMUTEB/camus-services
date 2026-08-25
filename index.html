@@ -1,11 +1,928 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Accueil — CAMU SERVICES</title><link rel="stylesheet" href="css/style.css"></head><body><header class="topbar"><a class="brand" href="index.html">CAMU <span>SERVICES</span></a><a href="profil.html">Compte</a></header><main class="container"><section class="hero"><h1>Trouver. Acheter. Réserver.</h1><p>Découvrez des services et prestataires près de chez vous.</p><div class="search"><input id="q" placeholder="Rechercher un service..."><button class="btn" id="go">Rechercher</button></div></section><section><h2>Services disponibles</h2><div id="services" class="grid"><div class="loading">Chargement...</div></div></section><section><div class="row"><h2>Communiqués</h2><a class="btn" href="communiques.html">Voir tout</a></div><div id="news" class="grid"></div></section></main><nav class="bottom">
-<a href="index.html"><i>⌂</i>Accueil</a>
-<a href="explorer.html"><i>⌕</i>Explorer</a>
-<a href="publier.html"><i>＋</i>Publier</a>
-<a href="favoris.html"><i>♥</i>Favoris</a>
-<a href="profil.html"><i>●</i>Profil</a>
-</nav><script type="module">import {listApprovedServices,listCommuniques,escapeHTML,whatsappUrl,serviceWhatsAppMessage} from "./js/app.js";
-const services=document.querySelector("#services"),news=document.querySelector("#news");
-function card(s){const wa=whatsappUrl(s.whatsapp||s.telephone,serviceWhatsAppMessage(s));return `<article class="card"><span class="badge">${escapeHTML(s.categorie)}</span><h3>${escapeHTML(s.titre)}</h3><p class="muted">${escapeHTML(s.description)}</p><p>${escapeHTML(s.localisation||"Disponible localement")}</p><div class="actions"><a class="btn secondary" href="service.html?id=${s.id}">Voir</a>${wa?`<a class="btn green" target="_blank" href="${wa}">WhatsApp</a>`:""}</div></article>`}
-async function load(){const r=await listApprovedServices(9);services.innerHTML=r.success&&r.data.length?r.data.map(card).join(""):`<div class="empty">Aucun service publié pour le moment.</div>`;const n=await listCommuniques(3);news.innerHTML=n.success&&n.data.length?n.data.map(x=>`<article class="card"><span class="badge">${escapeHTML(x.type||"Information")}</span><h3>${escapeHTML(x.titre)}</h3><p>${escapeHTML(x.description)}</p></article>`).join(""):`<div class="empty">Aucun communiqué.</div>`}
-document.querySelector("#go").onclick=()=>location.href="explorer.html?q="+encodeURIComponent(document.querySelector("#q").value);load();</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="CAMU SERVICES — Trouvez, achetez et réservez des services locaux."
+  >
+
+  <title>CAMU SERVICES</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="topbar">
+
+    <a href="index.html" class="brand">
+      CAMU <span>SERVICES</span>
+    </a>
+
+    <a href="profil.html" class="account-link">
+      👤
+    </a>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTENU PRINCIPAL
+       ===================================================== -->
+
+  <main class="container">
+
+
+    <!-- ===================================================
+         HERO
+         =================================================== -->
+
+    <section class="hero">
+
+      <div class="hero-location">
+        📍 Services locaux
+      </div>
+
+      <h1>
+        Trouvez les meilleurs
+        services près de chez vous.
+      </h1>
+
+      <p>
+        CAMU SERVICES connecte directement les clients
+        aux entreprises, commerçants, artisans et
+        professionnels locaux.
+      </p>
+
+
+      <!-- RECHERCHE -->
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Rechercher un service..."
+          autocomplete="off"
+        >
+
+        <button
+          type="button"
+          id="searchButton"
+          class="search-button"
+        >
+          🔍
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CATÉGORIES
+         =================================================== -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2>Catégories</h2>
+
+        <a href="explorer.html">
+          Voir tout →
+        </a>
+
+      </div>
+
+
+      <div class="categories">
+
+        <button
+          class="category-btn active"
+          data-category="Toutes"
+        >
+          Toutes
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Construction"
+        >
+          🏗️ Construction
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Transport"
+        >
+          🚗 Transport
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Beauté"
+        >
+          ✂️ Beauté
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Restaurant"
+        >
+          🍴 Restaurant
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Informatique"
+        >
+          💻 Informatique
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Commerce"
+        >
+          🏪 Commerce
+        </button>
+
+        <button
+          class="category-btn"
+          data-category="Services"
+        >
+          💼 Services
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         SERVICES
+         =================================================== -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2>Services disponibles</h2>
+
+        <a href="explorer.html">
+          Voir tout →
+        </a>
+
+      </div>
+
+
+      <div
+        id="services"
+        class="services-grid"
+      >
+
+        <div class="loading">
+          <span class="spinner"></span>
+          Chargement des services...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         COMMUNIQUÉS
+         =================================================== -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2>📢 Communiqués</h2>
+
+        <a href="communiques.html">
+          Voir tout →
+        </a>
+
+      </div>
+
+
+      <div
+        id="communiques"
+        class="communiques-grid"
+      >
+
+        <div class="loading">
+          <span class="spinner"></span>
+          Chargement des communiqués...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ENTREPRISES
+         =================================================== -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2>Entreprises mises en avant</h2>
+
+        <a href="explorer.html">
+          Voir tout →
+        </a>
+
+      </div>
+
+
+      <div
+        id="featuredServices"
+        class="services-grid"
+      >
+
+        <div class="loading">
+          <span class="spinner"></span>
+          Chargement des services...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PRÉSENTATION
+         =================================================== -->
+
+    <section class="about-card">
+
+      <h2>
+        CAMU SERVICES
+      </h2>
+
+      <p>
+        La plateforme qui connecte les entreprises
+        locales à leurs clients.
+      </p>
+
+      <div class="about-actions">
+
+        <a href="index.html">
+          Accueil
+        </a>
+
+        <a href="conditions.html">
+          Conditions
+        </a>
+
+        <a href="parametres.html">
+          Paramètres
+        </a>
+
+        <a href="profil.html">
+          Mon profil
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer class="footer">
+
+    <div class="footer-brand">
+      CAMU SERVICES
+    </div>
+
+    <p>
+      La plateforme qui connecte les entreprises
+      locales à leurs clients.
+    </p>
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Accueil
+      </a>
+
+      <a href="conditions.html">
+        Conditions
+      </a>
+
+      <a href="profil.html">
+        Profil
+      </a>
+
+      <a href="parametres.html">
+        Paramètres
+      </a>
+
+    </div>
+
+    <p class="copyright">
+      © 2026 CAMU SERVICES. Tous droits réservés.
+    </p>
+
+  </footer>
+
+
+  <!-- =====================================================
+       NAVIGATION MOBILE
+       ===================================================== -->
+
+  <nav class="bottom-nav">
+
+    <a
+      href="index.html"
+      class="bottom-nav-item active"
+    >
+      <span>⌂</span>
+      <small>Accueil</small>
+    </a>
+
+    <a
+      href="publier.html"
+      class="bottom-nav-item"
+    >
+      <span>＋</span>
+      <small>Publier</small>
+    </a>
+
+    <a
+      href="explorer.html"
+      class="bottom-nav-item"
+    >
+      <span>⌕</span>
+      <small>Explorer</small>
+    </a>
+
+    <a
+      href="favoris.html"
+      class="bottom-nav-item"
+    >
+      <span>♡</span>
+      <small>Favoris</small>
+    </a>
+
+    <a
+      href="profil.html"
+      class="bottom-nav-item"
+    >
+      <span>♙</span>
+      <small>Profil</small>
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       WHATSAPP
+       ===================================================== -->
+
+  <a
+    href="https://wa.me/"
+    target="_blank"
+    rel="noopener"
+    class="whatsapp-button"
+    aria-label="WhatsApp"
+  >
+    ☎
+  </a>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       IMPORTANT : app.js V2
+       ===================================================== -->
+
+  <script type="module">
+
+    import {
+      listApprovedServices,
+      listCommuniques,
+      escapeHTML,
+      whatsappUrl,
+      serviceWhatsAppMessage
+    } from "./js/app.js";
+
+
+    /* =====================================================
+       VARIABLES
+       ===================================================== */
+
+    const servicesContainer =
+      document.getElementById("services");
+
+    const featuredContainer =
+      document.getElementById("featuredServices");
+
+    const communiquesContainer =
+      document.getElementById("communiques");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const searchButton =
+      document.getElementById("searchButton");
+
+    let allServices = [];
+
+    let selectedCategory = "Toutes";
+
+
+    /* =====================================================
+       CARTE SERVICE
+       ===================================================== */
+
+    function serviceCard(service) {
+
+      const title =
+        escapeHTML(service.titre || "Service");
+
+      const description =
+        escapeHTML(
+          service.description ||
+          "Aucune description disponible."
+        );
+
+      const category =
+        escapeHTML(
+          service.categorie ||
+          "Services"
+        );
+
+      const location =
+        escapeHTML(
+          service.localisation ||
+          "Localisation non précisée"
+        );
+
+
+      let whatsapp = "";
+
+      if (
+        service.whatsapp ||
+        service.telephone
+      ) {
+
+        const url =
+          whatsappUrl(
+            service.whatsapp ||
+            service.telephone,
+            serviceWhatsAppMessage(service)
+          );
+
+        if (url) {
+
+          whatsapp = `
+            <a
+              href="${url}"
+              target="_blank"
+              rel="noopener"
+              class="btn green"
+            >
+              WhatsApp
+            </a>
+          `;
+
+        }
+
+      }
+
+
+      let image = "";
+
+      if (service.imageUrl) {
+
+        image = `
+          <div class="service-image">
+            <img
+              src="${escapeHTML(service.imageUrl)}"
+              alt="${title}"
+              loading="lazy"
+            >
+          </div>
+        `;
+
+      }
+
+
+      return `
+
+        <article class="service-card">
+
+          ${image}
+
+          <div class="service-content">
+
+            <span class="badge">
+              ${category}
+            </span>
+
+            <h3>
+              ${title}
+            </h3>
+
+            <p class="service-description">
+              ${description}
+            </p>
+
+            <p class="service-location">
+              📍 ${location}
+            </p>
+
+            <div class="service-actions">
+
+              <a
+                href="service.html?id=${encodeURIComponent(service.id)}"
+                class="btn secondary"
+              >
+                Voir
+              </a>
+
+              ${whatsapp}
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =====================================================
+       AFFICHER SERVICES
+       ===================================================== */
+
+    function renderServices() {
+
+      const search =
+        searchInput.value
+          .toLowerCase()
+          .trim();
+
+
+      const filtered =
+        allServices.filter(service => {
+
+          const categoryOK =
+            selectedCategory === "Toutes" ||
+            service.categorie === selectedCategory;
+
+
+          const text = [
+
+            service.titre || "",
+
+            service.description || "",
+
+            service.localisation || "",
+
+            service.categorie || ""
+
+          ]
+            .join(" ")
+            .toLowerCase();
+
+
+          const searchOK =
+            !search ||
+            text.includes(search);
+
+
+          return categoryOK && searchOK;
+
+        });
+
+
+      if (!filtered.length) {
+
+        servicesContainer.innerHTML = `
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              🔍
+            </div>
+
+            <h3>
+              Aucun service trouvé
+            </h3>
+
+            <p>
+              Essayez une autre recherche ou catégorie.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      servicesContainer.innerHTML =
+        filtered
+          .slice(0, 9)
+          .map(serviceCard)
+          .join("");
+
+    }
+
+
+    /* =====================================================
+       CHARGER SERVICES
+       ===================================================== */
+
+    async function loadServices() {
+
+      try {
+
+        const result =
+          await listApprovedServices(50);
+
+
+        if (!result.success) {
+
+          servicesContainer.innerHTML = `
+
+            <div class="error-state">
+
+              Impossible de charger les services.
+
+            </div>
+
+          `;
+
+          featuredContainer.innerHTML = "";
+
+          return;
+
+        }
+
+
+        allServices =
+          result.data || [];
+
+
+        renderServices();
+
+
+        /*
+         * Entreprises mises en avant
+         * On prend simplement les premiers services
+         * approuvés pour la V2.
+         */
+
+        const featured =
+          allServices.slice(0, 3);
+
+
+        if (featured.length) {
+
+          featuredContainer.innerHTML =
+            featured
+              .map(serviceCard)
+              .join("");
+
+        } else {
+
+          featuredContainer.innerHTML = `
+
+            <div class="empty-state">
+
+              Aucun service disponible.
+
+            </div>
+
+          `;
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur chargement services :",
+          error
+        );
+
+
+        servicesContainer.innerHTML = `
+
+          <div class="error-state">
+
+            Une erreur est survenue
+            pendant le chargement.
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       CHARGER COMMUNIQUÉS
+       ===================================================== */
+
+    async function loadCommuniques() {
+
+      try {
+
+        const result =
+          await listCommuniques(6);
+
+
+        if (
+          !result.success ||
+          !result.data ||
+          !result.data.length
+        ) {
+
+          communiquesContainer.innerHTML = `
+
+            <div class="empty-state">
+
+              <div class="empty-icon">
+                📢
+              </div>
+
+              <h3>
+                Aucun communiqué
+              </h3>
+
+              <p>
+                Aucun communiqué publié pour le moment.
+              </p>
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        communiquesContainer.innerHTML =
+          result.data
+            .slice(0, 3)
+            .map(communique => `
+
+              <article class="communique-card">
+
+                <span class="badge">
+                  ${escapeHTML(
+                    communique.type ||
+                    "Information"
+                  )}
+                </span>
+
+                <h3>
+                  ${escapeHTML(
+                    communique.titre ||
+                    "Communiqué"
+                  )}
+                </h3>
+
+                <p>
+                  ${escapeHTML(
+                    communique.description ||
+                    ""
+                  )}
+                </p>
+
+              </article>
+
+            `)
+            .join("");
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur communiqués :",
+          error
+        );
+
+
+        communiquesContainer.innerHTML = `
+
+          <div class="error-state">
+
+            Impossible de charger les communiqués.
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       CATÉGORIES
+       ===================================================== */
+
+    document
+      .querySelectorAll(".category-btn")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(".category-btn")
+              .forEach(btn =>
+                btn.classList.remove("active")
+              );
+
+
+            button.classList.add("active");
+
+
+            selectedCategory =
+              button.dataset.category;
+
+
+            renderServices();
+
+          }
+        );
+
+      });
+
+
+    /* =====================================================
+       RECHERCHE
+       ===================================================== */
+
+    searchInput.addEventListener(
+      "input",
+      renderServices
+    );
+
+
+    searchButton.addEventListener(
+      "click",
+      () => {
+
+        const value =
+          searchInput.value.trim();
+
+
+        if (value) {
+
+          window.location.href =
+            "explorer.html?q=" +
+            encodeURIComponent(value);
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       INITIALISATION
+       ===================================================== */
+
+    loadServices();
+
+    loadCommuniques();
+
+  </script>
+
+</body>
+</html>
