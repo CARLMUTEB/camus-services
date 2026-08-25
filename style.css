@@ -1,5 +1,5 @@
 /* =========================================================
-   CAMU SERVICES – FEUILLE DE STYLE GLOBALE
+   CAMU SERVICES – FEUILLE DE STYLE GLOBALE (CORRIGÉE)
    ========================================================= */
 
 /* ===== RESET & BASE ===== */
@@ -350,7 +350,141 @@ textarea {
   font-size: 0.9rem;
 }
 
-/* ===== CARTES ===== */
+/* ===== COMMUNIQUÉS ===== */
+.communiques {
+  background: var(--orange-light);
+  border-left: 4px solid var(--orange);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.communiques h3 {
+  font-size: 0.9rem;
+  color: var(--orange-dark);
+  margin-bottom: 5px;
+}
+
+.communique-item {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+/* ===== CATÉGORIES ===== */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.categorie-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 15px 8px;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.categorie-card:hover {
+  transform: translateY(-3px);
+}
+
+.categorie-icon {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.categorie-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ===== ANNONCES ===== */
+.annonces-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.annonce-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.annonce-card:hover {
+  transform: translateY(-3px);
+}
+
+.annonce-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: #E5E7EB;
+}
+
+.annonce-body {
+  padding: 10px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.annonce-type {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.annonce-titre {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.annonce-prix {
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.annonce-localisation {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.annonce-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.btn-detail {
+  color: var(--orange);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.btn-favori {
+  font-size: 1.2rem;
+  color: #9CA3AF;
+}
+
+.btn-favori.active {
+  color: #EF4444;
+}
+
+/* ===== CARTES GÉNÉRIQUES ===== */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -502,7 +636,9 @@ textarea {
 .dark .header,
 .dark .mobile-nav,
 .dark .card,
-.dark .drawer {
+.dark .drawer,
+.dark .annonce-card,
+.dark .categorie-card {
   background: #1F2937;
 }
 
@@ -646,6 +782,14 @@ textarea {
   .grid-3 { grid-template-columns: repeat(3, 1fr); }
   .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+  .categories-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .annonces-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .footer-content {
     grid-template-columns: 2fr 1fr 1fr 1fr;
   }
@@ -654,5 +798,15 @@ textarea {
 @media (min-width: 1024px) {
   .main-container {
     padding: 24px;
+  }
+
+  .annonces-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .annonces-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
