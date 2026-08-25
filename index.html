@@ -1,264 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - Trouvez tout près de chez vous</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CAMU SERVICES — Accueil</title>
+    <!-- Firebase (module) -->
+    <script type="module" src="js/app.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <button class="icon-btn" id="menu-toggle" aria-label="Ouvrir le menu">☰</button>
-    <a href="index.html" class="logo">
-      <span>🛠️</span> CAMU SERVICES
-    </a>
-    <div class="header-actions">
-      <button class="icon-btn" id="theme-toggle" title="Basculer le thème">🌙</button>
-      <div id="auth-buttons"></div>
-    </div>
-  </header>
+    <!-- OVERLAY SIDEBAR -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-  <!-- MENU LATÉRAL -->
-  <div class="drawer-overlay" id="drawer-overlay"></div>
-  <aside class="drawer" id="drawer">
-    <div class="drawer-header">
-      <span class="logo">CAMU SERVICES</span>
-      <button class="icon-btn" id="drawer-close">✕</button>
-    </div>
-    <nav class="drawer-nav">
-      <a href="index.html" class="active">🏠 Accueil</a>
-      <a href="explorer.html">🔍 Explorer</a>
-      <a href="publier.html">＋ Publier</a>
-      <a href="favoris.html">❤️ Favoris</a>
-      <a href="chat.html">💬 Chat</a>
-      <a href="profil.html">👤 Profil</a>
-      <a href="devenir-entreprise.html">🏢 Devenir entreprise</a>
-      <a href="parametres.html">⚙️ Paramètres</a>
-    </nav>
-    <div class="drawer-footer">
-      <a href="conditions.html">Conditions</a>
-      <a href="confidentialite.html">Confidentialité</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </aside>
-
-  <!-- BARRE DE RECHERCHE -->
-  <div class="search-container">
-    <div class="search-bar">
-      <input type="search" id="search-input" placeholder="Rechercher un service, une maison, un véhicule...">
-      <button id="search-btn">Rechercher</button>
-    </div>
-  </div>
-
-  <!-- CONTENU PRINCIPAL -->
-  <main class="main-container">
-    <!-- Communiqués -->
-    <div class="communiques" id="communiques-container">
-      <h3>📢 Communiqués</h3>
-      <div id="communiques-list"></div>
-    </div>
-
-    <!-- Catégories -->
-    <div class="section-title">
-      <h2>Catégories populaires</h2>
-      <a href="explorer.html">Voir tout</a>
-    </div>
-    <div class="categories-grid" id="categories-grid"></div>
-
-    <!-- Dernières annonces -->
-    <div class="section-title">
-      <h2>Dernières annonces</h2>
-      <a href="explorer.html">Voir tout</a>
-    </div>
-    <div class="annonces-grid" id="annonces-grid"></div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <span class="logo">CAMU SERVICES</span>
-        <p>La plateforme de confiance pour trouver et publier des annonces locales.</p>
-      </div>
-      <div class="footer-links">
-        <h4>Navigation</h4>
-        <a href="index.html">Accueil</a>
-        <a href="explorer.html">Explorer</a>
-        <a href="publier.html">Publier</a>
-        <a href="profil.html">Profil</a>
-      </div>
-      <div class="footer-links">
-        <h4>Informations</h4>
-        <a href="a-propos.html">À propos</a>
-        <a href="conditions.html">Conditions d'utilisation</a>
-        <a href="confidentialite.html">Politique de confidentialité</a>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div class="footer-links">
-        <h4>Contact</h4>
-        <a href="contact.html">Page de contact</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 CAMU SERVICES. Tous droits réservés.
-    </div>
-  </footer>
-
-  <!-- NAVIGATION MOBILE -->
-  <nav class="mobile-nav">
-    <a href="index.html" class="active">
-      <span class="nav-icon">🏠</span>
-      Accueil
-    </a>
-    <a href="explorer.html">
-      <span class="nav-icon">🔍</span>
-      Explorer
-    </a>
-    <a href="publier.html" class="nav-publish">
-      <span class="nav-icon">＋</span>
-    </a>
-    <a href="favoris.html">
-      <span class="nav-icon">❤️</span>
-      Favoris
-    </a>
-    <a href="profil.html">
-      <span class="nav-icon">👤</span>
-      Profil
-    </a>
-  </nav>
-
-  <!-- SCRIPT MODULE -->
-  <script type="module">
-    import {
-      listApprovedServices,
-      listCommuniques,
-      waitForAuth,
-      toggleTheme,
-      applyTheme,
-      escapeHTML,
-      whatsappUrl,
-      serviceWhatsAppMessage,
-      CATEGORIES
-    } from './js/app.js';
-
-    // Thème
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-    applyTheme();
-
-    // Menu latéral
-    const drawer = document.getElementById('drawer');
-    const overlay = document.getElementById('drawer-overlay');
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      drawer.classList.add('open');
-      overlay.classList.add('active');
-    });
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    document.getElementById('drawer-close').addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-
-    // Boutons d'authentification
-    const authButtons = document.getElementById('auth-buttons');
-    async function updateAuthUI() {
-      const user = await waitForAuth();
-      if (user) {
-        authButtons.innerHTML = `<a href="profil.html" class="icon-btn" title="Mon profil">👤</a>`;
-      } else {
-        authButtons.innerHTML = `
-          <a href="connexion.html" style="color:var(--orange); font-weight:500;">Connexion</a>
-          <a href="inscription.html" style="background:var(--orange); color:white; padding:8px 16px; border-radius:20px; font-weight:500;">S'inscrire</a>
-        `;
-      }
-    }
-    updateAuthUI();
-
-    // Recherche
-    document.getElementById('search-btn').addEventListener('click', () => {
-      const query = document.getElementById('search-input').value.trim();
-      if (query) window.location.href = `explorer.html?q=${encodeURIComponent(query)}`;
-    });
-    document.getElementById('search-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') document.getElementById('search-btn').click();
-    });
-
-    // Catégories
-    const categoriesGrid = document.getElementById('categories-grid');
-    const categoryIcons = {
-      "Construction": "🏗️",
-      "Transport": "🚚",
-      "Beauté": "💅",
-      "Restaurant": "🍽️",
-      "Informatique": "💻",
-      "Commerce": "🛍️",
-      "Services": "🛠️",
-      "Immobilier": "🏠",
-      "Véhicules": "🚗",
-      "Hôtels": "🏨",
-      "Événements": "🎪"
-    };
-
-    CATEGORIES.forEach(cat => {
-      const card = document.createElement('div');
-      card.className = 'categorie-card';
-      card.innerHTML = `
-        <div class="categorie-icon">${categoryIcons[cat] || '📦'}</div>
-        <div class="categorie-name">${escapeHTML(cat)}</div>
-      `;
-      card.addEventListener('click', () => {
-        window.location.href = `explorer.html?categorie=${encodeURIComponent(cat)}`;
-      });
-      categoriesGrid.appendChild(card);
-    });
-
-    // Communiqués
-    async function loadCommuniques() {
-      const container = document.getElementById('communiques-list');
-      const result = await listCommuniques(5);
-      if (result.success && result.data.length > 0) {
-        container.innerHTML = result.data.map(com => `
-          <div class="communique-item">
-            <strong>${escapeHTML(com.titre)}</strong> : ${escapeHTML(com.description)}
-          </div>
-        `).join('');
-      } else {
-        document.getElementById('communiques-container').style.display = 'none';
-      }
-    }
-    loadCommuniques();
-
-    // Annonces récentes
-    async function loadAnnonces() {
-      const grid = document.getElementById('annonces-grid');
-      const result = await listApprovedServices({ max: 8, sortBy: 'recent' });
-      if (result.success && result.data.length > 0) {
-        grid.innerHTML = result.data.map(service => {
-          const image = service.imageUrl || 'https://via.placeholder.com/300x160?text=Pas+d%27image';
-          const whatsapp = whatsappUrl(service.whatsapp || service.telephone, serviceWhatsAppMessage(service));
-          return `
-            <div class="annonce-card">
-              <img src="${escapeHTML(image)}" alt="${escapeHTML(service.titre)}" class="annonce-image" loading="lazy">
-              <div class="annonce-body">
-                <span class="annonce-type">${escapeHTML(service.typeAnnonce || 'Service')}</span>
-                <h3 class="annonce-titre">${escapeHTML(service.titre)}</h3>
-                ${service.prix ? `<p class="annonce-prix">${escapeHTML(service.prix)}</p>` : ''}
-                <p class="annonce-localisation">📍 ${escapeHTML(service.localisation || 'Non spécifié')}</p>
-                <div class="annonce-actions">
-                  <a href="${whatsapp}" target="_blank" class="btn-whatsapp btn-sm">💬 WhatsApp</a>
-                  <a href="detail.html?id=${service.id}" class="btn-detail">Voir détails</a>
-                </div>
-              </div>
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-avatar" id="sidebar-avatar">
+                <img src="assets/default-avatar.png" alt="Avatar" id="sidebar-avatar-img">
             </div>
-          `;
-        }).join('');
-      } else {
-        grid.innerHTML = '<p>Aucune annonce approuvée pour le moment.</p>';
-      }
-    }
-    loadAnnonces();
-  </script>
+            <div class="sidebar-user-info">
+                <span id="sidebar-displayName">Invité</span>
+                <span id="sidebar-role" class="badge">Visiteur</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="/" data-link><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="/recherche" data-link><i class="fas fa-search"></i> Rechercher</a></li>
+                <li><a href="/categories" data-link><i class="fas fa-th-large"></i> Catégories</a></li>
+                <li><a href="/chat" data-link><i class="fas fa-comment-dots"></i> Chat</a></li>
+                <li><a href="/publier" data-link><i class="fas fa-plus-circle"></i> Publier</a></li>
+                <li><a href="/favoris" data-link><i class="fas fa-heart"></i> Favoris</a></li>
+                <li><a href="/reservations" data-link><i class="fas fa-calendar-check"></i> Réservations</a></li>
+                <li><a href="/notifications" data-link><i class="fas fa-bell"></i> Notifications</a></li>
+                <li><a href="/profil" data-link><i class="fas fa-user"></i> Mon profil</a></li>
+                <li><a href="/parametres" data-link><i class="fas fa-cog"></i> Paramètres</a></li>
+                <!-- Dynamique -->
+                <li id="sidebar-pro-link" style="display:none;"><a href="/professionnel/dashboard" data-link><i class="fas fa-briefcase"></i> Espace professionnel</a></li>
+                <li id="sidebar-admin-link" style="display:none;"><a href="/admin" data-link><i class="fas fa-shield-alt"></i> Administration</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="sidebar-logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+    </aside>
+
+    <!-- ===== APPLICATION ===== -->
+    <div class="app-container">
+
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <button id="menu-toggle" class="menu-btn"><i class="fas fa-bars"></i></button>
+            <div class="logo">CAMU SERVICES</div>
+            <button id="profile-btn" class="profile-btn">
+                <i class="fas fa-user"></i> Profil
+            </button>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main id="main-content">
+
+            <!-- HERO : Slogan seul -->
+            <section class="hero">
+                <h1>SOYEZ LES BIENVENUS</h1>
+            </section>
+
+            <!-- BARRE DE RECHERCHE -->
+            <section class="search-section">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Que recherchez-vous ? (maison, voiture, service...)" />
+                    <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="quick-filters">
+                    <select id="filter-category"><option value="">Catégorie</option></select>
+                    <input type="text" id="filter-city" placeholder="VILLE" />
+                    <input type="number" id="filter-price-min" placeholder="Prix min" />
+                    <input type="number" id="filter-price-max" placeholder="Prix max" />
+                </div>
+            </section>
+
+            <!-- COMMUNIQUÉ (bloc) -->
+            <section class="communique-bloc">
+                <div class="communique-banner" id="communique-banner">
+                    <i class="fas fa-bullhorn"></i>
+                    <span id="communique-text">Chargement du communiqué...</span>
+                </div>
+            </section>
+
+            <!-- CATÉGORIES -->
+            <section class="categories-section">
+                <h2>Catégories</h2>
+                <div class="category-grid" id="category-grid">
+                    <!-- Chargé dynamiquement -->
+                </div>
+            </section>
+
+            <!-- ANNONCES RÉCENTES -->
+            <section class="annonces-section">
+                <h2>Annonces récentes</h2>
+                <div id="annonces-recentes" class="annonces-grid">
+                    <!-- Chargé dynamiquement -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ===== PIED DE PAGE (liens) ===== -->
+        <footer class="app-footer">
+            <ul class="footer-links">
+                <li><a href="/a-propos" data-link>À-PROPOS</a></li>
+                <li><a href="/conditions" data-link>CONDITIONNALITÉ</a></li>
+                <li><a href="/confidentialite" data-link>CONFIDENTIALITÉ</a></li>
+                <li><a href="/contacts" data-link>CONTACTS</a></li>
+            </ul>
+        </footer>
+
+        <!-- ===== BOTTOM NAV (4 icônes) ===== -->
+        <nav class="bottom-nav">
+            <a href="/" data-link class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
+            <a href="/chat" data-link><i class="fas fa-comment-dots"></i><span>Chat</span></a>
+            <a href="/publier" data-link><i class="fas fa-plus-circle"></i><span>Publier</span></a>
+            <a href="/favoris" data-link><i class="fas fa-heart"></i><span>Favoris</span></a>
+        </nav>
+
+    </div>
+
 </body>
 </html>
