@@ -1,46 +1,122 @@
+```javascript
 // =========================================================
 // CAMU SERVICES — STORE GLOBAL
 // =========================================================
 
 const state = {
+
     user: null,
+
     userData: null,
+
     isAuthenticated: false,
+
     listeners: []
+
 };
 
+
+// =========================================================
+// OBTENIR L'ÉTAT
+// =========================================================
+
 export function getState() {
-    return { ...state };
+
+    return {
+
+        user: state.user,
+
+        userData: state.userData,
+
+        isAuthenticated:
+            state.isAuthenticated
+    };
 }
 
-export function setUser(user, userData = null) {
-    state.user = user;
-    state.userData = userData;
-    state.isAuthenticated = !!user;
+
+// =========================================================
+// UTILISATEUR
+// =========================================================
+
+export function setUser(
+    user,
+    userData = null
+) {
+
+    state.user =
+        user;
+
+    state.userData =
+        userData;
+
+    state.isAuthenticated =
+        !!user;
 
     notify();
 }
 
-export function addListener(callback) {
-    if (typeof callback !== "function") return;
 
-    state.listeners.push(callback);
+// =========================================================
+// LISTENERS
+// =========================================================
 
-    callback({ ...state });
+export function addListener(
+    callback
+) {
+
+    if (
+        typeof callback !==
+        "function"
+    ) {
+        return () => {};
+    }
+
+    state.listeners.push(
+        callback
+    );
+
+    callback(
+        getState()
+    );
 
     return () => {
-        state.listeners = state.listeners.filter(
-            listener => listener !== callback
-        );
+
+        state.listeners =
+            state.listeners.filter(
+                listener =>
+                    listener !== callback
+            );
     };
 }
 
+
+// =========================================================
+// NOTIFICATION
+// =========================================================
+
 function notify() {
-    state.listeners.forEach(listener => {
-        try {
-            listener({ ...state });
-        } catch (error) {
-            console.error("Erreur listener :", error);
+
+    const currentState =
+        getState();
+
+    state.listeners.forEach(
+        listener => {
+
+            try {
+
+                listener(
+                    currentState
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur listener :",
+                    error
+                );
+            }
+
         }
-    });
+    );
 }
+```
