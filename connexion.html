@@ -1,110 +1,215 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Connexion — CAMU SERVICES</title>
+
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script type="module" src="js/app.js"></script>
-    <style>
-        .auth-page {
-            max-width: 400px;
-            margin: 60px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-        }
-        .auth-page h1 {
-            text-align: center;
-            margin-bottom: 24px;
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        .auth-page input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            font-size: 1rem;
-        }
-        .auth-page button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .auth-page button:hover {
-            background: var(--primary-dark);
-        }
-        .auth-page .link {
-            text-align: center;
-            margin-top: 16px;
-        }
-        .auth-page .link a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .error {
-            color: #d32f2f;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-    </style>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    >
+
 </head>
+
 <body>
-    <div class="auth-page">
-        <h1>🔐 Connexion</h1>
-        <div id="login-error" class="error"></div>
-        <input type="email" id="login-email" placeholder="Email" required>
-        <input type="password" id="login-password" placeholder="Mot de passe" required>
-        <button id="login-btn">Se connecter</button>
-        <div class="link">
-            <a href="/inscription" data-link>Pas encore de compte ? Inscrivez-vous</a><br>
-            <a href="#" id="forgot-password">Mot de passe oublié ?</a>
-        </div>
+
+<main class="auth-page">
+
+    <h1>🔐 Connexion</h1>
+
+    <div
+        id="login-error"
+        class="error"
+    ></div>
+
+    <input
+        type="email"
+        id="login-email"
+        placeholder="Adresse email"
+        autocomplete="email"
+    >
+
+    <input
+        type="password"
+        id="login-password"
+        placeholder="Mot de passe"
+        autocomplete="current-password"
+    >
+
+    <button id="login-btn">
+        Se connecter
+    </button>
+
+    <div class="auth-links">
+
+        <a href="inscription.html">
+            Pas encore de compte ? Inscrivez-vous
+        </a>
+
+        <a href="#" id="forgot-password">
+            Mot de passe oublié ?
+        </a>
+
+        <a href="index.html">
+            ← Retour à l'accueil
+        </a>
+
     </div>
 
-    <script type="module">
-        import { signIn, resetPassword } from './js/core/auth.js';
-        import { router } from './js/core/router.js';
+</main>
 
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const errorEl = document.getElementById('login-error');
-            errorEl.textContent = '';
 
-            const result = await signIn(email, password);
-            if (result.success) {
-                router.navigate('/');
-            } else {
-                errorEl.textContent = result.error;
-            }
-        });
+<script type="module">
 
-        document.getElementById('forgot-password').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
+import {
+    signIn,
+    resetPassword
+} from "./js/core/auth.js";
+
+
+const emailInput =
+    document.getElementById(
+        "login-email"
+    );
+
+const passwordInput =
+    document.getElementById(
+        "login-password"
+    );
+
+const loginButton =
+    document.getElementById(
+        "login-btn"
+    );
+
+const errorElement =
+    document.getElementById(
+        "login-error"
+    );
+
+
+loginButton.addEventListener(
+    "click",
+    async () => {
+
+        errorElement.textContent = "";
+
+
+        const email =
+            emailInput.value.trim();
+
+        const password =
+            passwordInput.value;
+
+
+        if (!email || !password) {
+
+            errorElement.textContent =
+                "Veuillez remplir tous les champs.";
+
+            return;
+
+        }
+
+
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+            "Connexion...";
+
+
+        const result =
+            await signIn(
+                email,
+                password
+            );
+
+
+        if (result.success) {
+
+            window.location.href =
+                "index.html";
+
+        } else {
+
+            errorElement.textContent =
+                result.error;
+
+            loginButton.disabled =
+                false;
+
+            loginButton.textContent =
+                "Se connecter";
+
+        }
+
+    }
+);
+
+
+document
+    .getElementById(
+        "forgot-password"
+    )
+    .addEventListener(
+        "click",
+        async event => {
+
+            event.preventDefault();
+
+
+            const email =
+                emailInput.value.trim();
+
+
             if (!email) {
-                alert('Veuillez entrer votre email.');
+
+                alert(
+                    "Entrez d'abord votre adresse email."
+                );
+
+                emailInput.focus();
+
                 return;
+
             }
-            const result = await resetPassword(email);
+
+
+            const result =
+                await resetPassword(
+                    email
+                );
+
+
             if (result.success) {
-                alert('Un email de réinitialisation a été envoyé.');
+
+                alert(
+                    "Un email de réinitialisation a été envoyé."
+                );
+
             } else {
-                alert('Erreur: ' + result.error);
+
+                alert(
+                    result.error
+                );
+
             }
-        });
-    </script>
+
+        }
+    );
+
+</script>
+
 </body>
 </html>
