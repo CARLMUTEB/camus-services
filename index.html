@@ -20,7 +20,7 @@
     </div>
   </header>
 
-  <!-- MENU LATÉRAL (DRAWER) -->
+  <!-- MENU LATÉRAL -->
   <div class="drawer-overlay" id="drawer-overlay"></div>
   <aside class="drawer" id="drawer">
     <div class="drawer-header">
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <!-- MAIN -->
+  <!-- CONTENU PRINCIPAL -->
   <main class="main-container">
     <!-- Communiqués -->
     <div class="communiques" id="communiques-container">
@@ -134,7 +134,6 @@
     import {
       listApprovedServices,
       listCommuniques,
-      getCurrentUser,
       waitForAuth,
       toggleTheme,
       applyTheme,
@@ -144,11 +143,11 @@
       CATEGORIES
     } from './js/app.js';
 
-    // ===== THÈME =====
+    // Thème
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     applyTheme();
 
-    // ===== MENU LATÉRAL =====
+    // Menu latéral
     const drawer = document.getElementById('drawer');
     const overlay = document.getElementById('drawer-overlay');
     document.getElementById('menu-toggle').addEventListener('click', () => {
@@ -162,7 +161,7 @@
     document.getElementById('drawer-close').addEventListener('click', closeDrawer);
     overlay.addEventListener('click', closeDrawer);
 
-    // ===== AUTH BUTTONS =====
+    // Boutons d'authentification
     const authButtons = document.getElementById('auth-buttons');
     async function updateAuthUI() {
       const user = await waitForAuth();
@@ -177,7 +176,7 @@
     }
     updateAuthUI();
 
-    // ===== RECHERCHE =====
+    // Recherche
     document.getElementById('search-btn').addEventListener('click', () => {
       const query = document.getElementById('search-input').value.trim();
       if (query) window.location.href = `explorer.html?q=${encodeURIComponent(query)}`;
@@ -186,7 +185,7 @@
       if (e.key === 'Enter') document.getElementById('search-btn').click();
     });
 
-    // ===== CATÉGORIES =====
+    // Catégories
     const categoriesGrid = document.getElementById('categories-grid');
     const categoryIcons = {
       "Construction": "🏗️",
@@ -215,7 +214,7 @@
       categoriesGrid.appendChild(card);
     });
 
-    // ===== COMMUMIQUÉS =====
+    // Communiqués
     async function loadCommuniques() {
       const container = document.getElementById('communiques-list');
       const result = await listCommuniques(5);
@@ -231,7 +230,7 @@
     }
     loadCommuniques();
 
-    // ===== ANNONCES RÉCENTES =====
+    // Annonces récentes
     async function loadAnnonces() {
       const grid = document.getElementById('annonces-grid');
       const result = await listApprovedServices({ max: 8, sortBy: 'recent' });
@@ -248,7 +247,7 @@
                 ${service.prix ? `<p class="annonce-prix">${escapeHTML(service.prix)}</p>` : ''}
                 <p class="annonce-localisation">📍 ${escapeHTML(service.localisation || 'Non spécifié')}</p>
                 <div class="annonce-actions">
-                  <a href="${whatsapp}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+                  <a href="${whatsapp}" target="_blank" class="btn-whatsapp btn-sm">💬 WhatsApp</a>
                   <a href="detail.html?id=${service.id}" class="btn-detail">Voir détails</a>
                 </div>
               </div>
