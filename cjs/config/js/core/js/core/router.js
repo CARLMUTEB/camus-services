@@ -1,55 +1,148 @@
-// js/core/router.js
-import { addListener } from "./auth.js";
+const routes = {
 
-export const router = {
-    currentPath: '/',
-    navigate(path) {
-        if (path === this.currentPath) return;
-        this.currentPath = path;
-        // Mise à jour de l'URL sans rechargement
-        window.history.pushState({}, '', path);
-        this.handleRoute(path);
-    },
-    handleRoute(path) {
-        // Pour l'instant, on recharge la page si on est sur une page différente
-        // Plus tard, on pourra faire du SPA avec chargement dynamique
-        const pageMap = {
-            '/': 'index.html',
-            '/connexion': 'connexion.html',
-            '/inscription': 'inscription.html',
-            '/profil': 'profil.html',
-            // ajouter les autres pages au fur et à mesure
-        };
-        const page = pageMap[path] || 'index.html';
-        // On ne recharge que si on n'est pas déjà sur cette page
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        if (page !== currentPage) {
-            window.location.href = page;
-        }
-    }
+    "/":
+        "index.html",
+
+    "/index.html":
+        "index.html",
+
+    "/connexion":
+        "connexion.html",
+
+    "/connexion.html":
+        "connexion.html",
+
+    "/inscription":
+        "inscription.html",
+
+    "/inscription.html":
+        "inscription.html",
+
+    "/profil":
+        "profil.html",
+
+    "/profil.html":
+        "profil.html",
+
+    "/recherche":
+        "recherche.html",
+
+    "/categories":
+        "categories.html",
+
+    "/chat":
+        "chat.html",
+
+    "/publier":
+        "publier.html",
+
+    "/favoris":
+        "favoris.html",
+
+    "/reservations":
+        "reservations.html",
+
+    "/notifications":
+        "notifications.html",
+
+    "/parametres":
+        "parametres.html",
+
+    "/admin":
+        "admin.html"
+
 };
 
-// Gestion des clics sur les liens avec data-link
-document.addEventListener('click', (e) => {
-    const link = e.target.closest('[data-link]');
-    if (link) {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (href) router.navigate(href);
+
+export const router = {
+
+    navigate(path) {
+
+        const target =
+            routes[path] || path;
+
+
+        const current =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+
+        const targetFile =
+            target.split("/")
+                .pop();
+
+
+        if (current === targetFile) {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+            return;
+
+        }
+
+
+        window.location.href =
+            target;
+
+    },
+
+
+    handleRoute() {
+
+        // GitHub Pages utilise les vrais fichiers HTML.
+        // Aucune réécriture complexe nécessaire.
+
     }
-});
 
-// Gestion du bouton retour
-window.addEventListener('popstate', () => {
-    const path = window.location.pathname;
-    router.currentPath = path;
-    router.handleRoute(path);
-});
+};
 
-// Initialisation
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const link =
+            event.target.closest(
+                "[data-link]"
+            );
+
+
+        if (!link) {
+            return;
+        }
+
+
+        const href =
+            link.getAttribute("href");
+
+
+        if (!href) {
+            return;
+        }
+
+
+        if (
+            href.startsWith("http") ||
+            href.startsWith("#")
+        ) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+        router.navigate(href);
+
+    }
+);
+
+
 export function initRouter() {
-    // Gérer le chemin initial
-    const path = window.location.pathname;
-    router.currentPath = path;
-    // On peut aussi vérifier les permissions ici
+
+    router.handleRoute();
+
 }
