@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
 
@@ -11,43 +10,93 @@
 
     <meta
         name="description"
-        content="CAMU SERVICES — Trouver, acheter et réserver."
+        content="CAMU SERVICES — Trouver, Acheter, Réserver"
     >
 
-    <title>CAMU SERVICES — Accueil</title>
+    <title>CAMU SERVICES</title>
 
+    <!-- CSS PRINCIPAL -->
     <link
         rel="stylesheet"
-        href="css/main.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/responsive.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        href="css/style.css"
     >
 </head>
 
 <body>
 
-    <!-- =====================================================
-         OVERLAY SIDEBAR
-         ===================================================== -->
+<!-- =====================================================
+     APPLICATION CAMU SERVICES
+     ===================================================== -->
+
+<div id="app">
+
+    <!-- =================================================
+         BARRE SUPÉRIEURE
+         ================================================= -->
+
+    <header class="topbar">
+
+        <button
+            id="menuBtn"
+            class="icon-btn"
+            type="button"
+            aria-label="Ouvrir le menu"
+            aria-controls="sidebar"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
+        <a
+            href="#accueil"
+            class="logo"
+            id="logoLink"
+        >
+            CAMU <span>SERVICES</span>
+        </a>
+
+        <div class="topbar-actions">
+
+            <button
+                id="topProfileBtn"
+                class="profile-btn"
+                type="button"
+                aria-label="Mon profil"
+            >
+                <span
+                    id="topProfilePhoto"
+                    class="profile-photo-small"
+                >
+                    👤
+                </span>
+
+                <span
+                    id="topProfileName"
+                    class="top-profile-name"
+                >
+                    Connexion
+                </span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         FOND MOBILE POUR SIDEBAR
+         ================================================= -->
 
     <div
-        id="sidebar-overlay"
+        id="sidebarOverlay"
         class="sidebar-overlay"
         aria-hidden="true"
     ></div>
 
 
-    <!-- =====================================================
+    <!-- =================================================
          SIDEBAR
-         ===================================================== -->
+         ================================================= -->
 
     <aside
         id="sidebar"
@@ -57,26 +106,36 @@
 
         <div class="sidebar-header">
 
-            <div class="sidebar-avatar">
+            <button
+                id="closeSidebarBtn"
+                class="close-sidebar"
+                type="button"
+                aria-label="Fermer le menu"
+            >
+                ×
+            </button>
 
-                <img
-                    id="sidebar-avatar-img"
-                    src="assets/default-avatar.png"
-                    alt="Photo de profil"
-                >
+        </div>
 
+
+        <!-- PROFIL SIDEBAR -->
+
+        <div class="sidebar-profile">
+
+            <div
+                id="sidebarProfilePhoto"
+                class="sidebar-profile-photo"
+            >
+                👤
             </div>
 
-            <div class="sidebar-user-info">
+            <div class="sidebar-profile-info">
 
-                <strong id="sidebar-displayName">
-                    Invité
+                <strong id="sidebarProfileName">
+                    Visiteur
                 </strong>
 
-                <span
-                    id="sidebar-role"
-                    class="badge"
-                >
+                <span id="sidebarProfileRole">
                     Visiteur
                 </span>
 
@@ -85,490 +144,1766 @@
         </div>
 
 
+        <!-- NAVIGATION PRINCIPALE -->
+
         <nav class="sidebar-nav">
 
-            <ul>
-
-                <li>
-                    <a
-                        href="index.html"
-                        data-link
-                    >
-                        <i class="fas fa-home"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="recherche.html"
-                        data-link
-                    >
-                        <i class="fas fa-search"></i>
-                        <span>Rechercher</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="#categories"
-                        data-link
-                    >
-                        <i class="fas fa-th-large"></i>
-                        <span>Catégories</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="chat.html"
-                        data-link
-                    >
-                        <i class="fas fa-comment-dots"></i>
-                        <span>Chat</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="publier.html"
-                        data-link
-                    >
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Publier</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="favoris.html"
-                        data-link
-                    >
-                        <i class="fas fa-heart"></i>
-                        <span>Favoris</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="reservations.html"
-                        data-link
-                    >
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Réservations</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="notifications.html"
-                        data-link
-                    >
-                        <i class="fas fa-bell"></i>
-                        <span>Notifications</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="profil.html"
-                        data-link
-                    >
-                        <i class="fas fa-user"></i>
-                        <span>Mon profil</span>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a
-                        href="parametres.html"
-                        data-link
-                    >
-                        <i class="fas fa-cog"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </li>
-
-
-                <!-- Professionnel -->
-                <li
-                    id="sidebar-pro-link"
-                    style="display: none;"
-                >
-                    <a
-                        href="professionnel/index.html"
-                        data-link
-                    >
-                        <i class="fas fa-briefcase"></i>
-                        <span>Espace professionnel</span>
-                    </a>
-                </li>
-
-
-                <!-- Administration -->
-                <li
-                    id="sidebar-admin-link"
-                    style="display: none;"
-                >
-                    <a
-                        href="admin/index.html"
-                        data-link
-                    >
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Administration</span>
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-
-        <div class="sidebar-footer">
-
             <button
-                id="sidebar-logout"
-                class="btn-logout"
+                class="nav-item active"
                 type="button"
+                data-section="accueil"
             >
-
-                <i class="fas fa-sign-out-alt"></i>
-
-                <span>Déconnexion</span>
-
+                <span>🏠</span>
+                <span>Accueil</span>
             </button>
 
-        </div>
+            <button
+                class="nav-item"
+                type="button"
+                data-section="recherche"
+            >
+                <span>🔍</span>
+                <span>Rechercher</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="categories"
+            >
+                <span>🏷️</span>
+                <span>Catégories</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="chat"
+            >
+                <span>💬</span>
+                <span>Chat</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="publier"
+            >
+                <span>➕</span>
+                <span>Publier</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="favoris"
+            >
+                <span>❤️</span>
+                <span>Favoris</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="reservations"
+            >
+                <span>📅</span>
+                <span>Réservations</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="notifications"
+            >
+                <span>🔔</span>
+                <span>Notifications</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="profil"
+            >
+                <span>👤</span>
+                <span>Mon profil</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="parametres"
+            >
+                <span>⚙️</span>
+                <span>Paramètres</span>
+            </button>
+
+            <div class="sidebar-divider"></div>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="professionnel"
+            >
+                <span>💼</span>
+                <span>Espace professionnel</span>
+            </button>
+
+            <button
+                id="adminNavBtn"
+                class="nav-item admin-nav-item hidden"
+                type="button"
+                data-section="administration"
+            >
+                <span>🛡️</span>
+                <span>Administration</span>
+            </button>
+
+            <div class="sidebar-divider"></div>
+
+            <button
+                id="logoutBtn"
+                class="nav-item logout-item"
+                type="button"
+            >
+                <span>🚪</span>
+                <span>Déconnexion</span>
+            </button>
+
+        </nav>
 
     </aside>
 
 
-    <!-- =====================================================
-         CONTENEUR PRINCIPAL
-         ===================================================== -->
+    <!-- =================================================
+         CONTENU PRINCIPAL
+         ================================================= -->
 
-    <div class="app-container">
-
-
-        <!-- =================================================
-             BARRE SUPÉRIEURE
-             ================================================= -->
-
-        <header class="top-bar">
-
-            <button
-                id="menu-toggle"
-                class="menu-btn"
-                type="button"
-                aria-label="Ouvrir le menu"
-                aria-controls="sidebar"
-                aria-expanded="false"
-            >
-
-                <i class="fas fa-bars"></i>
-
-            </button>
-
-
-            <div class="logo">
-                CAMU SERVICES
-            </div>
-
-
-            <button
-                id="profile-btn"
-                class="profile-btn"
-                type="button"
-                aria-label="Ouvrir le profil"
-            >
-
-                <i class="fas fa-user"></i>
-
-                <span>Profil</span>
-
-            </button>
-
-        </header>
+    <main id="mainContent">
 
 
         <!-- =================================================
-             CONTENU PRINCIPAL
+             SECTION ACCUEIL
              ================================================= -->
 
-        <main id="main-content">
+        <section
+            id="section-accueil"
+            class="page-section active"
+        >
 
-
-            <!-- =============================================
-                 HERO
-                 ============================================= -->
+            <!-- HERO -->
 
             <section class="hero">
 
-                <h1>
-                    SOYEZ LES BIENVENUS
-                </h1>
+                <div class="hero-content">
 
-                <p>
-                    TROUVER • ACHETER • RÉSERVER
-                </p>
+                    <p class="hero-welcome">
+                        SOYEZ LES BIENVENUS
+                    </p>
+
+                    <h1>
+                        CAMU SERVICES
+                    </h1>
+
+                    <p class="hero-slogan">
+                        TROUVER • ACHETER • RÉSERVER
+                    </p>
+
+                    <p class="hero-description">
+                        Trouvez facilement des biens, services,
+                        commerces et opportunités près de vous.
+                    </p>
+
+                    <button
+                        id="heroSearchBtn"
+                        class="primary-btn"
+                        type="button"
+                    >
+                        🔍 Commencer une recherche
+                    </button>
+
+                </div>
 
             </section>
 
 
-            <!-- =============================================
-                 RECHERCHE
-                 ============================================= -->
+            <!-- RECHERCHE -->
 
             <section
+                id="searchBox"
                 class="search-section"
-                aria-label="Recherche"
             >
 
-                <div class="search-bar">
+                <div class="section-heading">
 
-                    <i class="fas fa-search"></i>
+                    <h2>
+                        Que recherchez-vous ?
+                    </h2>
 
-                    <input
-                        type="search"
-                        id="search-input"
-                        placeholder="Que recherchez-vous ?"
-                        autocomplete="off"
-                    >
+                    <p>
+                        Trouvez rapidement ce dont vous avez besoin.
+                    </p>
+
+                </div>
+
+
+                <form
+                    id="searchForm"
+                    class="search-form"
+                >
+
+                    <div class="search-field">
+
+                        <label for="searchInput">
+                            Recherche
+                        </label>
+
+                        <input
+                            id="searchInput"
+                            name="search"
+                            type="search"
+                            placeholder="Maison, voiture, boutique, service..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="search-field">
+
+                        <label for="citySelect">
+                            Ville
+                        </label>
+
+                        <select
+                            id="citySelect"
+                            name="city"
+                        >
+
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                            <option value="lubumbashi">
+                                Lubumbashi
+                            </option>
+
+                            <option value="kolwezi">
+                                Kolwezi
+                            </option>
+
+                            <option value="likasi">
+                                Likasi
+                            </option>
+
+                            <option value="fungurume">
+                                Fungurume
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="search-field">
+
+                        <label for="categorySelect">
+                            Catégorie
+                        </label>
+
+                        <select
+                            id="categorySelect"
+                            name="category"
+                        >
+
+                            <option value="">
+                                Toutes les catégories
+                            </option>
+
+                            <option value="immobilier">
+                                Immobilier
+                            </option>
+
+                            <option value="vehicules">
+                                Véhicules
+                            </option>
+
+                            <option value="commerce">
+                                Commerce
+                            </option>
+
+                            <option value="services">
+                                Services
+                            </option>
+
+                            <option value="emploi">
+                                Emploi
+                            </option>
+
+                            <option value="autres">
+                                Autres
+                            </option>
+
+                        </select>
+
+                    </div>
+
 
                     <button
-                        id="search-btn"
-                        type="button"
-                        aria-label="Rechercher"
+                        class="search-btn"
+                        type="submit"
                     >
+                        🔍 Rechercher
+                    </button>
 
-                        <i class="fas fa-arrow-right"></i>
+                </form>
 
+            </section>
+
+
+            <!-- COMMUNIQUÉ -->
+
+            <section
+                id="communiqueSection"
+                class="communique-section"
+            >
+
+                <div class="section-heading">
+
+                    <h2>
+                        📢 Communiqué
+                    </h2>
+
+                </div>
+
+                <div
+                    id="communiqueContainer"
+                    class="communique-container"
+                >
+
+                    <div class="loading-message">
+                        Chargement du communiqué...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CATÉGORIES -->
+
+            <section
+                id="categoriesPreview"
+                class="categories-section"
+            >
+
+                <div class="section-heading">
+
+                    <h2>
+                        🏷️ Catégories
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="text-btn"
+                        data-section="categories"
+                    >
+                        Voir tout
                     </button>
 
                 </div>
 
 
-                <div class="quick-filters">
+                <div
+                    id="categoryCards"
+                    class="category-grid"
+                >
+
+                    <button
+                        class="category-card"
+                        type="button"
+                        data-category="immobilier"
+                    >
+                        <span>🏠</span>
+                        <strong>Immobilier</strong>
+                        <small>Maisons, terrains...</small>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        type="button"
+                        data-category="vehicules"
+                    >
+                        <span>🚗</span>
+                        <strong>Véhicules</strong>
+                        <small>Voitures, motos...</small>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        type="button"
+                        data-category="commerce"
+                    >
+                        <span>🛍️</span>
+                        <strong>Commerce</strong>
+                        <small>Produits et boutiques</small>
+                    </button>
+
+                    <button
+                        class="category-card"
+                        type="button"
+                        data-category="services"
+                    >
+                        <span>🛠️</span>
+                        <strong>Services</strong>
+                        <small>Professionnels</small>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ANNONCES SPONSORISÉES -->
+
+            <section
+                id="sponsoredSection"
+                class="annonces-section"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            ⭐ Annonces sponsorisées
+                        </h2>
+
+                        <p>
+                            Les annonces mises en avant.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="sponsoredListings"
+                    class="listings-grid"
+                >
+
+                    <div class="loading-message">
+                        Chargement des annonces...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ANNONCES RÉCENTES -->
+
+            <section
+                id="recentSection"
+                class="annonces-section"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            🆕 Annonces récentes
+                        </h2>
+
+                        <p>
+                            Découvrez les dernières publications.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="recentListings"
+                    class="listings-grid"
+                >
+
+                    <div class="loading-message">
+                        Chargement des annonces...
+                    </div>
+
+                </div>
+
+
+                <div class="load-more-container">
+
+                    <button
+                        id="loadMoreBtn"
+                        class="secondary-btn"
+                        type="button"
+                    >
+                        Voir plus d'annonces
+                    </button>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION RECHERCHE
+             ================================================= -->
+
+        <section
+            id="section-recherche"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    🔍 Rechercher
+                </h1>
+
+                <p>
+                    Recherchez parmi toutes les publications disponibles.
+                </p>
+
+            </div>
+
+
+            <div class="advanced-search">
+
+                <form id="advancedSearchForm">
 
                     <input
+                        id="advancedSearchInput"
+                        type="search"
+                        placeholder="Que recherchez-vous ?"
+                    >
+
+                    <select id="advancedCitySelect">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                    <select id="advancedCategorySelect">
+
+                        <option value="">
+                            Toutes les catégories
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Rechercher
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div
+                id="searchResults"
+                class="listings-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION CATÉGORIES
+             ================================================= -->
+
+        <section
+            id="section-categories"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    🏷️ Catégories
+                </h1>
+
+                <p>
+                    Explorez les annonces par catégorie.
+                </p>
+
+            </div>
+
+
+            <div
+                id="allCategoryCards"
+                class="category-grid category-grid-large"
+            >
+
+                <button
+                    class="category-card"
+                    data-category="immobilier"
+                    type="button"
+                >
+                    <span>🏠</span>
+                    <strong>Immobilier</strong>
+                    <small>Maisons, appartements, terrains...</small>
+                </button>
+
+                <button
+                    class="category-card"
+                    data-category="vehicules"
+                    type="button"
+                >
+                    <span>🚗</span>
+                    <strong>Véhicules</strong>
+                    <small>Voitures, motos et autres véhicules</small>
+                </button>
+
+                <button
+                    class="category-card"
+                    data-category="commerce"
+                    type="button"
+                >
+                    <span>🛍️</span>
+                    <strong>Commerce</strong>
+                    <small>Produits, boutiques et commerces</small>
+                </button>
+
+                <button
+                    class="category-card"
+                    data-category="services"
+                    type="button"
+                >
+                    <span>🛠️</span>
+                    <strong>Services</strong>
+                    <small>Services professionnels</small>
+                </button>
+
+                <button
+                    class="category-card"
+                    data-category="emploi"
+                    type="button"
+                >
+                    <span>💼</span>
+                    <strong>Emploi</strong>
+                    <small>Offres et demandes d'emploi</small>
+                </button>
+
+                <button
+                    class="category-card"
+                    data-category="autres"
+                    type="button"
+                >
+                    <span>📦</span>
+                    <strong>Autres</strong>
+                    <small>Autres publications</small>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION CHAT
+             ================================================= -->
+
+        <section
+            id="section-chat"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    💬 Chat
+                </h1>
+
+                <p>
+                    Discutez avec les utilisateurs et professionnels.
+                </p>
+
+            </div>
+
+
+            <div
+                id="chatContainer"
+                class="chat-container"
+            >
+
+                <div
+                    id="conversationList"
+                    class="conversation-list"
+                >
+
+                    <div class="empty-message">
+                        Aucune conversation.
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="conversationPanel"
+                    class="conversation-panel"
+                >
+
+                    <div class="chat-empty">
+
+                        <span>💬</span>
+
+                        <h3>
+                            Vos conversations
+                        </h3>
+
+                        <p>
+                            Sélectionnez une conversation pour commencer.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION PUBLIER
+             ================================================= -->
+
+        <section
+            id="section-publier"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    ➕ Publier une annonce
+                </h1>
+
+                <p>
+                    Présentez votre bien, produit ou service.
+                </p>
+
+            </div>
+
+
+            <form
+                id="publicationForm"
+                class="publication-form"
+            >
+
+                <div class="form-group">
+
+                    <label for="publicationTitle">
+                        Titre
+                    </label>
+
+                    <input
+                        id="publicationTitle"
                         type="text"
-                        id="filter-city"
-                        placeholder="Ville"
-                        autocomplete="address-level2"
+                        required
+                        maxlength="120"
+                        placeholder="Ex. Maison à vendre"
                     >
 
                 </div>
 
-            </section>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="publicationCategory">
+                            Catégorie
+                        </label>
+
+                        <select
+                            id="publicationCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Choisir une catégorie
+                            </option>
+
+                            <option value="immobilier">
+                                Immobilier
+                            </option>
+
+                            <option value="vehicules">
+                                Véhicules
+                            </option>
+
+                            <option value="commerce">
+                                Commerce
+                            </option>
+
+                            <option value="services">
+                                Services
+                            </option>
+
+                            <option value="emploi">
+                                Emploi
+                            </option>
+
+                            <option value="autres">
+                                Autres
+                            </option>
+
+                        </select>
+
+                    </div>
 
 
-            <!-- =============================================
-                 COMMUNIQUÉ
-                 ============================================= -->
+                    <div class="form-group">
 
-            <section
-                class="communique-section"
-                aria-label="Communiqué"
+                        <label for="publicationCity">
+                            Ville
+                        </label>
+
+                        <input
+                            id="publicationCity"
+                            type="text"
+                            required
+                            placeholder="Ville"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="publicationPrice">
+                        Prix
+                    </label>
+
+                    <input
+                        id="publicationPrice"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Prix"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="publicationDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="publicationDescription"
+                        rows="6"
+                        maxlength="5000"
+                        required
+                        placeholder="Décrivez votre annonce..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="publicationImages">
+                        Photos
+                    </label>
+
+                    <input
+                        id="publicationImages"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <small>
+                        Ajoutez une ou plusieurs photos.
+                    </small>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Publier l'annonce
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION FAVORIS
+             ================================================= -->
+
+        <section
+            id="section-favoris"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    ❤️ Mes favoris
+                </h1>
+
+                <p>
+                    Retrouvez les annonces que vous avez enregistrées.
+                </p>
+
+            </div>
+
+
+            <div
+                id="favoritesListings"
+                class="listings-grid"
             >
 
-                <div
-                    id="communique-banner"
-                    class="communique-banner"
-                >
+                <div class="empty-message">
+                    Vous n'avez encore aucun favori.
+                </div>
 
-                    <i class="fas fa-bullhorn"></i>
+            </div>
 
-                    <span id="communique-text">
-                        Aucun communiqué disponible.
+        </section>
+
+
+        <!-- =================================================
+             SECTION RÉSERVATIONS
+             ================================================= -->
+
+        <section
+            id="section-reservations"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    📅 Mes réservations
+                </h1>
+
+                <p>
+                    Consultez vos réservations.
+                </p>
+
+            </div>
+
+
+            <div
+                id="reservationsContainer"
+                class="reservations-container"
+            >
+
+                <div class="empty-message">
+                    Aucune réservation.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION NOTIFICATIONS
+             ================================================= -->
+
+        <section
+            id="section-notifications"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    🔔 Notifications
+                </h1>
+
+                <p>
+                    Vos notifications apparaîtront ici.
+                </p>
+
+            </div>
+
+
+            <div
+                id="notificationsContainer"
+                class="notifications-container"
+            >
+
+                <div class="empty-message">
+                    Aucune notification.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECTION PROFIL
+             ================================================= -->
+
+        <section
+            id="section-profil"
+            class="page-section"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    👤 Mon profil
+                </h1>
+
+                <p>
+                    Gérez vos informations personnelles.
+                </p>
+
+            </div>
+
+
+            <div
+                id="profileContainer"
+                class="profile-container"
+            >
+
+                <div class="profile-card">
+
+                    <div
+                        id="profilePhoto"
+                        class="profile-photo-large"
+                    >
+                        👤
+                    </div>
+
+                    <h2 id="profileName">
+                        Visiteur
+                    </h2>
+
+                    <p id="profileEmail">
+                        Non connecté
+                    </p>
+
+                    <span
+                        id="profileRole"
+                        class="role-badge"
+                    >
+                        Visiteur
                     </span>
 
                 </div>
 
-            </section>
 
-
-            <!-- =============================================
-                 ANNONCES SPONSORISÉES
-                 ============================================= -->
-
-            <section
-                id="sponsored-section"
-                class="annonces-section sponsored-section"
-            >
-
-                <div class="section-header">
-
-                    <h2>
-                        Annonces sponsorisées
-                    </h2>
-
-                </div>
-
-
-                <div
-                    id="annonces-sponsorisees"
-                    class="annonces-grid"
+                <form
+                    id="profileForm"
+                    class="profile-form"
                 >
-                    <!--
-                        Les annonces sponsorisées seront
-                        chargées dynamiquement depuis Firebase.
-                    -->
-                </div>
 
-            </section>
+                    <div class="form-group">
 
+                        <label for="profileFullName">
+                            Nom complet
+                        </label>
 
-            <!-- =============================================
-                 ANNONCES RÉCENTES
-                 ============================================= -->
+                        <input
+                            id="profileFullName"
+                            type="text"
+                            placeholder="Votre nom"
+                        >
 
-            <section
-                id="recent-section"
-                class="annonces-section recent-section"
-            >
-
-                <div class="section-header">
-
-                    <h2>
-                        Annonces récentes
-                    </h2>
-
-                </div>
+                    </div>
 
 
-                <div
-                    id="annonces-recentes"
-                    class="annonces-grid"
-                >
-                    <!--
-                        Les annonces récentes seront
-                        chargées dynamiquement depuis Firebase.
-                    -->
-                </div>
+                    <div class="form-group">
 
-            </section>
+                        <label for="profilePhone">
+                            Téléphone
+                        </label>
 
-        </main>
+                        <input
+                            id="profilePhone"
+                            type="tel"
+                            placeholder="Votre numéro"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="profileCity">
+                            Ville
+                        </label>
+
+                        <input
+                            id="profileCity"
+                            type="text"
+                            placeholder="Votre ville"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Enregistrer les modifications
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
 
 
         <!-- =================================================
-             FOOTER
+             SECTION PARAMÈTRES
              ================================================= -->
 
-        <footer class="app-footer">
+        <section
+            id="section-parametres"
+            class="page-section"
+        >
 
-            <div class="footer-brand">
-                CAMU SERVICES
+            <div class="page-header">
+
+                <h1>
+                    ⚙️ Paramètres
+                </h1>
+
+                <p>
+                    Configurez votre expérience CAMU SERVICES.
+                </p>
+
             </div>
 
 
-            <nav
-                class="footer-links"
-                aria-label="Informations"
-            >
+            <div class="settings-list">
 
-                <a href="a-propos.html">
-                    À-PROPOS
-                </a>
+                <div class="setting-item">
 
-                <a href="conditions.html">
-                    CONDITIONS
-                </a>
+                    <div>
 
-                <a href="politique.html">
-                    CONFIDENTIALITÉ
-                </a>
+                        <strong>
+                            Notifications
+                        </strong>
 
-                <a href="contact.html">
-                    CONTACTS
-                </a>
+                        <p>
+                            Recevoir les notifications.
+                        </p>
 
-            </nav>
+                    </div>
 
-        </footer>
+                    <input
+                        id="notificationSetting"
+                        type="checkbox"
+                        checked
+                    >
+
+                </div>
+
+
+                <div class="setting-item">
+
+                    <div>
+
+                        <strong>
+                            Mode sombre
+                        </strong>
+
+                        <p>
+                            Utiliser une interface sombre.
+                        </p>
+
+                    </div>
+
+                    <input
+                        id="darkModeSetting"
+                        type="checkbox"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- =================================================
-             NAVIGATION MOBILE
+             ESPACE PROFESSIONNEL
              ================================================= -->
 
-        <nav
-            class="bottom-nav"
-            aria-label="Navigation mobile"
+        <section
+            id="section-professionnel"
+            class="page-section"
         >
 
-            <a
-                href="index.html"
-                data-link
-                class="active"
+            <div class="page-header">
+
+                <h1>
+                    💼 Espace professionnel
+                </h1>
+
+                <p>
+                    Gérez votre activité et vos publications.
+                </p>
+
+            </div>
+
+
+            <div
+                id="professionalContainer"
+                class="dashboard-grid"
             >
 
-                <i class="fas fa-home"></i>
+                <div class="dashboard-card">
 
-                <span>Accueil</span>
+                    <span>📢</span>
 
-            </a>
+                    <strong>
+                        Mes publications
+                    </strong>
+
+                    <span id="myPublicationsCount">
+                        0
+                    </span>
+
+                </div>
 
 
-            <a
-                href="chat.html"
-                data-link
+                <div class="dashboard-card">
+
+                    <span>💬</span>
+
+                    <strong>
+                        Conversations
+                    </strong>
+
+                    <span id="myConversationsCount">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <span>📅</span>
+
+                    <strong>
+                        Réservations
+                    </strong>
+
+                    <span id="myReservationsCount">
+                        0
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ADMINISTRATION
+             ================================================= -->
+
+        <section
+            id="section-administration"
+            class="page-section admin-section hidden"
+        >
+
+            <div class="page-header">
+
+                <h1>
+                    🛡️ Administration
+                </h1>
+
+                <p>
+                    Gestion de la plateforme CAMU SERVICES.
+                </p>
+
+            </div>
+
+
+            <div class="admin-dashboard">
+
+                <div class="admin-stat-card">
+
+                    <span>👤</span>
+
+                    <strong>
+                        Utilisateurs
+                    </strong>
+
+                    <b id="adminUsersCount">
+                        0
+                    </b>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span>📢</span>
+
+                    <strong>
+                        Publications
+                    </strong>
+
+                    <b id="adminListingsCount">
+                        0
+                    </b>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span>💬</span>
+
+                    <strong>
+                        Conversations
+                    </strong>
+
+                    <b id="adminConversationsCount">
+                        0
+                    </b>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span>📢</span>
+
+                    <strong>
+                        Communiqués
+                    </strong>
+
+                    <b id="adminAnnouncementsCount">
+                        0
+                    </b>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-panels">
+
+                <div class="admin-panel">
+
+                    <div class="panel-heading">
+
+                        <h2>
+                            Utilisateurs
+                        </h2>
+
+                    </div>
+
+                    <div
+                        id="adminUsersList"
+                        class="admin-list"
+                    >
+
+                        <div class="loading-message">
+                            Chargement...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-panel">
+
+                    <div class="panel-heading">
+
+                        <h2>
+                            Publications
+                        </h2>
+
+                    </div>
+
+                    <div
+                        id="adminListingsList"
+                        class="admin-list"
+                    >
+
+                        <div class="loading-message">
+                            Chargement...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-panel">
+
+                    <div class="panel-heading">
+
+                        <h2>
+                            Communiqué
+                        </h2>
+
+                    </div>
+
+
+                    <form
+                        id="communiqueForm"
+                        class="admin-form"
+                    >
+
+                        <div class="form-group">
+
+                            <label for="communiqueTitle">
+                                Titre
+                            </label>
+
+                            <input
+                                id="communiqueTitle"
+                                type="text"
+                                maxlength="150"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="communiqueMessage">
+                                Message
+                            </label>
+
+                            <textarea
+                                id="communiqueMessage"
+                                rows="5"
+                                maxlength="3000"
+                            ></textarea>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                        >
+                            Publier le communiqué
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         NAVIGATION MOBILE
+         ================================================= -->
+
+    <nav
+        id="mobileBottomNav"
+        class="mobile-bottom-nav"
+        aria-label="Navigation mobile"
+    >
+
+        <button
+            class="mobile-nav-item active"
+            type="button"
+            data-section="accueil"
+        >
+            <span>🏠</span>
+            <small>Accueil</small>
+        </button>
+
+        <button
+            class="mobile-nav-item"
+            type="button"
+            data-section="chat"
+        >
+            <span>💬</span>
+            <small>Chat</small>
+        </button>
+
+        <button
+            class="mobile-nav-item publish-mobile-btn"
+            type="button"
+            data-section="publier"
+        >
+            <span>＋</span>
+            <small>Publier</small>
+        </button>
+
+        <button
+            class="mobile-nav-item"
+            type="button"
+            data-section="favoris"
+        >
+            <span>❤️</span>
+            <small>Favoris</small>
+        </button>
+
+        <button
+            class="mobile-nav-item"
+            type="button"
+            data-section="profil"
+        >
+            <span>👤</span>
+            <small>Profil</small>
+        </button>
+
+    </nav>
+
+
+    <!-- =================================================
+         MODALE DE CONNEXION
+         ================================================= -->
+
+    <div
+        id="authModal"
+        class="modal hidden"
+        aria-hidden="true"
+    >
+
+        <div class="modal-overlay"></div>
+
+        <div
+            class="modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="authModalTitle"
+        >
+
+            <button
+                id="closeAuthModal"
+                class="modal-close"
+                type="button"
+                aria-label="Fermer"
             >
-
-                <i class="fas fa-comment-dots"></i>
-
-                <span>Chat</span>
-
-            </a>
+                ×
+            </button>
 
 
-            <a
-                href="publier.html"
-                data-link
-            >
+            <div class="modal-header">
 
-                <i class="fas fa-plus-circle"></i>
+                <h2 id="authModalTitle">
+                    Connexion
+                </h2>
 
-                <span>Publier</span>
+                <p id="authModalDescription">
+                    Connectez-vous à votre compte CAMU SERVICES.
+                </p>
 
-            </a>
+            </div>
 
 
-            <a
-                href="favoris.html"
-                data-link
-            >
+            <form id="loginForm">
 
-                <i class="fas fa-heart"></i>
+                <div class="form-group">
 
-                <span>Favoris</span>
+                    <label for="loginEmail">
+                        Email
+                    </label>
 
-            </a>
+                    <input
+                        id="loginEmail"
+                        type="email"
+                        required
+                        autocomplete="email"
+                        placeholder="votre@email.com"
+                    >
 
-        </nav>
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Votre mot de passe"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn full-width"
+                >
+                    Se connecter
+                </button>
+
+            </form>
+
+
+            <div class="auth-links">
+
+                <button
+                    id="showRegisterBtn"
+                    type="button"
+                    class="text-btn"
+                >
+                    Créer un compte
+                </button>
+
+                <button
+                    id="forgotPasswordBtn"
+                    type="button"
+                    class="text-btn"
+                >
+                    Mot de passe oublié ?
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
 
-    <!-- =====================================================
-         APPLICATION
-         ===================================================== -->
+    <!-- =================================================
+         MESSAGE GLOBAL
+         ================================================= -->
 
-    <script
-        type="module"
-        src="js/app.js"
-    ></script>
+    <div
+        id="toastContainer"
+        class="toast-container"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h2>
+                    CAMU SERVICES
+                </h2>
+
+                <p>
+                    TROUVER • ACHETER • RÉSERVER
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    À propos
+                </h3>
+
+                <button
+                    type="button"
+                    data-footer-action="about"
+                >
+                    À propos de CAMU SERVICES
+                </button>
+
+                <button
+                    type="button"
+                    data-footer-action="contact"
+                >
+                    Contacts
+                </button>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Informations
+                </h3>
+
+                <button
+                    type="button"
+                    data-footer-action="conditions"
+                >
+                    Conditions d'utilisation
+                </button>
+
+                <button
+                    type="button"
+                    data-footer-action="privacy"
+                >
+                    Confidentialité
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © <span id="currentYear"></span>
+                CAMU SERVICES. Tous droits réservés.
+            </p>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
 
 </body>
-
 </html>
 ```
