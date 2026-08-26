@@ -1,13 +1,18 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="CAMU SERVICES — Trouver, acheter et réserver."
     >
 
     <title>CAMU SERVICES — Accueil</title>
@@ -26,913 +31,545 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     >
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     OVERLAY SIDEBAR
-     ===================================================== -->
-
-<div
-    id="sidebar-overlay"
-    class="sidebar-overlay"
-></div>
-
-
-<!-- =====================================================
-     SIDEBAR
-     ===================================================== -->
-
-<aside
-    id="sidebar"
-    class="sidebar"
->
-
-    <div class="sidebar-header">
-
-        <div class="sidebar-avatar">
-
-            <img
-                id="sidebar-avatar-img"
-                src="assets/default-avatar.png"
-                alt="Avatar"
-            >
-
-        </div>
-
-
-        <div class="sidebar-user-info">
-
-            <span id="sidebar-displayName">
-                Invité
-            </span>
-
-            <span
-                id="sidebar-role"
-                class="badge"
-            >
-                Visiteur
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <nav class="sidebar-nav">
-
-        <ul>
-
-            <li>
-
-                <a
-                    href="index.html"
-                    data-link
-                >
-
-                    <i class="fas fa-home"></i>
-
-                    Accueil
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="recherche.html"
-                    data-link
-                >
-
-                    <i class="fas fa-search"></i>
-
-                    Rechercher
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="#categories"
-                    id="categories-link"
-                >
-
-                    <i class="fas fa-th-large"></i>
-
-                    Catégories
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-comment-dots"></i>
-
-                    Chat
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-plus-circle"></i>
-
-                    Publier
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-heart"></i>
-
-                    Favoris
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-calendar-check"></i>
-
-                    Réservations
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-bell"></i>
-
-                    Notifications
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="profil.html"
-                    data-link
-                >
-
-                    <i class="fas fa-user"></i>
-
-                    Mon profil
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a
-                    href="connexion.html"
-                    data-link
-                >
-
-                    <i class="fas fa-cog"></i>
-
-                    Paramètres
-
-                </a>
-
-            </li>
-
-
-            <li
-                id="sidebar-pro-link"
-                style="display:none"
-            >
-
-                <a href="professionnel.html">
-
-                    <i class="fas fa-briefcase"></i>
-
-                    Espace professionnel
-
-                </a>
-
-            </li>
-
-
-            <li
-                id="sidebar-admin-link"
-                style="display:none"
-            >
-
-                <a href="admin.html">
-
-                    <i class="fas fa-shield-alt"></i>
-
-                    Administration
-
-                </a>
-
-            </li>
-
-        </ul>
-
-    </nav>
-
-
-    <div class="sidebar-footer">
-
-        <button
-            id="sidebar-logout"
-            class="btn-logout"
-            type="button"
-        >
-
-            <i class="fas fa-sign-out-alt"></i>
-
-            Déconnexion
-
-        </button>
-
-    </div>
-
-</aside>
-
-
-<!-- =====================================================
-     APPLICATION
-     ===================================================== -->
-
-<div class="app-container">
-
-
-    <!-- =================================================
-         BARRE SUPÉRIEURE
-         ================================================= -->
-
-    <header class="top-bar">
-
-
-        <button
-            id="menu-toggle"
-            class="menu-btn"
-            type="button"
-            aria-label="Ouvrir le menu"
-        >
-
-            <i class="fas fa-bars"></i>
-
-        </button>
-
-
-        <div class="logo">
-
-            CAMU SERVICES
-
-        </div>
-
-
-        <button
-            id="profile-btn"
-            class="profile-btn"
-            type="button"
-        >
-
-            <i class="fas fa-user"></i>
-
-            <span>Profil</span>
-
-        </button>
-
-    </header>
-
-
-    <!-- =================================================
-         CONTENU PRINCIPAL
-         ================================================= -->
-
-    <main id="main-content">
-
-
-        <!-- =============================================
-             HERO
-             ============================================= -->
-
-        <section class="hero">
-
-            <h1>
-                SOYEZ LES BIENVENUS
-            </h1>
-
-            <p>
-                TROUVER • ACHETER • RÉSERVER
-            </p>
-
-        </section>
-
-
-        <!-- =============================================
-             RECHERCHE
-             ============================================= -->
-
-        <section class="search-section">
-
-
-            <div class="search-bar">
-
-                <i class="fas fa-search"></i>
-
-
-                <input
-                    type="text"
-                    id="search-input"
-                    placeholder="Que recherchez-vous ?"
-                    autocomplete="off"
-                >
-
-
-                <button
-                    id="search-btn"
-                    type="button"
-                    aria-label="Rechercher"
-                >
-
-                    <i class="fas fa-arrow-right"></i>
-
-                </button>
-
-            </div>
-
-
-            <div class="quick-filters">
-
-
-                <select
-                    id="filter-category"
-                >
-
-                    <option value="">
-                        Catégorie
-                    </option>
-
-                    <option value="immobilier">
-                        Immobilier
-                    </option>
-
-                    <option value="vehicules">
-                        Véhicules
-                    </option>
-
-                    <option value="services">
-                        Services
-                    </option>
-
-                    <option value="commerce">
-                        Commerce
-                    </option>
-
-                </select>
-
-
-                <input
-                    type="text"
-                    id="filter-city"
-                    placeholder="VILLE"
-                >
-
-
-                <input
-                    type="number"
-                    id="filter-price-min"
-                    placeholder="Prix min"
-                    min="0"
-                >
-
-
-                <input
-                    type="number"
-                    id="filter-price-max"
-                    placeholder="Prix max"
-                    min="0"
+    <!-- =====================================================
+         OVERLAY SIDEBAR
+         ===================================================== -->
+
+    <div
+        id="sidebar-overlay"
+        class="sidebar-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+        aria-label="Menu principal"
+    >
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-avatar">
+
+                <img
+                    id="sidebar-avatar-img"
+                    src="assets/default-avatar.png"
+                    alt="Photo de profil"
                 >
 
             </div>
 
-        </section>
+            <div class="sidebar-user-info">
 
+                <strong id="sidebar-displayName">
+                    Invité
+                </strong>
 
-        <!-- =============================================
-             COMMUNIQUÉ
-             ============================================= -->
-
-        <section class="communique-bloc">
-
-            <div
-                class="communique-banner"
-                id="communique-banner"
-            >
-
-                <i class="fas fa-bullhorn"></i>
-
-                <span id="communique-text">
-                    Bienvenue sur CAMU SERVICES.
+                <span
+                    id="sidebar-role"
+                    class="badge"
+                >
+                    Visiteur
                 </span>
 
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- =============================================
-             CATÉGORIES
-             ============================================= -->
+        <nav class="sidebar-nav">
 
-        <section
-            id="categories"
-            class="categories-section"
-        >
+            <ul>
 
-            <h2>
-                Catégories
-            </h2>
+                <li>
+                    <a
+                        href="index.html"
+                        data-link
+                    >
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </a>
+                </li>
 
 
-            <div
-                id="category-grid"
-                class="category-grid"
+                <li>
+                    <a
+                        href="recherche.html"
+                        data-link
+                    >
+                        <i class="fas fa-search"></i>
+                        <span>Rechercher</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="#categories"
+                        data-link
+                    >
+                        <i class="fas fa-th-large"></i>
+                        <span>Catégories</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="chat.html"
+                        data-link
+                    >
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Chat</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="publier.html"
+                        data-link
+                    >
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Publier</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="favoris.html"
+                        data-link
+                    >
+                        <i class="fas fa-heart"></i>
+                        <span>Favoris</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="reservations.html"
+                        data-link
+                    >
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Réservations</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="notifications.html"
+                        data-link
+                    >
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="profil.html"
+                        data-link
+                    >
+                        <i class="fas fa-user"></i>
+                        <span>Mon profil</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a
+                        href="parametres.html"
+                        data-link
+                    >
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </li>
+
+
+                <!-- Professionnel -->
+                <li
+                    id="sidebar-pro-link"
+                    style="display: none;"
+                >
+                    <a
+                        href="professionnel/index.html"
+                        data-link
+                    >
+                        <i class="fas fa-briefcase"></i>
+                        <span>Espace professionnel</span>
+                    </a>
+                </li>
+
+
+                <!-- Administration -->
+                <li
+                    id="sidebar-admin-link"
+                    style="display: none;"
+                >
+                    <a
+                        href="admin/index.html"
+                        data-link
+                    >
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Administration</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <button
+                id="sidebar-logout"
+                class="btn-logout"
+                type="button"
             >
 
+                <i class="fas fa-sign-out-alt"></i>
 
-                <a
-                    href="recherche.html?category=immobilier"
-                    class="category-card"
-                >
+                <span>Déconnexion</span>
 
-                    <i class="fas fa-home"></i>
+            </button>
 
-                    <span>
-                        Immobilier
-                    </span>
+        </div>
 
-                </a>
+    </aside>
 
 
-                <a
-                    href="recherche.html?category=vehicules"
-                    class="category-card"
-                >
+    <!-- =====================================================
+         CONTENEUR PRINCIPAL
+         ===================================================== -->
 
-                    <i class="fas fa-car"></i>
-
-                    <span>
-                        Véhicules
-                    </span>
-
-                </a>
+    <div class="app-container">
 
 
-                <a
-                    href="recherche.html?category=services"
-                    class="category-card"
-                >
+        <!-- =================================================
+             BARRE SUPÉRIEURE
+             ================================================= -->
 
-                    <i class="fas fa-tools"></i>
+        <header class="top-bar">
 
-                    <span>
-                        Services
-                    </span>
+            <button
+                id="menu-toggle"
+                class="menu-btn"
+                type="button"
+                aria-label="Ouvrir le menu"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
 
-                </a>
+                <i class="fas fa-bars"></i>
+
+            </button>
 
 
-                <a
-                    href="recherche.html?category=commerce"
-                    class="category-card"
-                >
-
-                    <i class="fas fa-store"></i>
-
-                    <span>
-                        Commerce
-                    </span>
-
-                </a>
-
+            <div class="logo">
+                CAMU SERVICES
             </div>
 
-        </section>
 
-
-        <!-- =============================================
-             ANNONCES RÉCENTES
-             ============================================= -->
-
-        <section class="annonces-section">
-
-            <h2>
-                Annonces récentes
-            </h2>
-
-
-            <div
-                id="annonces-recentes"
-                class="annonces-grid"
+            <button
+                id="profile-btn"
+                class="profile-btn"
+                type="button"
+                aria-label="Ouvrir le profil"
             >
 
-                <div class="annonce-card">
+                <i class="fas fa-user"></i>
 
-                    <div
-                        class="annonce-content"
+                <span>Profil</span>
+
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             CONTENU PRINCIPAL
+             ================================================= -->
+
+        <main id="main-content">
+
+
+            <!-- =============================================
+                 HERO
+                 ============================================= -->
+
+            <section class="hero">
+
+                <h1>
+                    SOYEZ LES BIENVENUS
+                </h1>
+
+                <p>
+                    TROUVER • ACHETER • RÉSERVER
+                </p>
+
+            </section>
+
+
+            <!-- =============================================
+                 RECHERCHE
+                 ============================================= -->
+
+            <section
+                class="search-section"
+                aria-label="Recherche"
+            >
+
+                <div class="search-bar">
+
+                    <i class="fas fa-search"></i>
+
+                    <input
+                        type="search"
+                        id="search-input"
+                        placeholder="Que recherchez-vous ?"
+                        autocomplete="off"
                     >
 
-                        <h3>
-                            Aucune annonce pour le moment
-                        </h3>
+                    <button
+                        id="search-btn"
+                        type="button"
+                        aria-label="Rechercher"
+                    >
 
-                        <p>
-                            Les nouvelles annonces
-                            apparaîtront ici.
-                        </p>
+                        <i class="fas fa-arrow-right"></i>
 
-                    </div>
+                    </button>
 
                 </div>
 
+
+                <div class="quick-filters">
+
+                    <input
+                        type="text"
+                        id="filter-city"
+                        placeholder="Ville"
+                        autocomplete="address-level2"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 COMMUNIQUÉ
+                 ============================================= -->
+
+            <section
+                class="communique-section"
+                aria-label="Communiqué"
+            >
+
+                <div
+                    id="communique-banner"
+                    class="communique-banner"
+                >
+
+                    <i class="fas fa-bullhorn"></i>
+
+                    <span id="communique-text">
+                        Aucun communiqué disponible.
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 ANNONCES SPONSORISÉES
+                 ============================================= -->
+
+            <section
+                id="sponsored-section"
+                class="annonces-section sponsored-section"
+            >
+
+                <div class="section-header">
+
+                    <h2>
+                        Annonces sponsorisées
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="annonces-sponsorisees"
+                    class="annonces-grid"
+                >
+                    <!--
+                        Les annonces sponsorisées seront
+                        chargées dynamiquement depuis Firebase.
+                    -->
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 ANNONCES RÉCENTES
+                 ============================================= -->
+
+            <section
+                id="recent-section"
+                class="annonces-section recent-section"
+            >
+
+                <div class="section-header">
+
+                    <h2>
+                        Annonces récentes
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="annonces-recentes"
+                    class="annonces-grid"
+                >
+                    <!--
+                        Les annonces récentes seront
+                        chargées dynamiquement depuis Firebase.
+                    -->
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="app-footer">
+
+            <div class="footer-brand">
+                CAMU SERVICES
             </div>
 
-        </section>
 
-    </main>
+            <nav
+                class="footer-links"
+                aria-label="Informations"
+            >
 
-
-    <!-- =================================================
-         FOOTER
-         ================================================= -->
-
-    <footer class="app-footer">
-
-        <ul class="footer-links">
-
-            <li>
-                <a href="#">
+                <a href="a-propos.html">
                     À-PROPOS
                 </a>
-            </li>
 
-            <li>
-                <a href="#">
+                <a href="conditions.html">
                     CONDITIONS
                 </a>
-            </li>
 
-            <li>
-                <a href="#">
+                <a href="politique.html">
                     CONFIDENTIALITÉ
                 </a>
-            </li>
 
-            <li>
-                <a href="#">
+                <a href="contact.html">
                     CONTACTS
                 </a>
-            </li>
 
-        </ul>
+            </nav>
 
-    </footer>
-
-
-    <!-- =================================================
-         NAVIGATION MOBILE
-         ================================================= -->
-
-    <nav class="bottom-nav">
+        </footer>
 
 
-        <a
-            href="index.html"
-            class="active"
+        <!-- =================================================
+             NAVIGATION MOBILE
+             ================================================= -->
+
+        <nav
+            class="bottom-nav"
+            aria-label="Navigation mobile"
         >
 
-            <i class="fas fa-home"></i>
+            <a
+                href="index.html"
+                data-link
+                class="active"
+            >
 
-            <span>
-                Accueil
-            </span>
+                <i class="fas fa-home"></i>
 
-        </a>
+                <span>Accueil</span>
 
+            </a>
 
-        <a
-            href="connexion.html"
-        >
 
-            <i class="fas fa-comment-dots"></i>
+            <a
+                href="chat.html"
+                data-link
+            >
 
-            <span>
-                Chat
-            </span>
+                <i class="fas fa-comment-dots"></i>
 
-        </a>
+                <span>Chat</span>
 
+            </a>
 
-        <a
-            href="connexion.html"
-        >
 
-            <i class="fas fa-plus-circle"></i>
+            <a
+                href="publier.html"
+                data-link
+            >
 
-            <span>
-                Publier
-            </span>
+                <i class="fas fa-plus-circle"></i>
 
-        </a>
+                <span>Publier</span>
 
+            </a>
 
-        <a
-            href="connexion.html"
-        >
 
-            <i class="fas fa-heart"></i>
+            <a
+                href="favoris.html"
+                data-link
+            >
 
-            <span>
-                Favoris
-            </span>
+                <i class="fas fa-heart"></i>
 
-        </a>
+                <span>Favoris</span>
 
-    </nav>
+            </a>
 
+        </nav>
 
-</div>
+    </div>
 
 
-<!-- =====================================================
-     APPLICATION JAVASCRIPT
-     ===================================================== -->
+    <!-- =====================================================
+         APPLICATION
+         ===================================================== -->
 
-<script
-    type="module"
-    src="js/app.js"
-></script>
-
-
-<!-- =====================================================
-     FONCTION RECHERCHE
-     ===================================================== -->
-
-<script>
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const searchInput =
-            document.getElementById(
-                "search-input"
-            );
-
-        const searchButton =
-            document.getElementById(
-                "search-btn"
-            );
-
-        const category =
-            document.getElementById(
-                "filter-category"
-            );
-
-        const city =
-            document.getElementById(
-                "filter-city"
-            );
-
-        const priceMin =
-            document.getElementById(
-                "filter-price-min"
-            );
-
-        const priceMax =
-            document.getElementById(
-                "filter-price-max"
-            );
-
-
-        function performSearch() {
-
-            const params =
-                new URLSearchParams();
-
-
-            const search =
-                searchInput.value.trim();
-
-            const selectedCategory =
-                category.value;
-
-            const selectedCity =
-                city.value.trim();
-
-            const min =
-                priceMin.value;
-
-            const max =
-                priceMax.value;
-
-
-            if (search) {
-
-                params.set(
-                    "q",
-                    search
-                );
-            }
-
-
-            if (selectedCategory) {
-
-                params.set(
-                    "category",
-                    selectedCategory
-                );
-            }
-
-
-            if (selectedCity) {
-
-                params.set(
-                    "city",
-                    selectedCity
-                );
-            }
-
-
-            if (min) {
-
-                params.set(
-                    "min",
-                    min
-                );
-            }
-
-
-            if (max) {
-
-                params.set(
-                    "max",
-                    max
-                );
-            }
-
-
-            const query =
-                params.toString();
-
-
-            window.location.href =
-                query
-                    ? `recherche.html?${query}`
-                    : "recherche.html";
-        }
-
-
-        if (searchButton) {
-
-            searchButton.addEventListener(
-                "click",
-                performSearch
-            );
-        }
-
-
-        if (searchInput) {
-
-            searchInput.addEventListener(
-                "keydown",
-                event => {
-
-                    if (
-                        event.key === "Enter"
-                    ) {
-
-                        performSearch();
-                    }
-                }
-            );
-        }
-
-
-        const categoriesLink =
-            document.getElementById(
-                "categories-link"
-            );
-
-
-        if (categoriesLink) {
-
-            categoriesLink.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-
-                    const section =
-                        document.getElementById(
-                            "categories"
-                        );
-
-
-                    if (section) {
-
-                        section.scrollIntoView({
-                            behavior: "smooth"
-                        });
-                    }
-
-
-                    const sidebar =
-                        document.getElementById(
-                            "sidebar"
-                        );
-
-                    const overlay =
-                        document.getElementById(
-                            "sidebar-overlay"
-                        );
-
-
-                    if (sidebar) {
-
-                        sidebar.classList.remove(
-                            "open"
-                        );
-                    }
-
-
-                    if (overlay) {
-
-                        overlay.classList.remove(
-                            "open"
-                        );
-                    }
-
-
-                    document.body.classList.remove(
-                        "sidebar-open"
-                    );
-                }
-            );
-        }
-
-    }
-);
-
-</script>
-
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
 
 </body>
 
 </html>
+```
