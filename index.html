@@ -12,9 +12,6 @@
 
     <title>CAMU SERVICES — Accueil</title>
 
-
-    <!-- CSS PRINCIPAL -->
-
     <link
         rel="stylesheet"
         href="css/main.css"
@@ -24,9 +21,6 @@
         rel="stylesheet"
         href="css/responsive.css"
     >
-
-
-    <!-- FONT AWESOME -->
 
     <link
         rel="stylesheet"
@@ -58,18 +52,14 @@
     class="sidebar"
 >
 
-
-    <!-- UTILISATEUR -->
-
     <div class="sidebar-header">
-
 
         <div class="sidebar-avatar">
 
             <img
+                id="sidebar-avatar-img"
                 src="assets/default-avatar.png"
                 alt="Avatar"
-                id="sidebar-avatar-img"
             >
 
         </div>
@@ -77,12 +67,9 @@
 
         <div class="sidebar-user-info">
 
-            <span
-                id="sidebar-displayName"
-            >
+            <span id="sidebar-displayName">
                 Invité
             </span>
-
 
             <span
                 id="sidebar-role"
@@ -96,25 +83,20 @@
     </div>
 
 
-
-    <!-- MENU -->
-
     <nav class="sidebar-nav">
 
         <ul>
-
 
             <li>
 
                 <a
                     href="index.html"
+                    data-link
                 >
 
                     <i class="fas fa-home"></i>
 
-                    <span>
-                        Accueil
-                    </span>
+                    Accueil
 
                 </a>
 
@@ -124,15 +106,13 @@
             <li>
 
                 <a
-                    href="#search-section"
-                    id="sidebar-search-link"
+                    href="recherche.html"
+                    data-link
                 >
 
                     <i class="fas fa-search"></i>
 
-                    <span>
-                        Rechercher
-                    </span>
+                    Rechercher
 
                 </a>
 
@@ -143,14 +123,12 @@
 
                 <a
                     href="#categories"
-                    id="sidebar-category-link"
+                    id="categories-link"
                 >
 
                     <i class="fas fa-th-large"></i>
 
-                    <span>
-                        Catégories
-                    </span>
+                    Catégories
 
                 </a>
 
@@ -160,14 +138,13 @@
             <li>
 
                 <a
-                    href="chat.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-comment-dots"></i>
 
-                    <span>
-                        Chat
-                    </span>
+                    Chat
 
                 </a>
 
@@ -177,14 +154,13 @@
             <li>
 
                 <a
-                    href="publier.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-plus-circle"></i>
 
-                    <span>
-                        Publier
-                    </span>
+                    Publier
 
                 </a>
 
@@ -194,14 +170,13 @@
             <li>
 
                 <a
-                    href="favoris.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-heart"></i>
 
-                    <span>
-                        Favoris
-                    </span>
+                    Favoris
 
                 </a>
 
@@ -211,14 +186,13 @@
             <li>
 
                 <a
-                    href="reservations.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-calendar-check"></i>
 
-                    <span>
-                        Réservations
-                    </span>
+                    Réservations
 
                 </a>
 
@@ -228,14 +202,13 @@
             <li>
 
                 <a
-                    href="notifications.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-bell"></i>
 
-                    <span>
-                        Notifications
-                    </span>
+                    Notifications
 
                 </a>
 
@@ -246,13 +219,12 @@
 
                 <a
                     href="profil.html"
+                    data-link
                 >
 
                     <i class="fas fa-user"></i>
 
-                    <span>
-                        Mon profil
-                    </span>
+                    Mon profil
 
                 </a>
 
@@ -262,71 +234,54 @@
             <li>
 
                 <a
-                    href="parametres.html"
+                    href="connexion.html"
+                    data-link
                 >
 
                     <i class="fas fa-cog"></i>
 
-                    <span>
-                        Paramètres
-                    </span>
+                    Paramètres
 
                 </a>
 
             </li>
 
-
-            <!-- PROFESSIONNEL -->
 
             <li
                 id="sidebar-pro-link"
-                style="display:none;"
+                style="display:none"
             >
 
-                <a
-                    href="professionnel/dashboard.html"
-                >
+                <a href="professionnel.html">
 
                     <i class="fas fa-briefcase"></i>
 
-                    <span>
-                        Espace professionnel
-                    </span>
+                    Espace professionnel
 
                 </a>
 
             </li>
 
-
-            <!-- ADMIN -->
 
             <li
                 id="sidebar-admin-link"
-                style="display:none;"
+                style="display:none"
             >
 
-                <a
-                    href="admin/index.html"
-                >
+                <a href="admin.html">
 
                     <i class="fas fa-shield-alt"></i>
 
-                    <span>
-                        Administration
-                    </span>
+                    Administration
 
                 </a>
 
             </li>
-
 
         </ul>
 
     </nav>
 
-
-
-    <!-- DÉCONNEXION -->
 
     <div class="sidebar-footer">
 
@@ -344,9 +299,7 @@
 
     </div>
 
-
 </aside>
-
 
 
 <!-- =====================================================
@@ -357,7 +310,7 @@
 
 
     <!-- =================================================
-         HEADER
+         BARRE SUPÉRIEURE
          ================================================= -->
 
     <header class="top-bar">
@@ -390,15 +343,11 @@
 
             <i class="fas fa-user"></i>
 
-            <span>
-                Profil
-            </span>
+            <span>Profil</span>
 
         </button>
 
-
     </header>
-
 
 
     <!-- =================================================
@@ -408,7 +357,9 @@
     <main id="main-content">
 
 
-        <!-- HERO -->
+        <!-- =============================================
+             HERO
+             ============================================= -->
 
         <section class="hero">
 
@@ -423,27 +374,20 @@
         </section>
 
 
-
-        <!-- =================================================
+        <!-- =============================================
              RECHERCHE
-             ================================================= -->
+             ============================================= -->
 
-        <section
-            id="search-section"
-            class="search-section"
-        >
+        <section class="search-section">
 
 
             <div class="search-bar">
 
-
-                <i
-                    class="fas fa-search"
-                ></i>
+                <i class="fas fa-search"></i>
 
 
                 <input
-                    type="search"
+                    type="text"
                     id="search-input"
                     placeholder="Que recherchez-vous ?"
                     autocomplete="off"
@@ -456,18 +400,12 @@
                     aria-label="Rechercher"
                 >
 
-                    <i
-                        class="fas fa-arrow-right"
-                    ></i>
+                    <i class="fas fa-arrow-right"></i>
 
                 </button>
 
-
             </div>
 
-
-
-            <!-- FILTRES -->
 
             <div class="quick-filters">
 
@@ -480,24 +418,16 @@
                         Catégorie
                     </option>
 
-                    <option value="maison">
-                        Maison
+                    <option value="immobilier">
+                        Immobilier
                     </option>
 
-                    <option value="appartement">
-                        Appartement
+                    <option value="vehicules">
+                        Véhicules
                     </option>
 
-                    <option value="terrain">
-                        Terrain
-                    </option>
-
-                    <option value="voiture">
-                        Voiture
-                    </option>
-
-                    <option value="service">
-                        Service
+                    <option value="services">
+                        Services
                     </option>
 
                     <option value="commerce">
@@ -510,7 +440,7 @@
                 <input
                     type="text"
                     id="filter-city"
-                    placeholder="Ville"
+                    placeholder="VILLE"
                 >
 
 
@@ -529,52 +459,41 @@
                     min="0"
                 >
 
-
             </div>
 
         </section>
 
 
-
-        <!-- =================================================
+        <!-- =============================================
              COMMUNIQUÉ
-             ================================================= -->
+             ============================================= -->
 
         <section class="communique-bloc">
-
 
             <div
                 class="communique-banner"
                 id="communique-banner"
             >
 
-                <i
-                    class="fas fa-bullhorn"
-                ></i>
+                <i class="fas fa-bullhorn"></i>
 
-
-                <span
-                    id="communique-text"
-                >
+                <span id="communique-text">
                     Bienvenue sur CAMU SERVICES.
                 </span>
 
             </div>
 
-
         </section>
 
 
-
-        <!-- =================================================
+        <!-- =============================================
              CATÉGORIES
-             ================================================= -->
+             ============================================= -->
 
         <section
             id="categories"
             class="categories-section"
         >
-
 
             <h2>
                 Catégories
@@ -587,105 +506,71 @@
             >
 
 
-                <div
+                <a
+                    href="recherche.html?category=immobilier"
                     class="category-card"
-                    data-category="maison"
                 >
 
-                    <i class="fas fa-house fa-2x"></i>
+                    <i class="fas fa-home"></i>
 
-                    <h3>
-                        Maisons
-                    </h3>
+                    <span>
+                        Immobilier
+                    </span>
 
-                </div>
+                </a>
 
 
-                <div
+                <a
+                    href="recherche.html?category=vehicules"
                     class="category-card"
-                    data-category="appartement"
                 >
 
-                    <i class="fas fa-building fa-2x"></i>
+                    <i class="fas fa-car"></i>
 
-                    <h3>
-                        Appartements
-                    </h3>
-
-                </div>
-
-
-                <div
-                    class="category-card"
-                    data-category="terrain"
-                >
-
-                    <i class="fas fa-map fa-2x"></i>
-
-                    <h3>
-                        Terrains
-                    </h3>
-
-                </div>
-
-
-                <div
-                    class="category-card"
-                    data-category="voiture"
-                >
-
-                    <i class="fas fa-car fa-2x"></i>
-
-                    <h3>
+                    <span>
                         Véhicules
-                    </h3>
+                    </span>
 
-                </div>
+                </a>
 
 
-                <div
+                <a
+                    href="recherche.html?category=services"
                     class="category-card"
-                    data-category="service"
                 >
 
-                    <i class="fas fa-tools fa-2x"></i>
+                    <i class="fas fa-tools"></i>
 
-                    <h3>
+                    <span>
                         Services
-                    </h3>
+                    </span>
 
-                </div>
+                </a>
 
 
-                <div
+                <a
+                    href="recherche.html?category=commerce"
                     class="category-card"
-                    data-category="commerce"
                 >
 
-                    <i class="fas fa-store fa-2x"></i>
+                    <i class="fas fa-store"></i>
 
-                    <h3>
-                        Commerces
-                    </h3>
+                    <span>
+                        Commerce
+                    </span>
 
-                </div>
-
+                </a>
 
             </div>
-
 
         </section>
 
 
+        <!-- =============================================
+             ANNONCES RÉCENTES
+             ============================================= -->
 
-        <!-- =================================================
-             ANNONCES
-             ================================================= -->
-
-        <section
-            class="annonces-section"
-        >
-
+        <section class="annonces-section">
 
             <h2>
                 Annonces récentes
@@ -697,42 +582,30 @@
                 class="annonces-grid"
             >
 
-
-                <!-- MESSAGE INITIAL -->
-
-                <div
-                    class="annonce-card"
-                >
+                <div class="annonce-card">
 
                     <div
-                        style="
-                            padding:30px;
-                            text-align:center;
-                            grid-column:1/-1;
-                        "
+                        class="annonce-content"
                     >
 
-                        <i
-                            class="fas fa-spinner fa-spin"
-                        ></i>
+                        <h3>
+                            Aucune annonce pour le moment
+                        </h3>
 
                         <p>
-                            Chargement des annonces...
+                            Les nouvelles annonces
+                            apparaîtront ici.
                         </p>
 
                     </div>
 
                 </div>
 
-
             </div>
-
 
         </section>
 
-
     </main>
-
 
 
     <!-- =================================================
@@ -741,51 +614,35 @@
 
     <footer class="app-footer">
 
-
         <ul class="footer-links">
 
-
             <li>
-
                 <a href="#">
                     À-PROPOS
                 </a>
-
             </li>
 
-
             <li>
-
                 <a href="#">
                     CONDITIONS
                 </a>
-
             </li>
 
-
             <li>
-
                 <a href="#">
                     CONFIDENTIALITÉ
                 </a>
-
             </li>
 
-
             <li>
-
                 <a href="#">
                     CONTACTS
                 </a>
-
             </li>
-
 
         </ul>
 
-
     </footer>
-
 
 
     <!-- =================================================
@@ -800,9 +657,7 @@
             class="active"
         >
 
-            <i
-                class="fas fa-home"
-            ></i>
+            <i class="fas fa-home"></i>
 
             <span>
                 Accueil
@@ -812,12 +667,10 @@
 
 
         <a
-            href="chat.html"
+            href="connexion.html"
         >
 
-            <i
-                class="fas fa-comment-dots"
-            ></i>
+            <i class="fas fa-comment-dots"></i>
 
             <span>
                 Chat
@@ -827,12 +680,10 @@
 
 
         <a
-            href="publier.html"
+            href="connexion.html"
         >
 
-            <i
-                class="fas fa-plus-circle"
-            ></i>
+            <i class="fas fa-plus-circle"></i>
 
             <span>
                 Publier
@@ -842,12 +693,10 @@
 
 
         <a
-            href="favoris.html"
+            href="connexion.html"
         >
 
-            <i
-                class="fas fa-heart"
-            ></i>
+            <i class="fas fa-heart"></i>
 
             <span>
                 Favoris
@@ -855,16 +704,14 @@
 
         </a>
 
-
     </nav>
 
 
 </div>
 
 
-
 <!-- =====================================================
-     APPLICATION JS
+     APPLICATION JAVASCRIPT
      ===================================================== -->
 
 <script
@@ -874,229 +721,214 @@
 
 
 <!-- =====================================================
-     PETIT SCRIPT POUR LES CATÉGORIES ET LA RECHERCHE
+     FONCTION RECHERCHE
      ===================================================== -->
 
-<script type="module">
+<script>
 
-const searchInput =
-    document.getElementById(
-        "search-input"
-    );
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-const searchButton =
-    document.getElementById(
-        "search-btn"
-    );
+        const searchInput =
+            document.getElementById(
+                "search-input"
+            );
 
-const categorySelect =
-    document.getElementById(
-        "filter-category"
-    );
+        const searchButton =
+            document.getElementById(
+                "search-btn"
+            );
 
-const categoryCards =
-    document.querySelectorAll(
-        ".category-card"
-    );
+        const category =
+            document.getElementById(
+                "filter-category"
+            );
 
+        const city =
+            document.getElementById(
+                "filter-city"
+            );
 
-// =====================================================
-// RECHERCHE
-// =====================================================
+        const priceMin =
+            document.getElementById(
+                "filter-price-min"
+            );
 
-function executeSearch() {
-
-    const query =
-        searchInput.value.trim();
-
-    const category =
-        categorySelect.value;
-
-
-    console.log(
-        "Recherche CAMU SERVICES :",
-        {
-            query,
-            category
-        }
-    );
+        const priceMax =
+            document.getElementById(
+                "filter-price-max"
+            );
 
 
-    /*
-       La recherche Firestore complète
-       sera branchée dans la prochaine étape.
-    */
+        function performSearch() {
 
-    const annonces =
-        document.getElementById(
-            "annonces-recentes"
-        );
-
-    if (
-        query ||
-        category
-    ) {
-
-        annonces.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-
-}
+            const params =
+                new URLSearchParams();
 
 
-// =====================================================
-// BOUTON RECHERCHE
-// =====================================================
+            const search =
+                searchInput.value.trim();
 
-if (searchButton) {
+            const selectedCategory =
+                category.value;
 
-    searchButton.addEventListener(
-        "click",
-        executeSearch
-    );
+            const selectedCity =
+                city.value.trim();
 
-}
+            const min =
+                priceMin.value;
+
+            const max =
+                priceMax.value;
 
 
-// =====================================================
-// ENTRÉE CLAVIER
-// =====================================================
+            if (search) {
 
-if (searchInput) {
-
-    searchInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                event.preventDefault();
-
-                executeSearch();
+                params.set(
+                    "q",
+                    search
+                );
             }
 
+
+            if (selectedCategory) {
+
+                params.set(
+                    "category",
+                    selectedCategory
+                );
+            }
+
+
+            if (selectedCity) {
+
+                params.set(
+                    "city",
+                    selectedCity
+                );
+            }
+
+
+            if (min) {
+
+                params.set(
+                    "min",
+                    min
+                );
+            }
+
+
+            if (max) {
+
+                params.set(
+                    "max",
+                    max
+                );
+            }
+
+
+            const query =
+                params.toString();
+
+
+            window.location.href =
+                query
+                    ? `recherche.html?${query}`
+                    : "recherche.html";
         }
-    );
-
-}
 
 
-// =====================================================
-// CATÉGORIES
-// =====================================================
+        if (searchButton) {
 
-categoryCards.forEach(
-    card => {
+            searchButton.addEventListener(
+                "click",
+                performSearch
+            );
+        }
 
-        card.addEventListener(
-            "click",
-            () => {
 
-                const category =
-                    card.dataset.category;
+        if (searchInput) {
 
-                if (
-                    categorySelect
-                ) {
+            searchInput.addEventListener(
+                "keydown",
+                event => {
 
-                    categorySelect.value =
-                        category;
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        performSearch();
+                    }
                 }
+            );
+        }
 
 
-                const searchSection =
-                    document.getElementById(
-                        "search-section"
+        const categoriesLink =
+            document.getElementById(
+                "categories-link"
+            );
+
+
+        if (categoriesLink) {
+
+            categoriesLink.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    const section =
+                        document.getElementById(
+                            "categories"
+                        );
+
+
+                    if (section) {
+
+                        section.scrollIntoView({
+                            behavior: "smooth"
+                        });
+                    }
+
+
+                    const sidebar =
+                        document.getElementById(
+                            "sidebar"
+                        );
+
+                    const overlay =
+                        document.getElementById(
+                            "sidebar-overlay"
+                        );
+
+
+                    if (sidebar) {
+
+                        sidebar.classList.remove(
+                            "open"
+                        );
+                    }
+
+
+                    if (overlay) {
+
+                        overlay.classList.remove(
+                            "open"
+                        );
+                    }
+
+
+                    document.body.classList.remove(
+                        "sidebar-open"
                     );
-
-                if (
-                    searchSection
-                ) {
-
-                    searchSection.scrollIntoView({
-                        behavior: "smooth"
-                    });
                 }
-
-            }
-        );
+            );
+        }
 
     }
 );
-
-
-// =====================================================
-// SIDEBAR → RECHERCHE
-// =====================================================
-
-const sidebarSearch =
-    document.getElementById(
-        "sidebar-search-link"
-    );
-
-if (sidebarSearch) {
-
-    sidebarSearch.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            const section =
-                document.getElementById(
-                    "search-section"
-                );
-
-            if (section) {
-
-                section.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// SIDEBAR → CATÉGORIES
-// =====================================================
-
-const sidebarCategory =
-    document.getElementById(
-        "sidebar-category-link"
-    );
-
-if (sidebarCategory) {
-
-    sidebarCategory.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            const section =
-                document.getElementById(
-                    "categories"
-                );
-
-            if (section) {
-
-                section.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-
-        }
-    );
-
-}
 
 </script>
 
@@ -1104,4 +936,3 @@ if (sidebarCategory) {
 </body>
 
 </html>
-```
