@@ -2,38 +2,47 @@
 // CAMU SERVICES — SIDEBAR
 // =========================================================
 
-import { addListener } from "../core/store.js";
-import { signOutUser } from "../core/auth.js";
-
-
-// =========================================================
-// INITIALISATION
-// =========================================================
-
 export function initSidebar() {
 
     const sidebar =
         document.getElementById("sidebar");
 
+    const menuToggle =
+        document.getElementById("menu-toggle");
+
     const overlay =
         document.getElementById("sidebar-overlay");
 
-    const menuButton =
-        document.getElementById("menu-toggle");
 
-    const logoutButton =
-        document.getElementById("sidebar-logout");
+    // -----------------------------------------------------
+    // VÉRIFICATION
+    // -----------------------------------------------------
 
-
-    // La page n'a pas de sidebar
     if (!sidebar) {
+
+        console.error(
+            "❌ Sidebar introuvable : #sidebar"
+        );
+
         return;
+
     }
 
 
-    // =====================================================
+    if (!menuToggle) {
+
+        console.error(
+            "❌ Bouton Menu introuvable : #menu-toggle"
+        );
+
+        return;
+
+    }
+
+
+    // -----------------------------------------------------
     // OUVRIR
-    // =====================================================
+    // -----------------------------------------------------
 
     function openSidebar() {
 
@@ -41,24 +50,27 @@ export function initSidebar() {
 
         if (overlay) {
             overlay.classList.add("open");
+            overlay.setAttribute(
+                "aria-hidden",
+                "false"
+            );
         }
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
 
         document.body.classList.add(
             "sidebar-open"
         );
 
-        if (menuButton) {
-            menuButton.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-        }
     }
 
 
-    // =====================================================
+    // -----------------------------------------------------
     // FERMER
-    // =====================================================
+    // -----------------------------------------------------
 
     function closeSidebar() {
 
@@ -66,71 +78,73 @@ export function initSidebar() {
 
         if (overlay) {
             overlay.classList.remove("open");
+            overlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
         }
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
 
         document.body.classList.remove(
             "sidebar-open"
         );
 
-        if (menuButton) {
-            menuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
+    }
+
+
+    // -----------------------------------------------------
+    // BASCULER
+    // -----------------------------------------------------
+
+    function toggleSidebar() {
+
+        const isOpen =
+            sidebar.classList.contains("open");
+
+        if (isOpen) {
+
+            closeSidebar();
+
+        } else {
+
+            openSidebar();
+
         }
+
     }
 
 
-    // =====================================================
+    // -----------------------------------------------------
     // BOUTON MENU
-    // =====================================================
+    // -----------------------------------------------------
 
-    if (menuButton) {
-
-        menuButton.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                if (
-                    sidebar.classList.contains(
-                        "open"
-                    )
-                ) {
-
-                    closeSidebar();
-
-                } else {
-
-                    openSidebar();
-                }
-            }
-        );
-    }
+    menuToggle.addEventListener(
+        "click",
+        toggleSidebar
+    );
 
 
-    // =====================================================
+    // -----------------------------------------------------
     // OVERLAY
-    // =====================================================
+    // -----------------------------------------------------
 
     if (overlay) {
 
         overlay.addEventListener(
             "click",
-            event => {
-
-                event.preventDefault();
-
-                closeSidebar();
-            }
+            closeSidebar
         );
+
     }
 
 
-    // =====================================================
-    // TOUCHE ESC
-    // =====================================================
+    // -----------------------------------------------------
+    // TOUCHE ÉCHAP
+    // -----------------------------------------------------
 
     document.addEventListener(
         "keydown",
@@ -142,245 +156,71 @@ export function initSidebar() {
             ) {
 
                 closeSidebar();
+
             }
+
         }
     );
 
 
-    // =====================================================
-    // LIENS DE LA SIDEBAR
-    // =====================================================
+    // -----------------------------------------------------
+    // LIENS DU MENU
+    // -----------------------------------------------------
 
-    sidebar
-        .querySelectorAll("a")
-        .forEach(link => {
-
-            link.addEventListener(
-                "click",
-                () => {
-
-                    closeSidebar();
-                }
-            );
-        });
-
-
-    // =====================================================
-    // DÉCONNEXION
-    // =====================================================
-
-    if (logoutButton) {
-
-        logoutButton.addEventListener(
-            "click",
-            async event => {
-
-                event.preventDefault();
-
-                logoutButton.disabled = true;
-
-                logoutButton.innerHTML =
-                    '<i class="fas fa-spinner fa-spin"></i> Déconnexion...';
-
-
-                const result =
-                    await signOutUser();
-
-
-                if (result.success) {
-
-                    closeSidebar();
-
-                    window.location.href =
-                        "connexion.html";
-
-                    return;
-                }
-
-
-                logoutButton.disabled = false;
-
-                logoutButton.innerHTML =
-                    '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-
-
-                alert(
-                    result.error ||
-                    "Impossible de se déconnecter."
-                );
-            }
+    const links =
+        sidebar.querySelectorAll(
+            "a"
         );
-    }
 
 
-    // =====================================================
-    // MISE À JOUR DES INFORMATIONS UTILISATEUR
-    // =====================================================
+    links.forEach(link => {
 
-    addListener(
-        state => {
+        link.addEventListener(
+            "click",
+            () => {
 
-            const name =
-                document.getElementById(
-                    "sidebar-displayName"
-                );
+                /*
+                 * Sur mobile, le menu se ferme
+                 * après sélection d'une page.
+                 */
 
-            const role =
-                document.getElementById(
-                    "sidebar-role"
-                );
-
-            const avatar =
-                document.getElementById(
-                    "sidebar-avatar-img"
-                );
-
-            const professional =
-                document.getElementById(
-                    "sidebar-pro-link"
-                );
-
-            const admin =
-                document.getElementById(
-                    "sidebar-admin-link"
-                );
-
-
-            // -------------------------------------------------
-            // VISITEUR
-            // -------------------------------------------------
-
-            if (!state.isAuthenticated) {
-
-                if (name) {
-                    name.textContent =
-                        "Invité";
-                }
-
-                if (role) {
-                    role.textContent =
-                        "Visiteur";
-                }
-
-                if (avatar) {
-                    avatar.src =
-                        "assets/default-avatar.png";
-                }
-
-                if (professional) {
-                    professional.style.display =
-                        "none";
-                }
-
-                if (admin) {
-                    admin.style.display =
-                        "none";
-                }
-
-                if (logoutButton) {
-                    logoutButton.style.display =
-                        "none";
-                }
-
-                return;
-            }
-
-
-            // -------------------------------------------------
-            // UTILISATEUR CONNECTÉ
-            // -------------------------------------------------
-
-            const data =
-                state.userData || {};
-
-
-            if (name) {
-
-                name.textContent =
-                    data.displayName ||
-                    state.user?.displayName ||
-                    "Utilisateur";
-            }
-
-
-            // -------------------------------------------------
-            // RÔLE
-            // -------------------------------------------------
-
-            if (role) {
-
-                const userRole =
-                    data.role || "client";
-
-
-                if (userRole === "admin") {
-
-                    role.textContent =
-                        "Administrateur";
-
-                } else if (
-                    userRole === "professional"
+                if (
+                    window.innerWidth < 1024
                 ) {
 
-                    role.textContent =
-                        "Professionnel";
+                    closeSidebar();
 
-                } else {
-
-                    role.textContent =
-                        "Client";
                 }
+
+            }
+        );
+
+    });
+
+
+    // -----------------------------------------------------
+    // REDIMENSIONNEMENT
+    // -----------------------------------------------------
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (
+                window.innerWidth >= 1024
+            ) {
+
+                closeSidebar();
+
             }
 
-
-            // -------------------------------------------------
-            // PHOTO
-            // -------------------------------------------------
-
-            if (avatar) {
-
-                avatar.src =
-                    data.photoURL ||
-                    "assets/default-avatar.png";
-            }
-
-
-            // -------------------------------------------------
-            // ESPACE PROFESSIONNEL
-            // -------------------------------------------------
-
-            if (professional) {
-
-                professional.style.display =
-                    data.role === "professional" ||
-                    data.role === "admin"
-                        ? "block"
-                        : "none";
-            }
-
-
-            // -------------------------------------------------
-            // ADMINISTRATION
-            // -------------------------------------------------
-
-            if (admin) {
-
-                admin.style.display =
-                    data.role === "admin"
-                        ? "block"
-                        : "none";
-            }
-
-
-            // -------------------------------------------------
-            // DÉCONNEXION
-            // -------------------------------------------------
-
-            if (logoutButton) {
-
-                logoutButton.style.display =
-                    "block";
-            }
         }
     );
+
+
+    console.log(
+        "✅ Sidebar fonctionnelle"
+    );
+
 }
+```
