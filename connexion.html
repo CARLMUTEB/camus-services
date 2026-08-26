@@ -29,6 +29,7 @@
 
 </head>
 
+
 <body>
 
 <main class="auth-page">
@@ -38,19 +39,18 @@
         Connexion
     </h1>
 
+
     <div
         id="login-error"
         class="error"
         role="alert"
     ></div>
 
-    <div
-        id="login-success"
-        class="success"
-        role="status"
-    ></div>
 
-    <form id="login-form">
+    <form
+        id="login-form"
+        novalidate
+    >
 
         <input
             type="email"
@@ -60,6 +60,7 @@
             required
         >
 
+
         <input
             type="password"
             id="login-password"
@@ -68,15 +69,16 @@
             required
         >
 
+
         <button
             type="submit"
             id="login-btn"
         >
-            <i class="fas fa-sign-in-alt"></i>
             Se connecter
         </button>
 
     </form>
+
 
     <div class="auth-links">
 
@@ -84,17 +86,16 @@
             href="#"
             id="forgot-password"
         >
-            <i class="fas fa-key"></i>
             Mot de passe oublié ?
         </a>
 
+
         <a href="inscription.html">
-            <i class="fas fa-user-plus"></i>
             Créer un compte
         </a>
 
+
         <a href="index.html">
-            <i class="fas fa-home"></i>
             Retour à l'accueil
         </a>
 
@@ -112,187 +113,191 @@ import {
 
 
 const form =
-    document.getElementById("login-form");
+    document.getElementById(
+        "login-form"
+    );
 
-const error =
-    document.getElementById("login-error");
+const errorElement =
+    document.getElementById(
+        "login-error"
+    );
 
-const success =
-    document.getElementById("login-success");
+const loginButton =
+    document.getElementById(
+        "login-btn"
+    );
 
-const button =
-    document.getElementById("login-btn");
+const forgotPassword =
+    document.getElementById(
+        "forgot-password"
+    );
 
 
-// =========================================================
+// =====================================================
 // CONNEXION
-// =========================================================
+// =====================================================
 
-form.addEventListener("submit", async (event) => {
-
-    event.preventDefault();
-
-    error.textContent = "";
-    success.textContent = "";
-
-
-    const email =
-        document
-            .getElementById("login-email")
-            .value
-            .trim();
-
-
-    const password =
-        document
-            .getElementById("login-password")
-            .value;
-
-
-    if (!email) {
-
-        error.textContent =
-            "Veuillez entrer votre adresse email.";
-
-        return;
-    }
-
-
-    if (!password) {
-
-        error.textContent =
-            "Veuillez entrer votre mot de passe.";
-
-        return;
-    }
-
-
-    button.disabled = true;
-
-    button.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> Connexion...';
-
-
-    try {
-
-        const result =
-            await signIn(
-                email,
-                password
-            );
-
-
-        if (result.success) {
-
-            success.textContent =
-                "Connexion réussie ! Redirection...";
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "index.html";
-
-            }, 500);
-
-
-        } else {
-
-            error.textContent =
-                result.error ||
-                "Impossible de vous connecter.";
-
-            button.disabled = false;
-
-            button.innerHTML =
-                '<i class="fas fa-sign-in-alt"></i> Se connecter';
-        }
-
-
-    } catch (err) {
-
-        console.error(
-            "Erreur connexion :",
-            err
-        );
-
-        error.textContent =
-            "Une erreur inattendue est survenue.";
-
-        button.disabled = false;
-
-        button.innerHTML =
-            '<i class="fas fa-sign-in-alt"></i> Se connecter';
-    }
-
-});
-
-
-// =========================================================
-// MOT DE PASSE OUBLIÉ
-// =========================================================
-
-document
-    .getElementById("forgot-password")
-    .addEventListener("click", async (event) => {
+form.addEventListener(
+    "submit",
+    async event => {
 
         event.preventDefault();
 
-        error.textContent = "";
-        success.textContent = "";
+        errorElement.textContent = "";
 
 
         const email =
-            document
-                .getElementById("login-email")
-                .value
-                .trim();
+            document.getElementById(
+                "login-email"
+            ).value.trim();
+
+
+        const password =
+            document.getElementById(
+                "login-password"
+            ).value;
 
 
         if (!email) {
 
-            error.textContent =
+            errorElement.textContent =
+                "Veuillez saisir votre adresse email.";
+
+            return;
+        }
+
+
+        if (!password) {
+
+            errorElement.textContent =
+                "Veuillez saisir votre mot de passe.";
+
+            return;
+        }
+
+
+        loginButton.disabled = true;
+
+        loginButton.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+
+
+        try {
+
+            const result =
+                await signIn(
+                    email,
+                    password
+                );
+
+
+            if (result.success) {
+
+                window.location.href =
+                    "index.html";
+
+                return;
+            }
+
+
+            errorElement.textContent =
+                result.error ||
+                "Impossible de se connecter.";
+
+        } catch (error) {
+
+            console.error(
+                "Erreur connexion :",
+                error
+            );
+
+
+            errorElement.textContent =
+                "Une erreur est survenue pendant la connexion.";
+        }
+
+
+        loginButton.disabled = false;
+
+        loginButton.innerHTML =
+            "Se connecter";
+    }
+);
+
+
+// =====================================================
+// MOT DE PASSE OUBLIÉ
+// =====================================================
+
+forgotPassword.addEventListener(
+    "click",
+    async event => {
+
+        event.preventDefault();
+
+        errorElement.textContent = "";
+
+
+        const email =
+            document.getElementById(
+                "login-email"
+            ).value.trim();
+
+
+        if (!email) {
+
+            errorElement.textContent =
                 "Entrez d'abord votre adresse email.";
 
             return;
         }
 
 
+        forgotPassword.style.pointerEvents =
+            "none";
+
+
         try {
 
             const result =
-                await resetPassword(email);
+                await resetPassword(
+                    email
+                );
 
 
             if (result.success) {
 
-                success.textContent =
-                    "Un email de réinitialisation a été envoyé à cette adresse.";
+                alert(
+                    "Un email de réinitialisation a été envoyé à cette adresse."
+                );
 
             } else {
 
-                error.textContent =
-                    result.error;
-
+                errorElement.textContent =
+                    result.error ||
+                    "Impossible d'envoyer l'email.";
             }
 
-
-        } catch (err) {
+        } catch (error) {
 
             console.error(
                 "Erreur réinitialisation :",
-                err
+                error
             );
 
-            error.textContent =
-                "Impossible d'envoyer l'email de réinitialisation.";
 
+            errorElement.textContent =
+                "Une erreur est survenue.";
         }
 
-    });
+
+        forgotPassword.style.pointerEvents =
+            "";
+    }
+);
 
 </script>
 
 </body>
+
 </html>
-```
