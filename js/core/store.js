@@ -3,94 +3,71 @@
 // =========================================================
 
 const state = {
-
     user: null,
-
     userData: null,
-
     isAuthenticated: false,
-
     listeners: []
-
 };
 
 
 // =========================================================
-// OBTENIR L'ÉTAT
+// RÉCUPÉRER L'ÉTAT
 // =========================================================
 
 export function getState() {
-
     return {
-
         user: state.user,
-
         userData: state.userData,
-
-        isAuthenticated:
-            state.isAuthenticated
+        isAuthenticated: state.isAuthenticated
     };
 }
 
 
 // =========================================================
-// UTILISATEUR
+// DÉFINIR L'UTILISATEUR
 // =========================================================
 
-export function setUser(
-    user,
-    userData = null
-) {
+export function setUser(user, userData = null) {
 
-    state.user =
-        user;
+    state.user = user;
 
-    state.userData =
-        userData;
+    state.userData = userData;
 
-    state.isAuthenticated =
-        !!user;
+    state.isAuthenticated = !!user;
 
     notify();
 }
 
 
 // =========================================================
-// LISTENERS
+// AJOUTER UN ÉCOUTEUR
 // =========================================================
 
-export function addListener(
-    callback
-) {
+export function addListener(callback) {
 
-    if (
-        typeof callback !==
-        "function"
-    ) {
+    if (typeof callback !== "function") {
         return () => {};
     }
 
-    state.listeners.push(
-        callback
-    );
+    state.listeners.push(callback);
 
-    callback(
-        getState()
-    );
+    // Envoyer immédiatement l'état actuel
+    callback(getState());
 
-    return () => {
+
+    // Fonction permettant de supprimer l'écouteur
+    return function unsubscribe() {
 
         state.listeners =
             state.listeners.filter(
-                listener =>
-                    listener !== callback
+                listener => listener !== callback
             );
     };
 }
 
 
 // =========================================================
-// NOTIFICATION
+// NOTIFIER LES COMPOSANTS
 // =========================================================
 
 function notify() {
@@ -103,19 +80,15 @@ function notify() {
 
             try {
 
-                listener(
-                    currentState
-                );
+                listener(currentState);
 
             } catch (error) {
 
                 console.error(
-                    "Erreur listener :",
+                    "CAMU SERVICES — erreur listener :",
                     error
                 );
             }
-
         }
     );
 }
-```
