@@ -9,10 +9,10 @@ import { initProfileButton } from "./components/ProfileButton.js";
 
 
 // =========================================================
-// DÉMARRAGE DE L'APPLICATION
+// DÉMARRAGE
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     console.log("🚀 CAMU SERVICES — démarrage");
 
@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         initAuth();
 
-        console.log("✅ Authentification initialisée");
+        console.log("✅ Authentification OK");
 
     } catch (error) {
 
         console.error(
-            "❌ Erreur initialisation authentification :",
+            "❌ Authentification :",
             error
         );
 
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         initSidebar();
 
-        console.log("✅ Sidebar initialisée");
+        console.log("✅ Sidebar OK");
 
     } catch (error) {
 
         console.error(
-            "❌ Erreur initialisation Sidebar :",
+            "❌ Sidebar :",
             error
         );
 
@@ -65,12 +65,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         initProfileButton();
 
-        console.log("✅ Bouton Profil initialisé");
+        console.log("✅ Profil OK");
 
     } catch (error) {
 
         console.error(
-            "❌ Erreur initialisation Profil :",
+            "❌ Profil :",
             error
         );
 
@@ -86,25 +86,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         initBottomNav();
 
         console.log(
-            "✅ Navigation mobile initialisée"
+            "✅ Navigation mobile OK"
         );
 
     } catch (error) {
 
         console.error(
-            "❌ Erreur navigation mobile :",
+            "❌ Navigation mobile :",
             error
         );
 
     }
 
 
-    // -----------------------------------------------------
-    // FIN
-    // -----------------------------------------------------
-
     console.log(
-        "✅ CAMU SERVICES — application prête"
+        "✅ CAMU SERVICES — prêt"
     );
 
 });
