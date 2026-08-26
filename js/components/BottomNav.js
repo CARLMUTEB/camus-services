@@ -2,123 +2,192 @@
 // CAMU SERVICES — NAVIGATION MOBILE
 // =========================================================
 
-import {
-    addListener
-} from "../core/store.js";
+import { addListener } from "../core/store.js";
+
+
+// =========================================================
+// INITIALISATION
+// =========================================================
 
 export function initBottomNav() {
 
-    const nav =
-        document.querySelector(
-            ".bottom-nav"
-        );
-
-    if (!nav) return;
+    const bottomNav =
+        document.querySelector(".bottom-nav");
 
 
-    nav
-        .querySelectorAll("a")
-        .forEach(
-            link => {
-
-                link.addEventListener(
-                    "click",
-                    event => {
-
-                        const href =
-                            link.getAttribute(
-                                "href"
-                            );
-
-                        if (!href) return;
+    // La navigation n'existe pas sur cette page
+    if (!bottomNav) {
+        return;
+    }
 
 
-                        if (
-                            href === "/"
-                        ) {
+    // =====================================================
+    // RÉCUPÉRER LES LIENS
+    // =====================================================
 
-                            event.preventDefault();
-
-                            window.location.href =
-                                "index.html";
-
-                            return;
-                        }
+    const links =
+        bottomNav.querySelectorAll("a");
 
 
-                        if (
-                            href ===
-                            "/connexion"
-                        ) {
+    // =====================================================
+    // GESTION DES CLICS
+    // =====================================================
 
-                            event.preventDefault();
+    links.forEach(link => {
 
-                            window.location.href =
-                                "connexion.html";
-                        }
+        link.addEventListener(
+            "click",
+            event => {
 
-                    }
-                );
+                event.preventDefault();
 
-            }
-        );
-
-
-    updateActive();
-}
-
-
-// =========================================================
-// LIEN ACTIF
-// =========================================================
-
-function updateActive() {
-
-    const nav =
-        document.querySelector(
-            ".bottom-nav"
-        );
-
-    if (!nav) return;
-
-
-    const current =
-        window.location.pathname
-            .split("/")
-            .pop();
-
-
-    nav
-        .querySelectorAll("a")
-        .forEach(
-            link => {
 
                 const href =
-                    link.getAttribute(
-                        "href"
-                    );
+                    link.getAttribute("href");
 
 
-                link.classList.remove(
-                    "active"
-                );
+                // ------------------------------------------------
+                // ACCUEIL
+                // ------------------------------------------------
+
+                if (
+                    href === "/" ||
+                    href === "index.html"
+                ) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+                }
+
+
+                // ------------------------------------------------
+                // CHAT / PUBLIER / FAVORIS
+                // ------------------------------------------------
+                // Pour ces fonctions, l'utilisateur doit être
+                // connecté.
+
+                const state =
+                    window.CAMU_STATE;
 
 
                 if (
-                    (
-                        current ===
-                            "index.html" ||
-                        current === ""
-                    ) &&
-                    href === "/"
+                    !state ||
+                    !state.isAuthenticated
                 ) {
 
-                    link.classList.add(
-                        "active"
-                    );
+                    window.location.href =
+                        "connexion.html";
+
+                    return;
                 }
 
+
+                // ------------------------------------------------
+                // CHAT
+                // ------------------------------------------------
+
+                if (
+                    href.includes("chat")
+                ) {
+
+                    window.location.href =
+                        "chat.html";
+
+                    return;
+                }
+
+
+                // ------------------------------------------------
+                // PUBLIER
+                // ------------------------------------------------
+
+                if (
+                    href.includes("publier")
+                ) {
+
+                    window.location.href =
+                        "publier.html";
+
+                    return;
+                }
+
+
+                // ------------------------------------------------
+                // FAVORIS
+                // ------------------------------------------------
+
+                if (
+                    href.includes("favoris")
+                ) {
+
+                    window.location.href =
+                        "favoris.html";
+
+                    return;
+                }
+
+
+                // ------------------------------------------------
+                // AUTRE LIEN
+                // ------------------------------------------------
+
+                if (href) {
+
+                    window.location.href =
+                        href;
+                }
             }
         );
+    });
+
+
+    // =====================================================
+    // ÉTAT DE CONNEXION
+    // =====================================================
+
+    addListener(
+        state => {
+
+            // Rendre l'état disponible
+            // pour les autres composants.
+
+            window.CAMU_STATE =
+                state;
+
+
+            links.forEach(link => {
+
+                const href =
+                    link.getAttribute("href");
+
+
+                // ---------------------------------------------
+                // Accueil toujours accessible
+                // ---------------------------------------------
+
+                if (
+                    href === "/" ||
+                    href === "index.html"
+                ) {
+
+                    link.classList.remove(
+                        "requires-auth"
+                    );
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // Liens nécessitant une connexion
+                // ---------------------------------------------
+
+                link.classList.add(
+                    "requires-auth"
+                );
+            });
+        }
+    );
 }
-```
