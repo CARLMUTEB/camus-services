@@ -1,362 +1,79 @@
 // =========================================================
-// CAMU SERVICES — SIDEBAR
+// CAMU SERVICES — CONFIGURATION FIREBASE
 // =========================================================
 
 import {
-    addListener
-} from "../core/store.js";
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-    signOutUser
-} from "../core/auth.js";
+    getAuth
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    getFirestore
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 // =========================================================
-// INITIALISATION
+// CONFIGURATION DU PROJET FIREBASE
 // =========================================================
 
-export function initSidebar() {
+const firebaseConfig = {
 
-    const sidebar =
-        document.getElementById(
-            "sidebar"
-        );
+    apiKey:
+        "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
 
-    const overlay =
-        document.getElementById(
-            "sidebar-overlay"
-        );
+    authDomain:
+        "camu-services.firebaseapp.com",
 
-    const menu =
-        document.getElementById(
-            "menu-toggle"
-        );
+    projectId:
+        "camu-services",
 
-    const logout =
-        document.getElementById(
-            "sidebar-logout"
-        );
+    storageBucket:
+        "camu-services.firebasestorage.app",
 
+    messagingSenderId:
+        "879100396449",
 
-    if (!sidebar) {
+    appId:
+        "1:879100396449:web:9d7ffe441a3df2daf841e0",
 
-        console.warn(
-            "Sidebar introuvable."
-        );
+    measurementId:
+        "G-RQ16SX2SNV"
+};
 
-        return;
-    }
 
+// =========================================================
+// INITIALISATION FIREBASE
+// =========================================================
 
-    // =====================================================
-    // OUVRIR
-    // =====================================================
+const app =
+    initializeApp(firebaseConfig);
 
-    function openSidebar() {
 
-        sidebar.classList.add(
-            "open"
-        );
+// =========================================================
+// AUTHENTIFICATION
+// =========================================================
 
-        if (overlay) {
+const auth =
+    getAuth(app);
 
-            overlay.classList.add(
-                "open"
-            );
-        }
 
-        document.body.classList.add(
-            "sidebar-open"
-        );
-    }
+// =========================================================
+// FIRESTORE
+// =========================================================
 
+const db =
+    getFirestore(app);
 
-    // =====================================================
-    // FERMER
-    // =====================================================
 
-    function closeSidebar() {
+// =========================================================
+// EXPORTS
+// =========================================================
 
-        sidebar.classList.remove(
-            "open"
-        );
-
-        if (overlay) {
-
-            overlay.classList.remove(
-                "open"
-            );
-        }
-
-        document.body.classList.remove(
-            "sidebar-open"
-        );
-    }
-
-
-    // =====================================================
-    // BOUTON MENU
-    // =====================================================
-
-    if (menu) {
-
-        menu.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                if (
-                    sidebar.classList.contains(
-                        "open"
-                    )
-                ) {
-
-                    closeSidebar();
-
-                } else {
-
-                    openSidebar();
-                }
-            }
-        );
-    }
-
-
-    // =====================================================
-    // OVERLAY
-    // =====================================================
-
-    if (overlay) {
-
-        overlay.addEventListener(
-            "click",
-            closeSidebar
-        );
-    }
-
-
-    // =====================================================
-    // ESC
-    // =====================================================
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                closeSidebar();
-            }
-        }
-    );
-
-
-    // =====================================================
-    // NAVIGATION
-    // =====================================================
-
-    sidebar
-        .querySelectorAll(
-            "a"
-        )
-        .forEach(
-            link => {
-
-                link.addEventListener(
-                    "click",
-                    () => {
-
-                        closeSidebar();
-                    }
-                );
-
-            }
-        );
-
-
-    // =====================================================
-    // DÉCONNEXION
-    // =====================================================
-
-    if (logout) {
-
-        logout.addEventListener(
-            "click",
-            async () => {
-
-                logout.disabled =
-                    true;
-
-                logout.textContent =
-                    "Déconnexion...";
-
-
-                const result =
-                    await signOutUser();
-
-
-                if (
-                    result.success
-                ) {
-
-                    window.location.href =
-                        "connexion.html";
-
-                } else {
-
-                    alert(
-                        result.error
-                    );
-
-                    logout.disabled =
-                        false;
-
-                    logout.innerHTML =
-                        '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-                }
-
-            }
-        );
-    }
-
-
-    // =====================================================
-    // UTILISATEUR
-    // =====================================================
-
-    addListener(
-        state => {
-
-            const name =
-                document.getElementById(
-                    "sidebar-displayName"
-                );
-
-            const role =
-                document.getElementById(
-                    "sidebar-role"
-                );
-
-            const avatar =
-                document.getElementById(
-                    "sidebar-avatar-img"
-                );
-
-            const professional =
-                document.getElementById(
-                    "sidebar-pro-link"
-                );
-
-            const admin =
-                document.getElementById(
-                    "sidebar-admin-link"
-                );
-
-
-            if (
-                !state.isAuthenticated
-            ) {
-
-                if (name)
-                    name.textContent =
-                        "Invité";
-
-                if (role)
-                    role.textContent =
-                        "Visiteur";
-
-                if (avatar)
-                    avatar.src =
-                        "assets/default-avatar.png";
-
-                if (professional)
-                    professional.style.display =
-                        "none";
-
-                if (admin)
-                    admin.style.display =
-                        "none";
-
-                return;
-            }
-
-
-            const data =
-                state.userData || {};
-
-
-            if (name) {
-
-                name.textContent =
-                    data.displayName ||
-                    state.user?.displayName ||
-                    "Utilisateur";
-            }
-
-
-            const userRole =
-                data.role ||
-                "client";
-
-
-            if (role) {
-
-                if (
-                    userRole === "admin"
-                ) {
-
-                    role.textContent =
-                        "Administrateur";
-
-                } else if (
-                    userRole === "professional"
-                ) {
-
-                    role.textContent =
-                        "Professionnel";
-
-                } else {
-
-                    role.textContent =
-                        "Client";
-                }
-            }
-
-
-            if (
-                avatar &&
-                data.photoURL
-            ) {
-
-                avatar.src =
-                    data.photoURL;
-            }
-
-
-            if (professional) {
-
-                professional.style.display =
-                    (
-                        userRole === "professional" ||
-                        userRole === "admin"
-                    )
-                        ? "block"
-                        : "none";
-            }
-
-
-            if (admin) {
-
-                admin.style.display =
-                    userRole === "admin"
-                        ? "block"
-                        : "none";
-            }
-
-        }
-    );
-}
-```
+export {
+    app,
+    auth,
+    db
+};
