@@ -4,7 +4,20 @@
 
 
 /* =========================================================
-   TABLETTES
+   SIDEBAR — TOUS LES APPAREILS
+   ========================================================= */
+
+.sidebar {
+    transform: translateX(-100%);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+
+/* =========================================================
+   TABLETTES ET PLUS GRAND
    ========================================================= */
 
 @media (min-width: 768px) {
@@ -30,42 +43,28 @@
 
 
 /* =========================================================
-   ORDINATEURS
+   ORDINATEUR
    ========================================================= */
 
 @media (min-width: 1024px) {
 
     .app-container {
+        margin-left: 0;
         padding-bottom: 0;
     }
 
 
-    .sidebar {
-        transform: translateX(0);
-    }
-
-
-    .sidebar-overlay {
-        display: none;
-    }
-
-
-    .app-container {
-        margin-left: var(--sidebar-width);
-    }
-
-
     .top-bar {
-        left: var(--sidebar-width);
-    }
-
-
-    .bottom-nav {
-        display: none;
+        left: 0;
     }
 
 
     .menu-btn {
+        display: inline-flex;
+    }
+
+
+    .bottom-nav {
         display: none;
     }
 
@@ -83,7 +82,7 @@
 
 
 /* =========================================================
-   PETITS ÉCRANS
+   TÉLÉPHONE
    ========================================================= */
 
 @media (max-width: 767px) {
@@ -143,7 +142,6 @@
 
     .search-bar input {
         height: 48px;
-
         font-size: 0.9rem;
     }
 
@@ -172,7 +170,6 @@
 
     .communique-banner {
         align-items: flex-start;
-
         font-size: 0.9rem;
     }
 
@@ -185,7 +182,7 @@
 
 
 /* =========================================================
-   TRÈS PETITS ÉCRANS
+   TRÈS PETITS TÉLÉPHONES
    ========================================================= */
 
 @media (max-width: 380px) {
