@@ -1,5 +1,6 @@
 // =========================================================
 // CAMU SERVICES — AUTHENTIFICATION
+// Firebase Authentication + Firestore
 // =========================================================
 
 import {
@@ -9,16 +10,14 @@ import {
     sendPasswordResetEmail,
     onAuthStateChanged,
     updateProfile
-} from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
     doc,
     setDoc,
     getDoc,
     serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
     auth,
@@ -44,9 +43,24 @@ export async function signUp(
 
     try {
 
-        email =
-            email.trim();
+        email = email.trim();
 
+        if (!email || !password) {
+            return {
+                success: false,
+                error: "Veuillez remplir tous les champs obligatoires."
+            };
+        }
+
+        if (password.length < 6) {
+            return {
+                success: false,
+                error: "Le mot de passe doit contenir au moins 6 caractères."
+            };
+        }
+
+
+        // Création du compte Firebase Authentication
         const credential =
             await createUserWithEmailAndPassword(
                 auth,
@@ -58,15 +72,17 @@ export async function signUp(
             credential.user;
 
 
+        // Enregistrement du nom dans Firebase Authentication
         await updateProfile(
             user,
             {
                 displayName:
-                    displayName || ""
+                    displayName?.trim() || ""
             }
         );
 
 
+        // Création du profil dans Firestore
         await setDoc(
             doc(
                 db,
@@ -74,7 +90,6 @@ export async function signUp(
                 user.uid
             ),
             {
-
                 uid:
                     user.uid,
 
@@ -82,13 +97,13 @@ export async function signUp(
                     user.email,
 
                 displayName:
-                    displayName || "",
+                    displayName?.trim() || "",
 
                 phoneNumber:
-                    phone || "",
+                    phone?.trim() || "",
 
                 photoURL:
-                    "",
+                    user.photoURL || "",
 
                 role:
                     "client",
@@ -101,41 +116,47 @@ export async function signUp(
 
                 updatedAt:
                     serverTimestamp()
-
             }
         );
 
 
-        await fetchUserData(
-            user.uid
+        // Mettre immédiatement l'utilisateur dans le store
+        const userData = {
+            uid: user.uid,
+            email: user.email,
+            displayName: displayName?.trim() || "",
+            phoneNumber: phone?.trim() || "",
+            photoURL: user.photoURL || "",
+            role: "client",
+            isActive: true
+        };
+
+        setUser(
+            user,
+            userData
         );
 
 
         return {
-
             success: true,
-
-            user
-
+            user: user,
+            userData: userData
         };
 
 
     } catch (error) {
 
         console.error(
-            "Erreur inscription :",
+            "CAMU SERVICES — Erreur inscription :",
             error
         );
 
         return {
-
             success: false,
-
             error:
                 translateFirebaseError(
                     error.code
                 )
-
         };
     }
 }
@@ -152,43 +173,96 @@ export async function signIn(
 
     try {
 
+        email =
+            email.trim();
+
+
+        if (!email || !password) {
+
+            return {
+                success: false,
+                error:
+                    "Veuillez saisir votre email et votre mot de passe."
+            };
+        }
+
+
+        // Connexion Firebase Authentication
         const credential =
             await signInWithEmailAndPassword(
                 auth,
-                email.trim(),
+                email,
                 password
             );
 
-        await fetchUserData(
-            credential.user.uid
-        );
+        const user =
+            credential.user;
+
+
+        // Récupération du profil Firestore
+        const userData =
+            await fetchUserData(
+                user.uid
+            );
+
+
+        // Si le document n'existe pas encore,
+        // créer un profil local minimal.
+        if (!userData) {
+
+            const defaultData = {
+
+                uid:
+                    user.uid,
+
+                email:
+                    user.email,
+
+                displayName:
+                    user.displayName || "",
+
+                phoneNumber:
+                    "",
+
+                photoURL:
+                    user.photoURL || "",
+
+                role:
+                    "client",
+
+                isActive:
+                    true
+            };
+
+
+            setUser(
+                user,
+                defaultData
+            );
+
+        }
+
 
         return {
-
             success: true,
-
-            user:
-                credential.user
-
+            user: user,
+            userData: userData
         };
 
 
     } catch (error) {
 
         console.error(
-            "Erreur connexion :",
+            "CAMU SERVICES — Erreur connexion :",
             error
         );
 
         return {
-
             success: false,
-
             error:
                 translateFirebaseError(
                     error.code
                 )
-
         };
     }
 }
@@ -206,10 +280,12 @@ export async function signOutUser() {
             auth
         );
 
+
         setUser(
             null,
             null
         );
+
 
         return {
             success: true
@@ -219,16 +295,15 @@ export async function signOutUser() {
     } catch (error) {
 
         console.error(
-            "Erreur déconnexion :",
+            "CAMU SERVICES — Erreur déconnexion :",
             error
         );
 
         return {
-
             success: false,
-
             error:
-                error.message
+                error.message ||
+                "Impossible de se déconnecter."
         };
     }
 }
@@ -244,10 +319,25 @@ export async function resetPassword(
 
     try {
 
+        email =
+            email.trim();
+
+
+        if (!email) {
+
+            return {
+                success: false,
+                error:
+                    "Veuillez saisir votre adresse email."
+            };
+        }
+
+
         await sendPasswordResetEmail(
             auth,
-            email.trim()
+            email
         );
+
 
         return {
             success: true
@@ -256,10 +346,13 @@ export async function resetPassword(
 
     } catch (error) {
 
+        console.error(
+            "CAMU SERVICES — Erreur réinitialisation :",
+            error
+        );
+
         return {
-
             success: false,
-
             error:
                 translateFirebaseError(
                     error.code
@@ -270,7 +363,7 @@ export async function resetPassword(
 
 
 // =========================================================
-// DONNÉES UTILISATEUR
+// RÉCUPÉRER LES DONNÉES FIRESTORE
 // =========================================================
 
 export async function fetchUserData(
@@ -279,6 +372,11 @@ export async function fetchUserData(
 
     try {
 
+        if (!uid) {
+            return null;
+        }
+
+
         const reference =
             doc(
                 db,
@@ -286,35 +384,41 @@ export async function fetchUserData(
                 uid
             );
 
+
         const snapshot =
             await getDoc(
                 reference
             );
 
 
-        if (
-            snapshot.exists()
-        ) {
+        if (!snapshot.exists()) {
 
-            const data =
-                snapshot.data();
-
-            setUser(
-                auth.currentUser,
-                data
-            );
-
-            return data;
+            return null;
         }
 
 
-        return null;
+        const data =
+            snapshot.data();
+
+
+        // Utilisateur Firebase actuellement connecté
+        const currentUser =
+            auth.currentUser;
+
+
+        setUser(
+            currentUser,
+            data
+        );
+
+
+        return data;
 
 
     } catch (error) {
 
         console.error(
-            "Erreur récupération utilisateur :",
+            "CAMU SERVICES — Erreur Firestore :",
             error
         );
 
@@ -324,7 +428,7 @@ export async function fetchUserData(
 
 
 // =========================================================
-// SURVEILLANCE AUTH
+// SURVEILLANCE DE L'AUTHENTIFICATION
 // =========================================================
 
 export function initAuth() {
@@ -333,58 +437,87 @@ export function initAuth() {
         auth,
         async user => {
 
-            if (!user) {
+            try {
+
+                if (!user) {
+
+                    setUser(
+                        null,
+                        null
+                    );
+
+                    return;
+                }
+
+
+                const data =
+                    await fetchUserData(
+                        user.uid
+                    );
+
+
+                if (data) {
+
+                    setUser(
+                        user,
+                        data
+                    );
+
+                    return;
+                }
+
+
+                // Profil Firestore absent
+                const defaultData = {
+
+                    uid:
+                        user.uid,
+
+                    email:
+                        user.email,
+
+                    displayName:
+                        user.displayName || "",
+
+                    phoneNumber:
+                        "",
+
+                    photoURL:
+                        user.photoURL || "",
+
+                    role:
+                        "client",
+
+                    isActive:
+                        true
+                };
+
 
                 setUser(
-                    null,
+                    user,
+                    defaultData
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "CAMU SERVICES — Erreur surveillance auth :",
+                    error
+                );
+
+                setUser(
+                    user,
                     null
                 );
-
-                return;
             }
-
-
-            const data =
-                await fetchUserData(
-                    user.uid
-                );
-
-
-            if (data) {
-
-                setUser(
-                    user,
-                    data
-                );
-
-            } else {
-
-                setUser(
-                    user,
-                    {
-
-                        uid:
-                            user.uid,
-
-                        email:
-                            user.email,
-
-                        displayName:
-                            user.displayName || "",
-
-                        role:
-                            "client"
-                    }
-                );
-            }
-
         }
     );
 }
 
 
 // =========================================================
-// ERREURS FIREBASE
+// TRADUCTION DES ERREURS FIREBASE
 // =========================================================
 
 function translateFirebaseError(
@@ -418,11 +551,16 @@ function translateFirebaseError(
             "Trop de tentatives. Réessayez plus tard.",
 
         "auth/operation-not-allowed":
-            "La connexion par email/mot de passe n'est pas activée dans Firebase.",
+            "La connexion par email et mot de passe n'est pas activée dans Firebase.",
 
         "auth/missing-password":
-            "Veuillez saisir votre mot de passe."
+            "Veuillez saisir votre mot de passe.",
 
+        "auth/user-disabled":
+            "Ce compte a été désactivé.",
+
+        "auth/requires-recent-login":
+            "Veuillez vous reconnecter avant d'effectuer cette opération."
     };
 
 
@@ -440,4 +578,3 @@ function translateFirebaseError(
 export {
     addListener
 };
-```
