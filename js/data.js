@@ -320,5 +320,93 @@ export async function getMessages(conversationId) {
 }
 
 // =========================================================
-// (Les exports sont déjà faits avec "export" devant chaque fonction)
+// NOUVELLES FONCTIONS POUR LE CHAT ET L'ADMIN
 // =========================================================
+
+/**
+ * Récupère toutes les conversations d'un utilisateur (triées par dernière activité)
+ */
+export async function getUserConversations(userId) {
+    try {
+        if (!userId) return [];
+        const q = query(
+            collection(db, "chats"),
+            where("participants", "array-contains", userId),
+            orderBy("updatedAt", "desc")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur récupération conversations :", error);
+        return [];
+    }
+}
+
+/**
+ * Récupère toutes les annonces en attente de validation (status "pending")
+ */
+export async function getPendingListings() {
+    try {
+        const q = query(
+            collection(db, "annonces"),
+            where("status", "==", "pending")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur récupération annonces en attente :", error);
+        return [];
+    }
+}
+
+/**
+ * Approuve une annonce (passe le status à "approved")
+ */
+export async function approveListing(listingId) {
+    try {
+        await updateDoc(doc(db, "annonces", listingId), {
+            status: "approved",
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur approbation :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Rejette une annonce (passe le status à "rejected")
+ */
+export async function rejectListing(listingId) {
+    try {
+        await updateDoc(doc(db, "annonces", listingId), {
+            status: "rejected",
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur rejet :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Crée un nouveau communiqué dans la collection "communiques"
+ */
+export async function createCommunique(data) {
+    try {
+        const communique = cleanData({
+            ...data,
+            active: true,
+            author: data.author || "Administration",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "communiques"), communique);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur création communiqué :", error);
+        return { success: false, error: error.message };
+    }
+}
