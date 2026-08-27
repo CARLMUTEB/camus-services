@@ -17,12 +17,11 @@ import {
     where,
     orderBy,
     limit,
-    startAfter,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // =========================================================
-// VOS VRAIES CLÉS FIREBASE (identique à auth.js)
+// VOS VRAIES CLÉS FIREBASE
 // =========================================================
 const firebaseConfig = {
     apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -57,10 +56,9 @@ function convertDocument(snapshot) {
 }
 
 // =========================================================
-// ANNONCES (collection "annonces" dans Firestore)
+// ANNONCES (collection "annonces")
 // =========================================================
-
-async function getListings(options = {}) {
+export async function getListings(options = {}) {
     try {
         const { category = null, city = null, listingLimit = 20 } = options;
         let constraints = [];
@@ -78,7 +76,7 @@ async function getListings(options = {}) {
     }
 }
 
-async function getListing(listingId) {
+export async function getListing(listingId) {
     try {
         if (!listingId) return null;
         const snapshot = await getDoc(doc(db, "annonces", listingId));
@@ -89,13 +87,13 @@ async function getListing(listingId) {
     }
 }
 
-async function createListing(data) {
+export async function createListing(data) {
     try {
         const listing = cleanData({
             ...data,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-            status: data.status || "approved"  // pour que les règles autorisent la lecture
+            status: data.status || "approved"
         });
         const ref = await addDoc(collection(db, "annonces"), listing);
         return { success: true, id: ref.id };
@@ -105,7 +103,7 @@ async function createListing(data) {
     }
 }
 
-async function updateListing(listingId, data) {
+export async function updateListing(listingId, data) {
     try {
         if (!listingId) throw new Error("ID manquant.");
         await updateDoc(doc(db, "annonces", listingId), {
@@ -119,7 +117,7 @@ async function updateListing(listingId, data) {
     }
 }
 
-async function deleteListing(listingId) {
+export async function deleteListing(listingId) {
     try {
         await deleteDoc(doc(db, "annonces", listingId));
         return { success: true };
@@ -132,7 +130,7 @@ async function deleteListing(listingId) {
 // =========================================================
 // FAVORIS
 // =========================================================
-async function addFavorite(userId, listingId) {
+export async function addFavorite(userId, listingId) {
     try {
         if (!userId || !listingId) throw new Error("Utilisateur ou annonce manquant.");
         const favoriteId = `${userId}_${listingId}`;
@@ -148,7 +146,7 @@ async function addFavorite(userId, listingId) {
     }
 }
 
-async function removeFavorite(userId, listingId) {
+export async function removeFavorite(userId, listingId) {
     try {
         const favoriteId = `${userId}_${listingId}`;
         await deleteDoc(doc(db, "favorites", favoriteId));
@@ -159,7 +157,7 @@ async function removeFavorite(userId, listingId) {
     }
 }
 
-async function isFavorite(userId, listingId) {
+export async function isFavorite(userId, listingId) {
     try {
         const favoriteId = `${userId}_${listingId}`;
         const snapshot = await getDoc(doc(db, "favorites", favoriteId));
@@ -173,7 +171,7 @@ async function isFavorite(userId, listingId) {
 // =========================================================
 // RÉSERVATIONS
 // =========================================================
-async function createReservation(data) {
+export async function createReservation(data) {
     try {
         const reservation = cleanData({
             ...data,
@@ -189,7 +187,7 @@ async function createReservation(data) {
     }
 }
 
-async function getUserReservations(userId) {
+export async function getUserReservations(userId) {
     try {
         if (!userId) return [];
         const q = query(
@@ -208,7 +206,7 @@ async function getUserReservations(userId) {
 // =========================================================
 // NOTIFICATIONS
 // =========================================================
-async function createNotification(data) {
+export async function createNotification(data) {
     try {
         const notification = cleanData({
             ...data,
@@ -223,7 +221,7 @@ async function createNotification(data) {
     }
 }
 
-async function getUserNotifications(userId) {
+export async function getUserNotifications(userId) {
     try {
         if (!userId) return [];
         const q = query(
@@ -240,7 +238,7 @@ async function getUserNotifications(userId) {
     }
 }
 
-async function markNotificationAsRead(notificationId) {
+export async function markNotificationAsRead(notificationId) {
     try {
         await updateDoc(doc(db, "notifications", notificationId), { read: true });
         return { success: true };
@@ -253,7 +251,7 @@ async function markNotificationAsRead(notificationId) {
 // =========================================================
 // COMMUNIQUÉS
 // =========================================================
-async function getCommuniques() {
+export async function getCommuniques() {
     try {
         const q = query(
             collection(db, "communiques"),
@@ -270,9 +268,9 @@ async function getCommuniques() {
 }
 
 // =========================================================
-// CONVERSATIONS (collection "chats" dans Firestore)
+// CHAT / CONVERSATIONS (collection "chats")
 // =========================================================
-async function createConversation(data) {
+export async function createConversation(data) {
     try {
         const conversation = cleanData({
             ...data,
@@ -287,7 +285,7 @@ async function createConversation(data) {
     }
 }
 
-async function sendMessage(conversationId, data) {
+export async function sendMessage(conversationId, data) {
     try {
         if (!conversationId) throw new Error("Conversation introuvable.");
         const message = cleanData({
@@ -306,7 +304,7 @@ async function sendMessage(conversationId, data) {
     }
 }
 
-async function getMessages(conversationId) {
+export async function getMessages(conversationId) {
     try {
         if (!conversationId) return [];
         const q = query(
@@ -322,25 +320,5 @@ async function getMessages(conversationId) {
 }
 
 // =========================================================
-// EXPORTS
+// (Les exports sont déjà faits avec "export" devant chaque fonction)
 // =========================================================
-export {
-    db,
-    getListings,
-    getListing,
-    createListing,
-    updateListing,
-    deleteListing,
-    addFavorite,
-    removeFavorite,
-    isFavorite,
-    createReservation,
-    getUserReservations,
-    createNotification,
-    getUserNotifications,
-    markNotificationAsRead,
-    getCommuniques,
-    createConversation,
-    sendMessage,
-    getMessages
-};
