@@ -3,486 +3,268 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration — CAMU SERVICES</title>
 
-    <link
-        rel="stylesheet"
-        href="css/admin.css"
-    >
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    >
+    <style>
+        /* Petit correctif pour le chargement */
+        #admin-loading {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            z-index: 9999;
+            gap: 16px;
+            font-family: system-ui, sans-serif;
+        }
+        #admin-loading i {
+            font-size: 48px;
+            color: #1f6f43;
+        }
+        #admin-loading p {
+            color: #68736d;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="admin-loading">
-    <i class="fas fa-spinner fa-spin"></i>
-    <p>Vérification de votre compte...</p>
-</div>
+    <!-- Écran de chargement -->
+    <div id="admin-loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Vérification de votre compte...</p>
+    </div>
 
+    <!-- Application admin -->
+    <div id="admin-app" class="admin-app hidden">
 
-<div id="admin-app" class="admin-app hidden">
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+        <aside class="admin-sidebar" id="admin-sidebar">
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-
-    <aside class="admin-sidebar" id="admin-sidebar">
-
-        <div class="admin-logo">
-            <i class="fas fa-shield-alt"></i>
-            <span>CAMU SERVICES</span>
-        </div>
-
-        <div class="admin-profile">
-
-            <div class="admin-avatar">
-                <i class="fas fa-user-shield"></i>
+            <div class="admin-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>CAMU SERVICES</span>
             </div>
 
-            <div>
-                <strong id="admin-name">
-                    Administrateur
-                </strong>
-
-                <span>
-                    Administrateur
-                </span>
+            <div class="admin-profile">
+                <div class="admin-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div>
+                    <strong id="admin-name">Administrateur</strong>
+                    <span>Administrateur</span>
+                </div>
             </div>
 
-        </div>
-
-
-        <nav class="admin-nav">
-
-            <button
-                class="nav-item active"
-                data-section="dashboard"
-            >
-                <i class="fas fa-chart-line"></i>
-                <span>Tableau de bord</span>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-section="users"
-            >
-                <i class="fas fa-users"></i>
-                <span>Utilisateurs</span>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-section="annonces"
-            >
-                <i class="fas fa-list"></i>
-                <span>Annonces</span>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-section="pending"
-            >
-                <i class="fas fa-clock"></i>
-                <span>En attente</span>
-                <b id="pending-badge">0</b>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-section="communiques"
-            >
-                <i class="fas fa-bullhorn"></i>
-                <span>Communiqués</span>
-            </button>
-
-        </nav>
-
-
-        <div class="admin-sidebar-footer">
-
-            <button id="back-site-btn">
-                <i class="fas fa-globe"></i>
-                Retour au site
-            </button>
-
-            <button id="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-                Déconnexion
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main class="admin-main">
-
-        <header class="admin-topbar">
-
-            <button
-                id="mobile-menu-btn"
-                class="mobile-menu-btn"
-            >
-                <i class="fas fa-bars"></i>
-            </button>
-
-
-            <div>
-
-                <h1 id="section-title">
-                    Tableau de bord
-                </h1>
-
-                <p>
-                    Gestion de CAMU SERVICES
-                </p>
-
-            </div>
-
-
-            <div class="admin-top-actions">
-
-                <button
-                    id="refresh-btn"
-                    title="Actualiser"
-                >
-                    <i class="fas fa-sync-alt"></i>
+            <nav class="admin-nav">
+                <button class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Tableau de bord</span>
                 </button>
+                <button class="nav-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>Utilisateurs</span>
+                </button>
+                <button class="nav-item" data-section="annonces">
+                    <i class="fas fa-list"></i>
+                    <span>Annonces</span>
+                </button>
+                <button class="nav-item" data-section="pending">
+                    <i class="fas fa-clock"></i>
+                    <span>En attente</span>
+                    <b id="pending-badge">0</b>
+                </button>
+                <button class="nav-item" data-section="communiques">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Communiqués</span>
+                </button>
+            </nav>
 
+            <div class="admin-sidebar-footer">
+                <button id="back-site-btn">
+                    <i class="fas fa-globe"></i>
+                    Retour au site
+                </button>
+                <button id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
             </div>
 
-        </header>
-
+        </aside>
 
         <!-- =========================
-             DASHBOARD
+             MAIN
         ========================== -->
+        <main class="admin-main">
 
-        <section
-            id="section-dashboard"
-            class="admin-section active"
-        >
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon blue">
-                        <i class="fas fa-users"></i>
-                    </div>
-
-                    <div>
-                        <span>Utilisateurs</span>
-                        <strong id="stat-users">0</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon green">
-                        <i class="fas fa-list"></i>
-                    </div>
-
-                    <div>
-                        <span>Annonces</span>
-                        <strong id="stat-annonces">0</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon orange">
-                        <i class="fas fa-clock"></i>
-                    </div>
-
-                    <div>
-                        <span>En attente</span>
-                        <strong id="stat-pending">0</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon purple">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-
-                    <div>
-                        <span>Professionnels</span>
-                        <strong id="stat-professionals">0</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="admin-card">
-
-                <div class="card-header">
-
-                    <div>
-                        <h2>Annonces récemment publiées</h2>
-                        <p>Dernières annonces enregistrées</p>
-                    </div>
-
-                    <button
-                        class="small-action"
-                        data-section-target="annonces"
-                    >
-                        Voir tout
+            <header class="admin-topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button id="mobile-menu-btn" class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
                     </button>
-
-                </div>
-
-                <div
-                    id="recent-annonces"
-                    class="table-container"
-                >
-                    <div class="empty-state">
-                        Chargement...
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             USERS
-        ========================== -->
-
-        <section
-            id="section-users"
-            class="admin-section"
-        >
-
-            <div class="section-toolbar">
-
-                <div>
-                    <h2>Utilisateurs</h2>
-                    <p>Gestion des comptes CAMU SERVICES</p>
-                </div>
-
-                <input
-                    type="search"
-                    id="user-search"
-                    placeholder="Rechercher..."
-                >
-
-            </div>
-
-
-            <div class="admin-card">
-
-                <div
-                    id="users-table"
-                    class="table-container"
-                >
-                    <div class="empty-state">
-                        Chargement...
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             ANNONCES
-        ========================== -->
-
-        <section
-            id="section-annonces"
-            class="admin-section"
-        >
-
-            <div class="section-toolbar">
-
-                <div>
-                    <h2>Annonces</h2>
-                    <p>Toutes les annonces</p>
-                </div>
-
-                <select id="annonce-filter">
-
-                    <option value="all">
-                        Toutes
-                    </option>
-
-                    <option value="pending">
-                        En attente
-                    </option>
-
-                    <option value="approved">
-                        Approuvées
-                    </option>
-
-                    <option value="rejected">
-                        Refusées
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="admin-card">
-
-                <div
-                    id="annonces-table"
-                    class="table-container"
-                >
-                    <div class="empty-state">
-                        Chargement...
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PENDING
-        ========================== -->
-
-        <section
-            id="section-pending"
-            class="admin-section"
-        >
-
-            <div class="section-toolbar">
-
-                <div>
-                    <h2>Annonces en attente</h2>
-                    <p>Validation avant publication</p>
-                </div>
-
-            </div>
-
-
-            <div
-                id="pending-list"
-                class="pending-grid"
-            >
-
-                <div class="empty-state">
-                    Chargement...
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             COMMUNIQUES
-        ========================== -->
-
-        <section
-            id="section-communiques"
-            class="admin-section"
-        >
-
-            <div class="section-toolbar">
-
-                <div>
-                    <h2>Communiqués</h2>
-                    <p>Gestion du communiqué affiché sur l'accueil</p>
-                </div>
-
-            </div>
-
-
-            <div class="admin-card">
-
-                <form id="communique-form">
-
-                    <label>
-                        Texte du communiqué
-                    </label>
-
-                    <textarea
-                        id="communique-text-input"
-                        rows="5"
-                        placeholder="Écrivez votre communiqué..."
-                        required
-                    ></textarea>
-
-
-                    <button
-                        type="submit"
-                        class="primary-btn"
-                    >
-                        <i class="fas fa-save"></i>
-                        Publier le communiqué
-                    </button>
-
-                </form>
-
-            </div>
-
-
-            <div class="admin-card">
-
-                <div class="card-header">
-
                     <div>
-                        <h2>Communiqué actuel</h2>
+                        <h1 id="section-title">Tableau de bord</h1>
+                        <p>Gestion de CAMU SERVICES</p>
                     </div>
+                </div>
+                <div class="admin-top-actions">
+                    <button id="refresh-btn" title="Actualiser">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </header>
 
+            <!-- DASHBOARD -->
+            <section id="section-dashboard" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+                        <div>
+                            <span>Utilisateurs</span>
+                            <strong id="stat-users">0</strong>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-list"></i></div>
+                        <div>
+                            <span>Annonces</span>
+                            <strong id="stat-annonces">0</strong>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <span>En attente</span>
+                            <strong id="stat-pending">0</strong>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-briefcase"></i></div>
+                        <div>
+                            <span>Professionnels</span>
+                            <strong id="stat-professionals">0</strong>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="current-communique">
-                    Aucun communiqué.
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Annonces récemment publiées</h2>
+                            <p>Dernières annonces enregistrées</p>
+                        </div>
+                        <button class="small-action" data-section-target="annonces">
+                            Voir tout
+                        </button>
+                    </div>
+                    <div id="recent-annonces" class="table-container">
+                        <div class="empty-state">Chargement...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- USERS -->
+            <section id="section-users" class="admin-section">
+                <div class="section-toolbar">
+                    <div>
+                        <h2>Utilisateurs</h2>
+                        <p>Gestion des comptes CAMU SERVICES</p>
+                    </div>
+                    <input type="search" id="user-search" placeholder="Rechercher...">
+                </div>
+                <div class="admin-card">
+                    <div id="users-table" class="table-container">
+                        <div class="empty-state">Chargement...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ANNONCES -->
+            <section id="section-annonces" class="admin-section">
+                <div class="section-toolbar">
+                    <div>
+                        <h2>Annonces</h2>
+                        <p>Toutes les annonces</p>
+                    </div>
+                    <select id="annonce-filter">
+                        <option value="all">Toutes</option>
+                        <option value="pending">En attente</option>
+                        <option value="approved">Approuvées</option>
+                        <option value="rejected">Refusées</option>
+                    </select>
+                </div>
+                <div class="admin-card">
+                    <div id="annonces-table" class="table-container">
+                        <div class="empty-state">Chargement...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PENDING -->
+            <section id="section-pending" class="admin-section">
+                <div class="section-toolbar">
+                    <div>
+                        <h2>Annonces en attente</h2>
+                        <p>Validation avant publication</p>
+                    </div>
+                </div>
+                <div id="pending-list" class="pending-grid">
+                    <div class="empty-state">Chargement...</div>
+                </div>
+            </section>
+
+            <!-- COMMUNIQUES -->
+            <section id="section-communiques" class="admin-section">
+                <div class="section-toolbar">
+                    <div>
+                        <h2>Communiqués</h2>
+                        <p>Gestion du communiqué affiché sur l'accueil</p>
+                    </div>
                 </div>
 
-            </div>
+                <div class="admin-card">
+                    <form id="communique-form">
+                        <label>Texte du communiqué</label>
+                        <textarea id="communique-text-input" rows="5"
+                            placeholder="Écrivez votre communiqué..." required></textarea>
+                        <button type="submit" class="primary-btn">
+                            <i class="fas fa-save"></i> Publier le communiqué
+                        </button>
+                    </form>
+                </div>
 
-        </section>
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Communiqué actuel</h2>
+                        </div>
+                    </div>
+                    <div id="current-communique" style="padding:16px;background:#f8fafc;border-radius:8px;color:#68736d;">
+                        Aucun communiqué.
+                    </div>
+                </div>
+            </section>
 
-    </main>
+        </main>
+    </div>
 
-</div>
+    <!-- Toast -->
+    <div id="admin-toast" class="admin-toast"></div>
 
-
-<div
-    id="admin-toast"
-    class="admin-toast"
-></div>
-
-
-<script
-    type="module"
-    src="js/admin/admin.js"
-></script>
+    <!-- Script principal -->
+    <script type="module" src="js/admin/admin.js"></script>
 
 </body>
 </html>
