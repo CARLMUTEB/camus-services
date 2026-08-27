@@ -20,7 +20,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // =========================================================
-// VOS VRAIES CLÉS FIREBASE (copiées de votre console)
+// VOS VRAIES CLÉS FIREBASE
 // =========================================================
 const firebaseConfig = {
     apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
@@ -40,25 +40,25 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 // =========================================================
-// ÉTAT GLOBAL
+// ÉTAT
 // =========================================================
 let currentUser = null;
 
 // =========================================================
 // EXPOSER L'UTILISATEUR
 // =========================================================
-function getUser() {
+export function getUser() {
     return currentUser;
 }
 
-function isAuthenticated() {
+export function isAuthenticated() {
     return currentUser !== null;
 }
 
 // =========================================================
 // INSCRIPTION
 // =========================================================
-async function registerUser({ email, password, displayName = "", role = "client" }) {
+export async function registerUser({ email, password, displayName = "", role = "client" }) {
     try {
         if (!email || !password) {
             throw new Error("Email et mot de passe requis.");
@@ -94,7 +94,7 @@ async function registerUser({ email, password, displayName = "", role = "client"
 // =========================================================
 // CONNEXION
 // =========================================================
-async function loginUser(email, password) {
+export async function loginUser(email, password) {
     try {
         if (!email || !password) {
             throw new Error("Veuillez remplir tous les champs.");
@@ -110,7 +110,7 @@ async function loginUser(email, password) {
 // =========================================================
 // DÉCONNEXION
 // =========================================================
-async function logoutUser() {
+export async function logoutUser() {
     try {
         await signOut(auth);
         return { success: true };
@@ -121,9 +121,9 @@ async function logoutUser() {
 }
 
 // =========================================================
-// OBSERVER L'ÉTAT DE CONNEXION
+// OBSERVER L'ÉTAT
 // =========================================================
-function observeAuth(callback) {
+export function observeAuth(callback) {
     return onAuthStateChanged(auth, async (user) => {
         currentUser = user;
         let profile = null;
@@ -145,9 +145,9 @@ function observeAuth(callback) {
 }
 
 // =========================================================
-// RÉCUPÉRER LE PROFIL UTILISATEUR
+// RÉCUPÉRER LE PROFIL
 // =========================================================
-async function getUserProfile(uid = null) {
+export async function getUserProfile(uid = null) {
     try {
         const userId = uid || currentUser?.uid;
         if (!userId) return null;
@@ -181,16 +181,6 @@ function getAuthErrorMessage(error) {
 }
 
 // =========================================================
-// EXPORTS
+// EXPORTS (déjà faits avec "export" devant chaque fonction)
 // =========================================================
-export {
-    auth,
-    db,
-    getUser,
-    isAuthenticated,
-    registerUser,
-    loginUser,
-    logoutUser,
-    observeAuth,
-    getUserProfile
-};
+// Pas besoin de bloc d'export supplémentaire car nous avons utilisé "export" devant chaque fonction.
