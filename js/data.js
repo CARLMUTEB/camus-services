@@ -15,7 +15,6 @@ import {
   deleteDoc,
   query,
   where,
-  orderBy,
   limit,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -24,7 +23,7 @@ import {
 // CONFIGURATION FIREBASE (CORRIGÉE)
 // =========================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg", // ✅ ICI : "AIza"
+  apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
   authDomain: "camu-services.firebaseapp.com",
   projectId: "camu-services",
   storageBucket: "camu-services.firebasestorage.app",
@@ -56,7 +55,7 @@ function convertDocument(snapshot) {
 }
 
 // =========================================================
-// ANNONCES (collection "annonces") - ✅ NOM UNIFORMISÉ
+// ANNONCES (collection "annonces")
 // =========================================================
 export async function getListings(options = {}) {
   try {
@@ -66,8 +65,6 @@ export async function getListings(options = {}) {
     if (category) constraints.push(where("category", "==", category));
     if (city) constraints.push(where("city", "==", city));
     
-    // ✅ SUPPRESSION de orderBy() pour éviter l'erreur d'index manquant.
-    // Le tri se fera côté client ci-dessous.
     constraints.push(limit(listingLimit));
     
     const q = query(collection(db, "annonces"), ...constraints);
@@ -75,7 +72,7 @@ export async function getListings(options = {}) {
     
     let listings = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     
-    // ✅ TRI MANUEL (plus fiable sans index Firestore)
+    // ✅ TRI MANUEL (plus récent en premier)
     listings.sort((a, b) => {
       const dateA = a.createdAt?.seconds || 0;
       const dateB = b.createdAt?.seconds || 0;
@@ -182,7 +179,7 @@ export async function isFavorite(userId, listingId) {
 }
 
 // =========================================================
-// RÉSERVATIONS
+// RÉSERVATIONS (CORRIGÉ : sans orderBy)
 // =========================================================
 export async function createReservation(data) {
   try {
@@ -205,11 +202,19 @@ export async function getUserReservations(userId) {
     if (!userId) return [];
     const q = query(
       collection(db, "reservations"),
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc")
+      where("userId", "==", userId)
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let reservations = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    // ✅ TRI MANUEL (plus récent en premier)
+    reservations.sort((a, b) => {
+      const dateA = a.createdAt?.seconds || 0;
+      const dateB = b.createdAt?.seconds || 0;
+      return dateB - dateA;
+    });
+    
+    return reservations;
   } catch (error) {
     console.error("Erreur réservations :", error);
     return [];
@@ -217,7 +222,7 @@ export async function getUserReservations(userId) {
 }
 
 // =========================================================
-// NOTIFICATIONS
+// NOTIFICATIONS (CORRIGÉ : sans orderBy)
 // =========================================================
 export async function createNotification(data) {
   try {
@@ -239,12 +244,22 @@ export async function getUserNotifications(userId) {
     if (!userId) return [];
     const q = query(
       collection(db, "notifications"),
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc"),
-      limit(50)
+      where("userId", "==", userId)
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let notifications = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    // ✅ TRI MANUEL (plus récent en premier)
+    notifications.sort((a, b) => {
+      const dateA = a.createdAt?.seconds || 0;
+      const dateB = b.createdAt?.seconds || 0;
+      return dateB - dateA;
+    });
+    
+    // ✅ Limitation à 50 (comme avant)
+    notifications = notifications.slice(0, 50);
+    
+    return notifications;
   } catch (error) {
     console.error("Erreur notifications :", error);
     return [];
@@ -262,18 +277,28 @@ export async function markNotificationAsRead(notificationId) {
 }
 
 // =========================================================
-// COMMUNIQUÉS
+// COMMUNIQUÉS (CORRIGÉ : sans orderBy)
 // =========================================================
 export async function getCommuniques() {
   try {
     const q = query(
       collection(db, "communiques"),
-      where("active", "==", true),
-      orderBy("createdAt", "desc"),
-      limit(10)
+      where("active", "==", true)
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let communiques = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    // ✅ TRI MANUEL (plus récent en premier)
+    communiques.sort((a, b) => {
+      const dateA = a.createdAt?.seconds || 0;
+      const dateB = b.createdAt?.seconds || 0;
+      return dateB - dateA;
+    });
+    
+    // ✅ Limitation à 10 (comme avant)
+    communiques = communiques.slice(0, 10);
+    
+    return communiques;
   } catch (error) {
     console.error("Erreur communiqués :", error);
     return [];
@@ -281,7 +306,7 @@ export async function getCommuniques() {
 }
 
 // =========================================================
-// CHAT
+// CHAT (CORRIGÉ : sans orderBy)
 // =========================================================
 export async function createConversation(data) {
   try {
@@ -321,11 +346,19 @@ export async function getMessages(conversationId) {
   try {
     if (!conversationId) return [];
     const q = query(
-      collection(db, "chats", conversationId, "messages"),
-      orderBy("createdAt", "asc")
+      collection(db, "chats", conversationId, "messages")
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let messages = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    // ✅ TRI MANUEL (chronologique, plus ancien en premier pour le chat)
+    messages.sort((a, b) => {
+      const dateA = a.createdAt?.seconds || 0;
+      const dateB = b.createdAt?.seconds || 0;
+      return dateA - dateB;
+    });
+    
+    return messages;
   } catch (error) {
     console.error("Erreur messages :", error);
     return [];
@@ -337,11 +370,19 @@ export async function getUserConversations(userId) {
     if (!userId) return [];
     const q = query(
       collection(db, "chats"),
-      where("participants", "array-contains", userId),
-      orderBy("updatedAt", "desc")
+      where("participants", "array-contains", userId)
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    let conversations = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    // ✅ TRI MANUEL (plus récent en premier)
+    conversations.sort((a, b) => {
+      const dateA = a.updatedAt?.seconds || 0;
+      const dateB = b.updatedAt?.seconds || 0;
+      return dateB - dateA;
+    });
+    
+    return conversations;
   } catch (error) {
     console.error("Erreur récupération conversations :", error);
     return [];
