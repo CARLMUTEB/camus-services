@@ -812,13 +812,20 @@ const App = {
   },
 
   // =========================================================
-  // FOOTER
+  // FOOTER (avec lien ADMIN) ✅ MODIFIÉ
   // =========================================================
   setupFooter() {
     document.addEventListener("click", (event) => {
       const button = event.target.closest("[data-footer-action]");
       if (!button) return;
       const action = button.dataset.footerAction;
+
+      // ✅ Redirection vers l'administration
+      if (action === "admin") {
+        window.location.href = "admin.html";
+        return;
+      }
+
       const messages = {
         about: "CAMU SERVICES est une plateforme destinée à faciliter la recherche de biens, produits et services.",
         contact: "Les informations de contact seront ajoutées prochainement.",
