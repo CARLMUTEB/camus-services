@@ -157,19 +157,18 @@ const App = {
     navigateTo(section) {
         const pageSections = document.querySelectorAll(".page-section");
         pageSections.forEach((el) => el.classList.remove("active"));
-
         const target = document.getElementById(`section-${section}`);
         if (!target) {
             console.warn("Section introuvable :", section);
             return;
         }
-
         target.classList.add("active");
         this.state.currentSection = section;
 
-        document.querySelectorAll(".nav-item[data-section], .mobile-nav-item[data-section]").forEach((item) => {
-            item.classList.toggle("active", item.dataset.section === section);
-        });
+        document.querySelectorAll(".nav-item[data-section], .mobile-nav-item[data-section]")
+            .forEach((item) => {
+                item.classList.toggle("active", item.dataset.section === section);
+            });
 
         this.closeSidebar();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -258,9 +257,9 @@ const App = {
             this.state.user = user;
             this.state.profile = profile;
             this.updateUserInterface(user, profile);
-
             if (user) {
                 await this.loadNotifications();
+                // Charger les préférences
                 if (profile?.preferences) {
                     const darkMode = document.getElementById("darkModeSetting");
                     const notif = document.getElementById("notificationSetting");
@@ -336,6 +335,7 @@ const App = {
         const modal = document.getElementById("authModal");
         modal?.classList.remove("hidden");
         modal?.setAttribute("aria-hidden", "false");
+        // S'assurer que le panneau de connexion est visible
         document.getElementById("loginPanel")?.classList.remove("hidden");
         document.getElementById("loginPanel")?.classList.add("active");
         document.getElementById("registerPanel")?.classList.add("hidden");
@@ -353,6 +353,7 @@ const App = {
         const content = modal?.querySelector(".modal-content");
         if (!content) return;
 
+        // On remplace le contenu de la modale par le formulaire d'inscription
         content.innerHTML = `
             <button id="closeRegisterModal" class="modal-close" type="button" aria-label="Fermer">×</button>
             <div class="modal-header">
@@ -388,6 +389,7 @@ const App = {
 
         document.getElementById("closeRegisterModal")?.addEventListener("click", () => this.closeAuthModal());
         document.getElementById("backToLoginBtn")?.addEventListener("click", () => {
+            // Recharger la modale avec la connexion (on recharge la page pour simplifier)
             window.location.reload();
         });
 
@@ -437,8 +439,8 @@ const App = {
         if (!container) return;
 
         container.innerHTML = `<div class="loading-message">Recherche en cours...</div>`;
-        let listings = await getListings({ city, category, listingLimit: 100 });
 
+        let listings = await getListings({ city, category, listingLimit: 100 });
         if (search) {
             listings = listings.filter((listing) => {
                 const text = `${listing.title || ""} ${listing.description || ""} ${listing.category || ""} ${listing.city || ""}`.toLowerCase();
@@ -459,7 +461,6 @@ const App = {
             if (!card) return;
             const category = card.dataset.category;
             if (!category) return;
-
             const categorySelect = document.getElementById("categorySelect");
             if (categorySelect) categorySelect.value = category;
             await this.performSearch("", "", category);
@@ -503,6 +504,7 @@ const App = {
             container.innerHTML = `<div class="empty-message">Aucune annonce disponible.</div>`;
             return;
         }
+
         container.innerHTML = listings.map((listing) => this.createListingCard(listing)).join("");
         this.attachListingEvents(container);
     },
@@ -520,7 +522,7 @@ const App = {
         return `
             <article class="listing-card" data-listing-id="${this.escapeHTML(listing.id)}">
                 <div class="listing-image">
-                    ${image ? `<img src="${this.escapeHTML(image)}" alt="${title}" loading="lazy">` : `<div class="listing-placeholder"></div>`}
+                    ${image ? `<img src="${this.escapeHTML(image)}" alt="${title}" loading="lazy">` : `<div class="listing-placeholder"> </div>`}
                 </div>
                 <div class="listing-content">
                     <span class="listing-category">${category}</span>
@@ -571,7 +573,6 @@ const App = {
         }
         const user = getUser();
         const favorite = await isFavorite(user.uid, listingId);
-
         if (favorite) {
             const result = await removeFavorite(user.uid, listingId);
             if (result.success) {
@@ -590,7 +591,6 @@ const App = {
     async loadFavorites() {
         const container = document.getElementById("favoritesListings");
         if (!container) return;
-
         if (!isAuthenticated()) {
             container.innerHTML = `<div class="empty-message">Connectez-vous pour consulter vos favoris.</div>`;
             return;
@@ -602,7 +602,6 @@ const App = {
             const favorite = await isFavorite(this.state.user.uid, listing.id);
             if (favorite) favorites.push(listing);
         }
-
         this.state.favorites = favorites;
         this.renderListings(container, favorites);
     },
@@ -613,20 +612,16 @@ const App = {
     async loadReservations() {
         const container = document.getElementById("reservationsContainer");
         if (!container) return;
-
         if (!isAuthenticated()) {
             container.innerHTML = `<div class="empty-message">Connectez-vous pour voir vos réservations.</div>`;
             return;
         }
-
         const reservations = await getUserReservations(this.state.user.uid);
         this.state.reservations = reservations;
-
         if (reservations.length === 0) {
             container.innerHTML = `<div class="empty-message">Aucune réservation.</div>`;
             return;
         }
-
         container.innerHTML = reservations.map((reservation) => `
             <div class="reservation-card">
                 <h3>${this.escapeHTML(reservation.title || "Réservation")}</h3>
@@ -642,15 +637,12 @@ const App = {
         if (!isAuthenticated()) return;
         const notifications = await getUserNotifications(this.state.user.uid);
         this.state.notifications = notifications;
-
         const container = document.getElementById("notificationsContainer");
         if (!container) return;
-
         if (notifications.length === 0) {
             container.innerHTML = `<div class="empty-message">Aucune notification.</div>`;
             return;
         }
-
         container.innerHTML = notifications.map((notification) => `
             <div class="notification-item ${notification.read ? "read" : "unread"}">
                 <strong>${this.escapeHTML(notification.title || "Notification")}</strong>
@@ -673,15 +665,12 @@ const App = {
     async loadCommuniques() {
         const container = document.getElementById("communiqueContainer");
         if (!container) return;
-
         const communiques = await getCommuniques();
         this.state.communiques = communiques;
-
         if (communiques.length === 0) {
             container.innerHTML = `<div class="empty-message">Aucun communiqué pour le moment.</div>`;
             return;
         }
-
         container.innerHTML = communiques.map((item) => `
             <div class="communique-card">
                 <h3>${this.escapeHTML(item.title || "Communiqué")}</h3>
@@ -719,7 +708,7 @@ const App = {
                 ownerName: this.state.user.displayName || "",
                 sponsored: false,
                 featured: false,
-                status: "approved"
+                status: "approved" // ou "pending" si validation admin
             });
 
             if (result.success) {
@@ -744,14 +733,12 @@ const App = {
                 this.openAuthModal();
                 return;
             }
-
             const user = getUser();
             const data = {
                 displayName: document.getElementById("profileFullName").value.trim(),
                 phone: document.getElementById("profilePhone").value.trim(),
                 city: document.getElementById("profileCity").value.trim()
             };
-
             const result = await updateUserProfile(user.uid, data);
             if (result.success) {
                 this.showToast("Profil mis à jour !", "success");
@@ -791,12 +778,12 @@ const App = {
             return;
         }
 
+        // Charger les conversations
         getUserConversations(this.state.user.uid).then(conversations => {
             if (conversations.length === 0) {
                 list.innerHTML = '<div class="empty-message">Aucune conversation.</div>';
                 return;
             }
-
             list.innerHTML = conversations.map(conv => {
                 const other = conv.participants.filter(p => p !== this.state.user.uid).join(', ');
                 return `
@@ -825,11 +812,11 @@ const App = {
             </form>
         `;
 
+        // Écouter les messages
         if (this._unsubscribeChat) this._unsubscribeChat();
         this._unsubscribeChat = listenToMessages(convId, (messages) => {
             const container = document.getElementById("chatMessages");
             if (!container) return;
-
             container.innerHTML = messages.map(msg => `
                 <div class="message ${msg.senderId === this.state.user.uid ? 'own' : 'other'}">
                     <span>${this.escapeHTML(msg.text)}</span>
@@ -839,11 +826,11 @@ const App = {
             container.scrollTop = container.scrollHeight;
         });
 
+        // Envoyer un message
         document.getElementById("chatForm")?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const input = document.getElementById("chatInput");
             if (!input.value.trim()) return;
-
             await sendMessage(convId, {
                 senderId: this.state.user.uid,
                 text: input.value.trim()
@@ -880,7 +867,6 @@ const App = {
             this.openAuthModal();
             return;
         }
-
         const role = this.state.profile?.role;
         if (role !== "admin" && role !== "administrator") {
             this.showToast("Accès réservé à l'administration.", "error");
@@ -888,12 +874,13 @@ const App = {
             return;
         }
 
+        // Charger les statistiques
         const allListings = await getListings({ listingLimit: 1000 });
         document.getElementById("adminListingsCount").textContent = allListings.length;
 
+        // Annonces en attente
         const pending = await getPendingListings();
         const pendingContainer = document.getElementById("adminListingsList");
-
         if (pending.length === 0) {
             pendingContainer.innerHTML = '<div class="empty-message">Aucune annonce en attente.</div>';
         } else {
@@ -904,7 +891,6 @@ const App = {
                     <button class="reject-btn" data-id="${item.id}">Rejeter</button>
                 </div>
             `).join('');
-
             pendingContainer.querySelectorAll('.approve-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     await approveListing(btn.dataset.id);
@@ -912,7 +898,6 @@ const App = {
                     this.showToast("Annonce approuvée.", "success");
                 });
             });
-
             pendingContainer.querySelectorAll('.reject-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     await rejectListing(btn.dataset.id);
@@ -922,17 +907,16 @@ const App = {
             });
         }
 
+        // Gestion du communiqué
         const communiqueForm = document.getElementById("communiqueForm");
         communiqueForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const title = document.getElementById("communiqueTitle").value.trim();
             const message = document.getElementById("communiqueMessage").value.trim();
-
             if (!title || !message) {
                 this.showToast("Veuillez remplir tous les champs.", "error");
                 return;
             }
-
             await createCommunique({ title, message, author: this.state.user.displayName || "Administration" });
             this.showToast("Communiqué publié.", "success");
             communiqueForm.reset();
@@ -972,6 +956,7 @@ const App = {
             }
         });
 
+        // Charger depuis localStorage au démarrage
         const saved = localStorage.getItem("camu_dark_mode");
         if (saved === "true") {
             this.state.darkMode = true;
@@ -981,11 +966,21 @@ const App = {
     },
 
     // =========================================================
-    // FOOTER (Corrigé pour laisser la navigation globale agir)
+    // FOOTER
     // =========================================================
     setupFooter() {
-        // La navigation globale s'occupe déjà automatiquement 
-        // de tous les éléments possédant l'attribut [data-section].
+        document.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-footer-action]");
+            if (!button) return;
+            const action = button.dataset.footerAction;
+            const messages = {
+                about: "CAMU SERVICES est une plateforme destinée à faciliter la recherche de biens, produits et services.",
+                contact: "Les informations de contact seront ajoutées prochainement.",
+                conditions: "Les conditions d'utilisation seront disponibles prochainement.",
+                privacy: "La politique de confidentialité sera disponible prochainement."
+            };
+            this.showToast(messages[action] || "Information indisponible.", "info");
+        });
     },
 
     // =========================================================
@@ -1004,7 +999,6 @@ const App = {
     showToast(message, type = "info") {
         const container = document.getElementById("toastContainer");
         if (!container) return;
-
         const toast = document.createElement("div");
         toast.className = `toast toast-${type}`;
         toast.textContent = message;
@@ -1025,12 +1019,7 @@ const App = {
     // SÉCURITÉ HTML
     // =========================================================
     escapeHTML(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 };
 
