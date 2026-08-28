@@ -372,4 +372,210 @@
         <!-- =============================================
              SECTION PARAMÈTRES
              ============================================= -->
-        <section id="section-parametre
+        <section id="section-parametres" class="page-section">
+            <div class="page-header">
+                <h1>⚙️ Paramètres</h1>
+                <p>Personnalisez vos préférences d'utilisation.</p>
+            </div>
+            <div class="container form-container">
+                <div class="settings-group">
+                    <label><input type="checkbox" id="darkModeSetting"> Mode sombre</label>
+                    <label><input type="checkbox" id="notificationSetting"> Activer les notifications</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             SECTION ESPACE PROFESSIONNEL
+             ============================================= -->
+        <section id="section-professionnel" class="page-section">
+            <div class="page-header">
+                <h1>💼 Espace professionnel</h1>
+                <p>Gérez vos publications et suivez vos activités professionnelles.</p>
+            </div>
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Mes Publications</h3>
+                        <p id="myPublicationsCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Réservations Reçues</h3>
+                        <p id="myReservationsCount">0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             SECTION ADMINISTRATION
+             ============================================= -->
+        <section id="section-administration" class="page-section">
+            <div class="page-header">
+                <h1>🛡️ Administration</h1>
+                <p>Gestion globale de la plateforme CAMU SERVICES.</p>
+            </div>
+            <div class="container">
+                <p>Total des annonces : <span id="adminListingsCount">0</span></p>
+                <h3>Annonces en attente de validation</h3>
+                <div id="adminListingsList"></div>
+                <h3>Publier un communiqué officiel</h3>
+                <form id="communiqueForm">
+                    <div class="form-group">
+                        <input type="text" id="communiqueTitle" placeholder="Titre du communiqué" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="communiqueMessage" placeholder="Message..." rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="primary-btn">Diffuser</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- =============================================
+             SECTIONS DU FOOTER (À PROPOS, CONTACTS, CGU, CONFIDENTIALITÉ)
+             ============================================= -->
+
+        <!-- Section À propos -->
+        <section id="section-about" class="page-section">
+            <div class="container form-container">
+                <h2>À propos de CAMU SERVICES</h2>
+                <p>Bienvenue sur <strong>CAMU SERVICES</strong>, votre plateforme de mise en relation incontournable conçue pour faciliter l'accès aux meilleures opportunités de services, de véhicules et de biens immobiliers.</p>
+                
+                <h3>Notre Mission</h3>
+                <p>Notre objectif principal est de simplifier les transactions et les recherches du quotidien en connectant directement les utilisateurs avec des prestataires qualifiés et des offres vérifiées. Que vous cherchiez un logement, un véhicule ou un service professionnel spécifique, CAMU SERVICES vous garantit rapidité, sécurité et transparence.</p>
+                
+                <h3>Pourquoi nous choisir ?</h3>
+                <ul>
+                    <li><strong>Fiabilité :</strong> Un système rigoureux pour des annonces toujours de qualité.</li>
+                    <li><strong>Proximité :</strong> Des offres adaptées à votre zone géographique (Lubumbashi, Kolwezi, Likasi, Fungurume et environs).</li>
+                    <li><strong>Simplicité :</strong> Une interface moderne, pensée pour tous les appareils, avec messagerie et réservations intégrées.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section Contacts -->
+        <section id="section-contact" class="page-section">
+            <div class="container form-container">
+                <h2>Contactez-nous</h2>
+                <p>Une question, une suggestion ou besoin d'assistance technique ? Notre équipe est à votre écoute pour vous accompagner.</p>
+                
+                <div class="contact-details" style="margin: 20px 0;">
+                    <p><strong>📍 Adresse principale :</strong> Lubumbashi / Kolwezi / Fungurume, République Démocratique du Congo</p>
+                    <p><strong>📧 Email de support :</strong> support@camuservices.com</p>
+                    <p><strong>🕒 Horaires d'ouverture :</strong> Lundi au Samedi, de 08h00 à 18h00</p>
+                </div>
+
+                <h3>Formulaire de message rapide</h3>
+                <form id="contactFormSupport">
+                    <div class="form-group">
+                        <label for="supportName">Votre nom</label>
+                        <input type="text" id="supportName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supportEmail">Votre email</label>
+                        <input type="email" id="supportEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supportMessage">Votre message</label>
+                        <textarea id="supportMessage" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="primary-btn">Envoyer le message</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section Conditions d'utilisation -->
+        <section id="section-terms" class="page-section">
+            <div class="container form-container">
+                <h2>Conditions Générales d'Utilisation (CGU)</h2>
+                <p><em>Dernière mise à jour : 2026</em></p>
+                
+                <h3>1. Objet</h3>
+                <p>Les présentes Conditions Générales d'Utilisation régissent l'accès et l'utilisation de la plateforme CAMU SERVICES, accessible via le web et ses supports mobiles.</p>
+                
+                <h3>2. Inscription et Compte</h3>
+                <p>L'utilisation de certaines fonctionnalités (publication d'annonces, chat, favoris) nécessite la création d'un compte. L'utilisateur s'engage à fournir des informations exactes et à préserver la confidentialité de ses identifiants.</p>
+                
+                <h3>3. Publication d'annonces</h3>
+                <p>Tout utilisateur s'engage à publier des annonces honnêtes, conformes à la législation en vigueur. L'administration de CAMU SERVICES se réserve le droit de supprimer ou de refuser toute annonce jugée inappropriée, trompeuse ou illégale.</p>
+                
+                <h3>4. Responsabilité</h3>
+                <p>CAMU SERVICES agit en tant que plateforme de mise en relation. La responsabilité de la plateforme ne saurait être engagée en cas de litige direct entre acheteurs, vendeurs ou prestataires.</p>
+            </div>
+        </section>
+
+        <!-- Section Confidentialité -->
+        <section id="section-privacy" class="page-section">
+            <div class="container form-container">
+                <h2>Politique de Confidentialité</h2>
+                <p>Chez <strong>CAMU SERVICES</strong>, nous accordons une importance capitale à la protection de la vie privée et des données personnelles de nos utilisateurs.</p>
+                
+                <h3>1. Collecte des données</h3>
+                <p>Nous collectons uniquement les informations nécessaires au bon fonctionnement du service (nom, email, ville, numéro de téléphone renseigné dans le profil, et données d'annonces ou de messages).</p>
+                
+                <h3>2. Utilisation des informations</h3>
+                <p>Vos données servent exclusivement à :</p>
+                <ul>
+                    <li>Gérer votre compte et sécuriser vos connexions.</li>
+                    <li>Faciliter la mise en relation via le chat et les réservations.</li>
+                    <li>Améliorer l'expérience utilisateur et la sécurité de la plateforme.</li>
+                </ul>
+                
+                <h3>3. Partage des données</h3>
+                <p>Vos informations personnelles ne sont en aucun cas vendues, échangées ou louées à des tiers à des fins commerciales. Elles peuvent uniquement être partagées dans le cadre strict des transactions ou sur requête légale des autorités compétentes.</p>
+                
+                <h3>4. Sécurité</h3>
+                <p>Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles robustes (via l'infrastructure sécurisée de Firebase) pour protéger vos données contre tout accès non autorisé.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODALE AUTHENTIFICATION ================= -->
+    <div id="authModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="closeAuthModal" class="modal-close" type="button">×</button>
+            <div class="modal-header">
+                <h2>Connexion</h2>
+                <p>Accédez à votre compte CAMU SERVICES</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="primary-btn full-width">Se connecter</button>
+            </form>
+            <div class="auth-links">
+                <button type="button" id="forgotPasswordBtn" class="text-btn">Mot de passe oublié ?</button>
+                <button type="button" id="showRegisterBtn" class="text-btn">Créer un compte</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST CONTAINER ================= -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="main-header" style="padding: 20px; text-align: center; background: #111; color: #fff;">
+        <p>&copy; <span id="currentYear">2026</span> CAMU SERVICES. Tous droits réservés.</p>
+        <div class="footer-actions" style="margin-top: 10px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button type="button" class="text-btn" data-section="about" style="background:none; border:none; color:#ccc; cursor:pointer;">À propos</button>
+            <button type="button" class="text-btn" data-section="contact" style="background:none; border:none; color:#ccc; cursor:pointer;">Contacts</button>
+            <button type="button" class="text-btn" data-section="terms" style="background:none; border:none; color:#ccc; cursor:pointer;">Conditions</button>
+            <button type="button" class="text-btn" data-section="privacy" style="background:none; border:none; color:#ccc; cursor:pointer;">Confidentialité</button>
+        </div>
+    </footer>
+
+</div>
+
+<!-- Script principal (Point d'entrée ES6) -->
+<script type="module" src="app.js"></script>
+</body>
+</html>
