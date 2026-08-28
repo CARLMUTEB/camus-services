@@ -1,35 +1,39 @@
-// =========================================================
-// CAMU SERVICES — DATA (Firestore)
-// =========================================================
+/* =========================================================
+   CAMU SERVICES — DATA (Firestore)
+   ========================================================= */
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {
-  getFirestore,
-  collection,
-  doc,
-  addDoc,
-  setDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  limit,
-  serverTimestamp
+    getFirestore,
+    collection,
+    doc,
+    addDoc,
+    setDoc,
+    getDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    query,
+    where,
+    orderBy,
+    limit,
+    serverTimestamp,
+    onSnapshot,
+    arrayUnion,
+    arrayRemove
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // =========================================================
-// CONFIGURATION FIREBASE (CORRIGÉE)
+// VOS VRAIES CLÉS FIREBASE
 // =========================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-  authDomain: "camu-services.firebaseapp.com",
-  projectId: "camu-services",
-  storageBucket: "camu-services.firebasestorage.app",
-  messagingSenderId: "879100396449",
-  appId: "1:879100396449:web:9d7ffe441a3df2daf841e0",
-  measurementId: "G-RQ16SX2SNV"
+    apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+    authDomain: "camu-services.firebaseapp.com",
+    projectId: "camu-services",
+    storageBucket: "camu-services.firebasestorage.app",
+    messagingSenderId: "879100396449",
+    appId: "1:879100396449:web:9d7ffe441a3df2daf841e0",
+    measurementId: "G-RQ16SX2SNV"
 };
 
 // =========================================================
@@ -42,409 +46,362 @@ const db = getFirestore(app);
 // UTILITAIRES
 // =========================================================
 function cleanData(data) {
-  const result = {};
-  Object.keys(data || {}).forEach((key) => {
-    if (data[key] !== undefined) result[key] = data[key];
-  });
-  return result;
+    const result = {};
+    Object.keys(data || {}).forEach((key) => {
+        if (data[key] !== undefined) result[key] = data[key];
+    });
+    return result;
 }
 
 function convertDocument(snapshot) {
-  if (!snapshot.exists()) return null;
-  return { id: snapshot.id, ...snapshot.data() };
+    if (!snapshot.exists()) return null;
+    return { id: snapshot.id, ...snapshot.data() };
 }
 
 // =========================================================
 // ANNONCES (collection "annonces")
 // =========================================================
 export async function getListings(options = {}) {
-  try {
-    const { category = null, city = null, listingLimit = 20 } = options;
-    let constraints = [];
-    
-    if (category) constraints.push(where("category", "==", category));
-    if (city) constraints.push(where("city", "==", city));
-    
-    constraints.push(limit(listingLimit));
-    
-    const q = query(collection(db, "annonces"), ...constraints);
-    const snapshot = await getDocs(q);
-    
-    let listings = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (plus récent en premier)
-    listings.sort((a, b) => {
-      const dateA = a.createdAt?.seconds || 0;
-      const dateB = b.createdAt?.seconds || 0;
-      return dateB - dateA;
-    });
-    
-    return listings;
-  } catch (error) {
-    console.error("Erreur récupération annonces :", error);
-    return [];
-  }
+    try {
+        const { category = null, city = null, listingLimit = 20 } = options;
+        let constraints = [];
+        if (category) constraints.push(where("category", "==", category));
+        if (city) constraints.push(where("city", "==", city));
+        constraints.push(orderBy("createdAt", "desc"));
+        constraints.push(limit(listingLimit));
+        const q = query(collection(db, "annonces"), ...constraints);
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur récupération annonces :", error);
+        return [];
+    }
 }
 
 export async function getListing(listingId) {
-  try {
-    if (!listingId) return null;
-    const snapshot = await getDoc(doc(db, "annonces", listingId));
-    return convertDocument(snapshot);
-  } catch (error) {
-    console.error("Erreur annonce :", error);
-    return null;
-  }
+    try {
+        if (!listingId) return null;
+        const snapshot = await getDoc(doc(db, "annonces", listingId));
+        return convertDocument(snapshot);
+    } catch (error) {
+        console.error("Erreur annonce :", error);
+        return null;
+    }
 }
 
 export async function createListing(data) {
-  try {
-    const listing = cleanData({
-      ...data,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      status: data.status || "approved"
-    });
-    const ref = await addDoc(collection(db, "annonces"), listing);
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur création annonce :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        const listing = cleanData({
+            ...data,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            status: data.status || "approved"
+        });
+        const ref = await addDoc(collection(db, "annonces"), listing);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur création annonce :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function updateListing(listingId, data) {
-  try {
-    if (!listingId) throw new Error("ID manquant");
-    await updateDoc(doc(db, "annonces", listingId), {
-      ...cleanData(data),
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur modification annonce :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        if (!listingId) throw new Error("ID manquant");
+        await updateDoc(doc(db, "annonces", listingId), {
+            ...cleanData(data),
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur modification annonce :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function deleteListing(listingId) {
-  try {
-    await deleteDoc(doc(db, "annonces", listingId));
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur suppression annonce :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        await deleteDoc(doc(db, "annonces", listingId));
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur suppression annonce :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function getPendingListings() {
+    try {
+        const q = query(
+            collection(db, "annonces"),
+            where("status", "==", "pending")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur récupération annonces en attente :", error);
+        return [];
+    }
+}
+
+export async function approveListing(listingId) {
+    try {
+        await updateDoc(doc(db, "annonces", listingId), {
+            status: "approved",
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur approbation :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function rejectListing(listingId) {
+    try {
+        await updateDoc(doc(db, "annonces", listingId), {
+            status: "rejected",
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur rejet :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 // =========================================================
 // FAVORIS
 // =========================================================
 export async function addFavorite(userId, listingId) {
-  try {
-    if (!userId || !listingId) throw new Error("Utilisateur ou annonce manquant.");
-    const favoriteId = `${userId}-${listingId}`;
-    await setDoc(doc(db, "favorites", favoriteId), {
-      userId,
-      listingId,
-      createdAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur ajout favori:", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        if (!userId || !listingId) throw new Error("Utilisateur ou annonce manquant.");
+        const favoriteId = `${userId}-${listingId}`;
+        await setDoc(doc(db, "favorites", favoriteId), {
+            userId,
+            listingId,
+            createdAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur ajout favori :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function removeFavorite(userId, listingId) {
-  try {
-    const favoriteId = `${userId}-${listingId}`;
-    await deleteDoc(doc(db, "favorites", favoriteId));
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur suppression favori:", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        const favoriteId = `${userId}-${listingId}`;
+        await deleteDoc(doc(db, "favorites", favoriteId));
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur suppression favori :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function isFavorite(userId, listingId) {
-  try {
-    const favoriteId = `${userId}-${listingId}`;
-    const snapshot = await getDoc(doc(db, "favorites", favoriteId));
-    return snapshot.exists();
-  } catch (error) {
-    console.error("Erreur vérification favori :", error);
-    return false;
-  }
+    try {
+        const favoriteId = `${userId}-${listingId}`;
+        const snapshot = await getDoc(doc(db, "favorites", favoriteId));
+        return snapshot.exists();
+    } catch (error) {
+        console.error("Erreur vérification favori :", error);
+        return false;
+    }
 }
 
 // =========================================================
-// RÉSERVATIONS (CORRIGÉ : sans orderBy)
+// RÉSERVATIONS
 // =========================================================
 export async function createReservation(data) {
-  try {
-    const reservation = cleanData({
-      ...data,
-      status: data.status || "pending",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    const ref = await addDoc(collection(db, "reservations"), reservation);
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur reservation :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        const reservation = cleanData({
+            ...data,
+            status: data.status || "pending",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "reservations"), reservation);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur réservation :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function getUserReservations(userId) {
-  try {
-    if (!userId) return [];
-    const q = query(
-      collection(db, "reservations"),
-      where("userId", "==", userId)
-    );
-    const snapshot = await getDocs(q);
-    let reservations = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (plus récent en premier)
-    reservations.sort((a, b) => {
-      const dateA = a.createdAt?.seconds || 0;
-      const dateB = b.createdAt?.seconds || 0;
-      return dateB - dateA;
-    });
-    
-    return reservations;
-  } catch (error) {
-    console.error("Erreur réservations :", error);
-    return [];
-  }
+    try {
+        if (!userId) return [];
+        const q = query(
+            collection(db, "reservations"),
+            where("userId", "==", userId),
+            orderBy("createdAt", "desc")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur réservations :", error);
+        return [];
+    }
 }
 
 // =========================================================
-// NOTIFICATIONS (CORRIGÉ : sans orderBy)
+// NOTIFICATIONS
 // =========================================================
 export async function createNotification(data) {
-  try {
-    const notification = cleanData({
-      ...data,
-      read: false,
-      createdAt: serverTimestamp()
-    });
-    const ref = await addDoc(collection(db, "notifications"), notification);
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur notification :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        const notification = cleanData({
+            ...data,
+            read: false,
+            createdAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "notifications"), notification);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur notification :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function getUserNotifications(userId) {
-  try {
-    if (!userId) return [];
-    const q = query(
-      collection(db, "notifications"),
-      where("userId", "==", userId)
-    );
-    const snapshot = await getDocs(q);
-    let notifications = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (plus récent en premier)
-    notifications.sort((a, b) => {
-      const dateA = a.createdAt?.seconds || 0;
-      const dateB = b.createdAt?.seconds || 0;
-      return dateB - dateA;
-    });
-    
-    // ✅ Limitation à 50 (comme avant)
-    notifications = notifications.slice(0, 50);
-    
-    return notifications;
-  } catch (error) {
-    console.error("Erreur notifications :", error);
-    return [];
-  }
+    try {
+        if (!userId) return [];
+        const q = query(
+            collection(db, "notifications"),
+            where("userId", "==", userId),
+            orderBy("createdAt", "desc"),
+            limit(50)
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur notifications :", error);
+        return [];
+    }
 }
 
 export async function markNotificationAsRead(notificationId) {
-  try {
-    await updateDoc(doc(db, "notifications", notificationId), { read: true });
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur notification :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        await updateDoc(doc(db, "notifications", notificationId), { read: true });
+        return { success: true };
+    } catch (error) {
+        console.error("Erreur notification :", error);
+        return { success: false, error: error.message };
+    }
 }
 
 // =========================================================
-// COMMUNIQUÉS (CORRIGÉ : sans orderBy)
+// COMMUNIQUÉS
 // =========================================================
 export async function getCommuniques() {
-  try {
-    const q = query(
-      collection(db, "communiques"),
-      where("active", "==", true)
-    );
-    const snapshot = await getDocs(q);
-    let communiques = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (plus récent en premier)
-    communiques.sort((a, b) => {
-      const dateA = a.createdAt?.seconds || 0;
-      const dateB = b.createdAt?.seconds || 0;
-      return dateB - dateA;
-    });
-    
-    // ✅ Limitation à 10 (comme avant)
-    communiques = communiques.slice(0, 10);
-    
-    return communiques;
-  } catch (error) {
-    console.error("Erreur communiqués :", error);
-    return [];
-  }
-}
-
-// =========================================================
-// CHAT (CORRIGÉ : sans orderBy)
-// =========================================================
-export async function createConversation(data) {
-  try {
-    const conversation = cleanData({
-      ...data,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    const ref = await addDoc(collection(db, "chats"), conversation);
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur conversation:", error);
-    return { success: false, error: error.message };
-  }
-}
-
-export async function sendMessage(conversationId, data) {
-  try {
-    if (!conversationId) throw new Error("Conversation introuvable.");
-    const message = cleanData({
-      ...data,
-      createdAt: serverTimestamp()
-    });
-    const ref = await addDoc(collection(db, "chats", conversationId, "messages"), message);
-    await updateDoc(doc(db, "chats", conversationId), {
-      lastMessage: data.text || "",
-      updatedAt: serverTimestamp()
-    });
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur message :", error);
-    return { success: false, error: error.message };
-  }
-}
-
-export async function getMessages(conversationId) {
-  try {
-    if (!conversationId) return [];
-    const q = query(
-      collection(db, "chats", conversationId, "messages")
-    );
-    const snapshot = await getDocs(q);
-    let messages = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (chronologique, plus ancien en premier pour le chat)
-    messages.sort((a, b) => {
-      const dateA = a.createdAt?.seconds || 0;
-      const dateB = b.createdAt?.seconds || 0;
-      return dateA - dateB;
-    });
-    
-    return messages;
-  } catch (error) {
-    console.error("Erreur messages :", error);
-    return [];
-  }
-}
-
-export async function getUserConversations(userId) {
-  try {
-    if (!userId) return [];
-    const q = query(
-      collection(db, "chats"),
-      where("participants", "array-contains", userId)
-    );
-    const snapshot = await getDocs(q);
-    let conversations = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
-    // ✅ TRI MANUEL (plus récent en premier)
-    conversations.sort((a, b) => {
-      const dateA = a.updatedAt?.seconds || 0;
-      const dateB = b.updatedAt?.seconds || 0;
-      return dateB - dateA;
-    });
-    
-    return conversations;
-  } catch (error) {
-    console.error("Erreur récupération conversations :", error);
-    return [];
-  }
-}
-
-// =========================================================
-// ADMINISTRATION
-// =========================================================
-export async function getPendingListings() {
-  try {
-    const q = query(
-      collection(db, "annonces"),
-      where("status", "==", "pending")
-    );
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  } catch (error) {
-    console.error("Erreur récupération annonces en attente :", error);
-    return [];
-  }
-}
-
-export async function approveListing(listingId) {
-  try {
-    await updateDoc(doc(db, "annonces", listingId), {
-      status: "approved",
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur approbation :", error);
-    return { success: false, error: error.message };
-  }
-}
-
-export async function rejectListing(listingId) {
-  try {
-    await updateDoc(doc(db, "annonces", listingId), {
-      status: "rejected",
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur rejet :", error);
-    return { success: false, error: error.message };
-  }
+    try {
+        const q = query(
+            collection(db, "communiques"),
+            where("active", "==", true),
+            orderBy("createdAt", "desc"),
+            limit(10)
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur communiqués :", error);
+        return [];
+    }
 }
 
 export async function createCommunique(data) {
-  try {
-    const communique = cleanData({
-      ...data,
-      active: true,
-      author: data.author || "Administration",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+    try {
+        const communique = cleanData({
+            ...data,
+            active: true,
+            author: data.author || "Administration",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "communiques"), communique);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur création communiqué :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+// =========================================================
+// CHAT / CONVERSATIONS (collection "chats")
+// =========================================================
+export async function createConversation(data) {
+    try {
+        const conversation = cleanData({
+            ...data,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "chats"), conversation);
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur conversation :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function sendMessage(conversationId, data) {
+    try {
+        if (!conversationId) throw new Error("Conversation introuvable.");
+        const message = cleanData({
+            ...data,
+            createdAt: serverTimestamp()
+        });
+        const ref = await addDoc(collection(db, "chats", conversationId, "messages"), message);
+        await updateDoc(doc(db, "chats", conversationId), {
+            lastMessage: data.text || "",
+            updatedAt: serverTimestamp()
+        });
+        return { success: true, id: ref.id };
+    } catch (error) {
+        console.error("Erreur message :", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function getMessages(conversationId) {
+    try {
+        if (!conversationId) return [];
+        const q = query(
+            collection(db, "chats", conversationId, "messages"),
+            orderBy("createdAt", "asc")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur messages :", error);
+        return [];
+    }
+}
+
+export function listenToMessages(conversationId, callback) {
+    const q = query(
+        collection(db, "chats", conversationId, "messages"),
+        orderBy("createdAt", "asc")
+    );
+    return onSnapshot(q, (snapshot) => {
+        const messages = [];
+        snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+        callback(messages);
     });
-    const ref = await addDoc(collection(db, "communiques"), communique);
-    return { success: true, id: ref.id };
-  } catch (error) {
-    console.error("Erreur création communiqué :", error);
-    return { success: false, error: error.message };
-  }
+}
+
+export async function getUserConversations(userId) {
+    try {
+        if (!userId) return [];
+        const q = query(
+            collection(db, "chats"),
+            where("participants", "array-contains", userId),
+            orderBy("updatedAt", "desc")
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Erreur récupération conversations :", error);
+        return [];
+    }
 }
