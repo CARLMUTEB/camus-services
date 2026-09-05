@@ -10,17 +10,29 @@
 
   <!-- HEADER -->
   <header class="header">
+    <button class="menu-btn">☰</button>
     <div class="logo">CAMU SERVICES</div>
-    <div class="search-header">
-      <input type="text" placeholder="Rechercher un produit ou service...">
-      <button>🔍</button>
-    </div>
-    <div class="header-icons">
-      <button>👤</button>
-      <button>❤️</button>
-      <button>🔔</button>
-    </div>
+    <button class="profile-btn">👤</button>
   </header>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar hidden">
+    <div class="user-info">
+      <img src="assets/icons/user.png" alt="Avatar">
+      <h3>Visiteur</h3>
+      <span>Client</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">🏠 Accueil</a></li>
+        <li><a href="chat.html">💬 Chat</a></li>
+        <li><a href="publier.html">➕ Publier</a></li>
+        <li><a href="favoris.html">❤️ Favoris</a></li>
+        <li><a href="profil.html">👤 Profil</a></li>
+        <li><a href="#">🚪 Déconnexion</a></li>
+      </ul>
+    </nav>
+  </aside>
 
   <!-- HERO -->
   <section class="hero">
@@ -58,30 +70,7 @@
           <button class="fav-btn">❤️ Favoris</button>
         </div>
       </div>
-      <div class="listing-card">
-        <div class="user">👤 Marie</div>
-        <img src="assets/images/appartement.jpg" alt="Appartement">
-        <h3>Appartement moderne</h3>
-        <p class="price">800 $/mois</p>
-        <p class="city">📍 Kipushi</p>
-        <p class="date">04/09/2026</p>
-        <div class="actions">
-          <button class="contact-btn">📞 Contacter</button>
-          <button class="fav-btn">❤️ Favoris</button>
-        </div>
-      </div>
-      <div class="listing-card">
-        <div class="user">👤 David</div>
-        <img src="assets/images/voiture.jpg" alt="Voiture">
-        <h3>Voiture Toyota</h3>
-        <p class="price">45 000 $</p>
-        <p class="city">📍 Kasumbalesa</p>
-        <p class="date">03/09/2026</p>
-        <div class="actions">
-          <button class="contact-btn">📞 Contacter</button>
-          <button class="fav-btn">❤️ Favoris</button>
-        </div>
-      </div>
+      <!-- autres cartes -->
     </div>
   </section>
 
@@ -89,6 +78,14 @@
   <footer>
     <p>À-PROPOS | Conditionnalité | Confidentialité | Contacts</p>
   </footer>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button>🏠</button>
+    <button>💬</button>
+    <button>➕</button>
+    <button>❤️</button>
+  </nav>
 
 </body>
 </html>
