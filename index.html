@@ -1,582 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CAMU SERVICES — Trouver, Acheter, Réserver">
-    <title>CAMU SERVICES</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMU SERVICES — Trouver • Acheter • Réserver</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div id="app">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">CAMU SERVICES</div>
+    <div class="search-header">
+      <input type="text" placeholder="Rechercher un produit ou service...">
+      <button>🔍</button>
+    </div>
+    <div class="header-icons">
+      <button>👤</button>
+      <button>❤️</button>
+      <button>🔔</button>
+    </div>
+  </header>
 
-    <!-- ===== TOPBAR ===== -->
-    <header class="topbar">
-        <button id="menuBtn" class="icon-btn" type="button" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">☰</button>
-        <a href="#accueil" class="logo" id="logoLink">CAMU <span>SERVICES</span></a>
-        <div class="topbar-actions">
-            <button id="topProfileBtn" class="profile-btn" type="button" aria-label="Mon profil">
-                <span id="topProfilePhoto" class="profile-photo-small">👤</span>
-                <span id="topProfileName" class="top-profile-name">Connexion</span>
-            </button>
-        </div>
-    </header>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>✨ Soyez les bienvenus</h1>
+    <p class="slogan">Trouver • Acheter • Réserver</p>
+    <button class="cta">Rechercher maintenant</button>
+  </section>
 
-    <!-- ===== SIDEBAR OVERLAY ===== -->
-    <div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+  <!-- CATÉGORIES -->
+  <section class="categories">
+    <h2>📂 Catégories</h2>
+    <div class="grid">
+      <div class="card">🏠 Immobilier</div>
+      <div class="card">🚗 Véhicules</div>
+      <div class="card">🏪 Commerce</div>
+      <div class="card">💇 Services</div>
+      <div class="card">💼 Emploi</div>
+      <div class="card">📦 Autres</div>
+    </div>
+  </section>
 
-    <!-- ===== SIDEBAR ===== -->
-    <aside id="sidebar" class="sidebar" aria-label="Menu principal">
-        <div class="sidebar-header">
-            <button id="closeSidebarBtn" class="close-sidebar" type="button" aria-label="Fermer le menu">×</button>
-        </div>
-        <div class="sidebar-profile">
-            <div id="sidebarProfilePhoto" class="sidebar-profile-photo">👤</div>
-            <div class="sidebar-profile-info">
-                <strong id="sidebarProfileName">Visiteur</strong>
-                <span id="sidebarProfileRole">Visiteur</span>
-            </div>
-        </div>
-        <nav class="sidebar-nav">
-            <button class="nav-item active" type="button" data-section="accueil"><span>🏠</span><span>Accueil</span></button>
-            <button class="nav-item" type="button" data-section="recherche"><span>🔍</span><span>Rechercher</span></button>
-            <button class="nav-item" type="button" data-section="categories"><span>🏷️</span><span>Catégories</span></button>
-            <button class="nav-item" type="button" data-section="chat"><span>💬</span><span>Chat</span></button>
-            <button class="nav-item" type="button" data-section="publier"><span>➕</span><span>Publier</span></button>
-            <button class="nav-item" type="button" data-section="favoris"><span>❤️</span><span>Favoris</span></button>
-            <button class="nav-item" type="button" data-section="reservations"><span>📅</span><span>Réservations</span></button>
-            <button class="nav-item" type="button" data-section="notifications"><span>🔔</span><span>Notifications</span></button>
-            <button class="nav-item" type="button" data-section="profil"><span>👤</span><span>Mon profil</span></button>
-            <button class="nav-item" type="button" data-section="parametres"><span>⚙️</span><span>Paramètres</span></button>
-            <div class="sidebar-divider"></div>
-            <button class="nav-item" type="button" data-section="professionnel"><span>💼</span><span>Espace professionnel</span></button>
-            <button id="adminNavBtn" class="nav-item admin-nav-item hidden" type="button" data-section="administration"><span>🛡️</span><span>Administration</span></button>
-            <div class="sidebar-divider"></div>
-            <button id="logoutBtn" class="nav-item logout-item" type="button"><span>🚪</span><span>Déconnexion</span></button>
-        </nav>
-    </aside>
+  <!-- ANNONCES RÉCENTES -->
+  <section class="listings">
+    <h2>🏷️ Annonces récentes</h2>
+    <div class="grid-3">
+      <div class="listing-card">
+        <div class="user">👤 Jean</div>
+        <img src="assets/images/maison.jpg" alt="Maison">
+        <h3>Maison 3 chambres</h3>
+        <p class="price">150 000 $</p>
+        <p class="city">📍 Lubumbashi</p>
+        <p class="date">05/09/2026</p>
+        <div class="actions">
+          <button class="contact-btn">📞 Contacter</button>
+          <button class="fav-btn">❤️ Favoris</button>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="user">👤 Marie</div>
+        <img src="assets/images/appartement.jpg" alt="Appartement">
+        <h3>Appartement moderne</h3>
+        <p class="price">800 $/mois</p>
+        <p class="city">📍 Kipushi</p>
+        <p class="date">04/09/2026</p>
+        <div class="actions">
+          <button class="contact-btn">📞 Contacter</button>
+          <button class="fav-btn">❤️ Favoris</button>
+        </div>
+      </div>
+      <div class="listing-card">
+        <div class="user">👤 David</div>
+        <img src="assets/images/voiture.jpg" alt="Voiture">
+        <h3>Voiture Toyota</h3>
+        <p class="price">45 000 $</p>
+        <p class="city">📍 Kasumbalesa</p>
+        <p class="date">03/09/2026</p>
+        <div class="actions">
+          <button class="contact-btn">📞 Contacter</button>
+          <button class="fav-btn">❤️ Favoris</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- ===== CONTENU PRINCIPAL ===== -->
-    <main id="mainContent">
+  <!-- FOOTER -->
+  <footer>
+    <p>À-PROPOS | Conditionnalité | Confidentialité | Contacts</p>
+  </footer>
 
-        <!-- =============================================
-             SECTION ACCUEIL
-             ============================================= -->
-        <section id="section-accueil" class="page-section active">
-            <!-- HERO -->
-            <section class="hero">
-                <div class="hero-content">
-                    <p class="hero-welcome">SOYEZ LES BIENVENUS</p>
-                    <h1>CAMU SERVICES</h1>
-                    <p class="hero-slogan">TROUVER • ACHETER • RÉSERVER</p>
-                    <p class="hero-description">Trouvez facilement des biens, services, commerces et opportunités près de vous.</p>
-                    <button id="heroSearchBtn" class="primary-btn" type="button">🔍 Commencer une recherche</button>
-                </div>
-            </section>
-
-            <!-- RECHERCHE -->
-            <section id="searchBox" class="search-section">
-                <div class="section-heading">
-                    <h2>Que recherchez-vous ?</h2>
-                    <p>Trouvez rapidement ce dont vous avez besoin.</p>
-                </div>
-                <form id="searchForm" class="search-form">
-                    <div class="search-field">
-                        <label for="searchInput">Recherche</label>
-                        <input id="searchInput" name="search" type="search" placeholder="Maison, voiture, boutique, service..." autocomplete="off">
-                    </div>
-                    <div class="search-field">
-                        <label for="citySelect">Ville</label>
-                        <select id="citySelect" name="city">
-                            <option value="">Toutes les villes</option>
-                            <option value="lubumbashi">Lubumbashi</option>
-                            <option value="kolwezi">Kolwezi</option>
-                            <option value="likasi">Likasi</option>
-                            <option value="fungurume">Fungurume</option>
-                        </select>
-                    </div>
-                    <div class="search-field">
-                        <label for="categorySelect">Catégorie</label>
-                        <select id="categorySelect" name="category">
-                            <option value="">Toutes les catégories</option>
-                            <option value="immobilier">Immobilier</option>
-                            <option value="vehicules">Véhicules</option>
-                            <option value="commerce">Commerce</option>
-                            <option value="services">Services</option>
-                            <option value="emploi">Emploi</option>
-                            <option value="autres">Autres</option>
-                        </select>
-                    </div>
-                    <button class="search-btn" type="submit">🔍 Rechercher</button>
-                </form>
-            </section>
-
-            <!-- COMMUNIQUÉ -->
-            <section id="communiqueSection" class="communique-section">
-                <div class="section-heading">
-                    <h2>📢 Communiqué</h2>
-                </div>
-                <div id="communiqueContainer" class="communique-container">
-                    <div class="loading-message">Chargement du communiqué...</div>
-                </div>
-            </section>
-
-            <!-- CATÉGORIES (aperçu) -->
-            <section id="categoriesPreview" class="categories-section">
-                <div class="section-heading">
-                    <h2>🏷️ Catégories</h2>
-                    <button type="button" class="text-btn" data-section="categories">Voir tout</button>
-                </div>
-                <div id="categoryCards" class="category-grid">
-                    <button class="category-card" type="button" data-category="immobilier">
-                        <span>🏠</span><strong>Immobilier</strong><small>Maisons, terrains...</small>
-                    </button>
-                    <button class="category-card" type="button" data-category="vehicules">
-                        <span>🚗</span><strong>Véhicules</strong><small>Voitures, motos...</small>
-                    </button>
-                    <button class="category-card" type="button" data-category="commerce">
-                        <span>🛍️</span><strong>Commerce</strong><small>Produits et boutiques</small>
-                    </button>
-                    <button class="category-card" type="button" data-category="services">
-                        <span>🛠️</span><strong>Services</strong><small>Professionnels</small>
-                    </button>
-                </div>
-            </section>
-
-            <!-- ANNONCES SPONSORISÉES -->
-            <section id="sponsoredSection" class="annonces-section">
-                <div class="section-heading">
-                    <div>
-                        <h2>⭐ Annonces sponsorisées</h2>
-                        <p>Les annonces mises en avant.</p>
-                    </div>
-                </div>
-                <div id="sponsoredListings" class="listings-grid">
-                    <div class="loading-message">Chargement des annonces...</div>
-                </div>
-            </section>
-
-            <!-- ANNONCES RÉCENTES -->
-            <section id="recentSection" class="annonces-section">
-                <div class="section-heading">
-                    <div>
-                        <h2>🆕 Annonces récentes</h2>
-                        <p>Découvrez les dernières publications.</p>
-                    </div>
-                </div>
-                <div id="recentListings" class="listings-grid">
-                    <div class="loading-message">Chargement des annonces...</div>
-                </div>
-                <div class="load-more-container">
-                    <button id="loadMoreBtn" class="secondary-btn" type="button">Voir plus d'annonces</button>
-                </div>
-            </section>
-        </section>
-
-        <!-- =============================================
-             SECTION RECHERCHE
-             ============================================= -->
-        <section id="section-recherche" class="page-section">
-            <div class="page-header">
-                <h1>🔍 Rechercher</h1>
-                <p>Recherchez parmi toutes les publications disponibles.</p>
-            </div>
-            <div class="advanced-search">
-                <form id="advancedSearchForm">
-                    <input id="advancedSearchInput" type="search" placeholder="Que recherchez-vous ?">
-                    <select id="advancedCitySelect">
-                        <option value="">Toutes les villes</option>
-                    </select>
-                    <select id="advancedCategorySelect">
-                        <option value="">Toutes les catégories</option>
-                    </select>
-                    <button type="submit" class="primary-btn">Rechercher</button>
-                </form>
-            </div>
-            <div id="searchResults" class="listings-grid"></div>
-        </section>
-
-        <!-- =============================================
-             SECTION CATÉGORIES
-             ============================================= -->
-        <section id="section-categories" class="page-section">
-            <div class="page-header">
-                <h1>🏷️ Catégories</h1>
-                <p>Explorez les annonces par catégorie.</p>
-            </div>
-            <div id="allCategoryCards" class="category-grid category-grid-large">
-                <button class="category-card" data-category="immobilier" type="button">
-                    <span>🏠</span><strong>Immobilier</strong><small>Maisons, appartements, terrains...</small>
-                </button>
-                <button class="category-card" data-category="vehicules" type="button">
-                    <span>🚗</span><strong>Véhicules</strong><small>Voitures, motos et autres véhicules</small>
-                </button>
-                <button class="category-card" data-category="commerce" type="button">
-                    <span>🛍️</span><strong>Commerce</strong><small>Produits, boutiques et commerces</small>
-                </button>
-                <button class="category-card" data-category="services" type="button">
-                    <span>🛠️</span><strong>Services</strong><small>Services professionnels</small>
-                </button>
-                <button class="category-card" data-category="emploi" type="button">
-                    <span>💼</span><strong>Emploi</strong><small>Offres et demandes d'emploi</small>
-                </button>
-                <button class="category-card" data-category="autres" type="button">
-                    <span>📦</span><strong>Autres</strong><small>Autres publications</small>
-                </button>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION CHAT
-             ============================================= -->
-        <section id="section-chat" class="page-section">
-            <div class="page-header">
-                <h1>💬 Chat</h1>
-                <p>Discutez avec les utilisateurs et professionnels.</p>
-            </div>
-            <div id="chatContainer" class="chat-container">
-                <div id="conversationList" class="conversation-list">
-                    <div class="empty-message">Aucune conversation.</div>
-                </div>
-                <div id="conversationPanel" class="conversation-panel">
-                    <div class="chat-empty">
-                        <span>💬</span>
-                        <h3>Vos conversations</h3>
-                        <p>Sélectionnez une conversation pour commencer.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION PUBLIER
-             ============================================= -->
-        <section id="section-publier" class="page-section">
-            <div class="page-header">
-                <h1>➕ Publier une annonce</h1>
-                <p>Présentez votre bien, produit ou service.</p>
-            </div>
-            <form id="publicationForm" class="publication-form">
-                <div class="form-group">
-                    <label for="publicationTitle">Titre</label>
-                    <input id="publicationTitle" type="text" required maxlength="120" placeholder="Ex. Maison à vendre">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="publicationCategory">Catégorie</label>
-                        <select id="publicationCategory" required>
-                            <option value="">Choisir une catégorie</option>
-                            <option value="immobilier">Immobilier</option>
-                            <option value="vehicules">Véhicules</option>
-                            <option value="commerce">Commerce</option>
-                            <option value="services">Services</option>
-                            <option value="emploi">Emploi</option>
-                            <option value="autres">Autres</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="publicationCity">Ville</label>
-                        <input id="publicationCity" type="text" required placeholder="Ville">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="publicationPrice">Prix</label>
-                    <input id="publicationPrice" type="number" min="0" step="0.01" placeholder="Prix">
-                </div>
-                <div class="form-group">
-                    <label for="publicationDescription">Description</label>
-                    <textarea id="publicationDescription" rows="6" maxlength="5000" required placeholder="Décrivez votre annonce..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="publicationImages">Photos</label>
-                    <input id="publicationImages" type="file" accept="image/*" multiple>
-                    <small>Ajoutez une ou plusieurs photos.</small>
-                </div>
-                <button type="submit" class="primary-btn">Publier l'annonce</button>
-            </form>
-        </section>
-
-        <!-- =============================================
-             SECTION FAVORIS
-             ============================================= -->
-        <section id="section-favoris" class="page-section">
-            <div class="page-header">
-                <h1>❤️ Mes favoris</h1>
-                <p>Retrouvez les annonces que vous avez enregistrées.</p>
-            </div>
-            <div id="favoritesListings" class="listings-grid">
-                <div class="empty-message">Vous n'avez encore aucun favori.</div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION RÉSERVATIONS
-             ============================================= -->
-        <section id="section-reservations" class="page-section">
-            <div class="page-header">
-                <h1>📅 Mes réservations</h1>
-                <p>Consultez vos réservations.</p>
-            </div>
-            <div id="reservationsContainer" class="reservations-container">
-                <div class="empty-message">Aucune réservation.</div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION NOTIFICATIONS
-             ============================================= -->
-        <section id="section-notifications" class="page-section">
-            <div class="page-header">
-                <h1>🔔 Notifications</h1>
-                <p>Vos notifications apparaîtront ici.</p>
-            </div>
-            <div id="notificationsContainer" class="notifications-container">
-                <div class="empty-message">Aucune notification.</div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION PROFIL
-             ============================================= -->
-        <section id="section-profil" class="page-section">
-            <div class="page-header">
-                <h1>👤 Mon profil</h1>
-                <p>Gérez vos informations personnelles.</p>
-            </div>
-            <div id="profileContainer" class="profile-container">
-                <div class="profile-card">
-                    <div id="profilePhoto" class="profile-photo-large">👤</div>
-                    <h2 id="profileName">Visiteur</h2>
-                    <p id="profileEmail">Non connecté</p>
-                    <span id="profileRole" class="role-badge">Visiteur</span>
-                </div>
-                <form id="profileForm" class="profile-form">
-                    <div class="form-group">
-                        <label for="profileFullName">Nom complet</label>
-                        <input id="profileFullName" type="text" placeholder="Votre nom">
-                    </div>
-                    <div class="form-group">
-                        <label for="profilePhone">Téléphone</label>
-                        <input id="profilePhone" type="tel" placeholder="Votre numéro">
-                    </div>
-                    <div class="form-group">
-                        <label for="profileCity">Ville</label>
-                        <input id="profileCity" type="text" placeholder="Votre ville">
-                    </div>
-                    <button type="submit" class="primary-btn">Enregistrer les modifications</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- =============================================
-             SECTION PARAMÈTRES
-             ============================================= -->
-        <section id="section-parametres" class="page-section">
-            <div class="page-header">
-                <h1>⚙️ Paramètres</h1>
-                <p>Configurez votre expérience CAMU SERVICES.</p>
-            </div>
-            <div class="settings-list">
-                <div class="setting-item">
-                    <div>
-                        <strong>Notifications</strong>
-                        <p>Recevoir les notifications.</p>
-                    </div>
-                    <input id="notificationSetting" type="checkbox" checked>
-                </div>
-                <div class="setting-item">
-                    <div>
-                        <strong>Mode sombre</strong>
-                        <p>Utiliser une interface sombre.</p>
-                    </div>
-                    <input id="darkModeSetting" type="checkbox">
-                </div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             ESPACE PROFESSIONNEL
-             ============================================= -->
-        <section id="section-professionnel" class="page-section">
-            <div class="page-header">
-                <h1>💼 Espace professionnel</h1>
-                <p>Gérez votre activité et vos publications.</p>
-            </div>
-            <div id="professionalContainer" class="dashboard-grid">
-                <div class="dashboard-card">
-                    <span>📢</span>
-                    <strong>Mes publications</strong>
-                    <span id="myPublicationsCount">0</span>
-                </div>
-                <div class="dashboard-card">
-                    <span>💬</span>
-                    <strong>Conversations</strong>
-                    <span id="myConversationsCount">0</span>
-                </div>
-                <div class="dashboard-card">
-                    <span>📅</span>
-                    <strong>Réservations</strong>
-                    <span id="myReservationsCount">0</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- =============================================
-             ADMINISTRATION
-             ============================================= -->
-        <section id="section-administration" class="page-section admin-section hidden">
-            <div class="page-header">
-                <h1>🛡️ Administration</h1>
-                <p>Gestion de la plateforme CAMU SERVICES.</p>
-            </div>
-            <div class="admin-dashboard">
-                <div class="admin-stat-card">
-                    <span>👤</span><strong>Utilisateurs</strong><b id="adminUsersCount">0</b>
-                </div>
-                <div class="admin-stat-card">
-                    <span>📢</span><strong>Publications</strong><b id="adminListingsCount">0</b>
-                </div>
-                <div class="admin-stat-card">
-                    <span>💬</span><strong>Conversations</strong><b id="adminConversationsCount">0</b>
-                </div>
-                <div class="admin-stat-card">
-                    <span>📢</span><strong>Communiqués</strong><b id="adminAnnouncementsCount">0</b>
-                </div>
-            </div>
-            <div class="admin-panels">
-                <div class="admin-panel">
-                    <div class="panel-heading"><h2>Utilisateurs</h2></div>
-                    <div id="adminUsersList" class="admin-list">
-                        <div class="loading-message">Chargement...</div>
-                    </div>
-                </div>
-                <div class="admin-panel">
-                    <div class="panel-heading"><h2>Publications</h2></div>
-                    <div id="adminListingsList" class="admin-list">
-                        <div class="loading-message">Chargement...</div>
-                    </div>
-                </div>
-                <div class="admin-panel">
-                    <div class="panel-heading"><h2>Communiqué</h2></div>
-                    <form id="communiqueForm" class="admin-form">
-                        <div class="form-group">
-                            <label for="communiqueTitle">Titre</label>
-                            <input id="communiqueTitle" type="text" maxlength="150">
-                        </div>
-                        <div class="form-group">
-                            <label for="communiqueMessage">Message</label>
-                            <textarea id="communiqueMessage" rows="5" maxlength="3000"></textarea>
-                        </div>
-                        <button type="submit" class="primary-btn">Publier le communiqué</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ===== MOBILE NAV ===== -->
-    <nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Navigation mobile">
-        <button class="mobile-nav-item active" type="button" data-section="accueil"><span>🏠</span><small>Accueil</small></button>
-        <button class="mobile-nav-item" type="button" data-section="chat"><span>💬</span><small>Chat</small></button>
-        <button class="mobile-nav-item publish-mobile-btn" type="button" data-section="publier"><span>＋</span><small>Publier</small></button>
-        <button class="mobile-nav-item" type="button" data-section="favoris"><span>❤️</span><small>Favoris</small></button>
-        <button class="mobile-nav-item" type="button" data-section="profil"><span>👤</span><small>Profil</small></button>
-    </nav>
-
-    <!-- ============================================================
-         MODALE UNIQUE AVEC ONGLETS CONNEXION / INSCRIPTION
-         ============================================================ -->
-    <div id="authModal" class="modal hidden" aria-hidden="true">
-        <div class="modal-overlay"></div>
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
-            <button id="closeAuthModal" class="modal-close" type="button" aria-label="Fermer">×</button>
-
-            <div class="modal-header">
-                <h2 id="authModalTitle">Connexion</h2>
-                <p id="authModalDescription">Connectez-vous à votre compte CAMU SERVICES.</p>
-            </div>
-
-            <!-- Onglets -->
-            <div class="auth-tabs">
-                <button id="tabLogin" class="auth-tab active" type="button">Se connecter</button>
-                <button id="tabRegister" class="auth-tab" type="button">Créer un compte</button>
-            </div>
-
-            <!-- Panneau Connexion -->
-            <div id="loginPanel" class="auth-panel active">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input id="loginEmail" type="email" required autocomplete="email" placeholder="votre@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Mot de passe</label>
-                        <input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Votre mot de passe">
-                    </div>
-                    <button type="submit" class="primary-btn full-width">Se connecter</button>
-                </form>
-                <div class="auth-links">
-                    <button id="forgotPasswordBtn" type="button" class="text-btn">Mot de passe oublié ?</button>
-                </div>
-            </div>
-
-            <!-- Panneau Inscription -->
-            <div id="registerPanel" class="auth-panel hidden">
-                <form id="registerForm">
-                    <div class="form-group">
-                        <label for="registerName">Nom complet</label>
-                        <input id="registerName" type="text" required placeholder="Votre nom">
-                    </div>
-                    <div class="form-group">
-                        <label for="registerEmail">Email</label>
-                        <input id="registerEmail" type="email" required autocomplete="email" placeholder="votre@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="registerPassword">Mot de passe</label>
-                        <input id="registerPassword" type="password" required autocomplete="new-password" placeholder="Minimum 6 caractères">
-                    </div>
-                    <div class="form-group">
-                        <label for="registerConfirmPassword">Confirmer le mot de passe</label>
-                        <input id="registerConfirmPassword" type="password" required autocomplete="new-password" placeholder="Confirmez">
-                    </div>
-                    <button type="submit" class="primary-btn full-width">Créer mon compte</button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ===== TOAST ===== -->
-    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h2>CAMU SERVICES</h2>
-                <p>TROUVER • ACHETER • RÉSERVER</p>
-            </div>
-            <div class="footer-column">
-                <h3>À propos</h3>
-                <button type="button" data-footer-action="about">À propos de CAMU SERVICES</button>
-                <button type="button" data-footer-action="contact">Contacts</button>
-            </div>
-            <div class="footer-column">
-                <h3>Informations</h3>
-                <button type="button" data-footer-action="conditions">Conditions d'utilisation</button>
-                <button type="button" data-footer-action="privacy">Confidentialité</button>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© <span id="currentYear"></span> CAMU SERVICES. Tous droits réservés.</p>
-        </div>
-    </footer>
-
-</div>
-
-<!-- ===== JAVASCRIPT ===== -->
-<script type="module" src="js/app.js"></script>
 </body>
 </html>
