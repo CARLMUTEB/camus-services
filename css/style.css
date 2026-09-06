@@ -1399,3 +1399,33 @@ select:focus-visible {
 .main-content {
     animation: fadeIn 0.35s ease;
 }
+.favorite-button.is-favorite {
+    color: #dc2626;
+}
+
+.camu-message {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2000;
+
+    padding: 14px 18px;
+
+    background: #111827;
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    animation: fadeIn 0.3s ease;
+}
+
+.camu-message.hide {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.3s ease;
+}
