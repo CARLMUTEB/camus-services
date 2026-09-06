@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
 
@@ -11,13 +12,15 @@
 
     <title>Connexion — CAMU SERVICES</title>
 
-    <!-- CSS PRINCIPAL -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
+
 
 <body>
 
@@ -25,16 +28,17 @@
 
         <div class="auth-container">
 
-            <!-- =====================================================
-                 CARTE DE CONNEXION
-            ====================================================== -->
-
             <div class="auth-card">
 
                 <!-- LOGO -->
                 <div class="auth-logo">
+
                     <span>CAMU SERVICES</span>
-                    <small>TROUVER • ACHETER • RÉSERVER</small>
+
+                    <small>
+                        TROUVER • ACHETER • RÉSERVER
+                    </small>
+
                 </div>
 
 
@@ -53,14 +57,12 @@
 
                 <!-- MESSAGE -->
                 <div id="loginMessage"
-                     class="auth-message">
+                     class="auth-message"
+                     role="alert">
                 </div>
 
 
-                <!-- =================================================
-                     FORMULAIRE
-                ================================================== -->
-
+                <!-- FORMULAIRE -->
                 <form id="loginForm"
                       class="auth-form">
 
@@ -133,7 +135,7 @@
                     </div>
 
 
-                    <!-- BOUTON CONNEXION -->
+                    <!-- BOUTON -->
                     <button
                         type="submit"
                         id="loginButton"
@@ -149,10 +151,7 @@
                 </form>
 
 
-                <!-- =================================================
-                     INSCRIPTION
-                ================================================== -->
-
+                <!-- INSCRIPTION -->
                 <div class="auth-switch">
 
                     Vous n'avez pas encore de compte ?
@@ -164,10 +163,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     RETOUR ACCUEIL
-                ================================================== -->
-
+                <!-- RETOUR -->
                 <div style="text-align: center; margin-top: 18px;">
 
                     <a
@@ -190,10 +186,7 @@
             </div>
 
 
-            <!-- =====================================================
-                 FOOTER AUTH
-            ====================================================== -->
-
+            <!-- FOOTER -->
             <div class="auth-footer">
 
                 <p>
@@ -238,16 +231,12 @@
     </main>
 
 
-    <!-- =========================================================
-         FIREBASE / AUTHENTIFICATION
-    ========================================================== -->
-
-    <script type="module" src="js/auth.js"></script>>
+    <!-- FIREBASE AUTHENTIFICATION -->
+    <script type="module" src="js/auth.js"></script>
 
     <!-- APPLICATION -->
     <script type="module" src="js/app.js"></script>
 
-
 </body>
+
 </html>
-```
