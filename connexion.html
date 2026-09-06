@@ -1,303 +1,187 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Connexion — CAMU SERVICES</title>
 
-    <link
-        rel="stylesheet"
-        href="css/main.css"
+    <meta
+        name="description"
+        content="Connectez-vous à votre compte CAMU SERVICES."
     >
+
+    <link rel="stylesheet" href="../css/style.css">
 
     <link
         rel="stylesheet"
-        href="css/responsive.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    >
-
 </head>
 
+<body class="auth-page">
 
-<body>
+    <main class="auth-container">
 
-<main class="auth-page">
-
-    <h1>
-        <i class="fas fa-lock"></i>
-        Connexion
-    </h1>
-
-
-    <div
-        id="login-error"
-        class="error"
-        role="alert"
-    ></div>
-
-
-    <form
-        id="login-form"
-        novalidate
-    >
-
-        <input
-            type="email"
-            id="login-email"
-            placeholder="Adresse email"
-            autocomplete="email"
-            required
-        >
-
-
-        <input
-            type="password"
-            id="login-password"
-            placeholder="Mot de passe"
-            autocomplete="current-password"
-            required
-        >
-
-
-        <button
-            type="submit"
-            id="login-btn"
-        >
-            Se connecter
-        </button>
-
-    </form>
-
-
-    <div class="auth-links">
-
-        <a
-            href="#"
-            id="forgot-password"
-        >
-            Mot de passe oublié ?
-        </a>
-
-
-        <a href="inscription.html">
-            Créer un compte
-        </a>
-
-
-        <a href="index.html">
+        <!-- RETOUR -->
+        <a href="../index.html" class="auth-back">
+            <i class="fa-solid fa-arrow-left"></i>
             Retour à l'accueil
         </a>
 
-    </div>
 
-</main>
+        <!-- CARTE -->
+        <section class="auth-card">
 
+            <!-- LOGO -->
+            <div class="auth-logo">
+                <span class="logo-main">CAMU</span>
+                <span class="logo-sub">SERVICES</span>
+            </div>
 
-<script type="module">
 
-import {
-    signIn,
-    resetPassword
-} from "./js/core/auth.js";
+            <!-- TITRE -->
+            <div class="auth-header">
 
+                <h1>Bon retour !</h1>
 
-const form =
-    document.getElementById(
-        "login-form"
-    );
+                <p>
+                    Connectez-vous pour accéder à votre compte.
+                </p>
 
-const errorElement =
-    document.getElementById(
-        "login-error"
-    );
+            </div>
 
-const loginButton =
-    document.getElementById(
-        "login-btn"
-    );
 
-const forgotPassword =
-    document.getElementById(
-        "forgot-password"
-    );
+            <!-- FORMULAIRE -->
+            <form id="loginForm" class="auth-form">
 
+                <!-- EMAIL -->
+                <div class="form-group">
 
-// =====================================================
-// CONNEXION
-// =====================================================
+                    <label for="loginEmail">
+                        Adresse e-mail
+                    </label>
 
-form.addEventListener(
-    "submit",
-    async event => {
+                    <div class="input-wrapper">
 
-        event.preventDefault();
+                        <i class="fa-regular fa-envelope"></i>
 
-        errorElement.textContent = "";
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="exemple@email.com"
+                            autocomplete="email"
+                            required
+                        >
 
+                    </div>
 
-        const email =
-            document.getElementById(
-                "login-email"
-            ).value.trim();
+                </div>
 
 
-        const password =
-            document.getElementById(
-                "login-password"
-            ).value;
+                <!-- MOT DE PASSE -->
+                <div class="form-group">
 
+                    <div class="form-label-row">
 
-        if (!email) {
+                        <label for="loginPassword">
+                            Mot de passe
+                        </label>
 
-            errorElement.textContent =
-                "Veuillez saisir votre adresse email.";
+                        <a href="#" id="forgotPassword">
+                            Mot de passe oublié ?
+                        </a>
 
-            return;
-        }
+                    </div>
 
 
-        if (!password) {
+                    <div class="input-wrapper">
 
-            errorElement.textContent =
-                "Veuillez saisir votre mot de passe.";
+                        <i class="fa-solid fa-lock"></i>
 
-            return;
-        }
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Votre mot de passe"
+                            autocomplete="current-password"
+                            required
+                        >
 
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="loginPassword"
+                            aria-label="Afficher le mot de passe"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
 
-        loginButton.disabled = true;
+                    </div>
 
-        loginButton.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+                </div>
 
 
-        try {
+                <!-- ERREUR -->
+                <div
+                    id="loginMessage"
+                    class="auth-message"
+                    role="alert"
+                ></div>
 
-            const result =
-                await signIn(
-                    email,
-                    password
-                );
 
+                <!-- CONNEXION -->
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="loginButton"
+                >
 
-            if (result.success) {
+                    <span>Se connecter</span>
 
-                window.location.href =
-                    "index.html";
+                    <i class="fa-solid fa-arrow-right"></i>
 
-                return;
-            }
+                </button>
 
+            </form>
 
-            errorElement.textContent =
-                result.error ||
-                "Impossible de se connecter.";
 
-        } catch (error) {
+            <!-- INSCRIPTION -->
+            <div class="auth-switch">
 
-            console.error(
-                "Erreur connexion :",
-                error
-            );
+                <span>
+                    Vous n'avez pas encore de compte ?
+                </span>
 
+                <a href="inscription.html">
+                    Créer un compte
+                </a>
 
-            errorElement.textContent =
-                "Une erreur est survenue pendant la connexion.";
-        }
+            </div>
 
+        </section>
 
-        loginButton.disabled = false;
 
-        loginButton.innerHTML =
-            "Se connecter";
-    }
-);
+        <!-- FOOTER -->
+        <div class="auth-footer">
 
+            <a href="mentions-legales.html">
+                Mentions légales
+            </a>
 
-// =====================================================
-// MOT DE PASSE OUBLIÉ
-// =====================================================
+            <a href="cgu.html">
+                Conditions d'utilisation
+            </a>
 
-forgotPassword.addEventListener(
-    "click",
-    async event => {
+            <a href="confidentialite.html">
+                Confidentialité
+            </a>
 
-        event.preventDefault();
+        </div>
 
-        errorElement.textContent = "";
+    </main>
 
 
-        const email =
-            document.getElementById(
-                "login-email"
-            ).value.trim();
-
-
-        if (!email) {
-
-            errorElement.textContent =
-                "Entrez d'abord votre adresse email.";
-
-            return;
-        }
-
-
-        forgotPassword.style.pointerEvents =
-            "none";
-
-
-        try {
-
-            const result =
-                await resetPassword(
-                    email
-                );
-
-
-            if (result.success) {
-
-                alert(
-                    "Un email de réinitialisation a été envoyé à cette adresse."
-                );
-
-            } else {
-
-                errorElement.textContent =
-                    result.error ||
-                    "Impossible d'envoyer l'email.";
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Erreur réinitialisation :",
-                error
-            );
-
-
-            errorElement.textContent =
-                "Une erreur est survenue.";
-        }
-
-
-        forgotPassword.style.pointerEvents =
-            "";
-    }
-);
-
-</script>
+    <script src="../js/auth.js"></script>
 
 </body>
-
 </html>
