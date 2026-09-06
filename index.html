@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,14 +7,18 @@
 
     <title>CAMU SERVICES — Trouver • Acheter • Réserver</title>
 
-    <meta name="description"
-          content="CAMU SERVICES — Trouvez des produits, véhicules, logements et services près de chez vous.">
+    <meta
+        name="description"
+        content="CAMU SERVICES — Trouvez des produits, véhicules, logements et services près de chez vous."
+    >
 
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Icônes -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
 
 <body>
@@ -36,7 +41,12 @@
             <span class="logo-sub">SERVICES</span>
         </div>
 
-        <button class="sidebar-close" id="sidebarClose">
+        <button
+            type="button"
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Fermer le menu"
+        >
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -50,30 +60,37 @@
             <span>Accueil</span>
         </a>
 
+
         <a href="pages/recherche.html" class="nav-item">
             <i class="fa-solid fa-magnifying-glass"></i>
             <span>Rechercher</span>
         </a>
+
 
         <a href="pages/categories.html" class="nav-item">
             <i class="fa-solid fa-layer-group"></i>
             <span>Catégories</span>
         </a>
 
+
         <a href="pages/publier.html" class="nav-item">
             <i class="fa-solid fa-circle-plus"></i>
             <span>Publier</span>
         </a>
+
 
         <a href="pages/favoris.html" class="nav-item">
             <i class="fa-regular fa-heart"></i>
             <span>Favoris</span>
         </a>
 
-        <a href="pages/compte.html" class="nav-item">
+
+        <!-- MON COMPTE -->
+        <a href="compte.html" class="nav-item">
             <i class="fa-regular fa-user"></i>
             <span>Mon compte</span>
         </a>
+
 
         <a href="pages/parametres.html" class="nav-item">
             <i class="fa-solid fa-gear"></i>
@@ -90,7 +107,12 @@
             <span>Connexion</span>
         </a>
 
-        <a href="#" class="nav-item logout-item" id="logoutBtn">
+
+        <a
+            href="#"
+            class="nav-item logout-item"
+            id="logoutBtn"
+        >
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Déconnexion</span>
         </a>
@@ -112,24 +134,41 @@
     ========================= -->
     <header class="topbar">
 
-        <button class="menu-button" id="menuButton">
+        <button
+            type="button"
+            class="menu-button"
+            id="menuButton"
+            aria-label="Ouvrir le menu"
+        >
             <i class="fa-solid fa-bars"></i>
         </button>
 
 
         <div class="mobile-logo">
+
             <span>CAMU</span>
+
             <small>SERVICES</small>
+
         </div>
 
 
         <div class="topbar-right">
 
-            <a href="pages/favoris.html" class="topbar-icon">
+            <a
+                href="pages/favoris.html"
+                class="topbar-icon"
+                aria-label="Favoris"
+            >
                 <i class="fa-regular fa-heart"></i>
             </a>
 
-            <a href="pages/compte.html" class="profile-button">
+
+            <!-- MON COMPTE : CORRIGÉ -->
+            <a
+                href="compte.html"
+                class="profile-button"
+            >
                 <i class="fa-regular fa-user"></i>
                 <span>Mon compte</span>
             </a>
@@ -154,15 +193,20 @@
             <div class="hero-content">
 
                 <span class="hero-badge">
+
                     <i class="fa-solid fa-location-dot"></i>
+
                     Votre marketplace locale
+
                 </span>
+
 
                 <h1>
                     Trouver.
                     <span>Acheter.</span>
                     Réserver.
                 </h1>
+
 
                 <p>
                     Découvrez facilement des produits, logements,
@@ -171,7 +215,10 @@
 
 
                 <!-- SEARCH -->
-                <form class="search-box" id="homeSearchForm">
+                <form
+                    class="search-box"
+                    id="homeSearchForm"
+                >
 
                     <div class="search-field">
 
@@ -218,11 +265,16 @@
                     </div>
 
 
-                    <button type="submit" class="search-button">
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
 
                         <i class="fa-solid fa-magnifying-glass"></i>
 
-                        <span>Rechercher</span>
+                        <span>
+                            Rechercher
+                        </span>
 
                     </button>
 
@@ -242,16 +294,27 @@
             <div class="section-header">
 
                 <div>
+
                     <span class="section-label">
                         Explorer
                     </span>
 
-                    <h2>Catégories</h2>
+                    <h2>
+                        Catégories
+                    </h2>
+
                 </div>
 
-                <a href="pages/categories.html" class="see-all">
+
+                <a
+                    href="pages/categories.html"
+                    class="see-all"
+                >
+
                     Voir toutes
+
                     <i class="fa-solid fa-arrow-right"></i>
+
                 </a>
 
             </div>
@@ -260,14 +323,19 @@
             <div class="categories-grid">
 
 
-                <a href="pages/recherche.html?category=immobilier"
-                   class="category-card">
+                <!-- IMMOBILIER -->
+                <a
+                    href="pages/recherche.html?category=immobilier"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-house"></i>
                     </div>
 
-                    <h3>Immobilier</h3>
+                    <h3>
+                        Immobilier
+                    </h3>
 
                     <p>
                         Maisons, terrains, appartements...
@@ -276,14 +344,19 @@
                 </a>
 
 
-                <a href="pages/recherche.html?category=vehicules"
-                   class="category-card">
+                <!-- VEHICULES -->
+                <a
+                    href="pages/recherche.html?category=vehicules"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-car"></i>
                     </div>
 
-                    <h3>Véhicules</h3>
+                    <h3>
+                        Véhicules
+                    </h3>
 
                     <p>
                         Voitures, motos et autres...
@@ -292,14 +365,19 @@
                 </a>
 
 
-                <a href="pages/recherche.html?category=commerce"
-                   class="category-card">
+                <!-- COMMERCE -->
+                <a
+                    href="pages/recherche.html?category=commerce"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </div>
 
-                    <h3>Commerce</h3>
+                    <h3>
+                        Commerce
+                    </h3>
 
                     <p>
                         Produits et marchandises...
@@ -308,14 +386,19 @@
                 </a>
 
 
-                <a href="pages/recherche.html?category=services"
-                   class="category-card">
+                <!-- SERVICES -->
+                <a
+                    href="pages/recherche.html?category=services"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
 
-                    <h3>Services</h3>
+                    <h3>
+                        Services
+                    </h3>
 
                     <p>
                         Trouvez un professionnel...
@@ -324,14 +407,19 @@
                 </a>
 
 
-                <a href="pages/recherche.html?category=emploi"
-                   class="category-card">
+                <!-- EMPLOI -->
+                <a
+                    href="pages/recherche.html?category=emploi"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-briefcase"></i>
                     </div>
 
-                    <h3>Emploi</h3>
+                    <h3>
+                        Emploi
+                    </h3>
 
                     <p>
                         Offres et opportunités...
@@ -340,14 +428,19 @@
                 </a>
 
 
-                <a href="pages/recherche.html?category=autres"
-                   class="category-card">
+                <!-- AUTRES -->
+                <a
+                    href="pages/recherche.html?category=autres"
+                    class="category-card"
+                >
 
                     <div class="category-icon">
                         <i class="fa-solid fa-box-open"></i>
                     </div>
 
-                    <h3>Autres</h3>
+                    <h3>
+                        Autres
+                    </h3>
 
                     <p>
                         Découvrez d'autres annonces...
@@ -374,11 +467,17 @@
                         Découvrez
                     </span>
 
-                    <h2>Annonces récentes</h2>
+                    <h2>
+                        Annonces récentes
+                    </h2>
 
                 </div>
 
-                <a href="pages/recherche.html" class="see-all">
+
+                <a
+                    href="pages/recherche.html"
+                    class="see-all"
+                >
 
                     Voir toutes
 
@@ -389,7 +488,10 @@
             </div>
 
 
-            <div class="ads-grid" id="recentAds">
+            <div
+                class="ads-grid"
+                id="recentAds"
+            >
 
 
                 <!-- ANNONCE 1 -->
@@ -402,11 +504,12 @@
                             alt="Maison à vendre"
                         >
 
-                        <button class="favorite-button"
-                                aria-label="Ajouter aux favoris">
-
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            aria-label="Ajouter aux favoris"
+                        >
                             <i class="fa-regular fa-heart"></i>
-
                         </button>
 
                         <span class="ad-category">
@@ -450,11 +553,12 @@
                             alt="Véhicule à vendre"
                         >
 
-                        <button class="favorite-button"
-                                aria-label="Ajouter aux favoris">
-
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            aria-label="Ajouter aux favoris"
+                        >
                             <i class="fa-regular fa-heart"></i>
-
                         </button>
 
                         <span class="ad-category">
@@ -498,11 +602,12 @@
                             alt="Téléphone à vendre"
                         >
 
-                        <button class="favorite-button"
-                                aria-label="Ajouter aux favoris">
-
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            aria-label="Ajouter aux favoris"
+                        >
                             <i class="fa-regular fa-heart"></i>
-
                         </button>
 
                         <span class="ad-category">
@@ -546,11 +651,12 @@
                             alt="Service professionnel"
                         >
 
-                        <button class="favorite-button"
-                                aria-label="Ajouter aux favoris">
-
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            aria-label="Ajouter aux favoris"
+                        >
                             <i class="fa-regular fa-heart"></i>
-
                         </button>
 
                         <span class="ad-category">
@@ -596,8 +702,11 @@
             <div class="publish-cta-content">
 
                 <div class="publish-cta-icon">
+
                     <i class="fa-solid fa-bullhorn"></i>
+
                 </div>
+
 
                 <div>
 
@@ -615,8 +724,10 @@
             </div>
 
 
-            <a href="pages/publier.html"
-               class="primary-button">
+            <a
+                href="pages/publier.html"
+                class="primary-button"
+            >
 
                 <i class="fa-solid fa-plus"></i>
 
@@ -653,6 +764,7 @@
 
                 </div>
 
+
                 <p>
                     Trouver • Acheter • Réserver
                 </p>
@@ -688,7 +800,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -714,3 +825,4 @@
 
 </body>
 </html>
+```
