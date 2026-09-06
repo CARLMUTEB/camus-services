@@ -9,7 +9,7 @@
 
     <meta
         name="description"
-        content="Publiez votre annonce sur CAMU SERVICES."
+        content="Publiez facilement votre annonce sur CAMU SERVICES."
     >
 
     <link rel="stylesheet" href="css/style.css">
@@ -22,29 +22,19 @@
 
 <body>
 
-    <!-- =====================================================
-         OVERLAY MOBILE
-    ====================================================== -->
-    <div
-        class="sidebar-overlay"
-        id="sidebarOverlay"
-    ></div>
+    <!-- OVERLAY MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 
     <!-- =====================================================
          SIDEBAR
     ====================================================== -->
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
+    <aside class="sidebar" id="sidebar">
 
         <div class="sidebar-header">
 
-            <a
-                href="index.html"
-                class="sidebar-logo"
-            >
+            <a href="index.html" class="sidebar-logo">
+
                 <span class="logo-main">
                     CAMU
                 </span>
@@ -52,6 +42,7 @@
                 <span class="logo-sub">
                     SERVICES
                 </span>
+
             </a>
 
             <button
@@ -66,67 +57,39 @@
         </div>
 
 
-        <!-- NAVIGATION -->
         <nav class="sidebar-nav">
 
-            <a
-                href="index.html"
-                class="nav-item"
-            >
+            <a href="index.html" class="nav-item">
                 <i class="fa-solid fa-house"></i>
                 <span>Accueil</span>
             </a>
 
-
-            <a
-                href="recherche.html"
-                class="nav-item"
-            >
+            <a href="recherche.html" class="nav-item">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span>Rechercher</span>
             </a>
 
-
-            <a
-                href="categories.html"
-                class="nav-item"
-            >
+            <a href="categories.html" class="nav-item">
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Catégories</span>
             </a>
 
-
-            <a
-                href="publier.html"
-                class="nav-item active"
-            >
+            <a href="publier.html" class="nav-item active">
                 <i class="fa-solid fa-circle-plus"></i>
                 <span>Publier</span>
             </a>
 
-
-            <a
-                href="favoris.html"
-                class="nav-item"
-            >
+            <a href="favoris.html" class="nav-item">
                 <i class="fa-regular fa-heart"></i>
                 <span>Favoris</span>
             </a>
 
-
-            <a
-                href="compte.html"
-                class="nav-item"
-            >
+            <a href="compte.html" class="nav-item">
                 <i class="fa-regular fa-user"></i>
                 <span>Mon compte</span>
             </a>
 
-
-            <a
-                href="parametres.html"
-                class="nav-item"
-            >
+            <a href="parametres.html" class="nav-item">
                 <i class="fa-solid fa-gear"></i>
                 <span>Paramètres</span>
             </a>
@@ -134,7 +97,6 @@
         </nav>
 
 
-        <!-- BAS SIDEBAR -->
         <div class="sidebar-bottom">
 
             <a
@@ -145,7 +107,6 @@
                 <i class="fa-solid fa-right-to-bracket"></i>
                 <span>Connexion</span>
             </a>
-
 
             <button
                 type="button"
@@ -167,9 +128,7 @@
     <div class="main-wrapper">
 
 
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
+        <!-- TOPBAR -->
         <header class="topbar">
 
             <button
@@ -184,13 +143,8 @@
 
             <div class="mobile-logo">
 
-                <span>
-                    CAMU
-                </span>
-
-                <small>
-                    SERVICES
-                </small>
+                <span>CAMU</span>
+                <small>SERVICES</small>
 
             </div>
 
@@ -204,7 +158,6 @@
                 >
                     <i class="fa-regular fa-heart"></i>
                 </a>
-
 
                 <a
                     href="compte.html"
@@ -220,16 +173,22 @@
         </header>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              MAIN
-        ================================================== -->
+        ====================================================== -->
         <main class="main-content">
 
-            <section class="publish-page">
+            <div class="publish-v2">
 
 
-                <!-- EN-TÊTE -->
-                <div class="publish-page-header">
+                <!-- =================================================
+                     HERO
+                ================================================== -->
+                <div class="publish-hero">
+
+                    <div class="publish-hero-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
 
                     <div>
 
@@ -242,8 +201,64 @@
                         </h1>
 
                         <p>
-                            Présentez votre produit ou votre service aux utilisateurs de CAMU SERVICES.
+                            Présentez votre produit ou votre service
+                            et trouvez rapidement des intéressés.
                         </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PROGRESSION
+                ================================================== -->
+                <div class="publish-steps">
+
+                    <div class="publish-step active">
+
+                        <span>1</span>
+
+                        <div>
+                            <strong>Photos</strong>
+                            <small>Présentez votre annonce</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-step">
+
+                        <span>2</span>
+
+                        <div>
+                            <strong>Informations</strong>
+                            <small>Décrivez votre annonce</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-step">
+
+                        <span>3</span>
+
+                        <div>
+                            <strong>Localisation</strong>
+                            <small>Où se trouve-t-elle ?</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-step">
+
+                        <span>4</span>
+
+                        <div>
+                            <strong>Contact</strong>
+                            <small>Comment vous joindre ?</small>
+                        </div>
 
                     </div>
 
@@ -262,201 +277,320 @@
                 <!-- =================================================
                      FORMULAIRE
                 ================================================== -->
-                <section class="publish-section">
-
-                    <form
-                        id="publishForm"
-                        class="publish-form"
-                        novalidate
-                    >
+                <form
+                    id="publishForm"
+                    class="publish-v2-form"
+                    novalidate
+                >
 
 
-                        <!-- PHOTOS -->
-                        <div class="publish-form-group">
+                    <!-- =================================================
+                         01 — PHOTOS
+                    ================================================== -->
+                    <section class="publish-card">
 
-                            <div class="publish-form-title">
+                        <div class="publish-card-header">
 
-                                <span class="section-label">
-                                    01
-                                </span>
+                            <div class="publish-number">
+                                01
+                            </div>
+
+                            <div>
 
                                 <h2>
-                                    <i class="fa-regular fa-images"></i>
-                                    Photos
+                                    Ajouter des photos
                                 </h2>
 
                                 <p>
-                                    Ajoutez des photos claires de votre produit ou service.
+                                    Une bonne photo attire davantage de visiteurs.
                                 </p>
 
                             </div>
 
+                        </div>
 
-                            <label
-                                for="publishPhotos"
-                                class="photo-upload"
-                            >
 
+                        <label
+                            for="publishPhotos"
+                            class="publish-upload-zone"
+                        >
+
+                            <div class="publish-upload-icon">
                                 <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
 
-                                <strong>
-                                    Ajouter des photos
-                                </strong>
+                            <strong>
+                                Ajoutez vos photos
+                            </strong>
 
-                                <span>
-                                    Cliquez pour sélectionner vos photos
-                                </span>
+                            <span>
+                                Cliquez ici pour sélectionner vos images
+                            </span>
 
-                                <small>
-                                    JPG, PNG ou WEBP
-                                </small>
+                            <small>
+                                JPG, PNG ou WEBP • 5 MB maximum par image
+                            </small>
 
-                            </label>
-
-
-                            <input
-                                type="file"
-                                id="publishPhotos"
-                                accept="image/jpeg,image/png,image/webp"
-                                multiple
-                                hidden
-                            >
+                        </label>
 
 
-                            <div
-                                class="photo-preview"
-                                id="photoPreview"
-                            ></div>
+                        <input
+                            type="file"
+                            id="publishPhotos"
+                            accept="image/jpeg,image/png,image/webp"
+                            multiple
+                            hidden
+                        >
+
+
+                        <div
+                            class="publish-photo-preview"
+                            id="photoPreview"
+                        ></div>
+
+
+                    </section>
+
+
+                    <!-- =================================================
+                         02 — INFORMATIONS
+                    ================================================== -->
+                    <section class="publish-card">
+
+                        <div class="publish-card-header">
+
+                            <div class="publish-number">
+                                02
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Informations de l'annonce
+                                </h2>
+
+                                <p>
+                                    Donnez suffisamment de détails aux visiteurs.
+                                </p>
+
+                            </div>
 
                         </div>
 
 
-                        <!-- INFORMATIONS -->
-                        <div class="publish-form-group">
+                        <!-- TITRE -->
+                        <div class="publish-field">
 
-                            <div class="publish-form-title">
+                            <label for="publishTitle">
+                                Titre de l'annonce
+                                <span>*</span>
+                            </label>
 
-                                <span class="section-label">
-                                    02
-                                </span>
+                            <input
+                                type="text"
+                                id="publishTitle"
+                                name="title"
+                                placeholder="Ex : Toyota Hilux 2022 à vendre"
+                                maxlength="100"
+                                required
+                            >
 
-                                <h2>
-                                    <i class="fa-solid fa-circle-info"></i>
-                                    Informations
-                                </h2>
+                            <small>
+                                Choisissez un titre clair et précis.
+                            </small>
 
-                            </div>
+                        </div>
 
 
-                            <!-- TITRE -->
-                            <div class="form-group">
+                        <!-- PRIX -->
+                        <div class="publish-grid-2">
 
-                                <label for="publishTitle">
-                                    Titre de l'annonce
+                            <div class="publish-field">
+
+                                <label for="publishPrice">
+                                    Prix
                                     <span>*</span>
                                 </label>
 
                                 <input
-                                    type="text"
-                                    id="publishTitle"
-                                    name="title"
-                                    placeholder="Ex : Toyota Hilux 2022 à vendre"
-                                    maxlength="100"
+                                    type="number"
+                                    id="publishPrice"
+                                    name="price"
+                                    placeholder="Ex : 25000"
+                                    min="0"
+                                    step="1"
                                     required
                                 >
 
                             </div>
 
 
-                            <!-- PRIX -->
-                            <div class="form-row">
+                            <div class="publish-field">
 
-                                <div class="form-group">
+                                <label for="publishCurrency">
+                                    Devise
+                                </label>
 
-                                    <label for="publishPrice">
-                                        Prix
-                                        <span>*</span>
-                                    </label>
+                                <select
+                                    id="publishCurrency"
+                                    name="currency"
+                                >
 
-                                    <input
-                                        type="number"
-                                        id="publishPrice"
-                                        name="price"
-                                        placeholder="Ex : 25000"
-                                        min="0"
-                                        step="1"
-                                        required
-                                    >
+                                    <option value="USD">
+                                        USD ($)
+                                    </option>
 
-                                </div>
+                                    <option value="CDF">
+                                        CDF (FC)
+                                    </option>
 
-
-                                <div class="form-group">
-
-                                    <label for="publishCurrency">
-                                        Devise
-                                    </label>
-
-                                    <select
-                                        id="publishCurrency"
-                                        name="currency"
-                                    >
-
-                                        <option value="USD">
-                                            USD ($)
-                                        </option>
-
-                                        <option value="CDF">
-                                            CDF (FC)
-                                        </option>
-
-                                    </select>
-
-                                </div>
+                                </select>
 
                             </div>
 
+                        </div>
 
-                            <!-- CATÉGORIE -->
-                            <div class="form-group">
 
-                                <label for="publishCategory">
-                                    Catégorie
+                        <!-- CATÉGORIE -->
+                        <div class="publish-field">
+
+                            <label for="publishCategory">
+                                Catégorie
+                                <span>*</span>
+                            </label>
+
+                            <select
+                                id="publishCategory"
+                                name="category"
+                                required
+                            >
+
+                                <option value="">
+                                    Sélectionner une catégorie
+                                </option>
+
+                                <option value="Immobilier">
+                                    🏠 Immobilier
+                                </option>
+
+                                <option value="Véhicules">
+                                    🚗 Véhicules
+                                </option>
+
+                                <option value="Commerce">
+                                    🛒 Commerce
+                                </option>
+
+                                <option value="Services">
+                                    🛠️ Services
+                                </option>
+
+                                <option value="Emploi">
+                                    💼 Emploi
+                                </option>
+
+                                <option value="Autres">
+                                    📦 Autres
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+                        <div class="publish-field">
+
+                            <label for="publishDescription">
+                                Description
+                                <span>*</span>
+                            </label>
+
+                            <textarea
+                                id="publishDescription"
+                                name="description"
+                                rows="7"
+                                maxlength="2000"
+                                placeholder="Décrivez votre produit ou service : état, caractéristiques, conditions, disponibilité..."
+                                required
+                            ></textarea>
+
+                            <div class="publish-field-bottom">
+
+                                <small>
+                                    Soyez précis pour donner confiance aux visiteurs.
+                                </small>
+
+                                <span>
+                                    2000 caractères maximum
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         03 — LOCALISATION
+                    ================================================== -->
+                    <section class="publish-card">
+
+                        <div class="publish-card-header">
+
+                            <div class="publish-number">
+                                03
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Localisation
+                                </h2>
+
+                                <p>
+                                    Indiquez où se trouve votre produit ou service.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="publish-grid-2">
+
+                            <div class="publish-field">
+
+                                <label for="publishCity">
+                                    Ville
                                     <span>*</span>
                                 </label>
 
                                 <select
-                                    id="publishCategory"
-                                    name="category"
+                                    id="publishCity"
+                                    name="city"
                                     required
                                 >
 
                                     <option value="">
-                                        Choisir une catégorie
+                                        Sélectionner une ville
                                     </option>
 
-                                    <option value="Immobilier">
-                                        🏠 Immobilier
+                                    <option value="Lubumbashi">
+                                        Lubumbashi
                                     </option>
 
-                                    <option value="Véhicules">
-                                        🚗 Véhicules
+                                    <option value="Kolwezi">
+                                        Kolwezi
                                     </option>
 
-                                    <option value="Commerce">
-                                        🛒 Commerce
+                                    <option value="Likasi">
+                                        Likasi
                                     </option>
 
-                                    <option value="Services">
-                                        🛠️ Services
-                                    </option>
-
-                                    <option value="Emploi">
-                                        💼 Emploi
-                                    </option>
-
-                                    <option value="Autres">
-                                        📦 Autres
+                                    <option value="Fungurume">
+                                        Fungurume
                                     </option>
 
                                 </select>
@@ -464,225 +598,174 @@
                             </div>
 
 
-                            <!-- DESCRIPTION -->
-                            <div class="form-group">
+                            <div class="publish-field">
 
-                                <label for="publishDescription">
-                                    Description
-                                    <span>*</span>
+                                <label for="publishNeighborhood">
+                                    Quartier
                                 </label>
 
-                                <textarea
-                                    id="publishDescription"
-                                    name="description"
-                                    rows="7"
-                                    maxlength="2000"
-                                    placeholder="Décrivez votre produit ou votre service avec suffisamment de détails..."
-                                    required
-                                ></textarea>
+                                <input
+                                    type="text"
+                                    id="publishNeighborhood"
+                                    name="neighborhood"
+                                    placeholder="Ex : Golf"
+                                    maxlength="100"
+                                >
 
-                                <small class="form-help">
-                                    Maximum 2000 caractères.
-                                </small>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         04 — CONTACT
+                    ================================================== -->
+                    <section class="publish-card">
+
+                        <div class="publish-card-header">
+
+                            <div class="publish-number">
+                                04
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Contact WhatsApp
+                                </h2>
+
+                                <p>
+                                    Les personnes intéressées pourront vous contacter directement.
+                                </p>
 
                             </div>
 
                         </div>
 
 
-                        <!-- LOCALISATION -->
-                        <div class="publish-form-group">
+                        <div class="publish-whatsapp-box">
 
-                            <div class="publish-form-title">
-
-                                <span class="section-label">
-                                    03
-                                </span>
-
-                                <h2>
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    Localisation
-                                </h2>
-
-                                <p>
-                                    Indiquez où se trouve votre produit ou votre activité.
-                                </p>
-
+                            <div class="publish-whatsapp-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
                             </div>
 
+                            <div>
 
-                            <div class="form-row">
-
-                                <!-- VILLE -->
-                                <div class="form-group">
-
-                                    <label for="publishCity">
-                                        Ville
-                                        <span>*</span>
-                                    </label>
-
-                                    <select
-                                        id="publishCity"
-                                        name="city"
-                                        required
-                                    >
-
-                                        <option value="">
-                                            Choisir une ville
-                                        </option>
-
-                                        <option value="Lubumbashi">
-                                            Lubumbashi
-                                        </option>
-
-                                        <option value="Kolwezi">
-                                            Kolwezi
-                                        </option>
-
-                                        <option value="Likasi">
-                                            Likasi
-                                        </option>
-
-                                        <option value="Fungurume">
-                                            Fungurume
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- QUARTIER -->
-                                <div class="form-group">
-
-                                    <label for="publishNeighborhood">
-                                        Quartier
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="publishNeighborhood"
-                                        name="neighborhood"
-                                        placeholder="Ex : Golf"
-                                        maxlength="100"
-                                    >
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- CONTACT -->
-                        <div class="publish-form-group">
-
-                            <div class="publish-form-title">
-
-                                <span class="section-label">
-                                    04
-                                </span>
-
-                                <h2>
-                                    <i class="fa-brands fa-whatsapp"></i>
-                                    Contact
-                                </h2>
-
-                                <p>
-                                    Ce numéro sera utilisé pour permettre aux intéressés de vous contacter sur WhatsApp.
-                                </p>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="publishWhatsapp">
+                                <strong>
                                     Numéro WhatsApp
-                                    <span>*</span>
-                                </label>
-
-                                <input
-                                    type="tel"
-                                    id="publishWhatsapp"
-                                    name="whatsapp"
-                                    placeholder="Ex : +243 8XX XXX XXX"
-                                    maxlength="30"
-                                    required
-                                >
-
-                                <small class="form-help">
-                                    Utilisez un numéro WhatsApp actif.
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- CONDITIONS -->
-                        <div class="publish-terms">
-
-                            <label>
-
-                                <input
-                                    type="checkbox"
-                                    id="publishTerms"
-                                    required
-                                >
+                                </strong>
 
                                 <span>
-                                    J'accepte les
-                                    <a href="conditions.html" target="_blank">
-                                        conditions d'utilisation
-                                    </a>
-                                    et les
-                                    <a href="conditions.html" target="_blank">
-                                        règles de publication
-                                    </a>
-                                    de CAMU SERVICES.
+                                    Votre numéro ne sera pas affiché directement
+                                    sur l'annonce.
                                 </span>
 
+                            </div>
+
+                        </div>
+
+
+                        <div class="publish-field">
+
+                            <label for="publishWhatsapp">
+                                Votre numéro WhatsApp
+                                <span>*</span>
                             </label>
 
-                        </div>
-
-
-                        <!-- ACTIONS -->
-                        <div class="publish-actions">
-
-                            <a
-                                href="index.html"
-                                class="secondary-button"
+                            <input
+                                type="tel"
+                                id="publishWhatsapp"
+                                name="whatsapp"
+                                placeholder="Ex : +243 8XX XXX XXX"
+                                maxlength="30"
+                                required
                             >
-                                <i class="fa-solid fa-arrow-left"></i>
-                                Annuler
-                            </a>
-
-
-                            <button
-                                type="submit"
-                                class="primary-button"
-                                id="publishButton"
-                            >
-                                <i class="fa-solid fa-paper-plane"></i>
-                                Publier l'annonce
-                            </button>
 
                         </div>
 
-                    </form>
+                    </section>
 
-                </section>
 
-            </section>
+                    <!-- =================================================
+                         CONDITIONS
+                    ================================================== -->
+                    <section class="publish-terms-card">
+
+                        <label class="publish-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="publishTerms"
+                                required
+                            >
+
+                            <span class="publish-checkmark">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            <span class="publish-terms-text">
+
+                                J'accepte les
+                                <a
+                                    href="conditions.html"
+                                    target="_blank"
+                                >
+                                    conditions d'utilisation
+                                </a>
+                                et les
+                                <a
+                                    href="conditions.html"
+                                    target="_blank"
+                                >
+                                    règles de publication
+                                </a>
+                                de CAMU SERVICES.
+
+                            </span>
+
+                        </label>
+
+                    </section>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                    ================================================== -->
+                    <div class="publish-v2-actions">
+
+                        <a
+                            href="index.html"
+                            class="secondary-button"
+                        >
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Annuler
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button publish-submit"
+                            id="publishButton"
+                        >
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Publier l'annonce
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
 
         </main>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              FOOTER
-        ================================================== -->
+        ====================================================== -->
         <footer class="footer">
 
             <div class="footer-content">
@@ -752,12 +835,11 @@
     </div>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
+    <!-- JAVASCRIPT -->
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/publier.js"></script>
 
 </body>
+
 </html>
