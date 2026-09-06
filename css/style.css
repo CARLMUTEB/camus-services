@@ -1868,5 +1868,690 @@ select:focus-visible {
     .auth-header h1 {
         font-size: 24px;
     }
+/* =========================================================
+   CAMU SERVICES — PAGE MON COMPTE
+========================================================= */
 
+.account-page {
+    width: 100%;
+}
+
+.account-header {
+    margin-bottom: 30px;
+}
+
+.account-header h1 {
+    margin-bottom: 6px;
+    color: var(--dark);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.account-header p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   PROFIL
+========================================================= */
+
+.account-profile {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+
+    padding: 25px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow: var(--shadow-sm);
+
+    margin-bottom: 25px;
+}
+
+.account-avatar {
+    width: 78px;
+    height: 78px;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+.account-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.account-profile-info h2 {
+    margin-bottom: 4px;
+
+    color: var(--dark);
+
+    font-size: 20px;
+}
+
+.account-profile-info p {
+    margin-bottom: 3px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.account-profile-info i {
+    width: 18px;
+
+    margin-right: 5px;
+
+    color: var(--primary);
+}
+
+.account-edit-button {
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: var(--text);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.account-edit-button:hover {
+    border-color: var(--primary);
+
+    color: var(--primary);
+
+    background: #f0fdfa;
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+.account-stats {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+.account-stat {
+    padding: 20px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.account-stat-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 11px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    flex-shrink: 0;
+}
+
+.account-stat strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: var(--dark);
+
+    font-size: 21px;
+}
+
+.account-stat span {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   BLOCS DU COMPTE
+========================================================= */
+
+.account-section {
+    margin-top: 30px;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.account-section-header {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.account-section-header h2 {
+    color: var(--dark);
+
+    font-size: 19px;
+}
+
+.account-section-header p {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.account-section-link {
+    color: var(--primary);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.account-section-link:hover {
+    color: var(--primary-dark);
+}
+
+
+/* =========================================================
+   MES ANNONCES
+========================================================= */
+
+.account-ads-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.account-ad-card {
+    overflow: hidden;
+
+    background: #fff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    transition: 0.2s ease;
+}
+
+.account-ad-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: var(--shadow);
+
+    border-color: #d1d5db;
+}
+
+.account-ad-image {
+    height: 170px;
+
+    background: #f3f4f6;
+
+    overflow: hidden;
+}
+
+.account-ad-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.account-ad-content {
+    padding: 14px;
+}
+
+.account-ad-content h3 {
+    margin-bottom: 6px;
+
+    color: var(--dark);
+
+    font-size: 15px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.account-ad-price {
+    margin-bottom: 6px;
+
+    color: var(--primary);
+
+    font-size: 16px;
+
+    font-weight: 800;
+}
+
+.account-ad-location {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.account-ad-actions {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.account-ad-actions a,
+.account-ad-actions button {
+    flex: 1;
+
+    min-height: 36px;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.account-ad-edit {
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--text);
+}
+
+.account-ad-edit:hover {
+    border-color: var(--primary);
+
+    color: var(--primary);
+}
+
+.account-ad-delete {
+    border: 1px solid #fecaca;
+
+    background: #fef2f2;
+
+    color: var(--danger);
+}
+
+.account-ad-delete:hover {
+    background: #fee2e2;
+}
+
+
+/* =========================================================
+   FAVORIS
+========================================================= */
+
+.account-favorites-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   ÉTAT VIDE
+========================================================= */
+
+.account-empty {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    border: 1px dashed var(--border);
+
+    border-radius: 14px;
+
+    background: #fafafa;
+}
+
+.account-empty-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 13px;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.account-empty h3 {
+    margin-bottom: 5px;
+
+    color: var(--dark);
+
+    font-size: 16px;
+}
+
+.account-empty p {
+    margin-bottom: 17px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   INFORMATIONS DU COMPTE
+========================================================= */
+
+.account-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+.account-info-item {
+    padding: 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #f9fafb;
+}
+
+.account-info-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.account-info-value {
+    color: var(--dark);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
+
+.account-logout {
+    margin-top: 25px;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: var(--danger);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.account-logout:hover {
+    background: #fef2f2;
+
+    border-color: var(--danger);
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .account-ads-grid,
+    .account-favorites-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .account-header h1 {
+        font-size: 25px;
+    }
+
+    .account-profile {
+        grid-template-columns: auto 1fr;
+
+        padding: 18px;
+
+        gap: 15px;
+    }
+
+    .account-avatar {
+        width: 62px;
+        height: 62px;
+
+        font-size: 24px;
+    }
+
+    .account-profile-info h2 {
+        font-size: 17px;
+    }
+
+    .account-edit-button {
+        grid-column: 1 / -1;
+
+        width: 100%;
+    }
+
+    .account-stats {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .account-stat {
+        padding: 15px;
+    }
+
+    .account-section {
+        padding: 18px;
+
+        border-radius: 15px;
+    }
+
+    .account-section-header {
+        align-items: flex-start;
+    }
+
+    .account-section-header h2 {
+        font-size: 17px;
+    }
+
+    .account-ads-grid,
+    .account-favorites-grid {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .account-ad-image {
+        height: 140px;
+    }
+
+    .account-ad-content {
+        padding: 11px;
+    }
+
+    .account-ad-content h3 {
+        font-size: 13px;
+    }
+
+    .account-ad-price {
+        font-size: 14px;
+    }
+
+    .account-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   PETIT TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .account-profile {
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+    .account-avatar {
+        margin: auto;
+    }
+
+    .account-profile-info {
+        width: 100%;
+    }
+
+    .account-ads-grid,
+    .account-favorites-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .account-ad-image {
+        height: 125px;
+    }
+
+    .account-ad-actions {
+        flex-direction: column;
+    }
+
+    .account-section-header {
+        flex-direction: column;
+    }
+
+}
 }
