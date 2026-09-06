@@ -1,42 +1,716 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>CAMU SERVICES</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CAMU SERVICES — Trouver • Acheter • Réserver</title>
+
+    <meta name="description"
+          content="CAMU SERVICES — Trouvez des produits, véhicules, logements et services près de chez vous.">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icônes -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    <h1>CAMU SERVICES</h1>
-    <input type="text" placeholder="Rechercher une annonce...">
-  </header>
 
-  <nav>
-    <ul>
-      <li>Immobilier</li>
-      <li>Véhicules</li>
-      <li>Services</li>
-      <li>Hôtels & Restaurants</li>
-    </ul>
-  </nav>
+<!-- =========================
+     OVERLAY MOBILE
+========================= -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <section class="annonces">
-    <div class="card">
-      <img src="maison.jpg" alt="Maison">
-      <h2>Maison à vendre</h2>
-      <p>Prix : 50 000 $</p>
-      <button>Contacter</button>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="logo">
+            <span class="logo-main">CAMU</span>
+            <span class="logo-sub">SERVICES</span>
+        </div>
+
+        <button class="sidebar-close" id="sidebarClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
     </div>
-    <div class="card">
-      <img src="voiture.jpg" alt="Voiture">
-      <h2>Voiture Toyota</h2>
-      <p>Prix : 10 000 $</p>
-      <button>Contacter</button>
-    </div>
-  </section>
 
-  <footer>
-    <p>© 2026 CAMU SERVICES - Tous droits réservés</p>
-  </footer>
+
+    <nav class="sidebar-nav">
+
+        <a href="index.html" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="pages/recherche.html" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a href="pages/categories.html" class="nav-item">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Catégories</span>
+        </a>
+
+        <a href="pages/publier.html" class="nav-item">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Publier</span>
+        </a>
+
+        <a href="pages/favoris.html" class="nav-item">
+            <i class="fa-regular fa-heart"></i>
+            <span>Favoris</span>
+        </a>
+
+        <a href="pages/compte.html" class="nav-item">
+            <i class="fa-regular fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+
+        <a href="pages/parametres.html" class="nav-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <a href="pages/connexion.html" class="nav-item">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Connexion</span>
+        </a>
+
+        <a href="#" class="nav-item logout-item" id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================
+     CONTENU PRINCIPAL
+========================= -->
+<div class="main-wrapper">
+
+
+    <!-- =========================
+         TOPBAR
+    ========================= -->
+    <header class="topbar">
+
+        <button class="menu-button" id="menuButton">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+
+        <div class="mobile-logo">
+            <span>CAMU</span>
+            <small>SERVICES</small>
+        </div>
+
+
+        <div class="topbar-right">
+
+            <a href="pages/favoris.html" class="topbar-icon">
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
+            <a href="pages/compte.html" class="profile-button">
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="main-content">
+
+
+        <!-- =========================
+             HERO
+        ========================= -->
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Votre marketplace locale
+                </span>
+
+                <h1>
+                    Trouver.
+                    <span>Acheter.</span>
+                    Réserver.
+                </h1>
+
+                <p>
+                    Découvrez facilement des produits, logements,
+                    véhicules et services près de chez vous.
+                </p>
+
+
+                <!-- SEARCH -->
+                <form class="search-box" id="homeSearchForm">
+
+                    <div class="search-field">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="searchKeyword"
+                            placeholder="Que recherchez-vous ?"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="search-field city-field">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <select id="citySelect">
+
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                            <option value="lubumbashi">
+                                Lubumbashi
+                            </option>
+
+                            <option value="kolwezi">
+                                Kolwezi
+                            </option>
+
+                            <option value="likasi">
+                                Likasi
+                            </option>
+
+                            <option value="fungurume">
+                                Fungurume
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button type="submit" class="search-button">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <span>Rechercher</span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             CATEGORIES
+        ========================= -->
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+                    <span class="section-label">
+                        Explorer
+                    </span>
+
+                    <h2>Catégories</h2>
+                </div>
+
+                <a href="pages/categories.html" class="see-all">
+                    Voir toutes
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <div class="categories-grid">
+
+
+                <a href="pages/recherche.html?category=immobilier"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+
+                    <h3>Immobilier</h3>
+
+                    <p>
+                        Maisons, terrains, appartements...
+                    </p>
+
+                </a>
+
+
+                <a href="pages/recherche.html?category=vehicules"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-car"></i>
+                    </div>
+
+                    <h3>Véhicules</h3>
+
+                    <p>
+                        Voitures, motos et autres...
+                    </p>
+
+                </a>
+
+
+                <a href="pages/recherche.html?category=commerce"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+
+                    <h3>Commerce</h3>
+
+                    <p>
+                        Produits et marchandises...
+                    </p>
+
+                </a>
+
+
+                <a href="pages/recherche.html?category=services"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+
+                    <h3>Services</h3>
+
+                    <p>
+                        Trouvez un professionnel...
+                    </p>
+
+                </a>
+
+
+                <a href="pages/recherche.html?category=emploi"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+
+                    <h3>Emploi</h3>
+
+                    <p>
+                        Offres et opportunités...
+                    </p>
+
+                </a>
+
+
+                <a href="pages/recherche.html?category=autres"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+
+                    <h3>Autres</h3>
+
+                    <p>
+                        Découvrez d'autres annonces...
+                    </p>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             ANNONCES RÉCENTES
+        ========================= -->
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        Découvrez
+                    </span>
+
+                    <h2>Annonces récentes</h2>
+
+                </div>
+
+                <a href="pages/recherche.html" class="see-all">
+
+                    Voir toutes
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="ads-grid" id="recentAds">
+
+
+                <!-- ANNONCE 1 -->
+                <article class="ad-card">
+
+                    <div class="ad-image">
+
+                        <img
+                            src="assets/images/placeholder.jpg"
+                            alt="Maison à vendre"
+                        >
+
+                        <button class="favorite-button"
+                                aria-label="Ajouter aux favoris">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                        <span class="ad-category">
+                            Immobilier
+                        </span>
+
+                    </div>
+
+
+                    <div class="ad-content">
+
+                        <h3>
+                            Belle maison à vendre
+                        </h3>
+
+                        <div class="ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Lubumbashi
+
+                        </div>
+
+                        <div class="ad-price">
+                            85 000 $
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ANNONCE 2 -->
+                <article class="ad-card">
+
+                    <div class="ad-image">
+
+                        <img
+                            src="assets/images/placeholder.jpg"
+                            alt="Véhicule à vendre"
+                        >
+
+                        <button class="favorite-button"
+                                aria-label="Ajouter aux favoris">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                        <span class="ad-category">
+                            Véhicules
+                        </span>
+
+                    </div>
+
+
+                    <div class="ad-content">
+
+                        <h3>
+                            Toyota en bon état
+                        </h3>
+
+                        <div class="ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Kolwezi
+
+                        </div>
+
+                        <div class="ad-price">
+                            18 500 $
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ANNONCE 3 -->
+                <article class="ad-card">
+
+                    <div class="ad-image">
+
+                        <img
+                            src="assets/images/placeholder.jpg"
+                            alt="Téléphone à vendre"
+                        >
+
+                        <button class="favorite-button"
+                                aria-label="Ajouter aux favoris">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                        <span class="ad-category">
+                            Commerce
+                        </span>
+
+                    </div>
+
+
+                    <div class="ad-content">
+
+                        <h3>
+                            Smartphone dernière génération
+                        </h3>
+
+                        <div class="ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Lubumbashi
+
+                        </div>
+
+                        <div class="ad-price">
+                            450 $
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ANNONCE 4 -->
+                <article class="ad-card">
+
+                    <div class="ad-image">
+
+                        <img
+                            src="assets/images/placeholder.jpg"
+                            alt="Service professionnel"
+                        >
+
+                        <button class="favorite-button"
+                                aria-label="Ajouter aux favoris">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+                        <span class="ad-category">
+                            Services
+                        </span>
+
+                    </div>
+
+
+                    <div class="ad-content">
+
+                        <h3>
+                            Service de plomberie
+                        </h3>
+
+                        <div class="ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Likasi
+
+                        </div>
+
+                        <div class="ad-price">
+                            Sur devis
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             CTA PUBLICATION
+        ========================= -->
+        <section class="publish-cta">
+
+            <div class="publish-cta-content">
+
+                <div class="publish-cta-icon">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Vous avez quelque chose à vendre ?
+                    </h2>
+
+                    <p>
+                        Publiez votre annonce gratuitement
+                        sur CAMU SERVICES.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a href="pages/publier.html"
+               class="primary-button">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Publier une annonce
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+    <footer class="footer">
+
+        <div class="footer-content">
+
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <span class="logo-main">
+                        CAMU
+                    </span>
+
+                    <span class="logo-sub">
+                        SERVICES
+                    </span>
+
+                </div>
+
+                <p>
+                    Trouver • Acheter • Réserver
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="pages/a-propos.html">
+                    À propos
+                </a>
+
+                <a href="pages/contact.html">
+                    Contact
+                </a>
+
+                <a href="pages/mentions-legales.html">
+                    Mentions légales
+                </a>
+
+                <a href="pages/cgu.html">
+                    Conditions d'utilisation
+                </a>
+
+                <a href="pages/confidentialite.html">
+                    Confidentialité
+                </a>
+
+                <a href="pages/regles-publication.html">
+                    Règles de publication
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CAMU SERVICES.
+                Tous droits réservés.
+            </p>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+<script src="js/app.js"></script>
+
 </body>
 </html>
