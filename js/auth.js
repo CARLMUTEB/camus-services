@@ -3,8 +3,11 @@
 // AUTHENTIFICATION FIREBASE
 // =====================================================
 
-// Firebase
-import { auth, db } from "./firebase-config.js";
+import {
+    auth,
+    db
+} from "./firebase-config.js";
+
 
 import {
     createUserWithEmailAndPassword,
@@ -15,6 +18,7 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+
 import {
     doc,
     setDoc,
@@ -23,144 +27,187 @@ import {
 
 
 // =====================================================
-// FONCTION : AFFICHER UN MESSAGE
+// MESSAGE
 // =====================================================
 
-function showMessage(elementId, message, type = "error") {
+function showMessage(
+    elementId,
+    message,
+    type = "error"
+) {
 
-    const element = document.getElementById(elementId);
+    const element =
+        document.getElementById(elementId);
+
 
     if (!element) {
+
         console.warn(
-            `Élément #${elementId} introuvable.`
+            "Élément introuvable :",
+            elementId
         );
+
         return;
     }
 
-    element.textContent = message;
 
-    element.className = `auth-message ${type}`;
+    element.textContent =
+        message;
 
-    element.style.display = "block";
+
+    element.className =
+        `auth-message ${type}`;
+
+
+    element.style.display =
+        "block";
 }
 
 
 // =====================================================
-// FONCTION : TRADUIRE LES ERREURS FIREBASE
+// ERREURS FIREBASE
 // =====================================================
 
-function firebaseErrorMessage(error) {
+function getFirebaseErrorMessage(error) {
 
-    console.error("Erreur Firebase :", error);
+    console.error(
+        "Firebase Error:",
+        error
+    );
+
 
     switch (error.code) {
 
         case "auth/invalid-credential":
-            return "E-mail ou mot de passe incorrect.";
 
         case "auth/invalid-login-credentials":
-            return "E-mail ou mot de passe incorrect.";
 
         case "auth/wrong-password":
+
             return "E-mail ou mot de passe incorrect.";
 
+
         case "auth/user-not-found":
+
             return "Aucun compte ne correspond à cette adresse e-mail.";
 
+
         case "auth/invalid-email":
+
             return "L'adresse e-mail n'est pas valide.";
 
+
         case "auth/email-already-in-use":
+
             return "Cette adresse e-mail est déjà utilisée.";
 
+
         case "auth/weak-password":
+
             return "Le mot de passe doit contenir au moins 6 caractères.";
 
+
         case "auth/password-does-not-meet-requirements":
+
             return "Le mot de passe ne respecte pas les exigences de sécurité.";
 
+
         case "auth/network-request-failed":
+
             return "Problème de connexion Internet.";
 
+
         case "auth/too-many-requests":
+
             return "Trop de tentatives. Veuillez patienter quelques minutes.";
 
+
         case "auth/user-disabled":
+
             return "Ce compte a été désactivé.";
 
+
         case "auth/operation-not-allowed":
+
             return "La connexion par e-mail n'est pas activée dans Firebase.";
 
-        case "auth/internal-error":
-            return "Une erreur interne est survenue. Veuillez réessayer.";
 
         default:
-            return error.message ||
-                   "Une erreur est survenue. Veuillez réessayer.";
+
+            return "Une erreur est survenue. Veuillez réessayer.";
     }
 }
 
 
 // =====================================================
-// AFFICHER / MASQUER LE MOT DE PASSE
+// AFFICHER / MASQUER MOT DE PASSE
 // =====================================================
 
-document.addEventListener("click", (event) => {
+document.addEventListener(
+    "click",
+    function (event) {
 
-    const button =
-        event.target.closest(".password-toggle");
-
-    if (!button) return;
-
-    const targetId =
-        button.dataset.target;
-
-    if (!targetId) return;
-
-    const input =
-        document.getElementById(targetId);
-
-    if (!input) return;
+        const button =
+            event.target.closest(
+                ".password-toggle"
+            );
 
 
-    if (input.type === "password") {
+        if (!button) return;
 
-        input.type = "text";
+
+        const target =
+            button.dataset.target;
+
+
+        const input =
+            document.getElementById(target);
+
+
+        if (!input) return;
+
 
         const icon =
             button.querySelector("i");
 
-        if (icon) {
 
-            icon.classList.remove(
-                "fa-eye"
-            );
+        if (input.type === "password") {
 
-            icon.classList.add(
-                "fa-eye-slash"
-            );
+            input.type =
+                "text";
+
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "fa-eye"
+                );
+
+                icon.classList.add(
+                    "fa-eye-slash"
+                );
+            }
+
+        } else {
+
+            input.type =
+                "password";
+
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "fa-eye-slash"
+                );
+
+                icon.classList.add(
+                    "fa-eye"
+                );
+            }
         }
 
-    } else {
-
-        input.type = "password";
-
-        const icon =
-            button.querySelector("i");
-
-        if (icon) {
-
-            icon.classList.remove(
-                "fa-eye-slash"
-            );
-
-            icon.classList.add(
-                "fa-eye"
-            );
-        }
     }
-
-});
+);
 
 
 // =====================================================
@@ -168,57 +215,71 @@ document.addEventListener("click", (event) => {
 // =====================================================
 
 const registerForm =
-    document.getElementById("registerForm");
+    document.getElementById(
+        "registerForm"
+    );
 
 
 if (registerForm) {
 
     registerForm.addEventListener(
         "submit",
-        async (event) => {
+        async function (event) {
 
             event.preventDefault();
 
 
-            // -------------------------------------------------
-            // RÉCUPÉRATION DES CHAMPS
-            // -------------------------------------------------
-
             const name =
                 document
-                    .getElementById("registerName")
+                    .getElementById(
+                        "registerName"
+                    )
                     ?.value
                     .trim();
 
+
             const email =
                 document
-                    .getElementById("registerEmail")
+                    .getElementById(
+                        "registerEmail"
+                    )
                     ?.value
                     .trim()
                     .toLowerCase();
 
+
             const phone =
                 document
-                    .getElementById("registerPhone")
+                    .getElementById(
+                        "registerPhone"
+                    )
                     ?.value
                     .trim();
 
+
             const password =
                 document
-                    .getElementById("registerPassword")
+                    .getElementById(
+                        "registerPassword"
+                    )
                     ?.value;
+
 
             const passwordConfirm =
                 document
-                    .getElementById("registerPasswordConfirm")
+                    .getElementById(
+                        "registerPasswordConfirm"
+                    )
                     ?.value;
 
-            // IMPORTANT :
-            // ton HTML utilise registerTerms
+
             const terms =
                 document
-                    .getElementById("registerTerms")
+                    .getElementById(
+                        "registerTerms"
+                    )
                     ?.checked;
+
 
             const button =
                 document.getElementById(
@@ -226,9 +287,9 @@ if (registerForm) {
                 );
 
 
-            // -------------------------------------------------
+            // ---------------------------------------------
             // VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (
                 !name ||
@@ -276,7 +337,7 @@ if (registerForm) {
 
                 showMessage(
                     "registerMessage",
-                    "Veuillez accepter les conditions d'utilisation et la politique de confidentialité.",
+                    "Veuillez accepter les conditions d'utilisation.",
                     "error"
                 );
 
@@ -284,13 +345,14 @@ if (registerForm) {
             }
 
 
-            // -------------------------------------------------
-            // BOUTON : CHARGEMENT
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // CHARGEMENT
+            // ---------------------------------------------
 
             if (button) {
 
-                button.disabled = true;
+                button.disabled =
+                    true;
 
                 button.innerHTML = `
                     <i class="fa-solid fa-spinner fa-spin"></i>
@@ -301,14 +363,9 @@ if (registerForm) {
 
             try {
 
-                console.log(
-                    "Création du compte Firebase..."
-                );
-
-
-                // -------------------------------------------------
-                // CRÉER LE COMPTE FIREBASE
-                // -------------------------------------------------
+                // -----------------------------------------
+                // CRÉATION FIREBASE
+                // -----------------------------------------
 
                 const userCredential =
                     await createUserWithEmailAndPassword(
@@ -322,27 +379,22 @@ if (registerForm) {
                     userCredential.user;
 
 
-                console.log(
-                    "Compte Firebase créé :",
-                    user.uid
-                );
-
-
-                // -------------------------------------------------
-                // AJOUTER LE NOM
-                // -------------------------------------------------
+                // -----------------------------------------
+                // NOM UTILISATEUR
+                // -----------------------------------------
 
                 await updateProfile(
                     user,
                     {
-                        displayName: name
+                        displayName:
+                            name
                     }
                 );
 
 
-                // -------------------------------------------------
-                // CRÉER LE PROFIL FIRESTORE
-                // -------------------------------------------------
+                // -----------------------------------------
+                // FIRESTORE
+                // -----------------------------------------
 
                 await setDoc(
                     doc(
@@ -351,26 +403,36 @@ if (registerForm) {
                         user.uid
                     ),
                     {
-                        uid: user.uid,
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        photoURL: "",
-                        role: "user",
-                        status: "active",
-                        createdAt: serverTimestamp()
+                        uid:
+                            user.uid,
+
+                        name:
+                            name,
+
+                        email:
+                            email,
+
+                        phone:
+                            phone,
+
+                        photoURL:
+                            "",
+
+                        role:
+                            "user",
+
+                        status:
+                            "active",
+
+                        createdAt:
+                            serverTimestamp()
                     }
                 );
 
 
-                console.log(
-                    "Profil Firestore créé."
-                );
-
-
-                // -------------------------------------------------
+                // -----------------------------------------
                 // SUCCÈS
-                // -------------------------------------------------
+                // -----------------------------------------
 
                 showMessage(
                     "registerMessage",
@@ -379,12 +441,8 @@ if (registerForm) {
                 );
 
 
-                // -------------------------------------------------
-                // REDIRECTION
-                // -------------------------------------------------
-
                 setTimeout(
-                    () => {
+                    function () {
 
                         window.location.href =
                             "compte.html";
@@ -398,22 +456,22 @@ if (registerForm) {
 
                 showMessage(
                     "registerMessage",
-                    firebaseErrorMessage(error),
+                    getFirebaseErrorMessage(error),
                     "error"
                 );
 
 
-                // Réactiver le bouton
-
                 if (button) {
 
-                    button.disabled = false;
+                    button.disabled =
+                        false;
 
                     button.innerHTML = `
                         <i class="fa-solid fa-user-plus"></i>
                         Créer mon compte
                     `;
                 }
+
             }
 
         }
@@ -426,33 +484,42 @@ if (registerForm) {
 // =====================================================
 
 const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+        "loginForm"
+    );
 
 
 if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        async (event) => {
+        async function (event) {
 
             event.preventDefault();
 
 
-            // -------------------------------------------------
-            // RÉCUPÉRER LES INFORMATIONS
-            // -------------------------------------------------
+            console.log(
+                "CAMU SERVICES : formulaire de connexion envoyé."
+            );
+
 
             const email =
                 document
-                    .getElementById("loginEmail")
+                    .getElementById(
+                        "loginEmail"
+                    )
                     ?.value
                     .trim()
                     .toLowerCase();
 
+
             const password =
                 document
-                    .getElementById("loginPassword")
+                    .getElementById(
+                        "loginPassword"
+                    )
                     ?.value;
+
 
             const button =
                 document.getElementById(
@@ -460,9 +527,9 @@ if (loginForm) {
                 );
 
 
-            // -------------------------------------------------
+            // ---------------------------------------------
             // VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (!email || !password) {
 
@@ -476,17 +543,18 @@ if (loginForm) {
             }
 
 
-            // -------------------------------------------------
+            // ---------------------------------------------
             // CHARGEMENT
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (button) {
 
-                button.disabled = true;
+                button.disabled =
+                    true;
 
                 button.innerHTML = `
                     <i class="fa-solid fa-spinner fa-spin"></i>
-                    Connexion...
+                    <span>Connexion...</span>
                 `;
             }
 
@@ -494,13 +562,13 @@ if (loginForm) {
             try {
 
                 console.log(
-                    "Tentative de connexion Firebase..."
+                    "Connexion Firebase en cours..."
                 );
 
 
-                // -------------------------------------------------
-                // CONNEXION FIREBASE
-                // -------------------------------------------------
+                // -----------------------------------------
+                // CONNEXION
+                // -----------------------------------------
 
                 const userCredential =
                     await signInWithEmailAndPassword(
@@ -520,9 +588,9 @@ if (loginForm) {
                 );
 
 
-                // -------------------------------------------------
+                // -----------------------------------------
                 // MESSAGE
-                // -------------------------------------------------
+                // -----------------------------------------
 
                 showMessage(
                     "loginMessage",
@@ -531,12 +599,12 @@ if (loginForm) {
                 );
 
 
-                // -------------------------------------------------
+                // -----------------------------------------
                 // REDIRECTION
-                // -------------------------------------------------
+                // -----------------------------------------
 
                 setTimeout(
-                    () => {
+                    function () {
 
                         window.location.href =
                             "compte.html";
@@ -548,28 +616,21 @@ if (loginForm) {
 
             } catch (error) {
 
-                console.error(
-                    "Échec de connexion :",
-                    error
-                );
-
-
                 showMessage(
                     "loginMessage",
-                    firebaseErrorMessage(error),
+                    getFirebaseErrorMessage(error),
                     "error"
                 );
 
 
-                // Réactiver le bouton
-
                 if (button) {
 
-                    button.disabled = false;
+                    button.disabled =
+                        false;
 
                     button.innerHTML = `
                         <i class="fa-solid fa-right-to-bracket"></i>
-                        Se connecter
+                        <span>Se connecter</span>
                     `;
                 }
 
@@ -594,7 +655,7 @@ if (forgotPassword) {
 
     forgotPassword.addEventListener(
         "click",
-        async (event) => {
+        async function (event) {
 
             event.preventDefault();
 
@@ -611,10 +672,6 @@ if (forgotPassword) {
                     .trim()
                     .toLowerCase();
 
-
-            // -------------------------------------------------
-            // VÉRIFICATION EMAIL
-            // -------------------------------------------------
 
             if (!email) {
 
@@ -649,7 +706,7 @@ if (forgotPassword) {
 
                 showMessage(
                     "loginMessage",
-                    firebaseErrorMessage(error),
+                    getFirebaseErrorMessage(error),
                     "error"
                 );
 
@@ -664,71 +721,35 @@ if (forgotPassword) {
 // DÉCONNEXION
 // =====================================================
 
-const logoutButtons =
-    document.querySelectorAll(
-        "#logoutButton, .logout-button, [data-action='logout']"
-    );
+document.addEventListener(
+    "click",
+    async function (event) {
 
-
-logoutButtons.forEach(
-    (button) => {
-
-        button.addEventListener(
-            "click",
-            async (event) => {
-
-                event.preventDefault();
-
-
-                try {
-
-                    await signOut(auth);
-
-
-                    console.log(
-                        "Utilisateur déconnecté."
-                    );
-
-
-                    window.location.href =
-                        "index.html";
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Erreur lors de la déconnexion :",
-                        error
-                    );
-
-                }
-
-            }
-        );
-
-    }
-);
-
-
-// =====================================================
-// SURVEILLER L'ÉTAT DE CONNEXION
-// =====================================================
-
-onAuthStateChanged(
-    auth,
-    (user) => {
-
-        if (user) {
-
-            console.log(
-                "Utilisateur actuellement connecté :",
-                user.email
+        const button =
+            event.target.closest(
+                "#logoutButton, .logout-button, [data-action='logout']"
             );
 
-        } else {
 
-            console.log(
-                "Aucun utilisateur connecté."
+        if (!button) return;
+
+
+        event.preventDefault();
+
+
+        try {
+
+            await signOut(auth);
+
+            window.location.href =
+                "index.html";
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur de déconnexion :",
+                error
             );
         }
 
@@ -737,7 +758,33 @@ onAuthStateChanged(
 
 
 // =====================================================
-// TEST DE CHARGEMENT
+// ÉTAT DE CONNEXION
+// =====================================================
+
+onAuthStateChanged(
+    auth,
+    function (user) {
+
+        if (user) {
+
+            console.log(
+                "CAMU SERVICES : utilisateur connecté.",
+                user.email
+            );
+
+        } else {
+
+            console.log(
+                "CAMU SERVICES : aucun utilisateur connecté."
+            );
+        }
+
+    }
+);
+
+
+// =====================================================
+// CONFIRMATION DU CHARGEMENT
 // =====================================================
 
 console.log(
