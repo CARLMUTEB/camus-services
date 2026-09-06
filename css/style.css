@@ -1779,3 +1779,635 @@ textarea:focus-visible {
 .mb-20 {
     margin-bottom: 20px;
 }
+/* =========================================================
+   CAMU SERVICES — PAGE PUBLIER V2
+========================================================= */
+
+.publish-v2 {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.publish-hero {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.publish-hero-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-color, #16a34a);
+    color: #fff;
+
+    font-size: 25px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.publish-hero h1 {
+    margin: 5px 0 6px;
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.publish-hero p {
+    margin: 0;
+    color: var(--text-muted, #6b7280);
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ÉTAPES
+========================================================= */
+
+.publish-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    margin-bottom: 28px;
+}
+
+.publish-step {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 14px;
+
+    background: var(--card-bg, #fff);
+}
+
+.publish-step > span {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f3f4f6;
+    color: #6b7280;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.publish-step strong,
+.publish-step small {
+    display: block;
+}
+
+.publish-step strong {
+    font-size: 13px;
+}
+
+.publish-step small {
+    margin-top: 2px;
+    color: #8a8f98;
+    font-size: 11px;
+}
+
+.publish-step.active {
+    border-color: var(--primary-color, #16a34a);
+}
+
+.publish-step.active > span {
+    background: var(--primary-color, #16a34a);
+    color: #fff;
+}
+
+
+/* =========================================================
+   CARTES
+========================================================= */
+
+.publish-v2-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.publish-card {
+    background: #fff;
+
+    border: 1px solid #e7e9ed;
+    border-radius: 20px;
+
+    padding: 28px;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, .045);
+}
+
+.publish-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.publish-number {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #f0fdf4;
+    color: var(--primary-color, #16a34a);
+
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.publish-card-header h2 {
+    margin: 0 0 5px;
+
+    font-size: 19px;
+}
+
+.publish-card-header p {
+    margin: 0;
+
+    color: #7a808a;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   UPLOAD PHOTOS
+========================================================= */
+
+.publish-upload-zone {
+    min-height: 190px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    border: 2px dashed #d7dce2;
+    border-radius: 16px;
+
+    background: #fafbfc;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+.publish-upload-zone:hover {
+    border-color: var(--primary-color, #16a34a);
+    background: #f7fdf9;
+}
+
+.publish-upload-icon {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background: #eefbf2;
+    color: var(--primary-color, #16a34a);
+
+    font-size: 22px;
+}
+
+.publish-upload-zone strong {
+    font-size: 15px;
+}
+
+.publish-upload-zone span {
+    margin-top: 5px;
+
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.publish-upload-zone small {
+    margin-top: 9px;
+
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   APERÇU PHOTOS
+========================================================= */
+
+.publish-photo-preview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.photo-preview-item {
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #f3f4f6;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.publish-field {
+    margin-bottom: 20px;
+}
+
+.publish-field:last-child {
+    margin-bottom: 0;
+}
+
+.publish-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.publish-field label span {
+    color: #dc2626;
+}
+
+.publish-field input,
+.publish-field select,
+.publish-field textarea {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #dfe3e8;
+    border-radius: 11px;
+
+    background: #fff;
+
+    color: #20242a;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition: border-color .2s ease,
+                box-shadow .2s ease;
+}
+
+.publish-field input:focus,
+.publish-field select:focus,
+.publish-field textarea:focus {
+    border-color: var(--primary-color, #16a34a);
+
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, .09);
+}
+
+.publish-field textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.publish-field > small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #969ca5;
+    font-size: 11px;
+}
+
+.publish-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.publish-field-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-top: 6px;
+
+    color: #969ca5;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+.publish-whatsapp-box {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 20px;
+    padding: 14px 16px;
+
+    border-radius: 13px;
+
+    background: #f6fbf7;
+}
+
+.publish-whatsapp-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e8f7ec;
+    color: #16a34a;
+
+    font-size: 21px;
+}
+
+.publish-whatsapp-box strong,
+.publish-whatsapp-box span {
+    display: block;
+}
+
+.publish-whatsapp-box strong {
+    font-size: 13px;
+}
+
+.publish-whatsapp-box span {
+    margin-top: 3px;
+
+    color: #777e88;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CONDITIONS
+========================================================= */
+
+.publish-terms-card {
+    padding: 18px 20px;
+
+    border: 1px solid #e6e9ed;
+    border-radius: 15px;
+
+    background: #fff;
+}
+
+.publish-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    cursor: pointer;
+}
+
+.publish-checkbox input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.publish-checkmark {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ccd2d9;
+    border-radius: 5px;
+
+    color: transparent;
+
+    transition: all .2s ease;
+}
+
+.publish-checkbox input:checked + .publish-checkmark {
+    background: var(--primary-color, #16a34a);
+    border-color: var(--primary-color, #16a34a);
+    color: #fff;
+}
+
+.publish-checkmark i {
+    font-size: 11px;
+}
+
+.publish-terms-text {
+    color: #606772;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.publish-terms-text a {
+    color: var(--primary-color, #16a34a);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.publish-v2-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 5px;
+}
+
+.publish-submit {
+    min-width: 210px;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .publish-v2 {
+        max-width: 100%;
+    }
+
+    .publish-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .publish-v2 {
+        padding-bottom: 35px;
+    }
+
+    .publish-hero {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .publish-hero-icon {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+
+        border-radius: 14px;
+
+        font-size: 20px;
+    }
+
+    .publish-hero h1 {
+        font-size: 25px;
+    }
+
+    .publish-hero p {
+        font-size: 13px;
+    }
+
+    .publish-steps {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .publish-step {
+        padding: 11px 12px;
+    }
+
+    .publish-card {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .publish-card-header {
+        margin-bottom: 20px;
+    }
+
+    .publish-card-header h2 {
+        font-size: 17px;
+    }
+
+    .publish-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .publish-v2-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .publish-v2-actions .primary-button,
+    .publish-v2-actions .secondary-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .publish-submit {
+        min-width: 0;
+    }
+
+}
+
+
+/* =========================================================
+   PETIT TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .publish-hero h1 {
+        font-size: 22px;
+    }
+
+    .publish-card {
+        padding: 17px 13px;
+    }
+
+    .publish-upload-zone {
+        min-height: 165px;
+        padding: 18px;
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
