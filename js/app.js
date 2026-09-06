@@ -1,7 +1,16 @@
+```javascript
 /* =========================================================
    CAMU SERVICES — APP.JS V1
-   Interactions générales
+   Interactions générales + Firebase Auth
 ========================================================= */
+
+import { auth } from "./firebase-config.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -9,16 +18,111 @@ document.addEventListener("DOMContentLoaded", () => {
        ÉLÉMENTS
     ===================================================== */
 
-    const menuButton = document.getElementById("menuButton");
-    const sidebar = document.getElementById("sidebar");
-    const sidebarClose = document.getElementById("sidebarClose");
-    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const menuButton =
+        document.getElementById("menuButton");
 
-    const homeSearchForm = document.getElementById("homeSearchForm");
-    const searchKeyword = document.getElementById("searchKeyword");
-    const citySelect = document.getElementById("citySelect");
+    const sidebar =
+        document.getElementById("sidebar");
 
-    const logoutBtn = document.getElementById("logoutBtn");
+    const sidebarClose =
+        document.getElementById("sidebarClose");
+
+    const sidebarOverlay =
+        document.getElementById("sidebarOverlay");
+
+    const homeSearchForm =
+        document.getElementById("homeSearchForm");
+
+    const searchKeyword =
+        document.getElementById("searchKeyword");
+
+    const citySelect =
+        document.getElementById("citySelect");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+    const accountLinks =
+        document.querySelectorAll(
+            'a[href="compte.html"], #accountLink'
+        );
+
+
+    /* =====================================================
+       AUTHENTIFICATION FIREBASE
+    ===================================================== */
+
+    let currentUser = null;
+
+
+    onAuthStateChanged(auth, (user) => {
+
+        currentUser = user;
+
+
+        /* -----------------------------------------------
+           UTILISATEUR CONNECTÉ
+        ------------------------------------------------ */
+
+        if (user) {
+
+            console.log(
+                "Utilisateur connecté :",
+                user.email
+            );
+
+
+            /* Mon compte → compte.html */
+
+            accountLinks.forEach(link => {
+
+                link.href = "compte.html";
+
+            });
+
+
+            /* Afficher / activer Déconnexion */
+
+            if (logoutBtn) {
+
+                logoutBtn.style.display = "";
+
+            }
+
+        }
+
+
+        /* -----------------------------------------------
+           UTILISATEUR NON CONNECTÉ
+        ------------------------------------------------ */
+
+        else {
+
+            console.log(
+                "Aucun utilisateur connecté."
+            );
+
+
+            /* Mon compte → connexion.html */
+
+            accountLinks.forEach(link => {
+
+                link.href = "connexion.html";
+
+            });
+
+
+            /* Déconnexion */
+
+            if (logoutBtn) {
+
+                logoutBtn.style.display = "none";
+
+            }
+
+        }
+
+    });
 
 
     /* =====================================================
@@ -26,56 +130,93 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     function openSidebar() {
+
         if (!sidebar) return;
+
 
         sidebar.classList.add("open");
 
+
         if (sidebarOverlay) {
+
             sidebarOverlay.classList.add("active");
+
         }
 
-        document.body.style.overflow = "hidden";
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
     function closeSidebar() {
+
         if (!sidebar) return;
+
 
         sidebar.classList.remove("open");
 
+
         if (sidebarOverlay) {
+
             sidebarOverlay.classList.remove("active");
+
         }
 
-        document.body.style.overflow = "";
+
+        document.body.style.overflow =
+            "";
+
     }
 
 
     if (menuButton) {
-        menuButton.addEventListener("click", openSidebar);
+
+        menuButton.addEventListener(
+            "click",
+            openSidebar
+        );
+
     }
 
 
     if (sidebarClose) {
-        sidebarClose.addEventListener("click", closeSidebar);
+
+        sidebarClose.addEventListener(
+            "click",
+            closeSidebar
+        );
+
     }
 
 
     if (sidebarOverlay) {
-        sidebarOverlay.addEventListener("click", closeSidebar);
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
     }
 
 
     /* Fermer le menu après avoir cliqué sur un lien */
 
-    const navLinks = document.querySelectorAll(".sidebar .nav-item");
+    const navLinks =
+        document.querySelectorAll(
+            ".sidebar .nav-item"
+        );
+
 
     navLinks.forEach(link => {
 
         link.addEventListener("click", () => {
 
             if (window.innerWidth <= 700) {
+
                 closeSidebar();
+
             }
 
         });
@@ -83,15 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* Fermer avec la touche ESC */
+    /* Fermer avec ESC */
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        if (event.key === "Escape") {
-            closeSidebar();
+            if (event.key === "Escape") {
+
+                closeSidebar();
+
+            }
+
         }
-
-    });
+    );
 
 
     /* =====================================================
@@ -100,48 +246,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (homeSearchForm) {
 
-        homeSearchForm.addEventListener("submit", event => {
+        homeSearchForm.addEventListener(
+            "submit",
+            event => {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            const keyword =
-                searchKeyword?.value.trim() || "";
 
-            const city =
-                citySelect?.value || "";
+                const keyword =
+                    searchKeyword?.value.trim() || "";
 
-            /*
-             * On construit l'URL de recherche.
-             * La vraie recherche Firestore sera ajoutée plus tard.
-             */
 
-            const params = new URLSearchParams();
+                const city =
+                    citySelect?.value || "";
 
-            if (keyword) {
-                params.set("q", keyword);
+
+                const params =
+                    new URLSearchParams();
+
+
+                if (keyword) {
+
+                    params.set(
+                        "q",
+                        keyword
+                    );
+
+                }
+
+
+                if (city) {
+
+                    params.set(
+                        "city",
+                        city
+                    );
+
+                }
+
+
+                const queryString =
+                    params.toString();
+
+
+                /*
+                 * IMPORTANT :
+                 * recherche.html est à la racine.
+                 */
+
+                if (queryString) {
+
+                    window.location.href =
+                        `recherche.html?${queryString}`;
+
+                }
+
+                else {
+
+                    window.location.href =
+                        "recherche.html";
+
+                }
+
             }
-
-            if (city) {
-                params.set("city", city);
-            }
-
-
-            const queryString = params.toString();
-
-
-            if (queryString) {
-
-                window.location.href =
-                    `pages/recherche.html?${queryString}`;
-
-            } else {
-
-                window.location.href =
-                    "pages/recherche.html";
-
-            }
-
-        });
+        );
 
     }
 
@@ -151,7 +319,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const favoriteButtons =
-        document.querySelectorAll(".favorite-button");
+        document.querySelectorAll(
+            ".favorite-button"
+        );
 
 
     function getFavorites() {
@@ -159,10 +329,14 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             return JSON.parse(
-                localStorage.getItem("camu_favorites")
+                localStorage.getItem(
+                    "camu_favorites"
+                )
             ) || [];
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "Erreur lors de la lecture des favoris :",
@@ -186,79 +360,105 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    favoriteButtons.forEach((button, index) => {
+    favoriteButtons.forEach(
+        (button, index) => {
 
-        button.addEventListener("click", event => {
+            button.addEventListener(
+                "click",
+                event => {
 
-            event.preventDefault();
-            event.stopPropagation();
+                    event.preventDefault();
 
-
-            let favorites = getFavorites();
-
-            const favoriteId =
-                `demo-ad-${index + 1}`;
+                    event.stopPropagation();
 
 
-            const existingIndex =
-                favorites.indexOf(favoriteId);
+                    let favorites =
+                        getFavorites();
 
 
-            if (existingIndex === -1) {
+                    const favoriteId =
+                        `demo-ad-${index + 1}`;
 
-                favorites.push(favoriteId);
 
-                button.classList.add("is-favorite");
+                    const existingIndex =
+                        favorites.indexOf(
+                            favoriteId
+                        );
 
-                const icon =
-                    button.querySelector("i");
 
-                if (icon) {
+                    if (existingIndex === -1) {
 
-                    icon.classList.remove(
-                        "fa-regular"
-                    );
+                        favorites.push(
+                            favoriteId
+                        );
 
-                    icon.classList.add(
-                        "fa-solid"
+
+                        button.classList.add(
+                            "is-favorite"
+                        );
+
+
+                        const icon =
+                            button.querySelector("i");
+
+
+                        if (icon) {
+
+                            icon.classList.remove(
+                                "fa-regular"
+                            );
+
+
+                            icon.classList.add(
+                                "fa-solid"
+                            );
+
+                        }
+
+                    }
+
+                    else {
+
+                        favorites.splice(
+                            existingIndex,
+                            1
+                        );
+
+
+                        button.classList.remove(
+                            "is-favorite"
+                        );
+
+
+                        const icon =
+                            button.querySelector("i");
+
+
+                        if (icon) {
+
+                            icon.classList.remove(
+                                "fa-solid"
+                            );
+
+
+                            icon.classList.add(
+                                "fa-regular"
+                            );
+
+                        }
+
+                    }
+
+
+                    saveFavorites(
+                        favorites
                     );
 
                 }
+            );
 
-            } else {
-
-                favorites.splice(
-                    existingIndex,
-                    1
-                );
-
-                button.classList.remove(
-                    "is-favorite"
-                );
-
-                const icon =
-                    button.querySelector("i");
-
-                if (icon) {
-
-                    icon.classList.remove(
-                        "fa-solid"
-                    );
-
-                    icon.classList.add(
-                        "fa-regular"
-                    );
-
-                }
-
-            }
-
-
-            saveFavorites(favorites);
-
-        });
-
-    });
+        }
+    );
 
 
     /* =====================================================
@@ -269,81 +469,134 @@ document.addEventListener("DOMContentLoaded", () => {
         getFavorites();
 
 
-    favoriteButtons.forEach((button, index) => {
+    favoriteButtons.forEach(
+        (button, index) => {
 
-        const favoriteId =
-            `demo-ad-${index + 1}`;
-
-
-        if (savedFavorites.includes(favoriteId)) {
-
-            button.classList.add(
-                "is-favorite"
-            );
+            const favoriteId =
+                `demo-ad-${index + 1}`;
 
 
-            const icon =
-                button.querySelector("i");
+            if (
+                savedFavorites.includes(
+                    favoriteId
+                )
+            ) {
 
-
-            if (icon) {
-
-                icon.classList.remove(
-                    "fa-regular"
+                button.classList.add(
+                    "is-favorite"
                 );
 
-                icon.classList.add(
-                    "fa-solid"
-                );
+
+                const icon =
+                    button.querySelector("i");
+
+
+                if (icon) {
+
+                    icon.classList.remove(
+                        "fa-regular"
+                    );
+
+
+                    icon.classList.add(
+                        "fa-solid"
+                    );
+
+                }
 
             }
 
         }
-
-    });
+    );
 
 
     /* =====================================================
-       DÉCONNEXION — VERSION TEMPORAIRE
+       DÉCONNEXION — FIREBASE
     ===================================================== */
 
     if (logoutBtn) {
 
-        logoutBtn.addEventListener("click", event => {
+        logoutBtn.addEventListener(
+            "click",
+            async event => {
 
-            event.preventDefault();
-
-
-            /*
-             * Pour le moment, aucune authentification
-             * Firebase n'est encore connectée.
-             */
-
-            const confirmLogout =
-                confirm(
-                    "Voulez-vous vraiment vous déconnecter ?"
-                );
+                event.preventDefault();
 
 
-            if (!confirmLogout) {
-                return;
+                if (!currentUser) {
+
+                    window.location.href =
+                        "connexion.html";
+
+                    return;
+
+                }
+
+
+                const confirmLogout =
+                    confirm(
+                        "Voulez-vous vraiment vous déconnecter ?"
+                    );
+
+
+                if (!confirmLogout) {
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await signOut(auth);
+
+
+                    if (
+                        typeof window.showCamuMessage ===
+                        "function"
+                    ) {
+
+                        window.showCamuMessage(
+                            "Vous êtes déconnecté.",
+                            "success"
+                        );
+
+                    }
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "index.html";
+
+                    }, 700);
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Erreur de déconnexion :",
+                        error
+                    );
+
+
+                    if (
+                        typeof window.showCamuMessage ===
+                        "function"
+                    ) {
+
+                        window.showCamuMessage(
+                            "Impossible de vous déconnecter.",
+                            "error"
+                        );
+
+                    }
+
+                }
+
             }
-
-
-            /*
-             * Nettoyage temporaire.
-             * Firebase Auth prendra le relais plus tard.
-             */
-
-            localStorage.removeItem(
-                "camu_user"
-            );
-
-
-            window.location.href =
-                "index.html";
-
-        });
+        );
 
     }
 
@@ -358,71 +611,78 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-    cards.forEach((card, index) => {
+    cards.forEach(
+        (card, index) => {
 
-        card.style.animation =
-            `fadeIn 0.35s ease ${index * 0.04}s both`;
+            card.style.animation =
+                `fadeIn 0.35s ease ${index * 0.04}s both`;
 
-    });
+        }
+    );
 
 
     /* =====================================================
-       UTILITAIRE : NOTIFICATION
+       NOTIFICATION CAMU
     ===================================================== */
 
-    window.showCamuMessage = function (
-        message,
-        type = "success"
-    ) {
+    window.showCamuMessage =
+        function (
+            message,
+            type = "success"
+        ) {
 
-        const existing =
-            document.querySelector(
-                ".camu-message"
-            );
-
-
-        if (existing) {
-            existing.remove();
-        }
+            const existing =
+                document.querySelector(
+                    ".camu-message"
+                );
 
 
-        const notification =
-            document.createElement("div");
+            if (existing) {
+
+                existing.remove();
+
+            }
 
 
-        notification.className =
-            `camu-message camu-message-${type}`;
+            const notification =
+                document.createElement(
+                    "div"
+                );
 
 
-        notification.textContent =
-            message;
+            notification.className =
+                `camu-message camu-message-${type}`;
 
 
-        document.body.appendChild(
-            notification
-        );
+            notification.textContent =
+                message;
 
 
-        setTimeout(() => {
-
-            notification.classList.add(
-                "hide"
+            document.body.appendChild(
+                notification
             );
 
 
             setTimeout(() => {
 
-                notification.remove();
+                notification.classList.add(
+                    "hide"
+                );
 
-            }, 300);
 
-        }, 3000);
+                setTimeout(() => {
 
-    };
+                    notification.remove();
+
+                }, 300);
+
+            }, 3000);
+
+        };
 
 
     /* =====================================================
-       VÉRIFICATION DE LA PAGE
+       FIN
     ===================================================== */
 
     console.log(
