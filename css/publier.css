@@ -1,0 +1,1033 @@
+/* =========================================================
+   CAMU SERVICES — PAGE PUBLIER
+   CSS SPÉCIFIQUE À publier.html
+========================================================= */
+
+
+/* =========================================================
+   CONTENEUR PRINCIPAL
+========================================================= */
+
+.publish-v2 {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.publish-hero {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.publish-hero-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: var(--primary);
+    color: #fff;
+
+    font-size: 25px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.publish-hero .section-label {
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.publish-hero h1 {
+    margin: 5px 0 6px;
+    color: var(--dark);
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 900;
+}
+
+.publish-hero p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ÉTAPES
+========================================================= */
+
+.publish-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.publish-step {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: var(--white);
+
+    transition: .2s ease;
+}
+
+.publish-step > span {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f3f4f6;
+    color: #6b7280;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.publish-step strong,
+.publish-step small {
+    display: block;
+}
+
+.publish-step strong {
+    color: var(--dark);
+    font-size: 13px;
+}
+
+.publish-step small {
+    margin-top: 2px;
+    color: #8a8f98;
+    font-size: 11px;
+}
+
+.publish-step.active {
+    border-color: var(--primary);
+}
+
+.publish-step.active > span {
+    background: var(--primary);
+    color: #fff;
+}
+
+
+/* =========================================================
+   FORMULAIRE
+========================================================= */
+
+.publish-v2-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   CARTES
+========================================================= */
+
+.publish-card {
+    width: 100%;
+
+    padding: 28px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow: 0 6px 25px rgba(0, 0, 0, .045);
+}
+
+.publish-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.publish-number {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.publish-card-header h2 {
+    margin: 0 0 5px;
+
+    color: var(--dark);
+
+    font-size: 19px;
+    line-height: 1.3;
+}
+
+.publish-card-header p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ZONE PHOTOS
+========================================================= */
+
+.publish-upload-zone {
+    min-height: 190px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    border: 2px dashed #d7dce2;
+    border-radius: 16px;
+
+    background: #fafbfc;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+.publish-upload-zone:hover {
+    border-color: var(--primary);
+    background: #f7fdf9;
+}
+
+.publish-upload-zone:focus-within {
+    border-color: var(--primary);
+}
+
+.publish-upload-icon {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 22px;
+}
+
+.publish-upload-zone strong {
+    color: var(--dark);
+    font-size: 15px;
+}
+
+.publish-upload-zone span {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    text-align: center;
+}
+
+.publish-upload-zone small {
+    margin-top: 9px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   APERÇU PHOTOS
+========================================================= */
+
+.publish-photo-preview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.photo-preview-item {
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #f3f4f6;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.publish-field {
+    margin-bottom: 20px;
+}
+
+.publish-field:last-child {
+    margin-bottom: 0;
+}
+
+.publish-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--dark);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.publish-field label span {
+    color: var(--danger);
+}
+
+.publish-field input,
+.publish-field select,
+.publish-field textarea {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: var(--white);
+
+    color: var(--dark);
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.publish-field input {
+    min-height: 47px;
+}
+
+.publish-field select {
+    min-height: 47px;
+}
+
+.publish-field input:focus,
+.publish-field select:focus,
+.publish-field textarea:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, .09);
+}
+
+.publish-field textarea {
+    min-height: 150px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+.publish-field > small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #969ca5;
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   GRILLE DEUX COLONNES
+========================================================= */
+
+.publish-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.publish-field-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-top: 6px;
+
+    color: #969ca5;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+.publish-whatsapp-box {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 20px;
+    padding: 14px 16px;
+
+    border-radius: 13px;
+
+    background: #f6fbf7;
+}
+
+.publish-whatsapp-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e8f7ec;
+    color: var(--primary);
+
+    font-size: 21px;
+}
+
+.publish-whatsapp-box strong,
+.publish-whatsapp-box span {
+    display: block;
+}
+
+.publish-whatsapp-box strong {
+    color: var(--dark);
+    font-size: 13px;
+}
+
+.publish-whatsapp-box span {
+    margin-top: 3px;
+
+    color: #777e88;
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   CONDITIONS
+========================================================= */
+
+.publish-terms-card {
+    padding: 18px 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--white);
+}
+
+.publish-checkbox {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    cursor: pointer;
+}
+
+.publish-checkbox input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+}
+
+.publish-checkmark {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1px;
+
+    border: 1px solid #ccd2d9;
+    border-radius: 5px;
+
+    background: var(--white);
+
+    color: transparent;
+
+    transition: all .2s ease;
+}
+
+.publish-checkbox input:checked + .publish-checkmark {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.publish-checkbox input:focus-visible + .publish-checkmark {
+    outline: 3px solid rgba(22, 163, 74, .25);
+    outline-offset: 2px;
+}
+
+.publish-checkmark i {
+    font-size: 11px;
+}
+
+.publish-terms-text {
+    color: #606772;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.publish-terms-text a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.publish-v2-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 5px;
+}
+
+.publish-v2-actions .primary-button,
+.publish-v2-actions .secondary-button {
+    min-height: 46px;
+
+    display: inline-flex;
+    align-items: center;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.publish-v2-actions .primary-button {
+    padding: 0 20px;
+
+    border: none;
+
+    background: var(--primary);
+    color: #fff;
+}
+
+.publish-v2-actions .primary-button:hover {
+    background: var(--primary-dark);
+}
+
+.publish-v2-actions .secondary-button {
+    padding: 0 20px;
+
+    border: 1px solid var(--border);
+
+    background: var(--white);
+    color: var(--text);
+}
+
+.publish-v2-actions .secondary-button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.publish-submit {
+    min-width: 210px;
+
+    justify-content: center;
+
+    gap: 8px;
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .publish-v2 {
+        max-width: 100%;
+    }
+
+    .publish-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .publish-v2 {
+        width: 100%;
+        max-width: 100%;
+        padding: 8px 0 35px;
+    }
+
+
+    /* HERO */
+
+    .publish-hero {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 18px;
+    }
+
+    .publish-hero-icon {
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+    }
+
+    .publish-hero .section-label {
+        font-size: 9px;
+        letter-spacing: .8px;
+    }
+
+    .publish-hero h1 {
+        margin: 3px 0 4px;
+
+        font-size: 22px;
+        line-height: 1.15;
+    }
+
+    .publish-hero p {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+
+    /* ÉTAPES */
+
+    .publish-steps {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 7px;
+
+        margin-bottom: 16px;
+    }
+
+    .publish-step {
+        min-width: 0;
+
+        padding: 9px;
+
+        gap: 8px;
+
+        border-radius: 10px;
+    }
+
+    .publish-step > span {
+        width: 27px;
+        height: 27px;
+        min-width: 27px;
+
+        font-size: 11px;
+    }
+
+    .publish-step strong {
+        overflow: hidden;
+
+        font-size: 11px;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .publish-step small {
+        display: none;
+    }
+
+
+    /* FORMULAIRE */
+
+    .publish-v2-form {
+        gap: 12px;
+    }
+
+
+    /* CARTES */
+
+    .publish-card {
+        width: 100%;
+
+        padding: 17px 14px;
+
+        border-radius: 14px;
+
+        box-shadow: 0 3px 14px rgba(0, 0, 0, .04);
+    }
+
+    .publish-card-header {
+        gap: 10px;
+
+        margin-bottom: 17px;
+    }
+
+    .publish-number {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+    }
+
+    .publish-card-header h2 {
+        font-size: 15px;
+        line-height: 1.25;
+    }
+
+    .publish-card-header p {
+        margin-top: 3px;
+
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+
+    /* PHOTOS */
+
+    .publish-upload-zone {
+        min-height: 145px;
+
+        padding: 18px 10px;
+
+        border-radius: 12px;
+    }
+
+    .publish-upload-icon {
+        width: 43px;
+        height: 43px;
+
+        margin-bottom: 9px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+    }
+
+    .publish-upload-zone strong {
+        font-size: 13px;
+    }
+
+    .publish-upload-zone span {
+        margin-top: 4px;
+
+        font-size: 11px;
+
+        text-align: center;
+    }
+
+    .publish-upload-zone small {
+        margin-top: 7px;
+
+        font-size: 9px;
+
+        text-align: center;
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 7px;
+
+        margin-top: 10px;
+    }
+
+    .photo-preview-item {
+        border-radius: 9px;
+    }
+
+
+    /* CHAMPS */
+
+    .publish-field {
+        margin-bottom: 15px;
+    }
+
+    .publish-field label {
+        margin-bottom: 6px;
+
+        font-size: 12px;
+    }
+
+    .publish-field input,
+    .publish-field select,
+    .publish-field textarea {
+        box-sizing: border-box;
+
+        padding: 11px 12px;
+
+        border-radius: 9px;
+
+        font-size: 13px;
+    }
+
+    .publish-field input,
+    .publish-field select {
+        min-height: 43px;
+    }
+
+    .publish-field textarea {
+        min-height: 125px;
+    }
+
+    .publish-field > small {
+        margin-top: 5px;
+
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .publish-field-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 2px;
+
+        margin-top: 5px;
+
+        font-size: 9px;
+    }
+
+    .publish-grid-2 {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    /* WHATSAPP */
+
+    .publish-whatsapp-box {
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+        padding: 11px;
+
+        border-radius: 10px;
+    }
+
+    .publish-whatsapp-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+
+        font-size: 18px;
+    }
+
+    .publish-whatsapp-box strong {
+        font-size: 12px;
+    }
+
+    .publish-whatsapp-box span {
+        margin-top: 2px;
+
+        font-size: 10px;
+        line-height: 1.35;
+    }
+
+
+    /* CONDITIONS */
+
+    .publish-terms-card {
+        padding: 13px;
+
+        border-radius: 11px;
+    }
+
+    .publish-checkbox {
+        gap: 9px;
+    }
+
+    .publish-checkmark {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+    }
+
+    .publish-terms-text {
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* BOUTONS */
+
+    .publish-v2-actions {
+        display: flex;
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+
+        gap: 8px;
+
+        padding-top: 2px;
+    }
+
+    .publish-v2-actions .primary-button,
+    .publish-v2-actions .secondary-button {
+        width: 100%;
+        min-width: 0;
+        min-height: 44px;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+    }
+
+    .publish-submit {
+        min-width: 0;
+    }
+}
+
+
+/* =========================================================
+   TRÈS PETIT TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .publish-hero h1 {
+        font-size: 20px;
+    }
+
+    .publish-hero p {
+        font-size: 11px;
+    }
+
+    .publish-steps {
+        gap: 5px;
+    }
+
+    .publish-step {
+        padding: 8px;
+    }
+
+    .publish-step strong {
+        font-size: 10px;
+    }
+
+    .publish-card {
+        padding: 15px 12px;
+    }
+
+    .publish-upload-zone {
+        min-height: 135px;
+    }
+
+    .publish-photo-preview {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
