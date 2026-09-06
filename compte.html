@@ -1,0 +1,431 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mon compte — CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Gérez votre compte CAMU SERVICES."
+    >
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- HEADER MOBILE -->
+    <header class="mobile-header">
+
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="../index.html" class="mobile-logo">
+            <span>CAMU</span>
+            <small>SERVICES</small>
+        </a>
+
+        <a
+            href="compte.html"
+            class="mobile-account-btn"
+            aria-label="Mon compte"
+        >
+            <i class="fa-regular fa-user"></i>
+        </a>
+
+    </header>
+
+
+    <!-- OVERLAY MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <a href="../index.html" class="sidebar-logo">
+
+                <span class="logo-main">
+                    CAMU
+                </span>
+
+                <span class="logo-sub">
+                    SERVICES
+                </span>
+
+            </a>
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+        <nav class="sidebar-nav">
+
+            <a href="../index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a href="recherche.html" class="nav-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a href="categories.html" class="nav-item">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a href="publier.html" class="nav-item">
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a href="favoris.html" class="nav-item">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a href="compte.html" class="nav-item active">
+                <i class="fa-solid fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a href="parametres.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+
+        <!-- BAS SIDEBAR -->
+        <div class="sidebar-footer">
+
+            <button
+                type="button"
+                class="nav-item logout-button"
+                id="logoutButton"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="desktop-menu-btn"
+                    id="desktopMenuBtn"
+                    aria-label="Menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Mon compte</h1>
+
+                    <p>
+                        Gérez vos informations et vos annonces.
+                    </p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- MESSAGE -->
+        <div
+            id="accountMessage"
+            class="auth-message"
+            role="alert"
+        ></div>
+
+
+        <!-- PROFIL -->
+        <section class="account-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        <i class="fa-regular fa-user"></i>
+                        Mon profil
+                    </h2>
+
+                    <p>
+                        Vos informations personnelles.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="account-card">
+
+                <!-- PHOTO -->
+                <div class="account-avatar">
+
+                    <div class="account-avatar-placeholder">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                </div>
+
+
+                <!-- INFORMATIONS -->
+                <div class="account-info">
+
+                    <div class="account-info-item">
+
+                        <span class="account-label">
+                            Nom complet
+                        </span>
+
+                        <strong id="accountName">
+                            Chargement...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-info-item">
+
+                        <span class="account-label">
+                            Adresse e-mail
+                        </span>
+
+                        <strong id="accountEmail">
+                            Chargement...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-info-item">
+
+                        <span class="account-label">
+                            Téléphone
+                        </span>
+
+                        <strong id="accountPhone">
+                            Chargement...
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="account-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="editProfileButton"
+                    >
+                        <i class="fa-solid fa-pen"></i>
+                        Modifier mon profil
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MES ANNONCES -->
+        <section class="account-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        <i class="fa-solid fa-bullhorn"></i>
+                        Mes annonces
+                    </h2>
+
+                    <p>
+                        Gérez les annonces que vous avez publiées.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="publier.html"
+                    class="primary-button"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Publier une annonce
+                </a>
+
+            </div>
+
+
+            <div
+                class="account-empty"
+                id="myAdsContainer"
+            >
+
+                <div class="empty-icon">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+
+                <h3>
+                    Vous n'avez pas encore d'annonce
+                </h3>
+
+                <p>
+                    Publiez votre première annonce sur CAMU SERVICES.
+                </p>
+
+                <a
+                    href="publier.html"
+                    class="primary-button"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Publier une annonce
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FAVORIS -->
+        <section class="account-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        <i class="fa-solid fa-heart"></i>
+                        Mes favoris
+                    </h2>
+
+                    <p>
+                        Retrouvez les annonces que vous avez enregistrées.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="favoris.html"
+                    class="secondary-button"
+                >
+                    Voir mes favoris
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- DÉCONNEXION -->
+        <section class="account-section account-danger">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Déconnexion
+                </h2>
+
+                <p>
+                    Vous pouvez vous déconnecter de votre compte
+                    à tout moment.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="danger-button"
+                id="logoutButtonBottom"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Se déconnecter
+            </button>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+
+            <div class="footer-links">
+
+                <a href="mentions-legales.html">
+                    Mentions légales
+                </a>
+
+                <a href="cgu.html">
+                    Conditions d'utilisation
+                </a>
+
+                <a href="confidentialite.html">
+                    Confidentialité
+                </a>
+
+            </div>
+
+            <p>
+                © 2026 CAMU SERVICES. Tous droits réservés.
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/app.js"></script>
+
+</body>
+</html>
