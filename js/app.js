@@ -1,4 +1,3 @@
-```javascript
 /* =========================================================
    CAMU SERVICES — APP.JS V1
    Interactions générales + Firebase Auth
