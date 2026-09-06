@@ -1,298 +1,301 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Créer un compte — CAMU SERVICES</title>
 
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        name="description"
+        content="Créez votre compte CAMU SERVICES."
     >
 
-    <title>Inscription — CAMU SERVICES</title>
+    <link rel="stylesheet" href="../css/style.css">
 
     <link
         rel="stylesheet"
-        href="css/main.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-
-    <link
-        rel="stylesheet"
-        href="css/responsive.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    >
-
 </head>
 
+<body class="auth-page">
 
-<body>
+    <main class="auth-container">
 
-<main class="auth-page">
+        <!-- RETOUR -->
+        <a href="../index.html" class="auth-back">
 
-    <h1>
-        <i class="fas fa-user-plus"></i>
-        Créer un compte
-    </h1>
+            <i class="fa-solid fa-arrow-left"></i>
 
-
-    <div
-        id="signup-error"
-        class="error"
-        role="alert"
-    ></div>
-
-
-    <form
-        id="signup-form"
-        novalidate
-    >
-
-        <input
-            type="text"
-            id="signup-name"
-            placeholder="Nom complet"
-            autocomplete="name"
-            required
-        >
-
-
-        <input
-            type="tel"
-            id="signup-phone"
-            placeholder="Téléphone"
-            autocomplete="tel"
-        >
-
-
-        <input
-            type="email"
-            id="signup-email"
-            placeholder="Adresse email"
-            autocomplete="email"
-            required
-        >
-
-
-        <input
-            type="password"
-            id="signup-password"
-            placeholder="Mot de passe"
-            autocomplete="new-password"
-            minlength="6"
-            required
-        >
-
-
-        <input
-            type="password"
-            id="signup-confirm"
-            placeholder="Confirmer le mot de passe"
-            autocomplete="new-password"
-            minlength="6"
-            required
-        >
-
-
-        <button
-            type="submit"
-            id="signup-btn"
-        >
-            Créer mon compte
-        </button>
-
-    </form>
-
-
-    <div class="auth-links">
-
-        <a href="connexion.html">
-            J'ai déjà un compte
-        </a>
-
-
-        <a href="index.html">
             Retour à l'accueil
+
         </a>
 
-    </div>
 
-</main>
+        <!-- CARTE -->
+        <section class="auth-card register-card">
 
+            <!-- LOGO -->
+            <div class="auth-logo">
 
-<script type="module">
+                <span class="logo-main">
+                    CAMU
+                </span>
 
-import {
-    signUp
-} from "./js/core/auth.js";
+                <span class="logo-sub">
+                    SERVICES
+                </span>
 
+            </div>
 
-const form =
-    document.getElementById(
-        "signup-form"
-    );
 
-const errorElement =
-    document.getElementById(
-        "signup-error"
-    );
+            <!-- TITRE -->
+            <div class="auth-header">
 
-const button =
-    document.getElementById(
-        "signup-btn"
-    );
+                <h1>Créer votre compte</h1>
 
+                <p>
+                    Rejoignez CAMU SERVICES gratuitement.
+                </p>
 
-form.addEventListener(
-    "submit",
-    async event => {
+            </div>
 
-        event.preventDefault();
 
-        errorElement.textContent = "";
+            <!-- FORMULAIRE -->
+            <form
+                id="registerForm"
+                class="auth-form"
+            >
 
+                <!-- NOM -->
+                <div class="form-group">
 
-        const name =
-            document.getElementById(
-                "signup-name"
-            ).value.trim();
+                    <label for="registerName">
+                        Nom complet
+                    </label>
 
+                    <div class="input-wrapper">
 
-        const phone =
-            document.getElementById(
-                "signup-phone"
-            ).value.trim();
+                        <i class="fa-regular fa-user"></i>
 
+                        <input
+                            type="text"
+                            id="registerName"
+                            placeholder="Votre nom complet"
+                            autocomplete="name"
+                            required
+                        >
 
-        const email =
-            document.getElementById(
-                "signup-email"
-            ).value.trim();
+                    </div>
 
+                </div>
 
-        const password =
-            document.getElementById(
-                "signup-password"
-            ).value;
 
+                <!-- EMAIL -->
+                <div class="form-group">
 
-        const confirmPassword =
-            document.getElementById(
-                "signup-confirm"
-            ).value;
+                    <label for="registerEmail">
+                        Adresse e-mail
+                    </label>
 
+                    <div class="input-wrapper">
 
-        // =============================================
-        // VALIDATION
-        // =============================================
+                        <i class="fa-regular fa-envelope"></i>
 
-        if (!name) {
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="exemple@email.com"
+                            autocomplete="email"
+                            required
+                        >
 
-            errorElement.textContent =
-                "Veuillez saisir votre nom complet.";
+                    </div>
 
-            return;
-        }
+                </div>
 
 
-        if (!email) {
+                <!-- TELEPHONE -->
+                <div class="form-group">
 
-            errorElement.textContent =
-                "Veuillez saisir votre adresse email.";
+                    <label for="registerPhone">
+                        Numéro de téléphone
+                    </label>
 
-            return;
-        }
+                    <div class="input-wrapper">
 
+                        <i class="fa-solid fa-phone"></i>
 
-        if (password.length < 6) {
+                        <input
+                            type="tel"
+                            id="registerPhone"
+                            placeholder="+243..."
+                            autocomplete="tel"
+                            required
+                        >
 
-            errorElement.textContent =
-                "Le mot de passe doit contenir au moins 6 caractères.";
+                    </div>
 
-            return;
-        }
+                </div>
 
 
-        if (
-            password !==
-            confirmPassword
-        ) {
+                <!-- MOT DE PASSE -->
+                <div class="form-group">
 
-            errorElement.textContent =
-                "Les deux mots de passe ne correspondent pas.";
+                    <label for="registerPassword">
+                        Mot de passe
+                    </label>
 
-            return;
-        }
+                    <div class="input-wrapper">
 
+                        <i class="fa-solid fa-lock"></i>
 
-        // =============================================
-        // CRÉATION DU COMPTE
-        // =============================================
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="Minimum 6 caractères"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
 
-        button.disabled = true;
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="registerPassword"
+                            aria-label="Afficher le mot de passe"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
 
-        button.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Création du compte...';
+                    </div>
 
+                </div>
 
-        try {
 
-            const result =
-                await signUp(
-                    email,
-                    password,
-                    name,
-                    phone
-                );
+                <!-- CONFIRMATION -->
+                <div class="form-group">
 
+                    <label for="registerPasswordConfirm">
+                        Confirmer le mot de passe
+                    </label>
 
-            if (result.success) {
+                    <div class="input-wrapper">
 
-                alert(
-                    "Compte créé avec succès !"
-                );
+                        <i class="fa-solid fa-lock"></i>
 
+                        <input
+                            type="password"
+                            id="registerPasswordConfirm"
+                            placeholder="Confirmez votre mot de passe"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
 
-                window.location.href =
-                    "index.html";
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="registerPasswordConfirm"
+                            aria-label="Afficher le mot de passe"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
 
+                    </div>
 
-                return;
-            }
+                </div>
 
 
-            errorElement.textContent =
-                result.error ||
-                "Impossible de créer le compte.";
+                <!-- CONDITIONS -->
+                <div class="terms-checkbox">
 
+                    <label>
 
-        } catch (error) {
+                        <input
+                            type="checkbox"
+                            id="acceptTerms"
+                            required
+                        >
 
-            console.error(
-                "Erreur inscription :",
-                error
-            );
+                        <span>
+                            J'accepte les
+                            <a href="cgu.html">
+                                Conditions d'utilisation
+                            </a>
+                            et la
+                            <a href="confidentialite.html">
+                                Politique de confidentialité
+                            </a>.
+                        </span>
 
+                    </label>
 
-            errorElement.textContent =
-                "Une erreur est survenue pendant la création du compte.";
+                </div>
 
-        }
 
+                <!-- MESSAGE -->
+                <div
+                    id="registerMessage"
+                    class="auth-message"
+                    role="alert"
+                ></div>
 
-        button.disabled = false;
 
-        button.innerHTML =
-            "Créer mon compte";
-    }
-);
+                <!-- INSCRIPTION -->
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="registerButton"
+                >
 
-</script>
+                    <span>Créer mon compte</span>
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- CONNEXION -->
+            <div class="auth-switch">
+
+                <span>
+                    Vous avez déjà un compte ?
+                </span>
+
+                <a href="connexion.html">
+                    Se connecter
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <div class="auth-footer">
+
+            <a href="mentions-legales.html">
+                Mentions légales
+            </a>
+
+            <a href="cgu.html">
+                Conditions d'utilisation
+            </a>
+
+            <a href="confidentialite.html">
+                Confidentialité
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script src="../js/auth.js"></script>
 
 </body>
-
 </html>
