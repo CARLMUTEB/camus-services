@@ -1,74 +1,81 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Connexion à CAMU SERVICES — Trouver • Acheter • Réserver">
 
     <title>Connexion — CAMU SERVICES</title>
 
-    <meta
-        name="description"
-        content="Connectez-vous à votre compte CAMU SERVICES."
-    >
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="css/style.css">
 
-    <link rel="stylesheet" href="../css/style.css">
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
-<body class="auth-page">
+<body>
 
-    <main class="auth-container">
+    <main class="auth-page">
 
-        <!-- RETOUR -->
-        <a href="../index.html" class="auth-back">
-            <i class="fa-solid fa-arrow-left"></i>
-            Retour à l'accueil
-        </a>
+        <div class="auth-container">
 
+            <!-- =====================================================
+                 CARTE DE CONNEXION
+            ====================================================== -->
 
-        <!-- CARTE -->
-        <section class="auth-card">
+            <div class="auth-card">
 
-            <!-- LOGO -->
-            <div class="auth-logo">
-                <span class="logo-main">CAMU</span>
-                <span class="logo-sub">SERVICES</span>
-            </div>
+                <!-- LOGO -->
+                <div class="auth-logo">
+                    <span>CAMU SERVICES</span>
+                    <small>TROUVER • ACHETER • RÉSERVER</small>
+                </div>
 
 
-            <!-- TITRE -->
-            <div class="auth-header">
+                <!-- EN-TÊTE -->
+                <div class="auth-header">
 
-                <h1>Bon retour !</h1>
+                    <h1>Bienvenue 👋</h1>
 
-                <p>
-                    Connectez-vous pour accéder à votre compte.
-                </p>
+                    <p>
+                        Connectez-vous à votre compte
+                        CAMU SERVICES.
+                    </p>
 
-            </div>
+                </div>
 
 
-            <!-- FORMULAIRE -->
-            <form id="loginForm" class="auth-form">
+                <!-- MESSAGE -->
+                <div id="loginMessage"
+                     class="auth-message">
+                </div>
 
-                <!-- EMAIL -->
-                <div class="form-group">
 
-                    <label for="loginEmail">
-                        Adresse e-mail
-                    </label>
+                <!-- =================================================
+                     FORMULAIRE
+                ================================================== -->
 
-                    <div class="input-wrapper">
+                <form id="loginForm"
+                      class="auth-form">
 
-                        <i class="fa-regular fa-envelope"></i>
+                    <!-- EMAIL -->
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Adresse e-mail
+                        </label>
 
                         <input
                             type="email"
                             id="loginEmail"
+                            name="email"
                             placeholder="exemple@email.com"
                             autocomplete="email"
                             required
@@ -76,113 +83,171 @@
 
                     </div>
 
-                </div>
 
-
-                <!-- MOT DE PASSE -->
-                <div class="form-group">
-
-                    <div class="form-label-row">
+                    <!-- MOT DE PASSE -->
+                    <div class="form-group">
 
                         <label for="loginPassword">
                             Mot de passe
                         </label>
 
-                        <a href="#" id="forgotPassword">
+                        <div class="input-wrapper">
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                name="password"
+                                placeholder="Votre mot de passe"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="loginPassword"
+                                aria-label="Afficher ou masquer le mot de passe"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MOT DE PASSE OUBLIÉ -->
+                    <div style="text-align: right; margin-top: -8px;">
+
+                        <a
+                            href="#"
+                            id="forgotPassword"
+                            style="
+                                color: var(--primary);
+                                font-size: 12px;
+                                font-weight: 700;
+                            "
+                        >
                             Mot de passe oublié ?
                         </a>
 
                     </div>
 
 
-                    <div class="input-wrapper">
+                    <!-- BOUTON CONNEXION -->
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="auth-submit"
+                    >
 
-                        <i class="fa-solid fa-lock"></i>
+                        <i class="fa-solid fa-right-to-bracket"></i>
 
-                        <input
-                            type="password"
-                            id="loginPassword"
-                            placeholder="Votre mot de passe"
-                            autocomplete="current-password"
-                            required
-                        >
+                        Se connecter
 
-                        <button
-                            type="button"
-                            class="password-toggle"
-                            data-target="loginPassword"
-                            aria-label="Afficher le mot de passe"
-                        >
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
+                    </button>
 
-                    </div>
+                </form>
+
+
+                <!-- =================================================
+                     INSCRIPTION
+                ================================================== -->
+
+                <div class="auth-switch">
+
+                    Vous n'avez pas encore de compte ?
+
+                    <a href="inscription.html">
+                        Créer un compte
+                    </a>
 
                 </div>
 
 
-                <!-- MESSAGE -->
-                <div
-                    id="loginMessage"
-                    class="auth-message"
-                    role="alert"
-                ></div>
+                <!-- =================================================
+                     RETOUR ACCUEIL
+                ================================================== -->
 
+                <div style="text-align: center; margin-top: 18px;">
 
-                <!-- CONNEXION -->
-                <button
-                    type="submit"
-                    class="auth-submit"
-                    id="loginButton"
-                >
+                    <a
+                        href="index.html"
+                        style="
+                            color: var(--muted);
+                            font-size: 12px;
+                            font-weight: 600;
+                        "
+                    >
 
-                    <span>Se connecter</span>
+                        <i class="fa-solid fa-arrow-left"></i>
 
-                    <i class="fa-solid fa-arrow-right"></i>
+                        Retour à l'accueil
 
-                </button>
+                    </a>
 
-            </form>
-
-
-            <!-- INSCRIPTION -->
-            <div class="auth-switch">
-
-                <span>
-                    Vous n'avez pas encore de compte ?
-                </span>
-
-                <a href="inscription.html">
-                    Créer un compte
-                </a>
+                </div>
 
             </div>
 
-        </section>
 
+            <!-- =====================================================
+                 FOOTER AUTH
+            ====================================================== -->
 
-        <!-- FOOTER -->
-        <div class="auth-footer">
+            <div class="auth-footer">
 
-            <a href="mentions-legales.html">
-                Mentions légales
-            </a>
+                <p>
+                    En vous connectant, vous acceptez les
+                    conditions d'utilisation de CAMU SERVICES.
+                </p>
 
-            <a href="cgu.html">
-                Conditions d'utilisation
-            </a>
+                <div style="
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    margin-top: 8px;
+                ">
 
-            <a href="confidentialite.html">
-                Confidentialité
-            </a>
+                    <a href="conditions.html">
+                        Conditions
+                    </a>
+
+                    <span>•</span>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <span>•</span>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+                <p style="margin-top: 10px;">
+                    © 2026 CAMU SERVICES. Tous droits réservés.
+                </p>
+
+            </div>
 
         </div>
 
     </main>
 
 
-    <!-- FIREBASE AUTHENTIFICATION -->
-    <script type="module" src="../js/auth.js"></script>
+    <!-- =========================================================
+         FIREBASE / AUTHENTIFICATION
+    ========================================================== -->
+
+    <script type="module" src="js/auth.js"></script>
+
+    <!-- APPLICATION -->
+    <script type="module" src="js/app.js"></script>
+
 
 </body>
 </html>
