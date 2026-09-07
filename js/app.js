@@ -74,6 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
             /* Mon compte → compte.html */
 
             accountLinks.forEach(link => {
+               const adminNavItem =
+    document.getElementById("adminNavItem");
+
+const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
                 link.href = "compte.html";
 
