@@ -1,74 +1,884 @@
 /* =========================================================
-   ACTIONS DES ANNONCES
+   CAMU SERVICES
+   PAGE : MON COMPTE
+   DESIGN MOBILE / DESKTOP
 ========================================================= */
 
-.my-ad-actions {
-    margin-top: 14px;
+
+/* =========================================================
+   RESET LOCAL
+========================================================= */
+
+.account-main,
+.account-main *,
+.account-main *::before,
+.account-main *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.account-main {
+    margin-left: 260px !important;
+    min-height: 100vh;
+    padding: 28px 32px 0;
+    background: #f5f7f9;
+    color: #17212b;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.account-topbar {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 24px;
+
     display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.account-topbar .back-button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+    background: #ffffff;
+    color: #17212b;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+
+    transition: .2s ease;
+}
+
+.account-topbar .back-button:hover {
+    background: #18a957;
+    color: #ffffff;
+}
+
+.account-topbar h1 {
+    margin: 0;
+
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    color: #17212b;
+}
+
+
+/* =========================================================
+   PROFIL
+========================================================= */
+
+.account-user {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto 26px;
+    padding: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, .06);
+
+    border: 1px solid #edf0f2;
+}
+
+
+/* =========================================================
+   PHOTO PROFIL
+========================================================= */
+
+.account-avatar {
+    width: 150px;
+    height: 150px;
+
+    position: relative;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #edf1f4;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+.account-avatar-default {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8edf1;
+
+    color: #71808d;
+
+    font-size: 48px;
+}
+
+.account-avatar-default[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================================
+   INFOS PROFIL
+========================================================= */
+
+.account-user-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.account-user-info h2 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: #17212b;
+}
+
+.account-user-info p {
+    margin: 0;
+
+    font-size: 17px;
+
+    color: #65727f;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   CHANGER PHOTO
+========================================================= */
+
+.photo-action {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: -15px auto 26px;
+
+    padding-left: 202px;
+}
+
+.photo-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    background: #e8f7ef;
+    color: #13884a;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.photo-button:hover {
+    background: #d7f1e3;
+}
+
+.photo-button i {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   MENU COMPTE
+========================================================= */
+
+.account-menu {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto 26px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #edf0f2;
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, .06);
+}
+
+
+/* =========================================================
+   LIGNE MENU
+========================================================= */
+
+.account-menu-item {
+    min-height: 94px;
+
+    padding: 15px 22px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    position: relative;
+
+    text-decoration: none;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #edf0f2;
+
+    color: #17212b;
+
+    transition:
+        background .2s ease,
+        padding .2s ease;
+}
+
+.account-menu-item:last-child {
+    border-bottom: none;
+}
+
+.account-menu-item:hover {
+    background: #f8fafb;
+    padding-left: 27px;
+}
+
+
+/* =========================================================
+   ICÔNE MENU
+========================================================= */
+
+.account-menu-item .menu-icon {
+    width: 68px;
+    height: 68px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e0f8ed;
+
+    color: #15915a;
+
+    font-size: 27px;
+}
+
+.account-menu-item:nth-child(2) .menu-icon {
+    background: #ffe5e5;
+    color: #df3333;
+}
+
+.account-menu-item:nth-child(3) .menu-icon {
+    background: #ddf8ec;
+    color: #138b59;
+}
+
+.account-menu-item:nth-child(4) .menu-icon {
+    background: #dfebff;
+    color: #2477e8;
+}
+
+.account-menu-item:nth-child(5) .menu-icon {
+    background: #ffecd6;
+    color: #dc7800;
+}
+
+.account-menu-item:nth-child(6) .menu-icon {
+    background: #eee2ff;
+    color: #7444ca;
+}
+
+
+/* =========================================================
+   TEXTE MENU
+========================================================= */
+
+.account-menu-item .menu-text {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.account-menu-item .menu-text strong {
+    display: block;
+
+    font-size: 19px;
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    color: #17212b;
+}
+
+.account-menu-item .menu-text span {
+    display: block;
+
+    font-size: 15px;
+    line-height: 1.35;
+
+    color: #687583;
+}
+
+
+/* =========================================================
+   FLÈCHE
+========================================================= */
+
+.account-menu-item .menu-arrow {
+    flex-shrink: 0;
+
+    font-size: 20px;
+
+    color: #697682;
+}
+
+
+/* =========================================================
+   INFORMATIONS
+========================================================= */
+
+.account-info-section {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto 26px;
+    padding: 25px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    border: 1px solid #edf0f2;
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, .06);
+}
+
+
+/* =========================================================
+   TITRE INFORMATIONS
+========================================================= */
+
+.account-info-section .section-title {
+    min-height: 55px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 15px;
+}
+
+.account-info-section .section-title i {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ddf8ed;
+
+    color: #15915a;
+
+    font-size: 22px;
+}
+
+.account-info-section .section-title h2 {
+    margin: 0;
+
+    flex: 1;
+
+    font-size: 23px;
+
+    color: #17212b;
+}
+
+
+/* =========================================================
+   LIGNES INFORMATIONS
+========================================================= */
+
+.account-info-section .info-row {
+    min-height: 58px;
+
+    display: grid;
+    grid-template-columns: 150px 1fr;
+
+    align-items: center;
+
+    border-bottom: 1px solid #edf0f2;
+
+    gap: 15px;
+}
+
+.account-info-section .info-row:last-of-type {
+    border-bottom: none;
+}
+
+.account-info-section .info-row span {
+    color: #687583;
+
+    font-size: 15px;
+}
+
+.account-info-section .info-row strong {
+    color: #17212b;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   BOUTON MODIFIER PROFIL
+========================================================= */
+
+.edit-profile-button {
+    margin-top: 20px;
+
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    background: #e5f7ee;
+
+    color: #12864a;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.edit-profile-button:hover {
+    background: #d5f0e3;
+}
+
+
+/* =========================================================
+   MES ANNONCES
+========================================================= */
+
+.my-ads-section {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto 26px;
+
+    padding: 25px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    border: 1px solid #edf0f2;
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, .06);
+}
+
+.my-ads-section .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.my-ads-section .section-header h2 {
+    margin: 4px 0 0;
+
+    font-size: 23px;
+
+    color: #17212b;
+}
+
+.new-ad-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     gap: 8px;
-    flex-wrap: wrap;
+
+    padding: 10px 15px;
+
+    border-radius: 9px;
+
+    background: #e5f7ee;
+
+    color: #12864a;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.new-ad-link:hover {
+    background: #d5f0e3;
+}
+
+
+/* =========================================================
+   CONTENEUR ANNONCES
+========================================================= */
+
+.my-ads-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* =========================================================
+   CARTE ANNONCE
+========================================================= */
+
+.my-ad-card {
+    overflow: hidden;
+
+    border: 1px solid #e7ebee;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+.my-ad-card img {
+    width: 100%;
+    height: 190px;
+
+    display: block;
+
+    object-fit: cover;
+
+    background: #f0f2f4;
+}
+
+.my-ad-content {
+    padding: 15px;
+}
+
+.my-ad-content h3 {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+
+    color: #17212b;
+}
+
+.my-ad-price {
+    margin-bottom: 6px;
+
+    color: #15915a;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.my-ad-location {
+    color: #687583;
+
+    font-size: 13px;
+}
+
+.my-ad-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    padding: 12px 15px 15px;
 }
 
 .my-ad-actions a,
 .my-ad-actions button {
-    flex: 1;
-    min-width: 90px;
-    padding: 10px 8px;
-    border-radius: 7px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    cursor: pointer;
-    text-align: center;
+    min-height: 38px;
+
+    padding: 7px 8px;
+
+    border-radius: 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border: 1px solid #dfe4e7;
+
+    background: #ffffff;
+
+    color: #26323d;
+
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s ease;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
 }
 
-/* Voir */
-
-.my-ad-view {
-    color: #1f2937;
+.my-ad-actions a:hover,
+.my-ad-actions button:hover {
+    background: #f5f7f8;
 }
-
-.my-ad-view:hover {
-    border-color: #2563eb;
-    color: #2563eb;
-    background: #eff6ff;
-}
-
-
-/* Modifier */
-
-.my-ad-edit {
-    color: #16a34a !important;
-}
-
-.my-ad-edit:hover {
-    border-color: #16a34a;
-    color: #15803d !important;
-    background: #f0fdf4;
-}
-
-
-/* Supprimer */
 
 .my-ad-delete {
-    color: #dc2626 !important;
+    color: #d42e2e !important;
 }
 
 .my-ad-delete:hover {
-    border-color: #dc2626;
-    color: #b91c1c !important;
-    background: #fef2f2;
+    background: #fff0f0 !important;
+    border-color: #efbaba !important;
 }
 
 
-/* Bouton pendant la suppression */
+/* =========================================================
+   EMPTY ANNONCES
+========================================================= */
 
-.my-ad-delete:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.empty-ads {
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #687583;
+}
+
+.empty-ads i {
+    font-size: 42px;
+
+    color: #b7c1c8;
+
+    margin-bottom: 15px;
+}
+
+.empty-ads h3 {
+    margin: 0 0 8px;
+
+    color: #26323d;
+
+    font-size: 19px;
+}
+
+.empty-ads p {
+    margin: 0 0 20px;
+
+    font-size: 14px;
+}
+
+.publish-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #18a957;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.publish-button:hover {
+    background: #128846;
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
+
+.logout-section {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto 30px;
+
+    text-align: center;
+}
+
+.logout-button {
+    min-height: 46px;
+
+    padding: 0 25px;
+
+    border: 1px solid #efcaca;
+
+    border-radius: 10px;
+
+    background: #fff5f5;
+
+    color: #cf3030;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #ffe9e9;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.account-footer {
+    width: calc(100% + 64px);
+
+    margin-left: -32px;
+
+    padding: 28px 20px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e9edef;
+
+    text-align: center;
+
+    color: #687583;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .account-main {
+        margin-left: 0 !important;
+
+        padding:
+            20px
+            20px
+            0;
+    }
+
+    .account-topbar,
+    .account-user,
+    .photo-action,
+    .account-menu,
+    .account-info-section,
+    .my-ads-section,
+    .logout-section {
+        max-width: 680px;
+    }
+
+    .account-topbar h1 {
+        font-size: 29px;
+    }
+
+    .account-footer {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+    }
+
 }
 
 
@@ -78,34 +888,298 @@
 
 @media (max-width: 600px) {
 
-    .my-ad-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+    .account-main {
+        margin-left: 0 !important;
+
+        padding:
+            18px
+            14px
+            0 !important;
+
+        background: #f5f7f9;
+    }
+
+
+    /* TOPBAR */
+
+    .account-topbar {
+        margin-bottom: 18px;
+
+        gap: 12px;
+    }
+
+    .account-topbar .back-button {
+        width: 40px;
+        height: 40px;
+
+        font-size: 18px;
+    }
+
+    .account-topbar h1 {
+        font-size: 28px;
+    }
+
+
+    /* PROFIL */
+
+    .account-user {
+        margin-bottom: 18px;
+
+        padding: 20px;
+
+        gap: 18px;
+
+        border-radius: 14px;
+
+        align-items: center;
+    }
+
+    .account-avatar {
+        width: 105px;
+        height: 105px;
+    }
+
+    .account-user-info h2 {
+        font-size: 22px;
+
+        margin-bottom: 6px;
+    }
+
+    .account-user-info p {
+        font-size: 14px;
+    }
+
+
+    /* PHOTO */
+
+    .photo-action {
+        margin-top: -7px;
+
+        margin-bottom: 18px;
+
+        padding-left: 0;
+    }
+
+    .photo-button {
+        padding: 10px 15px;
+
+        font-size: 14px;
+    }
+
+
+    /* MENU */
+
+    .account-menu {
+        margin-bottom: 18px;
+
+        border-radius: 14px;
+    }
+
+    .account-menu-item {
+        min-height: 78px;
+
+        padding: 12px 15px;
+
+        gap: 13px;
+    }
+
+    .account-menu-item:hover {
+        padding-left: 15px;
+    }
+
+    .account-menu-item .menu-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 21px;
+    }
+
+    .account-menu-item .menu-text {
+        gap: 3px;
+    }
+
+    .account-menu-item .menu-text strong {
+        font-size: 16px;
+    }
+
+    .account-menu-item .menu-text span {
+        font-size: 13px;
+    }
+
+    .account-menu-item .menu-arrow {
+        font-size: 16px;
+    }
+
+
+    /* INFORMATIONS */
+
+    .account-info-section {
+        margin-bottom: 18px;
+
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+    .account-info-section .section-title {
+        min-height: 48px;
+
+        margin-bottom: 10px;
+
+        gap: 10px;
+    }
+
+    .account-info-section .section-title i {
+        width: 44px;
+        height: 44px;
+
+        font-size: 19px;
+    }
+
+    .account-info-section .section-title h2 {
+        font-size: 20px;
+    }
+
+    .account-info-section .info-row {
+        min-height: 53px;
+
+        grid-template-columns: 90px 1fr;
+
         gap: 8px;
     }
 
-    .my-ad-view {
-        grid-column: 1 / -1;
-    }
-
-    .my-ad-actions a,
-    .my-ad-actions button {
-        width: 100%;
-        min-width: 0;
+    .account-info-section .info-row span {
         font-size: 13px;
     }
-}
+
+    .account-info-section .info-row strong {
+        font-size: 14px;
+    }
+
+    .edit-profile-button {
+        width: 100%;
+
+        margin-top: 15px;
+    }
 
 
-/* PETITS TÉLÉPHONES */
+    /* ANNONCES */
 
-@media (max-width: 430px) {
+    .my-ads-section {
+        margin-bottom: 18px;
 
-    .my-ad-actions {
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+    .my-ads-section .section-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .my-ads-section .section-header h2 {
+        font-size: 20px;
+    }
+
+    .new-ad-link {
+        width: 100%;
+    }
+
+    .my-ads-container {
         grid-template-columns: 1fr;
     }
 
-    .my-ad-view {
-        grid-column: auto;
+
+    /* LOGOUT */
+
+    .logout-button {
+        width: 100%;
     }
+
+
+    /* FOOTER */
+
+    .account-footer {
+        width: calc(100% + 28px);
+
+        margin-left: -14px;
+
+        padding: 25px 15px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS TÉLÉPHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .account-main {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .account-user {
+        padding: 15px;
+
+        gap: 12px;
+    }
+
+    .account-avatar {
+        width: 85px;
+        height: 85px;
+    }
+
+    .account-user-info h2 {
+        font-size: 19px;
+    }
+
+    .account-user-info p {
+        font-size: 12px;
+    }
+
+    .account-menu-item {
+        padding: 10px 11px;
+
+        gap: 10px;
+    }
+
+    .account-menu-item .menu-icon {
+        width: 43px;
+        height: 43px;
+
+        font-size: 18px;
+    }
+
+    .account-menu-item .menu-text strong {
+        font-size: 15px;
+    }
+
+    .account-menu-item .menu-text span {
+        font-size: 12px;
+    }
+
+    .account-info-section {
+        padding: 14px;
+    }
+
+    .account-info-section .info-row {
+        grid-template-columns: 75px 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   SÉCURITÉ
+========================================================= */
+
+.account-main [hidden] {
+    display: none !important;
 }
