@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,720 +8,631 @@
 
     <meta
         name="description"
-        content="Gérez votre compte, votre profil, vos annonces et vos favoris sur CAMU SERVICES."
+        content="Gérez votre compte et vos annonces sur CAMU SERVICES."
     >
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/compte.css">
+
+    <link rel="icon" href="logo.png">
+
+    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
+
+    <!-- CSS général -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS spécifique au compte -->
+    <link rel="stylesheet" href="css/compte.css">
 </head>
 
 <body>
 
-    <!-- OVERLAY MOBILE -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<!-- =========================================================
+     MOBILE HEADER
+========================================================= -->
+
+<header class="mobile-header">
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Ouvrir le menu"
+    >
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="mobile-logo">
+        CAMU SERVICES
+    </a>
+
+    <a
+        href="compte.html"
+        class="mobile-account-button"
+        aria-label="Mon compte"
+    >
+        <i class="fa-solid fa-user"></i>
+    </a>
+
+</header>
 
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-    <aside class="sidebar" id="sidebar">
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
 
-        <div class="sidebar-header">
+<aside class="sidebar" id="sidebar">
 
-            <a href="index.html" class="sidebar-logo">
+    <div class="sidebar-header">
 
-                <span class="logo-main">
-                    CAMU
-                </span>
+        <a href="index.html" class="logo">
+            <span>CAMU</span>
+            <strong>SERVICES</strong>
+        </a>
 
-                <span class="logo-sub">
-                    SERVICES
-                </span>
+        <button
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Fermer le menu"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
 
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-folder"></i>
+            <span>Catégories</span>
+        </a>
+
+        <a href="publier.html" class="nav-item">
+            <i class="fa-solid fa-plus"></i>
+            <span>Publier</span>
+        </a>
+
+        <a href="favoris.html" class="nav-item">
+            <i class="fa-solid fa-heart"></i>
+            <span>Favoris</span>
+        </a>
+
+        <a href="compte.html" class="nav-item active">
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+
+        <a href="parametres.html" class="nav-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+        </a>
+
+        <button
+            type="button"
+            class="nav-item logout-button"
+            id="logoutButton"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- Overlay mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main-wrapper">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <a href="index.html" class="topbar-logo">
+                CAMU SERVICES
             </a>
-
-            <button
-                type="button"
-                class="sidebar-close"
-                id="sidebarClose"
-                aria-label="Fermer le menu"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
 
         </div>
 
+        <div class="topbar-right">
 
-        <nav class="sidebar-nav">
-
-            <a href="index.html" class="nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Accueil</span>
+            <a href="publier.html" class="topbar-publish">
+                <i class="fa-solid fa-plus"></i>
+                Publier une annonce
             </a>
 
-            <a href="recherche.html" class="nav-item">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>Rechercher</span>
-            </a>
-
-            <a href="categories.html" class="nav-item">
-                <i class="fa-solid fa-layer-group"></i>
-                <span>Catégories</span>
-            </a>
-
-            <a href="publier.html" class="nav-item">
-                <i class="fa-solid fa-circle-plus"></i>
-                <span>Publier</span>
-            </a>
-
-            <a href="favoris.html" class="nav-item">
-                <i class="fa-regular fa-heart"></i>
-                <span>Favoris</span>
-            </a>
-
-            <a href="compte.html" class="nav-item active">
-                <i class="fa-regular fa-user"></i>
+            <a href="compte.html" class="topbar-account">
+                <i class="fa-solid fa-user"></i>
                 <span>Mon compte</span>
             </a>
 
-            <a href="parametres.html" class="nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Paramètres</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="connexion.html"
-                class="nav-item"
-                id="loginSidebarLink"
-            >
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span>Connexion</span>
-            </a>
-
-            <button
-                type="button"
-                class="nav-item logout-item"
-                id="logoutButton"
-            >
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Déconnexion</span>
-            </button>
-
         </div>
 
-    </aside>
+    </header>
 
 
     <!-- =====================================================
-         CONTENU
+         CONTENT
     ====================================================== -->
-    <div class="main-wrapper">
+
+    <section class="account-page">
+
+        <!-- Chargement -->
+
+        <div
+            class="account-loading"
+            id="accountLoading"
+        >
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>Chargement de votre compte...</span>
+        </div>
 
 
-        <!-- TOPBAR -->
-        <header class="topbar">
+        <!-- Message -->
 
-            <button
-                type="button"
-                class="menu-button"
-                id="menuButton"
-                aria-label="Ouvrir le menu"
-            >
-                <i class="fa-solid fa-bars"></i>
-            </button>
+        <div
+            class="account-message"
+            id="accountMessage"
+            hidden
+        ></div>
 
 
-            <div class="mobile-logo">
+        <!-- CONTENU COMPTE -->
 
-                <span>CAMU</span>
-                <small>SERVICES</small>
-
-            </div>
+        <div id="accountContent" hidden>
 
 
-            <div class="topbar-right">
+            <!-- =================================================
+                 PROFIL
+            ================================================== -->
 
-                <a
-                    href="favoris.html"
-                    class="topbar-icon"
-                    aria-label="Favoris"
-                >
-                    <i class="fa-regular fa-heart"></i>
-                </a>
+            <section class="account-profile-card">
 
+                <div class="account-profile-photo">
 
-                <a
-                    href="compte.html"
-                    class="profile-button"
-                    id="accountLink"
-                >
-                    <i class="fa-regular fa-user"></i>
-                    <span>Mon compte</span>
-                </a>
+                    <div
+                        class="account-avatar"
+                        id="accountAvatar"
+                    >
 
-            </div>
+                        <img
+                            id="accountAvatarImage"
+                            src=""
+                            alt="Photo de profil"
+                        >
 
-        </header>
-
-
-        <!-- =====================================================
-             MAIN
-        ====================================================== -->
-        <main class="main-content">
-
-            <section class="account-page">
-
-
-                <!-- EN-TÊTE -->
-                <div class="account-page-header">
-
-                    <div>
-
-                        <span class="section-label">
-                            ESPACE PERSONNEL
-                        </span>
-
-                        <h1>
-                            Mon compte
-                        </h1>
-
-                        <p>
-                            Gérez votre profil, vos annonces et vos favoris.
-                        </p>
+                        <div
+                            id="accountAvatarDefault"
+                            class="account-avatar-default"
+                        >
+                            <i class="fa-solid fa-user"></i>
+                        </div>
 
                     </div>
+
+
+                    <label
+                        for="profilePhotoInput"
+                        class="secondary-button"
+                    >
+                        <i class="fa-solid fa-camera"></i>
+                        Changer la photo
+                    </label>
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/*"
+                        hidden
+                    >
 
                 </div>
 
 
-                <!-- MESSAGE -->
-                <div
-                    id="accountMessage"
-                    class="auth-message"
-                    role="alert"
-                    aria-live="polite"
-                ></div>
-
-
-                <!-- =================================================
-                     PROFIL
-                ================================================== -->
-                <section class="account-section">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                MON PROFIL
-                            </span>
-
-                            <h2>
-                                <i class="fa-regular fa-user"></i>
-                                Informations personnelles
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="account-profile-card">
-
-                        <!-- PHOTO -->
-                       <div class="account-profile-photo">
-
-    <div class="account-avatar" id="accountAvatar">
-        <img
-            id="accountAvatarImage"
-            src=""
-            alt="Photo de profil"
-        >
-
-        <div id="accountAvatarDefault" class="account-avatar-default">
-            <i class="fa-solid fa-user"></i>
-        </div>
-    </div>
-
-    <label for="profilePhotoInput" class="secondary-button">
-        <i class="fa-solid fa-camera"></i>
-        Changer la photo
-    </label>
-
-    <input
-        type="file"
-        id="profilePhotoInput"
-        accept="image/*"
-        hidden
-    >
-
-</div>
-
-
-                        <!-- INFORMATIONS -->
-                        <div class="account-profile-info">
-
-                            <div class="account-info-item">
-
-                                <span class="account-label">
-                                    Nom
-                                </span>
-
-                                <strong id="accountName">
-                                    Chargement...
-                                </strong>
-
-                            </div>
-
-
-                            <div class="account-info-item">
-
-                                <span class="account-label">
-                                    E-mail
-                                </span>
-
-                                <strong id="accountEmail">
-                                    Chargement...
-                                </strong>
-
-                            </div>
-
-
-                            <div class="account-info-item">
-
-                                <span class="account-label">
-                                    Téléphone
-                                </span>
-
-                                <strong id="accountPhone">
-                                    Non renseigné
-                                </strong>
-
-                            </div>
-
-
-                            <div class="account-info-item account-description-item">
-
-                                <span class="account-label">
-                                    Description
-                                </span>
-
-                                <p id="accountDescription">
-                                    Aucune description pour le moment.
-                                </p>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="secondary-button"
-                                id="editProfileButton"
-                            >
-                                <i class="fa-solid fa-pen"></i>
-                                Modifier mon profil
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     STATISTIQUES
-                ================================================== -->
-                <section class="account-section">
-
-                    <div class="account-stats">
-
-                        <div class="account-stat">
-
-                            <div class="account-stat-icon">
-                                <i class="fa-solid fa-bullhorn"></i>
-                            </div>
-
-                            <div>
-
-                                <strong id="myAdsCount">
-                                    0
-                                </strong>
-
-                                <span>
-                                    Mes annonces
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="account-stat">
-
-                            <div class="account-stat-icon">
-                                <i class="fa-regular fa-heart"></i>
-                            </div>
-
-                            <div>
-
-                                <strong id="myFavoritesCount">
-                                    0
-                                </strong>
-
-                                <span>
-                                    Mes favoris
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     MES ANNONCES
-                ================================================== -->
-                <section class="account-section">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                PUBLICATIONS
-                            </span>
-
-                            <h2>
-                                <i class="fa-solid fa-bullhorn"></i>
-                                Mes annonces
-                            </h2>
-
-                            <p>
-                                Les annonces que vous avez publiées.
-                            </p>
-
-                        </div>
-
-
-                        <a
-                            href="publier.html"
-                            class="primary-button"
-                        >
-                            <i class="fa-solid fa-plus"></i>
-                            Publier
-                        </a>
-
-                    </div>
-
-
-                    <div
-                        class="account-ads-grid"
-                        id="myAdsContainer"
-                    ></div>
-
-
-                    <div
-                        class="account-empty"
-                        id="myAdsEmpty"
+                <div class="account-profile-info">
+
+                    <span class="account-label">
+                        Mon profil
+                    </span>
+
+                    <h1 id="accountName">
+                        Utilisateur
+                    </h1>
+
+                    <p
+                        class="account-email"
+                        id="accountEmail"
                     >
+                        —
+                    </p>
 
-                        <div class="empty-icon">
-                            <i class="fa-regular fa-folder-open"></i>
-                        </div>
-
-                        <h3>
-                            Aucune annonce
-                        </h3>
-
-                        <p>
-                            Vous n'avez pas encore publié d'annonce.
-                        </p>
-
-                        <a
-                            href="publier.html"
-                            class="primary-button"
-                        >
-                            <i class="fa-solid fa-plus"></i>
-                            Publier ma première annonce
-                        </a>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     FAVORIS
-                ================================================== -->
-                <section class="account-section">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                ENREGISTRÉS
-                            </span>
-
-                            <h2>
-                                <i class="fa-regular fa-heart"></i>
-                                Mes favoris
-                            </h2>
-
-                            <p>
-                                Les annonces que vous avez enregistrées.
-                            </p>
-
-                        </div>
-
-
-                        <a
-                            href="favoris.html"
-                            class="secondary-button"
-                        >
-                            Voir tout
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-
-                    </div>
-
-
-                    <div
-                        class="account-favorites-grid"
-                        id="myFavoritesContainer"
-                    ></div>
-
-
-                    <div
-                        class="account-empty"
-                        id="myFavoritesEmpty"
+                    <p
+                        class="account-phone"
+                        id="accountPhone"
                     >
+                        —
+                    </p>
 
-                        <div class="empty-icon">
-                            <i class="fa-regular fa-heart"></i>
-                        </div>
-
-                        <h3>
-                            Aucun favori
-                        </h3>
-
-                        <p>
-                            Enregistrez vos annonces préférées pour les retrouver facilement.
-                        </p>
-
-                        <a
-                            href="recherche.html"
-                            class="secondary-button"
-                        >
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            Rechercher
-                        </a>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     GESTION DU COMPTE
-                ================================================== -->
-                <section class="account-section">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <span class="section-label">
-                                GESTION
-                            </span>
-
-                            <h2>
-                                <i class="fa-solid fa-gear"></i>
-                                Mon compte
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="account-actions-grid">
-
-                        <a
-                            href="parametres.html"
-                            class="account-action-card"
-                        >
-
-                            <i class="fa-solid fa-gear"></i>
-
-                            <div>
-
-                                <strong>
-                                    Paramètres
-                                </strong>
-
-                                <span>
-                                    Gérer les paramètres de votre compte.
-                                </span>
-
-                            </div>
-
-                            <i class="fa-solid fa-chevron-right"></i>
-
-                        </a>
-
-
-                        <a
-                            href="publier.html"
-                            class="account-action-card"
-                        >
-
-                            <i class="fa-solid fa-circle-plus"></i>
-
-                            <div>
-
-                                <strong>
-                                    Nouvelle annonce
-                                </strong>
-
-                                <span>
-                                    Publier un produit ou un service.
-                                </span>
-
-                            </div>
-
-                            <i class="fa-solid fa-chevron-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </section>
-
-
-                <!-- =================================================
-                     DÉCONNEXION
-                ================================================== -->
-                <section class="account-section account-danger">
-
-                    <div>
-
-                        <h2>
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Déconnexion
-                        </h2>
-
-                        <p>
-                            Vous souhaitez quitter votre compte ?
-                        </p>
-
-                    </div>
+                    <p
+                        class="account-description"
+                        id="accountDescription"
+                    >
+                        Aucune description.
+                    </p>
 
 
                     <button
                         type="button"
-                        class="danger-button"
-                        id="logoutButtonBottom"
+                        class="account-edit-button"
+                        id="editProfileButton"
                     >
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Se déconnecter
+                        <i class="fa-solid fa-pen"></i>
+                        Modifier mon profil
                     </button>
 
-                </section>
+                </div>
 
             </section>
 
-        </main>
+
+            <!-- =================================================
+                 STATISTIQUES
+            ================================================== -->
+
+            <section class="account-stats">
+
+                <div class="account-stat">
+
+                    <div class="account-stat-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <div>
+                        <strong id="myAdsCount">0</strong>
+                        <span>Mes annonces</span>
+                    </div>
+
+                </div>
 
 
-        <!-- =====================================================
-             FOOTER
-        ====================================================== -->
-        <footer class="footer">
+                <div class="account-stat">
 
-            <div class="footer-content">
+                    <div class="account-stat-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
 
-                <div class="footer-brand">
+                    <div>
+                        <strong id="myFavoritesCount">0</strong>
+                        <span>Favoris</span>
+                    </div>
 
-                    <div class="logo">
+                </div>
 
-                        <span class="logo-main">
-                            CAMU
+
+                <div class="account-stat">
+
+                    <div class="account-stat-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+
+                    <div>
+                        <strong>Membre</strong>
+                        <span>CAMU SERVICES</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MES ANNONCES
+            ================================================== -->
+
+            <section class="account-section">
+
+                <div class="account-section-header">
+
+                    <div>
+                        <span class="account-label">
+                            Mes publications
                         </span>
 
-                        <span class="logo-sub">
-                            SERVICES
+                        <h2>
+                            Mes annonces
+                        </h2>
+                    </div>
+
+                    <a
+                        href="publier.html"
+                        class="account-section-link"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Nouvelle annonce
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="account-ads-grid"
+                    id="myAdsContainer"
+                ></div>
+
+
+                <div
+                    class="account-empty"
+                    id="myAdsEmpty"
+                    hidden
+                >
+
+                    <div class="account-empty-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <h3>
+                        Vous n'avez pas encore d'annonce
+                    </h3>
+
+                    <p>
+                        Publiez votre première annonce sur
+                        CAMU SERVICES.
+                    </p>
+
+                    <a
+                        href="publier.html"
+                        class="primary-button"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Publier une annonce
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FAVORIS
+            ================================================== -->
+
+            <section class="account-section">
+
+                <div class="account-section-header">
+
+                    <div>
+                        <span class="account-label">
+                            Mes favoris
                         </span>
+
+                        <h2>
+                            Annonces enregistrées
+                        </h2>
+                    </div>
+
+                    <a
+                        href="favoris.html"
+                        class="account-section-link"
+                    >
+                        Voir tous
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="account-favorites-grid"
+                    id="myFavoritesContainer"
+                ></div>
+
+
+                <div
+                    class="account-empty"
+                    id="myFavoritesEmpty"
+                    hidden
+                >
+
+                    <div class="account-empty-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <h3>
+                        Aucun favori
+                    </h3>
+
+                    <p>
+                        Les annonces que vous ajoutez à vos favoris
+                        apparaîtront ici.
+                    </p>
+
+                    <a
+                        href="recherche.html"
+                        class="primary-button"
+                    >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Rechercher une annonce
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 INFORMATIONS
+            ================================================== -->
+
+            <section class="account-section">
+
+                <div class="account-section-header">
+
+                    <div>
+                        <span class="account-label">
+                            Mon compte
+                        </span>
+
+                        <h2>
+                            Informations du compte
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <div class="account-info-grid">
+
+                    <div class="account-info-item">
+
+                        <span class="account-info-label">
+                            Nom
+                        </span>
+
+                        <strong id="accountInfoName">
+                            —
+                        </strong>
 
                     </div>
 
-                    <p>
-                        Trouver • Acheter • Réserver
-                    </p>
+
+                    <div class="account-info-item">
+
+                        <span class="account-info-label">
+                            Adresse e-mail
+                        </span>
+
+                        <strong id="accountInfoEmail">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-info-item">
+
+                        <span class="account-info-label">
+                            Téléphone
+                        </span>
+
+                        <strong id="accountInfoPhone">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="account-info-item">
+
+                        <span class="account-info-label">
+                            Statut
+                        </span>
+
+                        <strong>
+                            Compte actif
+                        </strong>
+
+                    </div>
 
                 </div>
 
+            </section>
 
-                <div class="footer-links">
 
-                    <a href="a-propos.html">
-                        À propos
-                    </a>
+            <!-- =================================================
+                 DECONNEXION
+            ================================================== -->
 
-                    <a href="contact.html">
-                        Contact
-                    </a>
+            <section class="account-logout-section">
 
-                    <a href="conditions.html">
-                        Mentions légales
-                    </a>
+                <button
+                    type="button"
+                    class="account-logout"
+                    id="logoutButtonBottom"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Se déconnecter
+                </button>
 
-                    <a href="conditions.html">
-                        Conditions d'utilisation
-                    </a>
+            </section>
 
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
+        </div>
 
-                    <a href="conditions.html">
-                        Règles de publication
-                    </a>
+    </section>
 
-                </div>
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+                <strong>CAMU SERVICES</strong>
+                <span>
+                    Trouver • Acheter • Réserver
+                </span>
+            </div>
+
+            <div class="footer-links">
+
+                <a href="a-propos.html">
+                    À propos
+                </a>
+
+                <a href="conditions.html">
+                    Mentions légales
+                </a>
+
+                <a href="conditions.html">
+                    CGU
+                </a>
+
+                <a href="politique.html">
+                    Confidentialité
+                </a>
 
             </div>
 
+        </div>
 
-            <div class="footer-bottom">
+        <div class="footer-bottom">
+            © 2026 CAMU SERVICES. Tous droits réservés.
+        </div>
 
-                <p>
-                    © 2026 CAMU SERVICES. Tous droits réservés.
-                </p>
+    </footer>
 
-            </div>
-
-        </footer>
-
-    </div>
+</main>
 
 
-    <!-- JAVASCRIPT -->
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/compte.js"></script>
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/compte.js"></script>
 
 </body>
 </html>
