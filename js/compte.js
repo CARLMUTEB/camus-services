@@ -6,28 +6,26 @@
 import { auth, db } from "./firebase-config.js";
 
 import {
-    onAuthStateChanged,
-    updateProfile
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
     doc,
     getDoc,
-    setDoc,
-    serverTimestamp,
     collection,
     query,
     where,
-    getDocs
+    getDocs,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 console.log("CAMU SERVICES — compte.js chargé.");
 
 
-/* =====================================================
-   ÉLÉMENTS HTML
-===================================================== */
+// =====================================================
+// ÉLÉMENTS HTML
+// =====================================================
 
 const accountName =
     document.getElementById("accountName");
@@ -65,58 +63,64 @@ const myAdsEmpty =
 const favoritesCount =
     document.getElementById("favoritesCount");
 
-const editProfileButton =
-    document.getElementById("editProfileButton");
 
-
-/* =====================================================
-   AFFICHER LA PHOTO
-===================================================== */
+// =====================================================
+// AFFICHER LA PHOTO DE PROFIL
+// =====================================================
 
 function displayProfilePhoto(photoURL) {
 
-    if (!accountAvatarImage ||
-        !accountAvatarDefault) {
+    if (
+        !accountAvatarImage ||
+        !accountAvatarDefault
+    ) {
         return;
     }
 
-    if (photoURL && photoURL.trim() !== "") {
+    if (
+        photoURL &&
+        photoURL.trim() !== ""
+    ) {
 
         accountAvatarImage.src = photoURL;
-        accountAvatarImage.style.display = "block";
 
-        accountAvatarDefault.style.display = "none";
+        accountAvatarImage.style.display =
+            "block";
 
-        console.log(
-            "Photo de profil affichée."
-        );
+        accountAvatarDefault.style.display =
+            "none";
 
     } else {
 
         accountAvatarImage.removeAttribute("src");
-        accountAvatarImage.style.display = "none";
 
-        accountAvatarDefault.style.display = "flex";
+        accountAvatarImage.style.display =
+            "none";
 
-        console.log(
-            "Aucune photo de profil."
-        );
+        accountAvatarDefault.style.display =
+            "flex";
     }
 }
 
 
-/* =====================================================
-   CHARGER LE PROFIL
-===================================================== */
+// =====================================================
+// CHARGER LE PROFIL
+// =====================================================
 
 async function loadUserProfile(user) {
 
-    if (!user) return;
+    if (!user) {
+        return;
+    }
 
     try {
 
         const userRef =
-            doc(db, "users", user.uid);
+            doc(
+                db,
+                "users",
+                user.uid
+            );
 
         const userSnap =
             await getDoc(userRef);
@@ -128,8 +132,6 @@ async function loadUserProfile(user) {
         }
 
 
-        /* Nom */
-
         const name =
             profile.name ||
             profile.displayName ||
@@ -137,15 +139,11 @@ async function loadUserProfile(user) {
             "Utilisateur CAMU";
 
 
-        /* Email */
-
         const email =
             profile.email ||
             user.email ||
             "";
 
-
-        /* Téléphone */
 
         const phone =
             profile.phone ||
@@ -154,14 +152,10 @@ async function loadUserProfile(user) {
             "";
 
 
-        /* Description */
-
         const description =
             profile.description ||
             "";
 
-
-        /* Photo */
 
         const photoURL =
             profile.photoURL ||
@@ -170,9 +164,9 @@ async function loadUserProfile(user) {
             "";
 
 
-        /* =========================
-           AFFICHAGE
-        ========================= */
+        // ---------------------------------------------
+        // Affichage
+        // ---------------------------------------------
 
         if (accountName) {
             accountName.textContent = name;
@@ -201,18 +195,11 @@ async function loadUserProfile(user) {
                 "Aucune description pour le moment.";
         }
 
-
         displayProfilePhoto(photoURL);
 
 
         console.log(
-            "CAMU SERVICES : profil chargé.",
-            {
-                name,
-                email,
-                phone,
-                photoURL
-            }
+            "CAMU SERVICES : profil chargé."
         );
 
 
@@ -224,8 +211,9 @@ async function loadUserProfile(user) {
         );
 
 
-        /* Même si Firestore échoue,
-           on utilise Firebase Auth */
+        // ---------------------------------------------
+        // Solution de secours avec Firebase Auth
+        // ---------------------------------------------
 
         const name =
             user.displayName ||
@@ -261,71 +249,100 @@ async function loadUserProfile(user) {
 }
 
 
-/* =====================================================
-   CHARGER MES ANNONCES
-===================================================== */
+// =====================================================
+// CHARGER MES ANNONCES
+// =====================================================
 
 async function loadMyAds(user) {
 
-    if (!user || !myAdsContainer) {
+    if (
+        !user ||
+        !myAdsContainer
+    ) {
         return;
     }
 
+
     try {
 
-        const servicesQuery = query(
-            collection(db, "services"),
-            where("ownerId", "==", user.uid)
-        );
+        const servicesQuery =
+            query(
+                collection(
+                    db,
+                    "services"
+                ),
+                where(
+                    "ownerId",
+                    "==",
+                    user.uid
+                )
+            );
 
 
         const snapshot =
-            await getDocs(servicesQuery);
+            await getDocs(
+                servicesQuery
+            );
 
 
         const ads = [];
 
 
-        snapshot.forEach((document) => {
+        snapshot.forEach(
+            (document) => {
 
-            ads.push({
-                id: document.id,
-                ...document.data()
-            });
+                ads.push({
+                    id: document.id,
+                    ...document.data()
+                });
 
-        });
-
-
-        /* Tri : plus récente en premier */
-
-        ads.sort((a, b) => {
-
-            const dateA =
-                a.createdAt?.seconds || 0;
-
-            const dateB =
-                b.createdAt?.seconds || 0;
-
-            return dateB - dateA;
-        });
+            }
+        );
 
 
-        /* Nombre d'annonces */
+        // ---------------------------------------------
+        // Trier du plus récent au plus ancien
+        // ---------------------------------------------
+
+        ads.sort(
+            (a, b) => {
+
+                const dateA =
+                    a.createdAt?.seconds ||
+                    0;
+
+                const dateB =
+                    b.createdAt?.seconds ||
+                    0;
+
+                return dateB - dateA;
+            }
+        );
+
+
+        // ---------------------------------------------
+        // Nombre d'annonces
+        // ---------------------------------------------
 
         if (myAdsCount) {
+
             myAdsCount.textContent =
                 ads.length;
         }
 
 
-        myAdsContainer.innerHTML = "";
+        myAdsContainer.innerHTML =
+            "";
 
 
-        /* Aucune annonce */
+        // ---------------------------------------------
+        // Aucune annonce
+        // ---------------------------------------------
 
         if (ads.length === 0) {
 
             if (myAdsEmpty) {
+
                 myAdsEmpty.style.display =
                     "block";
             }
@@ -334,143 +351,340 @@ async function loadMyAds(user) {
         }
 
 
-        /* Il y a des annonces */
-
         if (myAdsEmpty) {
+
             myAdsEmpty.style.display =
                 "none";
         }
 
 
-        ads.forEach((ad) => {
+        // =================================================
+        // AFFICHER LES ANNONCES
+        // =================================================
 
-            const card =
-                document.createElement("article");
+        ads.forEach(
+            (ad) => {
 
-            card.className =
-                "my-ad-card";
+                const card =
+                    document.createElement(
+                        "article"
+                    );
 
-
-            const image =
-                ad.images?.[0] ||
-                ad.imageURL ||
-                ad.imageUrl ||
-                "";
-
-
-            const title =
-                ad.title ||
-                "Annonce sans titre";
+                card.className =
+                    "my-ad-card";
 
 
-            const price =
-                ad.price
-                    ? `${formatPrice(ad.price)} ${ad.currency || "USD"}`
-                    : "Prix sur demande";
+                // -----------------------------------------
+                // Image
+                // -----------------------------------------
+
+                const image =
+                    ad.images?.[0] ||
+                    ad.imageURL ||
+                    ad.imageUrl ||
+                    "";
 
 
-            const location =
-                [
-                    ad.neighborhood,
-                    ad.city
-                ]
-                .filter(Boolean)
-                .join(", ");
+                // -----------------------------------------
+                // Titre
+                // -----------------------------------------
+
+                const title =
+                    ad.title ||
+                    "Annonce sans titre";
 
 
-            let imageHTML = "";
+                // -----------------------------------------
+                // Prix
+                // -----------------------------------------
+
+                const price =
+                    ad.price
+                        ? `${formatPrice(ad.price)} ${ad.currency || "USD"}`
+                        : "Prix sur demande";
 
 
-            if (image) {
+                // -----------------------------------------
+                // Localisation
+                // -----------------------------------------
 
-                imageHTML = `
-                    <img
-                        class="my-ad-image"
-                        src="${escapeHTML(image)}"
-                        alt="${escapeHTML(title)}"
-                    >
-                `;
+                const location =
+                    [
+                        ad.neighborhood,
+                        ad.city
+                    ]
+                    .filter(Boolean)
+                    .join(", ");
 
-            } else {
 
-                imageHTML = `
-                    <div
-                        class="my-ad-image"
-                        style="
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            background:#f1f5f9;
-                            color:#94a3b8;
-                        "
-                    >
-                        <i
-                            class="fa-solid fa-image"
-                            style="font-size:35px;"
-                        ></i>
+                // -----------------------------------------
+                // Image HTML
+                // -----------------------------------------
+
+                let imageHTML = "";
+
+
+                if (image) {
+
+                    imageHTML = `
+                        <img
+                            class="my-ad-image"
+                            src="${escapeHTML(image)}"
+                            alt="${escapeHTML(title)}"
+                        >
+                    `;
+
+                } else {
+
+                    imageHTML = `
+                        <div
+                            class="my-ad-image"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                background:#f1f5f9;
+                                color:#94a3b8;
+                            "
+                        >
+                            <i
+                                class="fa-solid fa-image"
+                                style="font-size:35px;"
+                            ></i>
+                        </div>
+                    `;
+                }
+
+
+                // =================================================
+                // CARTE
+                // =================================================
+
+                card.innerHTML = `
+
+                    ${imageHTML}
+
+                    <div class="my-ad-content">
+
+                        <h3>
+                            ${escapeHTML(title)}
+                        </h3>
+
+                        <div class="my-ad-price">
+                            ${escapeHTML(price)}
+                        </div>
+
+                        <div class="my-ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            ${escapeHTML(
+                                location ||
+                                "Localisation non renseignée"
+                            )}
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="my-ad-actions">
+
+                            <a
+                                class="my-ad-view"
+                                href="explorer.html?id=${encodeURIComponent(ad.id)}"
+                            >
+                                👁️ Voir
+                            </a>
+
+
+                            <a
+                                class="my-ad-edit"
+                                href="modifier.html?id=${encodeURIComponent(ad.id)}"
+                            >
+                                ✏️ Modifier
+                            </a>
+
+
+                            <button
+                                type="button"
+                                class="my-ad-delete"
+                                data-id="${escapeHTML(ad.id)}"
+                            >
+                                🗑️ Supprimer
+                            </button>
+
+                        </div>
+
                     </div>
                 `;
+
+
+                myAdsContainer.appendChild(
+                    card
+                );
+
+
+                // =================================================
+                // BOUTON SUPPRIMER
+                // =================================================
+
+                const deleteButton =
+                    card.querySelector(
+                        ".my-ad-delete"
+                    );
+
+
+                if (deleteButton) {
+
+                    deleteButton.addEventListener(
+                        "click",
+                        async () => {
+
+                            const serviceId =
+                                deleteButton.dataset.id;
+
+
+                            // -------------------------------------
+                            // Confirmation
+                            // -------------------------------------
+
+                            const confirmation =
+                                confirm(
+                                    "Voulez-vous vraiment supprimer cette annonce ?\n\nCette action est définitive."
+                                );
+
+
+                            if (!confirmation) {
+                                return;
+                            }
+
+
+                            try {
+
+                                deleteButton.disabled =
+                                    true;
+
+                                deleteButton.textContent =
+                                    "Suppression...";
+
+
+                                // ---------------------------------
+                                // Récupérer l'annonce
+                                // ---------------------------------
+
+                                const serviceRef =
+                                    doc(
+                                        db,
+                                        "services",
+                                        serviceId
+                                    );
+
+
+                                const serviceSnap =
+                                    await getDoc(
+                                        serviceRef
+                                    );
+
+
+                                if (
+                                    !serviceSnap.exists()
+                                ) {
+
+                                    alert(
+                                        "Cette annonce n'existe plus."
+                                    );
+
+                                    await loadMyAds(
+                                        auth.currentUser
+                                    );
+
+                                    return;
+                                }
+
+
+                                const serviceData =
+                                    serviceSnap.data();
+
+
+                                // ---------------------------------
+                                // Vérification du propriétaire
+                                // ---------------------------------
+
+                                if (
+                                    serviceData.ownerId !==
+                                    auth.currentUser.uid
+                                ) {
+
+                                    alert(
+                                        "Vous ne pouvez supprimer que vos propres annonces."
+                                    );
+
+                                    deleteButton.disabled =
+                                        false;
+
+                                    deleteButton.textContent =
+                                        "🗑️ Supprimer";
+
+                                    return;
+                                }
+
+
+                                // ---------------------------------
+                                // Suppression Firebase
+                                // ---------------------------------
+
+                                await deleteDoc(
+                                    serviceRef
+                                );
+
+
+                                console.log(
+                                    "Annonce supprimée :",
+                                    serviceId
+                                );
+
+
+                                alert(
+                                    "Annonce supprimée avec succès."
+                                );
+
+
+                                // ---------------------------------
+                                // Actualiser la liste
+                                // ---------------------------------
+
+                                await loadMyAds(
+                                    auth.currentUser
+                                );
+
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Erreur suppression annonce :",
+                                    error
+                                );
+
+
+                                alert(
+                                    "Impossible de supprimer l'annonce."
+                                );
+
+
+                                deleteButton.disabled =
+                                    false;
+
+                                deleteButton.textContent =
+                                    "🗑️ Supprimer";
+                            }
+
+                        }
+                    );
+                }
+
             }
-
-
-            card.innerHTML = `
-
-                ${imageHTML}
-
-                <div class="my-ad-content">
-
-                    <h3>
-                        ${escapeHTML(title)}
-                    </h3>
-
-                    <div class="my-ad-price">
-                        ${escapeHTML(price)}
-                    </div>
-
-                    <div class="my-ad-location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        ${escapeHTML(
-                            location ||
-                            "Localisation non renseignée"
-                        )}
-
-                    </div>
-
-                   <div class="my-ad-actions">
-
-    <a
-        class="my-ad-view"
-        href="explorer.html?id=${encodeURIComponent(ad.id)}"
-    >
-        👁️ Voir
-    </a>
-
-    <a
-        class="my-ad-edit"
-        href="modifier.html?id=${encodeURIComponent(ad.id)}"
-    >
-        ✏️ Modifier
-    </a>
-
-    <button
-        type="button"
-        class="my-ad-delete"
-        data-id="${escapeHTML(ad.id)}"
-    >
-        🗑️ Supprimer
-    </button>
-
-</div>
-
-                </div>
-            `;
-
-
-            myAdsContainer.appendChild(card);
-
-        });
+        );
 
 
         console.log(
@@ -488,15 +702,20 @@ async function loadMyAds(user) {
 
         myAdsContainer.innerHTML = `
 
-            <div style="
-                padding:20px;
-                text-align:center;
-                color:#dc2626;
-            ">
+            <div
+                style="
+                    padding:20px;
+                    text-align:center;
+                    color:#dc2626;
+                "
+            >
 
                 <i
                     class="fa-solid fa-triangle-exclamation"
-                    style="font-size:30px;margin-bottom:10px;"
+                    style="
+                        font-size:30px;
+                        margin-bottom:10px;
+                    "
                 ></i>
 
                 <p>
@@ -510,9 +729,9 @@ async function loadMyAds(user) {
 }
 
 
-/* =====================================================
-   COMPTER LES FAVORIS
-===================================================== */
+// =====================================================
+// COMPTER LES FAVORIS
+// =====================================================
 
 function loadFavoritesCount() {
 
@@ -520,10 +739,14 @@ function loadFavoritesCount() {
         return;
     }
 
+
     try {
 
         const stored =
-            localStorage.getItem("camuFavorites");
+            localStorage.getItem(
+                "camuFavorites"
+            );
+
 
         const favorites =
             stored
@@ -531,7 +754,11 @@ function loadFavoritesCount() {
                 : [];
 
 
-        if (Array.isArray(favorites)) {
+        if (
+            Array.isArray(
+                favorites
+            )
+        ) {
 
             favoritesCount.textContent =
                 favorites.length;
@@ -556,196 +783,17 @@ function loadFavoritesCount() {
 }
 
 
-/* =====================================================
-   MODIFIER LE PROFIL
-===================================================== */
-
-if (editProfileButton) {
-
-    editProfileButton.addEventListener(
-        "click",
-        async () => {
-
-            const user =
-                auth.currentUser;
-
-
-            if (!user) {
-
-                window.location.href =
-                    "connexion.html";
-
-                return;
-            }
-
-
-            try {
-
-                /* Récupérer les données actuelles */
-
-                const snapshot =
-                    await getDoc(
-                        doc(
-                            db,
-                            "users",
-                            user.uid
-                        )
-                    );
-
-
-                const profile =
-                    snapshot.exists()
-                        ? snapshot.data()
-                        : {};
-
-
-                const currentName =
-                    profile.name ||
-                    user.displayName ||
-                    "";
-
-
-                const currentPhone =
-                    profile.phone ||
-                    "";
-
-
-                const currentDescription =
-                    profile.description ||
-                    "";
-
-
-                /* Nom */
-
-                const newName =
-                    prompt(
-                        "Votre nom :",
-                        currentName
-                    );
-
-
-                if (newName === null) {
-                    return;
-                }
-
-
-                const cleanName =
-                    newName.trim();
-
-
-                if (!cleanName) {
-
-                    alert(
-                        "Le nom ne peut pas être vide."
-                    );
-
-                    return;
-                }
-
-
-                /* Téléphone */
-
-                const newPhone =
-                    prompt(
-                        "Votre numéro WhatsApp / téléphone :",
-                        currentPhone
-                    );
-
-
-                if (newPhone === null) {
-                    return;
-                }
-
-
-                /* Description */
-
-                const newDescription =
-                    prompt(
-                        "Votre description :",
-                        currentDescription
-                    );
-
-
-                if (newDescription === null) {
-                    return;
-                }
-
-
-                /* Firebase Auth */
-
-                await updateProfile(
-                    user,
-                    {
-                        displayName:
-                            cleanName
-                    }
-                );
-
-
-                /* Firestore */
-
-                await setDoc(
-                    doc(
-                        db,
-                        "users",
-                        user.uid
-                    ),
-                    {
-                        name:
-                            cleanName,
-
-                        displayName:
-                            cleanName,
-
-                        phone:
-                            newPhone.trim(),
-
-                        description:
-                            newDescription.trim(),
-
-                        updatedAt:
-                            serverTimestamp()
-                    },
-                    {
-                        merge: true
-                    }
-                );
-
-
-                /* Rafraîchir */
-
-                await loadUserProfile(user);
-
-
-                alert(
-                    "Votre profil a été mis à jour avec succès."
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur modification profil :",
-                    error
-                );
-
-
-                alert(
-                    "Impossible de modifier votre profil."
-                );
-            }
-        }
-    );
-}
-
-
-/* =====================================================
-   AUTHENTIFICATION
-===================================================== */
+// =====================================================
+// AUTHENTIFICATION
+// =====================================================
 
 onAuthStateChanged(
     auth,
     async (user) => {
+
+        // ---------------------------------------------
+        // Utilisateur non connecté
+        // ---------------------------------------------
 
         if (!user) {
 
@@ -767,13 +815,19 @@ onAuthStateChanged(
         );
 
 
-        /*
-         * Charger les différentes données
-         */
+        // ---------------------------------------------
+        // Charger les données
+        // ---------------------------------------------
 
-        await loadUserProfile(user);
+        await loadUserProfile(
+            user
+        );
 
-        await loadMyAds(user);
+
+        await loadMyAds(
+            user
+        );
+
 
         loadFavoritesCount();
 
@@ -781,9 +835,9 @@ onAuthStateChanged(
 );
 
 
-/* =====================================================
-   OUTILS
-===================================================== */
+// =====================================================
+// OUTILS
+// =====================================================
 
 function formatPrice(value) {
 
@@ -791,7 +845,10 @@ function formatPrice(value) {
         Number(value);
 
 
-    if (Number.isNaN(number)) {
+    if (
+        Number.isNaN(number)
+    ) {
+
         return String(value);
     }
 
@@ -805,9 +862,24 @@ function formatPrice(value) {
 function escapeHTML(value) {
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
