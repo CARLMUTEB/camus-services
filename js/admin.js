@@ -27,7 +27,7 @@ import {
    Remplace cette adresse par l'adresse Gmail réellement
    utilisée comme administrateur CAMU SERVICES.
 */
-const ADMIN_EMAIL = "carlmuteb@gmail.com";
+const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 
 /* =========================================================
