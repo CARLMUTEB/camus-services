@@ -438,15 +438,31 @@ async function loadMyAds(user) {
 
                     </div>
 
-                    <div class="my-ad-actions">
+                   <div class="my-ad-actions">
 
-                        <a
-                            href="explorer.html?id=${encodeURIComponent(ad.id)}"
-                        >
-                            Voir l'annonce
-                        </a>
+    <a
+        class="my-ad-view"
+        href="explorer.html?id=${encodeURIComponent(ad.id)}"
+    >
+        👁️ Voir
+    </a>
 
-                    </div>
+    <a
+        class="my-ad-edit"
+        href="modifier.html?id=${encodeURIComponent(ad.id)}"
+    >
+        ✏️ Modifier
+    </a>
+
+    <button
+        type="button"
+        class="my-ad-delete"
+        data-id="${escapeHTML(ad.id)}"
+    >
+        🗑️ Supprimer
+    </button>
+
+</div>
 
                 </div>
             `;
