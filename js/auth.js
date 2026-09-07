@@ -1,13 +1,12 @@
 // =====================================================
 // CAMU SERVICES
 // AUTHENTIFICATION + COMPTE UTILISATEUR
-// Firebase Authentication + Firestore + Storage
+// Firebase Authentication + Firestore + Cloudinary
 // =====================================================
 
 import {
     auth,
-    db,
-    storage
+    db
 } from "./firebase-config.js";
 
 import {
@@ -26,11 +25,16 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-import {
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+// =====================================================
+// CLOUDINARY
+// =====================================================
+
+const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 // =====================================================
@@ -53,7 +57,7 @@ function showMessage(elementId, message, type = "error") {
 
 
 // =====================================================
-// MESSAGE POUR LA PAGE COMPTE
+// MESSAGE PAGE COMPTE
 // =====================================================
 
 function showAccountMessage(message, type = "success") {
@@ -114,15 +118,6 @@ function getFirebaseErrorMessage(error) {
         case "auth/operation-not-allowed":
             return "La connexion par e-mail n'est pas activée dans Firebase.";
 
-        case "storage/unauthorized":
-            return "Vous n'avez pas l'autorisation d'envoyer cette photo.";
-
-        case "storage/canceled":
-            return "L'envoi de la photo a été annulé.";
-
-        case "storage/quota-exceeded":
-            return "L'espace de stockage est insuffisant.";
-
         default:
             return "Une erreur est survenue. Veuillez réessayer.";
     }
@@ -165,7 +160,6 @@ document.addEventListener("click", function (event) {
             icon.classList.add("fa-eye");
         }
     }
-
 });
 
 
@@ -369,7 +363,6 @@ if (registerForm) {
                 `;
             }
         }
-
     });
 }
 
@@ -495,7 +488,6 @@ if (loginForm) {
                 `;
             }
         }
-
     });
 }
 
@@ -512,6 +504,7 @@ if (forgotPassword) {
     forgotPassword.addEventListener("click", async function (event) {
 
         event.preventDefault();
+
 
         const emailInput =
             document.getElementById("loginEmail");
@@ -560,7 +553,6 @@ if (forgotPassword) {
                 "error"
             );
         }
-
     });
 }
 
@@ -676,19 +668,28 @@ async function loadUserProfile(user) {
         // PHOTO
         // -------------------------------------------------
 
-        const avatar =
-            document.getElementById("accountAvatar");
+        const avatarImage =
+            document.getElementById("accountAvatarImage");
 
-        if (avatar) {
+        const avatarDefault =
+            document.getElementById("accountAvatarDefault");
+
+
+        if (avatarImage && avatarDefault) {
 
             if (photoURL) {
 
-                avatar.src = photoURL;
+                avatarImage.src = photoURL;
+                avatarImage.style.display = "block";
+
+                avatarDefault.style.display = "none";
 
             } else {
 
-                avatar.src =
-                    "logo.png";
+                avatarImage.src = "";
+                avatarImage.style.display = "none";
+
+                avatarDefault.style.display = "flex";
             }
         }
 
@@ -703,9 +704,7 @@ async function loadUserProfile(user) {
             );
 
         if (photoInput) {
-
-            photoInput.dataset.uid =
-                user.uid;
+            photoInput.dataset.uid = user.uid;
         }
 
 
@@ -720,6 +719,7 @@ async function loadUserProfile(user) {
             "Erreur chargement profil :",
             error
         );
+
 
         showAccountMessage(
             "Impossible de charger votre profil.",
@@ -776,7 +776,6 @@ onAuthStateChanged(
             if (isAccountPage) {
 
                 await loadUserProfile(user);
-
             }
         }
 
@@ -791,13 +790,12 @@ onAuthStateChanged(
                 "CAMU SERVICES : aucun utilisateur connecté."
             );
         }
-
     }
 );
 
 
 // =====================================================
-// PHOTO DE PROFIL
+// PHOTO DE PROFIL — CLOUDINARY
 // =====================================================
 
 const profilePhotoInput =
@@ -877,38 +875,67 @@ if (profilePhotoInput) {
 
 
                 // -------------------------------------------------
-                // NOM DU FICHIER
+                // PRÉPARER CLOUDINARY
                 // -------------------------------------------------
 
-                const fileName =
-                    `profile_${Date.now()}_${file.name}`;
+                const formData =
+                    new FormData();
 
-
-                const storageRef =
-                    ref(
-                        storage,
-                        `users/${user.uid}/profile/${fileName}`
-                    );
-
-
-                // -------------------------------------------------
-                // UPLOAD
-                // -------------------------------------------------
-
-                await uploadBytes(
-                    storageRef,
+                formData.append(
+                    "file",
                     file
+                );
+
+                formData.append(
+                    "upload_preset",
+                    CLOUDINARY_UPLOAD_PRESET
+                );
+
+                formData.append(
+                    "folder",
+                    `camu-services/profiles/${user.uid}`
                 );
 
 
                 // -------------------------------------------------
-                // URL
+                // UPLOAD CLOUDINARY
                 // -------------------------------------------------
 
-                const photoURL =
-                    await getDownloadURL(
-                        storageRef
+                const response =
+                    await fetch(
+                        CLOUDINARY_UPLOAD_URL,
+                        {
+                            method: "POST",
+                            body: formData
+                        }
                     );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok || !result.secure_url) {
+
+                    console.error(
+                        "Cloudinary Error :",
+                        result
+                    );
+
+                    throw new Error(
+                        "L'envoi de la photo vers Cloudinary a échoué."
+                    );
+                }
+
+
+                const photoURL =
+                    result.secure_url;
+
+
+                console.log(
+                    "Photo Cloudinary :",
+                    photoURL
+                );
 
 
                 // -------------------------------------------------
@@ -940,24 +967,49 @@ if (profilePhotoInput) {
 
 
                 // -------------------------------------------------
-                // AFFICHER PHOTO
+                // AFFICHER IMMÉDIATEMENT LA PHOTO
                 // -------------------------------------------------
 
-                const avatar =
+                const avatarImage =
                     document.getElementById(
-                        "accountAvatar"
+                        "accountAvatarImage"
+                    );
+
+                const avatarDefault =
+                    document.getElementById(
+                        "accountAvatarDefault"
                     );
 
 
-                if (avatar) {
-                    avatar.src = photoURL;
+                if (avatarImage) {
+
+                    avatarImage.src =
+                        photoURL;
+
+                    avatarImage.style.display =
+                        "block";
                 }
 
+
+                if (avatarDefault) {
+
+                    avatarDefault.style.display =
+                        "none";
+                }
+
+
+                // -------------------------------------------------
+                // MESSAGE
+                // -------------------------------------------------
 
                 showAccountMessage(
                     "Photo de profil mise à jour.",
                     "success"
                 );
+
+
+                // Réinitialiser input
+                this.value = "";
 
 
             } catch (error) {
@@ -969,9 +1021,12 @@ if (profilePhotoInput) {
 
 
                 showAccountMessage(
-                    getFirebaseErrorMessage(error),
+                    error.message ||
+                    "Impossible d'envoyer la photo.",
                     "error"
                 );
+
+                this.value = "";
             }
 
         }
@@ -1009,7 +1064,7 @@ if (editProfileButton) {
 
 
             // -------------------------------------------------
-            // RÉCUPÉRATION DU PROFIL ACTUEL
+            // RÉCUPÉRATION DU PROFIL
             // -------------------------------------------------
 
             let profile = {};
@@ -1123,8 +1178,7 @@ if (editProfileButton) {
                 await updateProfile(
                     user,
                     {
-                        displayName:
-                            cleanName
+                        displayName: cleanName
                     }
                 );
 
@@ -1136,17 +1190,10 @@ if (editProfileButton) {
                 await setDoc(
                     doc(db, "users", user.uid),
                     {
-                        name:
-                            cleanName,
-
-                        phone:
-                            newPhone.trim(),
-
-                        description:
-                            newDescription.trim(),
-
-                        updatedAt:
-                            serverTimestamp()
+                        name: cleanName,
+                        phone: newPhone.trim(),
+                        description: newDescription.trim(),
+                        updatedAt: serverTimestamp()
                     },
                     {
                         merge: true
@@ -1155,7 +1202,7 @@ if (editProfileButton) {
 
 
                 // -------------------------------------------------
-                // RAFRAÎCHIR L'AFFICHAGE
+                // RAFRAÎCHIR NOM
                 // -------------------------------------------------
 
                 const nameElement =
@@ -1171,6 +1218,10 @@ if (editProfileButton) {
                 }
 
 
+                // -------------------------------------------------
+                // RAFRAÎCHIR TÉLÉPHONE
+                // -------------------------------------------------
+
                 const phoneElement =
                     document.getElementById(
                         "accountPhone"
@@ -1184,6 +1235,10 @@ if (editProfileButton) {
                         "Non renseigné";
                 }
 
+
+                // -------------------------------------------------
+                // RAFRAÎCHIR DESCRIPTION
+                // -------------------------------------------------
 
                 const descriptionElement =
                     document.getElementById(
