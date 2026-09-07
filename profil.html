@@ -1,414 +1,264 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="description" content="Profil de l'annonceur — CAMU SERVICES">
 
-    <title>Mon profil — CAMU SERVICES</title>
+    <title>Profil — CAMU SERVICES</title>
 
-    <link
-        rel="stylesheet"
-        href="css/main.css"
-    >
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link
-        rel="stylesheet"
-        href="css/responsive.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    >
-
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profil.css">
 </head>
 
 <body>
 
-<div class="app-container">
+<!-- HEADER MOBILE -->
+<header class="mobile-header">
 
-    <header class="top-bar">
-
-        <button
-            id="menu-toggle"
-            class="menu-btn"
+    <button id="menuToggle"
+            class="mobile-menu-button"
             type="button"
-            aria-label="Ouvrir le menu"
-        >
-            <i class="fas fa-bars"></i>
-        </button>
+            aria-label="Ouvrir le menu">
 
-        <div class="logo">
-            CAMU SERVICES
-        </div>
+        <i class="fa-solid fa-bars"></i>
 
-        <button
-            id="profile-btn"
-            class="profile-btn"
-            type="button"
-        >
-            <i class="fas fa-user"></i>
-            Profil
-        </button>
+    </button>
 
-    </header>
+    <a href="index.html" class="mobile-logo">
+        CAMU <span>SERVICES</span>
+    </a>
 
+    <a href="compte.html"
+       class="mobile-account"
+       aria-label="Mon compte">
 
-    <main class="profile-page">
+        <i class="fa-solid fa-user"></i>
 
-        <section class="profile-card">
+    </a>
 
-            <div class="profile-avatar">
-
-                <img
-                    id="profile-avatar"
-                    src="assets/default-avatar.png"
-                    alt="Photo de profil"
-                >
-
-            </div>
+</header>
 
 
-            <h1 id="profile-name">
-                Chargement...
-            </h1>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
+    <div class="sidebar-logo">
+        CAMU <span>SERVICES</span>
+    </div>
 
-            <div
-                id="profile-error"
-                class="error"
-            ></div>
+    <nav class="sidebar-nav">
 
-
-            <div class="profile-info">
-
-                <div class="profile-info-row">
-
-                    <strong>Email</strong>
-
-                    <span id="profile-email">
-                        —
-                    </span>
-
-                </div>
-
-
-                <div class="profile-info-row">
-
-                    <strong>Téléphone</strong>
-
-                    <span id="profile-phone">
-                        —
-                    </span>
-
-                </div>
-
-
-                <div class="profile-info-row">
-
-                    <strong>Type de compte</strong>
-
-                    <span id="profile-role">
-                        —
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="profile-logout"
-                class="btn-logout"
-                type="button"
-                style="margin-top:20px;"
-            >
-                <i class="fas fa-sign-out-alt"></i>
-                Déconnexion
-            </button>
-
-        </section>
-
-    </main>
-
-
-    <footer class="app-footer">
-
-        <ul class="footer-links">
-
-            <li>
-                <a href="index.html">
-                    ACCUEIL
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    À-PROPOS
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    CONDITIONS
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    CONFIDENTIALITÉ
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    CONTACTS
-                </a>
-            </li>
-
-        </ul>
-
-    </footer>
-
-
-    <nav class="bottom-nav">
-
-        <a
-            href="index.html"
-        >
-            <i class="fas fa-home"></i>
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
             <span>Accueil</span>
         </a>
 
-        <a
-            href="chat.html"
-        >
-            <i class="fas fa-comment-dots"></i>
-            <span>Chat</span>
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
         </a>
 
-        <a
-            href="publier.html"
-        >
-            <i class="fas fa-plus-circle"></i>
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-folder"></i>
+            <span>Catégories</span>
+        </a>
+
+        <a href="publier.html" class="nav-item">
+            <i class="fa-solid fa-plus"></i>
             <span>Publier</span>
         </a>
 
-        <a
-            href="favoris.html"
-        >
-            <i class="fas fa-heart"></i>
+        <a href="favoris.html" class="nav-item">
+            <i class="fa-solid fa-heart"></i>
             <span>Favoris</span>
+        </a>
+
+        <a href="compte.html" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+
+        <a href="parametres.html" class="nav-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
         </a>
 
     </nav>
 
-</div>
+</aside>
 
 
-<script type="module">
+<!-- CONTENU -->
+<main class="main-content">
 
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <div class="public-profile-container">
 
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        <!-- RETOUR -->
+        <a href="javascript:history.back()" class="profile-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Retour
+        </a>
 
-import {
-    auth,
-    db
-} from "./js/config/firebase.js";
 
-import {
-    signOutUser
-} from "./js/core/auth.js";
+        <!-- CHARGEMENT -->
+        <div id="profileLoading" class="profile-loading">
 
+            <i class="fa-solid fa-spinner fa-spin"></i>
 
-const nameElement =
-    document.getElementById(
-        "profile-name"
-    );
+            <p>Chargement du profil...</p>
 
-const emailElement =
-    document.getElementById(
-        "profile-email"
-    );
+        </div>
 
-const phoneElement =
-    document.getElementById(
-        "profile-phone"
-    );
 
-const roleElement =
-    document.getElementById(
-        "profile-role"
-    );
+        <!-- ERREUR -->
+        <div id="profileError"
+             class="profile-error hidden">
 
-const avatarElement =
-    document.getElementById(
-        "profile-avatar"
-    );
+            <i class="fa-solid fa-circle-exclamation"></i>
 
-const errorElement =
-    document.getElementById(
-        "profile-error"
-    );
+            <h2>Profil introuvable</h2>
 
-const logoutButton =
-    document.getElementById(
-        "profile-logout"
-    );
+            <p>
+                Ce profil n'est pas disponible.
+            </p>
 
+            <a href="index.html" class="primary-button">
+                Retour à l'accueil
+            </a>
 
-function displayRole(role) {
+        </div>
 
-    if (role === "admin") {
-        return "Administrateur";
-    }
 
-    if (role === "professional") {
-        return "Professionnel";
-    }
+        <!-- PROFIL -->
+        <section id="publicProfile"
+                 class="public-profile hidden">
 
-    return "Client";
-}
 
+            <!-- EN-TÊTE PROFIL -->
+            <div class="profile-header-card">
 
-onAuthStateChanged(
-    auth,
-    async user => {
+                <div class="public-avatar">
 
-        if (!user) {
+                    <img id="profilePhoto"
+                         src=""
+                         alt="Photo du profil">
 
-            window.location.href =
-                "connexion.html";
+                    <div id="defaultProfileIcon"
+                         class="default-profile-icon">
 
-            return;
-        }
+                        <i class="fa-solid fa-user"></i>
 
+                    </div>
 
-        try {
+                </div>
 
-            nameElement.textContent =
-                user.displayName ||
-                "Utilisateur";
 
-            emailElement.textContent =
-                user.email || "—";
+                <div class="profile-header-info">
 
+                    <h1 id="profileName">
+                        —
+                    </h1>
 
-            const reference =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
+                    <p class="profile-member">
 
+                        <i class="fa-solid fa-circle-check"></i>
 
-            const snapshot =
-                await getDoc(
-                    reference
-                );
+                        Membre de CAMU SERVICES
 
+                    </p>
 
-            if (snapshot.exists()) {
+                    <p id="profileDescription"
+                       class="profile-description">
 
-                const data =
-                    snapshot.data();
+                        —
 
+                    </p>
 
-                nameElement.textContent =
-                    data.displayName ||
-                    user.displayName ||
-                    "Utilisateur";
+                </div>
 
+            </div>
 
-                phoneElement.textContent =
-                    data.phoneNumber ||
-                    "—";
 
+            <!-- STATISTIQUES -->
+            <div class="profile-stats">
 
-                roleElement.textContent =
-                    displayRole(
-                        data.role
-                    );
+                <div class="profile-stat">
 
+                    <strong id="profileAdsCount">
+                        0
+                    </strong>
 
-                if (data.photoURL) {
+                    <span>
+                        Annonces
+                    </span>
 
-                    avatarElement.src =
-                        data.photoURL;
-                }
+                </div>
 
-            } else {
+            </div>
 
-                phoneElement.textContent =
-                    "—";
 
-                roleElement.textContent =
-                    "Client";
-            }
+            <!-- ANNONCES -->
+            <section class="profile-ads-section">
 
-        } catch (error) {
+                <div class="profile-section-title">
 
-            console.error(
-                "Erreur profil :",
-                error
-            );
+                    <div>
 
-            errorElement.textContent =
-                "Impossible de charger les données du profil.";
-        }
-    }
-);
+                        <h2>
+                            Annonces publiées
+                        </h2>
 
+                        <p>
+                            Découvrez les annonces de cet annonceur.
+                        </p>
 
-logoutButton.addEventListener(
-    "click",
-    async () => {
+                    </div>
 
-        logoutButton.disabled =
-            true;
+                </div>
 
-        logoutButton.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Déconnexion...';
 
+                <div id="profileAds"
+                     class="profile-ads-grid">
+                </div>
 
-        const result =
-            await signOutUser();
 
+                <!-- VIDE -->
+                <div id="profileAdsEmpty"
+                     class="profile-empty hidden">
 
-        if (result.success) {
+                    <div class="profile-empty-icon">
 
-            window.location.href =
-                "connexion.html";
+                        <i class="fa-solid fa-box-open"></i>
 
-            return;
-        }
+                    </div>
 
+                    <h3>
+                        Aucune annonce
+                    </h3>
 
-        errorElement.textContent =
-            result.error ||
-            "Impossible de se déconnecter.";
+                    <p>
+                        Cet annonceur n'a pas encore publié d'annonce.
+                    </p>
 
-        logoutButton.disabled =
-            false;
+                </div>
 
-        logoutButton.innerHTML =
-            '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-    }
-);
+            </section>
 
-</script>
+        </section>
+
+    </div>
+
+</main>
+
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/profil.js"></script>
 
 </body>
 </html>
