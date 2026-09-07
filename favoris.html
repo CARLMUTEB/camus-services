@@ -1,323 +1,227 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="description"
+          content="Mes annonces favorites — CAMU SERVICES">
 
     <title>Mes favoris — CAMU SERVICES</title>
 
-    <link
-        rel="stylesheet"
-        href="css/main.css"
-    >
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link
-        rel="stylesheet"
-        href="css/responsive.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    >
-
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/favoris.css">
 </head>
 
 <body>
 
-<header class="top-bar">
+<!-- ==============================
+     HEADER MOBILE
+================================ -->
 
-    <button
-        id="back-btn"
-        class="menu-btn"
-    >
-        <i class="fas fa-arrow-left"></i>
+<header class="mobile-header">
+
+    <button id="menuToggle"
+            class="mobile-menu-button"
+            type="button"
+            aria-label="Ouvrir le menu">
+
+        <i class="fa-solid fa-bars"></i>
+
     </button>
 
-    <div class="logo">
-        CAMU SERVICES
-    </div>
+    <a href="index.html" class="mobile-logo">
+        CAMU <span>SERVICES</span>
+    </a>
 
-    <button
-        id="home-btn"
-        class="profile-btn"
-    >
-        <i class="fas fa-home"></i>
-    </button>
+    <a href="compte.html"
+       class="mobile-account"
+       aria-label="Mon compte">
+
+        <i class="fa-solid fa-user"></i>
+
+    </a>
 
 </header>
 
 
-<main class="favorites-page">
+<!-- ==============================
+     SIDEBAR
+================================ -->
 
-    <div class="favorites-header">
+<aside class="sidebar" id="sidebar">
 
-        <div>
+    <div class="sidebar-logo">
+        CAMU <span>SERVICES</span>
+    </div>
 
-            <h1>
-                <i class="fas fa-heart"></i>
-                Mes favoris
-            </h1>
+    <nav class="sidebar-nav">
+
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a href="recherche.html" class="nav-item">
+            <i class="fa-solid fa-folder"></i>
+            <span>Catégories</span>
+        </a>
+
+        <a href="publier.html" class="nav-item">
+            <i class="fa-solid fa-plus"></i>
+            <span>Publier</span>
+        </a>
+
+        <a href="favoris.html"
+           class="nav-item active">
+
+            <i class="fa-solid fa-heart"></i>
+            <span>Favoris</span>
+
+        </a>
+
+        <a href="compte.html" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+
+        <a href="parametres.html" class="nav-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ==============================
+     CONTENU
+================================ -->
+
+<main class="main-content">
+
+    <div class="favorites-page">
+
+        <!-- EN-TÊTE -->
+
+        <section class="favorites-header">
+
+            <div>
+
+                <span class="favorites-label">
+                    <i class="fa-solid fa-heart"></i>
+                    Mes favoris
+                </span>
+
+                <h1>
+                    Mes annonces favorites
+                </h1>
+
+                <p>
+                    Retrouvez ici les annonces que vous avez sauvegardées.
+                </p>
+
+            </div>
+
+            <a href="recherche.html"
+               class="favorites-search-button">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Rechercher une annonce
+
+            </a>
+
+        </section>
+
+
+        <!-- COMPTEUR -->
+
+        <div class="favorites-count">
+
+            <i class="fa-solid fa-heart"></i>
+
+            <span id="favoritesCount">
+                0
+            </span>
+
+            annonce(s) enregistrée(s)
+
+        </div>
+
+
+        <!-- CHARGEMENT -->
+
+        <div id="favoritesLoading"
+             class="favorites-loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
 
             <p>
-                Retrouvez les annonces que vous avez enregistrées.
+                Chargement de vos favoris...
             </p>
 
         </div>
 
-        <span id="favorites-count">
-            0
-        </span>
 
-    </div>
+        <!-- LISTE -->
 
-
-    <div
-        id="favorites-message"
-        class="favorites-message"
-    ></div>
+        <section id="favoritesContainer"
+                 class="favorites-grid">
+        </section>
 
 
-    <div
-        id="favorites-list"
-        class="favorites-grid"
-    >
+        <!-- AUCUN FAVORI -->
 
-        <div class="favorites-loading">
+        <section id="favoritesEmpty"
+                 class="favorites-empty"
+                 hidden>
 
-            <i class="fas fa-spinner fa-spin"></i>
+            <div class="favorites-empty-icon">
 
-            Chargement de vos favoris...
+                <i class="fa-regular fa-heart"></i>
 
-        </div>
+            </div>
+
+            <h2>
+                Aucun favori pour le moment
+            </h2>
+
+            <p>
+                Lorsque vous trouverez une annonce intéressante,
+                ajoutez-la à vos favoris pour la retrouver facilement.
+            </p>
+
+            <a href="recherche.html"
+               class="favorites-empty-button">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Découvrir les annonces
+
+            </a>
+
+        </section>
 
     </div>
 
 </main>
 
 
-<style>
-
-.favorites-page {
-    max-width: 1100px;
-
-    margin: 30px auto;
-
-    padding: 20px;
-}
-
-.favorites-header {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 25px;
-}
-
-.favorites-header h1 {
-    color: var(--primary);
-
-    margin-bottom: 5px;
-}
-
-.favorites-header p {
-    color: var(--text-secondary);
-}
-
-#favorites-count {
-    min-width: 40px;
-
-    height: 40px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background: var(--primary);
-
-    color: white;
-
-    font-weight: bold;
-}
-
-.favorites-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(auto-fill, minmax(240px, 1fr));
-
-    gap: 18px;
-}
-
-.favorite-card {
-    background: white;
-
-    border-radius: 14px;
-
-    overflow: hidden;
-
-    border: 1px solid var(--border);
-
-    box-shadow: var(--shadow);
-
-    transition: transform .2s;
-}
-
-.favorite-card:hover {
-    transform: translateY(-3px);
-}
-
-.favorite-image {
-    width: 100%;
-
-    height: 180px;
-
-    object-fit: cover;
-
-    background: #eeeeee;
-}
-
-.favorite-body {
-    padding: 14px;
-}
-
-.favorite-title {
-    font-size: 17px;
-
-    font-weight: 700;
-
-    margin-bottom: 7px;
-}
-
-.favorite-category {
-    color: var(--text-secondary);
-
-    font-size: 13px;
-}
-
-.favorite-price {
-    color: var(--primary);
-
-    font-weight: 700;
-
-    font-size: 18px;
-
-    margin: 8px 0;
-}
-
-.favorite-city {
-    color: var(--text-secondary);
-
-    font-size: 13px;
-
-    margin-bottom: 12px;
-}
-
-.favorite-actions {
-    display: flex;
-
-    gap: 8px;
-}
-
-.favorite-actions button {
-    flex: 1;
-
-    border: none;
-
-    padding: 10px;
-
-    border-radius: 20px;
-
-    cursor: pointer;
-
-    font-weight: 600;
-}
-
-.view-btn {
-    background: var(--primary);
-
-    color: white;
-}
-
-.remove-btn {
-    background: #ffebee;
-
-    color: #d32f2f;
-}
-
-.favorites-loading,
-.empty-favorites {
-    grid-column: 1 / -1;
-
-    text-align: center;
-
-    padding: 60px 20px;
-
-    color: var(--text-secondary);
-}
-
-.empty-favorites i {
-    display: block;
-
-    font-size: 50px;
-
-    color: #ccc;
-
-    margin-bottom: 15px;
-}
-
-.favorites-message {
-    display: none;
-
-    padding: 12px;
-
-    border-radius: 10px;
-
-    margin-bottom: 15px;
-
-    text-align: center;
-}
-
-.favorites-message.error {
-    display: block;
-
-    background: #ffebee;
-
-    color: #c62828;
-}
-
-@media (max-width: 600px) {
-
-    .favorites-page {
-        margin: 10px auto;
-
-        padding: 12px;
-    }
-
-    .favorites-header {
-        align-items: flex-start;
-    }
-
-}
-
-</style>
-
-
-<script
-    type="module"
-    src="js/pages/favoris.js"
-></script>
+<!-- ==============================
+     JAVASCRIPT
+================================ -->
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/favoris.js"></script>
 
 </body>
 </html>
