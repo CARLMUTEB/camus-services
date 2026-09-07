@@ -1,17 +1,19 @@
-// =========================================================
-// CAMU SERVICES — COMPTE.JS
-// Gestion de la page Mon compte
-// =========================================================
+/* =========================================================
+   CAMU SERVICES — COMPTE.JS
+========================================================= */
 
 import { auth, db } from "./firebase-config.js";
 
 import {
-    onAuthStateChanged
+    onAuthStateChanged,
+    updateProfile
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
     doc,
     getDoc,
+    setDoc,
+    serverTimestamp,
     collection,
     query,
     where,
@@ -19,18 +21,15 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-// =========================================================
-// ELEMENTS
-// =========================================================
+console.log("CAMU SERVICES — compte.js chargé.");
 
-const accountLoading =
-    document.getElementById("accountLoading");
 
-const accountContent =
-    document.getElementById("accountContent");
+/* =========================================================
+   ÉLÉMENTS
+========================================================= */
 
-const accountMessage =
-    document.getElementById("accountMessage");
+const accountName = document.getElementById("accountName");
+const accountEmail = document.getElementById("accountEmail");
 
 const accountAvatarImage =
     document.getElementById("accountAvatarImage");
@@ -38,62 +37,43 @@ const accountAvatarImage =
 const accountAvatarDefault =
     document.getElementById("accountAvatarDefault");
 
-const accountName =
-    document.getElementById("accountName");
+const profileName =
+    document.getElementById("profileName");
 
-const accountEmail =
-    document.getElementById("accountEmail");
+const profileEmail =
+    document.getElementById("profileEmail");
 
-const accountPhone =
-    document.getElementById("accountPhone");
+const profilePhone =
+    document.getElementById("profilePhone");
 
-const accountDescription =
-    document.getElementById("accountDescription");
+const profileDescription =
+    document.getElementById("profileDescription");
 
-const accountInfoName =
-    document.getElementById("accountInfoName");
+const profilePhotoInput =
+    document.getElementById("profilePhotoInput");
 
-const accountInfoEmail =
-    document.getElementById("accountInfoEmail");
+const editProfileButton =
+    document.getElementById("editProfileButton");
 
-const accountInfoPhone =
-    document.getElementById("accountInfoPhone");
+const logoutButton =
+    document.getElementById("logoutButton");
 
 const myAdsContainer =
     document.getElementById("myAdsContainer");
 
-const myAdsEmpty =
-    document.getElementById("myAdsEmpty");
-
 const myAdsCount =
     document.getElementById("myAdsCount");
 
-const myFavoritesContainer =
-    document.getElementById("myFavoritesContainer");
+const favoritesCount =
+    document.getElementById("favoritesCount");
 
-const myFavoritesEmpty =
-    document.getElementById("myFavoritesEmpty");
-
-const myFavoritesCount =
-    document.getElementById("myFavoritesCount");
+const myAdsEmpty =
+    document.getElementById("myAdsEmpty");
 
 
-// =========================================================
-// MESSAGE
-// =========================================================
-
-function showMessage(message) {
-
-    if (!accountMessage) return;
-
-    accountMessage.textContent = message;
-    accountMessage.hidden = false;
-}
-
-
-// =========================================================
-// PHOTO DE PROFIL
-// =========================================================
+/* =========================================================
+   AFFICHER PHOTO
+========================================================= */
 
 function displayProfilePhoto(photoURL) {
 
@@ -102,16 +82,18 @@ function displayProfilePhoto(photoURL) {
         return;
     }
 
-    if (photoURL) {
+    if (photoURL && photoURL.trim() !== "") {
 
         accountAvatarImage.src = photoURL;
+
         accountAvatarImage.style.display = "block";
 
         accountAvatarDefault.style.display = "none";
 
     } else {
 
-        accountAvatarImage.src = "";
+        accountAvatarImage.removeAttribute("src");
+
         accountAvatarImage.style.display = "none";
 
         accountAvatarDefault.style.display = "flex";
@@ -119,11 +101,11 @@ function displayProfilePhoto(photoURL) {
 }
 
 
-// =========================================================
-// CHARGER LE PROFIL
-// =========================================================
+/* =========================================================
+   CHARGER PROFIL
+========================================================= */
 
-async function loadProfile(user) {
+async function loadUserProfile(user) {
 
     try {
 
@@ -133,89 +115,90 @@ async function loadProfile(user) {
         const userSnap =
             await getDoc(userRef);
 
-        let profile = {};
+        let data = {};
 
         if (userSnap.exists()) {
-            profile = userSnap.data();
+            data = userSnap.data();
         }
 
 
-        // =====================================================
-        // INFORMATIONS
-        // =====================================================
-
         const name =
-            profile.name ||
+            data.name ||
+            data.displayName ||
             user.displayName ||
-            "Utilisateur";
+            "Utilisateur CAMU";
 
 
         const email =
-            profile.email ||
+            data.email ||
             user.email ||
-            "—";
+            "";
 
 
         const phone =
-            profile.phone ||
-            user.phoneNumber ||
-            "—";
+            data.phone ||
+            data.telephone ||
+            "Non renseigné";
 
 
         const description =
-            profile.description ||
-            "Aucune description pour le moment.";
+            data.description ||
+            "Non renseignée";
 
 
         const photoURL =
-            profile.photoURL ||
-            profile.photoUrl ||
+            data.photoURL ||
+            data.photoUrl ||
             user.photoURL ||
             "";
 
 
-        // =====================================================
-        // AFFICHAGE
-        // =====================================================
+        /* Nom */
 
         if (accountName) {
             accountName.textContent = name;
         }
 
+        if (profileName) {
+            profileName.textContent = name;
+        }
+
+
+        /* Email */
+
         if (accountEmail) {
             accountEmail.textContent = email;
         }
 
-        if (accountPhone) {
-            accountPhone.textContent = phone;
-        }
-
-        if (accountDescription) {
-            accountDescription.textContent = description;
+        if (profileEmail) {
+            profileEmail.textContent = email;
         }
 
 
-        if (accountInfoName) {
-            accountInfoName.textContent = name;
-        }
+        /* Téléphone */
 
-        if (accountInfoEmail) {
-            accountInfoEmail.textContent = email;
-        }
-
-        if (accountInfoPhone) {
-            accountInfoPhone.textContent = phone;
+        if (profilePhone) {
+            profilePhone.textContent = phone;
         }
 
 
-        // Photo
+        /* Description */
 
-        console.log(
-            "CAMU SERVICES — Photo de profil :",
-            photoURL || "Aucune photo"
-        );
+        if (profileDescription) {
+            profileDescription.textContent =
+                description;
+        }
+
+
+        /* Photo */
 
         displayProfilePhoto(photoURL);
+
+
+        console.log(
+            "Photo de profil :",
+            photoURL || "Aucune photo"
+        );
 
 
     } catch (error) {
@@ -225,36 +208,51 @@ async function loadProfile(user) {
             error
         );
 
-        showMessage(
-            "Impossible de charger certaines informations du profil."
+        if (accountName) {
+            accountName.textContent =
+                user.displayName ||
+                "Utilisateur CAMU";
+        }
+
+        if (accountEmail) {
+            accountEmail.textContent =
+                user.email || "";
+        }
+
+        displayProfilePhoto(
+            user.photoURL || ""
         );
     }
 }
 
 
-// =========================================================
-// CHARGER MES ANNONCES
-// =========================================================
+/* =========================================================
+   CHARGER MES ANNONCES
+========================================================= */
 
 async function loadMyAds(user) {
 
-    if (!myAdsContainer) return;
+    if (!myAdsContainer) {
+        return;
+    }
 
     try {
 
         const servicesRef =
             collection(db, "services");
 
-        const q =
+        const servicesQuery =
             query(
                 servicesRef,
                 where("ownerId", "==", user.uid)
             );
 
         const snapshot =
-            await getDocs(q);
+            await getDocs(servicesQuery);
+
 
         const ads = [];
+
 
         snapshot.forEach((item) => {
 
@@ -266,62 +264,146 @@ async function loadMyAds(user) {
         });
 
 
-        // Trier du plus récent au plus ancien
+        /* Tri par date */
 
         ads.sort((a, b) => {
 
             const dateA =
-                a.createdAt?.seconds ||
-                0;
+                a.createdAt?.seconds || 0;
 
             const dateB =
-                b.createdAt?.seconds ||
-                0;
+                b.createdAt?.seconds || 0;
 
             return dateB - dateA;
+
         });
 
 
-        // Nombre
-
         if (myAdsCount) {
-            myAdsCount.textContent = ads.length;
+            myAdsCount.textContent =
+                ads.length;
         }
 
-
-        // Vider
 
         myAdsContainer.innerHTML = "";
 
 
-        // Aucun résultat
-
         if (ads.length === 0) {
 
-            myAdsContainer.hidden = true;
-
             if (myAdsEmpty) {
-                myAdsEmpty.hidden = false;
+                myAdsEmpty.style.display =
+                    "block";
             }
 
             return;
         }
 
 
-        myAdsContainer.hidden = false;
-
         if (myAdsEmpty) {
-            myAdsEmpty.hidden = true;
+            myAdsEmpty.style.display =
+                "none";
         }
 
 
-        // Afficher maximum 8
+        ads.forEach((ad) => {
 
-        ads.slice(0, 8).forEach((ad) => {
+            const card =
+                document.createElement("article");
 
-            myAdsContainer.appendChild(
-                createAdCard(ad)
-            );
+            card.className =
+                "my-ad-card";
+
+
+            const image =
+                ad.images?.[0] ||
+                ad.imageURL ||
+                ad.imageUrl ||
+                "";
+
+
+            const imageHTML =
+                image
+                    ? `
+                        <img
+                            class="my-ad-image"
+                            src="${image}"
+                            alt="${escapeHTML(ad.title || "Annonce")}"
+                        >
+                      `
+                    : `
+                        <div
+                            class="my-ad-image"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                background:#f1f5f9;
+                                color:#94a3b8;
+                            "
+                        >
+                            <i class="fa-solid fa-image"
+                               style="font-size:35px;">
+                            </i>
+                        </div>
+                      `;
+
+
+            const price =
+                ad.price
+                    ? `${formatPrice(ad.price)} ${ad.currency || "USD"}`
+                    : "Prix sur demande";
+
+
+            const location =
+                [
+                    ad.neighborhood,
+                    ad.city
+                ]
+                .filter(Boolean)
+                .join(", ");
+
+
+            card.innerHTML = `
+
+                ${imageHTML}
+
+                <div class="my-ad-content">
+
+                    <h3>
+                        ${escapeHTML(
+                            ad.title || "Sans titre"
+                        )}
+                    </h3>
+
+                    <div class="my-ad-price">
+                        ${escapeHTML(price)}
+                    </div>
+
+                    <div class="my-ad-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        ${escapeHTML(
+                            location || "Localisation non renseignée"
+                        )}
+
+                    </div>
+
+                    <div class="my-ad-actions">
+
+                        <a
+                            href="explorer.html?id=${encodeURIComponent(ad.id)}"
+                        >
+                            Voir
+                        </a>
+
+                    </div>
+
+                </div>
+            `;
+
+
+            myAdsContainer.appendChild(card);
 
         });
 
@@ -333,12 +415,11 @@ async function loadMyAds(user) {
             error
         );
 
-        if (myAdsCount) {
-            myAdsCount.textContent = "0";
-        }
-
         myAdsContainer.innerHTML = `
-            <p>
+            <p style="
+                padding:20px;
+                color:#dc2626;
+            ">
                 Impossible de charger vos annonces.
             </p>
         `;
@@ -346,333 +427,249 @@ async function loadMyAds(user) {
 }
 
 
-// =========================================================
-// CREER CARTE ANNONCE
-// =========================================================
+/* =========================================================
+   FAVORIS
+========================================================= */
 
-function createAdCard(ad) {
+function loadFavoritesCount() {
 
-    const card =
-        document.createElement("article");
-
-    card.className =
-        "account-ad-card";
-
-
-    // =====================================================
-    // IMAGE
-    // =====================================================
-
-    let imageURL =
-        "https://placehold.co/600x400?text=CAMU+SERVICES";
-
-
-    if (
-        Array.isArray(ad.images) &&
-        ad.images.length > 0
-    ) {
-
-        imageURL =
-            ad.images[0];
-
-    } else if (ad.imageURL) {
-
-        imageURL =
-            ad.imageURL;
-
-    } else if (ad.imageUrl) {
-
-        imageURL =
-            ad.imageUrl;
-    }
-
-
-    // =====================================================
-    // PRIX
-    // =====================================================
-
-    let price = "";
-
-    if (
-        ad.price !== undefined &&
-        ad.price !== null &&
-        ad.price !== ""
-    ) {
-
-        const number =
-            Number(ad.price);
-
-        if (!isNaN(number)) {
-
-            price =
-                number.toLocaleString("fr-FR");
-
-        } else {
-
-            price = ad.price;
-        }
-
-
-        if (ad.currency) {
-            price += ` ${ad.currency}`;
-        }
-    }
-
-
-    // =====================================================
-    // STATUS
-    // =====================================================
-
-    const status =
-        ad.status ||
-        "active";
-
-
-    // =====================================================
-    // HTML
-    // =====================================================
-
-    card.innerHTML = `
-
-        <a
-            href="explorer.html?id=${encodeURIComponent(ad.id)}"
-            class="account-ad-link"
-        >
-
-            <img
-                src="${escapeHTML(imageURL)}"
-                alt="${escapeHTML(ad.title || "Annonce")}"
-                class="account-ad-image"
-                loading="lazy"
-                onerror="this.src='https://placehold.co/600x400?text=CAMU+SERVICES'"
-            >
-
-
-            <div class="account-ad-content">
-
-                ${
-                    ad.category
-                    ?
-                    `
-                    <div class="account-ad-category">
-                        ${escapeHTML(ad.category)}
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-
-                <h3 class="account-ad-title">
-                    ${escapeHTML(
-                        ad.title ||
-                        "Sans titre"
-                    )}
-                </h3>
-
-
-                ${
-                    price
-                    ?
-                    `
-                    <div class="account-ad-price">
-                        ${escapeHTML(price)}
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-
-                <div class="account-ad-location">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    <span>
-                        ${escapeHTML(
-                            ad.city ||
-                            "Localisation non précisée"
-                        )}
-                    </span>
-
-                </div>
-
-
-                ${
-                    ad.neighborhood
-                    ?
-                    `
-                    <div class="account-ad-location">
-
-                        <i class="fa-solid fa-map-pin"></i>
-
-                        <span>
-                            ${escapeHTML(ad.neighborhood)}
-                        </span>
-
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-
-                <span class="account-ad-status">
-                    ${escapeHTML(status)}
-                </span>
-
-            </div>
-
-        </a>
-    `;
-
-
-    return card;
-}
-
-
-// =========================================================
-// FAVORIS
-// =========================================================
-
-function loadFavorites() {
-
-    if (!myFavoritesContainer) {
+    if (!favoritesCount) {
         return;
     }
 
-
-    let favorites = [];
-
     try {
 
-        favorites =
+        const favorites =
             JSON.parse(
                 localStorage.getItem("camuFavorites")
             ) || [];
 
+        favoritesCount.textContent =
+            Array.isArray(favorites)
+                ? favorites.length
+                : 0;
+
     } catch (error) {
 
-        favorites = [];
+        favoritesCount.textContent = "0";
+
     }
-
-
-    if (myFavoritesCount) {
-        myFavoritesCount.textContent =
-            favorites.length;
-    }
-
-
-    myFavoritesContainer.innerHTML = "";
-
-
-    if (favorites.length === 0) {
-
-        myFavoritesContainer.hidden = true;
-
-        if (myFavoritesEmpty) {
-            myFavoritesEmpty.hidden = false;
-        }
-
-        return;
-    }
-
-
-    myFavoritesContainer.hidden = false;
-
-    if (myFavoritesEmpty) {
-        myFavoritesEmpty.hidden = true;
-    }
-
-
-    /*
-     * Pour la V1, les favoris sont conservés
-     * dans localStorage.
-     *
-     * Le système pourra ensuite être remplacé
-     * par une collection Firestore "favoris".
-     */
-
-
-    favorites.slice(0, 4).forEach((favorite) => {
-
-        const id =
-            typeof favorite === "string"
-                ? favorite
-                : favorite.id;
-
-
-        if (!id) return;
-
-
-        const card =
-            document.createElement("article");
-
-        card.className =
-            "account-ad-card";
-
-
-        card.innerHTML = `
-
-            <a
-                href="explorer.html?id=${encodeURIComponent(id)}"
-                class="account-ad-link"
-            >
-
-                <div
-                    class="account-ad-image"
-                    style="
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        font-size:30px;
-                        color:#64748b;
-                    "
-                >
-                    <i class="fa-solid fa-heart"></i>
-                </div>
-
-
-                <div class="account-ad-content">
-
-                    <h3 class="account-ad-title">
-                        Annonce enregistrée
-                    </h3>
-
-                    <div class="account-ad-location">
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                        <span>
-                            Voir l'annonce
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </a>
-
-        `;
-
-
-        myFavoritesContainer.appendChild(card);
-
-    });
 }
 
 
-// =========================================================
-// SECURITE HTML
-// =========================================================
+/* =========================================================
+   MODIFIER PROFIL
+========================================================= */
+
+if (editProfileButton) {
+
+    editProfileButton.addEventListener(
+        "click",
+        async () => {
+
+            const user =
+                auth.currentUser;
+
+            if (!user) {
+                return;
+            }
+
+
+            const currentName =
+                user.displayName || "";
+
+
+            const newName =
+                prompt(
+                    "Votre nom :",
+                    currentName
+                );
+
+
+            if (
+                newName === null ||
+                newName.trim() === ""
+            ) {
+                return;
+            }
+
+
+            try {
+
+                await updateProfile(
+                    user,
+                    {
+                        displayName:
+                            newName.trim()
+                    }
+                );
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
+                    {
+                        name:
+                            newName.trim(),
+
+                        displayName:
+                            newName.trim(),
+
+                        updatedAt:
+                            serverTimestamp()
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+
+                await loadUserProfile(user);
+
+
+                alert(
+                    "Votre profil a été mis à jour."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur modification profil :",
+                    error
+                );
+
+                alert(
+                    "Impossible de modifier votre profil."
+                );
+
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   CHANGER PHOTO
+   NOTE :
+   L'UPLOAD CLOUDINARY EST GÉRÉ DANS auth.js
+   SI auth.js ÉCOUTE profilePhotoInput.
+========================================================= */
+
+if (profilePhotoInput) {
+
+    profilePhotoInput.addEventListener(
+        "change",
+        () => {
+
+            const file =
+                profilePhotoInput.files?.[0];
+
+            if (!file) {
+                return;
+            }
+
+            console.log(
+                "Nouvelle photo sélectionnée :",
+                file.name
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await auth.signOut();
+
+                window.location.href =
+                    "connexion.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur déconnexion :",
+                    error
+                );
+
+                alert(
+                    "Impossible de se déconnecter."
+                );
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   AUTHENTIFICATION
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+        }
+
+
+        console.log(
+            "Compte connecté :",
+            user.email
+        );
+
+
+        await loadUserProfile(user);
+
+        await loadMyAds(user);
+
+        loadFavoritesCount();
+
+    }
+);
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+function formatPrice(value) {
+
+    const number =
+        Number(value);
+
+    if (Number.isNaN(number)) {
+        return String(value);
+    }
+
+    return number.toLocaleString(
+        "fr-FR"
+    );
+}
+
 
 function escapeHTML(value) {
-
-    if (value === null ||
-        value === undefined) {
-
-        return "";
-    }
 
     return String(value)
         .replace(/&/g, "&amp;")
@@ -681,219 +678,3 @@ function escapeHTML(value) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
-
-// =========================================================
-// AUTHENTIFICATION
-// =========================================================
-
-onAuthStateChanged(auth, async (user) => {
-
-    console.log(
-        "CAMU SERVICES — compte.js :",
-        user
-            ? `Utilisateur connecté : ${user.email}`
-            : "Aucun utilisateur connecté"
-    );
-
-
-    // =====================================================
-    // PAS CONNECTE
-    // =====================================================
-
-    if (!user) {
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-    }
-
-
-    try {
-
-        // Charger profil
-
-        await loadProfile(user);
-
-
-        // Charger annonces
-
-        await loadMyAds(user);
-
-
-        // Charger favoris
-
-        loadFavorites();
-
-
-        // Afficher page
-
-        if (accountLoading) {
-            accountLoading.hidden = true;
-        }
-
-        if (accountContent) {
-            accountContent.hidden = false;
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur compte :",
-            error
-        );
-
-        if (accountLoading) {
-            accountLoading.hidden = true;
-        }
-
-        showMessage(
-            "Une erreur est survenue lors du chargement du compte."
-        );
-    }
-
-});
-
-
-// =========================================================
-// MODIFIER LE PROFIL
-// =========================================================
-
-const editProfileButton =
-    document.getElementById(
-        "editProfileButton"
-    );
-
-
-if (editProfileButton) {
-
-    editProfileButton.addEventListener(
-        "click",
-        () => {
-
-            /*
-             * La modification complète du profil
-             * reste gérée par auth.js.
-             *
-             * Cette partie pourra ensuite être remplacée
-             * par une vraie fenêtre de modification.
-             */
-
-            const name =
-                prompt(
-                    "Entrez votre nouveau nom :",
-                    accountName?.textContent || ""
-                );
-
-
-            if (
-                name !== null &&
-                name.trim() !== ""
-            ) {
-
-                /*
-                 * Pour le moment, on demande à auth.js
-                 * de gérer la mise à jour.
-                 *
-                 * La fonctionnalité complète sera centralisée
-                 * ensuite si nécessaire.
-                 */
-
-                window.dispatchEvent(
-                    new CustomEvent(
-                        "camu-edit-profile",
-                        {
-                            detail: {
-                                name: name.trim()
-                            }
-                        }
-                    )
-                );
-            }
-
-        }
-    );
-}
-
-
-// =========================================================
-// PHOTO DE PROFIL
-// =========================================================
-
-const profilePhotoInput =
-    document.getElementById(
-        "profilePhotoInput"
-    );
-
-
-if (profilePhotoInput) {
-
-    profilePhotoInput.addEventListener(
-        "change",
-        async (event) => {
-
-            /*
-             * La gestion réelle de l'upload est effectuée
-             * dans auth.js.
-             *
-             * On affiche simplement un aperçu local
-             * immédiatement.
-             */
-
-            const file =
-                event.target.files?.[0];
-
-
-            if (!file) return;
-
-
-            if (
-                !file.type.startsWith("image/")
-            ) {
-
-                alert(
-                    "Veuillez sélectionner une image."
-                );
-
-                profilePhotoInput.value = "";
-
-                return;
-            }
-
-
-            if (
-                file.size >
-                5 * 1024 * 1024
-            ) {
-
-                alert(
-                    "La photo ne doit pas dépasser 5 MB."
-                );
-
-                profilePhotoInput.value = "";
-
-                return;
-            }
-
-
-            const localURL =
-                URL.createObjectURL(file);
-
-
-            displayProfilePhoto(localURL);
-
-
-            console.log(
-                "CAMU SERVICES — aperçu photo chargé."
-            );
-
-        }
-    );
-}
-
-
-console.log(
-    "CAMU SERVICES — compte.js chargé correctement."
-);
