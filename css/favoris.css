@@ -1,0 +1,521 @@
+/* =========================================================
+   CAMU SERVICES — FAVORIS
+========================================================= */
+
+.favorites-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.favorites-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    margin-bottom: 25px;
+}
+
+.favorites-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #16a34a;
+}
+
+.favorites-header h1 {
+    margin: 8px 0 6px;
+
+    font-size: 32px;
+    font-weight: 800;
+
+    color: #111827;
+}
+
+.favorites-header p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   BOUTON RECHERCHE
+========================================================= */
+
+.favorites-search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 12px 18px;
+
+    border-radius: 10px;
+
+    background: #16a34a;
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.favorites-search-button:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   COMPTEUR
+========================================================= */
+
+.favorites-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    padding: 13px 16px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+.favorites-count i {
+    color: #ef4444;
+}
+
+.favorites-count span {
+    font-weight: 800;
+    color: #111827;
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.favorites-loading {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    color: #6b7280;
+}
+
+.favorites-loading i {
+    font-size: 28px;
+    color: #16a34a;
+}
+
+.favorites-loading p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   GRILLE
+========================================================= */
+
+.favorites-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CARTE ANNONCE
+========================================================= */
+
+.favorite-card {
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
+
+    transition: 0.2s ease;
+}
+
+.favorite-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.favorite-image-wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 190px;
+
+    background: #f3f4f6;
+
+    overflow: hidden;
+}
+
+.favorite-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================================================
+   BOUTON RETIRER
+========================================================= */
+
+.favorite-remove {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: #ef4444;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.15);
+
+    transition: 0.2s ease;
+}
+
+.favorite-remove:hover {
+    background: #fee2e2;
+
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   CONTENU CARTE
+========================================================= */
+
+.favorite-content {
+    padding: 15px;
+}
+
+.favorite-category {
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #ecfdf5;
+
+    color: #15803d;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.favorite-title {
+    margin: 0 0 8px;
+
+    font-size: 16px;
+    font-weight: 750;
+
+    color: #111827;
+
+    line-height: 1.35;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.favorite-price {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    color: #16a34a;
+}
+
+.favorite-location {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 13px;
+
+    font-size: 13px;
+
+    color: #6b7280;
+}
+
+.favorite-location i {
+    color: #ef4444;
+}
+
+
+/* =========================================================
+   VOIR L'ANNONCE
+========================================================= */
+
+.favorite-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: #111827;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.favorite-view:hover {
+    border-color: #16a34a;
+
+    background: #f0fdf4;
+
+    color: #15803d;
+}
+
+
+/* =========================================================
+   AUCUN FAVORI
+========================================================= */
+
+.favorites-empty {
+    padding: 70px 25px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+}
+
+.favorites-empty-icon {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fef2f2;
+
+    color: #ef4444;
+
+    font-size: 30px;
+}
+
+.favorites-empty h2 {
+    margin: 0 0 8px;
+
+    font-size: 21px;
+
+    color: #111827;
+}
+
+.favorites-empty p {
+    max-width: 520px;
+
+    margin: 0 auto 22px;
+
+    color: #6b7280;
+
+    line-height: 1.6;
+}
+
+.favorites-empty-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 18px;
+
+    border-radius: 9px;
+
+    background: #16a34a;
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.favorites-empty-button:hover {
+    background: #15803d;
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .favorites-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .favorites-page {
+        padding: 20px 15px;
+    }
+
+    .favorites-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .favorites-header h1 {
+        font-size: 26px;
+    }
+
+    .favorites-search-button {
+        width: 100%;
+    }
+
+    .favorites-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+    .favorite-image-wrapper {
+        height: 160px;
+    }
+
+}
+
+
+/* =========================================================
+   PETIT MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .favorites-page {
+        padding: 16px 12px;
+    }
+
+    .favorites-header h1 {
+        font-size: 23px;
+    }
+
+    .favorites-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .favorite-image-wrapper {
+        height: 210px;
+    }
+
+    .favorites-empty {
+        padding: 50px 18px;
+    }
+
+}
