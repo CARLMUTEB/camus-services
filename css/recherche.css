@@ -1,0 +1,317 @@
+/* =========================================================
+   CAMU SERVICES — PAGE RECHERCHE
+========================================================= */
+
+.recherche-page {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.recherche-hero {
+    margin-bottom: 30px;
+    padding: 55px 40px;
+    border-radius: 24px;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color, #16a34a),
+        #0f766e
+    );
+    color: #fff;
+}
+
+.recherche-hero-content {
+    max-width: 700px;
+}
+
+.recherche-hero .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.15);
+}
+
+.recherche-hero h1 {
+    margin: 0 0 15px;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+}
+
+.recherche-hero h1 span {
+    display: inline;
+}
+
+.recherche-hero p {
+    margin: 0;
+    font-size: 17px;
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   PANNEAU DE RECHERCHE
+========================================================= */
+
+.search-panel {
+    margin-bottom: 45px;
+    padding: 28px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.search-panel form {
+    display: grid;
+    grid-template-columns:
+        minmax(200px, 2fr)
+        minmax(170px, 1fr)
+        minmax(170px, 1fr)
+        auto;
+    gap: 16px;
+    align-items: end;
+}
+
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.search-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.search-input-group label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+}
+
+.search-input-group input,
+.search-input-group select {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.search-input-group input:focus,
+.search-input-group select:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.10);
+}
+
+
+/* =========================================================
+   BOUTON
+========================================================= */
+
+.search-submit {
+    min-height: 50px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 12px;
+    background: #16a34a;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s ease;
+}
+
+.search-submit:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+}
+
+
+/* =========================================================
+   COMPTEUR
+========================================================= */
+
+.results-count {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   GRILLE
+========================================================= */
+
+.recherche-ads-grid {
+    min-height: 180px;
+}
+
+
+/* =========================================================
+   CARTE ANNONCE
+========================================================= */
+
+.recherche-ads-grid .ad-card {
+    cursor: pointer;
+}
+
+.recherche-ads-grid .ad-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.search-loading {
+    width: 100%;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+}
+
+.search-loading i {
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   AUCUN RÉSULTAT
+========================================================= */
+
+.search-empty {
+    width: 100%;
+    min-height: 220px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px dashed #d1d5db;
+    border-radius: 18px;
+}
+
+.search-empty-icon {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 24px;
+}
+
+.search-empty h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #111827;
+}
+
+.search-empty p {
+    margin: 0;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLETTE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .search-panel form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .search-submit {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .recherche-hero {
+        padding: 35px 22px;
+        border-radius: 18px;
+    }
+
+    .recherche-hero h1 {
+        font-size: 34px;
+    }
+
+    .recherche-hero p {
+        font-size: 15px;
+    }
+
+    .search-panel {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .search-panel form {
+        grid-template-columns: 1fr;
+    }
+
+    .search-input-group input,
+    .search-input-group select,
+    .search-submit {
+        min-height: 48px;
+    }
+
+    .results-count {
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   PETITS TÉLÉPHONES
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .recherche-hero {
+        padding: 28px 18px;
+    }
+
+    .recherche-hero h1 {
+        font-size: 29px;
+    }
+
+    .search-panel {
+        padding: 15px;
+    }
+}
