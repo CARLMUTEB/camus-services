@@ -46,6 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
             'a[href="compte.html"], #accountLink'
         );
 
+    /* =====================================================
+       ADMINISTRATION
+    ===================================================== */
+
+    const adminNavItem =
+        document.getElementById("adminNavItem");
+
+    const ADMIN_EMAIL =
+        "meschackmuteb@gmail.com";
+
 
     /* =====================================================
        AUTHENTIFICATION FIREBASE
@@ -64,14 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ------------------------------------------------ */
 
         if (user) {
-           if (
-    adminNavItem &&
-    user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
-) {
-    adminNavItem.style.display = "";
-} else if (adminNavItem) {
-    adminNavItem.style.display = "none";
-}
 
             console.log(
                 "Utilisateur connecté :",
@@ -82,22 +84,33 @@ document.addEventListener("DOMContentLoaded", () => {
             /* Mon compte → compte.html */
 
             accountLinks.forEach(link => {
-               const adminNavItem =
-    document.getElementById("adminNavItem");
-
-const ADMIN_EMAIL = "meschackmuteb@gmail.com";
-
                 link.href = "compte.html";
-
             });
+
+
+            /* -------------------------------------------
+               ADMINISTRATION
+            ------------------------------------------- */
+
+            if (
+                adminNavItem &&
+                user.email?.toLowerCase() ===
+                ADMIN_EMAIL.toLowerCase()
+            ) {
+
+                adminNavItem.style.display = "";
+
+            } else if (adminNavItem) {
+
+                adminNavItem.style.display = "none";
+
+            }
 
 
             /* Afficher / activer Déconnexion */
 
             if (logoutBtn) {
-
                 logoutBtn.style.display = "";
-
             }
 
         }
@@ -108,30 +121,30 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
         ------------------------------------------------ */
 
         else {
-           if (adminNavItem) {
-    adminNavItem.style.display = "none";
-}
 
             console.log(
                 "Aucun utilisateur connecté."
             );
 
 
+            /* Cacher Administration */
+
+            if (adminNavItem) {
+                adminNavItem.style.display = "none";
+            }
+
+
             /* Mon compte → connexion.html */
 
             accountLinks.forEach(link => {
-
                 link.href = "connexion.html";
-
             });
 
 
             /* Déconnexion */
 
             if (logoutBtn) {
-
                 logoutBtn.style.display = "none";
-
             }
 
         }
@@ -147,20 +160,13 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
         if (!sidebar) return;
 
-
         sidebar.classList.add("open");
 
-
         if (sidebarOverlay) {
-
             sidebarOverlay.classList.add("active");
-
         }
 
-
-        document.body.style.overflow =
-            "hidden";
-
+        document.body.style.overflow = "hidden";
     }
 
 
@@ -168,20 +174,13 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
         if (!sidebar) return;
 
-
         sidebar.classList.remove("open");
 
-
         if (sidebarOverlay) {
-
             sidebarOverlay.classList.remove("active");
-
         }
 
-
-        document.body.style.overflow =
-            "";
-
+        document.body.style.overflow = "";
     }
 
 
@@ -228,9 +227,7 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
         link.addEventListener("click", () => {
 
             if (window.innerWidth <= 700) {
-
                 closeSidebar();
-
             }
 
         });
@@ -245,9 +242,7 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
         event => {
 
             if (event.key === "Escape") {
-
                 closeSidebar();
-
             }
 
         }
@@ -303,19 +298,12 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                     params.toString();
 
 
-                /*
-                 * IMPORTANT :
-                 * recherche.html est à la racine.
-                 */
-
                 if (queryString) {
 
                     window.location.href =
                         `recherche.html?${queryString}`;
 
-                }
-
-                else {
+                } else {
 
                     window.location.href =
                         "recherche.html";
@@ -348,9 +336,7 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                 )
             ) || [];
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Erreur lors de la lecture des favoris :",
@@ -382,7 +368,6 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                 event => {
 
                     event.preventDefault();
-
                     event.stopPropagation();
 
 
@@ -406,7 +391,6 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                             favoriteId
                         );
 
-
                         button.classList.add(
                             "is-favorite"
                         );
@@ -422,16 +406,13 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                                 "fa-regular"
                             );
 
-
                             icon.classList.add(
                                 "fa-solid"
                             );
 
                         }
 
-                    }
-
-                    else {
+                    } else {
 
                         favorites.splice(
                             existingIndex,
@@ -453,7 +434,6 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                             icon.classList.remove(
                                 "fa-solid"
                             );
-
 
                             icon.classList.add(
                                 "fa-regular"
@@ -511,7 +491,6 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
                         "fa-regular"
                     );
 
-
                     icon.classList.add(
                         "fa-solid"
                     );
@@ -554,9 +533,7 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 
                 if (!confirmLogout) {
-
                     return;
-
                 }
 
 
@@ -652,9 +629,7 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 
             if (existing) {
-
                 existing.remove();
-
             }
 
 
