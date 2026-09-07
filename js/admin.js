@@ -610,42 +610,45 @@ document
     .querySelectorAll("[data-section]")
     .forEach(element => {
 
-        element.addEventListener(
-            "click",
-            event => {
+        element.addEventListener("click", event => {
 
-                const section =
-                    element.dataset.section;
+            const section = element.dataset.section;
 
-                if (!section) {
-                    return;
-                }
-
-                /*
-                   Les pages de gestion seront ajoutées
-                   dans les prochaines étapes.
-                */
-
-                if (
-                    section === "annonces" ||
-                    section === "utilisateurs" ||
-                    section === "signalements" ||
-                    section === "parametres"
-                ) {
-
-                    event.preventDefault();
-
-                    showAdminMessage(
-                        "Cette section sera activée dans la prochaine étape."
-                    );
-
-                    closeAdminMenu();
-                }
+            if (!section) {
+                return;
             }
-        );
+
+            // Gérer les annonces
+            if (section === "annonces") {
+                event.preventDefault();
+                window.location.href = "admin-annonces.html";
+                return;
+            }
+
+            // Gérer les utilisateurs
+            if (section === "utilisateurs") {
+                event.preventDefault();
+                window.location.href = "admin-utilisateurs.html";
+                return;
+            }
+
+            // Les autres modules seront activés plus tard
+            if (
+                section === "signalements" ||
+                section === "parametres"
+            ) {
+                event.preventDefault();
+
+                showAdminMessage(
+                    "Cette section sera activée prochainement."
+                );
+
+                closeAdminMenu();
+            }
+
+        });
 
     });
-
 
 /* =========================================================
    DÉCONNEXION
