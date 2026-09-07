@@ -214,6 +214,7 @@ async function uploadToCloudinary(file, serviceId, index) {
 if (publishForm) {
 
     publishForm.addEventListener("submit", async (event) => {
+        console.log("SUBMIT DÉCLENCHÉ");
 
         event.preventDefault();
 
