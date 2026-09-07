@@ -1,574 +1,74 @@
 /* =========================================================
-   CAMU SERVICES — COMPTE
-   Design mobile inspiré des applications marketplace
+   ACTIONS DES ANNONCES
 ========================================================= */
-
-.account-main {
-    margin-left: 260px;
-    min-height: 100vh;
-    background: #f7f8fa;
-    padding-bottom: 50px;
-}
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.account-topbar {
-    height: 70px;
-    background: #fff;
-    border-bottom: 1px solid #e5e7eb;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 30px;
-
-    gap: 18px;
-}
-
-.account-topbar h1 {
-    font-size: 24px;
-    margin: 0;
-    color: #1f2937;
-}
-
-.back-button {
-    color: #1f2937;
-    font-size: 20px;
-    text-decoration: none;
-}
-
-
-/* =========================================================
-   UTILISATEUR
-========================================================= */
-
-.account-user {
-    background: #fff;
-
-    padding: 25px 30px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 18px;
-
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.account-avatar {
-    width: 72px;
-    height: 72px;
-
-    border-radius: 50%;
-
-    overflow: hidden;
-
-    background: #f1f5f9;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-}
-
-.account-avatar img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    display: none;
-}
-
-.account-avatar-default {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #64748b;
-    font-size: 34px;
-}
-
-.account-user-info h2 {
-    margin: 0 0 5px;
-
-    font-size: 21px;
-    color: #111827;
-}
-
-.account-user-info p {
-    margin: 0;
-
-    color: #6b7280;
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   PHOTO
-========================================================= */
-
-.photo-action {
-    background: #fff;
-
-    padding: 0 30px 22px;
-}
-
-.photo-button {
-    display: inline-flex;
-
-    align-items: center;
-    gap: 9px;
-
-    padding: 10px 17px;
-
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-
-    background: #fff;
-
-    color: #1f2937;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.photo-button:hover {
-    border-color: #16a34a;
-    color: #16a34a;
-}
-
-
-/* =========================================================
-   MENU
-========================================================= */
-
-.account-menu {
-    margin-top: 12px;
-
-    background: #fff;
-
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.account-menu-item {
-    min-height: 78px;
-
-    padding: 14px 30px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 17px;
-
-    text-decoration: none;
-
-    color: #1f2937;
-
-    border-bottom: 1px solid #f0f1f3;
-}
-
-.account-menu-item:last-child {
-    border-bottom: none;
-}
-
-.account-menu-item:hover {
-    background: #f8fafc;
-}
-
-.menu-icon {
-    width: 38px;
-    height: 38px;
-
-    border-radius: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #f0fdf4;
-
-    color: #16a34a;
-
-    font-size: 18px;
-
-    flex-shrink: 0;
-}
-
-.publish-icon {
-    background: #dcfce7;
-}
-
-.menu-text {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-.menu-text strong {
-    font-size: 16px;
-}
-
-.menu-text span {
-    font-size: 13px;
-    color: #7b8491;
-}
-
-.menu-arrow {
-    color: #9ca3af;
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   INFORMATIONS
-========================================================= */
-
-.account-info-section {
-    margin-top: 12px;
-
-    background: #fff;
-
-    padding: 25px 30px;
-
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.section-title {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-.section-title i {
-    color: #16a34a;
-}
-
-.section-title h2 {
-    margin: 0;
-
-    font-size: 19px;
-}
-
-.info-row {
-    padding: 13px 0;
-
-    border-bottom: 1px solid #f0f1f3;
-
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.info-row span {
-    color: #6b7280;
-}
-
-.info-row strong {
-    text-align: right;
-
-    color: #1f2937;
-
-    max-width: 60%;
-    word-break: break-word;
-}
-
-.edit-profile-button {
-    width: 100%;
-
-    margin-top: 20px;
-
-    padding: 13px;
-
-    background: #fff;
-
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-
-    color: #1f2937;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.edit-profile-button:hover {
-    border-color: #16a34a;
-    color: #16a34a;
-}
-
-
-/* =========================================================
-   MES ANNONCES
-========================================================= */
-
-.my-ads-section {
-    margin-top: 12px;
-
-    background: #fff;
-
-    padding: 25px 30px;
-
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 20px;
-}
-
-.section-label {
-    color: #16a34a;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.section-header h2 {
-    margin: 4px 0 0;
-
-    font-size: 22px;
-}
-
-.new-ad-link {
-    color: #16a34a;
-
-    text-decoration: none;
-
-    font-weight: 600;
-
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-
-/* =========================================================
-   ANNONCES
-========================================================= */
-
-.my-ads-container {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 16px;
-}
-
-.my-ad-card {
-    border: 1px solid #e5e7eb;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-
-    background: #fff;
-}
-
-.my-ad-image {
-    width: 100%;
-    height: 170px;
-
-    object-fit: cover;
-
-    display: block;
-}
-
-.my-ad-content {
-    padding: 14px;
-}
-
-.my-ad-content h3 {
-    margin: 0 0 8px;
-
-    font-size: 16px;
-}
-
-.my-ad-price {
-    color: #16a34a;
-    font-weight: 700;
-}
-
-.my-ad-location {
-    margin-top: 6px;
-
-    color: #6b7280;
-
-    font-size: 13px;
-}
 
 .my-ad-actions {
-    margin-top: 12px;
-
+    margin-top: 14px;
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .my-ad-actions a,
 .my-ad-actions button {
     flex: 1;
-
-    padding: 9px;
-
+    min-width: 90px;
+    padding: 10px 8px;
     border-radius: 7px;
-
     border: 1px solid #d1d5db;
-
     background: #fff;
-
     cursor: pointer;
-
     text-align: center;
-
     text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
 
+/* Voir */
+
+.my-ad-view {
     color: #1f2937;
 }
 
-.my-ad-actions a:hover {
+.my-ad-view:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+
+/* Modifier */
+
+.my-ad-edit {
+    color: #16a34a !important;
+}
+
+.my-ad-edit:hover {
     border-color: #16a34a;
-    color: #16a34a;
+    color: #15803d !important;
+    background: #f0fdf4;
 }
 
 
-/* =========================================================
-   EMPTY
-========================================================= */
+/* Supprimer */
 
-.empty-ads {
-    background: #f8fafc;
-
-    border: 1px solid #e5e7eb;
-
-    border-radius: 12px;
-
-    padding: 30px;
-
-    text-align: center;
+.my-ad-delete {
+    color: #dc2626 !important;
 }
 
-.empty-ads i {
-    font-size: 38px;
-
-    color: #94a3b8;
-
-    margin-bottom: 12px;
-}
-
-.empty-ads h3 {
-    margin: 0 0 7px;
-}
-
-.empty-ads p {
-    color: #64748b;
-
-    margin: 0 0 18px;
-}
-
-.publish-button {
-    display: inline-flex;
-
-    align-items: center;
-    gap: 8px;
-
-    background: #16a34a;
-
-    color: white;
-
-    padding: 12px 18px;
-
-    border-radius: 8px;
-
-    text-decoration: none;
-
-    font-weight: 700;
-}
-
-.publish-button:hover {
-    background: #15803d;
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-.logout-section {
-    margin-top: 12px;
-
-    background: #fff;
-
-    padding: 20px 30px;
-
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.logout-button {
-    width: 100%;
-
-    padding: 14px;
-
-    border: 1px solid #fecaca;
-
-    background: #fff;
-
-    color: #dc2626;
-
-    border-radius: 8px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-.logout-button:hover {
+.my-ad-delete:hover {
+    border-color: #dc2626;
+    color: #b91c1c !important;
     background: #fef2f2;
 }
 
 
-/* =========================================================
-   FOOTER
-========================================================= */
+/* Bouton pendant la suppression */
 
-.account-footer {
-    text-align: center;
-
-    padding: 25px;
-
-    color: #9ca3af;
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   IMPORTANT
-   Cache / hidden
-========================================================= */
-
-[hidden] {
-    display: none !important;
+.my-ad-delete:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 
@@ -576,111 +76,36 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
-    .account-main {
-        margin-left: 0;
-
-        padding-bottom: 30px;
+    .my-ad-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
 
-    .account-topbar {
-        height: 58px;
-
-        padding: 0 18px;
-
-        justify-content: flex-start;
+    .my-ad-view {
+        grid-column: 1 / -1;
     }
 
-    .account-topbar h1 {
-        font-size: 20px;
-    }
-
-    .account-user {
-        padding: 22px 18px 15px;
-    }
-
-    .photo-action {
-        padding: 0 18px 18px;
-    }
-
-    .account-menu-item {
-        min-height: 72px;
-
-        padding: 12px 18px;
-    }
-
-    .account-info-section,
-    .my-ads-section {
-        padding: 22px 18px;
-    }
-
-    .logout-section {
-        padding: 18px;
-    }
-
-    .my-ads-container {
-        grid-template-columns: 1fr;
-    }
-
-    .section-header {
-        align-items: flex-start;
-    }
-
-    .section-header h2 {
-        font-size: 20px;
-    }
-
-    .new-ad-link {
-        font-size: 14px;
+    .my-ad-actions a,
+    .my-ad-actions button {
+        width: 100%;
+        min-width: 0;
+        font-size: 13px;
     }
 }
 
 
-/* =========================================================
-   PETITS TÉLÉPHONES
-========================================================= */
+/* PETITS TÉLÉPHONES */
 
 @media (max-width: 430px) {
 
-    .account-avatar {
-        width: 62px;
-        height: 62px;
+    .my-ad-actions {
+        grid-template-columns: 1fr;
     }
 
-    .account-user-info h2 {
-        font-size: 18px;
-    }
-
-    .account-menu-item {
-        gap: 13px;
-    }
-
-    .menu-icon {
-        width: 35px;
-        height: 35px;
-    }
-
-    .menu-text strong {
-        font-size: 15px;
-    }
-
-    .menu-text span {
-        font-size: 12px;
-    }
-
-    .info-row {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .info-row strong {
-        text-align: left;
-        max-width: 100%;
-    }
-
-    .section-header {
-        flex-direction: column;
-        gap: 12px;
+    .my-ad-view {
+        grid-column: auto;
     }
 }
