@@ -240,31 +240,33 @@
                     <div class="account-profile-card">
 
                         <!-- PHOTO -->
-                        <div class="account-profile-photo">
+                       <div class="account-profile-photo">
 
-                            <div
-                                class="account-avatar"
-                                id="accountAvatar"
-                            >
-                                <i class="fa-solid fa-user"></i>
-                            </div>
+    <div class="account-avatar" id="accountAvatar">
+        <img
+            id="accountAvatarImage"
+            src=""
+            alt="Photo de profil"
+        >
 
-                            <label
-                                for="profilePhotoInput"
-                                class="secondary-button"
-                            >
-                                <i class="fa-solid fa-camera"></i>
-                                Changer la photo
-                            </label>
+        <div id="accountAvatarDefault" class="account-avatar-default">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
 
-                            <input
-                                type="file"
-                                id="profilePhotoInput"
-                                accept="image/*"
-                                hidden
-                            >
+    <label for="profilePhotoInput" class="secondary-button">
+        <i class="fa-solid fa-camera"></i>
+        Changer la photo
+    </label>
 
-                        </div>
+    <input
+        type="file"
+        id="profilePhotoInput"
+        accept="image/*"
+        hidden
+    >
+
+</div>
 
 
                         <!-- INFORMATIONS -->
