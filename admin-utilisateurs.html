@@ -18,11 +18,8 @@
 
 <body>
 
-<!-- OVERLAY MOBILE -->
 <div class="admin-sidebar-overlay"></div>
 
-
-<!-- SIDEBAR -->
 <aside class="admin-sidebar">
 
     <div class="admin-sidebar-header">
@@ -41,7 +38,6 @@
         </button>
 
     </div>
-
 
     <nav class="admin-sidebar-nav">
 
@@ -75,7 +71,6 @@
 
     </nav>
 
-
     <div class="admin-sidebar-bottom">
 
         <a href="index.html" class="admin-nav-item">
@@ -93,11 +88,8 @@
 </aside>
 
 
-<!-- CONTENU PRINCIPAL -->
 <div class="admin-main-wrapper">
 
-
-    <!-- HEADER MOBILE -->
     <header class="admin-mobile-header">
 
         <button
@@ -115,15 +107,16 @@
     </header>
 
 
-    <!-- TOPBAR -->
     <header class="admin-topbar">
 
         <div>
+
             <span class="admin-topbar-label">
                 Administration
             </span>
 
             <h1>Utilisateurs</h1>
+
         </div>
 
         <a
@@ -137,11 +130,8 @@
     </header>
 
 
-    <!-- CONTENU -->
     <main class="admin-content">
 
-
-        <!-- INTRO -->
         <section class="admin-page-intro">
 
             <div>
@@ -155,20 +145,26 @@
                 </h2>
 
                 <p>
-                    Consulte les utilisateurs enregistrés
-                    sur CAMU SERVICES.
+                    Consulte et gère les utilisateurs
+                    enregistrés sur CAMU SERVICES.
                 </p>
 
             </div>
-
 
             <div class="admin-total-badge">
 
                 <i class="fa-solid fa-users"></i>
 
                 <div>
-                    <strong id="usersTotalCount">0</strong>
-                    <span>utilisateur(s)</span>
+
+                    <strong id="usersTotalCount">
+                        0
+                    </strong>
+
+                    <span>
+                        utilisateur(s)
+                    </span>
+
                 </div>
 
             </div>
@@ -177,6 +173,7 @@
 
 
         <!-- FILTRES -->
+
         <section class="admin-users-filters">
 
             <div class="admin-user-filter-group">
@@ -247,6 +244,7 @@
 
 
         <!-- LISTE -->
+
         <section class="admin-users-section">
 
             <div class="admin-users-header">
@@ -276,28 +274,27 @@
             </div>
 
 
-            <!-- LOADING -->
             <div
                 id="usersLoading"
                 class="admin-users-loading"
                 hidden
             >
+
                 <i class="fa-solid fa-spinner fa-spin"></i>
 
                 <p>
                     Chargement des utilisateurs...
                 </p>
+
             </div>
 
 
-            <!-- LISTE UTILISATEURS -->
             <div
                 id="adminUsersContainer"
                 class="admin-users-container"
             ></div>
 
 
-            <!-- VIDE -->
             <div
                 id="usersEmpty"
                 class="admin-users-empty"
@@ -324,17 +321,300 @@
     </main>
 
 
-    <!-- FOOTER -->
     <footer class="admin-footer">
+
         <p>
             © 2026 CAMU SERVICES — Administration
         </p>
+
     </footer>
 
 </div>
 
 
-<!-- SCRIPTS -->
+<!-- =====================================================
+     MODAL MODIFICATION UTILISATEUR
+===================================================== -->
+
+<div
+    id="userEditModal"
+    class="admin-user-modal"
+    hidden
+>
+
+    <div
+        class="admin-user-modal-overlay"
+        id="userEditModalOverlay"
+    ></div>
+
+    <div
+        class="admin-user-modal-card"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div class="admin-user-modal-header">
+
+            <div>
+
+                <span class="admin-section-label">
+                    Gestion du compte
+                </span>
+
+                <h2>
+                    Modifier l'utilisateur
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                id="userEditModalClose"
+                class="admin-user-modal-close"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form id="userEditForm">
+
+            <input
+                type="hidden"
+                id="editUserId"
+            >
+
+
+            <div class="admin-user-form-group">
+
+                <label for="editUserName">
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    id="editUserName"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-user-form-group">
+
+                <label for="editUserPhone">
+                    Téléphone
+                </label>
+
+                <input
+                    type="tel"
+                    id="editUserPhone"
+                >
+
+            </div>
+
+
+            <div class="admin-user-form-group">
+
+                <label for="editUserCity">
+                    Ville
+                </label>
+
+                <select id="editUserCity">
+
+                    <option value="Lubumbashi">
+                        Lubumbashi
+                    </option>
+
+                    <option value="Kolwezi">
+                        Kolwezi
+                    </option>
+
+                    <option value="Likasi">
+                        Likasi
+                    </option>
+
+                    <option value="Fungurume">
+                        Fungurume
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="admin-user-modal-actions">
+
+                <button
+                    type="button"
+                    id="userEditCancel"
+                    class="admin-user-cancel"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="submit"
+                    id="userEditSave"
+                    class="admin-user-save"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Enregistrer
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL AVERTISSEMENT
+===================================================== -->
+
+<div
+    id="userWarningModal"
+    class="admin-user-modal"
+    hidden
+>
+
+    <div
+        class="admin-user-modal-overlay"
+        id="userWarningModalOverlay"
+    ></div>
+
+    <div
+        class="admin-user-modal-card"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div class="admin-user-modal-header">
+
+            <div>
+
+                <span class="admin-section-label warning-label">
+                    Sécurité
+                </span>
+
+                <h2>
+                    Avertir l'utilisateur
+                </h2>
+
+                <p id="warningUserName">
+                    Utilisateur
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                id="userWarningModalClose"
+                class="admin-user-modal-close"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form id="userWarningForm">
+
+            <input
+                type="hidden"
+                id="warningUserId"
+            >
+
+
+            <div class="admin-user-form-group">
+
+                <label for="warningLevel">
+                    Niveau
+                </label>
+
+                <select id="warningLevel">
+
+                    <option value="information">
+                        Information
+                    </option>
+
+                    <option value="avertissement">
+                        Avertissement
+                    </option>
+
+                    <option value="urgent">
+                        Urgent
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="admin-user-form-group">
+
+                <label for="warningReason">
+                    Motif
+                </label>
+
+                <input
+                    type="text"
+                    id="warningReason"
+                    placeholder="Ex. Annonce non conforme"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-user-form-group">
+
+                <label for="warningMessage">
+                    Message
+                </label>
+
+                <textarea
+                    id="warningMessage"
+                    rows="5"
+                    placeholder="Écrivez le message destiné à l'utilisateur..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="admin-user-modal-actions">
+
+                <button
+                    type="button"
+                    id="userWarningCancel"
+                    class="admin-user-cancel"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="submit"
+                    id="userWarningSend"
+                    class="admin-user-warning"
+                >
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Envoyer l'avertissement
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
 <script type="module" src="js/auth.js"></script>
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/admin-utilisateurs.js"></script>
