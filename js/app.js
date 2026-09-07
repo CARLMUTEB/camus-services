@@ -64,6 +64,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ------------------------------------------------ */
 
         if (user) {
+           if (
+    adminNavItem &&
+    user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+) {
+    adminNavItem.style.display = "";
+} else if (adminNavItem) {
+    adminNavItem.style.display = "none";
+}
 
             console.log(
                 "Utilisateur connecté :",
@@ -100,6 +108,9 @@ const ADMIN_EMAIL = "meschackmuteb@gmail.com";
         ------------------------------------------------ */
 
         else {
+           if (adminNavItem) {
+    adminNavItem.style.display = "none";
+}
 
             console.log(
                 "Aucun utilisateur connecté."
