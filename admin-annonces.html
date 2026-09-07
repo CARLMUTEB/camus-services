@@ -442,6 +442,96 @@
      JAVASCRIPT
 ========================= -->
 
+
+    <!-- =========================
+         MODAL MODIFICATION ANNONCE
+    ========================= -->
+    <div class="admin-edit-modal" id="adminEditModal" hidden>
+        <div class="admin-edit-modal-overlay" id="adminEditModalOverlay"></div>
+
+        <div class="admin-edit-modal-card" role="dialog" aria-modal="true"
+             aria-labelledby="adminEditModalTitle">
+
+            <div class="admin-edit-modal-header">
+                <div>
+                    <span class="admin-section-label">Administration</span>
+                    <h2 id="adminEditModalTitle">Modifier l'annonce</h2>
+                </div>
+
+                <button type="button" class="admin-edit-modal-close"
+                        id="adminEditModalClose" aria-label="Fermer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="adminEditAdForm" class="admin-edit-form">
+                <input type="hidden" id="editAdId">
+
+                <div class="admin-edit-form-group">
+                    <label for="editAdTitle">Titre</label>
+                    <input type="text" id="editAdTitle" required maxlength="150">
+                </div>
+
+                <div class="admin-edit-form-group">
+                    <label for="editAdDescription">Description</label>
+                    <textarea id="editAdDescription" rows="5" required></textarea>
+                </div>
+
+                <div class="admin-edit-form-grid">
+                    <div class="admin-edit-form-group">
+                        <label for="editAdPrice">Prix</label>
+                        <input type="text" id="editAdPrice" placeholder="Ex. 500 $">
+                    </div>
+
+                    <div class="admin-edit-form-group">
+                        <label for="editAdCategory">Catégorie</label>
+                        <select id="editAdCategory" required>
+                            <option value="immobilier">Immobilier</option>
+                            <option value="vehicules">Véhicules</option>
+                            <option value="commerce">Commerce</option>
+                            <option value="services">Services</option>
+                            <option value="emploi">Emploi</option>
+                            <option value="autres">Autres</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-edit-form-grid">
+                    <div class="admin-edit-form-group">
+                        <label for="editAdCity">Ville</label>
+                        <select id="editAdCity" required>
+                            <option value="lubumbashi">Lubumbashi</option>
+                            <option value="kolwezi">Kolwezi</option>
+                            <option value="likasi">Likasi</option>
+                            <option value="fungurume">Fungurume</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-edit-form-group">
+                        <label for="editAdNeighborhood">Quartier</label>
+                        <input type="text" id="editAdNeighborhood" placeholder="Quartier">
+                    </div>
+                </div>
+
+                <div class="admin-edit-form-group">
+                    <label for="editAdWhatsapp">WhatsApp</label>
+                    <input type="tel" id="editAdWhatsapp" placeholder="Ex. +243...">
+                </div>
+
+                <div class="admin-edit-modal-actions">
+                    <button type="button" class="admin-edit-cancel" id="adminEditCancel">
+                        Annuler
+                    </button>
+
+                    <button type="submit" class="admin-edit-save" id="adminEditSave">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <script type="module" src="js/auth.js"></script>
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/admin-annonces.js"></script>
