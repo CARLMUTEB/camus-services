@@ -1,4 +1,4 @@
-import { auth, db, storage } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     onAuthStateChanged
@@ -7,14 +7,21 @@ import {
 import {
     collection,
     addDoc,
+    updateDoc,
+    doc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-import {
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+/* =========================================================
+   CLOUDINARY
+========================================================= */
+
+const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =========================================================
@@ -112,7 +119,6 @@ if (publishPhotos) {
             return;
         }
 
-
         files.forEach((file) => {
 
             if (!file.type.startsWith("image/")) {
@@ -143,6 +149,61 @@ if (publishPhotos) {
 
     });
 
+}
+
+
+/* =========================================================
+   UPLOAD CLOUDINARY
+========================================================= */
+
+async function uploadToCloudinary(file, serviceId, index) {
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    /*
+       Organisation des photos dans Cloudinary :
+       camu-services/services/UID/SERVICE_ID
+    */
+    formData.append(
+        "folder",
+        `camu-services/services/${currentUser.uid}/${serviceId}`
+    );
+
+    /*
+       Nom du fichier
+    */
+    formData.append(
+        "context",
+        `service_id=${serviceId}|owner_id=${currentUser.uid}|photo_index=${index + 1}`
+    );
+
+    const response = await fetch(
+        CLOUDINARY_UPLOAD_URL,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+        console.error(
+            "Erreur Cloudinary :",
+            data
+        );
+
+        throw new Error(
+            data.error?.message ||
+            "Cloudinary a refusé l'envoi de la photo."
+        );
+    }
+
+    return data.secure_url;
 }
 
 
@@ -214,32 +275,50 @@ if (publishForm) {
         ----------------------------------------- */
 
         if (!title) {
-            showMessage("Veuillez saisir le titre de l'annonce.", "error");
+            showMessage(
+                "Veuillez saisir le titre de l'annonce.",
+                "error"
+            );
             return;
         }
 
         if (!price || Number(price) < 0) {
-            showMessage("Veuillez saisir un prix valide.", "error");
+            showMessage(
+                "Veuillez saisir un prix valide.",
+                "error"
+            );
             return;
         }
 
         if (!category) {
-            showMessage("Veuillez choisir une catégorie.", "error");
+            showMessage(
+                "Veuillez choisir une catégorie.",
+                "error"
+            );
             return;
         }
 
         if (!description) {
-            showMessage("Veuillez saisir une description.", "error");
+            showMessage(
+                "Veuillez saisir une description.",
+                "error"
+            );
             return;
         }
 
         if (!city) {
-            showMessage("Veuillez choisir une ville.", "error");
+            showMessage(
+                "Veuillez choisir une ville.",
+                "error"
+            );
             return;
         }
 
         if (!whatsapp) {
-            showMessage("Veuillez saisir votre numéro WhatsApp.", "error");
+            showMessage(
+                "Veuillez saisir votre numéro WhatsApp.",
+                "error"
+            );
             return;
         }
 
@@ -301,7 +380,6 @@ if (publishForm) {
 
                 return;
             }
-
         }
 
 
@@ -325,7 +403,7 @@ if (publishForm) {
         try {
 
             /* =====================================
-               1. CRÉER L'ANNONCE
+               1. CRÉER L'ANNONCE DANS FIRESTORE
             ===================================== */
 
             const serviceRef = await addDoc(
@@ -359,6 +437,8 @@ if (publishForm) {
 
                     images: [],
 
+                    imageURL: "",
+
                     status: "active",
 
                     createdAt: serverTimestamp(),
@@ -375,7 +455,7 @@ if (publishForm) {
 
 
             /* =====================================
-               2. UPLOAD DES PHOTOS
+               2. UPLOAD DES PHOTOS → CLOUDINARY
             ===================================== */
 
             const imageUrls = [];
@@ -391,24 +471,21 @@ if (publishForm) {
                 );
 
 
-                const imageRef = ref(
-                    storage,
-                    `services/${currentUser.uid}/${serviceRef.id}/${Date.now()}-${file.name}`
-                );
-
-
-                await uploadBytes(
-                    imageRef,
-                    file
-                );
-
-
                 const imageUrl =
-                    await getDownloadURL(imageRef);
+                    await uploadToCloudinary(
+                        file,
+                        serviceRef.id,
+                        i
+                    );
 
 
                 imageUrls.push(imageUrl);
 
+
+                console.log(
+                    `Photo ${i + 1} envoyée sur Cloudinary :`,
+                    imageUrl
+                );
             }
 
 
@@ -416,16 +493,16 @@ if (publishForm) {
                3. METTRE À JOUR L'ANNONCE
             ===================================== */
 
-            const { updateDoc, doc } = await import(
-                "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
-            );
-
-
             await updateDoc(
                 doc(db, "services", serviceRef.id),
                 {
                     images: imageUrls,
-                    imageURL: imageUrls[0] || ""
+
+                    imageURL:
+                        imageUrls[0] || "",
+
+                    updatedAt:
+                        serverTimestamp()
                 }
             );
 
@@ -469,38 +546,24 @@ if (publishForm) {
                 "Une erreur est survenue lors de la publication.";
 
 
+            /* Erreur Firestore */
+
             if (error.code === "permission-denied") {
 
                 message =
                     "Vous n'avez pas l'autorisation de publier cette annonce. Vérifiez les règles Firebase.";
-
             }
 
+
+            /* Erreur Cloudinary */
+
             else if (
-                error.code === "storage/unauthorized"
+                error.message &&
+                error.message.toLowerCase().includes("cloudinary")
             ) {
 
                 message =
-                    "Firebase Storage refuse l'envoi de la photo. Vérifiez les règles Storage.";
-
-            }
-
-            else if (
-                error.code === "storage/quota-exceeded"
-            ) {
-
-                message =
-                    "L'espace de stockage Firebase disponible est insuffisant.";
-
-            }
-
-            else if (
-                error.code === "storage/unauthenticated"
-            ) {
-
-                message =
-                    "Votre session a expiré. Veuillez vous reconnecter.";
-
+                    "Impossible d'envoyer les photos vers Cloudinary. Vérifiez le preset d'upload.";
             }
 
 
@@ -525,5 +588,5 @@ if (publishForm) {
 
 
 console.log(
-    "CAMU SERVICES — publier.js chargé."
+    "CAMU SERVICES — publier.js avec Cloudinary chargé."
 );
