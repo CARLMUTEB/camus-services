@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Modifier une annonce — CAMU SERVICES</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modifier.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<header class="mobile-header">
+
+    <button id="menuToggle" class="menu-button">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="mobile-logo">
+        CAMU SERVICES
+    </div>
+
+    <a href="compte.html" class="mobile-account">
+        <i class="fa-solid fa-user"></i>
+    </a>
+
+</header>
+
+
+<aside class="sidebar" id="sidebar">
+
+    <button id="closeSidebar" class="close-sidebar">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="sidebar-logo">
+        CAMU<br>
+        SERVICES
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="recherche.html">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a href="publier.html">
+            <i class="fa-solid fa-plus"></i>
+            <span>Publier une annonce</span>
+        </a>
+
+        <a href="favoris.html">
+            <i class="fa-solid fa-heart"></i>
+            <span>Mes favoris</span>
+        </a>
+
+        <a href="compte.html" class="active">
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+
+        <a href="parametres.html">
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+
+<main class="edit-main">
+
+    <div class="edit-topbar">
+
+        <a href="compte.html" class="back-button">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <span class="page-label">GESTION</span>
+            <h1>Modifier mon annonce</h1>
+        </div>
+
+    </div>
+
+
+    <div id="editMessage" class="edit-message" hidden></div>
+
+
+    <section class="edit-card">
+
+        <div class="edit-card-header">
+
+            <div>
+                <span class="section-label">ANNONCE</span>
+                <h2>Informations de l'annonce</h2>
+            </div>
+
+            <i class="fa-solid fa-pen-to-square"></i>
+
+        </div>
+
+
+        <form id="editForm" novalidate>
+
+
+            <!-- TITRE -->
+
+            <div class="form-group">
+
+                <label for="title">
+                    Titre de l'annonce
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Ex. Appartement à louer"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PRIX -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="price">
+                        Prix
+                    </label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        min="0"
+                        placeholder="Ex. 500"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="currency">
+                        Devise
+                    </label>
+
+                    <select id="currency" name="currency">
+
+                        <option value="USD">USD</option>
+                        <option value="CDF">CDF</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATÉGORIE -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    Catégorie
+                </label>
+
+                <select id="category" name="category" required>
+
+                    <option value="">
+                        Sélectionner une catégorie
+                    </option>
+
+                    <option value="Immobilier">
+                        🏠 Immobilier
+                    </option>
+
+                    <option value="Véhicules">
+                        🚗 Véhicules
+                    </option>
+
+                    <option value="Commerce">
+                        🛒 Commerce
+                    </option>
+
+                    <option value="Services">
+                        🛠️ Services
+                    </option>
+
+                    <option value="Emploi">
+                        💼 Emploi
+                    </option>
+
+                    <option value="Autres">
+                        📦 Autres
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="7"
+                    placeholder="Décrivez votre annonce..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- LOCALISATION -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="city">
+                        Ville
+                    </label>
+
+                    <select id="city" name="city" required>
+
+                        <option value="">
+                            Sélectionner une ville
+                        </option>
+
+                        <option value="Lubumbashi">
+                            Lubumbashi
+                        </option>
+
+                        <option value="Kolwezi">
+                            Kolwezi
+                        </option>
+
+                        <option value="Likasi">
+                            Likasi
+                        </option>
+
+                        <option value="Fungurume">
+                            Fungurume
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="neighborhood">
+                        Quartier
+                    </label>
+
+                    <input
+                        type="text"
+                        id="neighborhood"
+                        name="neighborhood"
+                        placeholder="Ex. Golf"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- WHATSAPP -->
+
+            <div class="form-group">
+
+                <label for="whatsapp">
+                    Numéro WhatsApp
+                </label>
+
+                <input
+                    type="tel"
+                    id="whatsapp"
+                    name="whatsapp"
+                    placeholder="Ex. 243XXXXXXXXX"
+                    required
+                >
+
+                <small>
+                    Utilisé uniquement pour permettre aux clients de vous contacter.
+                </small>
+
+            </div>
+
+
+            <!-- PHOTOS EXISTANTES -->
+
+            <div class="form-group">
+
+                <label>
+                    Photos actuelles
+                </label>
+
+                <div id="existingPhotos" class="photos-grid"></div>
+
+            </div>
+
+
+            <!-- AJOUT PHOTOS -->
+
+            <div class="form-group">
+
+                <label for="newPhotos">
+                    Ajouter de nouvelles photos
+                </label>
+
+                <input
+                    type="file"
+                    id="newPhotos"
+                    accept="image/*"
+                    multiple
+                >
+
+                <small>
+                    Maximum 8 photos au total. 5 Mo maximum par photo.
+                </small>
+
+                <div id="newPhotosPreview" class="photos-grid"></div>
+
+            </div>
+
+
+            <!-- BOUTONS -->
+
+            <div class="form-actions">
+
+                <a href="compte.html" class="cancel-button">
+                    <i class="fa-solid fa-xmark"></i>
+                    Annuler
+                </a>
+
+                <button
+                    type="submit"
+                    id="saveButton"
+                    class="save-button"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    Enregistrer les modifications
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <footer class="edit-footer">
+        © 2026 CAMU SERVICES
+    </footer>
+
+</main>
+
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/modifier.js"></script>
+
+</body>
+</html>
