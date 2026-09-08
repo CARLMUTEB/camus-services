@@ -1,21 +1,14 @@
 /* =========================================================
    CAMU SERVICES — APP.JS V1
-   Interactions générales + Firebase Auth + Favoris Firestore
+   Interactions générales + Firebase Auth
 ========================================================= */
 
-import { auth, db } from "./firebase-config.js";
+import { auth } from "./firebase-config.js";
 
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-    doc,
-    setDoc,
-    deleteDoc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -72,331 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentUser = null;
 
 
-    /* =====================================================
-       FAVORIS — FIRESTORE
-    ===================================================== */
-
-    const favoriteButtons =
-        document.querySelectorAll(
-            ".favorite-button, .favorite-btn"
-        );
-
-
-    function getListingId(button) {
-
-        return (
-            button.dataset.listingId ||
-            button.dataset.favoriteId ||
-            button.dataset.id ||
-            ""
-        ).trim();
-
-    }
-
-
-    function updateFavoriteButton(button, active) {
-
-        if (!button) return;
-
-        button.classList.toggle(
-            "is-favorite",
-            active
-        );
-
-        button.classList.toggle(
-            "active",
-            active
-        );
-
-
-        const icon =
-            button.querySelector("i");
-
-
-        if (icon) {
-
-            icon.classList.toggle(
-                "fa-solid",
-                active
-            );
-
-            icon.classList.toggle(
-                "fa-regular",
-                !active
-            );
-
-        }
-
-
-        button.setAttribute(
-            "aria-label",
-            active
-                ? "Retirer des favoris"
-                : "Ajouter aux favoris"
-        );
-
-    }
-
-
-    async function toggleFavorite(button) {
-
-        if (!currentUser) {
-
-            window.showCamuMessage(
-                "Connectez-vous pour utiliser les favoris.",
-                "info"
-            );
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "connexion.html";
-
-            }, 700);
-
-
-            return;
-        }
-
-
-        const listingId =
-            getListingId(button);
-
-
-        if (!listingId) {
-
-            console.error(
-                "ID de l'annonce manquant.",
-                button
-            );
-
-
-            window.showCamuMessage(
-                "Impossible d'ajouter cette annonce aux favoris.",
-                "error"
-            );
-
-
-            return;
-        }
-
-
-        const favoriteId =
-            `${currentUser.uid}-${listingId}`;
-
-
-        try {
-
-            const favoriteRef =
-                doc(
-                    db,
-                    "favorites",
-                    favoriteId
-                );
-
-
-            const favoriteSnapshot =
-                await getDoc(
-                    favoriteRef
-                );
-
-
-            /* ---------------------------------------------
-               LE FAVORI EXISTE
-            --------------------------------------------- */
-
-            if (favoriteSnapshot.exists()) {
-
-                await deleteDoc(
-                    favoriteRef
-                );
-
-
-                updateFavoriteButton(
-                    button,
-                    false
-                );
-
-
-                window.showCamuMessage(
-                    "Annonce retirée des favoris.",
-                    "success"
-                );
-
-            }
-
-
-            /* ---------------------------------------------
-               LE FAVORI N'EXISTE PAS
-            --------------------------------------------- */
-
-            else {
-
-                await setDoc(
-                    favoriteRef,
-                    {
-                        userId:
-                            currentUser.uid,
-
-                        listingId:
-                            listingId,
-
-                        createdAt:
-                            new Date()
-                    }
-                );
-
-
-                updateFavoriteButton(
-                    button,
-                    true
-                );
-
-
-                window.showCamuMessage(
-                    "Annonce ajoutée aux favoris.",
-                    "success"
-                );
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Erreur Firestore favoris :",
-                error
-            );
-
-
-            window.showCamuMessage(
-                "Impossible de modifier les favoris.",
-                "error"
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       RESTAURATION DES FAVORIS
-    ===================================================== */
-
-    async function restoreFavoriteButtons() {
-
-        if (!currentUser) return;
-
-
-        for (
-            const button
-            of favoriteButtons
-        ) {
-
-            const listingId =
-                getListingId(button);
-
-
-            if (!listingId) continue;
-
-
-            try {
-
-                const favoriteId =
-                    `${currentUser.uid}-${listingId}`;
-
-
-                const favoriteSnapshot =
-                    await getDoc(
-                        doc(
-                            db,
-                            "favorites",
-                            favoriteId
-                        )
-                    );
-
-
-                updateFavoriteButton(
-                    button,
-                    favoriteSnapshot.exists()
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur restauration favori :",
-                    error
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       ÉVÉNEMENT DES BOUTONS FAVORIS
-    ===================================================== */
-
-    favoriteButtons.forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                async event => {
-
-                    event.preventDefault();
-
-                    event.stopPropagation();
-
-
-                    await toggleFavorite(
-                        button
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       AUTH STATE
-    ===================================================== */
-
     onAuthStateChanged(
         auth,
-        async user => {
+        user => {
 
             currentUser = user;
-
-
-            /* ---------------------------------------------
-               RESTAURER LES FAVORIS
-            --------------------------------------------- */
-
-            if (user) {
-
-                await restoreFavoriteButtons();
-
-            } else {
-
-                favoriteButtons.forEach(
-                    button => {
-
-                        updateFavoriteButton(
-                            button,
-                            false
-                        );
-
-                    }
-                );
-
-            }
 
 
             /* ---------------------------------------------
@@ -411,7 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                /* Mon compte → compte.html */
+                /* -----------------------------------------
+                   MON COMPTE
+                ----------------------------------------- */
 
                 accountLinks.forEach(
                     link => {
@@ -436,7 +111,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     adminNavItem.style.display =
                         "";
 
-                } else if (
+                }
+
+                else if (
                     adminNavItem
                 ) {
 
@@ -481,7 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* Mon compte → connexion.html */
+                /* -----------------------------------------
+                   MON COMPTE → CONNEXION
+                ----------------------------------------- */
 
                 accountLinks.forEach(
                     link => {
@@ -493,7 +172,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                /* Déconnexion */
+                /* -----------------------------------------
+                   CACHER DÉCONNEXION
+                ----------------------------------------- */
 
                 if (logoutBtn) {
 
@@ -509,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MENU MOBILE
+       MENU
     ===================================================== */
 
     function openSidebar() {
@@ -562,6 +243,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       OUVRIR LE MENU
+    ===================================================== */
+
     if (menuButton) {
 
         menuButton.addEventListener(
@@ -571,6 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+
+    /* =====================================================
+       FERMER LE MENU
+    ===================================================== */
 
     if (sidebarClose) {
 
@@ -582,6 +271,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       FERMER AVEC OVERLAY
+    ===================================================== */
+
     if (sidebarOverlay) {
 
         sidebarOverlay.addEventListener(
@@ -592,7 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* Fermer le menu après clic */
+    /* =====================================================
+       FERMER LE MENU APRÈS UN CLIC
+    ===================================================== */
 
     const navLinks =
         document.querySelectorAll(
@@ -622,7 +317,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* Fermer avec ESC */
+    /* =====================================================
+       FERMER AVEC ESC
+    ===================================================== */
 
     document.addEventListener(
         "keydown",
@@ -653,15 +350,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
+                /* -----------------------------------------
+                   MOT-CLÉ
+                ----------------------------------------- */
+
                 const keyword =
                     searchKeyword?.value.trim()
                     || "";
 
 
+                /* -----------------------------------------
+                   VILLE
+                ----------------------------------------- */
+
                 const city =
                     citySelect?.value
                     || "";
 
+
+                /* -----------------------------------------
+                   PARAMÈTRES URL
+                ----------------------------------------- */
 
                 const params =
                     new URLSearchParams();
@@ -687,6 +396,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+                /* -----------------------------------------
+                   REDIRECTION
+                ----------------------------------------- */
+
                 const queryString =
                     params.toString();
 
@@ -696,7 +409,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href =
                         `recherche.html?${queryString}`;
 
-                } else {
+                }
+
+                else {
 
                     window.location.href =
                         "recherche.html";
@@ -722,6 +437,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
+                /* -----------------------------------------
+                   VÉRIFIER UTILISATEUR
+                ----------------------------------------- */
+
                 if (!currentUser) {
 
                     window.location.href =
@@ -731,6 +450,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
 
+
+                /* -----------------------------------------
+                   CONFIRMATION
+                ----------------------------------------- */
 
                 const confirmLogout =
                     confirm(
@@ -744,6 +467,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
 
+
+                /* -----------------------------------------
+                   DÉCONNEXION
+                ----------------------------------------- */
 
                 try {
 
@@ -836,6 +563,10 @@ document.addEventListener("DOMContentLoaded", () => {
             type = "success"
         ) {
 
+            /* ---------------------------------------------
+               SUPPRIMER L'ANCIEN MESSAGE
+            --------------------------------------------- */
+
             const existing =
                 document.querySelector(
                     ".camu-message"
@@ -848,6 +579,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+
+            /* ---------------------------------------------
+               CRÉER LA NOTIFICATION
+            --------------------------------------------- */
 
             const notification =
                 document.createElement(
@@ -867,6 +602,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 notification
             );
 
+
+            /* ---------------------------------------------
+               MASQUER APRÈS 3 SECONDES
+            --------------------------------------------- */
 
             setTimeout(
                 () => {
