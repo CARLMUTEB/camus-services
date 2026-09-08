@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Signalements — CAMU SERVICES</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-signalements.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- =========================
+     OVERLAY MOBILE
+========================= -->
+<div
+    class="admin-sidebar-overlay"
+    id="adminSidebarOverlay">
+</div>
+
+
+<!-- =========================
+     SIDEBAR ADMIN
+========================= -->
+<aside
+    class="admin-sidebar"
+    id="adminSidebar">
+
+    <div class="admin-sidebar-header">
+
+        <div class="admin-logo">
+            <span>CAMU</span>
+            <small>SERVICES ADMIN</small>
+        </div>
+
+        <button
+            type="button"
+            class="admin-sidebar-close"
+            id="adminSidebarClose"
+            aria-label="Fermer le menu">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+
+    <nav class="admin-sidebar-nav">
+
+        <a
+            href="admin.html"
+            class="admin-nav-item">
+
+            <i class="fa-solid fa-gauge-high"></i>
+
+            <span>
+                Tableau de bord
+            </span>
+
+        </a>
+
+
+        <a
+            href="admin-annonces.html"
+            class="admin-nav-item">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+            <span>
+                Annonces
+            </span>
+
+        </a>
+
+
+        <a
+            href="admin-utilisateurs.html"
+            class="admin-nav-item">
+
+            <i class="fa-solid fa-users"></i>
+
+            <span>
+                Utilisateurs
+            </span>
+
+        </a>
+
+
+        <a
+            href="admin-signalements.html"
+            class="admin-nav-item active">
+
+            <i class="fa-solid fa-flag"></i>
+
+            <span>
+                Signalements
+            </span>
+
+        </a>
+
+
+        <a
+            href="admin-parametres.html"
+            class="admin-nav-item">
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Paramètres
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="admin-sidebar-bottom">
+
+        <a
+            href="index.html"
+            class="admin-nav-item">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            <span>
+                Retour au site
+            </span>
+
+        </a>
+
+
+        <a
+            href="#"
+            class="admin-nav-item"
+            id="adminLogout">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Déconnexion
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================
+     HEADER MOBILE
+========================= -->
+<header class="admin-mobile-header">
+
+    <button
+        type="button"
+        class="admin-mobile-menu"
+        id="adminSidebarOpen"
+        aria-label="Ouvrir le menu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <div class="admin-mobile-title">
+        Signalements
+    </div>
+
+
+    <a
+        href="admin.html"
+        aria-label="Tableau de bord">
+
+        <i class="fa-solid fa-gauge-high"></i>
+
+    </a>
+
+</header>
+
+
+
+<!-- =========================
+     CONTENU PRINCIPAL
+========================= -->
+<main class="admin-main">
+
+    <div class="admin-topbar">
+
+        <div>
+
+            <h1>
+                Gestion des signalements
+            </h1>
+
+            <p>
+                Examinez les annonces signalées et traitez les problèmes.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="admin-refresh-btn"
+            id="refreshReportsButton">
+
+            <i class="fa-solid fa-rotate"></i>
+
+            Actualiser
+
+        </button>
+
+    </div>
+
+
+
+    <!-- MESSAGE -->
+    <div
+        id="adminReportMessage"
+        class="admin-report-message"
+        hidden>
+    </div>
+
+
+
+    <!-- =========================
+         STATISTIQUES
+    ========================= -->
+    <section class="report-summary">
+
+        <div class="report-summary-card">
+
+            <div class="report-summary-icon">
+
+                <i class="fa-solid fa-flag"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Total des signalements
+                </span>
+
+                <strong id="reportsTotalCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="report-summary-card pending">
+
+            <div class="report-summary-icon">
+
+                <i class="fa-solid fa-hourglass-half"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    En attente
+                </span>
+
+                <strong id="reportsPendingCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="report-summary-card handled">
+
+            <div class="report-summary-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Traités
+                </span>
+
+                <strong id="reportsHandledCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FILTRES
+    ========================= -->
+    <section class="report-tools">
+
+        <div class="report-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                id="adminReportsSearch"
+                type="search"
+                placeholder="Rechercher une annonce, un motif ou un ID...">
+
+        </div>
+
+
+        <select id="adminReportsStatus">
+
+            <option value="all">
+                Tous les statuts
+            </option>
+
+            <option value="pending">
+                En attente
+            </option>
+
+            <option value="handled">
+                Traités
+            </option>
+
+        </select>
+
+
+        <button
+            type="button"
+            class="report-reset-btn"
+            id="clearAdminReportsFilters">
+
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+
+            Réinitialiser
+
+        </button>
+
+    </section>
+
+
+
+    <!-- RÉSULTATS -->
+    <div class="report-results-line">
+
+        <span id="reportsResultCount">
+            0 signalement
+        </span>
+
+    </div>
+
+
+
+    <!-- CHARGEMENT -->
+    <section
+        id="reportsLoading"
+        class="admin-report-state">
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <p>
+            Chargement des signalements...
+        </p>
+
+    </section>
+
+
+
+    <!-- VIDE -->
+    <section
+        id="reportsEmpty"
+        class="admin-report-state"
+        hidden>
+
+        <i class="fa-solid fa-flag"></i>
+
+        <h2>
+            Aucun signalement
+        </h2>
+
+        <p>
+            Aucun signalement ne correspond aux filtres actuels.
+        </p>
+
+    </section>
+
+
+
+    <!-- LISTE -->
+    <section
+        id="adminReportsContainer"
+        class="admin-reports-list">
+    </section>
+
+</main>
+
+
+
+<!-- =========================
+     MODALE DÉTAILS
+========================= -->
+<div
+    class="admin-report-modal"
+    id="reportDetailsModal"
+    hidden>
+
+    <div
+        class="admin-report-modal-backdrop"
+        data-close-report-modal>
+    </div>
+
+
+    <div
+        class="admin-report-modal-dialog"
+        role="dialog"
+        aria-modal="true">
+
+        <div class="admin-report-modal-header">
+
+            <div>
+
+                <span class="modal-kicker">
+                    Détails du signalement
+                </span>
+
+                <h2 id="reportModalTitle">
+                    Signalement
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="admin-report-modal-close"
+                data-close-report-modal>
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="reportModalContent"
+            class="admin-report-modal-content">
+        </div>
+
+
+        <div class="admin-report-modal-actions">
+
+            <button
+                type="button"
+                class="report-secondary-btn"
+                data-close-report-modal>
+
+                Fermer
+
+            </button>
+
+
+            <button
+                type="button"
+                class="report-primary-btn"
+                id="modalHandleReport">
+
+                <i class="fa-solid fa-check"></i>
+
+                Marquer comme traité
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script
+    type="module"
+    src="js/admin-signalements.js">
+</script>
+
+</body>
+</html>
