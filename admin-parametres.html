@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paramètres administrateur — CAMU SERVICES</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-parametres.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <div class="admin-sidebar-header">
+            <div class="admin-logo">
+                <span>CAMU</span> SERVICES
+            </div>
+
+            <button
+                type="button"
+                class="admin-sidebar-close"
+                id="adminSidebarClose"
+                aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="admin-sidebar-nav">
+
+            <a href="admin.html" class="admin-nav-link">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Tableau de bord</span>
+            </a>
+
+            <a href="admin-annonces.html" class="admin-nav-link">
+                <i class="fa-solid fa-list"></i>
+                <span>Gérer les annonces</span>
+            </a>
+
+            <a href="admin-utilisateurs.html" class="admin-nav-link">
+                <i class="fa-solid fa-users"></i>
+                <span>Gérer les utilisateurs</span>
+            </a>
+
+            <a href="admin-signalements.html" class="admin-nav-link">
+                <i class="fa-solid fa-flag"></i>
+                <span>Signalements</span>
+            </a>
+
+            <a href="admin-parametres.html"
+               class="admin-nav-link active">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+        <div class="admin-sidebar-footer">
+
+            <a href="index.html" class="admin-nav-link">
+                <i class="fa-solid fa-house"></i>
+                <span>Retour au site</span>
+            </a>
+
+            <button
+                type="button"
+                class="admin-nav-link admin-logout-btn"
+                id="adminLogoutButton">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= CONTENU ================= -->
+    <main class="admin-main">
+
+        <!-- TOPBAR -->
+        <header class="admin-mobile-topbar">
+
+            <button
+                type="button"
+                class="admin-menu-button"
+                id="adminMenuButton"
+                aria-label="Ouvrir le menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="admin-mobile-logo">
+                <strong>CAMU</strong> SERVICES
+            </div>
+
+        </header>
+
+
+        <!-- INTRO -->
+        <section class="admin-param-header">
+
+            <div>
+                <span class="admin-param-kicker">
+                    <i class="fa-solid fa-sliders"></i>
+                    Administration
+                </span>
+
+                <h1>Paramètres</h1>
+
+                <p>
+                    Gérez les informations et les paramètres généraux
+                    de CAMU SERVICES.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="admin-save-top-btn"
+                id="saveSettingsButton">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+                Enregistrer
+            </button>
+
+        </section>
+
+
+        <!-- MESSAGE -->
+        <div
+            class="admin-settings-message"
+            id="settingsMessage"
+            hidden>
+        </div>
+
+
+        <!-- ================= PARAMÈTRES ================= -->
+        <form id="adminSettingsForm">
+
+            <!-- INFORMATIONS GÉNÉRALES -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div>
+                        <h2>Informations générales</h2>
+                        <p>
+                            Informations principales affichées sur la plateforme.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-settings-grid">
+
+                    <div class="admin-field">
+
+                        <label for="siteName">
+                            Nom de la plateforme
+                        </label>
+
+                        <input
+                            type="text"
+                            id="siteName"
+                            name="siteName"
+                            placeholder="CAMU SERVICES">
+
+                    </div>
+
+
+                    <div class="admin-field">
+
+                        <label for="siteTagline">
+                            Slogan
+                        </label>
+
+                        <input
+                            type="text"
+                            id="siteTagline"
+                            name="siteTagline"
+                            placeholder="Trouver • Acheter • Réserver">
+
+                    </div>
+
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="siteDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="siteDescription"
+                            name="siteDescription"
+                            rows="4"
+                            placeholder="Présentez brièvement CAMU SERVICES..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CONTACT -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-address-book"></i>
+                    </div>
+
+                    <div>
+                        <h2>Contact</h2>
+                        <p>
+                            Coordonnées utilisées pour contacter CAMU SERVICES.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-settings-grid">
+
+                    <div class="admin-field">
+
+                        <label for="contactEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contactEmail"
+                            name="contactEmail"
+                            placeholder="contact@camuservices.com">
+
+                    </div>
+
+
+                    <div class="admin-field">
+
+                        <label for="contactPhone">
+                            Téléphone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="contactPhone"
+                            name="contactPhone"
+                            placeholder="+243 ...">
+
+                    </div>
+
+
+                    <div class="admin-field">
+
+                        <label for="contactWhatsapp">
+                            WhatsApp
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="contactWhatsapp"
+                            name="contactWhatsapp"
+                            placeholder="+243 ...">
+
+                    </div>
+
+
+                    <div class="admin-field">
+
+                        <label for="contactCity">
+                            Ville principale
+                        </label>
+
+                        <select id="contactCity" name="contactCity">
+
+                            <option value="Lubumbashi">
+                                Lubumbashi
+                            </option>
+
+                            <option value="Kolwezi">
+                                Kolwezi
+                            </option>
+
+                            <option value="Likasi">
+                                Likasi
+                            </option>
+
+                            <option value="Fungurume">
+                                Fungurume
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PUBLICATION -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <div>
+                        <h2>Publication des annonces</h2>
+                        <p>
+                            Contrôlez le fonctionnement général des publications.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-switch-list">
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Autoriser les nouvelles annonces</strong>
+
+                            <span>
+                                Les utilisateurs peuvent publier de nouvelles annonces.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="allowAds"
+                            name="allowAds"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Autoriser la modification</strong>
+
+                            <span>
+                                Les propriétaires peuvent modifier leurs annonces.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="allowEditAds"
+                            name="allowEditAds"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Autoriser les signalements</strong>
+
+                            <span>
+                                Les utilisateurs peuvent signaler une annonce.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="allowReports"
+                            name="allowReports"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- UTILISATEURS -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+
+                    <div>
+                        <h2>Utilisateurs</h2>
+                        <p>
+                            Paramètres liés aux comptes utilisateurs.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-switch-list">
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Autoriser les inscriptions</strong>
+
+                            <span>
+                                Les nouveaux utilisateurs peuvent créer un compte.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="allowRegistration"
+                            name="allowRegistration"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Profil public</strong>
+
+                            <span>
+                                Les informations publiques du vendeur peuvent être consultées.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="publicProfiles"
+                            name="publicProfiles"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- NOTIFICATIONS -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+
+                    <div>
+                        <h2>Notifications</h2>
+                        <p>
+                            Configurez les notifications administratives.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-switch-list">
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Notifications de nouveaux signalements</strong>
+
+                            <span>
+                                Activer les notifications lorsqu'un signalement est créé.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="reportNotifications"
+                            name="reportNotifications"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+
+                    <label class="admin-switch-row">
+
+                        <div>
+                            <strong>Notifications de nouvelles annonces</strong>
+
+                            <span>
+                                Recevoir une notification lorsqu'une annonce est publiée.
+                            </span>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            id="newAdNotifications"
+                            name="newAdNotifications"
+                            checked>
+
+                        <span class="admin-switch"></span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- ADMIN -->
+            <section class="admin-settings-card">
+
+                <div class="admin-settings-card-header">
+
+                    <div class="admin-settings-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <div>
+                        <h2>Sécurité administrateur</h2>
+                        <p>
+                            Informations concernant le compte administrateur.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-security-box">
+
+                    <div class="admin-security-item">
+
+                        <span class="admin-security-label">
+                            Administrateur principal
+                        </span>
+
+                        <strong id="adminEmailDisplay">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-security-item">
+
+                        <span class="admin-security-label">
+                            Statut
+                        </span>
+
+                        <strong class="admin-security-active">
+                            <i class="fa-solid fa-circle"></i>
+                            Compte actif
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACTIONS -->
+            <section class="admin-danger-card">
+
+                <div>
+
+                    <h2>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Zone sensible
+                    </h2>
+
+                    <p>
+                        Ces actions peuvent avoir des conséquences importantes.
+                        Utilisez-les avec précaution.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="admin-danger-btn"
+                    id="resetSettingsButton">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Réinitialiser les paramètres
+                </button>
+
+            </section>
+
+
+            <!-- BAS DE PAGE -->
+            <div class="admin-settings-footer">
+
+                <button
+                    type="submit"
+                    class="admin-save-btn">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Enregistrer les paramètres
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+</div>
+
+
+<!-- OVERLAY MOBILE -->
+<div
+    class="admin-sidebar-overlay"
+    id="adminSidebarOverlay"
+    hidden>
+</div>
+
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/admin-parametres.js"></script>
+
+</body>
+</html>
