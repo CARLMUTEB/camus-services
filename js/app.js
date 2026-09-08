@@ -1,14 +1,21 @@
 /* =========================================================
    CAMU SERVICES — APP.JS V1
-   Interactions générales + Firebase Auth
+   Interactions générales + Firebase Auth + Favoris Firestore
 ========================================================= */
 
-import { auth } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    doc,
+    setDoc,
+    deleteDoc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             'a[href="compte.html"], #accountLink'
         );
 
+
     /* =====================================================
        ADMINISTRATION
     ===================================================== */
@@ -64,92 +72,440 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentUser = null;
 
 
-    onAuthStateChanged(auth, (user) => {
+    /* =====================================================
+       FAVORIS — FIRESTORE
+    ===================================================== */
 
-        currentUser = user;
+    const favoriteButtons =
+        document.querySelectorAll(
+            ".favorite-button, .favorite-btn"
+        );
 
 
-        /* -----------------------------------------------
-           UTILISATEUR CONNECTÉ
-        ------------------------------------------------ */
+    function getListingId(button) {
 
-        if (user) {
+        return (
+            button.dataset.listingId ||
+            button.dataset.favoriteId ||
+            button.dataset.id ||
+            ""
+        ).trim();
 
-            console.log(
-                "Utilisateur connecté :",
-                user.email
+    }
+
+
+    function updateFavoriteButton(button, active) {
+
+        if (!button) return;
+
+        button.classList.toggle(
+            "is-favorite",
+            active
+        );
+
+        button.classList.toggle(
+            "active",
+            active
+        );
+
+
+        const icon =
+            button.querySelector("i");
+
+
+        if (icon) {
+
+            icon.classList.toggle(
+                "fa-solid",
+                active
             );
 
-
-            /* Mon compte → compte.html */
-
-            accountLinks.forEach(link => {
-                link.href = "compte.html";
-            });
-
-
-            /* -------------------------------------------
-               ADMINISTRATION
-            ------------------------------------------- */
-
-            if (
-                adminNavItem &&
-                user.email?.toLowerCase() ===
-                ADMIN_EMAIL.toLowerCase()
-            ) {
-
-                adminNavItem.style.display = "";
-
-            } else if (adminNavItem) {
-
-                adminNavItem.style.display = "none";
-
-            }
-
-
-            /* Afficher / activer Déconnexion */
-
-            if (logoutBtn) {
-                logoutBtn.style.display = "";
-            }
+            icon.classList.toggle(
+                "fa-regular",
+                !active
+            );
 
         }
 
 
-        /* -----------------------------------------------
-           UTILISATEUR NON CONNECTÉ
-        ------------------------------------------------ */
+        button.setAttribute(
+            "aria-label",
+            active
+                ? "Retirer des favoris"
+                : "Ajouter aux favoris"
+        );
 
-        else {
+    }
 
-            console.log(
-                "Aucun utilisateur connecté."
+
+    async function toggleFavorite(button) {
+
+        if (!currentUser) {
+
+            window.showCamuMessage(
+                "Connectez-vous pour utiliser les favoris.",
+                "info"
             );
 
 
-            /* Cacher Administration */
+            setTimeout(() => {
 
-            if (adminNavItem) {
-                adminNavItem.style.display = "none";
+                window.location.href =
+                    "connexion.html";
+
+            }, 700);
+
+
+            return;
+        }
+
+
+        const listingId =
+            getListingId(button);
+
+
+        if (!listingId) {
+
+            console.error(
+                "ID de l'annonce manquant.",
+                button
+            );
+
+
+            window.showCamuMessage(
+                "Impossible d'ajouter cette annonce aux favoris.",
+                "error"
+            );
+
+
+            return;
+        }
+
+
+        const favoriteId =
+            `${currentUser.uid}-${listingId}`;
+
+
+        try {
+
+            const favoriteRef =
+                doc(
+                    db,
+                    "favorites",
+                    favoriteId
+                );
+
+
+            const favoriteSnapshot =
+                await getDoc(
+                    favoriteRef
+                );
+
+
+            /* ---------------------------------------------
+               LE FAVORI EXISTE
+            --------------------------------------------- */
+
+            if (favoriteSnapshot.exists()) {
+
+                await deleteDoc(
+                    favoriteRef
+                );
+
+
+                updateFavoriteButton(
+                    button,
+                    false
+                );
+
+
+                window.showCamuMessage(
+                    "Annonce retirée des favoris.",
+                    "success"
+                );
+
             }
 
 
-            /* Mon compte → connexion.html */
+            /* ---------------------------------------------
+               LE FAVORI N'EXISTE PAS
+            --------------------------------------------- */
 
-            accountLinks.forEach(link => {
-                link.href = "connexion.html";
-            });
+            else {
+
+                await setDoc(
+                    favoriteRef,
+                    {
+                        userId:
+                            currentUser.uid,
+
+                        listingId:
+                            listingId,
+
+                        createdAt:
+                            new Date()
+                    }
+                );
 
 
-            /* Déconnexion */
+                updateFavoriteButton(
+                    button,
+                    true
+                );
 
-            if (logoutBtn) {
-                logoutBtn.style.display = "none";
+
+                window.showCamuMessage(
+                    "Annonce ajoutée aux favoris.",
+                    "success"
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur Firestore favoris :",
+                error
+            );
+
+
+            window.showCamuMessage(
+                "Impossible de modifier les favoris.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RESTAURATION DES FAVORIS
+    ===================================================== */
+
+    async function restoreFavoriteButtons() {
+
+        if (!currentUser) return;
+
+
+        for (
+            const button
+            of favoriteButtons
+        ) {
+
+            const listingId =
+                getListingId(button);
+
+
+            if (!listingId) continue;
+
+
+            try {
+
+                const favoriteId =
+                    `${currentUser.uid}-${listingId}`;
+
+
+                const favoriteSnapshot =
+                    await getDoc(
+                        doc(
+                            db,
+                            "favorites",
+                            favoriteId
+                        )
+                    );
+
+
+                updateFavoriteButton(
+                    button,
+                    favoriteSnapshot.exists()
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur restauration favori :",
+                    error
+                );
+
             }
 
         }
 
-    });
+    }
+
+
+    /* =====================================================
+       ÉVÉNEMENT DES BOUTONS FAVORIS
+    ===================================================== */
+
+    favoriteButtons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                async event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    await toggleFavorite(
+                        button
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       AUTH STATE
+    ===================================================== */
+
+    onAuthStateChanged(
+        auth,
+        async user => {
+
+            currentUser = user;
+
+
+            /* ---------------------------------------------
+               RESTAURER LES FAVORIS
+            --------------------------------------------- */
+
+            if (user) {
+
+                await restoreFavoriteButtons();
+
+            } else {
+
+                favoriteButtons.forEach(
+                    button => {
+
+                        updateFavoriteButton(
+                            button,
+                            false
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* ---------------------------------------------
+               UTILISATEUR CONNECTÉ
+            --------------------------------------------- */
+
+            if (user) {
+
+                console.log(
+                    "Utilisateur connecté :",
+                    user.email
+                );
+
+
+                /* Mon compte → compte.html */
+
+                accountLinks.forEach(
+                    link => {
+
+                        link.href =
+                            "compte.html";
+
+                    }
+                );
+
+
+                /* -----------------------------------------
+                   ADMINISTRATION
+                ----------------------------------------- */
+
+                if (
+                    adminNavItem &&
+                    user.email?.toLowerCase() ===
+                    ADMIN_EMAIL.toLowerCase()
+                ) {
+
+                    adminNavItem.style.display =
+                        "";
+
+                } else if (
+                    adminNavItem
+                ) {
+
+                    adminNavItem.style.display =
+                        "none";
+
+                }
+
+
+                /* -----------------------------------------
+                   DÉCONNEXION
+                ----------------------------------------- */
+
+                if (logoutBtn) {
+
+                    logoutBtn.style.display =
+                        "";
+
+                }
+
+            }
+
+
+            /* ---------------------------------------------
+               UTILISATEUR NON CONNECTÉ
+            --------------------------------------------- */
+
+            else {
+
+                console.log(
+                    "Aucun utilisateur connecté."
+                );
+
+
+                /* Cacher Administration */
+
+                if (adminNavItem) {
+
+                    adminNavItem.style.display =
+                        "none";
+
+                }
+
+
+                /* Mon compte → connexion.html */
+
+                accountLinks.forEach(
+                    link => {
+
+                        link.href =
+                            "connexion.html";
+
+                    }
+                );
+
+
+                /* Déconnexion */
+
+                if (logoutBtn) {
+
+                    logoutBtn.style.display =
+                        "none";
+
+                }
+
+            }
+
+        }
+    );
 
 
     /* =====================================================
@@ -160,13 +516,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!sidebar) return;
 
-        sidebar.classList.add("open");
+
+        sidebar.classList.add(
+            "open"
+        );
+
 
         if (sidebarOverlay) {
-            sidebarOverlay.classList.add("active");
+
+            sidebarOverlay.classList.add(
+                "active"
+            );
+
         }
 
-        document.body.style.overflow = "hidden";
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
@@ -174,13 +541,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!sidebar) return;
 
-        sidebar.classList.remove("open");
+
+        sidebar.classList.remove(
+            "open"
+        );
+
 
         if (sidebarOverlay) {
-            sidebarOverlay.classList.remove("active");
+
+            sidebarOverlay.classList.remove(
+                "active"
+            );
+
         }
 
-        document.body.style.overflow = "";
+
+        document.body.style.overflow =
+            "";
+
     }
 
 
@@ -214,7 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* Fermer le menu après avoir cliqué sur un lien */
+    /* Fermer le menu après clic */
 
     const navLinks =
         document.querySelectorAll(
@@ -222,17 +600,26 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-    navLinks.forEach(link => {
+    navLinks.forEach(
+        link => {
 
-        link.addEventListener("click", () => {
+            link.addEventListener(
+                "click",
+                () => {
 
-            if (window.innerWidth <= 700) {
-                closeSidebar();
-            }
+                    if (
+                        window.innerWidth <= 700
+                    ) {
 
-        });
+                        closeSidebar();
 
-    });
+                    }
+
+                }
+            );
+
+        }
+    );
 
 
     /* Fermer avec ESC */
@@ -241,8 +628,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         event => {
 
-            if (event.key === "Escape") {
+            if (
+                event.key === "Escape"
+            ) {
+
                 closeSidebar();
+
             }
 
         }
@@ -263,11 +654,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 const keyword =
-                    searchKeyword?.value.trim() || "";
+                    searchKeyword?.value.trim()
+                    || "";
 
 
                 const city =
-                    citySelect?.value || "";
+                    citySelect?.value
+                    || "";
 
 
                 const params =
@@ -317,193 +710,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FAVORIS — VERSION TEMPORAIRE
-    ===================================================== */
-
-    const favoriteButtons =
-        document.querySelectorAll(
-            ".favorite-button"
-        );
-
-
-    function getFavorites() {
-
-        try {
-
-            return JSON.parse(
-                localStorage.getItem(
-                    "camu_favorites"
-                )
-            ) || [];
-
-        } catch (error) {
-
-            console.error(
-                "Erreur lors de la lecture des favoris :",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    function saveFavorites(favorites) {
-
-        localStorage.setItem(
-            "camu_favorites",
-            JSON.stringify(favorites)
-        );
-
-    }
-
-
-    favoriteButtons.forEach(
-        (button, index) => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-
-                    let favorites =
-                        getFavorites();
-
-
-                    const favoriteId =
-                        `demo-ad-${index + 1}`;
-
-
-                    const existingIndex =
-                        favorites.indexOf(
-                            favoriteId
-                        );
-
-
-                    if (existingIndex === -1) {
-
-                        favorites.push(
-                            favoriteId
-                        );
-
-                        button.classList.add(
-                            "is-favorite"
-                        );
-
-
-                        const icon =
-                            button.querySelector("i");
-
-
-                        if (icon) {
-
-                            icon.classList.remove(
-                                "fa-regular"
-                            );
-
-                            icon.classList.add(
-                                "fa-solid"
-                            );
-
-                        }
-
-                    } else {
-
-                        favorites.splice(
-                            existingIndex,
-                            1
-                        );
-
-
-                        button.classList.remove(
-                            "is-favorite"
-                        );
-
-
-                        const icon =
-                            button.querySelector("i");
-
-
-                        if (icon) {
-
-                            icon.classList.remove(
-                                "fa-solid"
-                            );
-
-                            icon.classList.add(
-                                "fa-regular"
-                            );
-
-                        }
-
-                    }
-
-
-                    saveFavorites(
-                        favorites
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       RESTAURATION DES FAVORIS
-    ===================================================== */
-
-    const savedFavorites =
-        getFavorites();
-
-
-    favoriteButtons.forEach(
-        (button, index) => {
-
-            const favoriteId =
-                `demo-ad-${index + 1}`;
-
-
-            if (
-                savedFavorites.includes(
-                    favoriteId
-                )
-            ) {
-
-                button.classList.add(
-                    "is-favorite"
-                );
-
-
-                const icon =
-                    button.querySelector("i");
-
-
-                if (icon) {
-
-                    icon.classList.remove(
-                        "fa-regular"
-                    );
-
-                    icon.classList.add(
-                        "fa-solid"
-                    );
-
-                }
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
        DÉCONNEXION — FIREBASE
     ===================================================== */
 
@@ -533,13 +739,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (!confirmLogout) {
+
                     return;
+
                 }
 
 
                 try {
 
-                    await signOut(auth);
+                    await signOut(
+                        auth
+                    );
 
 
                     if (
@@ -555,14 +765,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    setTimeout(() => {
+                    setTimeout(
+                        () => {
 
-                        window.location.href =
-                            "index.html";
+                            window.location.href =
+                                "index.html";
 
-                    }, 700);
+                        },
+                        700
+                    );
 
                 }
+
 
                 catch (error) {
 
@@ -629,7 +843,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (existing) {
+
                 existing.remove();
+
             }
 
 
@@ -652,20 +868,26 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                notification.classList.add(
-                    "hide"
-                );
+                    notification.classList.add(
+                        "hide"
+                    );
 
 
-                setTimeout(() => {
+                    setTimeout(
+                        () => {
 
-                    notification.remove();
+                            notification.remove();
 
-                }, 300);
+                        },
+                        300
+                    );
 
-            }, 3000);
+                },
+                3000
+            );
 
         };
 
