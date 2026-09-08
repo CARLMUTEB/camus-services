@@ -153,23 +153,14 @@
 }
 
 
-.report-summary-card.pending
-.report-summary-icon {
-
+.report-summary-card.pending .report-summary-icon {
     background: #fff7ed;
-
     color: #c2410c;
-
 }
 
-
-.report-summary-card.handled
-.report-summary-icon {
-
+.report-summary-card.handled .report-summary-icon {
     background: #ecfdf3;
-
     color: #15803d;
-
 }
 
 
