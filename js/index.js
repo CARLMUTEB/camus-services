@@ -1,6 +1,7 @@
 // =========================================================
 // CAMU SERVICES — INDEX.JS
 // Affichage des annonces récentes depuis Firestore
+// Gestion des favoris compatible avec favoris.html
 // =========================================================
 
 import { db } from "./firebase-config.js";
@@ -15,7 +16,8 @@ import {
 // ÉLÉMENT HTML
 // =========================================================
 
-const recentAds = document.getElementById("recentAds");
+const recentAds =
+    document.getElementById("recentAds");
 
 
 // =========================================================
@@ -23,7 +25,11 @@ const recentAds = document.getElementById("recentAds");
 // =========================================================
 
 function escapeHtml(value) {
-    if (value === null || value === undefined) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return "";
     }
 
@@ -40,21 +46,34 @@ function escapeHtml(value) {
 // FORMAT PRIX
 // =========================================================
 
-function formatPrice(price, currency = "USD") {
+function formatPrice(
+    price,
+    currency = "USD"
+) {
 
     if (
         price === null ||
         price === undefined ||
         price === ""
     ) {
+
         return "Prix à discuter";
+
     }
 
-    const number = Number(price);
 
-    if (Number.isNaN(number)) {
+    const number =
+        Number(price);
+
+
+    if (
+        Number.isNaN(number)
+    ) {
+
         return `${escapeHtml(price)} ${escapeHtml(currency)}`;
+
     }
+
 
     return `${new Intl.NumberFormat("fr-FR").format(number)} ${escapeHtml(currency)}`;
 }
@@ -71,12 +90,18 @@ function getImage(ad) {
         ad.images.length > 0 &&
         ad.images[0]
     ) {
+
         return ad.images[0];
+
     }
 
+
     if (ad.imageURL) {
+
         return ad.imageURL;
+
     }
+
 
     return "logo.png";
 }
@@ -86,20 +111,44 @@ function getImage(ad) {
 // NOM DE LA CATÉGORIE
 // =========================================================
 
-function getCategoryName(category) {
+function getCategoryName(
+    category
+) {
 
     const categories = {
-        immobilier: "Immobilier",
-        vehicules: "Véhicules",
-        commerce: "Commerce",
-        services: "Services",
-        emploi: "Emploi",
-        autres: "Autres"
+
+        immobilier:
+            "Immobilier",
+
+        vehicules:
+            "Véhicules",
+
+        commerce:
+            "Commerce",
+
+        services:
+            "Services",
+
+        emploi:
+            "Emploi",
+
+        autres:
+            "Autres"
+
     };
 
-    const key = String(category || "").toLowerCase();
 
-    return categories[key] || category || "Autres";
+    const key =
+        String(
+            category || ""
+        ).toLowerCase();
+
+
+    return (
+        categories[key] ||
+        category ||
+        "Autres"
+    );
 }
 
 
@@ -110,60 +159,119 @@ function getCategoryName(category) {
 async function loadRecentAds() {
 
     if (!recentAds) {
+
         console.warn(
             "CAMU SERVICES : #recentAds introuvable."
         );
+
         return;
+
     }
+
 
     try {
 
-        // Message de chargement
+        // -------------------------------------------------
+        // MESSAGE DE CHARGEMENT
+        // -------------------------------------------------
+
         recentAds.innerHTML = `
+
             <div class="account-empty">
+
                 <div class="account-empty-icon">
+
                     <i class="fa-solid fa-spinner fa-spin"></i>
+
                 </div>
 
-                <h3>Chargement des annonces...</h3>
+                <h3>
+                    Chargement des annonces...
+                </h3>
+
             </div>
+
         `;
 
 
-        // Récupération de la collection services
-        const servicesRef = collection(db, "services");
+        // -------------------------------------------------
+        // RÉCUPÉRER LES ANNONCES
+        // IMPORTANT :
+        // On utilise "annonces" et non "services"
+        // -------------------------------------------------
 
-        const snapshot = await getDocs(servicesRef);
-
-
-        // Transformer les documents
-        const ads = snapshot.docs.map((document) => ({
-            id: document.id,
-            ...document.data()
-        }));
-
-
-        // Trier par date : plus récente en premier
-        ads.sort((a, b) => {
-
-            const dateA =
-                a.createdAt &&
-                typeof a.createdAt.toMillis === "function"
-                    ? a.createdAt.toMillis()
-                    : 0;
-
-            const dateB =
-                b.createdAt &&
-                typeof b.createdAt.toMillis === "function"
-                    ? b.createdAt.toMillis()
-                    : 0;
-
-            return dateB - dateA;
-        });
+        const annoncesRef =
+            collection(
+                db,
+                "annonces"
+            );
 
 
-        // Garder seulement les 8 dernières
-        const recent = ads.slice(0, 8);
+        const snapshot =
+            await getDocs(
+                annoncesRef
+            );
+
+
+        // -------------------------------------------------
+        // TRANSFORMER LES DOCUMENTS FIRESTORE
+        // -------------------------------------------------
+
+        const ads =
+            snapshot.docs.map(
+                document => ({
+
+                    id:
+                        document.id,
+
+                    ...document.data()
+
+                })
+            );
+
+
+        // -------------------------------------------------
+        // TRIER PAR DATE
+        // -------------------------------------------------
+
+        ads.sort(
+            (a, b) => {
+
+                const dateA =
+                    a.createdAt &&
+                    typeof a.createdAt.toMillis ===
+                    "function"
+
+                        ? a.createdAt.toMillis()
+
+                        : 0;
+
+
+                const dateB =
+                    b.createdAt &&
+                    typeof b.createdAt.toMillis ===
+                    "function"
+
+                        ? b.createdAt.toMillis()
+
+                        : 0;
+
+
+                return dateB - dateA;
+
+            }
+        );
+
+
+        // -------------------------------------------------
+        // GARDER LES 8 PLUS RÉCENTES
+        // -------------------------------------------------
+
+        const recent =
+            ads.slice(
+                0,
+                8
+            );
 
 
         console.log(
@@ -172,191 +280,264 @@ async function loadRecentAds() {
         );
 
 
-        // Aucune annonce
-        if (recent.length === 0) {
+        // -------------------------------------------------
+        // AUCUNE ANNONCE
+        // -------------------------------------------------
+
+        if (
+            recent.length === 0
+        ) {
 
             recentAds.innerHTML = `
+
                 <div class="account-empty">
 
                     <div class="account-empty-icon">
+
                         <i class="fa-solid fa-box-open"></i>
+
                     </div>
 
-                    <h3>Aucune annonce pour le moment</h3>
+                    <h3>
+                        Aucune annonce pour le moment
+                    </h3>
 
                     <p>
-                        Soyez le premier à publier une annonce
-                        sur CAMU SERVICES.
+                        Soyez le premier à publier
+                        une annonce sur CAMU SERVICES.
                     </p>
 
                 </div>
+
             `;
 
             return;
+
         }
 
 
-        // Vider les anciennes annonces statiques
+        // -------------------------------------------------
+        // VIDER LES ANNONCES STATIQUES
+        // -------------------------------------------------
+
         recentAds.innerHTML = "";
 
 
-        // =====================================================
-        // CRÉATION DES CARTES
-        // =====================================================
+        // =================================================
+        // CRÉER LES CARTES
+        // =================================================
 
-        recent.forEach((ad) => {
+        recent.forEach(
+            ad => {
 
-            const image = getImage(ad);
+                // -----------------------------------------
+                // DONNÉES
+                // -----------------------------------------
 
-            const title =
-                ad.title ||
-                "Annonce sans titre";
-
-            const city =
-                ad.city ||
-                "Ville non précisée";
-
-            const category =
-                getCategoryName(ad.category);
-
-            const price =
-                formatPrice(
-                    ad.price,
-                    ad.currency || "USD"
-                );
+                const image =
+                    getImage(ad);
 
 
-            const card = document.createElement("article");
-
-            card.className = "ad-card";
-
-            card.innerHTML = `
-
-                <div class="ad-image">
-
-                    <img
-                        src="${escapeHtml(image)}"
-                        alt="${escapeHtml(title)}"
-                        loading="lazy"
-                        onerror="this.src='logo.png'"
-                    >
-
-                    <button
-                        type="button"
-                        class="favorite-button"
-                        aria-label="Ajouter aux favoris"
-                        data-ad-id="${escapeHtml(ad.id)}"
-                    >
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-
-                    <span class="ad-category">
-                        ${escapeHtml(category)}
-                    </span>
-
-                </div>
+                const title =
+                    ad.title ||
+                    "Annonce sans titre";
 
 
-                <div class="ad-content">
+                const city =
+                    ad.city ||
+                    "Ville non précisée";
 
-                    <h3>
-                        ${escapeHtml(title)}
-                    </h3>
 
-                    <div class="ad-location">
+                const category =
+                    getCategoryName(
+                        ad.category
+                    );
 
-                        <i class="fa-solid fa-location-dot"></i>
 
-                        ${escapeHtml(city)}
+                const price =
+                    formatPrice(
+                        ad.price,
+                        ad.currency ||
+                        "USD"
+                    );
+
+
+                // -----------------------------------------
+                // CARTE
+                // -----------------------------------------
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+
+                card.className =
+                    "ad-card";
+
+
+                // -----------------------------------------
+                // HTML DE LA CARTE
+                // -----------------------------------------
+
+                card.innerHTML = `
+
+                    <div class="ad-image">
+
+                        <img
+                            src="${escapeHtml(image)}"
+                            alt="${escapeHtml(title)}"
+                            loading="lazy"
+                            onerror="this.src='logo.png'"
+                        >
+
+
+                        <!-- =============================
+                             BOUTON FAVORI
+                             ============================= -->
+
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            aria-label="Ajouter aux favoris"
+                            data-listing-id="${escapeHtml(ad.id)}"
+                        >
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+
+                        <span class="ad-category">
+
+                            ${escapeHtml(category)}
+
+                        </span>
 
                     </div>
 
-                    <div class="ad-price">
-                        ${price}
+
+                    <div class="ad-content">
+
+                        <h3>
+
+                            ${escapeHtml(title)}
+
+                        </h3>
+
+
+                        <div class="ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            ${escapeHtml(city)}
+
+                        </div>
+
+
+                        <div class="ad-price">
+
+                            ${price}
+
+                        </div>
+
                     </div>
 
-                </div>
-
-            `;
+                `;
 
 
-            // Cliquer sur la carte
-            card.addEventListener("click", (event) => {
+                // -----------------------------------------
+                // CLIQUER SUR LA CARTE
+                // -----------------------------------------
 
-                // Ne pas ouvrir l'annonce lorsqu'on clique
-                // sur le bouton favoris
-                if (
-                    event.target.closest(".favorite-button")
-                ) {
-                    return;
-                }
-
-                window.location.href =
-                    `explorer.html?id=${encodeURIComponent(ad.id)}`;
-            });
-
-
-            // Bouton favoris
-            const favoriteButton =
-                card.querySelector(".favorite-button");
-
-            if (favoriteButton) {
-
-                favoriteButton.addEventListener(
+                card.addEventListener(
                     "click",
-                    (event) => {
+                    event => {
 
-                        event.stopPropagation();
-
-                        const icon =
-                            favoriteButton.querySelector("i");
-
-                        favoriteButton.classList.toggle(
-                            "active"
-                        );
+                        // Si le clic vient du cœur,
+                        // ne pas ouvrir l'annonce.
 
                         if (
-                            favoriteButton.classList.contains(
-                                "active"
+                            event.target.closest(
+                                ".favorite-button"
                             )
                         ) {
 
-                            icon.classList.remove(
-                                "fa-regular"
-                            );
+                            return;
 
-                            icon.classList.add(
-                                "fa-solid"
-                            );
-
-                            console.log(
-                                "Favori ajouté :",
-                                ad.id
-                            );
-
-                        } else {
-
-                            icon.classList.remove(
-                                "fa-solid"
-                            );
-
-                            icon.classList.add(
-                                "fa-regular"
-                            );
-
-                            console.log(
-                                "Favori retiré :",
-                                ad.id
-                            );
                         }
+
+
+                        window.location.href =
+                            `explorer.html?id=${encodeURIComponent(ad.id)}`;
+
                     }
                 );
+
+
+                // -----------------------------------------
+                // BOUTON FAVORI
+                // -----------------------------------------
+
+                const favoriteButton =
+                    card.querySelector(
+                        ".favorite-button"
+                    );
+
+
+                if (
+                    favoriteButton
+                ) {
+
+                    favoriteButton.addEventListener(
+                        "click",
+                        event => {
+
+                            // Empêcher le clic
+                            // de remonter vers la carte.
+
+                            event.preventDefault();
+
+                            event.stopPropagation();
+
+
+                            console.log(
+                                "Annonce sélectionnée pour favori :",
+                                ad.id
+                            );
+
+
+                            /*
+                             * Le vrai traitement du favori
+                             * est effectué par app.js.
+                             *
+                             * app.js récupère :
+                             *
+                             * data-listing-id
+                             *
+                             * puis utilise :
+                             *
+                             * favorites
+                             *
+                             * dans Firestore.
+                             */
+
+                        }
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // AJOUTER LA CARTE À LA PAGE
+                // -----------------------------------------
+
+                recentAds.appendChild(
+                    card
+                );
+
             }
-
-
-            recentAds.appendChild(card);
-
-        });
+        );
 
 
     } catch (error) {
@@ -372,20 +553,26 @@ async function loadRecentAds() {
             <div class="account-empty">
 
                 <div class="account-empty-icon">
+
                     <i class="fa-solid fa-triangle-exclamation"></i>
+
                 </div>
 
-                <h3>Impossible de charger les annonces</h3>
+                <h3>
+                    Impossible de charger les annonces
+                </h3>
 
                 <p>
-                    Une erreur est survenue lors du chargement
-                    des annonces.
+                    Une erreur est survenue
+                    lors du chargement des annonces.
                 </p>
 
             </div>
 
         `;
+
     }
+
 }
 
 
@@ -394,6 +581,7 @@ async function loadRecentAds() {
 // =========================================================
 
 loadRecentAds();
+
 
 console.log(
     "CAMU SERVICES — index.js chargé correctement."
