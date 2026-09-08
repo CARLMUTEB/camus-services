@@ -20,159 +20,6 @@
 <body class="admin-page">
 
     <!-- =========================
-         MOBILE HEADER
-    ========================== -->
-    <header class="admin-mobile-header">
-
-        <button
-            id="adminMenuButton"
-            class="admin-menu-button"
-            type="button"
-            aria-label="Ouvrir le menu"
-        >
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="admin-mobile-logo">
-            <img src="logo.png" alt="CAMU SERVICES">
-            <span>CAMU SERVICES</span>
-        </div>
-
-        <div class="admin-mobile-user">
-            <i class="fa-solid fa-user-shield"></i>
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-    <aside id="adminSidebar" class="admin-sidebar">
-
-        <div class="admin-sidebar-header">
-
-            <a href="admin.html" class="admin-brand">
-
-                <img
-                    src="logo.png"
-                    alt="CAMU SERVICES"
-                    class="admin-brand-logo"
-                >
-
-                <div>
-                    <strong>CAMU SERVICES</strong>
-                    <span>ADMIN</span>
-                </div>
-
-            </a>
-
-            <button
-                id="adminCloseSidebar"
-                class="admin-close-sidebar"
-                type="button"
-                aria-label="Fermer le menu"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-        </div>
-
-
-        <nav class="admin-navigation">
-
-            <a
-                href="admin.html"
-                class="admin-nav-link active"
-            >
-                <span class="admin-nav-icon dashboard">
-                    <i class="fa-solid fa-chart-line"></i>
-                </span>
-
-                <span>Tableau de bord</span>
-            </a>
-
-
-            <a
-                href="#annonces"
-                class="admin-nav-link"
-                data-section="annonces"
-            >
-                <span class="admin-nav-icon ads">
-                    <i class="fa-solid fa-bullhorn"></i>
-                </span>
-
-                <span>Annonces</span>
-            </a>
-
-
-            <a
-                href="#utilisateurs"
-                class="admin-nav-link"
-                data-section="utilisateurs"
-            >
-                <span class="admin-nav-icon users">
-                    <i class="fa-solid fa-users"></i>
-                </span>
-
-                <span>Utilisateurs</span>
-            </a>
-
-
-            <a
-                href="#signalements"
-                class="admin-nav-link"
-                data-section="signalements"
-            >
-                <span class="admin-nav-icon reports">
-                    <i class="fa-solid fa-flag"></i>
-                </span>
-
-                <span>Signalements</span>
-            </a>
-
-
-            <a
-                href="#parametres"
-                class="admin-nav-link"
-                data-section="parametres"
-            >
-                <span class="admin-nav-icon settings">
-                    <i class="fa-solid fa-gear"></i>
-                </span>
-
-                <span>Paramètres</span>
-            </a>
-
-        </nav>
-
-
-        <div class="admin-sidebar-bottom">
-
-            <a href="index.html" class="admin-back-site">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Retour au site</span>
-            </a>
-
-            <button
-                id="adminLogoutButton"
-                class="admin-logout-button"
-                type="button"
-            >
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Déconnexion</span>
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- Overlay mobile -->
-    <div id="adminOverlay" class="admin-overlay"></div>
-
-
-    <!-- =========================
          MAIN
     ========================== -->
     <main class="admin-main">
@@ -180,16 +27,24 @@
         <!-- TOPBAR -->
         <header class="admin-topbar">
 
-            <div>
-                <p class="admin-breadcrumb">
-                    Administration
-                </p>
+            <div class="admin-topbar-left">
 
-                <h1>
-                    Tableau de bord
-                </h1>
+                <a href="index.html" class="admin-back-button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Retour</span>
+                </a>
+
+                <div>
+                    <p class="admin-breadcrumb">
+                        Administration
+                    </p>
+
+                    <h1>
+                        Tableau de bord
+                    </h1>
+                </div>
+
             </div>
-
 
             <div class="admin-topbar-right">
 
@@ -205,6 +60,16 @@
                     </div>
 
                 </div>
+
+                <button
+                    id="adminLogoutButton"
+                    class="admin-logout-topbar"
+                    type="button"
+                    title="Déconnexion"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </button>
 
             </div>
 
