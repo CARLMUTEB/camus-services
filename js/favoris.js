@@ -33,8 +33,7 @@ async function loadFavorites(user) {
         favoritesContainer.innerHTML = "";
         favoritesEmpty.hidden = true;
 
-        // IMPORTANT :
-        // La collection s'appelle "favorites"
+        // Collection Firestore : favorites
         const favoritesRef = collection(db, "favorites");
 
         const q = query(
@@ -44,8 +43,11 @@ async function loadFavorites(user) {
 
         const snapshot = await getDocs(q);
 
+        // Nombre total de favoris
         favoritesCount.textContent = snapshot.size;
 
+
+        // Aucun favori
         if (snapshot.empty) {
 
             favoritesLoading.hidden = true;
@@ -55,35 +57,58 @@ async function loadFavorites(user) {
         }
 
 
+        /* =====================================================
+           RÉCUPÉRER CHAQUE ANNONCE
+        ===================================================== */
+
         for (const favoriteDoc of snapshot.docs) {
 
             const favorite = favoriteDoc.data();
 
-            const serviceId = favorite.serviceId;
-
-            if (!serviceId) continue;
-
-
-            // Récupérer l'annonce
-            const serviceRef = doc(
-                db,
-                "services",
-                serviceId
-            );
-
-            const serviceSnapshot = await getDoc(serviceRef);
+            // IMPORTANT :
+            // Les documents favorites utilisent listingId
+            const listingId = favorite.listingId;
 
 
-            if (!serviceSnapshot.exists()) {
+            if (!listingId) {
+
+                console.warn(
+                    "Favori sans listingId :",
+                    favoriteDoc.id
+                );
+
                 continue;
             }
 
 
-            const service = serviceSnapshot.data();
+            // Les annonces sont dans la collection "annonces"
+            const listingRef = doc(
+                db,
+                "annonces",
+                listingId
+            );
+
+            const listingSnapshot = await getDoc(listingRef);
+
+
+            // L'annonce n'existe plus
+            if (!listingSnapshot.exists()) {
+
+                console.warn(
+                    "Annonce introuvable :",
+                    listingId
+                );
+
+                continue;
+            }
+
+
+            const listing = listingSnapshot.data();
+
 
             renderFavorite(
-                serviceSnapshot.id,
-                service,
+                listingSnapshot.id,
+                listing,
                 favoriteDoc.id
             );
         }
@@ -92,10 +117,13 @@ async function loadFavorites(user) {
         favoritesLoading.hidden = true;
 
 
-        // Si aucun document valide
+        // Aucun document favorite ne correspond
+        // à une annonce existante
         if (!favoritesContainer.children.length) {
+
             favoritesEmpty.hidden = false;
         }
+
 
     } catch (error) {
 
@@ -108,8 +136,13 @@ async function loadFavorites(user) {
 
         favoritesContainer.innerHTML = `
             <div class="favorites-error">
+
                 <i class="fa-solid fa-circle-exclamation"></i>
-                <p>Impossible de charger vos favoris.</p>
+
+                <p>
+                    Impossible de charger vos favoris.
+                </p>
+
             </div>
         `;
     }
@@ -121,8 +154,8 @@ async function loadFavorites(user) {
 ========================================================= */
 
 function renderFavorite(
-    serviceId,
-    service,
+    listingId,
+    listing,
     favoriteId
 ) {
 
@@ -131,33 +164,49 @@ function renderFavorite(
     card.className = "favorite-card";
 
 
+    /* =====================================================
+       IMAGE
+    ===================================================== */
+
     const image =
-        service.image ||
-        service.imageUrl ||
-        service.images?.[0] ||
+        listing.image ||
+        listing.imageUrl ||
+        listing.images?.[0] ||
         "assets/images/placeholder.jpg";
 
 
+    /* =====================================================
+       TITRE
+    ===================================================== */
+
     const title =
-        service.title ||
+        listing.title ||
         "Annonce sans titre";
 
 
+    /* =====================================================
+       PRIX
+    ===================================================== */
+
     const price =
-        service.price !== undefined &&
-        service.price !== null &&
-        service.price !== ""
-            ? `${service.price} $`
+        listing.price !== undefined &&
+        listing.price !== null &&
+        listing.price !== ""
+            ? `${listing.price} $`
             : "Prix à discuter";
 
 
+    /* =====================================================
+       LOCALISATION
+    ===================================================== */
+
     const city =
-        service.city ||
+        listing.city ||
         "";
 
 
     const neighborhood =
-        service.neighborhood ||
+        listing.neighborhood ||
         "";
 
 
@@ -167,12 +216,16 @@ function renderFavorite(
             .join(" • ");
 
 
+    /* =====================================================
+       CARTE
+    ===================================================== */
+
     card.innerHTML = `
 
         <div class="favorite-card-image">
 
             <img
-                src="${image}"
+                src="${escapeHTML(image)}"
                 alt="${escapeHTML(title)}"
                 onerror="this.src='assets/images/placeholder.jpg'"
             >
@@ -181,7 +234,7 @@ function renderFavorite(
                 class="favorite-remove"
                 type="button"
                 title="Retirer des favoris"
-                data-favorite-id="${favoriteId}">
+                data-favorite-id="${escapeHTML(favoriteId)}">
 
                 <i class="fa-solid fa-heart"></i>
 
@@ -196,16 +249,21 @@ function renderFavorite(
                 ${escapeHTML(title)}
             </h3>
 
+
             <div class="favorite-price">
                 ${escapeHTML(price)}
             </div>
+
 
             ${
                 location
                     ? `
                     <div class="favorite-location">
+
                         <i class="fa-solid fa-location-dot"></i>
+
                         ${escapeHTML(location)}
+
                     </div>
                     `
                     : ""
@@ -213,7 +271,7 @@ function renderFavorite(
 
 
             <a
-                href="explorer.html?id=${encodeURIComponent(serviceId)}"
+                href="explorer.html?id=${encodeURIComponent(listingId)}"
                 class="favorite-view">
 
                 Voir l'annonce
@@ -223,6 +281,10 @@ function renderFavorite(
         </div>
     `;
 
+
+    /* =====================================================
+       BOUTON RETIRER
+    ===================================================== */
 
     const removeButton =
         card.querySelector(".favorite-remove");
@@ -261,18 +323,25 @@ async function removeFavorite(
         );
 
 
+        // Supprimer la carte
         card.remove();
 
 
+        // Mettre à jour le compteur
         const currentCount =
             Number(favoritesCount.textContent) || 0;
 
 
         favoritesCount.textContent =
-            Math.max(0, currentCount - 1);
+            Math.max(
+                0,
+                currentCount - 1
+            );
 
 
+        // Afficher le message si plus aucun favori
         if (!favoritesContainer.children.length) {
+
             favoritesEmpty.hidden = false;
         }
 
