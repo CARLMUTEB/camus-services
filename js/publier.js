@@ -1,9 +1,3 @@
-// ============================================================
-// CAMU SERVICES — publier.js
-// Publication d'une annonce
-// Firebase Auth + Firestore + Cloudinary
-// ============================================================
-
 import { auth, db } from "./firebase-config.js";
 
 import {
@@ -13,101 +7,37 @@ import {
 import {
     collection,
     addDoc,
-    updateDoc,
-    doc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-// ============================================================
-// CONFIGURATION CLOUDINARY
-// ============================================================
-
-const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
-const CLOUDINARY_UPLOAD_PRESET = "camu_services";
-
-
-// ============================================================
-// VARIABLES
-// ============================================================
+console.log("publier.js CHARGÉ");
 
 let currentUser = null;
-let selectedFiles = [];
+
+const form = document.getElementById("publishForm");
+const button = document.getElementById("publishButton");
+const message = document.getElementById("publishMessage");
+
+console.log("FORMULAIRE :", form);
+console.log("BOUTON :", button);
+console.log("MESSAGE :", message);
 
 
-// ============================================================
-// ELEMENTS HTML
-// ============================================================
-
-const publishForm = document.getElementById("publishForm");
-const publishButton = document.getElementById("publishButton");
-const publishMessage = document.getElementById("publishMessage");
-const publishPhotos = document.getElementById("publishPhotos");
-const photoPreview = document.getElementById("photoPreview");
-
-
-// ============================================================
-// UTILITAIRES
-// ============================================================
-
-function showMessage(message, type = "info") {
-
-    if (!publishMessage) return;
-
-    publishMessage.textContent = message;
-
-    publishMessage.className = "";
-    publishMessage.classList.add(type);
-
-}
-
-
-function setButtonLoading(loading) {
-
-    if (!publishButton) return;
-
-    if (loading) {
-
-        publishButton.disabled = true;
-
-        publishButton.dataset.originalText =
-            publishButton.textContent;
-
-        publishButton.textContent = "Publication en cours...";
-
-    } else {
-
-        publishButton.disabled = false;
-
-        publishButton.textContent =
-            publishButton.dataset.originalText || "Publier";
-
-    }
-
-}
-
-
-// ============================================================
+// =====================================================
 // AUTHENTIFICATION
-// ============================================================
+// =====================================================
 
 onAuthStateChanged(auth, (user) => {
+
+    console.log("AUTH :", user);
 
     if (!user) {
 
         currentUser = null;
 
-        console.log(
-            "Aucun utilisateur connecté."
-        );
-
-        showMessage(
-            "Vous devez être connecté pour publier une annonce.",
-            "error"
-        );
-
-        if (publishButton) {
-            publishButton.disabled = true;
+        if (message) {
+            message.textContent =
+                "Vous devez être connecté pour publier.";
         }
 
         return;
@@ -116,296 +46,146 @@ onAuthStateChanged(auth, (user) => {
     currentUser = user;
 
     console.log(
-        "Utilisateur connecté :",
-        currentUser.email
+        "UTILISATEUR CONNECTÉ :",
+        user.email
     );
-
-    if (publishButton) {
-        publishButton.disabled = false;
-    }
 
 });
 
 
-// ============================================================
-// APERÇU DES PHOTOS
-// ============================================================
+// =====================================================
+// PUBLICATION
+// =====================================================
 
-if (publishPhotos) {
+if (form) {
 
-    publishPhotos.addEventListener("change", (event) => {
-
-        selectedFiles = Array.from(event.target.files || []);
-
-        renderPhotoPreview();
-
-    });
-
-}
-
-
-function renderPhotoPreview() {
-
-    if (!photoPreview) return;
-
-    photoPreview.innerHTML = "";
-
-    if (selectedFiles.length === 0) {
-        return;
-    }
-
-    selectedFiles.forEach((file) => {
-
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-
-            const wrapper = document.createElement("div");
-
-            wrapper.className = "photo-preview-item";
-
-            wrapper.innerHTML = `
-                <img
-                    src="${event.target.result}"
-                    alt="Aperçu"
-                >
-            `;
-
-            photoPreview.appendChild(wrapper);
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
-
-
-// ============================================================
-// UPLOAD CLOUDINARY
-// ============================================================
-
-async function uploadImageToCloudinary(file, listingId) {
-
-    const url =
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
-
-    const formData = new FormData();
-
-    formData.append("file", file);
-
-    formData.append(
-        "upload_preset",
-        CLOUDINARY_UPLOAD_PRESET
-    );
-
-    // On garde la structure actuelle Cloudinary
-    formData.append(
-        "folder",
-        `camu-services/services/${currentUser.uid}/${listingId}`
-    );
-
-    formData.append(
-        "context",
-        `listing_id=${listingId}|owner_id=${currentUser.uid}`
-    );
-
-
-    const response = await fetch(url, {
-        method: "POST",
-        body: formData
-    });
-
-
-    if (!response.ok) {
-
-        const errorText = await response.text();
-
-        console.error(
-            "Erreur Cloudinary :",
-            errorText
-        );
-
-        throw new Error(
-            "Échec de l'envoi de l'image."
-        );
-
-    }
-
-
-    const data = await response.json();
-
-    return data.secure_url;
-
-}
-
-
-// ============================================================
-// FORMULAIRE DE PUBLICATION
-// ============================================================
-
-if (publishForm) {
-
-    publishForm.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
+        console.log("=================================");
+        console.log("SUBMIT DÉCLENCHÉ");
+        console.log("=================================");
 
-        // ----------------------------------------------------
-        // Vérification utilisateur
-        // ----------------------------------------------------
 
         if (!currentUser) {
 
-            showMessage(
-                "Vous devez être connecté pour publier une annonce.",
-                "error"
+            alert(
+                "Vous devez être connecté pour publier."
             );
 
             return;
         }
 
 
-        // ----------------------------------------------------
-        // Récupération des champs
-        // ----------------------------------------------------
+        // ---------------------------------------------
+        // RÉCUPÉRATION DES CHAMPS
+        // ---------------------------------------------
 
         const title =
-            document.getElementById("title")?.value.trim() || "";
+            document.getElementById("publishTitle")?.value.trim();
 
         const price =
-            document.getElementById("price")?.value.trim() || "";
+            document.getElementById("publishPrice")?.value.trim();
 
         const currency =
-            document.getElementById("currency")?.value || "USD";
+            document.getElementById("publishCurrency")?.value;
 
         const category =
-            document.getElementById("category")?.value || "";
+            document.getElementById("publishCategory")?.value;
 
         const description =
-            document.getElementById("description")?.value.trim() || "";
+            document.getElementById("publishDescription")?.value.trim();
 
         const city =
-            document.getElementById("city")?.value || "";
+            document.getElementById("publishCity")?.value;
 
         const neighborhood =
-            document.getElementById("neighborhood")?.value.trim() || "";
+            document.getElementById("publishNeighborhood")?.value.trim();
 
         const whatsapp =
-            document.getElementById("whatsapp")?.value.trim() || "";
+            document.getElementById("publishWhatsapp")?.value.trim();
 
         const terms =
-            document.getElementById("terms")?.checked || false;
+            document.getElementById("publishTerms")?.checked;
 
 
-        // ----------------------------------------------------
-        // Validation
-        // ----------------------------------------------------
+        console.log("TITLE :", title);
+        console.log("PRICE :", price);
+        console.log("CURRENCY :", currency);
+        console.log("CATEGORY :", category);
+        console.log("DESCRIPTION :", description);
+        console.log("CITY :", city);
+        console.log("NEIGHBORHOOD :", neighborhood);
+        console.log("WHATSAPP :", whatsapp);
+        console.log("TERMS :", terms);
+
+
+        // ---------------------------------------------
+        // VALIDATION
+        // ---------------------------------------------
 
         if (!title) {
-
-            showMessage(
-                "Veuillez entrer le titre de l'annonce.",
-                "error"
-            );
-
+            alert("Veuillez saisir le titre.");
             return;
         }
-
 
         if (!price) {
-
-            showMessage(
-                "Veuillez entrer le prix.",
-                "error"
-            );
-
+            alert("Veuillez saisir le prix.");
             return;
         }
-
 
         if (!category) {
-
-            showMessage(
-                "Veuillez sélectionner une catégorie.",
-                "error"
-            );
-
+            alert("Veuillez choisir une catégorie.");
             return;
         }
-
 
         if (!description) {
-
-            showMessage(
-                "Veuillez entrer une description.",
-                "error"
-            );
-
+            alert("Veuillez saisir une description.");
             return;
         }
-
 
         if (!city) {
-
-            showMessage(
-                "Veuillez sélectionner une ville.",
-                "error"
-            );
-
+            alert("Veuillez choisir une ville.");
             return;
         }
-
 
         if (!whatsapp) {
-
-            showMessage(
-                "Veuillez entrer votre numéro WhatsApp.",
-                "error"
-            );
-
+            alert("Veuillez saisir votre numéro WhatsApp.");
             return;
         }
-
 
         if (!terms) {
-
-            showMessage(
-                "Vous devez accepter les conditions.",
-                "error"
-            );
-
+            alert("Veuillez accepter les conditions.");
             return;
         }
 
 
-        // ----------------------------------------------------
-        // Validation des photos
-        // ----------------------------------------------------
+        // ---------------------------------------------
+        // BOUTON
+        // ---------------------------------------------
 
-        const files = selectedFiles;
+        if (button) {
 
+            button.disabled = true;
 
-        // ----------------------------------------------------
-        // Début publication
-        // ----------------------------------------------------
+            button.textContent =
+                "Publication...";
 
-        setButtonLoading(true);
-
-        showMessage(
-            "Publication de votre annonce...",
-            "info"
-        );
+        }
 
 
         try {
 
-            // =================================================
-            // CRÉATION DE L'ANNONCE
+            console.log(
+                "Création de l'annonce dans Firestore..."
+            );
+
+
+            // ==========================================
             // IMPORTANT :
-            // collection = "annonces"
-            // =================================================
+            // ON UTILISE "annonces"
+            // ==========================================
 
             const listingRef = await addDoc(
                 collection(db, "annonces"),
@@ -413,13 +193,13 @@ if (publishForm) {
 
                     title: title,
 
-                    description: description,
-
-                    price: price,
+                    price: Number(price),
 
                     currency: currency,
 
                     category: category,
+
+                    description: description,
 
                     city: city,
 
@@ -427,8 +207,6 @@ if (publishForm) {
 
                     whatsapp: whatsapp,
 
-
-                    // Propriétaire
                     userId: currentUser.uid,
 
                     ownerId: currentUser.uid,
@@ -441,97 +219,14 @@ if (publishForm) {
                         currentUser.email ||
                         "",
 
-
-                    // Images
                     images: [],
 
                     imageURL: "",
 
-
-                    // Statut
                     status: "active",
 
-
-                    // Dates
-                    createdAt: serverTimestamp(),
-
-                    updatedAt: serverTimestamp()
-
-                }
-            );
-
-
-            console.log(
-                "Annonce créée :",
-                listingRef.id
-            );
-
-
-            // =================================================
-            // UPLOAD DES PHOTOS
-            // =================================================
-
-            const uploadedImages = [];
-
-
-            if (files.length > 0) {
-
-                showMessage(
-                    "Envoi des photos...",
-                    "info"
-                );
-
-
-                for (const file of files) {
-
-                    try {
-
-                        const imageUrl =
-                            await uploadImageToCloudinary(
-                                file,
-                                listingRef.id
-                            );
-
-                        if (imageUrl) {
-
-                            uploadedImages.push(
-                                imageUrl
-                            );
-
-                        }
-
-                    } catch (imageError) {
-
-                        console.error(
-                            "Erreur upload photo :",
-                            imageError
-                        );
-
-                    }
-
-                }
-
-            }
-
-
-            // =================================================
-            // MISE À JOUR DE L'ANNONCE AVEC LES IMAGES
-            // =================================================
-
-            await updateDoc(
-                doc(
-                    db,
-                    "annonces",
-                    listingRef.id
-                ),
-                {
-
-                    images: uploadedImages,
-
-                    imageURL:
-                        uploadedImages.length > 0
-                            ? uploadedImages[0]
-                            : "",
+                    createdAt:
+                        serverTimestamp(),
 
                     updatedAt:
                         serverTimestamp()
@@ -541,33 +236,33 @@ if (publishForm) {
 
 
             console.log(
-                "Annonce mise à jour avec les photos."
+                "ANNONCE CRÉÉE AVEC SUCCÈS :",
+                listingRef.id
             );
 
 
-            // =================================================
-            // SUCCÈS
-            // =================================================
+            if (message) {
 
-            showMessage(
-                "Votre annonce a été publiée avec succès !",
-                "success"
-            );
+                message.textContent =
+                    "Votre annonce a été publiée avec succès !";
 
+                message.className =
+                    "auth-message success";
 
-            // Réinitialiser le formulaire
-            publishForm.reset();
-
-            selectedFiles = [];
-
-            if (photoPreview) {
-                photoPreview.innerHTML = "";
             }
 
 
-            // =================================================
+            if (button) {
+
+                button.textContent =
+                    "Annonce publiée";
+
+            }
+
+
+            // -----------------------------------------
             // REDIRECTION
-            // =================================================
+            // -----------------------------------------
 
             setTimeout(() => {
 
@@ -580,31 +275,33 @@ if (publishForm) {
         } catch (error) {
 
             console.error(
-                "Erreur lors de la publication :",
+                "ERREUR FIRESTORE :",
                 error
             );
 
-
-            showMessage(
-                "Une erreur est survenue lors de la publication. Veuillez réessayer.",
-                "error"
+            alert(
+                "Erreur lors de la publication : " +
+                error.message
             );
 
-        } finally {
 
-            setButtonLoading(false);
+            if (button) {
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Publier l'annonce";
+
+            }
 
         }
 
     });
 
+} else {
+
+    console.error(
+        "ERREUR : #publishForm INTROUVABLE !"
+    );
+
 }
-
-
-// ============================================================
-// FIN
-// ============================================================
-
-console.log(
-    "CAMU SERVICES — publier.js chargé correctement."
-);
