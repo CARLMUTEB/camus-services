@@ -614,65 +614,44 @@ document
 
             const section = element.dataset.section;
 
-            if (!section) {
-                return;
-            }
-
-            // Gérer les annonces
-            if (section === "annonces") {
-                event.preventDefault();
-                window.location.href = "admin-annonces.html";
-                return;
-            }
-
-            // Gérer les utilisateurs
-            if (section === "utilisateurs") {
-                event.preventDefault();
-                window.location.href = "admin-utilisateurs.html";
-                return;
-            }
-
-            document
-    .querySelectorAll("[data-section]")
-    .forEach(element => {
-
-        element.addEventListener("click", event => {
-
-            const section = element.dataset.section;
-
             if (!section) return;
 
-            // Gestion des annonces
+            // =========================
+            // ANNONCES
+            // =========================
             if (section === "annonces") {
                 event.preventDefault();
                 window.location.href = "admin-annonces.html";
                 return;
             }
 
-            // Gestion des utilisateurs
+            // =========================
+            // UTILISATEURS
+            // =========================
             if (section === "utilisateurs") {
                 event.preventDefault();
                 window.location.href = "admin-utilisateurs.html";
                 return;
             }
 
-            // Gestion des signalements
+            // =========================
+            // SIGNALEMENTS
+            // =========================
             if (section === "signalements") {
                 event.preventDefault();
                 window.location.href = "admin-signalements.html";
                 return;
             }
 
-            // Paramètres
+            // =========================
+            // PARAMÈTRES
+            // =========================
             if (section === "parametres") {
                 event.preventDefault();
                 window.location.href = "admin-parametres.html";
                 return;
             }
 
-        });
-
-    });
         });
 
     });
