@@ -1,13 +1,181 @@
 /* =========================================================
-   CAMU SERVICES — ACTIONS UTILISATEURS
+   CAMU SERVICES — ADMIN UTILISATEURS
+   DESIGN RESPONSIVE
+========================================================= */
+
+/* =========================================================
+   CARTES UTILISATEURS
+========================================================= */
+
+.admin-user-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 18px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 18px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .05);
+
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.admin-user-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.admin-user-avatar {
+    width: 56px;
+    height: 56px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #ecfdf5;
+    color: #16a34a;
+
+    font-size: 22px;
+}
+
+.admin-user-avatar i {
+    line-height: 1;
+}
+
+
+/* =========================================================
+   CONTENU UTILISATEUR
+========================================================= */
+
+.admin-user-content {
+    min-width: 0;
+}
+
+.admin-user-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 9px;
+
+    min-width: 0;
+}
+
+.admin-user-top h3 {
+    margin: 0;
+
+    min-width: 0;
+
+    color: #111827;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   STATUT
+========================================================= */
+
+.admin-user-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.admin-user-status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.admin-user-status.disabled {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.admin-user-status.suspended {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+
+/* =========================================================
+   INFORMATIONS
+========================================================= */
+
+.admin-user-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px 14px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.admin-user-meta span {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.admin-user-meta i {
+    flex-shrink: 0;
+
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   ACTIONS
 ========================================================= */
 
 .admin-user-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     gap: 7px;
+
     flex-wrap: wrap;
+
+    min-width: 0;
 }
 
 .admin-user-actions button {
@@ -17,6 +185,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 6px;
 
     padding: 0 10px;
@@ -31,9 +200,29 @@
     font-size: 12px;
     font-weight: 700;
 
+    white-space: nowrap;
+
     cursor: pointer;
-    transition: .2s ease;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .15s ease;
 }
+
+.admin-user-actions button:hover {
+    transform: translateY(-1px);
+}
+
+.admin-user-actions button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   COULEURS DES ACTIONS
+========================================================= */
 
 .admin-user-view:hover {
     border-color: #2563eb;
@@ -67,12 +256,27 @@
 
 
 /* =========================================================
+   ESPACEMENT ENTRE LES CARTES
+========================================================= */
+
+#adminUsersContainer {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
    MODALS
 ========================================================= */
 
 .admin-user-modal {
     position: fixed;
     inset: 0;
+
     z-index: 9999;
 
     display: flex;
@@ -80,6 +284,8 @@
     justify-content: center;
 
     padding: 20px;
+
+    box-sizing: border-box;
 }
 
 .admin-user-modal[hidden] {
@@ -106,7 +312,10 @@
 
     padding: 25px;
 
+    box-sizing: border-box;
+
     background: #fff;
+
     border-radius: 18px;
 
     box-shadow: 0 25px 70px rgba(0, 0, 0, .18);
@@ -126,6 +335,7 @@
     margin: 0 0 5px;
 
     color: #111827;
+
     font-size: 22px;
 }
 
@@ -133,12 +343,15 @@
     margin: 0;
 
     color: #6b7280;
+
     font-size: 13px;
 }
 
 .admin-user-modal-close {
     width: 38px;
     height: 38px;
+
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
@@ -157,6 +370,11 @@
     background: #f3f4f6;
 }
 
+
+/* =========================================================
+   FORMULAIRE MODAL
+========================================================= */
+
 .admin-user-form-group {
     margin-bottom: 16px;
 }
@@ -167,6 +385,7 @@
     margin-bottom: 7px;
 
     color: #374151;
+
     font-size: 13px;
     font-weight: 700;
 }
@@ -201,6 +420,7 @@
 
 .admin-user-form-group textarea {
     resize: vertical;
+
     min-height: 120px;
 }
 
@@ -212,6 +432,11 @@
     box-shadow:
         0 0 0 3px rgba(22, 163, 74, .08);
 }
+
+
+/* =========================================================
+   BOUTONS MODAL
+========================================================= */
 
 .admin-user-modal-actions {
     display: flex;
@@ -248,6 +473,7 @@
 
 .admin-user-cancel {
     border: 1px solid #d1d5db;
+
     background: #fff;
     color: #374151;
 }
@@ -258,6 +484,7 @@
 
 .admin-user-save {
     border: 1px solid #16a34a;
+
     background: #16a34a;
     color: #fff;
 }
@@ -268,6 +495,7 @@
 
 .admin-user-warning {
     border: 1px solid #f59e0b;
+
     background: #f59e0b;
     color: #fff;
 }
@@ -279,6 +507,7 @@
 .admin-user-save:disabled,
 .admin-user-warning:disabled {
     opacity: .6;
+
     cursor: not-allowed;
 }
 
@@ -288,31 +517,192 @@
 
 
 /* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-user-card {
+        grid-template-columns: auto 1fr;
+
+        gap: 14px;
+    }
+
+    .admin-user-actions {
+        grid-column: 1 / -1;
+
+        justify-content: flex-start;
+
+        width: 100%;
+
+        padding-top: 4px;
+
+        border-top: 1px solid #f1f5f9;
+    }
+
+}
+
+
+/* =========================================================
    MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
 
+    .admin-user-card {
+        display: block;
+
+        padding: 15px;
+
+        border-radius: 14px;
+    }
+
+
+    /* Avatar + nom + statut */
+
+    .admin-user-content {
+        margin-top: 12px;
+    }
+
+    .admin-user-top {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+
+        gap: 7px;
+
+        margin-bottom: 10px;
+    }
+
+    .admin-user-top h3 {
+        width: 100%;
+
+        font-size: 17px;
+
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+    }
+
+
+    /* Avatar */
+
+    .admin-user-avatar {
+        width: 48px;
+        height: 48px;
+
+        border-radius: 12px;
+
+        font-size: 19px;
+    }
+
+
+    /* Informations */
+
+    .admin-user-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 7px;
+
+        width: 100%;
+
+        font-size: 12px;
+    }
+
+    .admin-user-meta span {
+        width: 100%;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       ACTIONS MOBILE
+    ===================================================== */
+
+    .admin-user-actions {
+        display: grid;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+
+        width: 100%;
+
+        margin-top: 15px;
+
+        padding-top: 14px;
+
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .admin-user-actions button {
+        width: 100%;
+        min-width: 0;
+
+        height: 42px;
+
+        padding: 0 7px;
+
+        gap: 5px;
+
+        font-size: 12px;
+
+        box-sizing: border-box;
+    }
+
+    .admin-user-actions button span {
+        display: inline;
+    }
+
+    /* Supprimer prend toute la largeur */
+
+    .admin-user-delete {
+        grid-column: 1 / -1;
+    }
+
+
+    /* =====================================================
+       MODAL MOBILE
+    ===================================================== */
+
     .admin-user-modal {
-        padding: 12px;
+        padding: 10px;
+
         align-items: flex-end;
     }
 
     .admin-user-modal-card {
         width: 100%;
+
         max-height: 92vh;
 
-        padding: 20px;
+        padding: 19px;
 
         border-radius: 16px 16px 0 0;
+    }
+
+    .admin-user-modal-header {
+        gap: 12px;
+
+        margin-bottom: 18px;
     }
 
     .admin-user-modal-header h2 {
         font-size: 19px;
     }
 
+    .admin-user-modal-header p {
+        font-size: 12px;
+    }
+
     .admin-user-modal-actions {
         flex-direction: column;
+
+        gap: 8px;
     }
 
     .admin-user-cancel,
@@ -321,13 +711,29 @@
         width: 100%;
     }
 
+}
+
+
+/* =========================================================
+   TRÈS PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .admin-user-card {
+        padding: 13px;
+    }
+
     .admin-user-actions {
-        width: 100%;
-        justify-content: stretch;
+        grid-template-columns: 1fr;
+    }
+
+    .admin-user-delete {
+        grid-column: auto;
     }
 
     .admin-user-actions button {
-        flex: 1;
+        height: 40px;
     }
 
 }
