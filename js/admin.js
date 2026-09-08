@@ -632,20 +632,47 @@ document
                 return;
             }
 
-            // Les autres modules seront activés plus tard
-            if (
-                section === "signalements" ||
-                section === "parametres"
-            ) {
+            document
+    .querySelectorAll("[data-section]")
+    .forEach(element => {
+
+        element.addEventListener("click", event => {
+
+            const section = element.dataset.section;
+
+            if (!section) return;
+
+            // Gestion des annonces
+            if (section === "annonces") {
                 event.preventDefault();
-
-                showAdminMessage(
-                    "Cette section sera activée prochainement."
-                );
-
-                closeAdminMenu();
+                window.location.href = "admin-annonces.html";
+                return;
             }
 
+            // Gestion des utilisateurs
+            if (section === "utilisateurs") {
+                event.preventDefault();
+                window.location.href = "admin-utilisateurs.html";
+                return;
+            }
+
+            // Gestion des signalements
+            if (section === "signalements") {
+                event.preventDefault();
+                window.location.href = "admin-signalements.html";
+                return;
+            }
+
+            // Paramètres
+            if (section === "parametres") {
+                event.preventDefault();
+                window.location.href = "admin-parametres.html";
+                return;
+            }
+
+        });
+
+    });
         });
 
     });
