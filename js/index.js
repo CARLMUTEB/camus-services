@@ -1,14 +1,21 @@
 // =========================================================
 // CAMU SERVICES — INDEX.JS
-// Affichage des annonces récentes depuis Firestore
-// Gestion des favoris compatible avec favoris.html
+// Annonces + Favoris Firestore
 // =========================================================
 
-import { db } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
     collection,
-    getDocs
+    getDocs,
+    doc,
+    getDoc,
+    setDoc,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -21,6 +28,34 @@ const recentAds =
 
 
 // =========================================================
+// UTILISATEUR CONNECTÉ
+// =========================================================
+
+let currentUser = null;
+
+
+// =========================================================
+// AUTHENTIFICATION
+// =========================================================
+
+onAuthStateChanged(
+    auth,
+    user => {
+
+        currentUser = user;
+
+        console.log(
+            "INDEX — utilisateur :",
+            user
+                ? user.email
+                : "non connecté"
+        );
+
+    }
+);
+
+
+// =========================================================
 // ÉCHAPPER LE HTML
 // =========================================================
 
@@ -30,8 +65,11 @@ function escapeHtml(value) {
         value === null ||
         value === undefined
     ) {
+
         return "";
+
     }
+
 
     return String(value)
         .replace(/&/g, "&amp;")
@@ -39,6 +77,7 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
 }
 
 
@@ -76,6 +115,7 @@ function formatPrice(
 
 
     return `${new Intl.NumberFormat("fr-FR").format(number)} ${escapeHtml(currency)}`;
+
 }
 
 
@@ -104,16 +144,15 @@ function getImage(ad) {
 
 
     return "logo.png";
+
 }
 
 
 // =========================================================
-// NOM DE LA CATÉGORIE
+// CATÉGORIE
 // =========================================================
 
-function getCategoryName(
-    category
-) {
+function getCategoryName(category) {
 
     const categories = {
 
@@ -149,6 +188,367 @@ function getCategoryName(
         category ||
         "Autres"
     );
+
+}
+
+
+// =========================================================
+// MESSAGE CAMU
+// =========================================================
+
+function showMessage(
+    message,
+    type = "success"
+) {
+
+    if (
+        typeof window.showCamuMessage ===
+        "function"
+    ) {
+
+        window.showCamuMessage(
+            message,
+            type
+        );
+
+        return;
+
+    }
+
+
+    alert(message);
+
+}
+
+
+// =========================================================
+// MODIFIER L'APPARENCE DU CŒUR
+// =========================================================
+
+function updateFavoriteButton(
+    button,
+    active
+) {
+
+    if (!button) return;
+
+
+    button.classList.toggle(
+        "active",
+        active
+    );
+
+
+    button.classList.toggle(
+        "is-favorite",
+        active
+    );
+
+
+    const icon =
+        button.querySelector("i");
+
+
+    if (icon) {
+
+        icon.classList.toggle(
+            "fa-solid",
+            active
+        );
+
+        icon.classList.toggle(
+            "fa-regular",
+            !active
+        );
+
+    }
+
+
+    button.setAttribute(
+        "aria-label",
+        active
+            ? "Retirer des favoris"
+            : "Ajouter aux favoris"
+    );
+
+}
+
+
+// =========================================================
+// VÉRIFIER SI UNE ANNONCE EST FAVORITE
+// =========================================================
+
+async function checkFavorite(
+    listingId
+) {
+
+    if (
+        !currentUser ||
+        !listingId
+    ) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        const favoriteId =
+            `${currentUser.uid}-${listingId}`;
+
+
+        const favoriteRef =
+            doc(
+                db,
+                "favorites",
+                favoriteId
+            );
+
+
+        const snapshot =
+            await getDoc(
+                favoriteRef
+            );
+
+
+        return snapshot.exists();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erreur vérification favori :",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+// =========================================================
+// AJOUTER / RETIRER FAVORI
+// =========================================================
+
+async function toggleFavorite(
+    button
+) {
+
+    if (!currentUser) {
+
+        showMessage(
+            "Connectez-vous pour ajouter une annonce aux favoris.",
+            "info"
+        );
+
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    "connexion.html";
+
+            },
+            700
+        );
+
+
+        return;
+
+    }
+
+
+    const listingId =
+        button.dataset.listingId;
+
+
+    if (!listingId) {
+
+        console.error(
+            "ID annonce manquant.",
+            button
+        );
+
+
+        showMessage(
+            "Impossible d'identifier cette annonce.",
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    const favoriteId =
+        `${currentUser.uid}-${listingId}`;
+
+
+    const favoriteRef =
+        doc(
+            db,
+            "favorites",
+            favoriteId
+        );
+
+
+    try {
+
+        const snapshot =
+            await getDoc(
+                favoriteRef
+            );
+
+
+        // =================================================
+        // RETIRER
+        // =================================================
+
+        if (
+            snapshot.exists()
+        ) {
+
+            await deleteDoc(
+                favoriteRef
+            );
+
+
+            updateFavoriteButton(
+                button,
+                false
+            );
+
+
+            showMessage(
+                "Annonce retirée des favoris.",
+                "success"
+            );
+
+
+            console.log(
+                "Favori supprimé :",
+                listingId
+            );
+
+        }
+
+
+        // =================================================
+        // AJOUTER
+        // =================================================
+
+        else {
+
+            await setDoc(
+                favoriteRef,
+                {
+
+                    userId:
+                        currentUser.uid,
+
+                    listingId:
+                        listingId,
+
+                    createdAt:
+                        new Date()
+
+                }
+            );
+
+
+            updateFavoriteButton(
+                button,
+                true
+            );
+
+
+            showMessage(
+                "Annonce ajoutée aux favoris ❤️",
+                "success"
+            );
+
+
+            console.log(
+                "Favori ajouté :",
+                listingId
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erreur Firestore favoris :",
+            error
+        );
+
+
+        showMessage(
+            "Impossible de modifier les favoris. Vérifiez votre connexion.",
+            "error"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// RESTAURER LES CŒURS
+// =========================================================
+
+async function restoreFavoriteButtons() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".favorite-button"
+        );
+
+
+    for (
+        const button
+        of buttons
+    ) {
+
+        const listingId =
+            button.dataset.listingId;
+
+
+        if (!listingId) {
+
+            continue;
+
+        }
+
+
+        const isFavorite =
+            await checkFavorite(
+                listingId
+            );
+
+
+        updateFavoriteButton(
+            button,
+            isFavorite
+        );
+
+    }
+
 }
 
 
@@ -164,6 +564,7 @@ async function loadRecentAds() {
             "CAMU SERVICES : #recentAds introuvable."
         );
 
+
         return;
 
     }
@@ -172,7 +573,7 @@ async function loadRecentAds() {
     try {
 
         // -------------------------------------------------
-        // MESSAGE DE CHARGEMENT
+        // CHARGEMENT
         // -------------------------------------------------
 
         recentAds.innerHTML = `
@@ -195,9 +596,7 @@ async function loadRecentAds() {
 
 
         // -------------------------------------------------
-        // RÉCUPÉRER LES ANNONCES
-        // IMPORTANT :
-        // On utilise "annonces" et non "services"
+        // COLLECTION ANNONCES
         // -------------------------------------------------
 
         const annoncesRef =
@@ -214,7 +613,7 @@ async function loadRecentAds() {
 
 
         // -------------------------------------------------
-        // TRANSFORMER LES DOCUMENTS FIRESTORE
+        // TRANSFORMATION
         // -------------------------------------------------
 
         const ads =
@@ -231,7 +630,7 @@ async function loadRecentAds() {
 
 
         // -------------------------------------------------
-        // TRIER PAR DATE
+        // TRI
         // -------------------------------------------------
 
         ads.sort(
@@ -264,7 +663,7 @@ async function loadRecentAds() {
 
 
         // -------------------------------------------------
-        // GARDER LES 8 PLUS RÉCENTES
+        // 8 DERNIÈRES
         // -------------------------------------------------
 
         const recent =
@@ -311,13 +710,14 @@ async function loadRecentAds() {
 
             `;
 
+
             return;
 
         }
 
 
         // -------------------------------------------------
-        // VIDER LES ANNONCES STATIQUES
+        // VIDER LES CARTES STATIQUES
         // -------------------------------------------------
 
         recentAds.innerHTML = "";
@@ -329,10 +729,6 @@ async function loadRecentAds() {
 
         recent.forEach(
             ad => {
-
-                // -----------------------------------------
-                // DONNÉES
-                // -----------------------------------------
 
                 const image =
                     getImage(ad);
@@ -362,9 +758,9 @@ async function loadRecentAds() {
                     );
 
 
-                // -----------------------------------------
+                // -------------------------------------------------
                 // CARTE
-                // -----------------------------------------
+                // -------------------------------------------------
 
                 const card =
                     document.createElement(
@@ -376,9 +772,9 @@ async function loadRecentAds() {
                     "ad-card";
 
 
-                // -----------------------------------------
-                // HTML DE LA CARTE
-                // -----------------------------------------
+                // -------------------------------------------------
+                // HTML
+                // -------------------------------------------------
 
                 card.innerHTML = `
 
@@ -391,10 +787,6 @@ async function loadRecentAds() {
                             onerror="this.src='logo.png'"
                         >
 
-
-                        <!-- =============================
-                             BOUTON FAVORI
-                             ============================= -->
 
                         <button
                             type="button"
@@ -446,16 +838,13 @@ async function loadRecentAds() {
                 `;
 
 
-                // -----------------------------------------
-                // CLIQUER SUR LA CARTE
-                // -----------------------------------------
+                // =================================================
+                // CLIC SUR LA CARTE
+                // =================================================
 
                 card.addEventListener(
                     "click",
                     event => {
-
-                        // Si le clic vient du cœur,
-                        // ne pas ouvrir l'annonce.
 
                         if (
                             event.target.closest(
@@ -475,9 +864,9 @@ async function loadRecentAds() {
                 );
 
 
-                // -----------------------------------------
+                // =================================================
                 // BOUTON FAVORI
-                // -----------------------------------------
+                // =================================================
 
                 const favoriteButton =
                     card.querySelector(
@@ -491,36 +880,16 @@ async function loadRecentAds() {
 
                     favoriteButton.addEventListener(
                         "click",
-                        event => {
-
-                            // Empêcher le clic
-                            // de remonter vers la carte.
+                        async event => {
 
                             event.preventDefault();
 
                             event.stopPropagation();
 
 
-                            console.log(
-                                "Annonce sélectionnée pour favori :",
-                                ad.id
+                            await toggleFavorite(
+                                favoriteButton
                             );
-
-
-                            /*
-                             * Le vrai traitement du favori
-                             * est effectué par app.js.
-                             *
-                             * app.js récupère :
-                             *
-                             * data-listing-id
-                             *
-                             * puis utilise :
-                             *
-                             * favorites
-                             *
-                             * dans Firestore.
-                             */
 
                         }
                     );
@@ -528,9 +897,9 @@ async function loadRecentAds() {
                 }
 
 
-                // -----------------------------------------
-                // AJOUTER LA CARTE À LA PAGE
-                // -----------------------------------------
+                // -------------------------------------------------
+                // AJOUTER LA CARTE
+                // -------------------------------------------------
 
                 recentAds.appendChild(
                     card
@@ -540,7 +909,15 @@ async function loadRecentAds() {
         );
 
 
-    } catch (error) {
+        // -------------------------------------------------
+        // RESTAURER LES FAVORIS
+        // -------------------------------------------------
+
+        await restoreFavoriteButtons();
+
+    }
+
+    catch (error) {
 
         console.error(
             "CAMU SERVICES : erreur chargement annonces :",
