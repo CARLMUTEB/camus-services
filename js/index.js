@@ -15,7 +15,8 @@ import {
     doc,
     getDoc,
     setDoc,
-    deleteDoc
+    deleteDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -23,8 +24,7 @@ import {
 // ÉLÉMENT HTML
 // =========================================================
 
-const recentAds =
-    document.getElementById("recentAds");
+const recentAds = document.getElementById("recentAds");
 
 
 // =========================================================
@@ -33,26 +33,28 @@ const recentAds =
 
 let currentUser = null;
 
+let authReadyResolve;
+
+const authReady = new Promise((resolve) => {
+    authReadyResolve = resolve;
+});
+
 
 // =========================================================
 // AUTHENTIFICATION
 // =========================================================
 
-onAuthStateChanged(
-    auth,
-    user => {
+onAuthStateChanged(auth, (user) => {
 
-        currentUser = user;
+    currentUser = user;
 
-        console.log(
-            "INDEX — utilisateur :",
-            user
-                ? user.email
-                : "non connecté"
-        );
+    console.log(
+        "INDEX — utilisateur :",
+        user ? user.email : "non connecté"
+    );
 
-    }
-);
+    authReadyResolve(user);
+});
 
 
 // =========================================================
@@ -65,11 +67,8 @@ function escapeHtml(value) {
         value === null ||
         value === undefined
     ) {
-
         return "";
-
     }
-
 
     return String(value)
         .replace(/&/g, "&amp;")
@@ -77,7 +76,6 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
 }
 
 
@@ -85,37 +83,23 @@ function escapeHtml(value) {
 // FORMAT PRIX
 // =========================================================
 
-function formatPrice(
-    price,
-    currency = "USD"
-) {
+function formatPrice(price, currency = "USD") {
 
     if (
         price === null ||
         price === undefined ||
         price === ""
     ) {
-
         return "Prix à discuter";
-
     }
 
+    const number = Number(price);
 
-    const number =
-        Number(price);
-
-
-    if (
-        Number.isNaN(number)
-    ) {
-
+    if (Number.isNaN(number)) {
         return `${escapeHtml(price)} ${escapeHtml(currency)}`;
-
     }
-
 
     return `${new Intl.NumberFormat("fr-FR").format(number)} ${escapeHtml(currency)}`;
-
 }
 
 
@@ -130,21 +114,14 @@ function getImage(ad) {
         ad.images.length > 0 &&
         ad.images[0]
     ) {
-
         return ad.images[0];
-
     }
-
 
     if (ad.imageURL) {
-
         return ad.imageURL;
-
     }
 
-
     return "logo.png";
-
 }
 
 
@@ -156,39 +133,29 @@ function getCategoryName(category) {
 
     const categories = {
 
-        immobilier:
-            "Immobilier",
+        immobilier: "Immobilier",
 
-        vehicules:
-            "Véhicules",
+        vehicules: "Véhicules",
 
-        commerce:
-            "Commerce",
+        commerce: "Commerce",
 
-        services:
-            "Services",
+        services: "Services",
 
-        emploi:
-            "Emploi",
+        emploi: "Emploi",
 
-        autres:
-            "Autres"
+        autres: "Autres"
 
     };
 
-
-    const key =
-        String(
-            category || ""
-        ).toLowerCase();
-
+    const key = String(
+        category || ""
+    ).toLowerCase();
 
     return (
         categories[key] ||
         category ||
         "Autres"
     );
-
 }
 
 
@@ -212,12 +179,14 @@ function showMessage(
         );
 
         return;
-
     }
 
+    console.log(
+        `CAMU MESSAGE [${type}] :`,
+        message
+    );
 
     alert(message);
-
 }
 
 
@@ -230,24 +199,22 @@ function updateFavoriteButton(
     active
 ) {
 
-    if (!button) return;
-
+    if (!button) {
+        return;
+    }
 
     button.classList.toggle(
         "active",
         active
     );
 
-
     button.classList.toggle(
         "is-favorite",
         active
     );
 
-
     const icon =
         button.querySelector("i");
-
 
     if (icon) {
 
@@ -263,14 +230,25 @@ function updateFavoriteButton(
 
     }
 
-
     button.setAttribute(
         "aria-label",
         active
             ? "Retirer des favoris"
             : "Ajouter aux favoris"
     );
+}
 
+
+// =========================================================
+// ID DU FAVORI
+// =========================================================
+
+function getFavoriteId(
+    userId,
+    listingId
+) {
+
+    return `${userId}-${listingId}`;
 }
 
 
@@ -282,21 +260,24 @@ async function checkFavorite(
     listingId
 ) {
 
+    const user =
+        auth.currentUser || currentUser;
+
     if (
-        !currentUser ||
+        !user ||
         !listingId
     ) {
 
         return false;
-
     }
-
 
     try {
 
         const favoriteId =
-            `${currentUser.uid}-${listingId}`;
-
+            getFavoriteId(
+                user.uid,
+                listingId
+            );
 
         const favoriteRef =
             doc(
@@ -305,89 +286,110 @@ async function checkFavorite(
                 favoriteId
             );
 
-
         const snapshot =
             await getDoc(
                 favoriteRef
             );
 
-
         return snapshot.exists();
 
     }
-
     catch (error) {
 
         console.error(
-            "Erreur vérification favori :",
+            "INDEX — erreur vérification favori :",
             error
         );
 
-
         return false;
-
     }
-
 }
 
 
 // =========================================================
-// AJOUTER / RETIRER FAVORI
+// AJOUTER / RETIRER UN FAVORI
 // =========================================================
 
 async function toggleFavorite(
     button
 ) {
 
-    if (!currentUser) {
+    console.log(
+        "INDEX — clic favori détecté."
+    );
+
+    const user =
+        auth.currentUser || currentUser;
+
+    // -------------------------------------------------------
+    // UTILISATEUR NON CONNECTÉ
+    // -------------------------------------------------------
+
+    if (!user) {
+
+        console.log(
+            "INDEX — aucun utilisateur connecté."
+        );
 
         showMessage(
             "Connectez-vous pour ajouter une annonce aux favoris.",
             "info"
         );
 
+        setTimeout(() => {
 
-        setTimeout(
-            () => {
+            window.location.href =
+                "connexion.html";
 
-                window.location.href =
-                    "connexion.html";
-
-            },
-            700
-        );
-
+        }, 700);
 
         return;
-
     }
 
 
+    // -------------------------------------------------------
+    // RÉCUPÉRER L'ID DE L'ANNONCE
+    // -------------------------------------------------------
+
     const listingId =
         button.dataset.listingId;
+
+    console.log(
+        "INDEX — ID annonce :",
+        listingId
+    );
 
 
     if (!listingId) {
 
         console.error(
-            "ID annonce manquant.",
+            "INDEX — ID annonce manquant.",
             button
         );
-
 
         showMessage(
             "Impossible d'identifier cette annonce.",
             "error"
         );
 
-
         return;
-
     }
 
 
+    // -------------------------------------------------------
+    // ID DU DOCUMENT FAVORI
+    // -------------------------------------------------------
+
     const favoriteId =
-        `${currentUser.uid}-${listingId}`;
+        getFavoriteId(
+            user.uid,
+            listingId
+        );
+
+    console.log(
+        "INDEX — ID favori :",
+        favoriteId
+    );
 
 
     const favoriteRef =
@@ -398,7 +400,26 @@ async function toggleFavorite(
         );
 
 
+    // -------------------------------------------------------
+    // ÉVITER LES CLICS MULTIPLES
+    // -------------------------------------------------------
+
+    if (
+        button.dataset.loading === "true"
+    ) {
+        return;
+    }
+
+    button.dataset.loading = "true";
+
+    button.disabled = true;
+
+
     try {
+
+        // ---------------------------------------------------
+        // VÉRIFIER LE FAVORI
+        // ---------------------------------------------------
 
         const snapshot =
             await getDoc(
@@ -406,13 +427,17 @@ async function toggleFavorite(
             );
 
 
-        // =================================================
-        // RETIRER
-        // =================================================
+        // ===================================================
+        // RETIRER DES FAVORIS
+        // ===================================================
 
         if (
             snapshot.exists()
         ) {
+
+            console.log(
+                "INDEX — suppression du favori..."
+            );
 
             await deleteDoc(
                 favoriteRef
@@ -432,31 +457,36 @@ async function toggleFavorite(
 
 
             console.log(
-                "Favori supprimé :",
+                "INDEX — favori supprimé avec succès :",
                 listingId
             );
 
         }
 
 
-        // =================================================
-        // AJOUTER
-        // =================================================
+        // ===================================================
+        // AJOUTER AUX FAVORIS
+        // ===================================================
 
         else {
+
+            console.log(
+                "INDEX — création du favori..."
+            );
+
 
             await setDoc(
                 favoriteRef,
                 {
 
                     userId:
-                        currentUser.uid,
+                        user.uid,
 
                     listingId:
                         listingId,
 
                     createdAt:
-                        new Date()
+                        serverTimestamp()
 
                 }
             );
@@ -475,28 +505,82 @@ async function toggleFavorite(
 
 
             console.log(
-                "Favori ajouté :",
+                "INDEX — favori ajouté avec succès :",
                 listingId
             );
 
         }
 
     }
-
     catch (error) {
 
         console.error(
-            "Erreur Firestore favoris :",
+            "INDEX — ERREUR FIRESTORE FAVORIS :",
             error
+        );
+
+        console.error(
+            "INDEX — code erreur :",
+            error.code
+        );
+
+        console.error(
+            "INDEX — message erreur :",
+            error.message
         );
 
 
         showMessage(
-            "Impossible de modifier les favoris. Vérifiez votre connexion.",
+            "Impossible de modifier les favoris. Vérifiez votre connexion et vos autorisations.",
             "error"
         );
 
     }
+    finally {
+
+        button.dataset.loading =
+            "false";
+
+        button.disabled = false;
+    }
+
+}
+
+
+// =========================================================
+// CLIC SUR LES FAVORIS
+// =========================================================
+// IMPORTANT :
+// Les cartes sont créées dynamiquement.
+// On écoute donc #recentAds au lieu de chercher
+// les boutons avant leur création.
+// =========================================================
+
+if (recentAds) {
+
+    recentAds.addEventListener(
+        "click",
+        async (event) => {
+
+            const button =
+                event.target.closest(
+                    ".favorite-button"
+                );
+
+            if (!button) {
+                return;
+            }
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            await toggleFavorite(
+                button
+            );
+
+        }
+    );
 
 }
 
@@ -507,46 +591,50 @@ async function toggleFavorite(
 
 async function restoreFavoriteButtons() {
 
-    if (!currentUser) {
+    const user =
+        auth.currentUser || currentUser;
 
+    if (!user) {
         return;
-
     }
 
+    if (!recentAds) {
+        return;
+    }
 
     const buttons =
-        document.querySelectorAll(
+        recentAds.querySelectorAll(
             ".favorite-button"
         );
 
 
+    console.log(
+        "INDEX — restauration de",
+        buttons.length,
+        "bouton(s) favori(s)."
+    );
+
+
     for (
-        const button
-        of buttons
+        const button of buttons
     ) {
 
         const listingId =
             button.dataset.listingId;
 
-
         if (!listingId) {
-
             continue;
-
         }
-
 
         const isFavorite =
             await checkFavorite(
                 listingId
             );
 
-
         updateFavoriteButton(
             button,
             isFavorite
         );
-
     }
 
 }
@@ -564,17 +652,15 @@ async function loadRecentAds() {
             "CAMU SERVICES : #recentAds introuvable."
         );
 
-
         return;
-
     }
 
 
     try {
 
-        // -------------------------------------------------
+        // ---------------------------------------------------
         // CHARGEMENT
-        // -------------------------------------------------
+        // ---------------------------------------------------
 
         recentAds.innerHTML = `
 
@@ -595,9 +681,9 @@ async function loadRecentAds() {
         `;
 
 
-        // -------------------------------------------------
+        // ---------------------------------------------------
         // COLLECTION ANNONCES
-        // -------------------------------------------------
+        // ---------------------------------------------------
 
         const annoncesRef =
             collection(
@@ -612,13 +698,13 @@ async function loadRecentAds() {
             );
 
 
-        // -------------------------------------------------
+        // ---------------------------------------------------
         // TRANSFORMATION
-        // -------------------------------------------------
+        // ---------------------------------------------------
 
         const ads =
             snapshot.docs.map(
-                document => ({
+                (document) => ({
 
                     id:
                         document.id,
@@ -629,9 +715,9 @@ async function loadRecentAds() {
             );
 
 
-        // -------------------------------------------------
-        // TRI
-        // -------------------------------------------------
+        // ---------------------------------------------------
+        // TRI PAR DATE
+        // ---------------------------------------------------
 
         ads.sort(
             (a, b) => {
@@ -640,9 +726,7 @@ async function loadRecentAds() {
                     a.createdAt &&
                     typeof a.createdAt.toMillis ===
                     "function"
-
                         ? a.createdAt.toMillis()
-
                         : 0;
 
 
@@ -650,9 +734,7 @@ async function loadRecentAds() {
                     b.createdAt &&
                     typeof b.createdAt.toMillis ===
                     "function"
-
                         ? b.createdAt.toMillis()
-
                         : 0;
 
 
@@ -662,9 +744,9 @@ async function loadRecentAds() {
         );
 
 
-        // -------------------------------------------------
-        // 8 DERNIÈRES
-        // -------------------------------------------------
+        // ---------------------------------------------------
+        // 8 DERNIÈRES ANNONCES
+        // ---------------------------------------------------
 
         const recent =
             ads.slice(
@@ -679,9 +761,9 @@ async function loadRecentAds() {
         );
 
 
-        // -------------------------------------------------
+        // ---------------------------------------------------
         // AUCUNE ANNONCE
-        // -------------------------------------------------
+        // ---------------------------------------------------
 
         if (
             recent.length === 0
@@ -710,25 +792,23 @@ async function loadRecentAds() {
 
             `;
 
-
             return;
-
         }
 
 
-        // -------------------------------------------------
-        // VIDER LES CARTES STATIQUES
-        // -------------------------------------------------
+        // ---------------------------------------------------
+        // VIDER LES ANCIENNES CARTES
+        // ---------------------------------------------------
 
         recentAds.innerHTML = "";
 
 
-        // =================================================
+        // ===================================================
         // CRÉER LES CARTES
-        // =================================================
+        // ===================================================
 
         recent.forEach(
-            ad => {
+            (ad) => {
 
                 const image =
                     getImage(ad);
@@ -758,9 +838,9 @@ async function loadRecentAds() {
                     );
 
 
-                // -------------------------------------------------
+                // ------------------------------------------------
                 // CARTE
-                // -------------------------------------------------
+                // ------------------------------------------------
 
                 const card =
                     document.createElement(
@@ -772,9 +852,9 @@ async function loadRecentAds() {
                     "ad-card";
 
 
-                // -------------------------------------------------
+                // ------------------------------------------------
                 // HTML
-                // -------------------------------------------------
+                // ------------------------------------------------
 
                 card.innerHTML = `
 
@@ -838,22 +918,20 @@ async function loadRecentAds() {
                 `;
 
 
-                // =================================================
+                // ------------------------------------------------
                 // CLIC SUR LA CARTE
-                // =================================================
+                // ------------------------------------------------
 
                 card.addEventListener(
                     "click",
-                    event => {
+                    (event) => {
 
                         if (
                             event.target.closest(
                                 ".favorite-button"
                             )
                         ) {
-
                             return;
-
                         }
 
 
@@ -864,42 +942,9 @@ async function loadRecentAds() {
                 );
 
 
-                // =================================================
-                // BOUTON FAVORI
-                // =================================================
-
-                const favoriteButton =
-                    card.querySelector(
-                        ".favorite-button"
-                    );
-
-
-                if (
-                    favoriteButton
-                ) {
-
-                    favoriteButton.addEventListener(
-                        "click",
-                        async event => {
-
-                            event.preventDefault();
-
-                            event.stopPropagation();
-
-
-                            await toggleFavorite(
-                                favoriteButton
-                            );
-
-                        }
-                    );
-
-                }
-
-
-                // -------------------------------------------------
+                // ------------------------------------------------
                 // AJOUTER LA CARTE
-                // -------------------------------------------------
+                // ------------------------------------------------
 
                 recentAds.appendChild(
                     card
@@ -909,14 +954,20 @@ async function loadRecentAds() {
         );
 
 
-        // -------------------------------------------------
+        // ---------------------------------------------------
+        // ATTENDRE L'ÉTAT AUTH
+        // ---------------------------------------------------
+
+        await authReady;
+
+
+        // ---------------------------------------------------
         // RESTAURER LES FAVORIS
-        // -------------------------------------------------
+        // ---------------------------------------------------
 
         await restoreFavoriteButtons();
 
     }
-
     catch (error) {
 
         console.error(
