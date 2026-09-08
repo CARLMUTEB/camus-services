@@ -1,3 +1,158 @@
+hier 16:29
+Texte collé(20260907-143001).txt
+Document
+Texte collé(20260907-143105).txt
+Document
+aujourd’hui 0:57
+Les design est devenu mal
+aujourd’hui 2:07
+Texte collé(20260908-000815).txt
+Document
+Texte collé(20260908-002552).txt
+Document
+COMME CA? 
+Texte collé(20260908-002747).txt
+Document
+Texte collé(20260908-011726).txt
+Document
+ICI AUSSI
+Texte collé(20260908-012220).txt
+Document
+Texte collé(20260908-013933).txt
+Document
+Texte collé(20260908-014059).txt
+Document
+
+Oui, j’ai trouvé le problème dans ton admin.js. 👍
+
+Il y a deux blocs de navigation [data-section] imbriqués l’un dans l’autre à partir de la ligne 609, ce qui explique pourquoi le comportement peut être incorrect.
+
+Remplace tout le bloc NAVIGATION ADMIN
+
+Supprime de :
+
+/* =========================================================
+   NAVIGATION ADMIN
+   ========================================================= */
+
+jusqu'à juste avant :
+
+/* =========================================================
+   DÉCONNEXION
+   ========================================================= */
+
+Puis mets exactement ceci :
+
+/* =========================================================
+   NAVIGATION ADMIN
+   ========================================================= */
+
+document
+    .querySelectorAll("[data-section]")
+    .forEach(element => {
+
+        element.addEventListener("click", event => {
+
+            const section = element.dataset.section;
+
+            if (!section) return;
+
+            // =========================
+            // ANNONCES
+            // =========================
+            if (section === "annonces") {
+                event.preventDefault();
+                window.location.href = "admin-annonces.html";
+                return;
+            }
+
+            // =========================
+            // UTILISATEURS
+            // =========================
+            if (section === "utilisateurs") {
+                event.preventDefault();
+                window.location.href = "admin-utilisateurs.html";
+                return;
+            }
+
+            // =========================
+            // SIGNALEMENTS
+            // =========================
+            if (section === "signalements") {
+                event.preventDefault();
+                window.location.href = "admin-signalements.html";
+                return;
+            }
+
+            // =========================
+            // PARAMÈTRES
+            // =========================
+            if (section === "parametres") {
+                event.preventDefault();
+                window.location.href = "admin-parametres.html";
+                return;
+            }
+
+        });
+
+    });
+Après cette modification
+
+Dans le dashboard admin.html :
+
+Bouton	Action
+📢 Annonces	admin-annonces.html
+👥 Utilisateurs	admin-utilisateurs.html
+🚩 Signalements	admin-signalements.html
+⚙️ Paramètres	admin-parametres.html
+
+Et les boutons Accès rapide qui utilisent aussi data-section fonctionneront également, car le code écoute tous les éléments [data-section]. Ton dashboard utilise effectivement ces attributs pour les trois premières actions rapides.
+
+Ne modifie rien d'autre dans admin.js. Le chargement Firebase, les statistiques, la déconnexion et la protection administrateur restent tels quels.
+
+Texte collé(20260908-014424).txt
+Document
+
+C’est corrigé. ✅
+
+J’ai supprimé le double bloc de navigation qui se trouvait dans ton admin.js et gardé un seul système propre.
+
+Maintenant :
+
+📢 Annonces → admin-annonces.html
+👥 Utilisateurs → admin-utilisateurs.html
+🚩 Signalements → admin-signalements.html
+⚙️ Paramètres → admin-parametres.html
+
+La syntaxe JavaScript a également été vérifiée : aucune erreur de syntaxe.
+
+👉 
+Télécharger le admin.js corrigé
+
+Remplace simplement ton ancien js/admin.js par celui-ci. 
+
+admin.js
+Code
+Texte collé(20260908-015215).txt
+Document
+ENLEVE LE SIDEBARE
+
+
+C’est fait. J’ai supprimé le sidebar, l’overlay et le menu mobile de admin.html.
+
+J’ai conservé :
+
+Tableau de bord
+Bouton ← Retour vers le site
+Informations administrateur
+Bouton Déconnexion
+Toutes les statistiques et fonctionnalités du dashboard
+
+Le fichier original contenait bien le sidebar administrateur avec ses liens de navigation.
+
+Fichier modifié : 
+Télécharger admin.html 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -487,3 +642,632 @@
 
 </body>
 </html>
+admin.html
+HTML
+MAI LE SIDEBARE EST TOUJOURS LA
+Modifier
+
+<!DOCTYPE html>
+
+<html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CAMU SERVICES ADMIN</title>
+
+<link rel="icon" href="logo.png">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+</head>
+
+<body class="admin-page">
+
+<!-- =========================
+     MOBILE HEADER
+========================== -->
+<header class="admin-mobile-header">
+
+    <button
+        id="adminMenuButton"
+        class="admin-menu-button"
+        type="button"
+        aria-label="Ouvrir le menu"
+    >
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="admin-mobile-logo">
+        <img src="logo.png" alt="CAMU SERVICES">
+        <span>CAMU SERVICES</span>
+    </div>
+
+    <div class="admin-mobile-user">
+        <i class="fa-solid fa-user-shield"></i>
+    </div>
+
+</header>
+
+
+<!-- =========================
+     SIDEBAR
+========================== -->
+<aside id="adminSidebar" class="admin-sidebar">
+
+    <div class="admin-sidebar-header">
+
+        <a href="admin.html" class="admin-brand">
+
+            <img
+                src="logo.png"
+                alt="CAMU SERVICES"
+                class="admin-brand-logo"
+            >
+
+            <div>
+                <strong>CAMU SERVICES</strong>
+                <span>ADMIN</span>
+            </div>
+
+        </a>
+
+        <button
+            id="adminCloseSidebar"
+            class="admin-close-sidebar"
+            type="button"
+            aria-label="Fermer le menu"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+
+    <nav class="admin-navigation">
+
+        <a
+            href="admin.html"
+            class="admin-nav-link active"
+        >
+            <span class="admin-nav-icon dashboard">
+                <i class="fa-solid fa-chart-line"></i>
+            </span>
+
+            <span>Tableau de bord</span>
+        </a>
+
+
+        <a
+            href="#annonces"
+            class="admin-nav-link"
+            data-section="annonces"
+        >
+            <span class="admin-nav-icon ads">
+                <i class="fa-solid fa-bullhorn"></i>
+            </span>
+
+            <span>Annonces</span>
+        </a>
+
+
+        <a
+            href="#utilisateurs"
+            class="admin-nav-link"
+            data-section="utilisateurs"
+        >
+            <span class="admin-nav-icon users">
+                <i class="fa-solid fa-users"></i>
+            </span>
+
+            <span>Utilisateurs</span>
+        </a>
+
+
+        <a
+            href="#signalements"
+            class="admin-nav-link"
+            data-section="signalements"
+        >
+            <span class="admin-nav-icon reports">
+                <i class="fa-solid fa-flag"></i>
+            </span>
+
+            <span>Signalements</span>
+        </a>
+
+
+        <a
+            href="#parametres"
+            class="admin-nav-link"
+            data-section="parametres"
+        >
+            <span class="admin-nav-icon settings">
+                <i class="fa-solid fa-gear"></i>
+            </span>
+
+            <span>Paramètres</span>
+        </a>
+
+    </nav>
+
+
+    <div class="admin-sidebar-bottom">
+
+        <a href="index.html" class="admin-back-site">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Retour au site</span>
+        </a>
+
+        <button
+            id="adminLogoutButton"
+            class="admin-logout-button"
+            type="button"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- Overlay mobile -->
+<div id="adminOverlay" class="admin-overlay"></div>
+
+
+<!-- =========================
+     MAIN
+========================== -->
+<main class="admin-main">
+
+    <!-- TOPBAR -->
+    <header class="admin-topbar">
+
+        <div>
+            <p class="admin-breadcrumb">
+                Administration
+            </p>
+
+            <h1>
+                Tableau de bord
+            </h1>
+        </div>
+
+
+        <div class="admin-topbar-right">
+
+            <div class="admin-user">
+
+                <div class="admin-user-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <div class="admin-user-info">
+                    <strong>CAMU SERVICES ADMIN</strong>
+                    <span>Administrateur</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         CONTENT
+    ========================== -->
+    <div class="admin-content">
+
+
+        <!-- MESSAGE -->
+        <div
+            id="adminMessage"
+            class="admin-message"
+            hidden
+        ></div>
+
+
+        <!-- =========================
+             WELCOME
+        ========================== -->
+        <section class="admin-welcome">
+
+            <div>
+
+                <span class="admin-welcome-label">
+                    Bienvenue 👋
+                </span>
+
+                <h2>
+                    Vue générale de CAMU SERVICES
+                </h2>
+
+                <p>
+                    Gérez les annonces, les utilisateurs et les
+                    signalements depuis votre espace administrateur.
+                </p>
+
+            </div>
+
+            <div class="admin-welcome-icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+        <section class="admin-stats">
+
+            <!-- USERS -->
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-icon users">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="admin-stat-content">
+
+                    <span>
+                        Utilisateurs
+                    </span>
+
+                    <strong id="totalUsers">
+                        0
+                    </strong>
+
+                    <small>
+                        comptes enregistrés
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <!-- ADS -->
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-icon ads">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+
+                <div class="admin-stat-content">
+
+                    <span>
+                        Annonces
+                    </span>
+
+                    <strong id="totalAds">
+                        0
+                    </strong>
+
+                    <small>
+                        annonces publiées
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <!-- REPORTS -->
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-icon reports">
+                    <i class="fa-solid fa-flag"></i>
+                </div>
+
+                <div class="admin-stat-content">
+
+                    <span>
+                        Signalements
+                    </span>
+
+                    <strong id="totalReports">
+                        0
+                    </strong>
+
+                    <small>
+                        signalements reçus
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <!-- CATEGORIES -->
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-icon categories">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <div class="admin-stat-content">
+
+                    <span>
+                        Catégories
+                    </span>
+
+                    <strong id="totalCategories">
+                        6
+                    </strong>
+
+                    <small>
+                        catégories actives
+                    </small>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =========================
+             QUICK ACTIONS
+        ========================== -->
+        <section class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <span class="admin-section-label">
+                        Gestion
+                    </span>
+
+                    <h2>
+                        Accès rapide
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="admin-quick-grid">
+
+                <button
+                    type="button"
+                    class="admin-quick-card"
+                    data-section="annonces"
+                >
+
+                    <span class="admin-quick-icon ads">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </span>
+
+                    <span class="admin-quick-text">
+                        <strong>Gérer les annonces</strong>
+                        <small>
+                            Voir et gérer les annonces publiées
+                        </small>
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-quick-card"
+                    data-section="utilisateurs"
+                >
+
+                    <span class="admin-quick-icon users">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+
+                    <span class="admin-quick-text">
+                        <strong>Gérer les utilisateurs</strong>
+                        <small>
+                            Consulter les comptes utilisateurs
+                        </small>
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-quick-card"
+                    data-section="signalements"
+                >
+
+                    <span class="admin-quick-icon reports">
+                        <i class="fa-solid fa-flag"></i>
+                    </span>
+
+                    <span class="admin-quick-text">
+                        <strong>Voir les signalements</strong>
+                        <small>
+                            Examiner les annonces signalées
+                        </small>
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <a
+                    href="index.html"
+                    class="admin-quick-card"
+                >
+
+                    <span class="admin-quick-icon site">
+                        <i class="fa-solid fa-globe"></i>
+                    </span>
+
+                    <span class="admin-quick-text">
+                        <strong>Voir le site</strong>
+                        <small>
+                            Ouvrir CAMU SERVICES
+                        </small>
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECENT ACTIVITY
+        ========================== -->
+        <section class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <span class="admin-section-label">
+                        Activité
+                    </span>
+
+                    <h2>
+                        Activité récente
+                    </h2>
+                </div>
+
+                <span class="admin-live-status">
+                    <span></span>
+                    En ligne
+                </span>
+
+            </div>
+
+
+            <div
+                id="recentActivity"
+                class="admin-activity"
+            >
+
+                <div class="admin-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <span>
+                        Chargement des activités...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OVERVIEW
+        ========================== -->
+        <section class="admin-overview-grid">
+
+            <!-- CATEGORIES -->
+            <div class="admin-section admin-overview-card">
+
+                <div class="admin-section-header">
+
+                    <div>
+                        <span class="admin-section-label">
+                            Répartition
+                        </span>
+
+                        <h2>
+                            Annonces par catégorie
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    id="categoryStats"
+                    class="admin-simple-stats"
+                >
+
+                    <div class="admin-loading">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <span>Chargement...</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CITIES -->
+            <div class="admin-section admin-overview-card">
+
+                <div class="admin-section-header">
+
+                    <div>
+                        <span class="admin-section-label">
+                            Localisation
+                        </span>
+
+                        <h2>
+                            Annonces par ville
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    id="cityStats"
+                    class="admin-simple-stats"
+                >
+
+                    <div class="admin-loading">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <span>Chargement...</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="admin-footer">
+
+            <div>
+                © 2026 <strong>CAMU SERVICES</strong>.
+                Tous droits réservés.
+            </div>
+
+            <div>
+                Administration
+            </div>
+
+        </footer>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/admin.js"></script>
+
+</body> </html>
+
+Fermer
