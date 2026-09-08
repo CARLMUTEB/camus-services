@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Catégories — CAMU SERVICES</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/categories.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="categories-topbar">
+
+    <button
+        type="button"
+        class="categories-menu-btn"
+        id="categoriesMenuBtn"
+        aria-label="Ouvrir le menu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <a href="index.html" class="categories-logo">
+        <strong>CAMU</strong> SERVICES
+    </a>
+
+
+    <a href="compte.html" class="categories-account-btn">
+        <i class="fa-solid fa-user"></i>
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
+
+<div
+    class="categories-overlay"
+    id="categoriesOverlay"
+    hidden>
+</div>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside
+    class="categories-sidebar"
+    id="categoriesSidebar">
+
+    <div class="categories-sidebar-header">
+
+        <a href="index.html" class="categories-sidebar-logo">
+            <strong>CAMU</strong> SERVICES
+        </a>
+
+        <button
+            type="button"
+            id="categoriesSidebarClose"
+            class="categories-sidebar-close"
+            aria-label="Fermer le menu">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+
+    <nav class="categories-sidebar-nav">
+
+        <a href="index.html" class="categories-nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="recherche.html" class="categories-nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a href="categories.html"
+           class="categories-nav-item active">
+
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Catégories</span>
+
+        </a>
+
+        <a href="publier.html" class="categories-nav-item">
+
+            <i class="fa-solid fa-plus"></i>
+            <span>Publier</span>
+
+        </a>
+
+        <a href="favoris.html" class="categories-nav-item">
+
+            <i class="fa-solid fa-heart"></i>
+            <span>Favoris</span>
+
+        </a>
+
+        <a href="compte.html" class="categories-nav-item">
+
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+
+        </a>
+
+        <a href="parametres.html" class="categories-nav-item">
+
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="categories-sidebar-footer">
+
+        <a href="index.html" class="categories-nav-item">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Retour</span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+===================================================== -->
+
+<main class="categories-main">
+
+    <!-- HERO -->
+
+    <section class="categories-hero">
+
+        <div class="categories-hero-content">
+
+            <span class="categories-kicker">
+                <i class="fa-solid fa-layer-group"></i>
+                CAMU SERVICES
+            </span>
+
+            <h1>
+                Explorez nos catégories
+            </h1>
+
+            <p>
+                Trouvez rapidement les produits, services,
+                emplois et opportunités qui vous intéressent.
+            </p>
+
+        </div>
+
+
+        <div class="categories-hero-icon">
+
+            <i class="fa-solid fa-shapes"></i>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECHERCHE -->
+
+    <section class="categories-search-section">
+
+        <div class="categories-search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="search"
+                id="categorySearch"
+                placeholder="Rechercher une catégorie..."
+                autocomplete="off">
+
+        </div>
+
+    </section>
+
+
+    <!-- CATÉGORIES -->
+
+    <section class="categories-section">
+
+        <div class="categories-section-header">
+
+            <div>
+
+                <h2>
+                    Toutes les catégories
+                </h2>
+
+                <p id="categoriesCount">
+                    6 catégories
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="categories-grid"
+            id="categoriesGrid">
+
+            <!-- Immobilier -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Immobilier">
+
+                <span class="category-icon immobilier">
+                    <i class="fa-solid fa-house"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Immobilier</strong>
+
+                    <small>
+                        Maisons, terrains, appartements...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+
+            <!-- Véhicules -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Véhicules">
+
+                <span class="category-icon vehicules">
+                    <i class="fa-solid fa-car"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Véhicules</strong>
+
+                    <small>
+                        Voitures, motos, camions...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+
+            <!-- Commerce -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Commerce">
+
+                <span class="category-icon commerce">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Commerce</strong>
+
+                    <small>
+                        Produits, boutiques, équipements...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+
+            <!-- Services -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Services">
+
+                <span class="category-icon services">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Services</strong>
+
+                    <small>
+                        Prestations et services professionnels...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+
+            <!-- Emploi -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Emploi">
+
+                <span class="category-icon emploi">
+                    <i class="fa-solid fa-briefcase"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Emploi</strong>
+
+                    <small>
+                        Offres et opportunités d'emploi...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+
+            <!-- Autres -->
+
+            <button
+                type="button"
+                class="category-card"
+                data-category="Autres">
+
+                <span class="category-icon autres">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </span>
+
+                <span class="category-card-content">
+
+                    <strong>Autres</strong>
+
+                    <small>
+                        Découvrez toutes les autres annonces...
+                    </small>
+
+                </span>
+
+                <i class="fa-solid fa-chevron-right category-arrow"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- AUCUN RÉSULTAT -->
+
+        <div
+            class="categories-empty"
+            id="categoriesEmpty"
+            hidden>
+
+            <div class="categories-empty-icon">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+            </div>
+
+            <h3>
+                Aucune catégorie trouvée
+            </h3>
+
+            <p>
+                Essayez avec un autre mot-clé.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="categories-cta">
+
+        <div>
+
+            <span>
+                Vous ne trouvez pas ce que vous cherchez ?
+            </span>
+
+            <h2>
+                Recherchez directement une annonce.
+            </h2>
+
+        </div>
+
+        <a
+            href="recherche.html"
+            class="categories-cta-btn">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Rechercher
+
+        </a>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="categories-footer">
+
+    <p>
+        © 2026 CAMU SERVICES — Trouver • Acheter • Réserver
+    </p>
+
+</footer>
+
+
+<script src="js/categories.js"></script>
+
+</body>
+</html>
