@@ -1,80 +1,715 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Politique de Confidentialité — CAMU SERVICES</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f4f9; color: #333; padding-top: 60px; padding-bottom: 75px; }
+    <meta charset="UTF-8">
 
-    /* Header Bar */
-    .header-bar { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #111111; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; color: #ffffff; font-weight: 800; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
-    .logo-text span { color: #d32f2f; }
-    .back-btn { color: #ffffff; text-decoration: none; font-size: 18px; }
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    /* Conteneur principal */
-    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
-    .card-page { background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    <meta
+        name="description"
+        content="Politique de confidentialité de CAMU SERVICES."
+    >
 
-    .page-title { font-size: 18px; font-weight: 900; color: #111; margin-bottom: 5px; }
-    .page-subtitle { font-size: 11px; color: #777; margin-bottom: 20px; border-bottom: 2px solid #d32f2f; padding-bottom: 8px; }
+    <title>Politique de confidentialité | CAMU SERVICES</title>
 
-    .section-title { font-size: 14px; font-weight: 800; color: #d32f2f; margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    p, li { font-size: 13px; color: #444; line-height: 1.5; margin-bottom: 8px; }
-    ul { margin-left: 18px; margin-bottom: 12px; }
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/politique.css">
 
-    /* Bottom Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; height: 65px; }
-    .bottom-nav a { text-align: center; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 25%; text-decoration: none; }
-    .bottom-nav a.active { color: #d32f2f; }
-    .bottom-nav i { font-size: 19px; margin-bottom: 3px; }
-  </style>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header class="header-bar">
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="logo-text">CAMU <span>SERVICES</span></div>
-    <div style="width: 18px;"></div>
-  </header>
+    <!-- =========================
+         HEADER MOBILE
+    ========================== -->
 
-  <main class="container">
-    <div class="card-page">
-      <h1 class="page-title">Politique de Confidentialité</h1>
-      <div class="page-subtitle">Protection des données — CAMU SERVICES</div>
+    <header class="mobile-header">
 
-      <div class="section-title"><i class="fa-solid fa-shield-halved"></i> 1. Collecte des Données</div>
-      <p>Nous collectons uniquement les informations strictement nécessaires à la mise en relation et à l'affichage de vos annonces :</p>
-      <ul>
-        <li>Nom, prénom ou nom de l'entreprise.</li>
-        <li>Numéro de téléphone / WhatsApp.</li>
-        <li>Ville et quartier d'activité.</li>
-        <li>Photos et descriptions des services publiés.</li>
-      </ul>
+        <button
+            id="menuToggle"
+            class="menu-toggle"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
 
-      <div class="section-title"><i class="fa-solid fa-database"></i> 2. Stockage Local (localStorage)</div>
-      <p>Vos préférences, favoris et identifiants de session sont conservés localement sur votre téléphone ou ordinateur dans la mémoire de votre navigateur (localStorage). Cela vous garantit une rapidité d'accès sans traitement abusif sur serveur distant.</p>
+        <a href="index.html" class="mobile-logo">
+            CAMU SERVICES
+        </a>
 
-      <div class="section-title"><i class="fa-solid fa-lock"></i> 3. Partage des Informations</div>
-      <p>Vos coordonnées publiques (numéro WhatsApp, ville) ne sont partagées que dans le but de permettre aux acheteurs et clients de vous contacter. Aucune donnée personnelle n'est vendue à des tiers.</p>
+    </header>
 
-      <div class="section-title"><i class="fa-solid fa-user-pen"></i> 4. Droit de Modification</div>
-      <p>Vous pouvez à tout moment modifier ou supprimer vos annonces et informations de profil directement depuis votre espace utilisateur.</p>
-    </div>
-  </main>
 
-  <!-- Bottom Nav -->
-  <nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i><span>Publier</span></a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
-  </nav>
+    <!-- =========================
+         OVERLAY
+    ========================== -->
 
-</body>
-</html>
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
 
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a href="index.html" class="brand">
+
+                <div class="brand-logo">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+
+                <div class="brand-text">
+                    <strong>CAMU</strong>
+                    <span>SERVICES</span>
+                </div>
+
+            </a>
+
+            <button
+                id="closeSidebar"
+                class="close-sidebar"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a href="recherche.html" class="nav-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a href="recherche.html" class="nav-item">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a href="publier.html" class="nav-item">
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a href="favoris.html" class="nav-item">
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a href="compte.html" class="nav-item">
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a href="parametres.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+            <!-- Administration -->
+            <a
+                href="admin.html"
+                class="nav-item admin-nav-item"
+                id="adminNavItem"
+                style="display:none;"
+            >
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Administration</span>
+            </a>
+
+            <a href="a-propos.html" class="nav-item">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>À propos</span>
+            </a>
+
+            <a href="contact.html" class="nav-item">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="sidebar-footer-links">
+
+                <a href="conditions.html">
+                    Mentions légales
+                </a>
+
+                <a
+                    href="politique.html"
+                    class="active"
+                >
+                    Politique de confidentialité
+                </a>
+
+                <a href="aide.html">
+                    Aide
+                </a>
+
+            </div>
+
+            <p>
+                © 2026 CAMU SERVICES
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENU
+    ========================== -->
+
+    <main class="privacy-page">
+
+        <!-- HERO -->
+
+        <section class="privacy-hero">
+
+            <div class="privacy-hero-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <span class="privacy-badge">
+                VIE PRIVÉE ET DONNÉES
+            </span>
+
+            <h1>
+                Politique de confidentialité
+            </h1>
+
+            <p>
+                CAMU SERVICES accorde une importance particulière
+                à la protection et à la confidentialité des données
+                de ses utilisateurs.
+            </p>
+
+            <div class="privacy-update">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                Dernière mise à jour :
+                septembre 2026
+
+            </div>
+
+        </section>
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="privacy-introduction">
+
+            <div class="intro-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Notre engagement
+                </h2>
+
+                <p>
+                    Cette politique explique quelles informations
+                    peuvent être collectées lorsque vous utilisez
+                    CAMU SERVICES, pourquoi elles sont utilisées
+                    et comment nous cherchons à les protéger.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTENU -->
+
+        <section class="privacy-content">
+
+
+            <!-- 01 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    01
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Qui sommes-nous ?
+                    </h2>
+
+                    <p>
+                        <strong>CAMU SERVICES</strong> est une
+                        plateforme numérique destinée à faciliter
+                        la mise en relation entre utilisateurs,
+                        vendeurs, prestataires de services et
+                        annonceurs.
+                    </p>
+
+                    <p>
+                        La plateforme est principalement destinée
+                        aux utilisateurs de la République
+                        démocratique du Congo, notamment dans
+                        les provinces du Haut-Katanga et du Lualaba.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    02
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-database"></i>
+                        Quelles données pouvons-nous collecter ?
+                    </h2>
+
+                    <p>
+                        Selon les fonctionnalités utilisées,
+                        CAMU SERVICES peut traiter certaines
+                        informations fournies directement par
+                        l'utilisateur.
+                    </p>
+
+                    <div class="privacy-list">
+
+                        <div>
+                            <i class="fa-solid fa-user"></i>
+                            <span>
+                                Nom et informations du profil
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>
+                                Adresse e-mail
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-phone"></i>
+                            <span>
+                                Numéro de téléphone ou WhatsApp
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>
+                                Ville et quartier
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-image"></i>
+                            <span>
+                                Photos et images publiées
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-bullhorn"></i>
+                            <span>
+                                Informations contenues dans les annonces
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    03
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-bullseye"></i>
+                        Pourquoi utilisons-nous ces données ?
+                    </h2>
+
+                    <p>
+                        Les données peuvent être utilisées pour
+                        permettre le fonctionnement normal de
+                        CAMU SERVICES.
+                    </p>
+
+                    <ul class="privacy-check-list">
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Créer et gérer un compte utilisateur.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Permettre la publication d'annonces.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Afficher les annonces et profils.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Permettre aux utilisateurs de se contacter.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Sécuriser la plateforme.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Détecter les abus et les contenus
+                            non conformes.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Améliorer les fonctionnalités de CAMU SERVICES.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </article>
+
+
+            <!-- 04 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    04
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-user-lock"></i>
+                        Compte utilisateur
+                    </h2>
+
+                    <p>
+                        Certaines fonctionnalités de CAMU SERVICES
+                        nécessitent la création d'un compte.
+                    </p>
+
+                    <p>
+                        Les informations liées au compte sont utilisées
+                        pour permettre l'authentification et l'accès
+                        aux fonctionnalités réservées aux utilisateurs.
+                    </p>
+
+                    <div class="privacy-note">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <p>
+                            Les informations d'authentification doivent
+                            rester confidentielles. L'utilisateur est
+                            responsable de la protection de ses
+                            identifiants d'accès.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 05 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    05
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-bullhorn"></i>
+                        Données publiées dans les annonces
+                    </h2>
+
+                    <p>
+                        Lorsqu'un utilisateur publie une annonce,
+                        certaines informations peuvent devenir
+                        visibles publiquement afin de permettre
+                        aux autres utilisateurs de découvrir
+                        l'offre.
+                    </p>
+
+                    <p>
+                        Il appartient donc à chaque utilisateur
+                        de vérifier les informations qu'il choisit
+                        de publier.
+                    </p>
+
+                    <div class="privacy-warning">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <p>
+                            Évitez de publier dans une annonce des
+                            informations personnelles sensibles ou
+                            confidentielles qui ne sont pas nécessaires
+                            à la présentation de votre offre.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 06 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    06
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-server"></i>
+                        Services techniques utilisés
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES utilise des services techniques
+                        nécessaires au fonctionnement de la plateforme.
+                    </p>
+
+                    <div class="service-box">
+
+                        <div class="service-icon">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Firebase
+                            </h3>
+
+                            <p>
+                                Utilisé notamment pour
+                                l'authentification des utilisateurs
+                                et le stockage des données de la
+                                plateforme.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="service-box">
+
+                        <div class="service-icon">
+                            <i class="fa-solid fa-cloud"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Service de stockage d'images
+                            </h3>
+
+                            <p>
+                                Les images utilisées dans certaines
+                                annonces peuvent être hébergées
+                                par un service spécialisé de stockage
+                                d'images.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 07 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    07
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-share-nodes"></i>
+                        Partage des données
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES ne vend pas les données
+                        personnelles des utilisateurs.
+                    </p>
+
+                    <p>
+                        Certaines informations peuvent toutefois
+                        être accessibles à d'autres utilisateurs
+                        lorsqu'elles sont volontairement publiées
+                        dans un profil ou une annonce.
+                    </p>
+
+                    <p>
+                        Des informations peuvent également être
+                        traitées par des prestataires techniques
+                        nécessaires au fonctionnement de la plateforme,
+                        dans les limites nécessaires à leurs services.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 08 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    08
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-lock"></i>
+                        Sécurité des données
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES met en œuvre des mesures
+                        techniques et organisationnelles destinées
+                        à protéger les informations contre les accès
+                        non autorisés, la perte ou l'utilisation
+                        abusive.
+                    </p>
+
+                    <p>
+                        Toutefois, aucun système informatique ou
+                        service en ligne ne peut garantir une
+                        sécurité absolue.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 09 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    09
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-clock"></i>
+                        Conservation des données
+                    </h2>
+
+                    <p>
+                        Les données peuvent être conservées pendant
+                        la durée nécessaire au fonctionnement du
+                        service, à la gestion du compte, à la sécurité
+                        de la plateforme ou au respect des obligations
+                        applicables.
+                    </p>
+
+                    <p>
+                        Lorsqu'une donnée n'est plus nécessaire,
+                        sa suppression ou sa conservation selon
+                        les exigences applicables peut être envisagée.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 10 -->
+
+            <article class="privacy-card">
+
+                <div class="privacy-number">
+                    10
+                </div>
+
+                <div class="privacy-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-user-check"></i>
+                        Vos droits
+                    </h2>
+
+                    <p>
+                        Dans les conditions prévues par la
+                        réglementation applicable, les utilisate
