@@ -288,16 +288,124 @@
 
 
 /* =========================================================
-   APERÇU PHOTOS
+   APERÇU DES PHOTOS
 ========================================================= */
 
 .publish-photo-preview {
     display: grid;
+
     grid-template-columns: repeat(5, 1fr);
+
     gap: 10px;
 
     margin-top: 15px;
 }
+
+
+/* CARTE PHOTO */
+
+.publish-photo-item {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #f3f4f6;
+
+    border: 1px solid var(--border);
+
+    box-sizing: border-box;
+}
+
+
+/* IMAGE */
+
+.publish-photo-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* PHOTO PRINCIPALE / NUMÉRO */
+
+.publish-photo-number {
+    position: absolute;
+
+    left: 7px;
+    bottom: 7px;
+
+    padding: 4px 7px;
+
+    border-radius: 6px;
+
+    background: rgba(0, 0, 0, .65);
+
+    color: #fff;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    z-index: 2;
+}
+
+
+/* BOUTON SUPPRIMER */
+
+.publish-photo-remove {
+    position: absolute;
+
+    top: 7px;
+    right: 7px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(220, 38, 38, .92);
+
+    color: #fff;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    transition: .2s ease;
+}
+
+.publish-photo-remove:hover {
+    transform: scale(1.08);
+
+    background: #dc2626;
+}
+
+
+/* =========================================================
+   ANCIEN SYSTÈME — COMPATIBILITÉ
+========================================================= */
 
 .photo-preview-item {
     position: relative;
@@ -314,6 +422,8 @@
 .photo-preview-item img {
     width: 100%;
     height: 100%;
+
+    display: block;
 
     object-fit: cover;
 }
@@ -354,6 +464,7 @@
     padding: 13px 14px;
 
     border: 1px solid var(--border);
+
     border-radius: 11px;
 
     background: var(--white);
@@ -368,6 +479,8 @@
     transition:
         border-color .2s ease,
         box-shadow .2s ease;
+
+    box-sizing: border-box;
 }
 
 .publish-field input {
@@ -413,13 +526,17 @@
 
 .publish-grid-2 {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 18px;
 }
 
 .publish-field-bottom {
     display: flex;
+
     justify-content: space-between;
+
     gap: 10px;
 
     margin-top: 6px;
@@ -436,10 +553,13 @@
 
 .publish-whatsapp-box {
     display: flex;
+
     align-items: center;
+
     gap: 13px;
 
     margin-bottom: 20px;
+
     padding: 14px 16px;
 
     border-radius: 13px;
@@ -453,12 +573,14 @@
     min-width: 42px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
     background: #e8f7ec;
+
     color: var(--primary);
 
     font-size: 21px;
@@ -471,6 +593,7 @@
 
 .publish-whatsapp-box strong {
     color: var(--dark);
+
     font-size: 13px;
 }
 
@@ -480,6 +603,7 @@
     color: #777e88;
 
     font-size: 12px;
+
     line-height: 1.4;
 }
 
@@ -492,6 +616,7 @@
     padding: 18px 20px;
 
     border: 1px solid var(--border);
+
     border-radius: 15px;
 
     background: var(--white);
@@ -501,7 +626,9 @@
     position: relative;
 
     display: flex;
+
     align-items: flex-start;
+
     gap: 12px;
 
     cursor: pointer;
@@ -522,12 +649,14 @@
     min-width: 20px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     margin-top: 1px;
 
     border: 1px solid #ccd2d9;
+
     border-radius: 5px;
 
     background: var(--white);
@@ -539,12 +668,15 @@
 
 .publish-checkbox input:checked + .publish-checkmark {
     background: var(--primary);
+
     border-color: var(--primary);
+
     color: #fff;
 }
 
 .publish-checkbox input:focus-visible + .publish-checkmark {
     outline: 3px solid rgba(22, 163, 74, .25);
+
     outline-offset: 2px;
 }
 
@@ -556,11 +688,13 @@
     color: #606772;
 
     font-size: 12px;
+
     line-height: 1.6;
 }
 
 .publish-terms-text a {
     color: var(--primary);
+
     font-weight: 600;
 }
 
@@ -571,7 +705,9 @@
 
 .publish-v2-actions {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 15px;
@@ -584,6 +720,7 @@
     min-height: 46px;
 
     display: inline-flex;
+
     align-items: center;
 
     border-radius: 10px;
@@ -599,6 +736,7 @@
     border: none;
 
     background: var(--primary);
+
     color: #fff;
 }
 
@@ -612,11 +750,13 @@
     border: 1px solid var(--border);
 
     background: var(--white);
+
     color: var(--text);
 }
 
 .publish-v2-actions .secondary-button:hover {
     border-color: var(--primary);
+
     color: var(--primary);
 }
 
@@ -658,7 +798,9 @@
 
     .publish-v2 {
         width: 100%;
+
         max-width: 100%;
+
         padding: 8px 0 35px;
     }
 
@@ -667,6 +809,7 @@
 
     .publish-hero {
         display: flex;
+
         align-items: center;
 
         gap: 12px;
@@ -686,6 +829,7 @@
 
     .publish-hero .section-label {
         font-size: 9px;
+
         letter-spacing: .8px;
     }
 
@@ -693,11 +837,13 @@
         margin: 3px 0 4px;
 
         font-size: 22px;
+
         line-height: 1.15;
     }
 
     .publish-hero p {
         font-size: 12px;
+
         line-height: 1.45;
     }
 
@@ -738,6 +884,7 @@
         font-size: 11px;
 
         white-space: nowrap;
+
         text-overflow: ellipsis;
     }
 
@@ -783,6 +930,7 @@
 
     .publish-card-header h2 {
         font-size: 15px;
+
         line-height: 1.25;
     }
 
@@ -790,6 +938,7 @@
         margin-top: 3px;
 
         font-size: 11px;
+
         line-height: 1.4;
     }
 
@@ -835,6 +984,9 @@
         text-align: center;
     }
 
+
+    /* APERÇU PHOTOS */
+
     .publish-photo-preview {
         grid-template-columns: repeat(3, 1fr);
 
@@ -843,8 +995,29 @@
         margin-top: 10px;
     }
 
-    .photo-preview-item {
+    .publish-photo-item {
         border-radius: 9px;
+    }
+
+    .publish-photo-number {
+        left: 5px;
+
+        bottom: 5px;
+
+        padding: 3px 5px;
+
+        font-size: 8px;
+    }
+
+    .publish-photo-remove {
+        top: 5px;
+
+        right: 5px;
+
+        width: 25px;
+        height: 25px;
+
+        font-size: 11px;
     }
 
 
@@ -885,11 +1058,13 @@
         margin-top: 5px;
 
         font-size: 9px;
+
         line-height: 1.4;
     }
 
     .publish-field-bottom {
         flex-direction: column;
+
         align-items: flex-start;
 
         gap: 2px;
@@ -934,6 +1109,7 @@
         margin-top: 2px;
 
         font-size: 10px;
+
         line-height: 1.35;
     }
 
@@ -958,6 +1134,7 @@
 
     .publish-terms-text {
         font-size: 10px;
+
         line-height: 1.5;
     }
 
@@ -979,7 +1156,9 @@
     .publish-v2-actions .primary-button,
     .publish-v2-actions .secondary-button {
         width: 100%;
+
         min-width: 0;
+
         min-height: 44px;
 
         justify-content: center;
@@ -990,6 +1169,7 @@
     .publish-submit {
         min-width: 0;
     }
+
 }
 
 
@@ -1029,170 +1209,9 @@
 
     .publish-photo-preview {
         grid-template-columns: repeat(3, 1fr);
-    }
-}
 
-
-/* =========================================================
-   APERÇU DES PHOTOS — NOUVEAU SYSTÈME
-========================================================= */
-
-.publish-photo-preview {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
-
-
-/* CARTE PHOTO */
-
-.publish-photo-item {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #f3f4f6;
-    border: 1px solid var(--border);
-}
-
-
-/* IMAGE */
-
-.publish-photo-image {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-
-/* PHOTO PRINCIPALE / NUMÉRO */
-
-.publish-photo-number {
-    position: absolute;
-    left: 7px;
-    bottom: 7px;
-
-    padding: 4px 7px;
-
-    border-radius: 6px;
-
-    background: rgba(0, 0, 0, .65);
-    color: #fff;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    line-height: 1;
-}
-
-
-/* BOUTON SUPPRIMER */
-
-.publish-photo-remove {
-    position: absolute;
-
-    top: 7px;
-    right: 7px;
-
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: none;
-    border-radius: 50%;
-
-    background: rgba(220, 38, 38, .92);
-    color: #fff;
-
-    font-size: 13px;
-
-    cursor: pointer;
-
-    z-index: 5;
-
-    transition: .2s ease;
-}
-
-
-.publish-photo-remove:hover {
-    transform: scale(1.08);
-    background: #dc2626;
-}
-
-
-/* =========================================================
-   TABLETTE
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .publish-photo-preview {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .publish-photo-preview {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 7px;
-        margin-top: 10px;
-    }
-
-
-    .publish-photo-item {
-        border-radius: 9px;
-    }
-
-
-    .publish-photo-number {
-        left: 5px;
-        bottom: 5px;
-
-        padding: 3px 5px;
-
-        font-size: 8px;
-    }
-
-
-    .publish-photo-remove {
-        top: 5px;
-        right: 5px;
-
-        width: 25px;
-        height: 25px;
-
-        font-size: 11px;
-    }
-
-}
-
-
-/* =========================================================
-   TRÈS PETIT TÉLÉPHONE
-========================================================= */
-
-@media (max-width: 380px) {
-
-    .publish-photo-preview {
-        grid-template-columns: repeat(3, 1fr);
         gap: 5px;
     }
-
 
     .publish-photo-remove {
         width: 23px;
@@ -1200,6 +1219,15 @@
 
         top: 4px;
         right: 4px;
+    }
+
+    .publish-photo-number {
+        left: 4px;
+        bottom: 4px;
+
+        font-size: 7px;
+
+        padding: 3px 4px;
     }
 
 }
