@@ -1,41 +1,80 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Profil de l'annonceur — CAMU SERVICES">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Profil de l'annonceur — CAMU SERVICES"
+    >
 
     <title>Profil — CAMU SERVICES</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profil.css">
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <!-- CSS PROFIL -->
+    <link
+        rel="stylesheet"
+        href="css/profil.css"
+    >
+
 </head>
+
 
 <body>
 
-<!-- HEADER MOBILE -->
+
+<!-- =====================================================
+     HEADER MOBILE
+===================================================== -->
+
 <header class="mobile-header">
 
-    <button id="menuToggle"
-            class="mobile-menu-button"
-            type="button"
-            aria-label="Ouvrir le menu">
+    <button
+        id="menuToggle"
+        class="mobile-menu-button"
+        type="button"
+        aria-label="Ouvrir le menu"
+    >
 
         <i class="fa-solid fa-bars"></i>
 
     </button>
 
-    <a href="index.html" class="mobile-logo">
+
+    <a
+        href="index.html"
+        class="mobile-logo"
+    >
+
         CAMU <span>SERVICES</span>
+
     </a>
 
-    <a href="compte.html"
-       class="mobile-account"
-       aria-label="Mon compte">
+
+    <a
+        href="compte.html"
+        class="mobile-account"
+        aria-label="Mon compte"
+    >
 
         <i class="fa-solid fa-user"></i>
 
@@ -44,48 +83,139 @@
 </header>
 
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <!-- LOGO -->
 
     <div class="sidebar-logo">
+
         CAMU <span>SERVICES</span>
+
     </div>
+
+
+    <!-- NAVIGATION -->
 
     <nav class="sidebar-nav">
 
-        <a href="index.html" class="nav-item">
+
+        <!-- ACCUEIL -->
+
+        <a
+            href="index.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
+
+            <span>
+                Accueil
+            </span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item">
+
+        <!-- RECHERCHER -->
+
+        <a
+            href="recherche.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Rechercher</span>
+
+            <span>
+                Rechercher
+            </span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item">
+
+        <!-- CATÉGORIES -->
+
+        <a
+            href="recherche.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-folder"></i>
-            <span>Catégories</span>
+
+            <span>
+                Catégories
+            </span>
+
         </a>
 
-        <a href="publier.html" class="nav-item">
+
+        <!-- PUBLIER -->
+
+        <a
+            href="publier.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-plus"></i>
-            <span>Publier</span>
+
+            <span>
+                Publier
+            </span>
+
         </a>
 
-        <a href="favoris.html" class="nav-item">
+
+        <!-- FAVORIS -->
+
+        <a
+            href="favoris.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-heart"></i>
-            <span>Favoris</span>
+
+            <span>
+                Favoris
+            </span>
+
         </a>
 
-        <a href="compte.html" class="nav-item">
+
+        <!-- MON COMPTE -->
+
+        <a
+            href="compte.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-user"></i>
-            <span>Mon compte</span>
+
+            <span>
+                Mon compte
+            </span>
+
         </a>
 
-        <a href="parametres.html" class="nav-item">
+
+        <!-- PARAMÈTRES -->
+
+        <a
+            href="parametres.html"
+            class="nav-item"
+        >
+
             <i class="fa-solid fa-gear"></i>
-            <span>Paramètres</span>
+
+            <span>
+                Paramètres
+            </span>
+
         </a>
 
     </nav>
@@ -93,63 +223,123 @@
 </aside>
 
 
-<!-- CONTENU -->
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+===================================================== -->
+
 <main class="main-content">
+
 
     <div class="public-profile-container">
 
-        <!-- RETOUR -->
-        <a href="javascript:history.back()" class="profile-back">
+
+        <!-- =================================================
+             RETOUR
+        ================================================== -->
+
+        <a
+            href="javascript:history.back()"
+            class="profile-back"
+        >
+
             <i class="fa-solid fa-arrow-left"></i>
+
             Retour
+
         </a>
 
 
-        <!-- CHARGEMENT -->
-        <div id="profileLoading" class="profile-loading">
+
+        <!-- =================================================
+             CHARGEMENT
+        ================================================== -->
+
+        <div
+            id="profileLoading"
+            class="profile-loading"
+        >
 
             <i class="fa-solid fa-spinner fa-spin"></i>
 
-            <p>Chargement du profil...</p>
+            <p>
+                Chargement du profil...
+            </p>
 
         </div>
 
 
-        <!-- ERREUR -->
-        <div id="profileError"
-             class="profile-error hidden">
 
-            <i class="fa-solid fa-circle-exclamation"></i>
+        <!-- =================================================
+             ERREUR
+        ================================================== -->
 
-            <h2>Profil introuvable</h2>
+        <div
+            id="profileError"
+            class="profile-error hidden"
+        >
+
+            <i
+                class="fa-solid fa-circle-exclamation"
+            ></i>
+
+
+            <h2>
+                Profil introuvable
+            </h2>
+
 
             <p>
                 Ce profil n'est pas disponible.
             </p>
 
-            <a href="index.html" class="primary-button">
+
+            <a
+                href="index.html"
+                class="primary-button"
+            >
+
                 Retour à l'accueil
+
             </a>
 
         </div>
 
 
-        <!-- PROFIL -->
-        <section id="publicProfile"
-                 class="public-profile hidden">
+
+        <!-- =================================================
+             PROFIL PUBLIC
+        ================================================== -->
+
+        <section
+            id="publicProfile"
+            class="public-profile hidden"
+        >
 
 
-            <!-- EN-TÊTE PROFIL -->
+            <!-- =================================================
+                 EN-TÊTE PROFIL
+            ================================================== -->
+
             <div class="profile-header-card">
+
+
+                <!-- PHOTO -->
 
                 <div class="public-avatar">
 
-                    <img id="profilePhoto"
-                         src=""
-                         alt="Photo du profil">
 
-                    <div id="defaultProfileIcon"
-                         class="default-profile-icon">
+                    <img
+                        id="profilePhoto"
+                        src=""
+                        alt="Photo du profil"
+                    >
+
+
+                    <div
+                        id="defaultProfileIcon"
+                        class="default-profile-icon"
+                    >
 
                         <i class="fa-solid fa-user"></i>
 
@@ -158,107 +348,255 @@
                 </div>
 
 
+
+                <!-- INFORMATIONS -->
+
                 <div class="profile-header-info">
+
 
                     <h1 id="profileName">
                         —
                     </h1>
 
+
                     <p class="profile-member">
 
-                        <i class="fa-solid fa-circle-check"></i>
+                        <i
+                            class="fa-solid fa-circle-check"
+                        ></i>
 
                         Membre de CAMU SERVICES
 
                     </p>
 
-                    <p id="profileDescription"
-                       class="profile-description">
 
+                    <p
+                        id="profileDescription"
+                        class="profile-description"
+                    >
                         —
-
                     </p>
+
+
+
+                    <!-- =================================================
+                         INFORMATIONS DE CONTACT
+                    ================================================== -->
+
+                    <div class="profile-contact-info">
+
+
+                        <!-- TÉLÉPHONE -->
+
+                        <div class="profile-contact-item">
+
+                            <i
+                                class="fa-solid fa-phone"
+                            ></i>
+
+                            <span id="profilePhone">
+                                Non renseigné
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- WHATSAPP -->
+
+                        <div class="profile-contact-item">
+
+                            <i
+                                class="fa-brands fa-whatsapp"
+                            ></i>
+
+                            <span id="profileWhatsapp">
+                                Non renseigné
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- LOCALISATION -->
+
+                        <div class="profile-contact-item">
+
+                            <i
+                                class="fa-solid fa-location-dot"
+                            ></i>
+
+                            <span id="profileLocation">
+                                Non renseignée
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- BOUTON WHATSAPP -->
+
+                        <a
+                            id="profileWhatsappButton"
+                            class="profile-whatsapp-button"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="display:none;"
+                        >
+
+                            <i
+                                class="fa-brands fa-whatsapp"
+                            ></i>
+
+                            Contacter sur WhatsApp
+
+                        </a>
+
+
+                    </div>
+
 
                 </div>
 
             </div>
 
 
-            <!-- STATISTIQUES -->
+
+            <!-- =================================================
+                 STATISTIQUES
+            ================================================== -->
+
             <div class="profile-stats">
 
+
                 <div class="profile-stat">
+
 
                     <strong id="profileAdsCount">
                         0
                     </strong>
 
+
                     <span>
                         Annonces
                     </span>
 
+
                 </div>
+
 
             </div>
 
 
-            <!-- ANNONCES -->
+
+            <!-- =================================================
+                 ANNONCES PUBLIÉES
+            ================================================== -->
+
             <section class="profile-ads-section">
+
 
                 <div class="profile-section-title">
 
+
                     <div>
+
 
                         <h2>
                             Annonces publiées
                         </h2>
 
+
                         <p>
                             Découvrez les annonces de cet annonceur.
                         </p>
 
+
                     </div>
 
+
                 </div>
 
 
-                <div id="profileAds"
-                     class="profile-ads-grid">
+
+                <!-- GRILLE ANNONCES -->
+
+                <div
+                    id="profileAds"
+                    class="profile-ads-grid"
+                >
                 </div>
 
 
-                <!-- VIDE -->
-                <div id="profileAdsEmpty"
-                     class="profile-empty hidden">
+
+                <!-- =================================================
+                     AUCUNE ANNONCE
+                ================================================== -->
+
+                <div
+                    id="profileAdsEmpty"
+                    class="profile-empty hidden"
+                >
+
 
                     <div class="profile-empty-icon">
 
-                        <i class="fa-solid fa-box-open"></i>
+                        <i
+                            class="fa-solid fa-box-open"
+                        ></i>
 
                     </div>
+
 
                     <h3>
                         Aucune annonce
                     </h3>
 
+
                     <p>
                         Cet annonceur n'a pas encore publié d'annonce.
                     </p>
 
+
                 </div>
+
 
             </section>
 
+
         </section>
 
+
     </div>
+
 
 </main>
 
 
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/profil.js"></script>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="js/auth.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/profil.js"
+></script>
+
 
 </body>
+
 </html>
