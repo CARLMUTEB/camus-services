@@ -1,173 +1,880 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>Contact — CAMU SERVICES</title>
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+    <meta
+        name="description"
+        content="Contactez CAMU SERVICES pour toute question, suggestion, assistance ou demande d'information."
+    >
 
-<title>Contact — CAMU SERVICES</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
 
-<link rel="stylesheet"
-href="style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-
-.contact-card{
-text-align:center;
-}
-
-.contact-icon{
-font-size:50px;
-color:#d32f2f;
-margin-bottom:15px;
-}
-
-.contact-card h1{
-font-size:20px;
-margin-bottom:8px;
-}
-
-.contact-card p{
-font-size:13px;
-color:#666;
-line-height:1.5;
-margin-bottom:20px;
-}
-
-.contact-btn{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-padding:13px;
-border-radius:8px;
-text-decoration:none;
-font-size:12px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.whatsapp{
-background:#25D366;
-color:white;
-}
-
-.email{
-background:#111;
-color:white;
-}
-
-</style>
-
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
 
 <body>
 
-<header class="top-bar">
+<div class="app">
 
-<div class="logo-text">
-CAMU <span>SERVICES</span>
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <a href="index.html" class="brand">
+                <span class="brand-main">CAMU</span>
+                <span class="brand-sub">SERVICES</span>
+            </a>
+
+            <button
+                class="close-sidebar"
+                id="closeSidebar"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a href="recherche.html" class="nav-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a href="explorer.html" class="nav-item">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a href="publier.html" class="nav-item">
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a href="favoris.html" class="nav-item">
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a href="compte.html" class="nav-item">
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a href="parametres.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+            <a
+                href="admin.html"
+                class="nav-item"
+                id="adminNavItem"
+                style="display:none;"
+            >
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Administration</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a href="a-propos.html" class="nav-item">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>À propos</span>
+            </a>
+
+            <a href="contact.html" class="nav-item active">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+
+            <a href="connexion.html" class="nav-item">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- OVERLAY MOBILE -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =========================
+         PAGE PRINCIPALE
+    ========================== -->
+
+    <main class="contact-page">
+
+        <!-- HEADER MOBILE -->
+
+        <header class="mobile-header">
+
+            <button
+                id="menuToggle"
+                class="menu-toggle"
+                aria-label="Ouvrir le menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <a href="index.html" class="mobile-logo">
+                <span>CAMU</span>
+                <small>SERVICES</small>
+            </a>
+
+            <a
+                href="compte.html"
+                class="mobile-account"
+                aria-label="Mon compte"
+            >
+                <i class="fa-regular fa-user"></i>
+            </a>
+
+        </header>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="contact-hero">
+
+            <div class="contact-hero-content">
+
+                <span class="hero-badge">
+                    <i class="fa-regular fa-envelope"></i>
+                    Contactez-nous
+                </span>
+
+                <h1>
+                    Nous sommes à votre
+                    <span>écoute.</span>
+                </h1>
+
+                <p>
+                    Une question, une suggestion, un problème
+                    ou besoin d'assistance ? L'équipe CAMU SERVICES
+                    est là pour vous accompagner.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             INFORMATIONS CONTACT
+        ========================== -->
+
+        <section class="contact-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-address-book"></i>
+                    Nos coordonnées
+                </span>
+
+                <h2>
+                    Comment pouvons-nous vous aider ?
+                </h2>
+
+                <p>
+                    Choisissez le moyen de contact qui vous convient.
+                </p>
+
+            </div>
+
+
+            <div class="contact-cards">
+
+                <!-- WHATSAPP -->
+
+                <a
+                    href="https://wa.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-card"
+                >
+
+                    <div class="contact-icon whatsapp-icon">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+
+                    <div>
+                        <span class="contact-label">
+                            WhatsApp
+                        </span>
+
+                        <h3>
+                            Contact direct
+                        </h3>
+
+                        <p>
+                            Écrivez-nous directement sur WhatsApp.
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+
+                </a>
+
+
+                <!-- EMAIL -->
+
+                <a
+                    href="mailto:contact@camu-services.com"
+                    class="contact-card"
+                >
+
+                    <div class="contact-icon">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+
+                    <div>
+                        <span class="contact-label">
+                            E-mail
+                        </span>
+
+                        <h3>
+                            Écrivez-nous
+                        </h3>
+
+                        <p>
+                            Envoyez-nous votre demande par e-mail.
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-up-right-from-square card-arrow"></i>
+
+                </a>
+
+
+                <!-- LOCALISATION -->
+
+                <div class="contact-card">
+
+                    <div class="contact-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+
+                    <div>
+                        <span class="contact-label">
+                            Zone d'activité
+                        </span>
+
+                        <h3>
+                            République démocratique du Congo
+                        </h3>
+
+                        <p>
+                            Lubumbashi, Kolwezi, Likasi et Fungurume.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FORMULAIRE
+        ========================== -->
+
+        <section class="form-section">
+
+            <div class="form-wrapper">
+
+                <div class="form-introduction">
+
+                    <span class="section-label">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Envoyer un message
+                    </span>
+
+                    <h2>
+                        Une question ? Écrivez-nous.
+                    </h2>
+
+                    <p>
+                        Remplissez le formulaire ci-dessous.
+                        Nous prendrons connaissance de votre message.
+                    </p>
+
+                    <div class="help-points">
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>
+                                Question générale
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>
+                                Problème avec une annonce
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>
+                                Suggestion d'amélioration
+                            </span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>
+                                Demande d'assistance
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    class="contact-form"
+                    id="contactForm"
+                >
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="contactName">
+                                Nom complet
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-regular fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    id="contactName"
+                                    name="name"
+                                    placeholder="Votre nom"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="contactEmail">
+                                Adresse e-mail
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-regular fa-envelope"></i>
+
+                                <input
+                                    type="email"
+                                    id="contactEmail"
+                                    name="email"
+                                    placeholder="exemple@email.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contactSubject">
+                            Sujet
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            <select
+                                id="contactSubject"
+                                name="subject"
+                                required
+                            >
+
+                                <option value="">
+                                    Sélectionnez un sujet
+                                </option>
+
+                                <option value="Question générale">
+                                    Question générale
+                                </option>
+
+                                <option value="Annonce">
+                                    Problème concernant une annonce
+                                </option>
+
+                                <option value="Compte">
+                                    Problème avec mon compte
+                                </option>
+
+                                <option value="Suggestion">
+                                    Suggestion
+                                </option>
+
+                                <option value="Signalement">
+                                    Signalement
+                                </option>
+
+                                <option value="Autre">
+                                    Autre demande
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contactMessage">
+                            Votre message
+                        </label>
+
+                        <textarea
+                            id="contactMessage"
+                            name="message"
+                            rows="7"
+                            placeholder="Écrivez votre message ici..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div
+                        class="form-message"
+                        id="formMessage"
+                        role="alert"
+                    ></div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Envoyer le message
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FAQ RAPIDE
+        ========================== -->
+
+        <section class="faq-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-regular fa-circle-question"></i>
+                    Besoin d'aide ?
+                </span>
+
+                <h2>
+                    Avant de nous contacter
+                </h2>
+
+                <p>
+                    Vous trouverez peut-être rapidement la réponse
+                    à votre question.
+                </p>
+
+            </div>
+
+
+            <div class="faq-grid">
+
+                <a href="aide.html" class="faq-card">
+
+                    <div class="faq-icon">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Centre d'aide
+                        </h3>
+
+                        <p>
+                            Consultez les questions fréquemment posées.
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a href="conditions.html" class="faq-card">
+
+                    <div class="faq-icon">
+                        <i class="fa-solid fa-file-contract"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Conditions d'utilisation
+                        </h3>
+
+                        <p>
+                            Consultez les règles d'utilisation de la plateforme.
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a href="politique.html" class="faq-card">
+
+                    <div class="faq-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Confidentialité
+                        </h3>
+
+                        <p>
+                            Découvrez comment vos informations sont protégées.
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CTA
+        ========================== -->
+
+        <section class="contact-cta">
+
+            <div class="cta-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <div class="cta-content">
+
+                <h2>
+                    Vous recherchez quelque chose ?
+                </h2>
+
+                <p>
+                    Parcourez les annonces disponibles sur CAMU SERVICES.
+                </p>
+
+            </div>
+
+            <a
+                href="recherche.html"
+                class="primary-button"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Rechercher
+
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <div class="logo">
+
+                        <span class="logo-main">
+                            CAMU
+                        </span>
+
+                        <span class="logo-sub">
+                            SERVICES
+                        </span>
+
+                    </div>
+
+                    <p>
+                        Trouver • Acheter • Réserver
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="conditions.html">
+                        Mentions légales
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions d'utilisation
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="conditions.html">
+                        Règles de publication
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CAMU SERVICES. Tous droits réservés.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </main>
+
 </div>
 
-<a href="profil.html"
-class="back-btn">
 
-<i class="fa-solid fa-arrow-left"></i>
+<!-- =========================
+     JAVASCRIPT
+========================== -->
 
-</a>
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
 
-</header>
+<script>
 
+    const menuToggle =
+        document.getElementById("menuToggle");
 
-<main class="container">
+    const sidebar =
+        document.getElementById("sidebar");
 
-<div class="page-card contact-card">
+    const sidebarOverlay =
+        document.getElementById("sidebarOverlay");
 
-<div class="contact-icon">
-
-<i class="fa-solid fa-headset"></i>
-
-</div>
-
-
-<h1>
-Besoin d'aide ?
-</h1>
+    const closeSidebar =
+        document.getElementById("closeSidebar");
 
 
-<p>
-Notre équipe CAMU SERVICES est disponible pour vous assister.
-</p>
+    function openMenu() {
+
+        sidebar?.classList.add("open");
+        sidebarOverlay?.classList.add("active");
+
+    }
 
 
-<a
-href="https://wa.me/243976993479?text=Bonjour%20CAMU%20SERVICES"
-target="_blank"
-class="contact-btn whatsapp">
+    function closeMenu() {
 
-<i class="fa-brands fa-whatsapp"></i>
+        sidebar?.classList.remove("open");
+        sidebarOverlay?.classList.remove("active");
 
-WhatsApp : +243 976 993 479
-
-</a>
+    }
 
 
-<a
-href="https://wa.me/243818211981?text=Bonjour%20CAMU%20SERVICES"
-target="_blank"
-class="contact-btn whatsapp">
-
-<i class="fa-brands fa-whatsapp"></i>
-
-WhatsApp : +243 818 211 981
-
-</a>
+    menuToggle?.addEventListener(
+        "click",
+        openMenu
+    );
 
 
-<a
-href="mailto:meschackmuteb@gmail.com"
-class="contact-btn email">
-
-<i class="fa-solid fa-envelope"></i>
-
-meschackmuteb@gmail.com
-
-</a>
-
-</div>
-
-</main>
+    closeSidebar?.addEventListener(
+        "click",
+        closeMenu
+    );
 
 
-<nav class="bottom-nav">
+    sidebarOverlay?.addEventListener(
+        "click",
+        closeMenu
+    );
 
-<a href="index.html">
-<i class="fa-solid fa-house"></i>
-<span>Accueil</span>
-</a>
 
-<a href="publier.html">
-<i class="fa-solid fa-circle-plus"></i>
-<span>Publier</span>
-</a>
+    document
+        .querySelectorAll(".sidebar .nav-item")
+        .forEach(item => {
 
-<a href="chat.html">
-<i class="fa-solid fa-comments"></i>
-<span>Chat</span>
-</a>
+            item.addEventListener(
+                "click",
+                closeMenu
+            );
 
-<a href="profil.html">
-<i class="fa-solid fa-user"></i>
-<span>Profil</span>
-</a>
+        });
 
-</nav>
+
+    /* =========================
+       FORMULAIRE
+    ========================== */
+
+    const contactForm =
+        document.getElementById("contactForm");
+
+    const formMessage =
+        document.getElementById("formMessage");
+
+
+    contactForm?.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("contactName").value.trim();
+
+            const email =
+                document.getElementById("contactEmail").value.trim();
+
+            const subject =
+                document.getElementById("contactSubject").value;
+
+            const message =
+                document.getElementById("contactMessage").value.trim();
+
+
+            if (
+                !name ||
+                !email ||
+                !subject ||
+                !message
+            ) {
+
+                formMessage.textContent =
+                    "Veuillez remplir tous les champs.";
+
+                formMessage.className =
+                    "form-message error";
+
+                return;
+            }
+
+
+            /*
+             * Pour cette V1, le formulaire prépare
+             * un e-mail dans l'application de messagerie
+             * de l'utilisateur.
+             */
+
+            const emailAddress =
+                "contact@camu-services.com";
+
+
+            const mailSubject =
+                encodeURIComponent(
+                    `[CAMU SERVICES] ${subject}`
+                );
+
+
+            const mailBody =
+                encodeURIComponent(
+                    `Nom : ${name}\n` +
+                    `E-mail : ${email}\n\n` +
+                    `Message :\n${message}`
+                );
+
+
+            window.location.href =
+                `mailto:${emailAddress}` +
+                `?subject=${mailSubject}` +
+                `&body=${mailBody}`;
+
+
+            formMessage.textContent =
+                "Votre application e-mail va s'ouvrir.";
+
+            formMessage.className =
+                "form-message success";
+
+        }
+    );
+
+</script>
 
 </body>
 </html>
