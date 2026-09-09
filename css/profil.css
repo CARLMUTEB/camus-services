@@ -1,263 +1,655 @@
-/* =========================================================
-   CAMU SERVICES — PROFIL PUBLIC
-========================================================= */
+/* =====================================================
+   CAMU SERVICES
+   PROFIL PUBLIC — V1
+===================================================== */
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+:root {
+    --profile-primary: #0f766e;
+    --profile-primary-dark: #115e59;
+    --profile-secondary: #f59e0b;
+
+    --profile-bg: #f8fafc;
+    --profile-card: #ffffff;
+
+    --profile-text: #0f172a;
+    --profile-muted: #64748b;
+    --profile-border: #e2e8f0;
+
+    --profile-success: #16a34a;
+    --profile-danger: #dc2626;
+
+    --profile-radius: 16px;
+    --profile-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =====================================================
+   CONTENU PRINCIPAL
+===================================================== */
+
+.main-content {
+    min-height: 100vh;
+    background: var(--profile-bg);
+    padding: 35px 25px 60px;
+}
+
 
 .public-profile-container {
+    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 30px 20px 60px;
 }
+
+
+/* =====================================================
+   BOUTON RETOUR
+===================================================== */
 
 .profile-back {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 20px;
-    color: var(--text);
+
+    margin-bottom: 25px;
+
+    color: var(--profile-text);
     text-decoration: none;
-    font-weight: 700;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
 }
+
 
 .profile-back:hover {
-    color: var(--primary);
+    color: var(--profile-primary);
 }
 
 
-/* ==============================
-   CHARGEMENT / ERREUR
-================================ */
+.profile-back i {
+    font-size: 14px;
+}
 
-.profile-loading,
+
+/* =====================================================
+   UTILITAIRE HIDDEN
+===================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CHARGEMENT
+===================================================== */
+
+.profile-loading {
+    min-height: 350px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    color: var(--profile-muted);
+}
+
+
+.profile-loading i {
+    font-size: 35px;
+    color: var(--profile-primary);
+}
+
+
+.profile-loading p {
+    margin: 0;
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   ERREUR
+===================================================== */
+
 .profile-error {
-    background: var(--card);
-    border-radius: 18px;
-    padding: 50px 20px;
+    background: var(--profile-card);
+
+    border: 1px solid var(--profile-border);
+
+    border-radius: var(--profile-radius);
+
+    padding: 50px 25px;
+
     text-align: center;
-    box-shadow: var(--shadow);
+
+    box-shadow: var(--profile-shadow);
 }
 
-.profile-loading i,
+
 .profile-error > i {
-    font-size: 40px;
+    font-size: 45px;
+    color: var(--profile-danger);
+
     margin-bottom: 15px;
 }
 
+
 .profile-error h2 {
-    margin-bottom: 10px;
+    margin: 0 0 10px;
+
+    color: var(--profile-text);
+
+    font-size: 25px;
 }
 
 
-/* ==============================
-   HEADER PROFIL
-================================ */
+.profile-error p {
+    margin: 0 0 25px;
+
+    color: var(--profile-muted);
+}
+
+
+/* =====================================================
+   BOUTON PRINCIPAL
+===================================================== */
+
+.primary-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    background: var(--profile-primary);
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+
+.primary-button:hover {
+    background: var(--profile-primary-dark);
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   CARTE EN-TÊTE DU PROFIL
+===================================================== */
 
 .profile-header-card {
     display: flex;
-    align-items: center;
-    gap: 25px;
+    align-items: flex-start;
 
-    background: var(--card);
-    border-radius: 20px;
+    gap: 30px;
+
+    background: var(--profile-card);
+
+    border: 1px solid var(--profile-border);
+
+    border-radius: var(--profile-radius);
+
     padding: 30px;
 
-    box-shadow: var(--shadow);
+    box-shadow: var(--profile-shadow);
 }
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
 
 .public-avatar {
-    width: 120px;
-    height: 120px;
-    min-width: 120px;
+    width: 125px;
+    height: 125px;
+
+    min-width: 125px;
+
+    position: relative;
 
     border-radius: 50%;
+
     overflow: hidden;
 
-    background: var(--primary-light);
+    background: #e2e8f0;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 4px solid #ffffff;
+
+    box-shadow:
+        0 0 0 1px var(--profile-border);
 }
+
 
 .public-avatar img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
+    display: none;
 }
+
 
 .default-profile-icon {
-    color: var(--primary);
-    font-size: 45px;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #e2e8f0;
+
+    color: #94a3b8;
+
+    font-size: 48px;
 }
+
+
+/* =====================================================
+   INFORMATIONS PROFIL
+===================================================== */
+
+.profile-header-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
 
 .profile-header-info h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
+
+    color: var(--profile-text);
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    word-break: break-word;
 }
+
 
 .profile-member {
-    color: var(--primary);
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 0 0 15px;
+
+    color: var(--profile-primary);
+
     font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 15px;
+
+    font-weight: 600;
 }
 
+
+.profile-member i {
+    font-size: 14px;
+}
+
+
 .profile-description {
-    color: var(--muted);
-    line-height: 1.6;
+    margin: 0;
+
+    color: var(--profile-muted);
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
     max-width: 700px;
+
     white-space: pre-line;
 }
 
 
-/* ==============================
-   STATS
-================================ */
+/* =====================================================
+   INFORMATIONS CONTACT
+===================================================== */
 
-.profile-stats {
+.profile-contact-info {
+    margin-top: 20px;
+
     display: flex;
-    margin: 20px 0;
-}
 
-.profile-stat {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 18px 30px;
-    box-shadow: var(--shadow);
-    min-width: 150px;
-}
+    flex-direction: column;
 
-.profile-stat strong {
-    display: block;
-    font-size: 25px;
-    margin-bottom: 3px;
-}
-
-.profile-stat span {
-    color: var(--muted);
-    font-size: 13px;
+    gap: 11px;
 }
 
 
-/* ==============================
-   ANNONCES
-================================ */
+.profile-contact-item {
+    display: flex;
 
-.profile-ads-section {
-    background: var(--card);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: var(--shadow);
-}
+    align-items: center;
 
-.profile-section-title {
-    margin-bottom: 25px;
-}
+    gap: 10px;
 
-.profile-section-title h2 {
-    font-size: 22px;
-    margin-bottom: 5px;
-}
+    color: var(--profile-text);
 
-.profile-section-title p {
-    color: var(--muted);
     font-size: 14px;
 }
 
 
-/* ==============================
-   GRILLE
-================================ */
+.profile-contact-item i {
+    width: 22px;
+
+    text-align: center;
+
+    color: var(--profile-primary);
+
+    font-size: 16px;
+}
+
+
+.profile-contact-item span {
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   BOUTON WHATSAPP
+===================================================== */
+
+.profile-whatsapp-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: fit-content;
+
+    margin-top: 7px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #16a34a;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+
+.profile-whatsapp-button:hover {
+    background: #15803d;
+
+    transform: translateY(-1px);
+}
+
+
+.profile-whatsapp-button i {
+    font-size: 17px;
+}
+
+
+/* =====================================================
+   STATISTIQUES
+===================================================== */
+
+.profile-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(160px, 1fr));
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+
+.profile-stat {
+    background: var(--profile-card);
+
+    border: 1px solid var(--profile-border);
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+
+.profile-stat strong {
+    display: block;
+
+    color: var(--profile-primary);
+
+    font-size: 30px;
+
+    line-height: 1.2;
+
+    margin-bottom: 5px;
+}
+
+
+.profile-stat span {
+    color: var(--profile-muted);
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   SECTION ANNONCES
+===================================================== */
+
+.profile-ads-section {
+    margin-top: 30px;
+}
+
+
+.profile-section-title {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+
+.profile-section-title h2 {
+    margin: 0 0 5px;
+
+    color: var(--profile-text);
+
+    font-size: 23px;
+}
+
+
+.profile-section-title p {
+    margin: 0;
+
+    color: var(--profile-muted);
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   GRILLE ANNONCES
+===================================================== */
 
 .profile-ads-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(3, minmax(0, 1fr));
 
-    gap: 18px;
+    gap: 20px;
 }
 
 
-/* ==============================
+/* =====================================================
    CARTE ANNONCE
-================================ */
+===================================================== */
 
 .profile-ad-card {
-    overflow: hidden;
+    background: var(--profile-card);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--profile-border);
+
     border-radius: 14px;
 
-    background: var(--card);
+    overflow: hidden;
 
     cursor: pointer;
 
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.06);
+
     transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
 
 .profile-ad-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow);
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.12);
 }
+
+
+/* =====================================================
+   IMAGE ANNONCE
+===================================================== */
 
 .profile-ad-image {
     width: 100%;
-    height: 180px;
 
-    object-fit: cover;
+    height: 210px;
 
     display: block;
 
-    background: #f2f2f2;
+    object-fit: cover;
+
+    background: #f1f5f9;
+
+    color: #94a3b8;
 }
+
+
+/* =====================================================
+   CONTENU ANNONCE
+===================================================== */
 
 .profile-ad-content {
-    padding: 14px;
+    padding: 16px;
 }
 
-.profile-ad-content h3 {
-    font-size: 16px;
 
-    margin-bottom: 8px;
+.profile-ad-content h3 {
+    margin: 0 0 10px;
+
+    color: var(--profile-text);
+
+    font-size: 17px;
+
+    line-height: 1.35;
 
     display: -webkit-box;
+
     -webkit-line-clamp: 2;
+
     -webkit-box-orient: vertical;
 
     overflow: hidden;
 }
 
+
+/* =====================================================
+   PRIX
+===================================================== */
+
 .profile-ad-price {
+    margin-bottom: 10px;
+
+    color: var(--profile-primary);
+
     font-size: 17px;
-    font-weight: 900;
-    margin-bottom: 7px;
+
+    font-weight: 700;
 }
+
+
+/* =====================================================
+   LOCALISATION ANNONCE
+===================================================== */
 
 .profile-ad-location {
     display: flex;
-    align-items: center;
-    gap: 6px;
 
-    color: var(--muted);
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--profile-muted);
 
     font-size: 13px;
 }
 
+
 .profile-ad-location i {
-    color: var(--primary);
+    color: var(--profile-primary);
 }
 
 
-/* ==============================
-   VIDE
-================================ */
+/* =====================================================
+   AUCUNE ANNONCE
+===================================================== */
 
 .profile-empty {
+    background: var(--profile-card);
+
+    border: 1px dashed var(--profile-border);
+
+    border-radius: var(--profile-radius);
+
+    padding: 45px 25px;
+
     text-align: center;
-    padding: 50px 20px;
 }
+
 
 .profile-empty-icon {
     width: 65px;
@@ -265,114 +657,282 @@
 
     margin: 0 auto 15px;
 
-    border-radius: 50%;
-
-    background: var(--primary-light);
-    color: var(--primary);
-
     display: flex;
+
     align-items: center;
     justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #94a3b8;
 
     font-size: 25px;
 }
 
+
 .profile-empty h3 {
-    margin-bottom: 7px;
+    margin: 0 0 8px;
+
+    color: var(--profile-text);
+
+    font-size: 18px;
 }
+
 
 .profile-empty p {
-    color: var(--muted);
+    margin: 0;
+
+    color: var(--profile-muted);
+
+    font-size: 14px;
 }
 
 
-/* ==============================
-   UTILITAIRE
-================================ */
-
-.hidden {
-    display: none !important;
-}
-
-
-/* ==============================
+/* =====================================================
    TABLETTE
-================================ */
+===================================================== */
 
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
 
-    .profile-ads-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+    .main-content {
+        padding: 30px 20px 50px;
     }
 
-}
-
-
-/* ==============================
-   MOBILE
-================================ */
-
-@media (max-width: 700px) {
-
-    .public-profile-container {
-        padding: 20px 15px 40px;
-    }
 
     .profile-header-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 25px 18px;
+        gap: 22px;
+
+        padding: 25px;
     }
+
 
     .public-avatar {
-        width: 100px;
-        height: 100px;
-        min-width: 100px;
+        width: 105px;
+        height: 105px;
+
+        min-width: 105px;
     }
+
+
+    .default-profile-icon {
+        font-size: 40px;
+    }
+
 
     .profile-header-info h1 {
-        font-size: 25px;
+        font-size: 27px;
     }
 
-    .profile-description {
-        font-size: 14px;
-    }
-
-    .profile-stats {
-        justify-content: center;
-    }
 
     .profile-ads-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
-
-        gap: 12px;
-    }
-
-    .profile-ads-section {
-        padding: 18px;
-    }
-
-    .profile-ad-image {
-        height: 150px;
     }
 
 }
 
 
-/* ==============================
-   PETIT MOBILE
-================================ */
+/* =====================================================
+   MOBILE
+===================================================== */
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
 
-    .profile-ads-grid {
+    .main-content {
+        padding: 20px 15px 40px;
+    }
+
+
+    .public-profile-container {
+        width: 100%;
+    }
+
+
+    .profile-back {
+        margin-bottom: 18px;
+
+        font-size: 14px;
+    }
+
+
+    /* -----------------------------------------------
+       EN-TÊTE
+    ------------------------------------------------ */
+
+    .profile-header-card {
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        gap: 18px;
+
+        padding: 25px 18px;
+    }
+
+
+    .public-avatar {
+        width: 105px;
+        height: 105px;
+
+        min-width: 105px;
+    }
+
+
+    .profile-header-info {
+        width: 100%;
+    }
+
+
+    .profile-header-info h1 {
+        font-size: 24px;
+    }
+
+
+    .profile-member {
+        justify-content: center;
+
+        margin-bottom: 12px;
+    }
+
+
+    .profile-description {
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+
+    /* -----------------------------------------------
+       CONTACT
+    ------------------------------------------------ */
+
+    .profile-contact-info {
+        width: 100%;
+
+        align-items: center;
+
+        margin-top: 18px;
+    }
+
+
+    .profile-contact-item {
+        justify-content: center;
+
+        font-size: 13px;
+    }
+
+
+    .profile-whatsapp-button {
+        width: 100%;
+
+        max-width: 300px;
+    }
+
+
+    /* -----------------------------------------------
+       STATISTIQUES
+    ------------------------------------------------ */
+
+    .profile-stats {
+        margin-top: 15px;
+
         grid-template-columns: 1fr;
     }
 
+
+    .profile-stat {
+        padding: 17px;
+    }
+
+
+    .profile-stat strong {
+        font-size: 26px;
+    }
+
+
+    /* -----------------------------------------------
+       ANNONCES
+    ------------------------------------------------ */
+
+    .profile-ads-section {
+        margin-top: 25px;
+    }
+
+
+    .profile-section-title {
+        margin-bottom: 15px;
+    }
+
+
+    .profile-section-title h2 {
+        font-size: 20px;
+    }
+
+
+    .profile-section-title p {
+        font-size: 13px;
+
+        line-height: 1.5;
+    }
+
+
+    .profile-ads-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
     .profile-ad-image {
         height: 210px;
+    }
+
+
+    .profile-ad-content {
+        padding: 14px;
+    }
+
+
+    .profile-ad-content h3 {
+        font-size: 16px;
+    }
+
+
+    .profile-ad-price {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =====================================================
+   PETIT MOBILE
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .main-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .profile-header-card {
+        padding: 20px 14px;
+    }
+
+
+    .profile-header-info h1 {
+        font-size: 22px;
+    }
+
+
+    .profile-ad-image {
+        height: 190px;
     }
 
 }
