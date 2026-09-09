@@ -265,11 +265,15 @@ async function loadMyAds(user) {
 
     try {
 
-        const servicesQuery =
+        // =================================================
+        // COLLECTION ANNONCES
+        // =================================================
+
+        const annoncesQuery =
             query(
                 collection(
                     db,
-                    "services"
+                    "annonces"
                 ),
                 where(
                     "ownerId",
@@ -281,7 +285,7 @@ async function loadMyAds(user) {
 
         const snapshot =
             await getDocs(
-                servicesQuery
+                annoncesQuery
             );
 
 
@@ -541,7 +545,7 @@ async function loadMyAds(user) {
                         "click",
                         async () => {
 
-                            const serviceId =
+                            const annonceId =
                                 deleteButton.dataset.id;
 
 
@@ -573,22 +577,22 @@ async function loadMyAds(user) {
                                 // Récupérer l'annonce
                                 // ---------------------------------
 
-                                const serviceRef =
+                                const annonceRef =
                                     doc(
                                         db,
-                                        "services",
-                                        serviceId
+                                        "annonces",
+                                        annonceId
                                     );
 
 
-                                const serviceSnap =
+                                const annonceSnap =
                                     await getDoc(
-                                        serviceRef
+                                        annonceRef
                                     );
 
 
                                 if (
-                                    !serviceSnap.exists()
+                                    !annonceSnap.exists()
                                 ) {
 
                                     alert(
@@ -603,8 +607,8 @@ async function loadMyAds(user) {
                                 }
 
 
-                                const serviceData =
-                                    serviceSnap.data();
+                                const annonceData =
+                                    annonceSnap.data();
 
 
                                 // ---------------------------------
@@ -612,7 +616,7 @@ async function loadMyAds(user) {
                                 // ---------------------------------
 
                                 if (
-                                    serviceData.ownerId !==
+                                    annonceData.ownerId !==
                                     auth.currentUser.uid
                                 ) {
 
@@ -635,13 +639,13 @@ async function loadMyAds(user) {
                                 // ---------------------------------
 
                                 await deleteDoc(
-                                    serviceRef
+                                    annonceRef
                                 );
 
 
                                 console.log(
                                     "Annonce supprimée :",
-                                    serviceId
+                                    annonceId
                                 );
 
 
