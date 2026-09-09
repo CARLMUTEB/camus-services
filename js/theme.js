@@ -1,98 +1,134 @@
-// ==========================================
-// CAMU SERVICES - GESTION DU MODE
-// ==========================================
+// =========================================================
+// CAMU SERVICES
+// THÈME GLOBAL
+// =========================================================
 
 (function () {
+
     "use strict";
 
-    const STORAGE_KEY = "camu_theme";
 
-    function getPreferredTheme() {
-        const savedTheme = localStorage.getItem(STORAGE_KEY);
+    const THEME_KEY =
+        "camu_theme";
 
-        if (savedTheme === "dark" || savedTheme === "light") {
+
+    // =====================================================
+    // RÉCUPÉRER LE THÈME
+    // =====================================================
+
+    function getTheme() {
+
+        const savedTheme =
+            localStorage.getItem(
+                THEME_KEY
+            );
+
+
+        if (
+            savedTheme === "dark" ||
+            savedTheme === "light"
+        ) {
+
             return savedTheme;
+
         }
 
-        // Si aucun choix n'a été enregistré,
-        // on suit le thème du système.
-        return window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
+
+        return "light";
+
     }
+
+
+    // =====================================================
+    // APPLIQUER LE THÈME
+    // =====================================================
 
     function applyTheme(theme) {
-        document.documentElement.setAttribute("data-theme", theme);
 
-        const buttons = document.querySelectorAll(
-            "#themeToggle, .theme-toggle"
+        if (
+            theme !== "dark" &&
+            theme !== "light"
+        ) {
+
+            theme = "light";
+
+        }
+
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            theme
         );
 
-        buttons.forEach(button => {
-            const icon = button.querySelector(".theme-icon");
-            const text = button.querySelector(".theme-text");
 
-            if (theme === "dark") {
-                if (icon) icon.textContent = "☀️";
-                if (text) text.textContent = "Mode clair";
+        document.documentElement.style.colorScheme =
+            theme;
 
-                button.setAttribute(
-                    "aria-label",
-                    "Activer le mode clair"
-                );
-                button.setAttribute(
-                    "title",
-                    "Activer le mode clair"
-                );
-            } else {
-                if (icon) icon.textContent = "🌙";
-                if (text) text.textContent = "Mode sombre";
 
-                button.setAttribute(
-                    "aria-label",
-                    "Activer le mode sombre"
-                );
-                button.setAttribute(
-                    "title",
-                    "Activer le mode sombre"
-                );
-            }
-        });
     }
 
-    function toggleTheme() {
-        const currentTheme =
-            document.documentElement.getAttribute("data-theme") ||
-            getPreferredTheme();
 
-        const newTheme =
-            currentTheme === "dark" ? "light" : "dark";
+    // =====================================================
+    // INITIALISATION IMMÉDIATE
+    // =====================================================
 
-        localStorage.setItem(STORAGE_KEY, newTheme);
-        applyTheme(newTheme);
-    }
+    applyTheme(
+        getTheme()
+    );
 
-    // Appliquer immédiatement le thème
-    applyTheme(getPreferredTheme());
 
-    // Attendre que le HTML soit chargé
-    document.addEventListener("DOMContentLoaded", function () {
-        applyTheme(getPreferredTheme());
+    // =====================================================
+    // API CAMU
+    // =====================================================
 
-        const buttons = document.querySelectorAll(
-            "#themeToggle, .theme-toggle"
-        );
-
-        buttons.forEach(button => {
-            button.addEventListener("click", toggleTheme);
-        });
-    });
-
-    // Permet à d'autres scripts d'utiliser ces fonctions
     window.CamuTheme = {
+
+        get: getTheme,
+
         apply: applyTheme,
-        toggle: toggleTheme,
-        get: getPreferredTheme
+
+        set: function (theme) {
+
+            localStorage.setItem(
+                THEME_KEY,
+                theme
+            );
+
+
+            applyTheme(
+                theme
+            );
+
+        },
+
+        toggle: function () {
+
+            const current =
+                getTheme();
+
+
+            const next =
+                current === "dark"
+                    ? "light"
+                    : "dark";
+
+
+            localStorage.setItem(
+                THEME_KEY,
+                next
+            );
+
+
+            applyTheme(
+                next
+            );
+
+
+            return next;
+
+        }
+
     };
+
+
 })();
