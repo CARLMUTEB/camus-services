@@ -1,0 +1,751 @@
+/* =====================================================
+   CAMU SERVICES — CONTACT
+===================================================== */
+
+.contact-page {
+    min-height: 100vh;
+    padding-left: 270px;
+    background: #f7f8fa;
+}
+
+
+/* =====================================================
+   MOBILE HEADER
+===================================================== */
+
+.mobile-header {
+    display: none;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.contact-hero {
+    min-height: 430px;
+    display: flex;
+    align-items: center;
+    padding: 70px 8%;
+    background:
+        linear-gradient(
+            135deg,
+            #101828 0%,
+            #172554 55%,
+            #1e3a8a 100%
+        );
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 65px solid rgba(255,255,255,0.04);
+    right: -80px;
+    top: -80px;
+}
+
+.contact-hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 15px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.contact-hero h1 {
+    font-size: clamp(40px, 5vw, 62px);
+    line-height: 1.08;
+    margin: 0 0 22px;
+    font-weight: 800;
+}
+
+.contact-hero h1 span {
+    color: #60a5fa;
+}
+
+.contact-hero p {
+    max-width: 700px;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.8);
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.contact-section,
+.faq-section {
+    padding: 80px 8%;
+}
+
+.section-heading {
+    max-width: 800px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 11px;
+}
+
+.section-heading h2 {
+    margin: 0 0 13px;
+    font-size: clamp(28px, 4vw, 40px);
+    color: #101828;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #667085;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   CONTACT CARDS
+===================================================== */
+
+.contact-cards {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.contact-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 17px;
+    padding: 27px;
+    background: white;
+    border: 1px solid #eaecf0;
+    border-radius: 18px;
+    color: #101828;
+    text-decoration: none;
+    transition: .25s ease;
+}
+
+a.contact-card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
+    box-shadow: 0 12px 30px rgba(16,24,40,.08);
+}
+
+.contact-icon {
+    width: 53px;
+    height: 53px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 22px;
+}
+
+.whatsapp-icon {
+    background: #ecfdf3;
+    color: #16a34a;
+}
+
+.contact-label {
+    display: block;
+    color: #667085;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.contact-card h3 {
+    margin: 0 0 7px;
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+.contact-card p {
+    margin: 0;
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.card-arrow {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    color: #98a2b3;
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   FORMULAIRE
+===================================================== */
+
+.form-section {
+    padding: 85px 8%;
+    background: white;
+}
+
+.form-wrapper {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.form-introduction h2 {
+    margin: 0 0 16px;
+    font-size: 34px;
+    color: #101828;
+}
+
+.form-introduction > p {
+    margin: 0;
+    color: #667085;
+    line-height: 1.8;
+}
+
+.help-points {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.help-points div {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #475467;
+    font-size: 14px;
+}
+
+.help-points i {
+    color: #16a34a;
+}
+
+
+/* FORM */
+
+.contact-form {
+    padding: 32px;
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 17px;
+}
+
+.form-group {
+    margin-bottom: 19px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #344054;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper > i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #98a2b3;
+    pointer-events: none;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.contact-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+    background: white;
+    color: #101828;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: .2s ease;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+    height: 48px;
+    padding: 0 15px 0 43px;
+}
+
+.contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+    padding: 14px 15px;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus,
+.contact-form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+
+.submit-button {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 0;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.form-message {
+    display: none;
+    padding: 12px 14px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.form-message.error {
+    display: block;
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.form-message.success {
+    display: block;
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+
+/* =====================================================
+   FAQ
+===================================================== */
+
+.faq-section {
+    background: #f7f8fa;
+}
+
+.faq-grid {
+    max-width: 950px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.faq-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #101828;
+    transition: .2s ease;
+}
+
+.faq-card:hover {
+    border-color: #2563eb;
+    transform: translateX(3px);
+}
+
+.faq-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.faq-card div:nth-child(2) {
+    flex: 1;
+}
+
+.faq-card h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.faq-card p {
+    margin: 0;
+    color: #667085;
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   CTA
+===================================================== */
+
+.contact-cta {
+    max-width: 1100px;
+    margin: 65px auto;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background: white;
+    border: 1px solid #eaecf0;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(16,24,40,.06);
+}
+
+.cta-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 23px;
+}
+
+.cta-content {
+    flex: 1;
+}
+
+.cta-content h2 {
+    margin: 0 0 7px;
+    font-size: 23px;
+}
+
+.cta-content p {
+    margin: 0;
+    color: #667085;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .25s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    background: #101828;
+    color: white;
+    padding: 45px 8% 25px;
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.footer-brand .logo {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-brand .logo-main {
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.footer-brand .logo-sub {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #98a2b3;
+}
+
+.footer-brand p {
+    color: #98a2b3;
+    margin-top: 12px;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 15px 25px;
+}
+
+.footer-links a {
+    color: #d0d5dd;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #98a2b3;
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1100px) {
+
+    .contact-page {
+        padding-left: 0;
+    }
+
+    .contact-cards {
+        grid-template-columns: 1fr;
+        max-width: 700px;
+    }
+
+    .form-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 800px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .contact-page {
+        padding-left: 0;
+    }
+
+    .mobile-header {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        background: white;
+        border-bottom: 1px solid #eaecf0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .menu-toggle,
+    .mobile-account {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: transparent;
+        color: #101828;
+        font-size: 20px;
+        text-decoration: none;
+    }
+
+    .mobile-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #101828;
+    }
+
+    .mobile-logo span {
+        font-size: 19px;
+        font-weight: 900;
+    }
+
+    .mobile-logo small {
+        font-size: 7px;
+        letter-spacing: 3px;
+        color: #667085;
+    }
+
+
+    .contact-hero {
+        min-height: auto;
+        padding: 60px 22px;
+    }
+
+    .contact-hero h1 {
+        font-size: 38px;
+    }
+
+    .contact-hero p {
+        font-size: 16px;
+    }
+
+
+    .contact-section,
+    .faq-section {
+        padding: 60px 20px;
+    }
+
+
+    .contact-card {
+        padding: 22px;
+    }
+
+
+    .form-section {
+        padding: 60px 20px;
+    }
+
+    .form-wrapper {
+        gap: 35px;
+    }
+
+    .form-introduction h2 {
+        font-size: 29px;
+    }
+
+    .contact-form {
+        padding: 22px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+
+    .faq-card {
+        align-items: flex-start;
+    }
+
+
+    .contact-cta {
+        margin: 40px 20px;
+        padding: 25px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-cta .primary-button {
+        width: 100%;
+    }
+
+
+    .footer {
+        padding: 40px 20px 22px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-links {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+}
+
+
+/* =====================================================
+   PETIT MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+
+    .contact-hero h1 {
+        font-size: 33px;
+    }
+
+    .contact-form {
+        padding: 18px;
+    }
+
+}
