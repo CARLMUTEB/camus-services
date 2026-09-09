@@ -32,19 +32,35 @@ let allAds = [];
 // ÉLÉMENTS HTML
 // =========================================================
 
-const container = document.getElementById("adminAdsContainer");
-const loading = document.getElementById("adsLoading");
-const empty = document.getElementById("adsEmpty");
+const container =
+    document.getElementById("adminAdsContainer");
 
-const totalCount = document.getElementById("adsTotalCount");
-const resultCount = document.getElementById("adsResultCount");
+const loading =
+    document.getElementById("adsLoading");
 
-const searchInput = document.getElementById("adminAdsSearch");
-const categorySelect = document.getElementById("adminAdsCategory");
-const citySelect = document.getElementById("adminAdsCity");
+const empty =
+    document.getElementById("adsEmpty");
 
-const resetButton = document.getElementById("clearAdminAdsFilters");
-const refreshButton = document.getElementById("refreshAdsButton");
+const totalCount =
+    document.getElementById("adsTotalCount");
+
+const resultCount =
+    document.getElementById("adsResultCount");
+
+const searchInput =
+    document.getElementById("adminAdsSearch");
+
+const categorySelect =
+    document.getElementById("adminAdsCategory");
+
+const citySelect =
+    document.getElementById("adminAdsCity");
+
+const resetButton =
+    document.getElementById("clearAdminAdsFilters");
+
+const refreshButton =
+    document.getElementById("refreshAdsButton");
 
 
 // =========================================================
@@ -54,28 +70,43 @@ const refreshButton = document.getElementById("refreshAdsButton");
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
+
         window.location.href = "connexion.html";
+
         return;
     }
 
-    const userEmail = user.email
-        ? user.email.toLowerCase()
-        : "";
 
-    if (userEmail !== ADMIN_EMAIL.toLowerCase()) {
+    const userEmail =
+        user.email
+            ? user.email.toLowerCase()
+            : "";
 
-        alert("Accès réservé à l'administrateur CAMU SERVICES.");
 
-        window.location.href = "index.html";
+    if (
+        userEmail !==
+        ADMIN_EMAIL.toLowerCase()
+    ) {
+
+        alert(
+            "Accès réservé à l'administrateur CAMU SERVICES."
+        );
+
+        window.location.href =
+            "index.html";
+
         return;
     }
+
 
     await loadAds();
+
 });
 
 
 // =========================================================
 // CHARGER LES ANNONCES
+// COLLECTION : annonces
 // =========================================================
 
 async function loadAds() {
@@ -84,33 +115,50 @@ async function loadAds() {
 
         showLoading(true);
 
-        const snapshot = await getDocs(
-            collection(db, "services")
-        );
+
+        const snapshot =
+            await getDocs(
+                collection(db, "annonces")
+            );
+
 
         allAds = [];
+
 
         snapshot.forEach((documentSnapshot) => {
 
             allAds.push({
+
                 id: documentSnapshot.id,
+
                 ...documentSnapshot.data()
+
             });
 
         });
 
-        // Trier les annonces : plus récentes en premier
+
+        // Trier les annonces :
+        // les plus récentes en premier
+
         allAds.sort((a, b) => {
 
-            const dateA = getDateValue(a.createdAt);
-            const dateB = getDateValue(b.createdAt);
+            const dateA =
+                getDateValue(a.createdAt);
+
+            const dateB =
+                getDateValue(b.createdAt);
 
             return dateB - dateA;
+
         });
+
 
         updateTotalCount();
 
+
         renderAds(allAds);
+
 
     } catch (error) {
 
@@ -119,14 +167,18 @@ async function loadAds() {
             error
         );
 
+
         showError(
             "Impossible de charger les annonces. Vérifie ta connexion à Firebase."
         );
 
+
     } finally {
 
         showLoading(false);
+
     }
+
 }
 
 
@@ -138,33 +190,48 @@ function renderAds(ads) {
 
     if (!container) return;
 
+
     container.innerHTML = "";
 
+
     if (resultCount) {
+
         resultCount.textContent =
             `${ads.length} annonce${ads.length > 1 ? "s" : ""}`;
+
     }
+
 
     if (ads.length === 0) {
 
         if (empty) {
+
             empty.hidden = false;
+
         }
 
         return;
+
     }
 
+
     if (empty) {
+
         empty.hidden = true;
+
     }
+
 
     ads.forEach((ad) => {
 
-        const card = createAdCard(ad);
+        const card =
+            createAdCard(ad);
+
 
         container.appendChild(card);
 
     });
+
 }
 
 
@@ -174,43 +241,58 @@ function renderAds(ads) {
 
 function createAdCard(ad) {
 
-    const card = document.createElement("article");
+    const card =
+        document.createElement("article");
 
-    card.className = "admin-ad-card";
+
+    card.className =
+        "admin-ad-card";
+
 
     const imageUrl =
-        getFirstImage(ad) || "logo.png";
+        getFirstImage(ad) ||
+        "logo.png";
+
 
     const title =
         ad.title ||
         ad.name ||
         "Annonce sans titre";
 
+
     const category =
         ad.category ||
         "Autres";
+
 
     const city =
         ad.city ||
         ad.location ||
         "Ville non précisée";
 
+
     const price =
         formatPrice(ad.price);
 
+
     const ownerName =
         ad.ownerName ||
+        ad.ownerDisplayName ||
         ad.userName ||
         ad.authorName ||
+        ad.sellerName ||
         "Utilisateur";
+
 
     const ownerEmail =
         ad.ownerEmail ||
         ad.email ||
         "";
 
+
     const date =
         formatDate(ad.createdAt);
+
 
     const status =
         ad.status ||
@@ -235,63 +317,89 @@ function createAdCard(ad) {
             <div class="admin-ad-top">
 
                 <span class="admin-ad-category">
+
                     ${escapeHtml(category)}
+
                 </span>
 
-                <span class="admin-ad-status ${escapeHtml(status)}">
+
+                <span
+                    class="admin-ad-status ${escapeHtml(status)}"
+                >
+
                     ${formatStatus(status)}
+
                 </span>
 
             </div>
 
 
             <h3 title="${escapeHtml(title)}">
+
                 ${escapeHtml(title)}
+
             </h3>
 
 
             <div class="admin-ad-meta">
 
                 <span>
+
                     <i class="fa-solid fa-location-dot"></i>
+
                     ${escapeHtml(city)}
+
                 </span>
 
 
                 <span>
+
                     <i class="fa-solid fa-user"></i>
+
                     ${escapeHtml(ownerName)}
+
                 </span>
 
 
                 ${
                     ownerEmail
-                    ? `
-                        <span>
-                            <i class="fa-solid fa-envelope"></i>
-                            ${escapeHtml(ownerEmail)}
-                        </span>
-                    `
-                    : ""
+                        ? `
+
+                            <span>
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                ${escapeHtml(ownerEmail)}
+
+                            </span>
+
+                        `
+                        : ""
                 }
 
 
                 <span>
+
                     <i class="fa-regular fa-calendar"></i>
+
                     ${escapeHtml(date)}
+
                 </span>
 
             </div>
 
 
             <div class="admin-ad-price">
+
                 ${escapeHtml(price)}
+
             </div>
 
         </div>
 
 
         <div class="admin-ad-actions">
+
 
             <!-- VOIR -->
 
@@ -339,6 +447,7 @@ function createAdCard(ad) {
 
             </button>
 
+
         </div>
 
     `;
@@ -348,15 +457,21 @@ function createAdCard(ad) {
     // IMAGE DE SECOURS
     // =====================================================
 
-    const image = card.querySelector("img");
+    const image =
+        card.querySelector("img");
+
 
     if (image) {
 
-        image.addEventListener("error", () => {
+        image.addEventListener(
+            "error",
+            () => {
 
-            image.src = "logo.png";
+                image.src =
+                    "logo.png";
 
-        });
+            }
+        );
 
     }
 
@@ -366,20 +481,27 @@ function createAdCard(ad) {
     // =====================================================
 
     const deleteButton =
-        card.querySelector(".admin-ad-delete");
+        card.querySelector(
+            ".admin-ad-delete"
+        );
+
 
     if (deleteButton) {
 
-        deleteButton.addEventListener("click", () => {
+        deleteButton.addEventListener(
+            "click",
+            () => {
 
-            deleteAd(ad.id);
+                deleteAd(ad.id);
 
-        });
+            }
+        );
 
     }
 
 
     return card;
+
 }
 
 
@@ -391,92 +513,110 @@ function applyFilters() {
 
     const search =
         searchInput
-            ? searchInput.value.trim().toLowerCase()
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
             : "";
+
 
     const category =
         categorySelect
-            ? categorySelect.value.trim().toLowerCase()
+            ? categorySelect.value
+                .trim()
+                .toLowerCase()
             : "";
+
 
     const city =
         citySelect
-            ? citySelect.value.trim().toLowerCase()
+            ? citySelect.value
+                .trim()
+                .toLowerCase()
             : "";
 
 
-    const filteredAds = allAds.filter((ad) => {
-
-        const title =
-            String(
-                ad.title ||
-                ad.name ||
-                ""
-            ).toLowerCase();
-
-        const description =
-            String(
-                ad.description ||
-                ""
-            ).toLowerCase();
-
-        const ownerName =
-            String(
-                ad.ownerName ||
-                ad.userName ||
-                ad.authorName ||
-                ""
-            ).toLowerCase();
-
-        const ownerEmail =
-            String(
-                ad.ownerEmail ||
-                ad.email ||
-                ""
-            ).toLowerCase();
-
-        const adCategory =
-            String(
-                ad.category ||
-                ""
-            ).toLowerCase();
-
-        const adCity =
-            String(
-                ad.city ||
-                ad.location ||
-                ""
-            ).toLowerCase();
+    const filteredAds =
+        allAds.filter((ad) => {
 
 
-        const matchesSearch =
-            !search ||
-            title.includes(search) ||
-            description.includes(search) ||
-            ownerName.includes(search) ||
-            ownerEmail.includes(search);
+            const title =
+                String(
+                    ad.title ||
+                    ad.name ||
+                    ""
+                ).toLowerCase();
 
 
-        const matchesCategory =
-            !category ||
-            adCategory === category;
+            const description =
+                String(
+                    ad.description ||
+                    ""
+                ).toLowerCase();
 
 
-        const matchesCity =
-            !city ||
-            adCity === city;
+            const ownerName =
+                String(
+                    ad.ownerName ||
+                    ad.ownerDisplayName ||
+                    ad.userName ||
+                    ad.authorName ||
+                    ad.sellerName ||
+                    ""
+                ).toLowerCase();
 
 
-        return (
-            matchesSearch &&
-            matchesCategory &&
-            matchesCity
-        );
+            const ownerEmail =
+                String(
+                    ad.ownerEmail ||
+                    ad.email ||
+                    ""
+                ).toLowerCase();
 
-    });
+
+            const adCategory =
+                String(
+                    ad.category ||
+                    ""
+                ).toLowerCase();
+
+
+            const adCity =
+                String(
+                    ad.city ||
+                    ad.location ||
+                    ""
+                ).toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                title.includes(search) ||
+                description.includes(search) ||
+                ownerName.includes(search) ||
+                ownerEmail.includes(search);
+
+
+            const matchesCategory =
+                !category ||
+                adCategory === category;
+
+
+            const matchesCity =
+                !city ||
+                adCity === city;
+
+
+            return (
+                matchesSearch &&
+                matchesCategory &&
+                matchesCity
+            );
+
+        });
 
 
     renderAds(filteredAds);
+
 }
 
 
@@ -485,47 +625,87 @@ function applyFilters() {
 // =========================================================
 
 const editModal =
-    document.getElementById("adminEditModal");
+    document.getElementById(
+        "adminEditModal"
+    );
+
 
 const editForm =
-    document.getElementById("adminEditAdForm");
+    document.getElementById(
+        "adminEditAdForm"
+    );
+
 
 const editClose =
-    document.getElementById("adminEditModalClose");
+    document.getElementById(
+        "adminEditModalClose"
+    );
+
 
 const editCancel =
-    document.getElementById("adminEditCancel");
+    document.getElementById(
+        "adminEditCancel"
+    );
+
 
 const editOverlay =
-    document.getElementById("adminEditModalOverlay");
+    document.getElementById(
+        "adminEditModalOverlay"
+    );
 
 
 const editId =
-    document.getElementById("editAdId");
+    document.getElementById(
+        "editAdId"
+    );
+
 
 const editTitle =
-    document.getElementById("editAdTitle");
+    document.getElementById(
+        "editAdTitle"
+    );
+
 
 const editDescription =
-    document.getElementById("editAdDescription");
+    document.getElementById(
+        "editAdDescription"
+    );
+
 
 const editPrice =
-    document.getElementById("editAdPrice");
+    document.getElementById(
+        "editAdPrice"
+    );
+
 
 const editCategory =
-    document.getElementById("editAdCategory");
+    document.getElementById(
+        "editAdCategory"
+    );
+
 
 const editCity =
-    document.getElementById("editAdCity");
+    document.getElementById(
+        "editAdCity"
+    );
+
 
 const editNeighborhood =
-    document.getElementById("editAdNeighborhood");
+    document.getElementById(
+        "editAdNeighborhood"
+    );
+
 
 const editWhatsapp =
-    document.getElementById("editAdWhatsapp");
+    document.getElementById(
+        "editAdWhatsapp"
+    );
+
 
 const editSave =
-    document.getElementById("adminEditSave");
+    document.getElementById(
+        "adminEditSave"
+    );
 
 
 // =========================================================
@@ -535,40 +715,54 @@ const editSave =
 function openEditModal(adId) {
 
     const ad =
-        allAds.find(item => item.id === adId);
+        allAds.find(
+            item => item.id === adId
+        );
 
 
     if (!ad || !editModal) {
 
-        alert("Annonce introuvable.");
+        alert(
+            "Annonce introuvable."
+        );
 
         return;
     }
 
 
     if (editId) {
-        editId.value = ad.id;
+
+        editId.value =
+            ad.id;
+
     }
 
 
     if (editTitle) {
+
         editTitle.value =
             ad.title ||
             ad.name ||
             "";
+
     }
 
 
     if (editDescription) {
+
         editDescription.value =
             ad.description ||
             "";
+
     }
 
 
     if (editPrice) {
+
         editPrice.value =
-            ad.price ?? "";
+            ad.price ??
+            "";
+
     }
 
 
@@ -608,12 +802,16 @@ function openEditModal(adId) {
 
         editWhatsapp.value =
             ad.whatsapp ||
+            ad.ownerWhatsapp ||
+            ad.ownerWhatsApp ||
             "";
 
     }
 
 
-    editModal.hidden = false;
+    editModal.hidden =
+        false;
+
 
     document.body.classList.add(
         "admin-edit-modal-open"
@@ -623,10 +821,13 @@ function openEditModal(adId) {
     setTimeout(() => {
 
         if (editTitle) {
+
             editTitle.focus();
+
         }
 
     }, 50);
+
 }
 
 
@@ -638,11 +839,15 @@ function closeEditModal() {
 
     if (!editModal) return;
 
-    editModal.hidden = true;
+
+    editModal.hidden =
+        true;
+
 
     document.body.classList.remove(
         "admin-edit-modal-open"
     );
+
 }
 
 
@@ -763,7 +968,9 @@ async function saveEditedAd(event) {
 
         if (editSave) {
 
-            editSave.disabled = true;
+            editSave.disabled =
+                true;
+
 
             editSave.innerHTML =
                 '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
@@ -771,52 +978,77 @@ async function saveEditedAd(event) {
         }
 
 
-        // Mise à jour Firestore
+        // =================================================
+        // MISE À JOUR FIRESTORE
+        // COLLECTION : annonces
+        // =================================================
 
         await updateDoc(
+
             doc(
                 db,
-                "services",
+                "annonces",
                 adId
             ),
+
             {
 
                 title,
+
                 description,
+
                 price,
+
                 category,
+
                 city,
+
                 neighborhood,
+
                 whatsapp,
 
-                updatedAt: new Date()
+                updatedAt:
+                    new Date()
 
             }
+
         );
 
 
-        // Mise à jour locale
+        // =================================================
+        // MISE À JOUR LOCALE
+        // =================================================
 
         allAds =
             allAds.map(ad => {
 
                 if (ad.id !== adId) {
+
                     return ad;
+
                 }
+
 
                 return {
 
                     ...ad,
 
                     title,
+
                     description,
+
                     price,
+
                     category,
+
                     city,
+
                     neighborhood,
+
                     whatsapp,
 
-                    updatedAt: new Date()
+                    updatedAt:
+                        new Date()
 
                 };
 
@@ -824,6 +1056,7 @@ async function saveEditedAd(event) {
 
 
         closeEditModal();
+
 
         applyFilters();
 
@@ -850,7 +1083,9 @@ async function saveEditedAd(event) {
 
         if (editSave) {
 
-            editSave.disabled = false;
+            editSave.disabled =
+                false;
+
 
             editSave.innerHTML =
                 '<i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications';
@@ -941,7 +1176,9 @@ if (editOverlay) {
 }
 
 
-// Fermer avec Échap
+// =========================================================
+// FERMER AVEC ÉCHAP
+// =========================================================
 
 document.addEventListener(
     "keydown",
@@ -989,7 +1226,9 @@ async function deleteAd(adId) {
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
@@ -1009,6 +1248,7 @@ async function deleteAd(adId) {
                 "connexion.html";
 
             return;
+
         }
 
 
@@ -1023,19 +1263,29 @@ async function deleteAd(adId) {
             );
 
             return;
+
         }
 
 
+        // =================================================
+        // SUPPRESSION FIRESTORE
+        // COLLECTION : annonces
+        // =================================================
+
         await deleteDoc(
+
             doc(
                 db,
-                "services",
+                "annonces",
                 adId
             )
+
         );
 
 
-        // Retirer l'annonce de la liste locale
+        // =================================================
+        // RETIRER L'ANNONCE DE LA LISTE LOCALE
+        // =================================================
 
         allAds =
             allAds.filter(
@@ -1044,6 +1294,7 @@ async function deleteAd(adId) {
 
 
         updateTotalCount();
+
 
         applyFilters();
 
@@ -1096,11 +1347,14 @@ if (refreshButton) {
         "click",
         async () => {
 
-            refreshButton.disabled = true;
+            refreshButton.disabled =
+                true;
 
 
             const icon =
-                refreshButton.querySelector("i");
+                refreshButton.querySelector(
+                    "i"
+                );
 
 
             if (icon) {
@@ -1124,7 +1378,8 @@ if (refreshButton) {
             }
 
 
-            refreshButton.disabled = false;
+            refreshButton.disabled =
+                false;
 
         }
     );
@@ -1177,17 +1432,26 @@ if (resetButton) {
         () => {
 
             if (searchInput) {
-                searchInput.value = "";
+
+                searchInput.value =
+                    "";
+
             }
 
 
             if (categorySelect) {
-                categorySelect.value = "";
+
+                categorySelect.value =
+                    "";
+
             }
 
 
             if (citySelect) {
-                citySelect.value = "";
+
+                citySelect.value =
+                    "";
+
             }
 
 
@@ -1250,6 +1514,7 @@ function openSidebar() {
     document.body.classList.add(
         "admin-menu-open"
     );
+
 }
 
 
@@ -1276,6 +1541,7 @@ function closeSidebar() {
     document.body.classList.remove(
         "admin-menu-open"
     );
+
 }
 
 
@@ -1309,7 +1575,9 @@ if (overlay) {
 }
 
 
-// Fermer le menu après clic sur un lien
+// =========================================================
+// FERMER LE MENU APRÈS CLIC SUR UN LIEN
+// =========================================================
 
 document
     .querySelectorAll(
@@ -1353,7 +1621,9 @@ if (logoutButton) {
 
 
             if (!confirmed) {
+
                 return;
+
             }
 
 
@@ -1394,21 +1664,24 @@ function showLoading(show) {
 
     if (loading) {
 
-        loading.hidden = !show;
+        loading.hidden =
+            !show;
 
     }
 
 
     if (show && empty) {
 
-        empty.hidden = true;
+        empty.hidden =
+            true;
 
     }
 
 
     if (show && container) {
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
     }
 
@@ -1422,7 +1695,8 @@ function showError(message) {
 
     if (empty) {
 
-        empty.hidden = true;
+        empty.hidden =
+            true;
 
     }
 
@@ -1453,6 +1727,10 @@ function showError(message) {
 
 }
 
+
+// =========================================================
+// IMAGE PRINCIPALE
+// =========================================================
 
 function getFirstImage(ad) {
 
@@ -1509,10 +1787,16 @@ function getFirstImage(ad) {
 }
 
 
+// =========================================================
+// DATE
+// =========================================================
+
 function getDateValue(value) {
 
     if (!value) {
+
         return 0;
+
     }
 
 
@@ -1540,7 +1824,7 @@ function getDateValue(value) {
     }
 
 
-    // Date JS
+    // Date JavaScript
 
     if (value instanceof Date) {
 
@@ -1561,6 +1845,10 @@ function getDateValue(value) {
 
 }
 
+
+// =========================================================
+// FORMAT DATE
+// =========================================================
 
 function formatDate(value) {
 
@@ -1588,6 +1876,10 @@ function formatDate(value) {
 
 }
 
+
+// =========================================================
+// FORMAT PRIX
+// =========================================================
 
 function formatPrice(price) {
 
@@ -1618,13 +1910,21 @@ function formatPrice(price) {
 
 
     return (
-        new Intl.NumberFormat("fr-FR")
-            .format(number)
+
+        new Intl.NumberFormat(
+            "fr-FR"
+        ).format(number)
+
         + " $"
+
     );
 
 }
 
+
+// =========================================================
+// FORMAT STATUT
+// =========================================================
 
 function formatStatus(status) {
 
@@ -1652,14 +1952,17 @@ function formatStatus(status) {
     }
 
 
-    if (value === "pending") {
+    if (
+        value === "pending"
+    ) {
 
         return "En attente";
 
     }
 
 
-    return status || "Publiée";
+    return status ||
+        "Publiée";
 
 }
 
@@ -1671,10 +1974,30 @@ function formatStatus(status) {
 function escapeHtml(value) {
 
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
