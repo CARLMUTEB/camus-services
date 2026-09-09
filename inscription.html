@@ -2,30 +2,61 @@
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <meta name="description"
-          content="Créer un compte CAMU SERVICES — Trouver • Acheter • Réserver">
+    <meta
+        name="description"
+        content="Créer un compte CAMU SERVICES — Trouver • Acheter • Réserver"
+    >
+
+    <meta
+        name="theme-color"
+        content="#176b4d"
+    >
 
     <title>Créer un compte — CAMU SERVICES</title>
 
+
     <!-- =====================================================
-         CSS
+         CSS PRINCIPAL
     ====================================================== -->
-    <link rel="stylesheet" href="css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <!-- =====================================================
+         CSS INSCRIPTION
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/inscription.css"
+    >
+
 
     <!-- =====================================================
          FONT AWESOME
     ====================================================== -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 </head>
 
 
 <body>
+
 
     <!-- =====================================================
          PAGE INSCRIPTION
@@ -33,174 +64,504 @@
 
     <main class="auth-page">
 
+
         <div class="auth-container">
 
+
             <!-- =================================================
-                 CARTE
+                 CARTE INSCRIPTION
             ================================================== -->
 
-            <div class="auth-card">
+            <section class="auth-card">
 
-                <!-- LOGO -->
+
+                <!-- =================================================
+                     LOGO
+                ================================================== -->
+
                 <div class="auth-logo">
 
-                    <span>CAMU SERVICES</span>
+                    <a
+                        href="index.html"
+                        class="auth-logo-link"
+                        aria-label="CAMU SERVICES - Accueil"
+                    >
 
-                    <small>
+                        <span class="auth-logo-name">
+                            CAMU SERVICES
+                        </span>
+
+                    </a>
+
+
+                    <span class="auth-logo-tagline">
                         TROUVER • ACHETER • RÉSERVER
-                    </small>
+                    </span>
 
                 </div>
 
 
-                <!-- EN-TÊTE -->
-                <div class="auth-header">
+                <!-- =================================================
+                     EN-TÊTE
+                ================================================== -->
+
+                <header class="auth-header">
+
+                    <span class="auth-eyebrow">
+                        BIENVENUE SUR CAMU SERVICES
+                    </span>
+
 
                     <h1>
                         Créer votre compte
                     </h1>
 
+
                     <p>
-                        Rejoignez CAMU SERVICES gratuitement.
+                        Inscrivez-vous gratuitement pour accéder
+                        à toutes les fonctionnalités de CAMU SERVICES.
                     </p>
 
-                </div>
+                </header>
 
 
                 <!-- =================================================
                      MESSAGE
                 ================================================== -->
 
-                <div id="registerMessage"
-                     class="auth-message">
-                </div>
+                <div
+                    id="registerMessage"
+                    class="auth-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
 
 
                 <!-- =================================================
                      FORMULAIRE
                 ================================================== -->
 
-                <form id="registerForm"
-                      class="auth-form">
-
-                    <!-- NOM -->
-                    <div class="form-group">
-
-                        <label for="registerName">
-                            Nom complet
-                        </label>
-
-                        <input
-                            type="text"
-                            id="registerName"
-                            name="name"
-                            placeholder="Votre nom complet"
-                            autocomplete="name"
-                            minlength="2"
-                            required
-                        >
-
-                    </div>
+                <form
+                    id="registerForm"
+                    class="auth-form"
+                    novalidate
+                >
 
 
-                    <!-- EMAIL -->
-                    <div class="form-group">
+                    <!-- =================================================
+                         INFORMATIONS PERSONNELLES
+                    ================================================== -->
 
-                        <label for="registerEmail">
-                            Adresse e-mail
-                        </label>
+                    <div class="auth-form-section">
 
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            name="email"
-                            placeholder="exemple@email.com"
-                            autocomplete="email"
-                            required
-                        >
+                        <div class="auth-form-section-title">
 
-                    </div>
+                            <span class="auth-form-section-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
 
+                            <div>
 
-                    <!-- TELEPHONE -->
-                    <div class="form-group">
+                                <h2>
+                                    Informations personnelles
+                                </h2>
 
-                        <label for="registerPhone">
-                            Numéro de téléphone
-                        </label>
+                                <p>
+                                    Renseignez vos informations principales.
+                                </p>
 
-                        <input
-                            type="tel"
-                            id="registerPhone"
-                            name="phone"
-                            placeholder="+243 ..."
-                            autocomplete="tel"
-                            required
-                        >
+                            </div>
 
-                    </div>
+                        </div>
 
 
-                    <!-- MOT DE PASSE -->
-                    <div class="form-group">
+                        <!-- =================================================
+                             NOM COMPLET
+                        ================================================== -->
 
-                        <label for="registerPassword">
-                            Mot de passe
-                        </label>
+                        <div class="form-group">
 
-                        <div class="input-wrapper">
+                            <label for="registerName">
 
-                            <input
-                                type="password"
-                                id="registerPassword"
-                                name="password"
-                                placeholder="Minimum 6 caractères"
-                                autocomplete="new-password"
-                                minlength="6"
-                                required
-                            >
+                                Nom complet
 
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="registerPassword"
-                                aria-label="Afficher ou masquer le mot de passe"
-                            >
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i
+                                    class="fa-regular fa-user input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <input
+                                    type="text"
+                                    id="registerName"
+                                    name="name"
+                                    placeholder="Ex. Carl Muteb"
+                                    autocomplete="name"
+                                    minlength="2"
+                                    maxlength="100"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             TÉLÉPHONE
+                        ================================================== -->
+
+                        <div class="form-group">
+
+                            <label for="registerPhone">
+
+                                Numéro de téléphone
+
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i
+                                    class="fa-solid fa-phone input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <input
+                                    type="tel"
+                                    id="registerPhone"
+                                    name="phone"
+                                    placeholder="+243 8XX XXX XXX"
+                                    autocomplete="tel"
+                                    inputmode="tel"
+                                    maxlength="25"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <small class="form-help">
+                                Utilisez un numéro auquel vous êtes joignable.
+                            </small>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             E-MAIL
+                        ================================================== -->
+
+                        <div class="form-group">
+
+                            <label for="registerEmail">
+
+                                Adresse e-mail
+
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i
+                                    class="fa-regular fa-envelope input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <input
+                                    type="email"
+                                    id="registerEmail"
+                                    name="email"
+                                    placeholder="exemple@email.com"
+                                    autocomplete="email"
+                                    maxlength="150"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             VILLE
+                        ================================================== -->
+
+                        <div class="form-group">
+
+                            <label for="registerCity">
+
+                                Ville
+
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper select-wrapper">
+
+                                <i
+                                    class="fa-solid fa-location-dot input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <select
+                                    id="registerCity"
+                                    name="city"
+                                    autocomplete="address-level2"
+                                    required
+                                >
+
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
+                                        Sélectionnez votre ville
+                                    </option>
+
+                                    <option value="Lubumbashi">
+                                        Lubumbashi
+                                    </option>
+
+                                    <option value="Kolwezi">
+                                        Kolwezi
+                                    </option>
+
+                                    <option value="Likasi">
+                                        Likasi
+                                    </option>
+
+                                    <option value="Fungurume">
+                                        Fungurume
+                                    </option>
+
+                                </select>
+
+                            </div>
 
                         </div>
 
                     </div>
 
 
-                    <!-- CONFIRMATION MOT DE PASSE -->
-                    <div class="form-group">
+                    <!-- =================================================
+                         SÉCURITÉ
+                    ================================================== -->
 
-                        <label for="registerPasswordConfirm">
-                            Confirmer le mot de passe
-                        </label>
+                    <div class="auth-form-section">
 
-                        <div class="input-wrapper">
+                        <div class="auth-form-section-title">
 
-                            <input
-                                type="password"
-                                id="registerPasswordConfirm"
-                                name="passwordConfirm"
-                                placeholder="Répétez votre mot de passe"
-                                autocomplete="new-password"
-                                minlength="6"
-                                required
+                            <span class="auth-form-section-icon">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </span>
+
+                            <div>
+
+                                <h2>
+                                    Sécurité du compte
+                                </h2>
+
+                                <p>
+                                    Choisissez un mot de passe sécurisé.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             MOT DE PASSE
+                        ================================================== -->
+
+                        <div class="form-group">
+
+                            <label for="registerPassword">
+
+                                Mot de passe
+
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i
+                                    class="fa-solid fa-lock input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <input
+                                    type="password"
+                                    id="registerPassword"
+                                    name="password"
+                                    placeholder="Minimum 6 caractères"
+                                    autocomplete="new-password"
+                                    minlength="6"
+                                    maxlength="128"
+                                    required
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    data-target="registerPassword"
+                                    aria-label="Afficher le mot de passe"
+                                    aria-pressed="false"
+                                >
+
+                                    <i
+                                        class="fa-regular fa-eye"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- INDICATEUR FORCE -->
+
+                            <div
+                                class="password-strength"
+                                id="passwordStrength"
+                                aria-live="polite"
                             >
 
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="registerPasswordConfirm"
-                                aria-label="Afficher ou masquer le mot de passe"
-                            >
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
+                                <div class="password-strength-bars">
+
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+
+                                </div>
+
+
+                                <span
+                                    class="password-strength-text"
+                                    id="passwordStrengthText"
+                                >
+                                    Sécurité du mot de passe
+                                </span>
+
+                            </div>
+
+
+                            <small class="form-help">
+                                Utilisez au moins 6 caractères.
+                            </small>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             CONFIRMATION
+                        ================================================== -->
+
+                        <div class="form-group">
+
+                            <label for="registerPasswordConfirm">
+
+                                Confirmer le mot de passe
+
+                                <span
+                                    class="required-mark"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i
+                                    class="fa-solid fa-lock input-icon"
+                                    aria-hidden="true"
+                                ></i>
+
+
+                                <input
+                                    type="password"
+                                    id="registerPasswordConfirm"
+                                    name="passwordConfirm"
+                                    placeholder="Répétez votre mot de passe"
+                                    autocomplete="new-password"
+                                    minlength="6"
+                                    maxlength="128"
+                                    required
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    data-target="registerPasswordConfirm"
+                                    aria-label="Afficher le mot de passe"
+                                    aria-pressed="false"
+                                >
+
+                                    <i
+                                        class="fa-regular fa-eye"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <small
+                                id="passwordMatchMessage"
+                                class="form-validation-message"
+                                aria-live="polite"
+                            ></small>
 
                         </div>
 
@@ -211,40 +572,57 @@
                          CONDITIONS
                     ================================================== -->
 
-                    <label class="terms-checkbox">
+                    <div class="terms-container">
 
-                        <input
-                            type="checkbox"
-                            id="registerTerms"
-                            name="terms"
-                            required
+                        <label
+                            for="registerTerms"
+                            class="terms-checkbox"
                         >
 
-                        <span>
+                            <input
+                                type="checkbox"
+                                id="registerTerms"
+                                name="terms"
+                                required
+                            >
 
-                            J'accepte les
 
-                            <a href="conditions.html"
-                               target="_blank">
-                                conditions d'utilisation
-                            </a>
+                            <span class="custom-checkbox"></span>
 
-                            et la
 
-                            <a href="politique.html"
-                               target="_blank">
-                                politique de confidentialité
-                            </a>
+                            <span class="terms-text">
 
-                            de CAMU SERVICES.
+                                J'accepte les
 
-                        </span>
+                                <a
+                                    href="conditions.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    conditions d'utilisation
+                                </a>
 
-                    </label>
+                                et la
+
+                                <a
+                                    href="politique.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    politique de confidentialité
+                                </a>
+
+                                de CAMU SERVICES.
+
+                            </span>
+
+                        </label>
+
+                    </div>
 
 
                     <!-- =================================================
-                         BOUTON
+                         BOUTON INSCRIPTION
                     ================================================== -->
 
                     <button
@@ -253,11 +631,34 @@
                         class="auth-submit"
                     >
 
-                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="submit-icon">
 
-                        Créer mon compte
+                            <i
+                                class="fa-solid fa-user-plus"
+                                aria-hidden="true"
+                            ></i>
+
+                        </span>
+
+
+                        <span class="submit-text">
+                            Créer mon compte
+                        </span>
+
+
+                        <span
+                            class="submit-loader"
+                            aria-hidden="true"
+                        >
+
+                            <i
+                                class="fa-solid fa-spinner fa-spin"
+                            ></i>
+
+                        </span>
 
                     </button>
+
 
                 </form>
 
@@ -268,10 +669,20 @@
 
                 <div class="auth-switch">
 
-                    Vous avez déjà un compte ?
+                    <span>
+                        Vous avez déjà un compte ?
+                    </span>
+
 
                     <a href="connexion.html">
+
                         Se connecter
+
+                        <i
+                            class="fa-solid fa-arrow-right"
+                            aria-hidden="true"
+                        ></i>
+
                     </a>
 
                 </div>
@@ -281,89 +692,92 @@
                      RETOUR ACCUEIL
                 ================================================== -->
 
-                <div style="
-                    text-align: center;
-                    margin-top: 18px;
-                ">
+                <a
+                    href="index.html"
+                    class="auth-home-link"
+                >
 
-                    <a
-                        href="index.html"
-                        style="
-                            color: var(--muted);
-                            font-size: 12px;
-                            font-weight: 600;
-                        "
-                    >
+                    <i
+                        class="fa-solid fa-arrow-left"
+                        aria-hidden="true"
+                    ></i>
 
-                        <i class="fa-solid fa-arrow-left"></i>
+                    Retour à l'accueil
 
-                        Retour à l'accueil
-
-                    </a>
-
-                </div>
-
-            </div>
+                </a>
 
 
-            <!-- =====================================================
+            </section>
+
+
+            <!-- =================================================
                  FOOTER
-            ====================================================== -->
+            ================================================== -->
 
-            <div class="auth-footer">
+            <footer class="auth-footer">
 
                 <p>
-                    En créant votre compte, vous acceptez
-                    les règles de CAMU SERVICES.
+                    Vos informations sont protégées et utilisées
+                    conformément à notre politique de confidentialité.
                 </p>
 
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                    margin-top: 8px;
-                ">
+
+                <nav
+                    class="auth-footer-links"
+                    aria-label="Liens légaux"
+                >
 
                     <a href="conditions.html">
                         Conditions
                     </a>
 
-                    <span>•</span>
+                    <span aria-hidden="true">
+                        •
+                    </span>
 
                     <a href="politique.html">
                         Confidentialité
                     </a>
 
-                    <span>•</span>
+                    <span aria-hidden="true">
+                        •
+                    </span>
 
                     <a href="contact.html">
                         Contact
                     </a>
 
-                </div>
+                </nav>
 
-                <p style="margin-top: 10px;">
+
+                <p class="auth-copyright">
                     © 2026 CAMU SERVICES. Tous droits réservés.
                 </p>
 
-            </div>
+            </footer>
+
 
         </div>
 
     </main>
 
 
-    <!-- =========================================================
-         FIREBASE AUTHENTIFICATION
-    ========================================================== -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-    <script type="module" src="js/auth.js"></script>
+    <script
+        type="module"
+        src="js/auth.js"
+    ></script>
 
-    <!-- APPLICATION -->
-    <script type="module" src="js/app.js"></script>
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
 
 </body>
 
 </html>
-```
