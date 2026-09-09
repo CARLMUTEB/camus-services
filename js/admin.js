@@ -11,10 +11,7 @@ import {
 
 import {
     collection,
-    getDocs,
-    query,
-    orderBy,
-    limit
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -22,11 +19,6 @@ import {
    CONFIGURATION ADMIN
    ========================================================= */
 
-/*
-   IMPORTANT :
-   Remplace cette adresse par l'adresse Gmail réellement
-   utilisée comme administrateur CAMU SERVICES.
-*/
 const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 
@@ -67,17 +59,22 @@ function showAdminMessage(message, type = "success") {
     adminMessage.hidden = false;
 
     if (type === "error") {
+
         adminMessage.style.background = "#fef2f2";
         adminMessage.style.color = "#b91c1c";
         adminMessage.style.borderColor = "#fecaca";
+
     } else {
+
         adminMessage.style.background = "#ecfdf3";
         adminMessage.style.color = "#15803d";
         adminMessage.style.borderColor = "#bbf7d0";
     }
 
     setTimeout(() => {
+
         adminMessage.hidden = true;
+
     }, 5000);
 }
 
@@ -93,11 +90,27 @@ function getDateValue(timestamp) {
     }
 
     if (typeof timestamp.toMillis === "function") {
+
         return timestamp.toMillis();
     }
 
     if (timestamp.seconds) {
+
         return timestamp.seconds * 1000;
+    }
+
+    if (timestamp instanceof Date) {
+
+        return timestamp.getTime();
+    }
+
+    if (typeof timestamp === "string") {
+
+        const parsed = Date.parse(timestamp);
+
+        return Number.isNaN(parsed)
+            ? 0
+            : parsed;
     }
 
     return 0;
@@ -109,13 +122,16 @@ function formatDate(timestamp) {
     const value = getDateValue(timestamp);
 
     if (!value) {
+
         return "Date inconnue";
     }
 
     return new Intl.DateTimeFormat("fr-FR", {
+
         day: "2-digit",
         month: "short",
         year: "numeric"
+
     }).format(new Date(value));
 }
 
@@ -135,12 +151,16 @@ async function loadUsers() {
         const count = snapshot.size;
 
         if (totalUsers) {
+
             totalUsers.textContent = count;
         }
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
+        return snapshot.docs.map(documentSnapshot => ({
+
+            id: documentSnapshot.id,
+
+            ...documentSnapshot.data()
+
         }));
 
     } catch (error) {
@@ -151,6 +171,7 @@ async function loadUsers() {
         );
 
         if (totalUsers) {
+
             totalUsers.textContent = "—";
         }
 
@@ -161,6 +182,8 @@ async function loadUsers() {
 
 /* =========================================================
    CHARGEMENT ANNONCES
+   IMPORTANT :
+   Les annonces CAMU SERVICES sont dans "annonces"
    ========================================================= */
 
 async function loadAds() {
@@ -168,18 +191,22 @@ async function loadAds() {
     try {
 
         const snapshot = await getDocs(
-            collection(db, "services")
+            collection(db, "annonces")
         );
 
         const count = snapshot.size;
 
         if (totalAds) {
+
             totalAds.textContent = count;
         }
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
+        return snapshot.docs.map(documentSnapshot => ({
+
+            id: documentSnapshot.id,
+
+            ...documentSnapshot.data()
+
         }));
 
     } catch (error) {
@@ -190,6 +217,7 @@ async function loadAds() {
         );
 
         if (totalAds) {
+
             totalAds.textContent = "—";
         }
 
@@ -213,12 +241,16 @@ async function loadReports() {
         const count = snapshot.size;
 
         if (totalReports) {
+
             totalReports.textContent = count;
         }
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
+        return snapshot.docs.map(documentSnapshot => ({
+
+            id: documentSnapshot.id,
+
+            ...documentSnapshot.data()
+
         }));
 
     } catch (error) {
@@ -229,6 +261,7 @@ async function loadReports() {
         );
 
         if (totalReports) {
+
             totalReports.textContent = "—";
         }
 
@@ -250,7 +283,10 @@ function renderCategoryStats(ads) {
     ads.forEach(ad => {
 
         const category =
-            ad.category?.trim() || "Autres";
+            typeof ad.category === "string" &&
+            ad.category.trim()
+                ? ad.category.trim()
+                : "Autres";
 
         categories[category] =
             (categories[category] || 0) + 1;
@@ -258,15 +294,22 @@ function renderCategoryStats(ads) {
 
 
     const entries = Object.entries(categories)
+
         .sort((a, b) => b[1] - a[1]);
 
 
     if (!entries.length) {
 
         categoryStats.innerHTML = `
+
             <div class="admin-loading">
-                <span>Aucune annonce disponible.</span>
+
+                <span>
+                    Aucune annonce disponible.
+                </span>
+
             </div>
+
         `;
 
         return;
@@ -274,11 +317,15 @@ function renderCategoryStats(ads) {
 
 
     const maxValue =
-        Math.max(...entries.map(item => item[1]));
+        Math.max(
+            ...entries.map(item => item[1])
+        );
 
 
     categoryStats.innerHTML = entries
+
         .slice(0, 8)
+
         .map(([category, count]) => {
 
             const percentage =
@@ -287,26 +334,37 @@ function renderCategoryStats(ads) {
                     : 0;
 
             return `
+
                 <div class="admin-simple-stat">
 
                     <span class="admin-simple-stat-name">
+
                         ${escapeHTML(category)}
+
                     </span>
 
+
                     <div class="admin-simple-stat-bar">
+
                         <span
                             style="width:${percentage}%"
                         ></span>
+
                     </div>
 
+
                     <strong class="admin-simple-stat-value">
+
                         ${count}
+
                     </strong>
 
                 </div>
+
             `;
 
         })
+
         .join("");
 }
 
@@ -324,7 +382,10 @@ function renderCityStats(ads) {
     ads.forEach(ad => {
 
         const city =
-            ad.city?.trim() || "Non renseignée";
+            typeof ad.city === "string" &&
+            ad.city.trim()
+                ? ad.city.trim()
+                : "Non renseignée";
 
         cities[city] =
             (cities[city] || 0) + 1;
@@ -332,15 +393,22 @@ function renderCityStats(ads) {
 
 
     const entries = Object.entries(cities)
+
         .sort((a, b) => b[1] - a[1]);
 
 
     if (!entries.length) {
 
         cityStats.innerHTML = `
+
             <div class="admin-loading">
-                <span>Aucune annonce disponible.</span>
+
+                <span>
+                    Aucune annonce disponible.
+                </span>
+
             </div>
+
         `;
 
         return;
@@ -348,11 +416,15 @@ function renderCityStats(ads) {
 
 
     const maxValue =
-        Math.max(...entries.map(item => item[1]));
+        Math.max(
+            ...entries.map(item => item[1])
+        );
 
 
     cityStats.innerHTML = entries
+
         .slice(0, 8)
+
         .map(([city, count]) => {
 
             const percentage =
@@ -361,26 +433,37 @@ function renderCityStats(ads) {
                     : 0;
 
             return `
+
                 <div class="admin-simple-stat">
 
                     <span class="admin-simple-stat-name">
+
                         ${escapeHTML(city)}
+
                     </span>
 
+
                     <div class="admin-simple-stat-bar">
+
                         <span
                             style="width:${percentage}%"
                         ></span>
+
                     </div>
 
+
                     <strong class="admin-simple-stat-value">
+
                         ${count}
+
                     </strong>
 
                 </div>
+
             `;
 
         })
+
         .join("");
 }
 
@@ -393,21 +476,34 @@ function renderRecentActivity(ads) {
 
     if (!recentActivity) return;
 
+
     const recentAds = [...ads]
+
         .sort(
+
             (a, b) =>
+
                 getDateValue(b.createdAt) -
+
                 getDateValue(a.createdAt)
+
         )
+
         .slice(0, 6);
 
 
     if (!recentAds.length) {
 
         recentActivity.innerHTML = `
+
             <div class="admin-loading">
-                <span>Aucune activité récente.</span>
+
+                <span>
+                    Aucune activité récente.
+                </span>
+
             </div>
+
         `;
 
         return;
@@ -415,43 +511,69 @@ function renderRecentActivity(ads) {
 
 
     recentActivity.innerHTML = recentAds
+
         .map(ad => {
 
             const title =
-                ad.title || "Nouvelle annonce";
+                ad.title ||
+                "Nouvelle annonce";
+
 
             const owner =
                 ad.ownerName ||
+
+                ad.ownerDisplayName ||
+
+                ad.sellerName ||
+
                 "Utilisateur";
 
+
             return `
+
                 <div class="admin-activity-row">
 
+
                     <div class="admin-activity-icon">
+
                         <i class="fa-solid fa-bullhorn"></i>
+
                     </div>
+
 
                     <div class="admin-activity-content">
 
                         <strong>
+
                             ${escapeHTML(title)}
+
                         </strong>
 
+
                         <span>
+
                             Publiée par
+
                             ${escapeHTML(owner)}
+
                         </span>
 
                     </div>
 
+
                     <time class="admin-activity-date">
+
                         ${formatDate(ad.createdAt)}
+
                     </time>
 
+
                 </div>
+
             `;
 
         })
+
         .join("");
 }
 
@@ -463,15 +585,19 @@ function renderRecentActivity(ads) {
 function updateCategoryCount() {
 
     const categories = [
+
         "Immobilier",
         "Véhicules",
         "Commerce",
         "Services",
         "Emploi",
         "Autres"
+
     ];
 
+
     if (totalCategories) {
+
         totalCategories.textContent =
             categories.length;
     }
@@ -485,10 +611,15 @@ function updateCategoryCount() {
 function escapeHTML(value) {
 
     return String(value ?? "")
+
         .replace(/&/g, "&amp;")
+
         .replace(/</g, "&lt;")
+
         .replace(/>/g, "&gt;")
+
         .replace(/"/g, "&quot;")
+
         .replace(/'/g, "&#039;");
 }
 
@@ -505,60 +636,96 @@ async function loadDashboard() {
 
 
     if (totalUsers) {
+
         totalUsers.textContent = "...";
     }
 
+
     if (totalAds) {
+
         totalAds.textContent = "...";
     }
 
+
     if (totalReports) {
+
         totalReports.textContent = "...";
+    }
+
+
+    if (totalCategories) {
+
+        totalCategories.textContent = "...";
     }
 
 
     try {
 
         const [
+
             users,
+
             ads,
+
             reports
+
         ] = await Promise.all([
+
             loadUsers(),
+
             loadAds(),
+
             loadReports()
+
         ]);
 
 
         updateCategoryCount();
 
+
         renderCategoryStats(ads);
 
+
         renderCityStats(ads);
+
 
         renderRecentActivity(ads);
 
 
         console.log(
+
             "Dashboard chargé :",
+
             {
+
                 users: users.length,
+
                 ads: ads.length,
+
                 reports: reports.length
+
             }
+
         );
 
 
     } catch (error) {
 
         console.error(
+
             "Erreur générale dashboard :",
+
             error
+
         );
 
+
         showAdminMessage(
+
             "Impossible de charger certaines données.",
+
             "error"
+
         );
     }
 }
@@ -571,6 +738,7 @@ async function loadDashboard() {
 function openAdminMenu() {
 
     adminSidebar?.classList.add("open");
+
     adminOverlay?.classList.add("open");
 
     document.body.style.overflow = "hidden";
@@ -580,6 +748,7 @@ function openAdminMenu() {
 function closeAdminMenu() {
 
     adminSidebar?.classList.remove("open");
+
     adminOverlay?.classList.remove("open");
 
     document.body.style.overflow = "";
@@ -587,18 +756,29 @@ function closeAdminMenu() {
 
 
 adminMenuButton?.addEventListener(
+
     "click",
+
     openAdminMenu
+
 );
+
 
 adminCloseSidebar?.addEventListener(
+
     "click",
+
     closeAdminMenu
+
 );
 
+
 adminOverlay?.addEventListener(
+
     "click",
+
     closeAdminMenu
+
 );
 
 
@@ -607,92 +787,146 @@ adminOverlay?.addEventListener(
    ========================================================= */
 
 document
+
     .querySelectorAll("[data-section]")
+
     .forEach(element => {
 
-        element.addEventListener("click", event => {
+        element.addEventListener(
 
-            const section = element.dataset.section;
+            "click",
 
-            if (!section) return;
+            event => {
 
-            // =========================
-            // ANNONCES
-            // =========================
-            if (section === "annonces") {
-                event.preventDefault();
-                window.location.href = "admin-annonces.html";
-                return;
+                const section =
+                    element.dataset.section;
+
+
+                if (!section) return;
+
+
+                /* =========================
+                   ANNONCES
+                   ========================= */
+
+                if (section === "annonces") {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "admin-annonces.html";
+
+                    return;
+                }
+
+
+                /* =========================
+                   UTILISATEURS
+                   ========================= */
+
+                if (section === "utilisateurs") {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "admin-utilisateurs.html";
+
+                    return;
+                }
+
+
+                /* =========================
+                   SIGNALEMENTS
+                   ========================= */
+
+                if (section === "signalements") {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "admin-signalements.html";
+
+                    return;
+                }
+
+
+                /* =========================
+                   PARAMÈTRES
+                   ========================= */
+
+                if (section === "parametres") {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "admin-parametres.html";
+
+                    return;
+                }
+
             }
 
-            // =========================
-            // UTILISATEURS
-            // =========================
-            if (section === "utilisateurs") {
-                event.preventDefault();
-                window.location.href = "admin-utilisateurs.html";
-                return;
-            }
-
-            // =========================
-            // SIGNALEMENTS
-            // =========================
-            if (section === "signalements") {
-                event.preventDefault();
-                window.location.href = "admin-signalements.html";
-                return;
-            }
-
-            // =========================
-            // PARAMÈTRES
-            // =========================
-            if (section === "parametres") {
-                event.preventDefault();
-                window.location.href = "admin-parametres.html";
-                return;
-            }
-
-        });
+        );
 
     });
+
 
 /* =========================================================
    DÉCONNEXION
    ========================================================= */
 
 adminLogoutButton?.addEventListener(
+
     "click",
+
     async () => {
 
         const confirmation =
+
             confirm(
+
                 "Voulez-vous vraiment vous déconnecter ?"
+
             );
 
+
         if (!confirmation) {
+
             return;
         }
+
 
         try {
 
             await signOut(auth);
 
+
             window.location.href =
                 "connexion.html";
+
 
         } catch (error) {
 
             console.error(
+
                 "Erreur déconnexion :",
+
                 error
+
             );
 
+
             showAdminMessage(
+
                 "Impossible de vous déconnecter.",
+
                 "error"
+
             );
         }
+
     }
+
 );
 
 
@@ -701,8 +935,15 @@ adminLogoutButton?.addEventListener(
    ========================================================= */
 
 onAuthStateChanged(
+
     auth,
+
     async user => {
+
+
+        /* =========================
+           PAS CONNECTÉ
+           ========================= */
 
         if (!user) {
 
@@ -714,42 +955,59 @@ onAuthStateChanged(
 
 
         console.log(
+
             "Utilisateur connecté :",
+
             user.email
+
         );
 
 
-        /*
-           Première protection côté interface.
-
-           La vraie sécurité devra également être
-           appliquée dans les règles Firestore.
-        */
+        /* =========================
+           VÉRIFICATION ADMIN
+           ========================= */
 
         if (
+
             user.email?.toLowerCase() !==
+
             ADMIN_EMAIL.toLowerCase()
+
         ) {
 
+
             console.warn(
+
                 "Accès administrateur refusé :",
+
                 user.email
+
             );
 
+
             alert(
+
                 "Accès réservé à l'administrateur CAMU SERVICES."
+
             );
+
 
             window.location.href =
                 "index.html";
+
 
             return;
         }
 
 
+        /* =========================
+           CHARGER DASHBOARD
+           ========================= */
+
         await loadDashboard();
 
     }
+
 );
 
 
@@ -758,5 +1016,7 @@ onAuthStateChanged(
    ========================================================= */
 
 console.log(
+
     "CAMU SERVICES : admin.js chargé correctement."
+
 );
