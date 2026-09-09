@@ -32,6 +32,30 @@ const settingsMessage =
 
 
 // =========================================================
+// THÈME
+// =========================================================
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const themeTitle =
+    document.getElementById("themeTitle");
+
+const themeDescription =
+    document.getElementById("themeDescription");
+
+const themeRowIcon =
+    document.getElementById("themeRowIcon");
+
+const themeSectionIcon =
+    document.getElementById("themeSectionIcon");
+
+
+const THEME_KEY =
+    "camu_theme";
+
+
+// =========================================================
 // MESSAGE
 // =========================================================
 
@@ -41,21 +65,208 @@ function showMessage(message, type = "success") {
         return;
     }
 
-    settingsMessage.textContent = message;
+
+    settingsMessage.textContent =
+        message;
+
 
     settingsMessage.classList.toggle(
         "error",
         type === "error"
     );
 
-    settingsMessage.hidden = false;
+
+    settingsMessage.hidden =
+        false;
+
 
     setTimeout(() => {
 
-        settingsMessage.hidden = true;
+        settingsMessage.hidden =
+            true;
 
     }, 5000);
+
 }
+
+
+// =========================================================
+// THÈME — RÉCUPÉRER
+// =========================================================
+
+function getSavedTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            THEME_KEY
+        );
+
+
+    if (
+        savedTheme === "dark" ||
+        savedTheme === "light"
+    ) {
+
+        return savedTheme;
+
+    }
+
+
+    return "light";
+}
+
+
+// =========================================================
+// THÈME — APPLIQUER
+// =========================================================
+
+function applyTheme(theme) {
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        theme
+    );
+
+
+    if (themeToggle) {
+
+        themeToggle.checked =
+            theme === "dark";
+
+    }
+
+
+    if (theme === "dark") {
+
+
+        if (themeTitle) {
+
+            themeTitle.textContent =
+                "Mode sombre";
+
+        }
+
+
+        if (themeDescription) {
+
+            themeDescription.textContent =
+                "Le mode sombre est actuellement activé.";
+
+        }
+
+
+        if (themeRowIcon) {
+
+            themeRowIcon.className =
+                "fa-solid fa-sun";
+
+        }
+
+
+        if (themeSectionIcon) {
+
+            themeSectionIcon.className =
+                "fa-solid fa-moon";
+
+        }
+
+
+    } else {
+
+
+        if (themeTitle) {
+
+            themeTitle.textContent =
+                "Mode clair";
+
+        }
+
+
+        if (themeDescription) {
+
+            themeDescription.textContent =
+                "Le mode clair est actuellement activé.";
+
+        }
+
+
+        if (themeRowIcon) {
+
+            themeRowIcon.className =
+                "fa-solid fa-moon";
+
+        }
+
+
+        if (themeSectionIcon) {
+
+            themeSectionIcon.className =
+                "fa-solid fa-sun";
+
+        }
+
+    }
+
+}
+
+
+// =========================================================
+// THÈME — INITIALISATION
+// =========================================================
+
+function initializeTheme() {
+
+    const theme =
+        getSavedTheme();
+
+
+    applyTheme(theme);
+
+}
+
+
+// =========================================================
+// THÈME — INTERRUPTEUR
+// =========================================================
+
+if (themeToggle) {
+
+    themeToggle.addEventListener(
+        "change",
+        () => {
+
+
+            const newTheme =
+                themeToggle.checked
+                    ? "dark"
+                    : "light";
+
+
+            localStorage.setItem(
+                THEME_KEY,
+                newTheme
+            );
+
+
+            applyTheme(
+                newTheme
+            );
+
+
+            showMessage(
+                newTheme === "dark"
+                    ? "Mode sombre activé."
+                    : "Mode clair activé."
+            );
+
+        }
+    );
+
+}
+
+
+// Initialiser immédiatement
+initializeTheme();
 
 
 // =========================================================
@@ -64,21 +275,30 @@ function showMessage(message, type = "success") {
 
 let currentUser = null;
 
-onAuthStateChanged(auth, (user) => {
 
-    if (!user) {
+onAuthStateChanged(
+    auth,
+    (user) => {
 
-        window.location.href =
-            "connexion.html";
 
-        return;
+        if (!user) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        currentUser =
+            user;
+
+
+        loadSettings();
+
     }
-
-    currentUser = user;
-
-    loadSettings();
-
-});
+);
 
 
 // =========================================================
@@ -87,28 +307,61 @@ onAuthStateChanged(auth, (user) => {
 
 function loadSettings() {
 
+
+    // -----------------------------------------
+    // THÈME
+    // -----------------------------------------
+
+    initializeTheme();
+
+
+    // -----------------------------------------
+    // NOTIFICATIONS
+    // -----------------------------------------
+
     const notifications =
         localStorage.getItem(
             "camu_notifications"
         );
 
-    if (notifications === "false") {
 
-        notificationsToggle.checked = false;
+    if (
+        notifications === "false"
+    ) {
+
+        if (notificationsToggle) {
+
+            notificationsToggle.checked =
+                false;
+
+        }
 
     } else {
 
-        notificationsToggle.checked = true;
+        if (notificationsToggle) {
+
+            notificationsToggle.checked =
+                true;
+
+        }
 
     }
 
+
+    // -----------------------------------------
+    // LANGUE
+    // -----------------------------------------
 
     const language =
         localStorage.getItem(
             "camu_language"
         );
 
-    if (language) {
+
+    if (
+        language &&
+        languageSelect
+    ) {
 
         languageSelect.value =
             language;
@@ -128,10 +381,12 @@ if (notificationsToggle) {
         "change",
         () => {
 
+
             localStorage.setItem(
                 "camu_notifications",
                 notificationsToggle.checked
             );
+
 
             showMessage(
                 notificationsToggle.checked
@@ -155,33 +410,48 @@ if (languageSelect) {
         "change",
         () => {
 
+
             const language =
                 languageSelect.value;
+
 
             localStorage.setItem(
                 "camu_language",
                 language
             );
 
-            if (language === "en") {
+
+            if (language === "fr") {
 
                 showMessage(
-                    "La version anglaise sera disponible prochainement."
-                );
-
-                languageSelect.value = "fr";
-
-                localStorage.setItem(
-                    "camu_language",
-                    "fr"
+                    "Français sélectionné."
                 );
 
                 return;
+
             }
 
-            showMessage(
-                "La langue française est sélectionnée."
-            );
+
+            if (language === "en") {
+
+                showMessage(
+                    "English sélectionné. La traduction complète sera activée prochainement."
+                );
+
+                return;
+
+            }
+
+
+            if (language === "sw") {
+
+                showMessage(
+                    "Kiswahili sélectionné. La traduction complète sera activée prochainement."
+                );
+
+                return;
+
+            }
 
         }
     );
@@ -199,6 +469,7 @@ if (changePasswordButton) {
         "click",
         async () => {
 
+
             if (!currentUser) {
 
                 showMessage(
@@ -207,6 +478,7 @@ if (changePasswordButton) {
                 );
 
                 return;
+
             }
 
 
@@ -218,6 +490,7 @@ if (changePasswordButton) {
                 );
 
                 return;
+
             }
 
 
@@ -234,21 +507,26 @@ if (changePasswordButton) {
 
             try {
 
+
                 await sendPasswordResetEmail(
                     auth,
                     currentUser.email
                 );
 
+
                 showMessage(
                     "Le lien de modification du mot de passe a été envoyé à votre adresse e-mail."
                 );
 
+
             } catch (error) {
+
 
                 console.error(
                     "Erreur mot de passe :",
                     error
                 );
+
 
                 showMessage(
                     "Impossible d'envoyer le lien. Veuillez réessayer.",
@@ -273,10 +551,12 @@ if (logoutButton) {
         "click",
         async () => {
 
+
             const confirmation =
                 confirm(
                     "Voulez-vous vraiment vous déconnecter ?"
                 );
+
 
             if (!confirmation) {
                 return;
@@ -285,17 +565,24 @@ if (logoutButton) {
 
             try {
 
-                await signOut(auth);
+
+                await signOut(
+                    auth
+                );
+
 
                 window.location.href =
                     "connexion.html";
 
+
             } catch (error) {
+
 
                 console.error(
                     "Erreur déconnexion :",
                     error
                 );
+
 
                 showMessage(
                     "Impossible de vous déconnecter.",
@@ -320,6 +607,7 @@ if (deleteAccountButton) {
         "click",
         async () => {
 
+
             if (!currentUser) {
 
                 showMessage(
@@ -328,6 +616,7 @@ if (deleteAccountButton) {
                 );
 
                 return;
+
             }
 
 
@@ -355,20 +644,33 @@ if (deleteAccountButton) {
 
             try {
 
-                await deleteUser(currentUser);
+
+                await deleteUser(
+                    currentUser
+                );
+
 
                 localStorage.removeItem(
                     "camu_notifications"
                 );
 
+
                 localStorage.removeItem(
                     "camu_language"
                 );
 
+
+                localStorage.removeItem(
+                    THEME_KEY
+                );
+
+
                 window.location.href =
                     "index.html";
 
+
             } catch (error) {
+
 
                 console.error(
                     "Erreur suppression compte :",
@@ -381,12 +683,15 @@ if (deleteAccountButton) {
                     "auth/requires-recent-login"
                 ) {
 
+
                     showMessage(
                         "Pour votre sécurité, reconnectez-vous avant de supprimer votre compte.",
                         "error"
                     );
 
+
                     return;
+
                 }
 
 
@@ -408,19 +713,28 @@ if (deleteAccountButton) {
 // =========================================================
 
 const menuToggle =
-    document.getElementById("menuToggle");
+    document.getElementById(
+        "menuToggle"
+    );
 
 const sidebar =
-    document.getElementById("sidebar");
+    document.getElementById(
+        "sidebar"
+    );
 
 
-if (menuToggle && sidebar) {
+if (
+    menuToggle &&
+    sidebar
+) {
 
     menuToggle.addEventListener(
         "click",
         () => {
 
-            sidebar.classList.toggle("open");
+            sidebar.classList.toggle(
+                "open"
+            );
 
         }
     );
