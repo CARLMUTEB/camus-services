@@ -1,11 +1,91 @@
 /* =========================================================
-   CAMU SERVICES — PARAMÈTRES
+   CAMU SERVICES
+   PARAMETRES
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --settings-bg: #f8fafc;
+
+    --settings-card: #ffffff;
+
+    --settings-text: #172033;
+
+    --settings-muted: #64748b;
+
+    --settings-border: #e2e8f0;
+
+    --settings-hover: #f8fafc;
+
+    --settings-icon-bg: #eff6ff;
+
+    --settings-icon-color: #2563eb;
+
+    --settings-primary: #2563eb;
+
+    --settings-danger: #dc2626;
+
+    --settings-danger-bg: #fef2f2;
+
+    --settings-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.06);
+
+    --settings-radius: 18px;
+
+}
+
+
+/* =========================================================
+   MODE SOMBRE
+========================================================= */
+
+html[data-theme="dark"] {
+
+    --settings-bg: #0f172a;
+
+    --settings-card: #1e293b;
+
+    --settings-text: #f1f5f9;
+
+    --settings-muted: #94a3b8;
+
+    --settings-border: #334155;
+
+    --settings-hover: #263449;
+
+    --settings-icon-bg: #263449;
+
+    --settings-icon-color: #60a5fa;
+
+    --settings-primary: #3b82f6;
+
+    --settings-danger: #f87171;
+
+    --settings-danger-bg: #3a2025;
+
+    --settings-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
+
+}
+
+
+/* =========================================================
+   PAGE
 ========================================================= */
 
 .settings-page {
+
     max-width: 900px;
+
     margin: 0 auto;
-    padding: 30px;
+
+    padding: 35px 25px 60px;
+
 }
 
 
@@ -14,35 +94,56 @@
 ========================================================= */
 
 .settings-header {
-    margin-bottom: 28px;
+
+    margin-bottom: 30px;
+
 }
+
 
 .settings-label {
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 8px;
 
-    color: #16a34a;
+    color: var(--settings-primary);
 
-    font-size: 14px;
+    font-size: 13px;
+
     font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+
+    margin-bottom: 8px;
+
 }
+
 
 .settings-header h1 {
-    margin: 8px 0 6px;
 
-    color: #111827;
+    margin: 5px 0 8px;
 
-    font-size: 32px;
+    color: var(--settings-text);
+
+    font-size: 30px;
+
     font-weight: 800;
+
 }
 
+
 .settings-header p {
+
     margin: 0;
 
-    color: #6b7280;
+    color: var(--settings-muted);
 
     font-size: 15px;
+
 }
 
 
@@ -51,197 +152,248 @@
 ========================================================= */
 
 .settings-section {
-    margin-bottom: 20px;
+
+    background: var(--settings-card);
+
+    border: 1px solid var(--settings-border);
+
+    border-radius: var(--settings-radius);
+
+    margin-bottom: 22px;
 
     overflow: hidden;
 
-    background: #ffffff;
+    box-shadow: var(--settings-shadow);
 
-    border: 1px solid #e5e7eb;
+    transition:
+        background-color .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
 
-    border-radius: 15px;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 
 /* =========================================================
-   TITRE SECTION
+   SECTION TITLE
 ========================================================= */
 
 .settings-section-title {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-
-    padding: 20px;
-
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.settings-title-icon {
-    width: 45px;
-    height: 45px;
-
-    flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
-    justify-content: center;
 
-    border-radius: 12px;
+    gap: 15px;
 
-    font-size: 18px;
+    padding: 22px;
+
+    border-bottom: 1px solid var(--settings-border);
+
 }
 
-.account-icon {
-    background: #ecfdf5;
-    color: #16a34a;
-}
-
-.security-icon {
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-.notification-icon {
-    background: #fff7ed;
-    color: #ea580c;
-}
-
-.language-icon {
-    background: #f5f3ff;
-    color: #7c3aed;
-}
-
-.danger-icon {
-    background: #fef2f2;
-    color: #dc2626;
-}
 
 .settings-section-title h2 {
-    margin: 0 0 3px;
 
-    color: #111827;
+    margin: 0 0 4px;
 
-    font-size: 17px;
+    color: var(--settings-text);
+
+    font-size: 18px;
+
+    font-weight: 750;
+
 }
 
+
 .settings-section-title p {
+
     margin: 0;
 
-    color: #6b7280;
+    color: var(--settings-muted);
 
     font-size: 13px;
+
+    line-height: 1.5;
+
 }
 
 
 /* =========================================================
-   LIGNES
+   TITLE ICON
+========================================================= */
+
+.settings-title-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    min-width: 46px;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--settings-icon-bg);
+
+    color: var(--settings-icon-color);
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   ROW
 ========================================================= */
 
 .settings-row {
+
     width: 100%;
 
-    min-height: 70px;
+    min-height: 75px;
+
+    padding: 17px 22px;
 
     display: flex;
+
     align-items: center;
 
-    gap: 14px;
-
-    padding: 14px 20px;
+    gap: 15px;
 
     border: 0;
-    border-bottom: 1px solid #f0f0f0;
 
-    background: #ffffff;
+    border-bottom: 1px solid var(--settings-border);
+
+    background: transparent;
 
     color: inherit;
 
-    text-align: left;
     text-decoration: none;
+
+    text-align: left;
 
     cursor: pointer;
 
-    transition: background 0.2s ease;
+    box-sizing: border-box;
+
+    transition:
+        background-color .2s ease;
+
 }
 
-.settings-row:last-child {
-    border-bottom: 0;
+
+.settings-section > .settings-row:last-child {
+
+    border-bottom: none;
+
 }
+
 
 .settings-row:hover {
-    background: #f9fafb;
-}
 
-.settings-row-button {
-    font-family: inherit;
+    background: var(--settings-hover);
+
 }
 
 
 /* =========================================================
-   ICÔNE
+   ROW ICON
 ========================================================= */
 
 .settings-row-icon {
-    width: 40px;
-    height: 40px;
 
-    flex-shrink: 0;
+    width: 42px;
+
+    height: 42px;
+
+    min-width: 42px;
+
+    border-radius: 11px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    border-radius: 10px;
+    background: var(--settings-icon-bg);
 
-    background: #f3f4f6;
-
-    color: #374151;
+    color: var(--settings-icon-color);
 
     font-size: 16px;
+
 }
 
 
 /* =========================================================
-   TEXTE
+   ROW CONTENT
 ========================================================= */
 
 .settings-row-content {
+
     flex: 1;
 
-    display: flex;
-    flex-direction: column;
+    min-width: 0;
 
-    gap: 4px;
 }
+
 
 .settings-row-content strong {
-    color: #111827;
 
-    font-size: 14px;
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--settings-text);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
 }
 
-.settings-row-content span {
-    color: #6b7280;
 
-    font-size: 12px;
+.settings-row-content span {
+
+    display: block;
+
+    color: var(--settings-muted);
+
+    font-size: 13px;
+
+    line-height: 1.45;
+
 }
 
 
 /* =========================================================
-   FLÈCHE
+   ARROW
 ========================================================= */
 
 .settings-arrow {
-    flex-shrink: 0;
 
-    color: #9ca3af;
+    color: var(--settings-muted);
 
-    font-size: 12px;
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   BUTTON ROW
+========================================================= */
+
+.settings-row-button {
+
+    font-family: inherit;
+
+    appearance: none;
+
 }
 
 
@@ -250,62 +402,94 @@
 ========================================================= */
 
 .switch {
+
     position: relative;
 
-    width: 48px;
-    height: 26px;
+    width: 52px;
 
-    flex-shrink: 0;
+    height: 30px;
+
+    min-width: 52px;
+
+    display: inline-block;
+
 }
 
+
 .switch input {
+
+    position: absolute;
+
     opacity: 0;
 
     width: 0;
+
     height: 0;
+
 }
 
+
 .slider {
+
     position: absolute;
 
     inset: 0;
 
-    background: #d1d5db;
-
     border-radius: 30px;
+
+    background: #cbd5e1;
 
     cursor: pointer;
 
-    transition: 0.25s;
+    transition: .25s ease;
+
 }
 
+
 .slider::before {
+
     content: "";
 
     position: absolute;
 
-    width: 20px;
-    height: 20px;
+    width: 22px;
 
-    left: 3px;
-    top: 3px;
+    height: 22px;
 
-    background: white;
+    left: 4px;
+
+    top: 4px;
 
     border-radius: 50%;
 
-    box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
 
-    transition: 0.25s;
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, .2);
+
+    transition: .25s ease;
+
 }
+
 
 .switch input:checked + .slider {
-    background: #16a34a;
+
+    background: var(--settings-primary);
+
 }
 
+
 .switch input:checked + .slider::before {
+
     transform: translateX(22px);
+
+}
+
+
+.switch input:focus-visible + .slider {
+
+    outline: 3px solid rgba(37, 99, 235, .25);
+
 }
 
 
@@ -314,82 +498,125 @@
 ========================================================= */
 
 .language-select-row {
+
     display: flex;
+
     align-items: center;
 
-    gap: 14px;
+    gap: 15px;
 
-    padding: 15px 20px;
+    min-height: 75px;
+
+    padding: 17px 22px;
+
 }
+
 
 .language-select-row .settings-row-content {
+
     flex: 1;
+
 }
 
-#languageSelect {
-    min-width: 130px;
 
-    padding: 9px 12px;
+.language-select-row select {
 
-    border: 1px solid #d1d5db;
+    min-width: 150px;
 
-    border-radius: 8px;
+    padding: 10px 35px 10px 12px;
 
-    background: white;
+    border: 1px solid var(--settings-border);
 
-    color: #111827;
+    border-radius: 10px;
 
-    font-size: 13px;
+    background: var(--settings-card);
+
+    color: var(--settings-text);
+
+    font-family: inherit;
+
+    font-size: 14px;
 
     cursor: pointer;
 
     outline: none;
+
 }
 
-#languageSelect:focus {
-    border-color: #16a34a;
+
+.language-select-row select:focus {
+
+    border-color: var(--settings-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .12);
+
 }
 
 
 /* =========================================================
-   ZONE DANGEREUSE
+   DANGER
 ========================================================= */
 
 .danger-section {
-    border-color: #fecaca;
+
+    border-color: rgba(220, 38, 38, .25);
+
 }
 
-.delete-account-button {
-    margin: 18px 20px;
 
-    display: inline-flex;
+.danger-icon {
+
+    background: var(--settings-danger-bg);
+
+    color: var(--settings-danger);
+
+}
+
+
+.delete-account-button {
+
+    width: calc(100% - 44px);
+
+    margin: 20px 22px;
+
+    padding: 13px 17px;
+
+    display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    gap: 8px;
+    gap: 9px;
 
-    padding: 11px 16px;
+    border: 1px solid rgba(220, 38, 38, .25);
 
-    border: 1px solid #fca5a5;
+    border-radius: 11px;
 
-    border-radius: 9px;
+    background: var(--settings-danger-bg);
 
-    background: #fff;
-
-    color: #dc2626;
+    color: var(--settings-danger);
 
     font-family: inherit;
 
-    font-size: 13px;
+    font-size: 14px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition: .2s ease;
+
 }
 
+
 .delete-account-button:hover {
-    background: #fef2f2;
+
+    transform: translateY(-1px);
+
+    filter: brightness(.97);
+
 }
 
 
@@ -398,106 +625,136 @@
 ========================================================= */
 
 .settings-message {
-    margin-bottom: 18px;
 
-    padding: 13px 15px;
+    margin-bottom: 20px;
 
-    border-radius: 9px;
+    padding: 14px 16px;
 
-    background: #ecfdf5;
+    border: 1px solid rgba(22, 163, 74, .25);
 
-    color: #166534;
+    border-radius: 11px;
 
-    font-size: 13px;
+    background: rgba(22, 163, 74, .08);
+
+    color: #16a34a;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
 }
+
 
 .settings-message.error {
-    background: #fef2f2;
 
-    color: #991b1b;
-}
+    border-color: rgba(220, 38, 38, .25);
 
-[hidden] {
-    display: none !important;
+    background: rgba(220, 38, 38, .08);
+
+    color: #dc2626;
+
 }
 
 
 /* =========================================================
-   DÉCONNEXION
+   LOGOUT
 ========================================================= */
 
 .settings-logout-button {
+
     width: 100%;
 
+    padding: 14px 18px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     gap: 9px;
 
-    padding: 13px;
+    border: 1px solid var(--settings-border);
 
-    margin-bottom: 15px;
+    border-radius: 12px;
 
-    border: 1px solid #e5e7eb;
+    background: var(--settings-card);
 
-    border-radius: 10px;
-
-    background: white;
-
-    color: #dc2626;
+    color: var(--settings-text);
 
     font-family: inherit;
 
     font-size: 14px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition: .2s ease;
+
 }
 
-.settings-logout-button:hover {
-    background: #fef2f2;
 
-    border-color: #fecaca;
+.settings-logout-button:hover {
+
+    background: var(--settings-hover);
+
 }
 
 
 /* =========================================================
-   RETOUR COMPTE
+   RETOUR
 ========================================================= */
 
 .back-account-button {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
 
-    padding: 11px;
+    margin-top: 15px;
 
-    color: #6b7280;
+    padding: 12px;
+
+    color: var(--settings-muted);
+
+    font-size: 13px;
+
+    font-weight: 600;
 
     text-decoration: none;
 
-    font-size: 13px;
 }
 
+
 .back-account-button:hover {
-    color: #16a34a;
+
+    color: var(--settings-primary);
+
 }
 
 
 /* =========================================================
-   TABLETTE
+   TRANSITIONS GLOBALES
 ========================================================= */
 
-@media (max-width: 900px) {
+html,
+body,
+.sidebar,
+.mobile-header,
+.settings-section,
+.settings-row,
+.settings-logout-button,
+.language-select-row select {
 
-    .settings-page {
-        padding: 25px 20px;
-    }
+    transition:
+        background-color .25s ease,
+        color .25s ease,
+        border-color .25s ease;
 
 }
 
@@ -506,60 +763,139 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
+
 
     .settings-page {
-        padding: 20px 14px;
+
+        padding:
+            25px 15px 45px;
+
     }
+
 
     .settings-header h1 {
-        font-size: 26px;
+
+        font-size: 25px;
+
     }
+
 
     .settings-section-title {
-        padding: 17px;
+
+        padding: 18px 15px;
+
     }
+
 
     .settings-row {
-        padding: 13px 16px;
+
+        padding: 16px 15px;
+
     }
 
+
     .language-select-row {
-        padding: 14px 16px;
+
+        padding: 16px 15px;
+
     }
+
+
+    .language-select-row select {
+
+        min-width: 125px;
+
+    }
+
 
 }
 
 
-/* =========================================================
-   PETIT MOBILE
-========================================================= */
-
 @media (max-width: 480px) {
 
-    .settings-page {
-        padding: 15px 10px;
-    }
-
-    .settings-header h1 {
-        font-size: 23px;
-    }
-
-    .settings-title-icon {
-        width: 40px;
-        height: 40px;
-    }
 
     .settings-section-title {
-        gap: 11px;
+
+        align-items: flex-start;
+
     }
+
+
+    .settings-title-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        font-size: 16px;
+
+    }
+
+
+    .settings-row-icon {
+
+        width: 38px;
+
+        height: 38px;
+
+        min-width: 38px;
+
+    }
+
+
+    .settings-row-content strong {
+
+        font-size: 14px;
+
+    }
+
 
     .settings-row-content span {
-        font-size: 11px;
+
+        font-size: 12px;
+
     }
 
-    #languageSelect {
-        min-width: 105px;
+
+    .switch {
+
+        width: 48px;
+
+        min-width: 48px;
+
+    }
+
+
+    .slider::before {
+
+        width: 20px;
+
+        height: 20px;
+
+    }
+
+
+    .switch input:checked + .slider::before {
+
+        transform: translateX(20px);
+
+    }
+
+
+    .language-select-row {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .language-select-row select {
+
+        margin-left: auto;
+
     }
 
 }
