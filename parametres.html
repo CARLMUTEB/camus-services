@@ -1,45 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Paramètres de votre compte — CAMU SERVICES">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="color-scheme"
+        content="light dark">
+
+    <meta
+        name="description"
+        content="Paramètres de votre compte — CAMU SERVICES">
 
     <title>Paramètres — CAMU SERVICES</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/parametres.css">
+    <!-- CSS principal -->
+    <link
+        rel="stylesheet"
+        href="css/style.css">
+
+    <!-- CSS paramètres -->
+    <link
+        rel="stylesheet"
+        href="css/parametres.css">
+
+    <!--
+        Appliquer le thème AVANT l'affichage
+        afin de limiter le flash clair/sombre.
+    -->
+    <script>
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem("camu_theme");
+
+            if (
+                savedTheme === "dark" ||
+                savedTheme === "light"
+            ) {
+
+                document.documentElement.setAttribute(
+                    "data-theme",
+                    savedTheme
+                );
+
+            } else {
+
+                document.documentElement.setAttribute(
+                    "data-theme",
+                    "light"
+                );
+
+            }
+
+        })();
+    </script>
+
 </head>
+
 
 <body>
 
-<!-- ==============================
+
+<!-- ==========================================
      HEADER MOBILE
-================================ -->
+========================================== -->
 
 <header class="mobile-header">
 
-    <button id="menuToggle"
-            class="mobile-menu-button"
-            type="button"
-            aria-label="Ouvrir le menu">
+    <button
+        id="menuToggle"
+        class="mobile-menu-button"
+        type="button"
+        aria-label="Ouvrir le menu">
 
         <i class="fa-solid fa-bars"></i>
 
     </button>
 
-    <a href="index.html" class="mobile-logo">
+
+    <a
+        href="index.html"
+        class="mobile-logo">
+
         CAMU <span>SERVICES</span>
+
     </a>
 
-    <a href="compte.html"
-       class="mobile-account"
-       aria-label="Mon compte">
+
+    <a
+        href="compte.html"
+        class="mobile-account"
+        aria-label="Mon compte">
 
         <i class="fa-solid fa-user"></i>
 
@@ -48,70 +110,120 @@
 </header>
 
 
-<!-- ==============================
-     SIDEBAR
-================================ -->
 
-<aside class="sidebar" id="sidebar">
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar">
 
     <div class="sidebar-logo">
+
         CAMU <span>SERVICES</span>
+
     </div>
+
 
     <nav class="sidebar-nav">
 
-        <a href="index.html" class="nav-item">
+
+        <a
+            href="index.html"
+            class="nav-item">
+
             <i class="fa-solid fa-house"></i>
+
             <span>Accueil</span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item">
+
+        <a
+            href="recherche.html"
+            class="nav-item">
+
             <i class="fa-solid fa-magnifying-glass"></i>
+
             <span>Rechercher</span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item">
+
+        <a
+            href="recherche.html"
+            class="nav-item">
+
             <i class="fa-solid fa-folder"></i>
+
             <span>Catégories</span>
+
         </a>
 
-        <a href="publier.html" class="nav-item">
+
+        <a
+            href="publier.html"
+            class="nav-item">
+
             <i class="fa-solid fa-plus"></i>
+
             <span>Publier</span>
+
         </a>
 
-        <a href="favoris.html" class="nav-item">
+
+        <a
+            href="favoris.html"
+            class="nav-item">
+
             <i class="fa-solid fa-heart"></i>
+
             <span>Favoris</span>
+
         </a>
 
-        <a href="compte.html" class="nav-item">
+
+        <a
+            href="compte.html"
+            class="nav-item">
+
             <i class="fa-solid fa-user"></i>
+
             <span>Mon compte</span>
+
         </a>
 
-        <a href="parametres.html"
-           class="nav-item active">
+
+        <a
+            href="parametres.html"
+            class="nav-item active">
 
             <i class="fa-solid fa-gear"></i>
+
             <span>Paramètres</span>
 
         </a>
+
 
     </nav>
 
 </aside>
 
 
-<!-- ==============================
+
+<!-- ==========================================
      CONTENU
-================================ -->
+========================================== -->
 
 <main class="main-content">
 
     <div class="settings-page">
 
-        <!-- EN-TÊTE -->
+
+        <!-- ======================================
+             EN-TÊTE
+        ======================================= -->
 
         <section class="settings-header">
 
@@ -125,12 +237,15 @@
 
                 </span>
 
+
                 <h1>
                     Paramètres du compte
                 </h1>
 
+
                 <p>
-                    Gérez les préférences et la sécurité de votre compte.
+                    Gérez les préférences et la sécurité
+                    de votre compte.
                 </p>
 
             </div>
@@ -138,17 +253,22 @@
         </section>
 
 
-        <!-- ==============================
+
+        <!-- ======================================
              COMPTE
-        ================================ -->
+        ======================================= -->
 
         <section class="settings-section">
+
 
             <div class="settings-section-title">
 
                 <div class="settings-title-icon account-icon">
+
                     <i class="fa-solid fa-user"></i>
+
                 </div>
+
 
                 <div>
 
@@ -165,12 +285,17 @@
             </div>
 
 
-            <a href="compte.html"
-               class="settings-row">
+
+            <a
+                href="compte.html"
+                class="settings-row">
 
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-user-pen"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -184,17 +309,25 @@
 
                 </div>
 
-                <i class="fa-solid fa-chevron-right settings-arrow"></i>
+
+                <i
+                    class="fa-solid fa-chevron-right settings-arrow">
+                </i>
 
             </a>
 
 
-            <a href="compte.html#mes-annonces"
-               class="settings-row">
+
+            <a
+                href="compte.html#mes-annonces"
+                class="settings-row">
 
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-bullhorn"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -208,17 +341,25 @@
 
                 </div>
 
-                <i class="fa-solid fa-chevron-right settings-arrow"></i>
+
+                <i
+                    class="fa-solid fa-chevron-right settings-arrow">
+                </i>
 
             </a>
 
 
-            <a href="favoris.html"
-               class="settings-row">
+
+            <a
+                href="favoris.html"
+                class="settings-row">
 
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-heart"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -232,24 +373,116 @@
 
                 </div>
 
-                <i class="fa-solid fa-chevron-right settings-arrow"></i>
+
+                <i
+                    class="fa-solid fa-chevron-right settings-arrow">
+                </i>
 
             </a>
+
 
         </section>
 
 
-        <!-- ==============================
-             SÉCURITÉ
-        ================================ -->
+
+        <!-- ======================================
+             APPARENCE
+        ======================================= -->
 
         <section class="settings-section">
+
+
+            <div class="settings-section-title">
+
+                <div class="settings-title-icon appearance-icon">
+
+                    <i
+                        id="themeSectionIcon"
+                        class="fa-solid fa-moon">
+                    </i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Apparence
+                    </h2>
+
+                    <p>
+                        Personnalisez l'apparence de CAMU SERVICES.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="settings-row">
+
+
+                <div class="settings-row-icon">
+
+                    <i
+                        id="themeRowIcon"
+                        class="fa-solid fa-moon">
+                    </i>
+
+                </div>
+
+
+                <div class="settings-row-content">
+
+                    <strong id="themeTitle">
+                        Mode clair
+                    </strong>
+
+                    <span id="themeDescription">
+                        Utiliser l'apparence claire de CAMU SERVICES
+                    </span>
+
+                </div>
+
+
+                <label
+                    class="switch"
+                    aria-label="Changer le mode">
+
+
+                    <input
+                        type="checkbox"
+                        id="themeToggle">
+
+
+                    <span class="slider"></span>
+
+
+                </label>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ======================================
+             SÉCURITÉ
+        ======================================= -->
+
+        <section class="settings-section">
+
 
             <div class="settings-section-title">
 
                 <div class="settings-title-icon security-icon">
+
                     <i class="fa-solid fa-shield-halved"></i>
+
                 </div>
+
 
                 <div>
 
@@ -266,13 +499,19 @@
             </div>
 
 
-            <button id="changePasswordButton"
-                    class="settings-row settings-row-button"
-                    type="button">
+
+            <button
+                id="changePasswordButton"
+                class="settings-row settings-row-button"
+                type="button">
+
 
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-key"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -286,24 +525,34 @@
 
                 </div>
 
-                <i class="fa-solid fa-chevron-right settings-arrow"></i>
+
+                <i
+                    class="fa-solid fa-chevron-right settings-arrow">
+                </i>
+
 
             </button>
+
 
         </section>
 
 
-        <!-- ==============================
+
+        <!-- ======================================
              NOTIFICATIONS
-        ================================ -->
+        ======================================= -->
 
         <section class="settings-section">
+
 
             <div class="settings-section-title">
 
                 <div class="settings-title-icon notification-icon">
+
                     <i class="fa-solid fa-bell"></i>
+
                 </div>
+
 
                 <div>
 
@@ -320,11 +569,16 @@
             </div>
 
 
+
             <div class="settings-row">
 
+
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-bell"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -338,32 +592,44 @@
 
                 </div>
 
+
                 <label class="switch">
 
-                    <input type="checkbox"
-                           id="notificationsToggle"
-                           checked>
+
+                    <input
+                        type="checkbox"
+                        id="notificationsToggle"
+                        checked>
+
 
                     <span class="slider"></span>
 
+
                 </label>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ==============================
+
+        <!-- ======================================
              LANGUE
-        ================================ -->
+        ======================================= -->
 
         <section class="settings-section">
+
 
             <div class="settings-section-title">
 
                 <div class="settings-title-icon language-icon">
+
                     <i class="fa-solid fa-language"></i>
+
                 </div>
+
 
                 <div>
 
@@ -380,11 +646,16 @@
             </div>
 
 
+
             <div class="language-select-row">
 
+
                 <div class="settings-row-icon">
+
                     <i class="fa-solid fa-globe"></i>
+
                 </div>
+
 
                 <div class="settings-row-content">
 
@@ -398,34 +669,51 @@
 
                 </div>
 
-                <select id="languageSelect">
+
+                <select
+                    id="languageSelect">
+
 
                     <option value="fr">
                         Français
                     </option>
 
+
                     <option value="en">
                         English
                     </option>
 
+
+                    <option value="sw">
+                        Kiswahili
+                    </option>
+
+
                 </select>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- ==============================
+
+        <!-- ======================================
              ZONE DANGEREUSE
-        ================================ -->
+        ======================================= -->
 
         <section class="settings-section danger-section">
+
 
             <div class="settings-section-title">
 
                 <div class="settings-title-icon danger-icon">
+
                     <i class="fa-solid fa-triangle-exclamation"></i>
+
                 </div>
+
 
                 <div>
 
@@ -442,63 +730,100 @@
             </div>
 
 
-            <button id="deleteAccountButton"
-                    class="delete-account-button"
-                    type="button">
+
+            <button
+                id="deleteAccountButton"
+                class="delete-account-button"
+                type="button">
+
 
                 <i class="fa-solid fa-trash"></i>
 
                 Supprimer mon compte
 
+
             </button>
+
 
         </section>
 
 
-        <!-- MESSAGE -->
 
-        <div id="settingsMessage"
-             class="settings-message"
-             hidden>
+        <!-- ======================================
+             MESSAGE
+        ======================================= -->
+
+        <div
+            id="settingsMessage"
+            class="settings-message"
+            hidden>
         </div>
 
 
-        <!-- DÉCONNEXION -->
 
-        <button id="logoutButton"
-                class="settings-logout-button"
-                type="button">
+        <!-- ======================================
+             DÉCONNEXION
+        ======================================= -->
+
+        <button
+            id="logoutButton"
+            class="settings-logout-button"
+            type="button">
+
 
             <i class="fa-solid fa-right-from-bracket"></i>
 
             Se déconnecter
 
+
         </button>
 
 
-        <!-- RETOUR -->
 
-        <a href="compte.html"
-           class="back-account-button">
+        <!-- ======================================
+             RETOUR
+        ======================================= -->
+
+        <a
+            href="compte.html"
+            class="back-account-button">
+
 
             <i class="fa-solid fa-arrow-left"></i>
 
             Retour à mon compte
 
+
         </a>
+
 
     </div>
 
 </main>
 
 
-<!-- ==============================
-     JAVASCRIPT
-================================ -->
 
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/parametres.js"></script>
+<!-- ==========================================
+     JAVASCRIPT
+========================================== -->
+
+<script
+    type="module"
+    src="js/auth.js">
+</script>
+
+
+<script
+    type="module"
+    src="js/app.js">
+</script>
+
+
+<script
+    type="module"
+    src="js/parametres.js">
+</script>
+
 
 </body>
 </html>
