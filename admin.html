@@ -1,520 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>CAMU SERVICES ADMIN</title>
 
-    <link rel="icon" href="logo.png">
+    <link
+        rel="icon"
+        href="logo.png"
+    >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
+    <!-- CSS ADMIN -->
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+    <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-</head>
-
-<body class="admin-page">
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-    <main class="admin-main">
-
-        <!-- TOPBAR -->
-        <header class="admin-topbar">
-
-            <div class="admin-topbar-left">
-
-                <a href="index.html" class="admin-back-button">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Retour</span>
-                </a>
-
-                <div>
-                    <p class="admin-breadcrumb">
-                        Administration
-                    </p>
-
-                    <h1>
-                        Tableau de bord
-                    </h1>
-                </div>
-
-            </div>
-
-            <div class="admin-topbar-right">
-
-                <div class="admin-user">
-
-                    <div class="admin-user-avatar">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-
-                    <div class="admin-user-info">
-                        <strong>CAMU SERVICES ADMIN</strong>
-                        <span>Administrateur</span>
-                    </div>
-
-                </div>
-
-                <button
-                    id="adminLogoutButton"
-                    class="admin-logout-topbar"
-                    type="button"
-                    title="Déconnexion"
-                >
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Déconnexion</span>
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <!-- =========================
-             CONTENT
-        ========================== -->
-        <div class="admin-content">
-
-
-            <!-- MESSAGE -->
-            <div
-                id="adminMessage"
-                class="admin-message"
-                hidden
-            ></div>
-
-
-            <!-- =========================
-                 WELCOME
-            ========================== -->
-            <section class="admin-welcome">
-
-                <div>
-
-                    <span class="admin-welcome-label">
-                        Bienvenue 👋
-                    </span>
-
-                    <h2>
-                        Vue générale de CAMU SERVICES
-                    </h2>
-
-                    <p>
-                        Gérez les annonces, les utilisateurs et les
-                        signalements depuis votre espace administrateur.
-                    </p>
-
-                </div>
-
-                <div class="admin-welcome-icon">
-                    <i class="fa-solid fa-chart-pie"></i>
-                </div>
-
-            </section>
-
-
-            <!-- =========================
-                 STATISTICS
-            ========================== -->
-            <section class="admin-stats">
-
-                <!-- USERS -->
-                <article class="admin-stat-card">
-
-                    <div class="admin-stat-icon users">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-
-                    <div class="admin-stat-content">
-
-                        <span>
-                            Utilisateurs
-                        </span>
-
-                        <strong id="totalUsers">
-                            0
-                        </strong>
-
-                        <small>
-                            comptes enregistrés
-                        </small>
-
-                    </div>
-
-                </article>
-
-
-                <!-- ADS -->
-                <article class="admin-stat-card">
-
-                    <div class="admin-stat-icon ads">
-                        <i class="fa-solid fa-bullhorn"></i>
-                    </div>
-
-                    <div class="admin-stat-content">
-
-                        <span>
-                            Annonces
-                        </span>
-
-                        <strong id="totalAds">
-                            0
-                        </strong>
-
-                        <small>
-                            annonces publiées
-                        </small>
-
-                    </div>
-
-                </article>
-
-
-                <!-- REPORTS -->
-                <article class="admin-stat-card">
-
-                    <div class="admin-stat-icon reports">
-                        <i class="fa-solid fa-flag"></i>
-                    </div>
-
-                    <div class="admin-stat-content">
-
-                        <span>
-                            Signalements
-                        </span>
-
-                        <strong id="totalReports">
-                            0
-                        </strong>
-
-                        <small>
-                            signalements reçus
-                        </small>
-
-                    </div>
-
-                </article>
-
-
-                <!-- CATEGORIES -->
-                <article class="admin-stat-card">
-
-                    <div class="admin-stat-icon categories">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-
-                    <div class="admin-stat-content">
-
-                        <span>
-                            Catégories
-                        </span>
-
-                        <strong id="totalCategories">
-                            6
-                        </strong>
-
-                        <small>
-                            catégories actives
-                        </small>
-
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- =========================
-                 QUICK ACTIONS
-            ========================== -->
-            <section class="admin-section">
-
-                <div class="admin-section-header">
-
-                    <div>
-                        <span class="admin-section-label">
-                            Gestion
-                        </span>
-
-                        <h2>
-                            Accès rapide
-                        </h2>
-                    </div>
-
-                </div>
-
-
-                <div class="admin-quick-grid">
-
-                    <button
-                        type="button"
-                        class="admin-quick-card"
-                        data-section="annonces"
-                    >
-
-                        <span class="admin-quick-icon ads">
-                            <i class="fa-solid fa-bullhorn"></i>
-                        </span>
-
-                        <span class="admin-quick-text">
-                            <strong>Gérer les annonces</strong>
-                            <small>
-                                Voir et gérer les annonces publiées
-                            </small>
-                        </span>
-
-                        <i class="fa-solid fa-chevron-right"></i>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="admin-quick-card"
-                        data-section="utilisateurs"
-                    >
-
-                        <span class="admin-quick-icon users">
-                            <i class="fa-solid fa-users"></i>
-                        </span>
-
-                        <span class="admin-quick-text">
-                            <strong>Gérer les utilisateurs</strong>
-                            <small>
-                                Consulter les comptes utilisateurs
-                            </small>
-                        </span>
-
-                        <i class="fa-solid fa-chevron-right"></i>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="admin-quick-card"
-                        data-section="signalements"
-                    >
-
-                        <span class="admin-quick-icon reports">
-                            <i class="fa-solid fa-flag"></i>
-                        </span>
-
-                        <span class="admin-quick-text">
-                            <strong>Voir les signalements</strong>
-                            <small>
-                                Examiner les annonces signalées
-                            </small>
-                        </span>
-
-                        <i class="fa-solid fa-chevron-right"></i>
-
-                    </button>
-
-
-                    <a
-                        href="index.html"
-                        class="admin-quick-card"
-                    >
-
-                        <span class="admin-quick-icon site">
-                            <i class="fa-solid fa-globe"></i>
-                        </span>
-
-                        <span class="admin-quick-text">
-                            <strong>Voir le site</strong>
-                            <small>
-                                Ouvrir CAMU SERVICES
-                            </small>
-                        </span>
-
-                        <i class="fa-solid fa-chevron-right"></i>
-
-                    </a>
-
-                </div>
-
-            </section>
-
-
-            <!-- =========================
-                 RECENT ACTIVITY
-            ========================== -->
-            <section class="admin-section">
-
-                <div class="admin-section-header">
-
-                    <div>
-                        <span class="admin-section-label">
-                            Activité
-                        </span>
-
-                        <h2>
-                            Activité récente
-                        </h2>
-                    </div>
-
-                    <span class="admin-live-status">
-                        <span></span>
-                        En ligne
-                    </span>
-
-                </div>
-
-
-                <div
-                    id="recentActivity"
-                    class="admin-activity"
-                >
-
-                    <div class="admin-loading">
-
-                        <i class="fa-solid fa-spinner fa-spin"></i>
-
-                        <span>
-                            Chargement des activités...
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =========================
-                 OVERVIEW
-            ========================== -->
-            <section class="admin-overview-grid">
-
-                <!-- CATEGORIES -->
-                <div class="admin-section admin-overview-card">
-
-                    <div class="admin-section-header">
-
-                        <div>
-                            <span class="admin-section-label">
-                                Répartition
-                            </span>
-
-                            <h2>
-                                Annonces par catégorie
-                            </h2>
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="categoryStats"
-                        class="admin-simple-stats"
-                    >
-
-                        <div class="admin-loading">
-                            <i class="fa-solid fa-spinner fa-spin"></i>
-                            <span>Chargement...</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CITIES -->
-                <div class="admin-section admin-overview-card">
-
-                    <div class="admin-section-header">
-
-                        <div>
-                            <span class="admin-section-label">
-                                Localisation
-                            </span>
-
-                            <h2>
-                                Annonces par ville
-                            </h2>
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="cityStats"
-                        class="admin-simple-stats"
-                    >
-
-                        <div class="admin-loading">
-                            <i class="fa-solid fa-spinner fa-spin"></i>
-                            <span>Chargement...</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- FOOTER -->
-            <footer class="admin-footer">
-
-                <div>
-                    © 2026 <strong>CAMU SERVICES</strong>.
-                    Tous droits réservés.
-                </div>
-
-                <div>
-                    Administration
-                </div>
-
-            </footer>
-
-        </div>
-
-    </main>
-
-
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/admin.js"></script>
-
-</body>
-</html>
-admin.html
-HTML
-MAI LE SIDEBARE EST TOUJOURS LA
-Modifier
-
-<!DOCTYPE html>
-
-<html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CAMU SERVICES ADMIN</title>
-
-<link rel="icon" href="logo.png">
-
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/admin.css">
-
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
 
 </head>
 
+
 <body class="admin-page">
 
-<!-- =========================
-     MOBILE HEADER
-========================== -->
+
+<!-- =====================================================
+     HEADER MOBILE
+===================================================== -->
+
 <header class="admin-mobile-header">
 
     <button
@@ -522,30 +52,61 @@ Modifier
         class="admin-menu-button"
         type="button"
         aria-label="Ouvrir le menu"
+        aria-controls="adminSidebar"
+        aria-expanded="false"
     >
+
         <i class="fa-solid fa-bars"></i>
+
     </button>
 
-    <div class="admin-mobile-logo">
-        <img src="logo.png" alt="CAMU SERVICES">
-        <span>CAMU SERVICES</span>
-    </div>
+
+    <a
+        href="admin.html"
+        class="admin-mobile-logo"
+    >
+
+        <img
+            src="logo.png"
+            alt="CAMU SERVICES"
+        >
+
+        <span>
+            CAMU SERVICES
+        </span>
+
+    </a>
+
 
     <div class="admin-mobile-user">
+
         <i class="fa-solid fa-user-shield"></i>
+
     </div>
 
 </header>
 
 
-<!-- =========================
-     SIDEBAR
-========================== -->
-<aside id="adminSidebar" class="admin-sidebar">
+
+<!-- =====================================================
+     SIDEBAR ADMIN
+===================================================== -->
+
+<aside
+    id="adminSidebar"
+    class="admin-sidebar"
+>
+
+
+    <!-- SIDEBAR HEADER -->
 
     <div class="admin-sidebar-header">
 
-        <a href="admin.html" class="admin-brand">
+
+        <a
+            href="admin.html"
+            class="admin-brand"
+        >
 
             <img
                 src="logo.png"
@@ -553,12 +114,23 @@ Modifier
                 class="admin-brand-logo"
             >
 
+
             <div>
-                <strong>CAMU SERVICES</strong>
-                <span>ADMIN</span>
+
+                <strong>
+                    CAMU SERVICES
+                </strong>
+
+                <span>
+                    ADMIN
+                </span>
+
             </div>
 
         </a>
+
+
+        <!-- FERMER MOBILE -->
 
         <button
             id="adminCloseSidebar"
@@ -566,151 +138,263 @@ Modifier
             type="button"
             aria-label="Fermer le menu"
         >
+
             <i class="fa-solid fa-xmark"></i>
+
         </button>
 
     </div>
 
 
+
+    <!-- =================================================
+         NAVIGATION ADMIN
+    ================================================== -->
+
     <nav class="admin-navigation">
+
+
+        <!-- TABLEAU DE BORD -->
 
         <a
             href="admin.html"
             class="admin-nav-link active"
         >
+
             <span class="admin-nav-icon dashboard">
+
                 <i class="fa-solid fa-chart-line"></i>
+
             </span>
 
-            <span>Tableau de bord</span>
+            <span>
+                Tableau de bord
+            </span>
+
         </a>
 
+
+
+        <!-- ANNONCES -->
 
         <a
             href="#annonces"
             class="admin-nav-link"
             data-section="annonces"
         >
+
             <span class="admin-nav-icon ads">
+
                 <i class="fa-solid fa-bullhorn"></i>
+
             </span>
 
-            <span>Annonces</span>
+            <span>
+                Annonces
+            </span>
+
         </a>
 
+
+
+        <!-- UTILISATEURS -->
 
         <a
             href="#utilisateurs"
             class="admin-nav-link"
             data-section="utilisateurs"
         >
+
             <span class="admin-nav-icon users">
+
                 <i class="fa-solid fa-users"></i>
+
             </span>
 
-            <span>Utilisateurs</span>
+            <span>
+                Utilisateurs
+            </span>
+
         </a>
 
+
+
+        <!-- SIGNALEMENTS -->
 
         <a
             href="#signalements"
             class="admin-nav-link"
             data-section="signalements"
         >
+
             <span class="admin-nav-icon reports">
+
                 <i class="fa-solid fa-flag"></i>
+
             </span>
 
-            <span>Signalements</span>
+            <span>
+                Signalements
+            </span>
+
         </a>
 
+
+
+        <!-- PARAMÈTRES -->
 
         <a
             href="#parametres"
             class="admin-nav-link"
             data-section="parametres"
         >
+
             <span class="admin-nav-icon settings">
+
                 <i class="fa-solid fa-gear"></i>
+
             </span>
 
-            <span>Paramètres</span>
+            <span>
+                Paramètres
+            </span>
+
         </a>
 
     </nav>
 
 
+
+    <!-- =================================================
+         BAS SIDEBAR
+    ================================================== -->
+
     <div class="admin-sidebar-bottom">
 
-        <a href="index.html" class="admin-back-site">
+
+        <!-- RETOUR SITE -->
+
+        <a
+            href="index.html"
+            class="admin-back-site"
+        >
+
             <i class="fa-solid fa-arrow-left"></i>
-            <span>Retour au site</span>
+
+            <span>
+                Retour au site
+            </span>
+
         </a>
+
+
+
+        <!-- DÉCONNEXION -->
 
         <button
             id="adminLogoutButton"
             class="admin-logout-button"
             type="button"
         >
+
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Déconnexion</span>
+
+            <span>
+                Déconnexion
+            </span>
+
         </button>
+
 
     </div>
 
 </aside>
 
 
-<!-- Overlay mobile -->
-<div id="adminOverlay" class="admin-overlay"></div>
+
+<!-- =====================================================
+     OVERLAY MOBILE
+===================================================== -->
+
+<div
+    id="adminOverlay"
+    class="admin-overlay"
+></div>
 
 
-<!-- =========================
-     MAIN
-========================== -->
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+===================================================== -->
+
 <main class="admin-main">
 
-    <!-- TOPBAR -->
+
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
+
     <header class="admin-topbar">
 
+
         <div>
+
             <p class="admin-breadcrumb">
                 Administration
             </p>
 
+
             <h1>
                 Tableau de bord
             </h1>
+
         </div>
+
 
 
         <div class="admin-topbar-right">
 
+
             <div class="admin-user">
 
+
                 <div class="admin-user-avatar">
+
                     <i class="fa-solid fa-user-shield"></i>
+
                 </div>
 
+
                 <div class="admin-user-info">
-                    <strong>CAMU SERVICES ADMIN</strong>
-                    <span>Administrateur</span>
+
+                    <strong>
+                        CAMU SERVICES ADMIN
+                    </strong>
+
+                    <span>
+                        Administrateur
+                    </span>
+
                 </div>
 
             </div>
+
 
         </div>
 
     </header>
 
 
-    <!-- =========================
-         CONTENT
-    ========================== -->
+
+    <!-- =================================================
+         CONTENU
+    ================================================== -->
+
     <div class="admin-content">
 
 
         <!-- MESSAGE -->
+
         <div
             id="adminMessage"
             class="admin-message"
@@ -718,10 +402,13 @@ Modifier
         ></div>
 
 
-        <!-- =========================
-             WELCOME
-        ========================== -->
+
+        <!-- =================================================
+             BIENVENUE
+        ================================================== -->
+
         <section class="admin-welcome">
+
 
             <div>
 
@@ -729,9 +416,11 @@ Modifier
                     Bienvenue 👋
                 </span>
 
+
                 <h2>
                     Vue générale de CAMU SERVICES
                 </h2>
+
 
                 <p>
                     Gérez les annonces, les utilisateurs et les
@@ -740,24 +429,35 @@ Modifier
 
             </div>
 
+
             <div class="admin-welcome-icon">
+
                 <i class="fa-solid fa-chart-pie"></i>
+
             </div>
 
         </section>
 
 
-        <!-- =========================
-             STATISTICS
-        ========================== -->
+
+        <!-- =================================================
+             STATISTIQUES
+        ================================================== -->
+
         <section class="admin-stats">
 
-            <!-- USERS -->
+
+            <!-- UTILISATEURS -->
+
             <article class="admin-stat-card">
 
+
                 <div class="admin-stat-icon users">
+
                     <i class="fa-solid fa-users"></i>
+
                 </div>
+
 
                 <div class="admin-stat-content">
 
@@ -765,9 +465,11 @@ Modifier
                         Utilisateurs
                     </span>
 
+
                     <strong id="totalUsers">
                         0
                     </strong>
+
 
                     <small>
                         comptes enregistrés
@@ -778,12 +480,18 @@ Modifier
             </article>
 
 
-            <!-- ADS -->
+
+            <!-- ANNONCES -->
+
             <article class="admin-stat-card">
 
+
                 <div class="admin-stat-icon ads">
+
                     <i class="fa-solid fa-bullhorn"></i>
+
                 </div>
+
 
                 <div class="admin-stat-content">
 
@@ -791,9 +499,11 @@ Modifier
                         Annonces
                     </span>
 
+
                     <strong id="totalAds">
                         0
                     </strong>
+
 
                     <small>
                         annonces publiées
@@ -804,12 +514,18 @@ Modifier
             </article>
 
 
-            <!-- REPORTS -->
+
+            <!-- SIGNALEMENTS -->
+
             <article class="admin-stat-card">
 
+
                 <div class="admin-stat-icon reports">
+
                     <i class="fa-solid fa-flag"></i>
+
                 </div>
+
 
                 <div class="admin-stat-content">
 
@@ -817,9 +533,11 @@ Modifier
                         Signalements
                     </span>
 
+
                     <strong id="totalReports">
                         0
                     </strong>
+
 
                     <small>
                         signalements reçus
@@ -830,12 +548,18 @@ Modifier
             </article>
 
 
-            <!-- CATEGORIES -->
+
+            <!-- CATÉGORIES -->
+
             <article class="admin-stat-card">
 
+
                 <div class="admin-stat-icon categories">
+
                     <i class="fa-solid fa-layer-group"></i>
+
                 </div>
+
 
                 <div class="admin-stat-content">
 
@@ -843,9 +567,11 @@ Modifier
                         Catégories
                     </span>
 
+
                     <strong id="totalCategories">
                         6
                     </strong>
+
 
                     <small>
                         catégories actives
@@ -855,30 +581,43 @@ Modifier
 
             </article>
 
+
         </section>
 
 
-        <!-- =========================
-             QUICK ACTIONS
-        ========================== -->
+
+        <!-- =================================================
+             ACCÈS RAPIDE
+        ================================================== -->
+
         <section class="admin-section">
+
 
             <div class="admin-section-header">
 
+
                 <div>
+
                     <span class="admin-section-label">
                         Gestion
                     </span>
 
+
                     <h2>
                         Accès rapide
                     </h2>
+
                 </div>
+
 
             </div>
 
 
+
             <div class="admin-quick-grid">
+
+
+                <!-- ANNONCES -->
 
                 <button
                     type="button"
@@ -887,20 +626,32 @@ Modifier
                 >
 
                     <span class="admin-quick-icon ads">
+
                         <i class="fa-solid fa-bullhorn"></i>
+
                     </span>
 
+
                     <span class="admin-quick-text">
-                        <strong>Gérer les annonces</strong>
+
+                        <strong>
+                            Gérer les annonces
+                        </strong>
+
                         <small>
                             Voir et gérer les annonces publiées
                         </small>
+
                     </span>
+
 
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </button>
 
+
+
+                <!-- UTILISATEURS -->
 
                 <button
                     type="button"
@@ -909,20 +660,32 @@ Modifier
                 >
 
                     <span class="admin-quick-icon users">
+
                         <i class="fa-solid fa-users"></i>
+
                     </span>
 
+
                     <span class="admin-quick-text">
-                        <strong>Gérer les utilisateurs</strong>
+
+                        <strong>
+                            Gérer les utilisateurs
+                        </strong>
+
                         <small>
                             Consulter les comptes utilisateurs
                         </small>
+
                     </span>
+
 
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </button>
 
+
+
+                <!-- SIGNALEMENTS -->
 
                 <button
                     type="button"
@@ -931,20 +694,32 @@ Modifier
                 >
 
                     <span class="admin-quick-icon reports">
+
                         <i class="fa-solid fa-flag"></i>
+
                     </span>
 
+
                     <span class="admin-quick-text">
-                        <strong>Voir les signalements</strong>
+
+                        <strong>
+                            Voir les signalements
+                        </strong>
+
                         <small>
                             Examiner les annonces signalées
                         </small>
+
                     </span>
+
 
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </button>
 
+
+
+                <!-- VOIR LE SITE -->
 
                 <a
                     href="index.html"
@@ -952,48 +727,71 @@ Modifier
                 >
 
                     <span class="admin-quick-icon site">
+
                         <i class="fa-solid fa-globe"></i>
+
                     </span>
 
+
                     <span class="admin-quick-text">
-                        <strong>Voir le site</strong>
+
+                        <strong>
+                            Voir le site
+                        </strong>
+
                         <small>
                             Ouvrir CAMU SERVICES
                         </small>
+
                     </span>
+
 
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </a>
+
 
             </div>
 
         </section>
 
 
-        <!-- =========================
-             RECENT ACTIVITY
-        ========================== -->
+
+        <!-- =================================================
+             ACTIVITÉ RÉCENTE
+        ================================================== -->
+
         <section class="admin-section">
+
 
             <div class="admin-section-header">
 
+
                 <div>
+
                     <span class="admin-section-label">
                         Activité
                     </span>
 
+
                     <h2>
                         Activité récente
                     </h2>
+
                 </div>
 
+
                 <span class="admin-live-status">
+
                     <span></span>
+
                     En ligne
+
                 </span>
 
+
             </div>
+
 
 
             <div
@@ -1013,30 +811,40 @@ Modifier
 
             </div>
 
+
         </section>
 
 
-        <!-- =========================
-             OVERVIEW
-        ========================== -->
+
+        <!-- =================================================
+             VUE D'ENSEMBLE
+        ================================================== -->
+
         <section class="admin-overview-grid">
 
-            <!-- CATEGORIES -->
+
+            <!-- CATÉGORIES -->
+
             <div class="admin-section admin-overview-card">
+
 
                 <div class="admin-section-header">
 
                     <div>
+
                         <span class="admin-section-label">
                             Répartition
                         </span>
 
+
                         <h2>
                             Annonces par catégorie
                         </h2>
+
                     </div>
 
                 </div>
+
 
                 <div
                     id="categoryStats"
@@ -1044,31 +852,44 @@ Modifier
                 >
 
                     <div class="admin-loading">
+
                         <i class="fa-solid fa-spinner fa-spin"></i>
-                        <span>Chargement...</span>
+
+                        <span>
+                            Chargement...
+                        </span>
+
                     </div>
 
                 </div>
+
 
             </div>
 
 
-            <!-- CITIES -->
+
+            <!-- VILLES -->
+
             <div class="admin-section admin-overview-card">
+
 
                 <div class="admin-section-header">
 
                     <div>
+
                         <span class="admin-section-label">
                             Localisation
                         </span>
 
+
                         <h2>
                             Annonces par ville
                         </h2>
+
                     </div>
 
                 </div>
+
 
                 <div
                     id="cityStats"
@@ -1076,43 +897,81 @@ Modifier
                 >
 
                     <div class="admin-loading">
+
                         <i class="fa-solid fa-spinner fa-spin"></i>
-                        <span>Chargement...</span>
+
+                        <span>
+                            Chargement...
+                        </span>
+
                     </div>
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- FOOTER -->
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
         <footer class="admin-footer">
 
+
             <div>
-                © 2026 <strong>CAMU SERVICES</strong>.
+
+                © 2026
+
+                <strong>
+                    CAMU SERVICES
+                </strong>.
+
                 Tous droits réservés.
+
             </div>
+
 
             <div>
                 Administration
             </div>
 
+
         </footer>
+
 
     </div>
 
 </main>
 
 
-<!-- =========================
+
+<!-- =====================================================
      JAVASCRIPT
-========================== -->
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/admin.js"></script>
+===================================================== -->
 
-</body> </html>
+<script
+    type="module"
+    src="js/auth.js"
+></script>
 
-Fermer
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/admin.js"
+></script>
+
+
+</body>
+
+</html>
