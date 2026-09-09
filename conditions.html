@@ -1,93 +1,823 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Conditions d'utilisation | CAMU SERVICES</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-    /* Design spécifique pour la page Conditions */
-    .content-box {
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 20px;
-        border: 1px solid var(--border);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        margin-top: 10px;
-    }
-    .condition-item {
-        margin-bottom: 25px;
-    }
-    .condition-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 16px;
-        font-weight: 800;
-        color: var(--dark);
-        margin-bottom: 8px;
-    }
-    .condition-title i {
-        color: var(--red);
-        font-size: 14px;
-    }
-    .condition-text {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #555;
-        padding-left: 24px;
-    }
-</style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Mentions légales de CAMU SERVICES, plateforme de mise en relation en République démocratique du Congo."
+    >
+
+    <title>Mentions légales | CAMU SERVICES</title>
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS de la page -->
+    <link rel="stylesheet" href="css/conditions.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 <body>
 
-<header class="top-bar">
-    <a href="index.html" class="menu-toggle"><i class="fa-solid fa-arrow-left"></i></a>
-    <div class="logo-text">CAMU <span>SERVICES</span></div>
-    <a href="profil.html" class="profile-btn"><i class="fa-solid fa-user"></i></a>
-</header>
+    <!-- =========================
+         HEADER MOBILE
+    ========================== -->
+    <header class="mobile-header">
 
-<main class="container">
-    <div class="content-box">
-        <h1 style="font-size: 24px; font-weight: 900; margin-bottom: 10px;">Conditions d'utilisation</h1>
-        <p style="font-size: 13px; color: var(--muted); margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-            Dernière mise à jour : août 2026
-        </p>
+        <button
+            id="menuToggle"
+            class="menu-toggle"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
 
-        <div class="condition-item">
-            <div class="condition-title"><i class="fa-solid fa-circle-check"></i> 1. Utilisation de CAMU SERVICES</div>
-            <p class="condition-text">CAMU SERVICES est une plateforme destinée à faciliter la mise en relation entre clients et prestataires de services locaux.</p>
+        <a href="index.html" class="mobile-logo">
+            CAMU SERVICES
+        </a>
+
+    </header>
+
+
+    <!-- =========================
+         OVERLAY
+    ========================== -->
+    <div
+        id="sidebarOverlay"
+        class="sidebar-overlay"
+    ></div>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside
+        id="sidebar"
+        class="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a href="index.html" class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+
+                <div class="brand-text">
+                    <strong>CAMU</strong>
+                    <span>SERVICES</span>
+                </div>
+            </a>
+
+            <button
+                id="closeSidebar"
+                class="close-sidebar"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
         </div>
 
-        <div class="condition-item">
-            <div class="condition-title"><i class="fa-solid fa-circle-check"></i> 2. Prestataires</div>
-            <p class="condition-text">Chaque prestataire s'engage à fournir des informations véridiques et à proposer uniquement des services conformes à la législation.</p>
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a
+                href="publier.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+            <!-- Administration -->
+            <a
+                href="admin.html"
+                class="nav-item admin-nav-item"
+                id="adminNavItem"
+                style="display:none;"
+            >
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Administration</span>
+            </a>
+
+            <a
+                href="a-propos.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-circle-info"></i>
+                <span>À propos</span>
+            </a>
+
+            <a
+                href="contact.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="sidebar-footer-links">
+
+                <a
+                    href="conditions.html"
+                    class="active"
+                >
+                    Mentions légales
+                </a>
+
+                <a href="politique.html">
+                    Politique de confidentialité
+                </a>
+
+                <a href="aide.html">
+                    Aide
+                </a>
+
+            </div>
+
+            <p>
+                © 2026 CAMU SERVICES
+            </p>
+
         </div>
 
-        <div class="condition-item">
-            <div class="condition-title"><i class="fa-solid fa-circle-check"></i> 3. Clients</div>
-            <p class="condition-text">Les utilisateurs sont tenus de respecter les prestataires et d'utiliser la plateforme avec courtoisie et intégrité.</p>
-        </div>
+    </aside>
 
-        <div class="condition-item">
-            <div class="condition-title"><i class="fa-solid fa-circle-check"></i> 4. Transactions</div>
-            <p class="condition-text">La plateforme est un intermédiaire. Tous les paiements et modalités d'exécution sont gérés directement entre les deux parties.</p>
-        </div>
 
-        <div class="condition-item">
-            <div class="condition-title"><i class="fa-solid fa-circle-check"></i> 5. Modération</div>
-            <p class="condition-text">CAMU SERVICES se réserve le droit de modérer les annonces et de suspendre tout compte ne respectant pas nos règles communautaires.</p>
-        </div>
-    </div>
-</main>
+    <!-- =========================
+         CONTENU PRINCIPAL
+    ========================== -->
+    <main class="legal-page">
 
-<nav class="bottom-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i>Accueil</a>
-    <a href="publier.html"><i class="fa-solid fa-circle-plus"></i>Publier</a>
-    <a href="chat.html"><i class="fa-solid fa-comments"></i>Chat</a>
-    <a href="profil.html"><i class="fa-solid fa-user"></i>Profil</a>
-</nav>
+        <!-- HERO -->
+        <section class="legal-hero">
+
+            <div class="legal-hero-icon">
+                <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+
+            <span class="legal-badge">
+                INFORMATIONS LÉGALES
+            </span>
+
+            <h1>
+                Mentions légales
+            </h1>
+
+            <p>
+                Retrouvez ici les informations légales
+                relatives à la plateforme CAMU SERVICES.
+            </p>
+
+            <div class="legal-update">
+                <i class="fa-regular fa-calendar"></i>
+                Dernière mise à jour : septembre 2026
+            </div>
+
+        </section>
+
+
+        <!-- CONTENU -->
+        <section class="legal-content">
+
+            <!-- 1 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    01
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-building"></i>
+                        Présentation de CAMU SERVICES
+                    </h2>
+
+                    <p>
+                        <strong>CAMU SERVICES</strong> est une
+                        plateforme numérique destinée à faciliter
+                        la mise en relation entre les utilisateurs,
+                        les vendeurs, les prestataires de services
+                        et les annonceurs.
+                    </p>
+
+                    <p>
+                        La plateforme permet notamment de rechercher,
+                        découvrir, publier et consulter des offres
+                        et des annonces.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 2 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    02
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-id-card"></i>
+                        Éditeur de la plateforme
+                    </h2>
+
+                    <div class="legal-info-grid">
+
+                        <div class="legal-info-item">
+                            <span>Nom</span>
+                            <strong>CAMU SERVICES</strong>
+                        </div>
+
+                        <div class="legal-info-item">
+                            <span>Pays</span>
+                            <strong>
+                                République démocratique du Congo
+                            </strong>
+                        </div>
+
+                        <div class="legal-info-item">
+                            <span>Zone d'activité</span>
+                            <strong>
+                                Haut-Katanga et Lualaba
+                            </strong>
+                        </div>
+
+                        <div class="legal-info-item">
+                            <span>Villes couvertes</span>
+                            <strong>
+                                Lubumbashi, Kolwezi, Likasi et Fungurume
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="legal-warning">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <p>
+                            Les informations juridiques supplémentaires
+                            telles que l'identité juridique du propriétaire,
+                            l'adresse officielle, le numéro d'enregistrement
+                            ou les informations fiscales seront ajoutées
+                            lorsqu'elles seront officiellement disponibles.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- 3 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    03
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-bullseye"></i>
+                        Objet de la plateforme
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES a pour objectif de permettre
+                        aux utilisateurs de trouver plus facilement
+                        des produits, services, offres et opportunités
+                        proposés par des annonceurs.
+                    </p>
+
+                    <p>
+                        La plateforme facilite la mise en relation
+                        entre les différentes parties. Les échanges
+                        et transactions peuvent ensuite être réalisés
+                        directement entre les utilisateurs concernés.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 4 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    04
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-server"></i>
+                        Hébergement
+                    </h2>
+
+                    <p>
+                        Le site internet de CAMU SERVICES est actuellement
+                        accessible en ligne dans le cadre de son
+                        développement et de sa mise à disposition
+                        des utilisateurs.
+                    </p>
+
+                    <p>
+                        Les informations définitives concernant
+                        l'hébergeur commercial, son adresse et ses
+                        coordonnées seront ajoutées lorsque
+                        l'hébergement définitif de la plateforme
+                        sera établi.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 5 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    05
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-copyright"></i>
+                        Propriété intellectuelle
+                    </h2>
+
+                    <p>
+                        Le nom <strong>CAMU SERVICES</strong>, son
+                        identité visuelle, son logo, son interface,
+                        ses textes, ses éléments graphiques et les
+                        différents contenus créés pour la plateforme
+                        sont protégés par les règles applicables en
+                        matière de propriété intellectuelle.
+                    </p>
+
+                    <p>
+                        Toute reproduction, modification, distribution
+                        ou utilisation non autorisée d'un élément
+                        appartenant à CAMU SERVICES peut être interdite.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 6 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    06
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Responsabilité
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES agit principalement comme une
+                        plateforme de mise en relation.
+                    </p>
+
+                    <p>
+                        Les utilisateurs sont responsables des informations,
+                        produits, services et annonces qu'ils publient
+                        sur la plateforme.
+                    </p>
+
+                    <p>
+                        Les utilisateurs doivent s'assurer que leurs
+                        activités et leurs échanges respectent les lois
+                        et réglementations applicables.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 7 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    07
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-user-shield"></i>
+                        Données personnelles
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES peut collecter certaines informations
+                        nécessaires au fonctionnement de la plateforme,
+                        notamment lors de la création d'un compte,
+                        de la publication d'une annonce ou de l'utilisation
+                        de certaines fonctionnalités.
+                    </p>
+
+                    <p>
+                        Les données personnelles sont destinées à permettre
+                        le fonctionnement, la sécurité et l'amélioration
+                        des services proposés par CAMU SERVICES.
+                    </p>
+
+                    <a
+                        href="politique.html"
+                        class="legal-link"
+                    >
+                        Consulter la politique de confidentialité
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- 8 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    08
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-bullhorn"></i>
+                        Publications et annonces
+                    </h2>
+
+                    <p>
+                        Chaque utilisateur qui publie une annonce
+                        doit fournir des informations aussi exactes
+                        et claires que possible.
+                    </p>
+
+                    <p>
+                        Les contenus illégaux, frauduleux, trompeurs,
+                        offensants ou contraires aux règles de la
+                        plateforme peuvent être retirés.
+                    </p>
+
+                    <p>
+                        CAMU SERVICES peut prendre des mesures de
+                        modération lorsqu'une publication ne respecte
+                        pas les règles applicables à la plateforme.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 9 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    09
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-handshake"></i>
+                        Transactions entre utilisateurs
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES facilite la mise en relation
+                        mais n'est pas nécessairement partie aux
+                        transactions conclues entre les utilisateurs.
+                    </p>
+
+                    <p>
+                        Les modalités de paiement, de livraison,
+                        de prestation ou de remise d'un produit
+                        doivent être convenues directement entre
+                        les parties concernées.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- 10 -->
+            <article class="legal-card">
+
+                <div class="legal-number">
+                    10
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-envelope"></i>
+                        Contact
+                    </h2>
+
+                    <p>
+                        Pour toute question concernant CAMU SERVICES,
+                        ses services ou les informations présentées
+                        sur cette page, vous pouvez nous contacter.
+                    </p>
+
+                    <a
+                        href="contact.html"
+                        class="legal-contact-button"
+                    >
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Nous contacter
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- 11 -->
+            <article class="legal-card final-card">
+
+                <div class="legal-number">
+                    11
+                </div>
+
+                <div class="legal-card-content">
+
+                    <h2>
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Mise à jour
+                    </h2>
+
+                    <p>
+                        Les présentes mentions légales peuvent être
+                        modifiées afin de tenir compte de l'évolution
+                        de CAMU SERVICES, de ses fonctionnalités ou
+                        des exigences légales applicables.
+                    </p>
+
+                    <p class="last-update">
+                        <strong>
+                            Dernière mise à jour :
+                        </strong>
+                        septembre 2026
+                    </p>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =========================
+             CTA
+        ========================== -->
+        <section class="legal-cta">
+
+            <div class="legal-cta-icon">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Une question ?
+                </h2>
+
+                <p>
+                    Notre équipe reste à votre écoute.
+                </p>
+
+            </div>
+
+            <a
+                href="contact.html"
+                class="cta-button"
+            >
+                Nous contacter
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script type="module">
+
+        import { auth } from "./js/firebase-config.js";
+
+        import {
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        const ADMIN_EMAIL =
+            "meschackmuteb@gmail.com";
+
+
+        const adminNavItem =
+            document.getElementById("adminNavItem");
+
+
+        onAuthStateChanged(
+            auth,
+            (user) => {
+
+                if (
+                    user &&
+                    user.email &&
+                    user.email.toLowerCase() ===
+                    ADMIN_EMAIL.toLowerCase()
+                ) {
+
+                    if (adminNavItem) {
+                        adminNavItem.style.display =
+                            "flex";
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           MENU MOBILE
+        ========================== */
+
+        const menuToggle =
+            document.getElementById("menuToggle");
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const sidebarOverlay =
+            document.getElementById("sidebarOverlay");
+
+        const closeSidebar =
+            document.getElementById("closeSidebar");
+
+
+        function openMenu() {
+
+            if (sidebar) {
+                sidebar.classList.add("open");
+            }
+
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.add("active");
+            }
+
+        }
+
+
+        function closeMenu() {
+
+            if (sidebar) {
+                sidebar.classList.remove("open");
+            }
+
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.remove("active");
+            }
+
+        }
+
+
+        if (menuToggle) {
+
+            menuToggle.addEventListener(
+                "click",
+                openMenu
+            );
+
+        }
+
+
+        if (closeSidebar) {
+
+            closeSidebar.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        }
+
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(".sidebar-nav a")
+            .forEach(link => {
+
+                link.addEventListener(
+                    "click",
+                    closeMenu
+                );
+
+            });
+
+    </script>
 
 </body>
 </html>
