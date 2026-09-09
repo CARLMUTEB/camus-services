@@ -1,44 +1,1005 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMU SERVICES - À propos</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>À propos — CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Découvrez CAMU SERVICES, une plateforme numérique qui facilite la recherche, la vente et la réservation de produits et services en RDC."
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/a-propos.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
-<body style="background: #f9f9f9; padding-bottom: 70px;">
 
-  <header class="top-bar">
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2 style="font-size: 16px; margin: 0; color: white;">À Propos de Nous</h2>
-    </div>
-  </header>
+<body>
 
-  <main style="max-width: 600px; margin: 20px auto; padding: 0 15px;">
-    <div style="background: white; border-radius: 10px; padding: 20px; border: 1px solid #eee; line-height: 1.6;">
-      <h3 style="font-size: 18px; font-weight: bold; color: #d32f2f; margin-bottom: 5px; text-align: center;">CAMU SERVICES</h3>
-      <p style="text-align: center; font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Trouver. Acheter. Réserver.</p>
+<div class="app">
 
-      <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-bullseye" style="color: #d32f2f;"></i> Notre Vision</h4>
-      <p style="font-size: 13px; color: #444; margin-bottom: 15px;">CAMU SERVICES est une plateforme conçue pour dynamiser le commerce de proximité et valoriser les compétences des entrepreneurs locaux.</p>
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
-      <h4 style="font-size: 14px; font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-handshake" style="color: #d32f2f;"></i> Notre Mission</h4>
-      <p style="font-size: 13px; color: #444; margin-bottom: 15px;">Offrir une vitrine simple et puissante à chaque artisan, indépendant ou entreprise pour mettre en valeur ses offres et échanger directement avec ses clients sans aucun intermédiaire.</p>
+    <aside class="sidebar" id="sidebar">
 
-      <div style="background: #fafafa; padding: 12px; border-radius: 8px; border-left: 3px solid #d32f2f; font-size: 12px; color: #555;">
-        <strong>Engagements :</strong> Mise en relation directe par WhatsApp, mise en avant de prestataires vérifiés, et plateforme 100% accessible.
-      </div>
-    </div>
-  </main>
+        <div class="sidebar-header">
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
-    <a href="publier.html" class="nav-item"><i class="fa-solid fa-plus-circle"></i><span>Publier</span></a>
-    <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
-    <a href="favoris.html" class="nav-item"><i class="fa-solid fa-heart"></i><span>Favoris</span></a>
-  </nav>
+            <a href="index.html" class="brand">
+                <span class="brand-main">CAMU</span>
+                <span class="brand-sub">SERVICES</span>
+            </a>
+
+            <button
+                class="close-sidebar"
+                id="closeSidebar"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a href="recherche.html" class="nav-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a href="explorer.html" class="nav-item">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a href="publier.html" class="nav-item">
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a href="favoris.html" class="nav-item">
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a href="compte.html" class="nav-item">
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a href="parametres.html" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+            <a
+                href="admin.html"
+                class="nav-item"
+                id="adminNavItem"
+                style="display:none;"
+            >
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Administration</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a href="a-propos.html" class="nav-item active">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>À propos</span>
+            </a>
+
+            <a href="contact.html" class="nav-item">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+
+            <a href="connexion.html" class="nav-item">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- OVERLAY MOBILE -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =========================
+         CONTENU PRINCIPAL
+    ========================== -->
+
+    <main class="about-page">
+
+        <!-- HEADER MOBILE -->
+
+        <header class="mobile-header">
+
+            <button
+                id="menuToggle"
+                class="menu-toggle"
+                aria-label="Ouvrir le menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <a href="index.html" class="mobile-logo">
+                <span>CAMU</span>
+                <small>SERVICES</small>
+            </a>
+
+            <a href="compte.html" class="mobile-account">
+                <i class="fa-regular fa-user"></i>
+            </a>
+
+        </header>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="about-hero">
+
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    <i class="fa-solid fa-building"></i>
+                    À propos de CAMU SERVICES
+                </span>
+
+                <h1>
+                    Une plateforme pour
+                    <span>trouver, acheter et réserver</span>
+                    facilement.
+                </h1>
+
+                <p>
+                    CAMU SERVICES est une plateforme numérique conçue
+                    pour faciliter la mise en relation entre les
+                    particuliers, entrepreneurs, commerçants,
+                    entreprises et prestataires de services.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="recherche.html"
+                        class="primary-button"
+                    >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Explorer les annonces
+                    </a>
+
+                    <a
+                        href="publier.html"
+                        class="secondary-button"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Publier une annonce
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             QUI SOMMES-NOUS ?
+        ========================== -->
+
+        <section class="about-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-users"></i>
+                    Qui sommes-nous ?
+                </span>
+
+                <h2>
+                    CAMU SERVICES
+                </h2>
+
+                <p>
+                    Une solution numérique pensée pour les besoins
+                    du marché local.
+                </p>
+
+            </div>
+
+
+            <div class="about-introduction">
+
+                <div class="intro-icon">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+
+                <div class="intro-content">
+
+                    <h3>
+                        Une plateforme proche de ses utilisateurs
+                    </h3>
+
+                    <p>
+                        CAMU SERVICES a pour objectif de rapprocher
+                        les personnes qui proposent des produits
+                        ou des services de celles qui les recherchent.
+                    </p>
+
+                    <p>
+                        Grâce à une interface simple et moderne,
+                        les utilisateurs peuvent découvrir des
+                        annonces, consulter les informations
+                        disponibles et contacter directement
+                        les annonceurs.
+                    </p>
+
+                    <p>
+                        La plateforme est pensée pour accompagner
+                        progressivement les particuliers,
+                        entrepreneurs, commerçants et entreprises
+                        dans leur présence numérique.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MISSION / VISION
+        ========================== -->
+
+        <section class="mission-section">
+
+            <div class="mission-grid">
+
+                <article class="mission-card">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+
+                    <span class="card-label">
+                        Notre mission
+                    </span>
+
+                    <h3>
+                        Simplifier la recherche et la mise en relation
+                    </h3>
+
+                    <p>
+                        Notre mission est de faciliter l'accès aux
+                        produits, services et opportunités disponibles
+                        localement en réunissant les annonceurs et
+                        les clients sur une même plateforme.
+                    </p>
+
+                </article>
+
+
+                <article class="mission-card">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+
+                    <span class="card-label">
+                        Notre vision
+                    </span>
+
+                    <h3>
+                        Devenir une plateforme de référence en RDC
+                    </h3>
+
+                    <p>
+                        Notre vision est de construire une plateforme
+                        moderne et accessible permettant de découvrir,
+                        promouvoir et trouver facilement des produits
+                        et services à proximité.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CE QUE CAMU PERMET
+        ========================== -->
+
+        <section class="about-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Fonctionnalités
+                </span>
+
+                <h2>
+                    Ce que CAMU SERVICES permet de faire
+                </h2>
+
+                <p>
+                    Tout ce dont vous avez besoin pour découvrir
+                    et présenter des offres locales.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>Rechercher</h3>
+                    <p>
+                        Trouvez rapidement un produit,
+                        un service ou une opportunité.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <h3>Localiser</h3>
+                    <p>
+                        Recherchez des offres selon
+                        votre ville.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <h3>Publier</h3>
+                    <p>
+                        Présentez vos produits ou services
+                        avec une annonce.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-solid fa-images"></i>
+                    <h3>Ajouter des photos</h3>
+                    <p>
+                        Présentez vos offres avec plusieurs
+                        photos.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <h3>Contacter</h3>
+                    <p>
+                        Contactez directement l'annonceur
+                        via WhatsApp.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-regular fa-heart"></i>
+                    <h3>Favoris</h3>
+                    <p>
+                        Gardez vos annonces intéressantes
+                        à portée de main.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-regular fa-user"></i>
+                    <h3>Profils</h3>
+                    <p>
+                        Consultez les informations publiques
+                        des annonceurs.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fa-solid fa-store"></i>
+                    <h3>Visibilité</h3>
+                    <p>
+                        Donnez davantage de visibilité
+                        à votre activité.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CATÉGORIES
+        ========================== -->
+
+        <section class="categories-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-layer-group"></i>
+                    Nos catégories
+                </span>
+
+                <h2>
+                    Plusieurs domaines réunis au même endroit
+                </h2>
+
+            </div>
+
+
+            <div class="categories-grid">
+
+                <a href="recherche.html?category=Immobilier"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+
+                    <span>Immobilier</span>
+
+                </a>
+
+
+                <a href="recherche.html?category=Véhicules"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-car"></i>
+                    </div>
+
+                    <span>Véhicules</span>
+
+                </a>
+
+
+                <a href="recherche.html?category=Commerce"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+
+                    <span>Commerce</span>
+
+                </a>
+
+
+                <a href="recherche.html?category=Services"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+
+                    <span>Services</span>
+
+                </a>
+
+
+                <a href="recherche.html?category=Emploi"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+
+                    <span>Emploi</span>
+
+                </a>
+
+
+                <a href="recherche.html?category=Autres"
+                   class="category-card">
+
+                    <div class="category-icon">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+
+                    <span>Autres</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             POUR QUI ?
+        ========================== -->
+
+        <section class="about-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-people-group"></i>
+                    Pour qui ?
+                </span>
+
+                <h2>
+                    CAMU SERVICES pour tout le monde
+                </h2>
+
+            </div>
+
+
+            <div class="audience-grid">
+
+                <article class="audience-card">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <h3>
+                        Particuliers
+                    </h3>
+
+                    <p>
+                        Achetez, vendez, recherchez et
+                        contactez facilement les annonceurs.
+                    </p>
+
+                </article>
+
+
+                <article class="audience-card">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    <h3>
+                        Entrepreneurs
+                    </h3>
+
+                    <p>
+                        Présentez votre activité et
+                        développez votre visibilité.
+                    </p>
+
+                </article>
+
+
+                <article class="audience-card">
+
+                    <i class="fa-solid fa-shop"></i>
+
+                    <h3>
+                        Commerçants
+                    </h3>
+
+                    <p>
+                        Mettez vos produits en avant
+                        auprès de nouveaux clients.
+                    </p>
+
+                </article>
+
+
+                <article class="audience-card">
+
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                    <h3>
+                        Prestataires
+                    </h3>
+
+                    <p>
+                        Faites connaître vos services
+                        et facilitez le contact avec vos clients.
+                    </p>
+
+                </article>
+
+
+                <article class="audience-card">
+
+                    <i class="fa-solid fa-building"></i>
+
+                    <h3>
+                        Entreprises
+                    </h3>
+
+                    <p>
+                        Améliorez votre présence numérique
+                        auprès du public local.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ZONE D'ACTIVITÉ
+        ========================== -->
+
+        <section class="location-section">
+
+            <div class="location-content">
+
+                <div class="location-icon">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+
+                <div>
+
+                    <span class="section-label">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Notre zone d'activité
+                    </span>
+
+                    <h2>
+                        Une plateforme pensée pour le marché local
+                    </h2>
+
+                    <p>
+                        CAMU SERVICES commence son développement
+                        dans plusieurs villes importantes du
+                        Haut-Katanga et du Lualaba.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="cities">
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Lubumbashi
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Kolwezi
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Likasi
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Fungurume
+                </span>
+
+            </div>
+
+
+            <p class="location-note">
+                Notre ambition est d'étendre progressivement
+                CAMU SERVICES à d'autres villes et provinces
+                de la République démocratique du Congo.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             CONFIANCE
+        ========================== -->
+
+        <section class="trust-section">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Confiance
+                </span>
+
+                <h2>
+                    Une plateforme pensée pour une expérience responsable
+                </h2>
+
+                <p>
+                    Nous encourageons les utilisateurs à publier
+                    des informations claires et à utiliser la
+                    plateforme de manière responsable.
+                </p>
+
+            </div>
+
+
+            <div class="trust-grid">
+
+                <div>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>
+                        Des informations claires
+                    </span>
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-image"></i>
+                    <span>
+                        Des photos représentatives
+                    </span>
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>
+                        Le respect des règles de publication
+                    </span>
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-flag"></i>
+                    <span>
+                        La possibilité de signaler une annonce
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AMBITION
+        ========================== -->
+
+        <section class="ambition-section">
+
+            <div class="ambition-content">
+
+                <span class="section-label">
+                    <i class="fa-solid fa-rocket"></i>
+                    Notre ambition
+                </span>
+
+                <h2>
+                    Construire une plateforme qui évolue avec ses utilisateurs
+                </h2>
+
+                <p>
+                    CAMU SERVICES est conçu pour évoluer progressivement.
+                    Notre ambition est de développer de nouvelles
+                    fonctionnalités afin de faciliter davantage
+                    le commerce, les services et les échanges locaux
+                    en République démocratique du Congo.
+                </p>
+
+                <p>
+                    Nous voulons construire une expérience simple,
+                    moderne, accessible et adaptée aux réalités
+                    du marché congolais.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CTA FINAL
+        ========================== -->
+
+        <section class="about-cta">
+
+            <div class="cta-icon">
+                <i class="fa-solid fa-bullhorn"></i>
+            </div>
+
+            <div class="cta-content">
+
+                <h2>
+                    Vous avez quelque chose à proposer ?
+                </h2>
+
+                <p>
+                    Publiez votre annonce et présentez votre
+                    produit ou votre service sur CAMU SERVICES.
+                </p>
+
+            </div>
+
+            <a
+                href="publier.html"
+                class="primary-button"
+            >
+                <i class="fa-solid fa-plus"></i>
+                Publier une annonce
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <div class="logo">
+
+                        <span class="logo-main">
+                            CAMU
+                        </span>
+
+                        <span class="logo-sub">
+                            SERVICES
+                        </span>
+
+                    </div>
+
+                    <p>
+                        Trouver • Acheter • Réserver
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="conditions.html">
+                        Mentions légales
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions d'utilisation
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="conditions.html">
+                        Règles de publication
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CAMU SERVICES. Tous droits réservés.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/app.js"></script>
+
+<script>
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const sidebarOverlay =
+        document.getElementById("sidebarOverlay");
+
+    const closeSidebar =
+        document.getElementById("closeSidebar");
+
+
+    function openMenu() {
+
+        if (sidebar) {
+            sidebar.classList.add("open");
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.add("active");
+        }
+
+    }
+
+
+    function closeMenu() {
+
+        if (sidebar) {
+            sidebar.classList.remove("open");
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.remove("active");
+        }
+
+    }
+
+
+    if (menuToggle) {
+        menuToggle.addEventListener(
+            "click",
+            openMenu
+        );
+    }
+
+
+    if (closeSidebar) {
+        closeSidebar.addEventListener(
+            "click",
+            closeMenu
+        );
+    }
+
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+    }
+
+
+    document
+        .querySelectorAll(".sidebar .nav-item")
+        .forEach(item => {
+
+            item.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        });
+
+</script>
 
 </body>
 </html>
