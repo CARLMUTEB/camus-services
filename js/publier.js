@@ -25,6 +25,7 @@ console.log("CAMU SERVICES — publier.js chargé.");
 // =====================================================
 
 const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+
 const CLOUDINARY_UPLOAD_PRESET = "camu_services";
 
 const CLOUDINARY_UPLOAD_URL =
@@ -118,13 +119,19 @@ if (photosInput) {
             }
 
 
-            // ---------------------------------------------
-            // Vérification des images
-            // ---------------------------------------------
+            // =================================================
+            // VÉRIFICATION DES IMAGES
+            // =================================================
 
             for (const file of files) {
 
-                if (!file.type.startsWith("image/")) {
+                // ---------------------------------------------
+                // Vérifier le type
+                // ---------------------------------------------
+
+                if (
+                    !file.type.startsWith("image/")
+                ) {
 
                     alert(
                         `${file.name} n'est pas une image valide.`
@@ -134,8 +141,14 @@ if (photosInput) {
                 }
 
 
-                // Maximum 5 MB par image
-                if (file.size > 5 * 1024 * 1024) {
+                // ---------------------------------------------
+                // Maximum 5 MB
+                // ---------------------------------------------
+
+                if (
+                    file.size >
+                    5 * 1024 * 1024
+                ) {
 
                     alert(
                         `${file.name} dépasse la limite de 5 MB.`
@@ -145,7 +158,10 @@ if (photosInput) {
                 }
 
 
+                // ---------------------------------------------
                 // Éviter les doublons
+                // ---------------------------------------------
+
                 const alreadyExists =
                     selectedImages.some(
                         (existingFile) =>
@@ -157,27 +173,45 @@ if (photosInput) {
                 if (!alreadyExists) {
 
                     selectedImages.push(file);
+
                 }
 
             }
 
 
-            // Maximum 8 images
-            if (selectedImages.length > 8) {
+            // =================================================
+            // MAXIMUM 8 IMAGES
+            // =================================================
+
+            if (
+                selectedImages.length >
+                8
+            ) {
 
                 alert(
                     "Vous pouvez sélectionner au maximum 8 images."
                 );
 
+
                 selectedImages =
-                    selectedImages.slice(0, 8);
+                    selectedImages.slice(
+                        0,
+                        8
+                    );
             }
 
+
+            // =================================================
+            // APERÇU
+            // =================================================
 
             renderPhotoPreview();
 
 
-            // Permet de sélectionner à nouveau les mêmes fichiers
+            // =================================================
+            // PERMETTRE DE RESÉLECTIONNER LE MÊME FICHIER
+            // =================================================
+
             photosInput.value = "";
 
         }
@@ -197,10 +231,13 @@ function renderPhotoPreview() {
     }
 
 
-    photoPreview.innerHTML = "";
+    photoPreview.innerHTML =
+        "";
 
 
-    if (selectedImages.length === 0) {
+    if (
+        selectedImages.length === 0
+    ) {
         return;
     }
 
@@ -209,14 +246,24 @@ function renderPhotoPreview() {
         (file, index) => {
 
             const wrapper =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             wrapper.className =
                 "publish-photo-item";
 
 
+            // =================================================
+            // IMAGE
+            // =================================================
+
             const image =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
+
 
             image.className =
                 "publish-photo-image";
@@ -227,30 +274,38 @@ function renderPhotoPreview() {
 
 
             const objectURL =
-                URL.createObjectURL(file);
+                URL.createObjectURL(
+                    file
+                );
+
 
             image.src =
                 objectURL;
 
 
-            image.onload = () => {
+            image.onload =
+                () => {
 
-                URL.revokeObjectURL(
-                    objectURL
-                );
+                    URL.revokeObjectURL(
+                        objectURL
+                    );
 
-            };
+                };
 
 
-            // ---------------------------------------------
-            // Numéro de la photo
-            // ---------------------------------------------
+            // =================================================
+            // NUMÉRO
+            // =================================================
 
             const number =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
+
 
             number.className =
                 "publish-photo-number";
+
 
             number.textContent =
                 index === 0
@@ -258,21 +313,27 @@ function renderPhotoPreview() {
                     : `${index + 1}`;
 
 
-            // ---------------------------------------------
-            // Bouton supprimer
-            // ---------------------------------------------
+            // =================================================
+            // BOUTON SUPPRIMER
+            // =================================================
 
             const removeButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
+
 
             removeButton.type =
                 "button";
 
+
             removeButton.className =
                 "publish-photo-remove";
 
+
             removeButton.innerHTML =
                 '<i class="fa-solid fa-xmark"></i>';
+
 
             removeButton.title =
                 "Supprimer cette photo";
@@ -287,19 +348,26 @@ function renderPhotoPreview() {
                         1
                     );
 
+
                     renderPhotoPreview();
 
                 }
             );
 
 
+            // =================================================
+            // AJOUT
+            // =================================================
+
             wrapper.appendChild(
                 image
             );
 
+
             wrapper.appendChild(
                 number
             );
+
 
             wrapper.appendChild(
                 removeButton
@@ -321,6 +389,59 @@ function renderPhotoPreview() {
 // =====================================================
 
 async function uploadImageToCloudinary(file) {
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "CLOUDINARY — DÉBUT UPLOAD"
+    );
+
+    console.log(
+        "================================="
+    );
+
+
+    console.log(
+        "Cloud Name :",
+        CLOUDINARY_CLOUD_NAME
+    );
+
+
+    console.log(
+        "Upload Preset :",
+        CLOUDINARY_UPLOAD_PRESET
+    );
+
+
+    console.log(
+        "Fichier :",
+        file.name
+    );
+
+
+    console.log(
+        "Type :",
+        file.type
+    );
+
+
+    console.log(
+        "Taille :",
+        file.size
+    );
+
+
+    console.log(
+        "URL Cloudinary :",
+        CLOUDINARY_UPLOAD_URL
+    );
+
+
+    // =================================================
+    // FORM DATA
+    // =================================================
 
     const formData =
         new FormData();
@@ -344,45 +465,152 @@ async function uploadImageToCloudinary(file) {
     );
 
 
-    const response =
-        await fetch(
-            CLOUDINARY_UPLOAD_URL,
-            {
-                method: "POST",
-                body: formData
-            }
+    try {
+
+        // =================================================
+        // ENVOI CLOUDINARY
+        // =================================================
+
+        const response =
+            await fetch(
+                CLOUDINARY_UPLOAD_URL,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        console.log(
+            "Cloudinary HTTP :",
+            response.status,
+            response.statusText
         );
 
 
-    if (!response.ok) {
+        // =================================================
+        // LIRE LA RÉPONSE
+        // =================================================
 
-        const errorText =
+        const responseText =
             await response.text();
 
+
+        console.log(
+            "Réponse Cloudinary :",
+            responseText
+        );
+
+
+        // =================================================
+        // ERREUR HTTP
+        // =================================================
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Cloudinary ${response.status} : ${responseText}`
+            );
+        }
+
+
+        // =================================================
+        // CONVERTIR JSON
+        // =================================================
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    responseText
+                );
+
+        } catch (jsonError) {
+
+            console.error(
+                "Réponse Cloudinary non JSON :",
+                responseText
+            );
+
+
+            throw new Error(
+                "Cloudinary a retourné une réponse invalide."
+            );
+        }
+
+
+        // =================================================
+        // VÉRIFIER URL
+        // =================================================
+
+        if (
+            !data.secure_url
+        ) {
+
+            throw new Error(
+                "Cloudinary n'a pas retourné l'adresse de l'image."
+            );
+        }
+
+
+        console.log(
+            "IMAGE CLOUDINARY ENREGISTRÉE :",
+            data.secure_url
+        );
+
+
+        console.log(
+            "================================="
+        );
+
+
+        return data.secure_url;
+
+
+    } catch (error) {
+
         console.error(
-            "Erreur Cloudinary :",
-            errorText
+            "================================="
         );
 
-        throw new Error(
-            "Impossible d'envoyer une image vers Cloudinary."
+
+        console.error(
+            "ERREUR CLOUDINARY"
         );
+
+
+        console.error(
+            error
+        );
+
+
+        console.error(
+            "================================="
+        );
+
+
+        // =================================================
+        // FAILED TO FETCH
+        // =================================================
+
+        if (
+            error instanceof TypeError &&
+            error.message === "Failed to fetch"
+        ) {
+
+            throw new Error(
+                "Impossible de contacter Cloudinary. Vérifiez votre connexion Internet, le Cloud Name et le Upload Preset."
+            );
+        }
+
+
+        throw error;
+
     }
 
-
-    const data =
-        await response.json();
-
-
-    if (!data.secure_url) {
-
-        throw new Error(
-            "Cloudinary n'a pas retourné l'adresse de l'image."
-        );
-    }
-
-
-    return data.secure_url;
 }
 
 
@@ -405,6 +633,10 @@ async function uploadAllImages() {
             selectedImages[i];
 
 
+        // =================================================
+        // MESSAGE PROGRESSION
+        // =================================================
+
         if (message) {
 
             message.textContent =
@@ -420,6 +652,10 @@ async function uploadAllImages() {
             file.name
         );
 
+
+        // =================================================
+        // UPLOAD
+        // =================================================
 
         const imageURL =
             await uploadImageToCloudinary(
@@ -455,18 +691,20 @@ if (form) {
                 "================================="
             );
 
+
             console.log(
                 "SUBMIT DÉCLENCHÉ"
             );
+
 
             console.log(
                 "================================="
             );
 
 
-            // ---------------------------------------------
-            // Vérifier connexion
-            // ---------------------------------------------
+            // =================================================
+            // VÉRIFIER CONNEXION
+            // =================================================
 
             if (!currentUser) {
 
@@ -478,72 +716,90 @@ if (form) {
             }
 
 
-            // ---------------------------------------------
+            // =================================================
             // RÉCUPÉRATION DES CHAMPS
-            // ---------------------------------------------
+            // =================================================
 
             const title =
                 document
-                    .getElementById("publishTitle")
+                    .getElementById(
+                        "publishTitle"
+                    )
                     ?.value
                     .trim();
 
 
             const price =
                 document
-                    .getElementById("publishPrice")
+                    .getElementById(
+                        "publishPrice"
+                    )
                     ?.value
                     .trim();
 
 
             const currency =
                 document
-                    .getElementById("publishCurrency")
+                    .getElementById(
+                        "publishCurrency"
+                    )
                     ?.value;
 
 
             const category =
                 document
-                    .getElementById("publishCategory")
+                    .getElementById(
+                        "publishCategory"
+                    )
                     ?.value;
 
 
             const description =
                 document
-                    .getElementById("publishDescription")
+                    .getElementById(
+                        "publishDescription"
+                    )
                     ?.value
                     .trim();
 
 
             const city =
                 document
-                    .getElementById("publishCity")
+                    .getElementById(
+                        "publishCity"
+                    )
                     ?.value;
 
 
             const neighborhood =
                 document
-                    .getElementById("publishNeighborhood")
+                    .getElementById(
+                        "publishNeighborhood"
+                    )
                     ?.value
                     .trim();
 
 
             const whatsapp =
                 document
-                    .getElementById("publishWhatsapp")
+                    .getElementById(
+                        "publishWhatsapp"
+                    )
                     ?.value
                     .trim();
 
 
             const terms =
                 document
-                    .getElementById("publishTerms")
+                    .getElementById(
+                        "publishTerms"
+                    )
                     ?.checked;
 
 
-            // ---------------------------------------------
+            // =================================================
             // VALIDATION
-            // ---------------------------------------------
+            // =================================================
 
             if (!title) {
 
@@ -615,11 +871,13 @@ if (form) {
             }
 
 
-            // ---------------------------------------------
-            // Validation des images
-            // ---------------------------------------------
+            // =================================================
+            // VALIDATION IMAGES
+            // =================================================
 
-            if (selectedImages.length === 0) {
+            if (
+                selectedImages.length === 0
+            ) {
 
                 alert(
                     "Veuillez ajouter au moins une photo à votre annonce."
@@ -629,14 +887,15 @@ if (form) {
             }
 
 
-            // ---------------------------------------------
-            // Désactiver bouton
-            // ---------------------------------------------
+            // =================================================
+            // DÉSACTIVER BOUTON
+            // =================================================
 
             if (button) {
 
                 button.disabled =
                     true;
+
 
                 button.innerHTML =
                     '<i class="fa-solid fa-spinner fa-spin"></i> Préparation...';
@@ -645,9 +904,9 @@ if (form) {
 
             try {
 
-                // =========================================
-                // 1. ENVOYER LES IMAGES À CLOUDINARY
-                // =========================================
+                // =================================================
+                // 1. CLOUDINARY
+                // =================================================
 
                 console.log(
                     "Envoi des images vers Cloudinary..."
@@ -664,7 +923,9 @@ if (form) {
                 );
 
 
-                if (imageURLs.length === 0) {
+                if (
+                    imageURLs.length === 0
+                ) {
 
                     throw new Error(
                         "Aucune image n'a pu être envoyée."
@@ -672,9 +933,9 @@ if (form) {
                 }
 
 
-                // =========================================
-                // 2. CRÉER L'ANNONCE FIRESTORE
-                // =========================================
+                // =================================================
+                // 2. FIRESTORE
+                // =================================================
 
                 if (message) {
 
@@ -691,6 +952,10 @@ if (form) {
                 );
 
 
+                // =================================================
+                // COLLECTION ANNONCES
+                // =================================================
+
                 const listingRef =
                     await addDoc(
                         collection(
@@ -699,7 +964,12 @@ if (form) {
                         ),
                         {
 
-                            title: title,
+                            // ---------------------------------
+                            // INFORMATIONS
+                            // ---------------------------------
+
+                            title:
+                                title,
 
                             price:
                                 Number(price),
@@ -713,14 +983,25 @@ if (form) {
                             description:
                                 description,
 
+
+                            // ---------------------------------
+                            // LOCALISATION
+                            // ---------------------------------
+
                             city:
                                 city,
 
                             neighborhood:
                                 neighborhood,
 
+
+                            // ---------------------------------
+                            // CONTACT
+                            // ---------------------------------
+
                             whatsapp:
                                 whatsapp,
+
 
                             // ---------------------------------
                             // PROPRIÉTAIRE
@@ -740,6 +1021,7 @@ if (form) {
                                 currentUser.email ||
                                 "",
 
+
                             // ---------------------------------
                             // IMAGES
                             // ---------------------------------
@@ -748,10 +1030,12 @@ if (form) {
                                 imageURLs,
 
                             imageURL:
-                                imageURLs[0] || "",
+                                imageURLs[0] ||
+                                "",
 
                             imageCount:
                                 imageURLs.length,
+
 
                             // ---------------------------------
                             // STATUT
@@ -759,6 +1043,7 @@ if (form) {
 
                             status:
                                 "active",
+
 
                             // ---------------------------------
                             // DATES
@@ -774,15 +1059,19 @@ if (form) {
                     );
 
 
+                // =================================================
+                // SUCCÈS FIRESTORE
+                // =================================================
+
                 console.log(
                     "ANNONCE CRÉÉE AVEC SUCCÈS :",
                     listingRef.id
                 );
 
 
-                // =========================================
-                // SUCCÈS
-                // =========================================
+                // =================================================
+                // MESSAGE SUCCÈS
+                // =================================================
 
                 if (message) {
 
@@ -794,6 +1083,10 @@ if (form) {
                 }
 
 
+                // =================================================
+                // BOUTON SUCCÈS
+                // =================================================
+
                 if (button) {
 
                     button.innerHTML =
@@ -802,9 +1095,9 @@ if (form) {
                 }
 
 
-                // =========================================
+                // =================================================
                 // REDIRECTION
-                // =========================================
+                // =================================================
 
                 setTimeout(
                     () => {
@@ -819,15 +1112,38 @@ if (form) {
 
             } catch (error) {
 
+                // =================================================
+                // ERREUR
+                // =================================================
+
+                console.error(
+                    "================================="
+                );
+
+
                 console.error(
                     "ERREUR PUBLICATION :",
                     error
                 );
 
 
+                console.error(
+                    "Message :",
+                    error?.message
+                );
+
+
+                console.error(
+                    "================================="
+                );
+
+
                 alert(
                     "Erreur lors de la publication : " +
-                    error.message
+                    (
+                        error?.message ||
+                        "Erreur inconnue."
+                    )
                 );
 
 
@@ -846,6 +1162,7 @@ if (form) {
                     button.disabled =
                         false;
 
+
                     button.innerHTML =
                         '<i class="fa-solid fa-paper-plane"></i> Publier l\'annonce';
                 }
@@ -862,3 +1179,12 @@ if (form) {
     );
 
 }
+
+
+// =====================================================
+// FIN
+// =====================================================
+
+console.log(
+    "CAMU SERVICES : publier.js prêt."
+);
