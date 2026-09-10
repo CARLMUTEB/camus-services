@@ -1,6 +1,7 @@
 // =========================================================
 // CAMU SERVICES — RECHERCHE.JS
 // Recherche des annonces Firestore
+// Collection utilisée : annonces
 // =========================================================
 
 import { db } from "./firebase-config.js";
@@ -50,7 +51,10 @@ let allAds = [];
 
 function escapeHtml(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return "";
     }
 
@@ -113,6 +117,7 @@ function categoryName(category) {
 
 function getImage(ad) {
 
+    // Tableau d'images Cloudinary
     if (
         Array.isArray(ad.images) &&
         ad.images.length > 0 &&
@@ -121,10 +126,28 @@ function getImage(ad) {
         return ad.images[0];
     }
 
+    // Différents noms possibles
     if (ad.imageURL) {
         return ad.imageURL;
     }
 
+    if (ad.imageUrl) {
+        return ad.imageUrl;
+    }
+
+    if (ad.imageURLFirst) {
+        return ad.imageURLFirst;
+    }
+
+    if (ad.photoURL) {
+        return ad.photoURL;
+    }
+
+    if (ad.photoUrl) {
+        return ad.photoUrl;
+    }
+
+    // Image par défaut
     return "logo.png";
 }
 
@@ -133,7 +156,10 @@ function getImage(ad) {
 // PRIX
 // =========================================================
 
-function formatPrice(price, currency = "USD") {
+function formatPrice(
+    price,
+    currency = "USD"
+) {
 
     if (
         price === null ||
@@ -146,10 +172,17 @@ function formatPrice(price, currency = "USD") {
     const number = Number(price);
 
     if (Number.isNaN(number)) {
-        return `${escapeHtml(price)} ${escapeHtml(currency)}`;
+
+        return `
+            ${escapeHtml(price)}
+            ${escapeHtml(currency)}
+        `;
     }
 
-    return `${new Intl.NumberFormat("fr-FR").format(number)} ${escapeHtml(currency)}`;
+    return `
+        ${new Intl.NumberFormat("fr-FR").format(number)}
+        ${escapeHtml(currency)}
+    `;
 }
 
 
@@ -163,7 +196,6 @@ function createAdCard(ad) {
         document.createElement("article");
 
     card.className = "ad-card";
-
 
     const image =
         getImage(ad);
@@ -186,6 +218,10 @@ function createAdCard(ad) {
         );
 
 
+    // =====================================================
+    // CONTENU DE LA CARTE
+    // =====================================================
+
     card.innerHTML = `
 
         <div class="ad-image">
@@ -194,13 +230,14 @@ function createAdCard(ad) {
                 src="${escapeHtml(image)}"
                 alt="${escapeHtml(title)}"
                 loading="lazy"
-                onerror="this.src='logo.png'"
+                onerror="this.onerror=null;this.src='logo.png';"
             >
 
             <button
                 type="button"
                 class="favorite-button"
                 aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris"
             >
                 <i class="fa-regular fa-heart"></i>
             </button>
@@ -241,17 +278,32 @@ function createAdCard(ad) {
     // OUVRIR L'ANNONCE
     // =====================================================
 
-    card.addEventListener("click", (event) => {
+    card.addEventListener(
+        "click",
+        (event) => {
 
-        if (
-            event.target.closest(".favorite-button")
-        ) {
-            return;
+            // Ne pas ouvrir l'annonce si on clique
+            // sur le bouton favoris
+            if (
+                event.target.closest(
+                    ".favorite-button"
+                )
+            ) {
+                return;
+            }
+
+            if (!ad.id) {
+                console.error(
+                    "CAMU SERVICES — ID annonce manquant."
+                );
+                return;
+            }
+
+            window.location.href =
+                `explorer.html?id=${encodeURIComponent(ad.id)}`;
+
         }
-
-        window.location.href =
-            `explorer.html?id=${encodeURIComponent(ad.id)}`;
-    });
+    );
 
 
     // =====================================================
@@ -259,7 +311,9 @@ function createAdCard(ad) {
     // =====================================================
 
     const favoriteButton =
-        card.querySelector(".favorite-button");
+        card.querySelector(
+            ".favorite-button"
+        );
 
     if (favoriteButton) {
 
@@ -299,6 +353,7 @@ function createAdCard(ad) {
                     icon.classList.add(
                         "fa-regular"
                     );
+
                 }
 
             }
@@ -324,17 +379,24 @@ function displayResults(ads) {
     searchResults.innerHTML = "";
 
 
-    // Compteur
+    // =====================================================
+    // COMPTEUR
+    // =====================================================
+
     if (resultsCount) {
 
         resultsCount.textContent =
             ads.length === 1
                 ? "1 annonce"
                 : `${ads.length} annonces`;
+
     }
 
 
-    // Aucun résultat
+    // =====================================================
+    // AUCUN RÉSULTAT
+    // =====================================================
+
     if (ads.length === 0) {
 
         searchResults.innerHTML = `
@@ -363,19 +425,25 @@ function displayResults(ads) {
     }
 
 
-    // Ajouter les cartes
-    ads.forEach((ad) => {
+    // =====================================================
+    // AJOUTER LES CARTES
+    // =====================================================
 
-        searchResults.appendChild(
-            createAdCard(ad)
-        );
+    ads.forEach(
+        (ad) => {
 
-    });
+            searchResults.appendChild(
+                createAdCard(ad)
+            );
+
+        }
+    );
+
 }
 
 
 // =========================================================
-// FILTRER
+// FILTRER LES ANNONCES
 // =========================================================
 
 function filterAds() {
@@ -397,48 +465,63 @@ function filterAds() {
 
 
     const filtered =
-        allAds.filter((ad) => {
+        allAds.filter(
+            (ad) => {
 
-            const title =
-                normalize(ad.title);
+                const title =
+                    normalize(ad.title);
 
-            const description =
-                normalize(ad.description);
+                const description =
+                    normalize(ad.description);
 
-            const adCategory =
-                normalize(ad.category);
+                const adCategory =
+                    normalize(ad.category);
 
-            const adCity =
-                normalize(ad.city);
-
-
-            // Mot-clé
-            const keywordMatch =
-                !keyword ||
-                title.includes(keyword) ||
-                description.includes(keyword);
+                const adCity =
+                    normalize(ad.city);
 
 
-            // Catégorie
-            const categoryMatch =
-                !category ||
-                adCategory === category;
+                // =================================================
+                // MOT-CLÉ
+                // =================================================
+
+                const keywordMatch =
+                    !keyword ||
+                    title.includes(keyword) ||
+                    description.includes(keyword);
 
 
-            // Ville
-            const cityMatch =
-                !city ||
-                adCity === city;
+                // =================================================
+                // CATÉGORIE
+                // =================================================
+
+                const categoryMatch =
+                    !category ||
+                    adCategory === category;
 
 
-            return (
-                keywordMatch &&
-                categoryMatch &&
-                cityMatch
-            );
+                // =================================================
+                // VILLE
+                // =================================================
 
-        });
+                const cityMatch =
+                    !city ||
+                    adCity === city;
 
+
+                return (
+                    keywordMatch &&
+                    categoryMatch &&
+                    cityMatch
+                );
+
+            }
+        );
+
+
+    // =====================================================
+    // TITRE DES RÉSULTATS
+    // =====================================================
 
     if (resultsTitle) {
 
@@ -455,16 +538,23 @@ function filterAds() {
 
             resultsTitle.textContent =
                 "Toutes les annonces";
+
         }
+
     }
 
 
+    // =====================================================
+    // AFFICHAGE
+    // =====================================================
+
     displayResults(filtered);
+
 }
 
 
 // =========================================================
-// CHARGER FIRESTORE
+// CHARGER LES ANNONCES DEPUIS FIRESTORE
 // =========================================================
 
 async function loadAds() {
@@ -476,42 +566,76 @@ async function loadAds() {
 
     try {
 
-        const servicesRef =
-            collection(db, "services");
+        // =================================================
+        // COLLECTION FIRESTORE
+        // =================================================
+
+        const annoncesRef =
+            collection(
+                db,
+                "annonces"
+            );
+
+
+        // =================================================
+        // RÉCUPÉRER LES DOCUMENTS
+        // =================================================
 
         const snapshot =
-            await getDocs(servicesRef);
+            await getDocs(
+                annoncesRef
+            );
 
+
+        // =================================================
+        // TRANSFORMER LES DOCUMENTS
+        // =================================================
 
         allAds =
-            snapshot.docs.map((document) => ({
+            snapshot.docs.map(
+                (document) => ({
 
-                id: document.id,
+                    id: document.id,
 
-                ...document.data()
+                    ...document.data()
 
-            }));
+                })
+            );
 
 
-        // Trier par date
-        allAds.sort((a, b) => {
+        // =================================================
+        // TRIER PAR DATE
+        // Plus récente → plus ancienne
+        // =================================================
 
-            const dateA =
-                a.createdAt &&
-                typeof a.createdAt.toMillis === "function"
-                    ? a.createdAt.toMillis()
-                    : 0;
+        allAds.sort(
+            (a, b) => {
 
-            const dateB =
-                b.createdAt &&
-                typeof b.createdAt.toMillis === "function"
-                    ? b.createdAt.toMillis()
-                    : 0;
+                const dateA =
+                    a.createdAt &&
+                    typeof a.createdAt.toMillis === "function"
+                        ? a.createdAt.toMillis()
+                        : 0;
 
-            return dateB - dateA;
+                const dateB =
+                    b.createdAt &&
+                    typeof b.createdAt.toMillis === "function"
+                        ? b.createdAt.toMillis()
+                        : 0;
 
-        });
+                return dateB - dateA;
 
+            }
+        );
+
+
+        // =================================================
+        // CONSOLE
+        // =================================================
+
+        console.log(
+            "CAMU SERVICES — collection utilisée : annonces"
+        );
 
         console.log(
             "CAMU SERVICES — annonces chargées :",
@@ -519,11 +643,19 @@ async function loadAds() {
         );
 
 
-        // Afficher toutes les annonces
-        displayResults(allAds);
+        // =================================================
+        // AFFICHER TOUTES LES ANNONCES
+        // =================================================
+
+        displayResults(
+            allAds
+        );
 
 
-        // Lire les paramètres de l'URL
+        // =================================================
+        // FILTRES URL
+        // =================================================
+
         applyUrlFilters();
 
 
@@ -534,6 +666,10 @@ async function loadAds() {
             error
         );
 
+
+        // =================================================
+        // MESSAGE D'ERREUR
+        // =================================================
 
         searchResults.innerHTML = `
 
@@ -553,16 +689,25 @@ async function loadAds() {
                     Impossible de récupérer les annonces.
                 </p>
 
+                <small>
+                    Vérifiez votre connexion et les règles Firestore.
+                </small>
+
             </div>
 
         `;
+
     }
+
 }
 
 
 // =========================================================
 // FILTRES URL
-// Exemple : recherche.html?category=immobilier
+// Exemple :
+// recherche.html?category=immobilier
+// recherche.html?city=Lubumbashi
+// recherche.html?q=iphone
 // =========================================================
 
 function applyUrlFilters() {
@@ -583,45 +728,70 @@ function applyUrlFilters() {
         params.get("q");
 
 
+    // =====================================================
+    // CATÉGORIE
+    // =====================================================
+
     if (
         category &&
         searchCategory
     ) {
+
         searchCategory.value =
             normalize(category);
+
     }
 
+
+    // =====================================================
+    // VILLE
+    // =====================================================
 
     if (
         city &&
         searchCity
     ) {
+
         searchCity.value =
             normalize(city);
+
     }
 
+
+    // =====================================================
+    // MOT-CLÉ
+    // =====================================================
 
     if (
         keyword &&
         searchKeyword
     ) {
+
         searchKeyword.value =
             keyword;
+
     }
 
+
+    // =====================================================
+    // APPLIQUER LES FILTRES
+    // =====================================================
 
     if (
         category ||
         city ||
         keyword
     ) {
+
         filterAds();
+
     }
+
 }
 
 
 // =========================================================
-// FORMULAIRE
+// FORMULAIRE DE RECHERCHE
 // =========================================================
 
 if (searchForm) {
@@ -641,12 +811,20 @@ if (searchForm) {
 
 
 // =========================================================
-// CHARGEMENT
+// CHARGEMENT INITIAL
 // =========================================================
 
 loadAds();
 
 
+// =========================================================
+// CONFIRMATION
+// =========================================================
+
 console.log(
     "CAMU SERVICES — recherche.js chargé correctement."
+);
+
+console.log(
+    "CAMU SERVICES — source Firestore : annonces"
 );
