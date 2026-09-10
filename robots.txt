@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /admin-
+Disallow: /connexion.html
+Disallow: /inscription.html
+Disallow: /compte.html
+Disallow: /profil.html
+Disallow: /parametres.html
+Disallow: /favoris.html
+Disallow: /chat.html
+Disallow: /conversation.html
+Disallow: /publier.html
+Disallow: /modifier.html
+
+Sitemap: https://camu.services/sitemap.xml
