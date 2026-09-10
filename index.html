@@ -12,6 +12,7 @@
         content="CAMU SERVICES — Trouvez des produits, véhicules, logements et services près de chez vous."
     >
 
+    <!-- CSS principal -->
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Icônes -->
@@ -90,10 +91,13 @@
             <span>Paramètres</span>
         </a>
 
-        <a href="admin.html"
-           class="nav-item admin-nav-item"
-           id="adminNavItem"
-           style="display:none;">
+        <!-- Administration visible uniquement pour l'administrateur -->
+        <a
+            href="admin.html"
+            class="nav-item admin-nav-item"
+            id="adminNavItem"
+            style="display: none;"
+        >
             <i class="fa-solid fa-gauge-high"></i>
             <span>Administration</span>
         </a>
@@ -121,14 +125,7 @@
 
 </aside>
 
-<a href="admin.html"
-   class="nav-item admin-nav-item"
-   id="adminNavItem"
-   style="display:none;">
-    <i class="fa-solid fa-gauge-high"></i>
-    <span>Administration</span>
-</a>
-    
+
 <!-- =========================
      CONTENU PRINCIPAL
 ========================= -->
@@ -212,12 +209,15 @@
                 </p>
 
 
-                <!-- SEARCH -->
+                <!-- =========================
+                     RECHERCHE
+                ========================= -->
                 <form
                     class="search-box"
                     id="homeSearchForm"
                 >
 
+                    <!-- MOT-CLÉ -->
                     <div class="search-field">
 
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -232,6 +232,7 @@
                     </div>
 
 
+                    <!-- VILLE DYNAMIQUE -->
                     <div class="search-field city-field">
 
                         <i class="fa-solid fa-location-dot"></i>
@@ -242,21 +243,10 @@
                                 Toutes les villes
                             </option>
 
-                            <option value="lubumbashi">
-                                Lubumbashi
-                            </option>
-
-                            <option value="kolwezi">
-                                Kolwezi
-                            </option>
-
-                            <option value="likasi">
-                                Likasi
-                            </option>
-
-                            <option value="fungurume">
-                                Fungurume
-                            </option>
+                            <!--
+                                Les villes seront chargées
+                                automatiquement depuis Firestore
+                            -->
 
                         </select>
 
@@ -314,133 +304,24 @@
             </div>
 
 
-            <div class="categories-grid">
+            <!--
+                Les catégories seront chargées
+                automatiquement depuis Firestore
+            -->
+            <div
+                class="categories-grid"
+                id="homeCategories"
+            >
 
+                <div class="category-loading">
 
-                <!-- IMMOBILIER -->
-                <a
-                    href="recherche.html?category=immobilier"
-                    class="category-card"
-                >
+                    <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    <div class="category-icon">
-                        <i class="fa-solid fa-house"></i>
-                    </div>
+                    <span>
+                        Chargement des catégories...
+                    </span>
 
-                    <h3>
-                        Immobilier
-                    </h3>
-
-                    <p>
-                        Maisons, terrains, appartements...
-                    </p>
-
-                </a>
-
-
-                <!-- VEHICULES -->
-                <a
-                    href="recherche.html?category=vehicules"
-                    class="category-card"
-                >
-
-                    <div class="category-icon">
-                        <i class="fa-solid fa-car"></i>
-                    </div>
-
-                    <h3>
-                        Véhicules
-                    </h3>
-
-                    <p>
-                        Voitures, motos et autres...
-                    </p>
-
-                </a>
-
-
-                <!-- COMMERCE -->
-                <a
-                    href="recherche.html?category=commerce"
-                    class="category-card"
-                >
-
-                    <div class="category-icon">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </div>
-
-                    <h3>
-                        Commerce
-                    </h3>
-
-                    <p>
-                        Produits et marchandises...
-                    </p>
-
-                </a>
-
-
-                <!-- SERVICES -->
-                <a
-                    href="recherche.html?category=services"
-                    class="category-card"
-                >
-
-                    <div class="category-icon">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                    </div>
-
-                    <h3>
-                        Services
-                    </h3>
-
-                    <p>
-                        Trouvez un professionnel...
-                    </p>
-
-                </a>
-
-
-                <!-- EMPLOI -->
-                <a
-                    href="recherche.html?category=emploi"
-                    class="category-card"
-                >
-
-                    <div class="category-icon">
-                        <i class="fa-solid fa-briefcase"></i>
-                    </div>
-
-                    <h3>
-                        Emploi
-                    </h3>
-
-                    <p>
-                        Offres et opportunités...
-                    </p>
-
-                </a>
-
-
-                <!-- AUTRES -->
-                <a
-                    href="recherche.html?category=autres"
-                    class="category-card"
-                >
-
-                    <div class="category-icon">
-                        <i class="fa-solid fa-box-open"></i>
-                    </div>
-
-                    <h3>
-                        Autres
-                    </h3>
-
-                    <p>
-                        Découvrez d'autres annonces...
-                    </p>
-
-                </a>
+                </div>
 
             </div>
 
@@ -478,190 +359,24 @@
             </div>
 
 
+            <!--
+                Les annonces sont chargées
+                par js/app.js / index.js
+            -->
             <div
                 class="ads-grid"
                 id="recentAds"
             >
 
+                <div class="category-loading">
 
-                <!-- ANNONCE 1 -->
-                <article class="ad-card">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    <div class="ad-image">
+                    <span>
+                        Chargement des annonces...
+                    </span>
 
-                        <img
-                            src="assets/images/placeholder.jpg"
-                            alt="Maison à vendre"
-                        >
-
-                        <button
-                            type="button"
-                            class="favorite-button"
-                            aria-label="Ajouter aux favoris"
-                        >
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-
-                        <span class="ad-category">
-                            Immobilier
-                        </span>
-
-                    </div>
-
-
-                    <div class="ad-content">
-
-                        <h3>
-                            Belle maison à vendre
-                        </h3>
-
-                        <div class="ad-location">
-                            <i class="fa-solid fa-location-dot"></i>
-                            Lubumbashi
-                        </div>
-
-                        <div class="ad-price">
-                            85 000 $
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- ANNONCE 2 -->
-                <article class="ad-card">
-
-                    <div class="ad-image">
-
-                        <img
-                            src="assets/images/placeholder.jpg"
-                            alt="Véhicule à vendre"
-                        >
-
-                        <button
-                            type="button"
-                            class="favorite-button"
-                            aria-label="Ajouter aux favoris"
-                        >
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-
-                        <span class="ad-category">
-                            Véhicules
-                        </span>
-
-                    </div>
-
-
-                    <div class="ad-content">
-
-                        <h3>
-                            Toyota en bon état
-                        </h3>
-
-                        <div class="ad-location">
-                            <i class="fa-solid fa-location-dot"></i>
-                            Kolwezi
-                        </div>
-
-                        <div class="ad-price">
-                            18 500 $
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- ANNONCE 3 -->
-                <article class="ad-card">
-
-                    <div class="ad-image">
-
-                        <img
-                            src="assets/images/placeholder.jpg"
-                            alt="Téléphone à vendre"
-                        >
-
-                        <button
-                            type="button"
-                            class="favorite-button"
-                            aria-label="Ajouter aux favoris"
-                        >
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-
-                        <span class="ad-category">
-                            Commerce
-                        </span>
-
-                    </div>
-
-
-                    <div class="ad-content">
-
-                        <h3>
-                            Smartphone dernière génération
-                        </h3>
-
-                        <div class="ad-location">
-                            <i class="fa-solid fa-location-dot"></i>
-                            Lubumbashi
-                        </div>
-
-                        <div class="ad-price">
-                            450 $
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- ANNONCE 4 -->
-                <article class="ad-card">
-
-                    <div class="ad-image">
-
-                        <img
-                            src="assets/images/placeholder.jpg"
-                            alt="Service professionnel"
-                        >
-
-                        <button
-                            type="button"
-                            class="favorite-button"
-                            aria-label="Ajouter aux favoris"
-                        >
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-
-                        <span class="ad-category">
-                            Services
-                        </span>
-
-                    </div>
-
-
-                    <div class="ad-content">
-
-                        <h3>
-                            Service de plomberie
-                        </h3>
-
-                        <div class="ad-location">
-                            <i class="fa-solid fa-location-dot"></i>
-                            Likasi
-                        </div>
-
-                        <div class="ad-price">
-                            Sur devis
-                        </div>
-
-                    </div>
-
-                </article>
+                </div>
 
             </div>
 
@@ -788,8 +503,15 @@
 <!-- =========================
      JAVASCRIPT
 ========================= -->
+
+<!-- Application générale -->
 <script type="module" src="js/app.js"></script>
+
+<!-- Fonctionnalités de la page d'accueil -->
 <script type="module" src="js/index.js"></script>
-    <script src="js/theme.js"></script>
+
+<!-- Thème -->
+<script src="js/theme.js"></script>
+
 </body>
 </html>
