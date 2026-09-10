@@ -1,0 +1,639 @@
+/* =========================================================
+   CAMU SERVICES — ADMIN CATALOGUE
+========================================================= */
+
+.catalogue-message {
+    margin: 0 0 20px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.catalogue-message.success {
+    background: #ecfdf3;
+    color: #087443;
+    border-color: #a7f3d0;
+}
+
+.catalogue-message.error {
+    background: #fef2f2;
+    color: #b42318;
+    border-color: #fecaca;
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+.catalogue-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.catalogue-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.catalogue-stat-card span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-secondary, #6b7280);
+    font-size: 13px;
+}
+
+.catalogue-stat-card strong {
+    display: block;
+    font-size: 27px;
+    color: var(--text-primary, #111827);
+}
+
+.catalogue-stat-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.category-icon {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.city-icon {
+    background: #ecfdf3;
+    color: #047857;
+}
+
+.active-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   GRILLE
+========================================================= */
+
+.catalogue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.catalogue-panel {
+    min-width: 0;
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.catalogue-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 22px;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.catalogue-panel-header h2 {
+    margin: 0 0 6px;
+    font-size: 19px;
+    color: var(--text-primary, #111827);
+}
+
+.catalogue-panel-header h2 i {
+    margin-right: 7px;
+}
+
+.catalogue-panel-header p {
+    margin: 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BOUTON AJOUT
+========================================================= */
+
+.catalogue-add-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    background: #111827;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.catalogue-add-button:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+
+/* =========================================================
+   RECHERCHE
+========================================================= */
+
+.catalogue-search {
+    position: relative;
+    margin: 18px 22px;
+}
+
+.catalogue-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+.catalogue-search input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px 12px 42px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 11px;
+    background: var(--bg-secondary, #f9fafb);
+    color: var(--text-primary, #111827);
+    outline: none;
+    font-size: 14px;
+}
+
+.catalogue-search input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.catalogue-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 35px 20px;
+    color: var(--text-secondary, #6b7280);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   LISTE
+========================================================= */
+
+.catalogue-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 18px 18px;
+}
+
+
+/* =========================================================
+   ITEM
+========================================================= */
+
+.catalogue-item {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 4px;
+    border-bottom: 1px solid var(--border-color, #edf0f2);
+}
+
+.catalogue-item:last-child {
+    border-bottom: 0;
+}
+
+.catalogue-item-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.catalogue-item-icon.city {
+    background: #ecfdf3;
+    color: #047857;
+}
+
+.catalogue-item-info {
+    min-width: 0;
+}
+
+.catalogue-item-info strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-primary, #111827);
+    font-size: 14px;
+}
+
+.catalogue-item-info span {
+    display: block;
+    overflow: hidden;
+    color: var(--text-secondary, #6b7280);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.catalogue-item-info small {
+    display: block;
+    margin-top: 4px;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUT
+========================================================= */
+
+.catalogue-item-status {
+    white-space: nowrap;
+}
+
+.status-active,
+.status-inactive {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-active {
+    background: #ecfdf3;
+    color: #047857;
+}
+
+.status-inactive {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.catalogue-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.catalogue-action {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: #374151;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.catalogue-action:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.catalogue-action.danger {
+    color: #dc2626;
+}
+
+.catalogue-action.danger:hover {
+    background: #fee2e2;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.catalogue-empty {
+    padding: 45px 20px;
+    text-align: center;
+    color: var(--text-secondary, #6b7280);
+}
+
+.catalogue-empty i {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 30px;
+    color: #9ca3af;
+}
+
+.catalogue-empty strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-primary, #111827);
+}
+
+.catalogue-empty span {
+    display: block;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.catalogue-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.catalogue-modal[hidden] {
+    display: none;
+}
+
+.catalogue-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.catalogue-modal-card {
+    position: relative;
+    z-index: 2;
+    width: min(520px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    background: var(--bg-primary, #ffffff);
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.catalogue-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 22px;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.catalogue-modal-header h2 {
+    margin: 0 0 5px;
+    color: var(--text-primary, #111827);
+    font-size: 20px;
+}
+
+.catalogue-modal-header p {
+    margin: 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 13px;
+}
+
+.catalogue-modal-close {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f4f6;
+    color: #374151;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   FORMULAIRE
+========================================================= */
+
+.catalogue-form {
+    padding: 22px;
+}
+
+.catalogue-form label:not(.catalogue-checkbox) {
+    display: block;
+    margin-bottom: 17px;
+}
+
+.catalogue-form label > span {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--text-primary, #111827);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.catalogue-form input[type="text"],
+.catalogue-form input[type="number"],
+.catalogue-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 13px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 10px;
+    background: var(--bg-secondary, #ffffff);
+    color: var(--text-primary, #111827);
+    font: inherit;
+    outline: none;
+}
+
+.catalogue-form textarea {
+    resize: vertical;
+}
+
+.catalogue-form input:focus,
+.catalogue-form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.catalogue-form small {
+    display: block;
+    margin-top: 5px;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.catalogue-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 5px 0 20px;
+    cursor: pointer;
+}
+
+.catalogue-checkbox input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.catalogue-checkbox span {
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.catalogue-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 5px;
+}
+
+.catalogue-cancel-button,
+.catalogue-save-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.catalogue-cancel-button {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.catalogue-save-button {
+    background: #111827;
+    color: #ffffff;
+}
+
+.catalogue-save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .catalogue-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 760px) {
+
+    .catalogue-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .catalogue-panel-header {
+        flex-direction: column;
+    }
+
+    .catalogue-add-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .catalogue-item {
+        grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .catalogue-item-status {
+        grid-column: 2;
+    }
+
+    .catalogue-item-actions {
+        grid-column: 2;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .catalogue-panel-header,
+    .catalogue-form,
+    .catalogue-modal-header {
+        padding: 17px;
+    }
+
+    .catalogue-list {
+        padding: 0 13px 13px;
+    }
+
+    .catalogue-item {
+        gap: 9px;
+    }
+
+    .catalogue-modal {
+        padding: 10px;
+    }
+
+    .catalogue-modal-card {
+        max-height: calc(100vh - 20px);
+    }
+
+}
