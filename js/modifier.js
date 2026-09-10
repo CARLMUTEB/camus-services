@@ -1,3 +1,9 @@
+// =====================================================
+// CAMU SERVICES
+// MODIFICATION D'ANNONCE — V1
+// Firebase + Cloudinary
+// =====================================================
+
 import { auth, db } from "./firebase-config.js";
 
 import {
@@ -26,8 +32,8 @@ const CLOUDINARY_UPLOAD_URL =
 // VARIABLES
 // =========================================================
 
-let currentService = null;
-let serviceId = null;
+let currentAnnonce = null;
+let annonceId = null;
 let existingImages = [];
 
 
@@ -35,26 +41,46 @@ let existingImages = [];
 // ÉLÉMENTS
 // =========================================================
 
-const form = document.getElementById("editForm");
-const saveButton = document.getElementById("saveButton");
-const editMessage = document.getElementById("editMessage");
+const form =
+    document.getElementById("editForm");
 
-const existingPhotos = document.getElementById("existingPhotos");
-const newPhotos = document.getElementById("newPhotos");
-const newPhotosPreview = document.getElementById("newPhotosPreview");
+const saveButton =
+    document.getElementById("saveButton");
+
+const editMessage =
+    document.getElementById("editMessage");
+
+const existingPhotos =
+    document.getElementById("existingPhotos");
+
+const newPhotos =
+    document.getElementById("newPhotos");
+
+const newPhotosPreview =
+    document.getElementById("newPhotosPreview");
 
 
 // =========================================================
 // MESSAGE
 // =========================================================
 
-function showMessage(message, type = "error") {
+function showMessage(
+    message,
+    type = "error"
+) {
 
-    if (!editMessage) return;
+    if (!editMessage) {
+        return;
+    }
 
-    editMessage.textContent = message;
-    editMessage.className = `edit-message ${type}`;
-    editMessage.hidden = false;
+    editMessage.textContent =
+        message;
+
+    editMessage.className =
+        `edit-message ${type}`;
+
+    editMessage.hidden =
+        false;
 
     editMessage.scrollIntoView({
         behavior: "smooth",
@@ -65,9 +91,12 @@ function showMessage(message, type = "error") {
 
 function hideMessage() {
 
-    if (!editMessage) return;
+    if (!editMessage) {
+        return;
+    }
 
-    editMessage.hidden = true;
+    editMessage.hidden =
+        true;
 }
 
 
@@ -75,12 +104,16 @@ function hideMessage() {
 // ID DE L'ANNONCE
 // =========================================================
 
-const params = new URLSearchParams(window.location.search);
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-serviceId = params.get("id");
+annonceId =
+    params.get("id");
 
 
-if (!serviceId) {
+if (!annonceId) {
 
     showMessage(
         "Impossible de trouver cette annonce.",
@@ -97,100 +130,200 @@ if (!serviceId) {
 // CHARGER L'ANNONCE
 // =========================================================
 
-async function loadService(user) {
+async function loadAnnonce(user) {
+
+    if (!annonceId) {
+        return;
+    }
 
     try {
 
-        const serviceRef = doc(
-            db,
-            "services",
-            serviceId
-        );
+        // =================================================
+        // COLLECTION ANNONCES
+        // =================================================
 
-        const serviceSnap = await getDoc(serviceRef);
+        const annonceRef =
+            doc(
+                db,
+                "annonces",
+                annonceId
+            );
 
 
-        if (!serviceSnap.exists()) {
+        const annonceSnap =
+            await getDoc(
+                annonceRef
+            );
+
+
+        // =================================================
+        // VÉRIFIER EXISTENCE
+        // =================================================
+
+        if (!annonceSnap.exists()) {
 
             showMessage(
                 "Cette annonce n'existe plus.",
                 "error"
             );
 
-            saveButton.disabled = true;
+            if (saveButton) {
+                saveButton.disabled = true;
+            }
 
             return;
         }
 
 
-        const data = serviceSnap.data();
+        // =================================================
+        // DONNÉES
+        // =================================================
 
-        currentService = data;
+        const data =
+            annonceSnap.data();
+
+        currentAnnonce =
+            data;
 
 
-        // -------------------------------------------------
-        // SÉCURITÉ
-        // -------------------------------------------------
+        // =================================================
+        // VÉRIFICATION PROPRIÉTAIRE
+        // =================================================
 
-        if (data.ownerId !== user.uid) {
+        if (
+            data.ownerId !==
+            user.uid
+        ) {
 
             showMessage(
                 "Vous n'êtes pas autorisé à modifier cette annonce.",
                 "error"
             );
 
-            saveButton.disabled = true;
+            if (saveButton) {
+                saveButton.disabled = true;
+            }
 
             return;
         }
 
 
-        // -------------------------------------------------
-        // PHOTOS
-        // -------------------------------------------------
+        // =================================================
+        // PHOTOS EXISTANTES
+        // =================================================
 
-        existingImages = Array.isArray(data.images)
-            ? [...data.images]
-            : [];
+        existingImages =
+            Array.isArray(data.images)
+                ? [...data.images]
+                : [];
+
 
         if (
             existingImages.length === 0 &&
             data.imageURL
         ) {
-            existingImages = [data.imageURL];
+
+            existingImages =
+                [data.imageURL];
         }
 
 
-        // -------------------------------------------------
-        // FORMULAIRE
-        // -------------------------------------------------
+        // =================================================
+        // REMPLIR LE FORMULAIRE
+        // =================================================
 
-        document.getElementById("title").value =
-            data.title || "";
+        const titleInput =
+            document.getElementById("title");
 
-        document.getElementById("price").value =
-            data.price ?? "";
+        const priceInput =
+            document.getElementById("price");
 
-        document.getElementById("currency").value =
-            data.currency || "USD";
+        const currencyInput =
+            document.getElementById("currency");
 
-        document.getElementById("category").value =
-            data.category || "";
+        const categoryInput =
+            document.getElementById("category");
 
-        document.getElementById("description").value =
-            data.description || "";
+        const descriptionInput =
+            document.getElementById("description");
 
-        document.getElementById("city").value =
-            data.city || "";
+        const cityInput =
+            document.getElementById("city");
 
-        document.getElementById("neighborhood").value =
-            data.neighborhood || "";
+        const neighborhoodInput =
+            document.getElementById("neighborhood");
 
-        document.getElementById("whatsapp").value =
-            data.whatsapp || "";
+        const whatsappInput =
+            document.getElementById("whatsapp");
 
+
+        if (titleInput) {
+
+            titleInput.value =
+                data.title || "";
+        }
+
+
+        if (priceInput) {
+
+            priceInput.value =
+                data.price ?? "";
+        }
+
+
+        if (currencyInput) {
+
+            currencyInput.value =
+                data.currency || "USD";
+        }
+
+
+        if (categoryInput) {
+
+            categoryInput.value =
+                data.category || "";
+        }
+
+
+        if (descriptionInput) {
+
+            descriptionInput.value =
+                data.description || "";
+        }
+
+
+        if (cityInput) {
+
+            cityInput.value =
+                data.city || "";
+        }
+
+
+        if (neighborhoodInput) {
+
+            neighborhoodInput.value =
+                data.neighborhood || "";
+        }
+
+
+        if (whatsappInput) {
+
+            whatsappInput.value =
+                data.whatsapp || "";
+        }
+
+
+        // =================================================
+        // AFFICHER LES PHOTOS
+        // =================================================
 
         renderExistingPhotos();
+
+
+        console.log(
+            "CAMU SERVICES : annonce chargée :",
+            annonceId
+        );
 
     } catch (error) {
 
@@ -204,7 +337,9 @@ async function loadService(user) {
             "error"
         );
 
-        saveButton.disabled = true;
+        if (saveButton) {
+            saveButton.disabled = true;
+        }
     }
 }
 
@@ -215,12 +350,17 @@ async function loadService(user) {
 
 function renderExistingPhotos() {
 
-    if (!existingPhotos) return;
+    if (!existingPhotos) {
+        return;
+    }
 
-    existingPhotos.innerHTML = "";
+    existingPhotos.innerHTML =
+        "";
 
 
-    if (existingImages.length === 0) {
+    if (
+        existingImages.length === 0
+    ) {
 
         existingPhotos.innerHTML = `
             <p style="color:#777;">
@@ -232,26 +372,36 @@ function renderExistingPhotos() {
     }
 
 
-    existingImages.forEach((url, index) => {
+    existingImages.forEach(
+        (url, index) => {
 
-        const item = document.createElement("div");
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        item.className = "photo-item";
+            item.className =
+                "photo-item";
 
-        item.innerHTML = `
-            <img
-                src="${escapeHTML(url)}"
-                alt="Photo ${index + 1}"
-            >
 
-            <span class="photo-number">
-                Photo ${index + 1}
-            </span>
-        `;
+            item.innerHTML = `
+                <img
+                    src="${escapeHTML(url)}"
+                    alt="Photo ${index + 1}"
+                >
 
-        existingPhotos.appendChild(item);
+                <span class="photo-number">
+                    Photo ${index + 1}
+                </span>
+            `;
 
-    });
+
+            existingPhotos.appendChild(
+                item
+            );
+
+        }
+    );
 }
 
 
@@ -265,86 +415,135 @@ if (newPhotos) {
         "change",
         () => {
 
-            newPhotosPreview.innerHTML = "";
+            if (newPhotosPreview) {
 
-            const files = Array.from(
-                newPhotos.files || []
-            );
+                newPhotosPreview.innerHTML =
+                    "";
+            }
 
 
-            if (files.length === 0) {
+            const files =
+                Array.from(
+                    newPhotos.files || []
+                );
+
+
+            if (
+                files.length === 0
+            ) {
                 return;
             }
 
 
+            // =================================================
+            // MAXIMUM 8 PHOTOS
+            // =================================================
+
             const totalPhotos =
-                existingImages.length + files.length;
+                existingImages.length +
+                files.length;
 
 
-            if (totalPhotos > 8) {
+            if (
+                totalPhotos > 8
+            ) {
 
                 showMessage(
                     "Vous pouvez avoir maximum 8 photos au total.",
                     "error"
                 );
 
-                newPhotos.value = "";
+                newPhotos.value =
+                    "";
 
                 return;
             }
 
 
+            // =================================================
+            // VÉRIFICATION DES FICHIERS
+            // =================================================
+
             for (const file of files) {
 
-                if (!file.type.startsWith("image/")) {
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
 
                     showMessage(
                         "Tous les fichiers doivent être des images.",
                         "error"
                     );
 
-                    newPhotos.value = "";
+                    newPhotos.value =
+                        "";
 
                     return;
                 }
 
 
-                if (file.size > 5 * 1024 * 1024) {
+                if (
+                    file.size >
+                    5 * 1024 * 1024
+                ) {
 
                     showMessage(
                         "Chaque photo doit faire maximum 5 Mo.",
                         "error"
                     );
 
-                    newPhotos.value = "";
+                    newPhotos.value =
+                        "";
 
                     return;
                 }
 
 
-                const reader = new FileReader();
+                // =================================================
+                // APERÇU
+                // =================================================
+
+                const reader =
+                    new FileReader();
 
 
-                reader.onload = event => {
+                reader.onload =
+                    event => {
 
-                    const item =
-                        document.createElement("div");
-
-                    item.className = "photo-item";
-
-                    item.innerHTML = `
-                        <img
-                            src="${event.target.result}"
-                            alt="Nouvelle photo"
-                        >
-                    `;
-
-                    newPhotosPreview.appendChild(item);
-
-                };
+                        if (!newPhotosPreview) {
+                            return;
+                        }
 
 
-                reader.readAsDataURL(file);
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+                        item.className =
+                            "photo-item";
+
+
+                        item.innerHTML = `
+                            <img
+                                src="${event.target.result}"
+                                alt="Nouvelle photo"
+                            >
+                        `;
+
+
+                        newPhotosPreview.appendChild(
+                            item
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
 
             }
 
@@ -358,15 +557,25 @@ if (newPhotos) {
 // UPLOAD CLOUDINARY
 // =========================================================
 
-async function uploadToCloudinary(file) {
+async function uploadToCloudinary(
+    file
+) {
 
-    const formData = new FormData();
+    const formData =
+        new FormData();
 
-    formData.append("file", file);
+
+    formData.append(
+        "file",
+        file
+    );
+
+
     formData.append(
         "upload_preset",
         CLOUDINARY_UPLOAD_PRESET
     );
+
 
     formData.append(
         "folder",
@@ -374,16 +583,25 @@ async function uploadToCloudinary(file) {
     );
 
 
-    const response = await fetch(
-        CLOUDINARY_UPLOAD_URL,
-        {
-            method: "POST",
-            body: formData
-        }
-    );
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
 
 
     if (!response.ok) {
+
+        const errorText =
+            await response.text();
+
+        console.error(
+            "Erreur Cloudinary :",
+            errorText
+        );
 
         throw new Error(
             "Erreur pendant l'envoi de la photo."
@@ -391,10 +609,13 @@ async function uploadToCloudinary(file) {
     }
 
 
-    const result = await response.json();
+    const result =
+        await response.json();
 
 
-    if (!result.secure_url) {
+    if (
+        !result.secure_url
+    ) {
 
         throw new Error(
             "Cloudinary n'a pas retourné l'image."
@@ -407,7 +628,7 @@ async function uploadToCloudinary(file) {
 
 
 // =========================================================
-// ENREGISTRER
+// ENREGISTRER LES MODIFICATIONS
 // =========================================================
 
 if (form) {
@@ -421,7 +642,12 @@ if (form) {
             hideMessage();
 
 
-            const user = auth.currentUser;
+            // =================================================
+            // UTILISATEUR
+            // =================================================
+
+            const user =
+                auth.currentUser;
 
 
             if (!user) {
@@ -435,7 +661,11 @@ if (form) {
             }
 
 
-            if (!currentService) {
+            // =================================================
+            // ANNONCE
+            // =================================================
+
+            if (!currentAnnonce) {
 
                 showMessage(
                     "Annonce introuvable.",
@@ -446,12 +676,13 @@ if (form) {
             }
 
 
-            // ------------------------------------------------
+            // =================================================
             // SÉCURITÉ
-            // ------------------------------------------------
+            // =================================================
 
             if (
-                currentService.ownerId !== user.uid
+                currentAnnonce.ownerId !==
+                user.uid
             ) {
 
                 showMessage(
@@ -463,43 +694,67 @@ if (form) {
             }
 
 
-            // ------------------------------------------------
-            // VALEURS
-            // ------------------------------------------------
+            // =================================================
+            // RÉCUPÉRATION DES VALEURS
+            // =================================================
 
             const title =
-                document.getElementById("title").value.trim();
+                document
+                    .getElementById("title")
+                    ?.value
+                    .trim();
+
 
             const price =
                 Number(
-                    document.getElementById("price").value
+                    document
+                        .getElementById("price")
+                        ?.value
                 );
 
+
             const currency =
-                document.getElementById("currency").value;
+                document
+                    .getElementById("currency")
+                    ?.value;
+
 
             const category =
-                document.getElementById("category").value;
+                document
+                    .getElementById("category")
+                    ?.value;
+
 
             const description =
-                document.getElementById("description")
-                    .value.trim();
+                document
+                    .getElementById("description")
+                    ?.value
+                    .trim();
+
 
             const city =
-                document.getElementById("city").value;
+                document
+                    .getElementById("city")
+                    ?.value;
+
 
             const neighborhood =
-                document.getElementById("neighborhood")
-                    .value.trim();
+                document
+                    .getElementById("neighborhood")
+                    ?.value
+                    .trim();
+
 
             const whatsapp =
-                document.getElementById("whatsapp")
-                    .value.trim();
+                document
+                    .getElementById("whatsapp")
+                    ?.value
+                    .trim();
 
 
-            // ------------------------------------------------
+            // =================================================
             // VALIDATION
-            // ------------------------------------------------
+            // =================================================
 
             if (!title) {
 
@@ -512,7 +767,10 @@ if (form) {
             }
 
 
-            if (!price || price < 0) {
+            if (
+                !Number.isFinite(price) ||
+                price < 0
+            ) {
 
                 showMessage(
                     "Veuillez saisir un prix valide.",
@@ -567,34 +825,42 @@ if (form) {
             }
 
 
-            // ------------------------------------------------
+            // =================================================
             // BOUTON
-            // ------------------------------------------------
+            // =================================================
 
-            saveButton.disabled = true;
+            if (saveButton) {
 
-            saveButton.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Enregistrement...
-            `;
+                saveButton.disabled =
+                    true;
+
+                saveButton.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Enregistrement...
+                `;
+            }
 
 
             try {
 
-                // --------------------------------------------
+                // =================================================
                 // PHOTOS
-                // --------------------------------------------
+                // =================================================
 
-                let finalImages = [...existingImages];
+                let finalImages =
+                    [...existingImages];
 
 
-                const files = Array.from(
-                    newPhotos?.files || []
-                );
+                const files =
+                    Array.from(
+                        newPhotos?.files || []
+                    );
 
 
                 if (
-                    finalImages.length + files.length > 8
+                    finalImages.length +
+                    files.length >
+                    8
                 ) {
 
                     throw new Error(
@@ -603,49 +869,84 @@ if (form) {
                 }
 
 
-                for (const file of files) {
+                // =================================================
+                // ENVOYER NOUVELLES PHOTOS
+                // =================================================
+
+                for (
+                    const file of files
+                ) {
 
                     const imageURL =
-                        await uploadToCloudinary(file);
+                        await uploadToCloudinary(
+                            file
+                        );
 
-                    finalImages.push(imageURL);
+
+                    finalImages.push(
+                        imageURL
+                    );
 
                 }
 
 
-                // --------------------------------------------
-                // FIRESTORE
-                // --------------------------------------------
+                // =================================================
+                // FIRESTORE — COLLECTION ANNONCES
+                // =================================================
 
-                const serviceRef =
+                const annonceRef =
                     doc(
                         db,
-                        "services",
-                        serviceId
+                        "annonces",
+                        annonceId
                     );
 
 
                 await updateDoc(
-                    serviceRef,
+                    annonceRef,
                     {
-                        title,
-                        price,
-                        currency,
-                        category,
-                        description,
-                        city,
-                        neighborhood,
-                        whatsapp,
-                        images: finalImages,
-                        imageURL: finalImages[0] || "",
-                        updatedAt: new Date()
+
+                        title:
+                            title,
+
+                        price:
+                            price,
+
+                        currency:
+                            currency,
+
+                        category:
+                            category,
+
+                        description:
+                            description,
+
+                        city:
+                            city,
+
+                        neighborhood:
+                            neighborhood,
+
+                        whatsapp:
+                            whatsapp,
+
+                        images:
+                            finalImages,
+
+                        imageURL:
+                            finalImages[0] ||
+                            "",
+
+                        updatedAt:
+                            new Date()
+
                     }
                 );
 
 
-                // --------------------------------------------
+                // =================================================
                 // SUCCÈS
-                // --------------------------------------------
+                // =================================================
 
                 showMessage(
                     "Votre annonce a été modifiée avec succès.",
@@ -653,16 +954,31 @@ if (form) {
                 );
 
 
-                saveButton.innerHTML = `
-                    <i class="fa-solid fa-check"></i>
-                    Modifications enregistrées
-                `;
+                if (saveButton) {
 
+                    saveButton.innerHTML = `
+                        <i class="fa-solid fa-check"></i>
+                        Modifications enregistrées
+                    `;
+                }
+
+
+                console.log(
+                    "CAMU SERVICES : annonce modifiée :",
+                    annonceId
+                );
+
+
+                // =================================================
+                // REDIRECTION
+                // =================================================
 
                 setTimeout(
                     () => {
+
                         window.location.href =
                             "compte.html";
+
                     },
                     1200
                 );
@@ -671,7 +987,7 @@ if (form) {
             } catch (error) {
 
                 console.error(
-                    "Erreur modification :",
+                    "Erreur modification annonce :",
                     error
                 );
 
@@ -683,12 +999,16 @@ if (form) {
                 );
 
 
-                saveButton.disabled = false;
+                if (saveButton) {
 
-                saveButton.innerHTML = `
-                    <i class="fa-solid fa-check"></i>
-                    Enregistrer les modifications
-                `;
+                    saveButton.disabled =
+                        false;
+
+                    saveButton.innerHTML = `
+                        <i class="fa-solid fa-check"></i>
+                        Enregistrer les modifications
+                    `;
+                }
 
             }
 
@@ -715,9 +1035,17 @@ onAuthStateChanged(
         }
 
 
-        if (serviceId) {
+        console.log(
+            "CAMU SERVICES : utilisateur connecté :",
+            user.email
+        );
 
-            await loadService(user);
+
+        if (annonceId) {
+
+            await loadAnnonce(
+                user
+            );
 
         }
 
@@ -731,12 +1059,29 @@ onAuthStateChanged(
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 }
 
 
