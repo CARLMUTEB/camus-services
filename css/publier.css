@@ -1,6 +1,7 @@
 /* =========================================================
-   CAMU SERVICES — PAGE PUBLIER
-   CSS SPÉCIFIQUE À publier.html
+   CAMU SERVICES — PUBLIER
+   CSS COMPLET
+   Compatible PC / TABLETTE / MOBILE
 ========================================================= */
 
 
@@ -11,8 +12,10 @@
 .publish-v2 {
     width: 100%;
     max-width: 1050px;
+
     margin: 0 auto;
-    padding: 0 0 60px;
+
+    padding: 25px 18px 100px;
 }
 
 
@@ -22,51 +25,91 @@
 
 .publish-hero {
     display: flex;
+
     align-items: center;
-    gap: 22px;
-    margin-bottom: 28px;
+
+    gap: 18px;
+
+    margin-bottom: 25px;
 }
 
+
+/* Bouton retour */
+
 .publish-hero-icon {
-    width: 64px;
-    height: 64px;
-    min-width: 64px;
+    width: 58px;
+    height: 58px;
+
+    min-width: 58px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
     background: var(--primary);
+
     color: #fff;
 
-    font-size: 25px;
+    font-size: 21px;
 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .12);
+
+    transition: .2s ease;
 }
 
+
+.publish-hero-icon:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
 .publish-hero .section-label {
+
     color: var(--primary);
+
     font-size: 10px;
+
     font-weight: 800;
+
     letter-spacing: 1.2px;
+
     text-transform: uppercase;
 }
 
+
 .publish-hero h1 {
+
     margin: 5px 0 6px;
+
     color: var(--dark);
+
     font-size: 32px;
+
     line-height: 1.2;
+
     font-weight: 900;
 }
 
+
 .publish-hero p {
+
     margin: 0;
+
     color: var(--muted);
+
     font-size: 15px;
+
+    line-height: 1.5;
 }
+
 
 
 /* =========================================================
@@ -74,20 +117,30 @@
 ========================================================= */
 
 .publish-steps {
+
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
     gap: 12px;
-    margin-bottom: 28px;
+
+    margin-bottom: 25px;
 }
 
+
 .publish-step {
+
     display: flex;
+
     align-items: center;
+
     gap: 11px;
 
     padding: 13px 14px;
 
     border: 1px solid var(--border);
+
     border-radius: 14px;
 
     background: var(--white);
@@ -95,48 +148,75 @@
     transition: .2s ease;
 }
 
+
 .publish-step > span {
+
     width: 32px;
     height: 32px;
+
     min-width: 32px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
     background: #f3f4f6;
+
     color: #6b7280;
 
     font-size: 13px;
-    font-weight: 700;
+
+    font-weight: 800;
 }
+
 
 .publish-step strong,
 .publish-step small {
+
     display: block;
 }
 
+
 .publish-step strong {
+
     color: var(--dark);
+
     font-size: 13px;
+
+    font-weight: 800;
 }
 
+
 .publish-step small {
-    margin-top: 2px;
+
+    margin-top: 3px;
+
     color: #8a8f98;
+
     font-size: 11px;
 }
 
+
 .publish-step.active {
+
     border-color: var(--primary);
+
+    background: var(--white);
+
 }
 
+
 .publish-step.active > span {
+
     background: var(--primary);
+
     color: #fff;
+
 }
+
 
 
 /* =========================================================
@@ -144,10 +224,14 @@
 ========================================================= */
 
 .publish-v2-form {
+
     display: flex;
+
     flex-direction: column;
-    gap: 20px;
+
+    gap: 18px;
 }
+
 
 
 /* =========================================================
@@ -155,101 +239,153 @@
 ========================================================= */
 
 .publish-card {
+
     width: 100%;
 
-    padding: 28px;
+    padding: 27px;
 
     background: var(--white);
 
     border: 1px solid var(--border);
+
     border-radius: 20px;
 
-    box-shadow: 0 6px 25px rgba(0, 0, 0, .045);
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, .045);
 }
+
 
 .publish-card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
 
-    margin-bottom: 25px;
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 23px;
 }
 
+
 .publish-number {
+
     width: 42px;
     height: 42px;
+
     min-width: 42px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 12px;
 
     background: var(--primary-light);
+
     color: var(--primary);
 
     font-size: 13px;
-    font-weight: 800;
+
+    font-weight: 900;
 }
 
+
 .publish-card-header h2 {
+
     margin: 0 0 5px;
 
     color: var(--dark);
 
     font-size: 19px;
+
     line-height: 1.3;
 }
 
+
 .publish-card-header p {
+
     margin: 0;
 
     color: var(--muted);
 
     font-size: 13px;
+
     line-height: 1.5;
 }
 
 
+
 /* =========================================================
-   ZONE PHOTOS
+   ZONE PHOTO
 ========================================================= */
 
 .publish-upload-zone {
-    min-height: 190px;
+
+    position: relative;
+
+    min-height: 185px;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 25px;
 
     border: 2px dashed #d7dce2;
+
     border-radius: 16px;
 
     background: #fafbfc;
 
     cursor: pointer;
 
-    transition: all .2s ease;
+    text-align: center;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease;
 }
+
 
 .publish-upload-zone:hover {
+
     border-color: var(--primary);
+
     background: #f7fdf9;
+
 }
+
+
+.publish-upload-zone:active {
+
+    transform: scale(.995);
+
+}
+
 
 .publish-upload-zone:focus-within {
+
     border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(22, 163, 74, .08);
 }
 
+
 .publish-upload-icon {
+
     width: 54px;
     height: 54px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -258,43 +394,62 @@
     border-radius: 15px;
 
     background: var(--primary-light);
+
     color: var(--primary);
 
     font-size: 22px;
 }
 
+
 .publish-upload-zone strong {
+
     color: var(--dark);
+
     font-size: 15px;
+
+    font-weight: 800;
 }
 
+
 .publish-upload-zone span {
+
     margin-top: 5px;
 
     color: var(--muted);
 
     font-size: 13px;
+
+    line-height: 1.5;
+
     text-align: center;
 }
 
+
 .publish-upload-zone small {
+
     margin-top: 9px;
 
     color: #9ca3af;
 
     font-size: 11px;
+
+    line-height: 1.4;
+
     text-align: center;
 }
 
 
+
 /* =========================================================
-   APERÇU DES PHOTOS
+   APERÇU PHOTOS
 ========================================================= */
 
 .publish-photo-preview {
+
     display: grid;
 
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns:
+        repeat(5, 1fr);
 
     gap: 10px;
 
@@ -302,9 +457,8 @@
 }
 
 
-/* CARTE PHOTO */
-
 .publish-photo-item {
+
     position: relative;
 
     width: 100%;
@@ -318,15 +472,13 @@
     background: #f3f4f6;
 
     border: 1px solid var(--border);
-
-    box-sizing: border-box;
 }
 
 
-/* IMAGE */
-
 .publish-photo-image {
+
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -335,12 +487,12 @@
 }
 
 
-/* PHOTO PRINCIPALE / NUMÉRO */
-
 .publish-photo-number {
+
     position: absolute;
 
     left: 7px;
+
     bottom: 7px;
 
     padding: 4px 7px;
@@ -361,20 +513,22 @@
 }
 
 
-/* BOUTON SUPPRIMER */
-
 .publish-photo-remove {
+
     position: absolute;
 
     top: 7px;
+
     right: 7px;
 
     width: 30px;
+
     height: 30px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     padding: 0;
@@ -396,18 +550,22 @@
     transition: .2s ease;
 }
 
+
 .publish-photo-remove:hover {
+
     transform: scale(1.08);
 
     background: #dc2626;
 }
 
 
+
 /* =========================================================
-   ANCIEN SYSTÈME — COMPATIBILITÉ
+   COMPATIBILITÉ ANCIEN APERÇU
 ========================================================= */
 
 .photo-preview-item {
+
     position: relative;
 
     aspect-ratio: 1 / 1;
@@ -417,10 +575,15 @@
     border-radius: 12px;
 
     background: #f3f4f6;
+
+    border: 1px solid var(--border);
 }
 
+
 .photo-preview-item img {
+
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -429,19 +592,25 @@
 }
 
 
+
 /* =========================================================
    CHAMPS
 ========================================================= */
 
 .publish-field {
-    margin-bottom: 20px;
+
+    margin-bottom: 19px;
 }
 
+
 .publish-field:last-child {
+
     margin-bottom: 0;
 }
 
+
 .publish-field label {
+
     display: block;
 
     margin-bottom: 8px;
@@ -449,16 +618,21 @@
     color: var(--dark);
 
     font-size: 13px;
+
     font-weight: 700;
 }
 
+
 .publish-field label span {
+
     color: var(--danger);
 }
+
 
 .publish-field input,
 .publish-field select,
 .publish-field textarea {
+
     width: 100%;
 
     padding: 13px 14px;
@@ -472,35 +646,35 @@
     color: var(--dark);
 
     font-family: inherit;
+
     font-size: 14px;
 
     outline: none;
 
+    box-sizing: border-box;
+
     transition:
         border-color .2s ease,
         box-shadow .2s ease;
-
-    box-sizing: border-box;
 }
+
 
 .publish-field input {
+
     min-height: 47px;
 }
+
 
 .publish-field select {
+
     min-height: 47px;
+
+    cursor: pointer;
 }
 
-.publish-field input:focus,
-.publish-field select:focus,
-.publish-field textarea:focus {
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(22, 163, 74, .09);
-}
 
 .publish-field textarea {
+
     min-height: 150px;
 
     resize: vertical;
@@ -508,7 +682,28 @@
     line-height: 1.5;
 }
 
+
+.publish-field input::placeholder,
+.publish-field textarea::placeholder {
+
+    color: #9ca3af;
+}
+
+
+.publish-field input:focus,
+.publish-field select:focus,
+.publish-field textarea:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(22, 163, 74, .09);
+}
+
+
 .publish-field > small {
+
     display: block;
 
     margin-top: 6px;
@@ -516,23 +711,29 @@
     color: #969ca5;
 
     font-size: 11px;
+
     line-height: 1.4;
 }
 
 
+
 /* =========================================================
-   GRILLE DEUX COLONNES
+   GRILLE
 ========================================================= */
 
 .publish-grid-2 {
+
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap: 18px;
 }
 
+
 .publish-field-bottom {
+
     display: flex;
 
     justify-content: space-between;
@@ -547,11 +748,13 @@
 }
 
 
+
 /* =========================================================
    WHATSAPP
 ========================================================= */
 
 .publish-whatsapp-box {
+
     display: flex;
 
     align-items: center;
@@ -565,11 +768,16 @@
     border-radius: 13px;
 
     background: #f6fbf7;
+
+    border: 1px solid #e4f1e7;
 }
 
+
 .publish-whatsapp-icon {
+
     width: 42px;
     height: 42px;
+
     min-width: 42px;
 
     display: flex;
@@ -586,18 +794,24 @@
     font-size: 21px;
 }
 
+
 .publish-whatsapp-box strong,
 .publish-whatsapp-box span {
+
     display: block;
 }
 
+
 .publish-whatsapp-box strong {
+
     color: var(--dark);
 
     font-size: 13px;
 }
 
+
 .publish-whatsapp-box span {
+
     margin-top: 3px;
 
     color: #777e88;
@@ -608,11 +822,13 @@
 }
 
 
+
 /* =========================================================
    CONDITIONS
 ========================================================= */
 
 .publish-terms-card {
+
     padding: 18px 20px;
 
     border: 1px solid var(--border);
@@ -622,7 +838,9 @@
     background: var(--white);
 }
 
+
 .publish-checkbox {
+
     position: relative;
 
     display: flex;
@@ -634,7 +852,9 @@
     cursor: pointer;
 }
 
+
 .publish-checkbox input {
+
     position: absolute;
 
     width: 1px;
@@ -643,9 +863,12 @@
     opacity: 0;
 }
 
+
 .publish-checkmark {
+
     width: 20px;
     height: 20px;
+
     min-width: 20px;
 
     display: flex;
@@ -663,10 +886,12 @@
 
     color: transparent;
 
-    transition: all .2s ease;
+    transition: .2s ease;
 }
 
+
 .publish-checkbox input:checked + .publish-checkmark {
+
     background: var(--primary);
 
     border-color: var(--primary);
@@ -674,17 +899,24 @@
     color: #fff;
 }
 
+
 .publish-checkbox input:focus-visible + .publish-checkmark {
-    outline: 3px solid rgba(22, 163, 74, .25);
+
+    outline: 3px solid
+        rgba(22, 163, 74, .25);
 
     outline-offset: 2px;
 }
 
+
 .publish-checkmark i {
+
     font-size: 11px;
 }
 
+
 .publish-terms-text {
+
     color: #606772;
 
     font-size: 12px;
@@ -692,18 +924,30 @@
     line-height: 1.6;
 }
 
+
 .publish-terms-text a {
+
     color: var(--primary);
 
-    font-weight: 600;
+    font-weight: 700;
+
+    text-decoration: none;
 }
 
 
+.publish-terms-text a:hover {
+
+    text-decoration: underline;
+}
+
+
+
 /* =========================================================
-   BOUTONS
+   ACTIONS
 ========================================================= */
 
 .publish-v2-actions {
+
     display: flex;
 
     align-items: center;
@@ -712,26 +956,46 @@
 
     gap: 15px;
 
-    padding-top: 5px;
+    padding-top: 4px;
 }
+
 
 .publish-v2-actions .primary-button,
 .publish-v2-actions .secondary-button {
-    min-height: 46px;
+
+    min-height: 48px;
 
     display: inline-flex;
 
     align-items: center;
 
-    border-radius: 10px;
+    justify-content: center;
 
-    font-weight: 700;
+    gap: 8px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+    cursor: pointer;
 
     transition: .2s ease;
+
+    box-sizing: border-box;
 }
 
+
 .publish-v2-actions .primary-button {
-    padding: 0 20px;
+
+    min-width: 220px;
+
+    padding: 0 22px;
 
     border: none;
 
@@ -740,33 +1004,70 @@
     color: #fff;
 }
 
+
 .publish-v2-actions .primary-button:hover {
+
     background: var(--primary-dark);
+
+    transform: translateY(-1px);
 }
 
+
 .publish-v2-actions .secondary-button {
-    padding: 0 20px;
+
+    padding: 0 22px;
 
     border: 1px solid var(--border);
 
     background: var(--white);
 
-    color: var(--text);
+    color: var(--dark);
 }
 
+
 .publish-v2-actions .secondary-button:hover {
+
     border-color: var(--primary);
 
     color: var(--primary);
 }
 
+
 .publish-submit {
-    min-width: 210px;
+
+    min-width: 220px;
 
     justify-content: center;
 
-    gap: 8px;
 }
+
+
+
+/* =========================================================
+   MESSAGE D'ERREUR / SUCCÈS
+========================================================= */
+
+#publishMessage {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    box-sizing: border-box;
+}
+
+
+#publishMessage:empty {
+
+    display: none;
+}
+
 
 
 /* =========================================================
@@ -776,18 +1077,33 @@
 @media (max-width: 900px) {
 
     .publish-v2 {
+
         max-width: 100%;
+
+        padding-left: 15px;
+
+        padding-right: 15px;
+
     }
+
 
     .publish-steps {
-        grid-template-columns: repeat(2, 1fr);
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
     }
 
+
     .publish-photo-preview {
-        grid-template-columns: repeat(4, 1fr);
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
     }
 
 }
+
 
 
 /* =========================================================
@@ -797,380 +1113,498 @@
 @media (max-width: 600px) {
 
     .publish-v2 {
+
         width: 100%;
 
         max-width: 100%;
 
-        padding: 8px 0 35px;
+        padding:
+            12px
+            10px
+            85px;
+
     }
 
 
     /* HERO */
 
     .publish-hero {
-        display: flex;
 
-        align-items: center;
+        gap: 11px;
 
-        gap: 12px;
+        margin-bottom: 16px;
 
-        margin-bottom: 18px;
     }
 
+
     .publish-hero-icon {
-        width: 46px;
-        height: 46px;
-        min-width: 46px;
+
+        width: 44px;
+
+        height: 44px;
+
+        min-width: 44px;
 
         border-radius: 12px;
 
-        font-size: 18px;
+        font-size: 17px;
+
     }
+
 
     .publish-hero .section-label {
-        font-size: 9px;
+
+        font-size: 8px;
 
         letter-spacing: .8px;
+
     }
+
 
     .publish-hero h1 {
+
         margin: 3px 0 4px;
 
-        font-size: 22px;
+        font-size: 21px;
 
         line-height: 1.15;
+
     }
+
 
     .publish-hero p {
-        font-size: 12px;
 
-        line-height: 1.45;
+        font-size: 11px;
+
+        line-height: 1.4;
+
     }
+
 
 
     /* ÉTAPES */
 
     .publish-steps {
-        display: grid;
 
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 6px;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .publish-step {
+
+        min-width: 0;
+
+        padding: 8px;
 
         gap: 7px;
 
-        margin-bottom: 16px;
+        border-radius: 9px;
+
     }
 
-    .publish-step {
-        min-width: 0;
-
-        padding: 9px;
-
-        gap: 8px;
-
-        border-radius: 10px;
-    }
 
     .publish-step > span {
-        width: 27px;
-        height: 27px;
-        min-width: 27px;
 
-        font-size: 11px;
+        width: 26px;
+
+        height: 26px;
+
+        min-width: 26px;
+
+        font-size: 10px;
+
     }
 
+
     .publish-step strong {
+
         overflow: hidden;
 
-        font-size: 11px;
+        font-size: 10px;
 
         white-space: nowrap;
 
         text-overflow: ellipsis;
+
     }
 
+
     .publish-step small {
+
         display: none;
+
     }
+
 
 
     /* FORMULAIRE */
 
     .publish-v2-form {
-        gap: 12px;
+
+        gap: 11px;
+
     }
+
 
 
     /* CARTES */
 
     .publish-card {
-        width: 100%;
 
-        padding: 17px 14px;
+        padding: 16px 13px;
 
         border-radius: 14px;
 
-        box-shadow: 0 3px 14px rgba(0, 0, 0, .04);
+        box-shadow:
+            0 3px 14px
+            rgba(0, 0, 0, .04);
+
     }
+
 
     .publish-card-header {
-        gap: 10px;
 
-        margin-bottom: 17px;
+        gap: 9px;
+
+        margin-bottom: 16px;
+
     }
 
+
     .publish-number {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
+
+        width: 33px;
+
+        height: 33px;
+
+        min-width: 33px;
 
         border-radius: 9px;
 
-        font-size: 11px;
+        font-size: 10px;
+
     }
+
 
     .publish-card-header h2 {
+
         font-size: 15px;
 
-        line-height: 1.25;
     }
+
 
     .publish-card-header p {
-        margin-top: 3px;
 
-        font-size: 11px;
+        font-size: 10px;
 
-        line-height: 1.4;
     }
 
 
-    /* PHOTOS */
+
+    /* ZONE PHOTO */
 
     .publish-upload-zone {
+
         min-height: 145px;
 
-        padding: 18px 10px;
+        padding: 17px 9px;
 
         border-radius: 12px;
+
     }
+
 
     .publish-upload-icon {
+
         width: 43px;
+
         height: 43px;
 
-        margin-bottom: 9px;
+        margin-bottom: 8px;
 
-        border-radius: 12px;
+        border-radius: 11px;
 
         font-size: 18px;
+
     }
+
 
     .publish-upload-zone strong {
+
         font-size: 13px;
+
     }
+
 
     .publish-upload-zone span {
-        margin-top: 4px;
 
-        font-size: 11px;
+        font-size: 10px;
 
-        text-align: center;
     }
 
+
     .publish-upload-zone small {
-        margin-top: 7px;
 
         font-size: 9px;
 
-        text-align: center;
     }
 
 
-    /* APERÇU PHOTOS */
+
+    /* APERÇU */
 
     .publish-photo-preview {
-        grid-template-columns: repeat(3, 1fr);
 
-        gap: 7px;
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 6px;
 
         margin-top: 10px;
+
     }
+
 
     .publish-photo-item {
+
         border-radius: 9px;
+
     }
 
-    .publish-photo-number {
-        left: 5px;
 
-        bottom: 5px;
+    .publish-photo-number {
+
+        left: 4px;
+
+        bottom: 4px;
 
         padding: 3px 5px;
 
         font-size: 8px;
+
     }
+
 
     .publish-photo-remove {
-        top: 5px;
 
-        right: 5px;
+        top: 4px;
 
-        width: 25px;
-        height: 25px;
+        right: 4px;
 
-        font-size: 11px;
+        width: 24px;
+
+        height: 24px;
+
+        font-size: 10px;
+
     }
+
 
 
     /* CHAMPS */
 
     .publish-field {
-        margin-bottom: 15px;
+
+        margin-bottom: 14px;
+
     }
+
 
     .publish-field label {
+
         margin-bottom: 6px;
 
-        font-size: 12px;
+        font-size: 11px;
+
     }
+
 
     .publish-field input,
     .publish-field select,
     .publish-field textarea {
-        box-sizing: border-box;
 
-        padding: 11px 12px;
+        padding:
+            10px
+            11px;
 
         border-radius: 9px;
 
-        font-size: 13px;
+        font-size: 12px;
+
     }
+
 
     .publish-field input,
     .publish-field select {
-        min-height: 43px;
+
+        min-height: 42px;
+
     }
+
 
     .publish-field textarea {
-        min-height: 125px;
+
+        min-height: 120px;
+
     }
 
+
     .publish-field > small {
+
         margin-top: 5px;
 
         font-size: 9px;
 
-        line-height: 1.4;
     }
 
+
     .publish-field-bottom {
+
         flex-direction: column;
 
         align-items: flex-start;
 
         gap: 2px;
 
-        margin-top: 5px;
-
         font-size: 9px;
+
     }
 
+
+
+    /* GRILLE */
+
     .publish-grid-2 {
+
         grid-template-columns: 1fr;
 
         gap: 0;
+
     }
+
 
 
     /* WHATSAPP */
 
     .publish-whatsapp-box {
-        gap: 10px;
 
-        margin-bottom: 15px;
+        gap: 9px;
 
-        padding: 11px;
+        margin-bottom: 14px;
+
+        padding: 10px;
 
         border-radius: 10px;
+
     }
+
 
     .publish-whatsapp-icon {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
 
-        font-size: 18px;
+        width: 35px;
+
+        height: 35px;
+
+        min-width: 35px;
+
+        font-size: 17px;
+
     }
+
 
     .publish-whatsapp-box strong {
-        font-size: 12px;
+
+        font-size: 11px;
+
     }
+
 
     .publish-whatsapp-box span {
-        margin-top: 2px;
 
-        font-size: 10px;
+        font-size: 9px;
 
-        line-height: 1.35;
     }
+
 
 
     /* CONDITIONS */
 
     .publish-terms-card {
-        padding: 13px;
 
-        border-radius: 11px;
+        padding: 12px;
+
+        border-radius: 10px;
+
     }
+
 
     .publish-checkbox {
-        gap: 9px;
+
+        gap: 8px;
+
     }
+
 
     .publish-checkmark {
+
         width: 18px;
+
         height: 18px;
+
         min-width: 18px;
+
     }
+
 
     .publish-terms-text {
-        font-size: 10px;
+
+        font-size: 9px;
 
         line-height: 1.5;
+
     }
+
 
 
     /* BOUTONS */
 
     .publish-v2-actions {
-        display: flex;
 
         flex-direction: column-reverse;
 
         align-items: stretch;
 
-        gap: 8px;
+        gap: 7px;
 
-        padding-top: 2px;
     }
+
 
     .publish-v2-actions .primary-button,
     .publish-v2-actions .secondary-button {
+
         width: 100%;
 
         min-width: 0;
 
         min-height: 44px;
 
-        justify-content: center;
-
-        box-sizing: border-box;
     }
 
+
     .publish-submit {
+
         min-width: 0;
+
     }
 
 }
+
 
 
 /* =========================================================
@@ -1179,55 +1613,69 @@
 
 @media (max-width: 380px) {
 
-    .publish-hero h1 {
-        font-size: 20px;
+    .publish-v2 {
+
+        padding-left: 8px;
+
+        padding-right: 8px;
+
     }
+
+
+    .publish-hero h1 {
+
+        font-size: 19px;
+
+    }
+
 
     .publish-hero p {
-        font-size: 11px;
+
+        font-size: 10px;
+
     }
 
-    .publish-steps {
-        gap: 5px;
-    }
-
-    .publish-step {
-        padding: 8px;
-    }
 
     .publish-step strong {
-        font-size: 10px;
+
+        font-size: 9px;
+
     }
+
 
     .publish-card {
-        padding: 15px 12px;
+
+        padding:
+            14px
+            11px;
+
     }
+
 
     .publish-upload-zone {
-        min-height: 135px;
+
+        min-height: 132px;
+
     }
+
 
     .publish-photo-preview {
-        grid-template-columns: repeat(3, 1fr);
 
         gap: 5px;
+
     }
+
 
     .publish-photo-remove {
-        width: 23px;
-        height: 23px;
 
-        top: 4px;
-        right: 4px;
-    }
+        width: 22px;
 
-    .publish-photo-number {
-        left: 4px;
-        bottom: 4px;
+        height: 22px;
 
-        font-size: 7px;
+        top: 3px;
 
-        padding: 3px 4px;
+        right: 3px;
+
     }
 
 }
