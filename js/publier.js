@@ -2,37 +2,53 @@
 // CAMU SERVICES
 // publier.js
 // Publication d'une annonce
-// Catégories depuis Firestore : categories
-// Villes depuis Firestore : villes
-// Champ ville : name
-// Images : Cloudinary
-// Annonces : annonces
+//
+// Catégories : Firestore → categories
+// Villes      : Firestore → villes
+// Annonces    : Firestore → annonces
+// Images      : Cloudinary
+// Firebase   : 12.1.0
 // ============================================================
+
 
 import { auth, db } from "./firebase-config.js";
 
+
 import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 import {
     collection,
     getDocs,
     addDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+console.log(
+    "CAMU SERVICES — publier.js chargé."
+);
+
 
 
 // ============================================================
 // CONFIGURATION CLOUDINARY
 // ============================================================
 
-const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+const CLOUDINARY_CLOUD_NAME =
+    "lc9jiidc";
 
-const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_PRESET =
+    "camu_services";
+
 
 const CLOUDINARY_UPLOAD_URL =
     `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+
 
 
 // ============================================================
@@ -43,99 +59,114 @@ let currentUser = null;
 
 let selectedFiles = [];
 
+let pageInitialized = false;
+
+
 
 // ============================================================
 // ELEMENTS HTML
 // ============================================================
 
 const publishForm =
-    document.getElementById("publishForm");
+    document.getElementById(
+        "publishForm"
+    );
+
 
 const publishButton =
-    document.getElementById("publishButton");
+    document.getElementById(
+        "publishButton"
+    );
+
 
 const publishMessage =
-    document.getElementById("publishMessage");
+    document.getElementById(
+        "publishMessage"
+    );
+
 
 const publishPhotos =
-    document.getElementById("publishPhotos");
+    document.getElementById(
+        "publishPhotos"
+    );
+
 
 const photoPreview =
-    document.getElementById("photoPreview");
+    document.getElementById(
+        "photoPreview"
+    );
+
 
 const publishCategory =
-    document.getElementById("publishCategory");
+    document.getElementById(
+        "publishCategory"
+    );
+
 
 const publishCity =
-    document.getElementById("publishCity");
+    document.getElementById(
+        "publishCity"
+    );
+
 
 
 // ============================================================
 // MESSAGE
 // ============================================================
 
-function showMessage(message, type = "error") {
+function showMessage(
+    text,
+    type = "error"
+) {
 
-    if (!publishMessage) return;
+    if (!publishMessage) {
+        return;
+    }
 
-    publishMessage.textContent = message;
+
+    publishMessage.textContent =
+        text;
+
 
     publishMessage.className =
         `auth-message ${type}`;
 
-    publishMessage.style.display = "block";
+
+    publishMessage.style.display =
+        "block";
 }
+
 
 
 function clearMessage() {
 
-    if (!publishMessage) return;
+    if (!publishMessage) {
+        return;
+    }
 
-    publishMessage.textContent = "";
+
+    publishMessage.textContent =
+        "";
+
 
     publishMessage.className =
         "auth-message";
 
-    publishMessage.style.display = "none";
+
+    publishMessage.style.display =
+        "none";
 }
 
-
-// ============================================================
-// AUTHENTIFICATION
-// ============================================================
-
-onAuthStateChanged(auth, (user) => {
-
-    currentUser = user;
-
-    if (!user) {
-
-        showMessage(
-            "Vous devez être connecté pour publier une annonce.",
-            "error"
-        );
-
-        if (publishButton) {
-            publishButton.disabled = true;
-        }
-
-        return;
-    }
-
-    if (publishButton) {
-        publishButton.disabled = false;
-    }
-
-    console.log(
-        "✅ Utilisateur connecté :",
-        user.uid
-    );
-});
 
 
 // ============================================================
 // CHARGER LES CATÉGORIES
 // COLLECTION : categories
+//
+// Champs utilisés :
+// name
+// icon
+// active
 // ============================================================
 
 async function loadCategories() {
@@ -143,13 +174,18 @@ async function loadCategories() {
     if (!publishCategory) {
 
         console.error(
-            "❌ Élément #publishCategory introuvable."
+            "❌ #publishCategory introuvable."
         );
 
         return;
     }
 
+
     try {
+
+        publishCategory.disabled =
+            true;
+
 
         publishCategory.innerHTML = `
             <option value="">
@@ -157,91 +193,140 @@ async function loadCategories() {
             </option>
         `;
 
+
         console.log(
-            "🔄 Chargement de la collection : categories"
+            "🔄 Lecture de Firestore : categories"
         );
+
 
         const snapshot =
             await getDocs(
-                collection(db, "categories")
+                collection(
+                    db,
+                    "categories"
+                )
             );
 
+
         console.log(
-            "📦 Nombre de catégories :",
+            "📦 Nombre de documents categories :",
             snapshot.size
         );
 
+
         const categories = [];
 
-        snapshot.forEach((docSnap) => {
 
-            const data = docSnap.data();
+        snapshot.forEach(
+            (docSnap) => {
 
-            console.log(
-                "📁 Catégorie :",
-                docSnap.id,
-                data
-            );
+                const data =
+                    docSnap.data();
 
-            // Ignorer les catégories désactivées
-            if (data.active === false) {
-                return;
+
+                console.log(
+                    "📁 Catégorie :",
+                    docSnap.id,
+                    data
+                );
+
+
+                // ------------------------------------------
+                // Catégorie inactive
+                // ------------------------------------------
+
+                if (
+                    data.active === false
+                ) {
+
+                    return;
+                }
+
+
+                // ------------------------------------------
+                // Nom obligatoire
+                // ------------------------------------------
+
+                if (
+                    !data.name ||
+                    String(data.name).trim() === ""
+                ) {
+
+                    console.warn(
+                        "⚠️ Catégorie sans nom :",
+                        docSnap.id
+                    );
+
+                    return;
+                }
+
+
+                categories.push({
+
+                    id:
+                        docSnap.id,
+
+                    name:
+                        String(
+                            data.name
+                        ).trim(),
+
+                    icon:
+                        data.icon
+                            ? String(
+                                data.icon
+                            ).trim()
+                            : "",
+
+                    description:
+                        data.description
+                            ? String(
+                                data.description
+                            ).trim()
+                            : ""
+
+                });
+
             }
-
-            // Champ attendu : name
-            if (
-                !data.name ||
-                String(data.name).trim() === ""
-            ) {
-                return;
-            }
-
-            categories.push({
-
-                id: docSnap.id,
-
-                name:
-                    String(data.name).trim(),
-
-                icon:
-                    data.icon || ""
-
-            });
-
-        });
+        );
 
 
         // ====================================================
         // SUPPRIMER LES DOUBLONS
         // ====================================================
 
-        const uniqueCategories = [
-            ...new Map(
-                categories.map(category => [
-                    category.name.toLowerCase(),
-                    category
-                ])
-            ).values()
-        ];
+        const uniqueCategories =
+            [
+                ...new Map(
+                    categories.map(
+                        category => [
+                            category.name.toLowerCase(),
+                            category
+                        ]
+                    )
+                ).values()
+            ];
 
 
         // ====================================================
         // TRI ALPHABÉTIQUE
         // ====================================================
 
-        uniqueCategories.sort((a, b) =>
-            a.name.localeCompare(
-                b.name,
-                "fr",
-                {
-                    sensitivity: "base"
-                }
-            )
+        uniqueCategories.sort(
+            (a, b) =>
+                a.name.localeCompare(
+                    b.name,
+                    "fr",
+                    {
+                        sensitivity:
+                            "base"
+                    }
+                )
         );
 
 
         // ====================================================
-        // RESET SELECT
+        // RESET
         // ====================================================
 
         publishCategory.innerHTML = `
@@ -251,7 +336,13 @@ async function loadCategories() {
         `;
 
 
-        if (uniqueCategories.length === 0) {
+        // ====================================================
+        // AUCUNE CATÉGORIE
+        // ====================================================
+
+        if (
+            uniqueCategories.length === 0
+        ) {
 
             publishCategory.innerHTML = `
                 <option value="">
@@ -259,9 +350,15 @@ async function loadCategories() {
                 </option>
             `;
 
+
+            publishCategory.disabled =
+                true;
+
+
             console.warn(
-                "⚠️ Aucune catégorie disponible."
+                "⚠️ Aucune catégorie active."
             );
+
 
             return;
         }
@@ -271,20 +368,45 @@ async function loadCategories() {
         // AJOUTER LES CATÉGORIES
         // ====================================================
 
-        uniqueCategories.forEach((category) => {
+        uniqueCategories.forEach(
+            (category) => {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.value =
-                category.name;
 
-            option.textContent =
-                `${category.icon ? category.icon + " " : ""}${category.name}`;
+                option.value =
+                    category.name;
 
-            publishCategory.appendChild(option);
 
-        });
+                option.textContent =
+                    category.icon
+                        ? `${category.icon} ${category.name}`
+                        : category.name;
+
+
+                // ID Firestore disponible
+                option.dataset.categoryId =
+                    category.id;
+
+
+                // Description disponible
+                option.dataset.description =
+                    category.description;
+
+
+                publishCategory.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        publishCategory.disabled =
+            false;
 
 
         console.log(
@@ -292,26 +414,62 @@ async function loadCategories() {
             uniqueCategories.length
         );
 
+
     } catch (error) {
 
         console.error(
-            "❌ Erreur chargement catégories :",
-            error
+            "❌ ERREUR CATEGORIES"
         );
+
+
+        console.error(
+            "Code :",
+            error?.code
+        );
+
+
+        console.error(
+            "Message :",
+            error?.message
+        );
+
 
         publishCategory.innerHTML = `
             <option value="">
                 Erreur de chargement des catégories
             </option>
         `;
+
+
+        publishCategory.disabled =
+            true;
+
+
+        // Message plus précis dans la console
+        if (
+            error?.code ===
+            "permission-denied"
+        ) {
+
+            console.error(
+                "🚫 Firestore refuse la lecture de categories."
+            );
+
+        }
+
     }
+
 }
+
 
 
 // ============================================================
 // CHARGER LES VILLES
 // COLLECTION : villes
-// CHAMP : name
+//
+// Champs utilisés :
+// name
+// active
 // ============================================================
 
 async function loadCities() {
@@ -319,7 +477,7 @@ async function loadCities() {
     if (!publishCity) {
 
         console.error(
-            "❌ Élément #publishCity introuvable dans le HTML."
+            "❌ #publishCity introuvable."
         );
 
         return;
@@ -327,6 +485,10 @@ async function loadCities() {
 
 
     try {
+
+        publishCity.disabled =
+            true;
+
 
         publishCity.innerHTML = `
             <option value="">
@@ -336,22 +498,21 @@ async function loadCities() {
 
 
         console.log(
-            "🔄 Chargement de la collection : villes"
+            "🔄 Lecture de Firestore : villes"
         );
 
 
-        // ====================================================
-        // RÉCUPÉRATION FIRESTORE
-        // ====================================================
-
         const snapshot =
             await getDocs(
-                collection(db, "villes")
+                collection(
+                    db,
+                    "villes"
+                )
             );
 
 
         console.log(
-            "📦 Nombre de documents dans villes :",
+            "📦 Nombre de documents villes :",
             snapshot.size
         );
 
@@ -359,103 +520,102 @@ async function loadCities() {
         const cities = [];
 
 
-        // ====================================================
-        // LECTURE DES DOCUMENTS
-        // ====================================================
+        snapshot.forEach(
+            (docSnap) => {
 
-        snapshot.forEach((docSnap) => {
+                const data =
+                    docSnap.data();
 
-            const data = docSnap.data();
-
-
-            console.log(
-                "🏙️ Document ville :",
-                docSnap.id,
-                data
-            );
-
-
-            // ==================================================
-            // VILLE DÉSACTIVÉE
-            // ==================================================
-
-            if (data.active === false) {
 
                 console.log(
-                    "⛔ Ville désactivée :",
-                    data.name
-                );
-
-                return;
-            }
-
-
-            // ==================================================
-            // CHAMP NAME
-            // ==================================================
-
-            if (
-                !data.name ||
-                String(data.name).trim() === ""
-            ) {
-
-                console.warn(
-                    "⚠️ Document sans champ 'name' :",
-                    docSnap.id
-                );
-
-                return;
-            }
-
-
-            // ==================================================
-            // AJOUT DE LA VILLE
-            // ==================================================
-
-            cities.push({
-
-                id:
+                    "🏙️ Ville :",
                     docSnap.id,
+                    data
+                );
 
-                name:
-                    String(data.name).trim()
 
-            });
+                // ------------------------------------------
+                // Ville inactive
+                // ------------------------------------------
 
-        });
+                if (
+                    data.active === false
+                ) {
+
+                    return;
+                }
+
+
+                // ------------------------------------------
+                // Nom obligatoire
+                // ------------------------------------------
+
+                if (
+                    !data.name ||
+                    String(data.name).trim() === ""
+                ) {
+
+                    console.warn(
+                        "⚠️ Ville sans nom :",
+                        docSnap.id
+                    );
+
+                    return;
+                }
+
+
+                cities.push({
+
+                    id:
+                        docSnap.id,
+
+                    name:
+                        String(
+                            data.name
+                        ).trim()
+
+                });
+
+            }
+        );
 
 
         // ====================================================
         // SUPPRIMER LES DOUBLONS
         // ====================================================
 
-        const uniqueCities = [
-            ...new Map(
-                cities.map(city => [
-                    city.name.toLowerCase(),
-                    city
-                ])
-            ).values()
-        ];
+        const uniqueCities =
+            [
+                ...new Map(
+                    cities.map(
+                        city => [
+                            city.name.toLowerCase(),
+                            city
+                        ]
+                    )
+                ).values()
+            ];
 
 
         // ====================================================
         // TRI ALPHABÉTIQUE
         // ====================================================
 
-        uniqueCities.sort((a, b) =>
-            a.name.localeCompare(
-                b.name,
-                "fr",
-                {
-                    sensitivity: "base"
-                }
-            )
+        uniqueCities.sort(
+            (a, b) =>
+                a.name.localeCompare(
+                    b.name,
+                    "fr",
+                    {
+                        sensitivity:
+                            "base"
+                    }
+                )
         );
 
 
         // ====================================================
-        // RESET DU SELECT
+        // RESET
         // ====================================================
 
         publishCity.innerHTML = `
@@ -469,7 +629,9 @@ async function loadCities() {
         // AUCUNE VILLE
         // ====================================================
 
-        if (uniqueCities.length === 0) {
+        if (
+            uniqueCities.length === 0
+        ) {
 
             publishCity.innerHTML = `
                 <option value="">
@@ -477,40 +639,55 @@ async function loadCities() {
                 </option>
             `;
 
+
+            publishCity.disabled =
+                true;
+
+
             console.warn(
-                "⚠️ Aucun document exploitable trouvé dans la collection 'villes'."
+                "⚠️ Aucune ville active."
             );
+
 
             return;
         }
 
 
         // ====================================================
-        // AJOUTER LES VILLES AU SELECT
+        // AJOUTER LES VILLES
         // ====================================================
 
-        uniqueCities.forEach((city) => {
+        uniqueCities.forEach(
+            (city) => {
 
-            const option =
-                document.createElement("option");
-
-
-            option.value =
-                city.name;
-
-
-            option.textContent =
-                city.name;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
 
-            // ID Firestore disponible si nécessaire
-            option.dataset.cityId =
-                city.id;
+                option.value =
+                    city.name;
 
 
-            publishCity.appendChild(option);
+                option.textContent =
+                    city.name;
 
-        });
+
+                option.dataset.cityId =
+                    city.id;
+
+
+                publishCity.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        publishCity.disabled =
+            false;
 
 
         console.log(
@@ -519,15 +696,22 @@ async function loadCities() {
         );
 
 
-        console.table(
-            uniqueCities
-        );
-
     } catch (error) {
 
         console.error(
-            "❌ Erreur chargement villes :",
-            error
+            "❌ ERREUR VILLES"
+        );
+
+
+        console.error(
+            "Code :",
+            error?.code
+        );
+
+
+        console.error(
+            "Message :",
+            error?.message
         );
 
 
@@ -536,8 +720,15 @@ async function loadCities() {
                 Erreur de chargement des villes
             </option>
         `;
+
+
+        publishCity.disabled =
+            true;
+
     }
+
 }
+
 
 
 // ============================================================
@@ -550,10 +741,14 @@ if (publishPhotos) {
         "change",
         handlePhotoSelection
     );
+
 }
 
 
-function handlePhotoSelection(event) {
+
+function handlePhotoSelection(
+    event
+) {
 
     const files =
         Array.from(
@@ -561,7 +756,9 @@ function handlePhotoSelection(event) {
         );
 
 
-    if (files.length === 0) {
+    if (
+        files.length === 0
+    ) {
         return;
     }
 
@@ -577,13 +774,19 @@ function handlePhotoSelection(event) {
         8;
 
 
-    for (const file of files) {
+    for (
+        const file of files
+    ) {
 
-        // ==================================================
+        // ------------------------------------------
         // TYPE
-        // ==================================================
+        // ------------------------------------------
 
-        if (!file.type.startsWith("image/")) {
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
 
             showMessage(
                 `Le fichier "${file.name}" n'est pas une image.`,
@@ -594,11 +797,13 @@ function handlePhotoSelection(event) {
         }
 
 
-        // ==================================================
+        // ------------------------------------------
         // TAILLE
-        // ==================================================
+        // ------------------------------------------
 
-        if (file.size > MAX_SIZE) {
+        if (
+            file.size > MAX_SIZE
+        ) {
 
             showMessage(
                 `L'image "${file.name}" dépasse 5 MB.`,
@@ -609,29 +814,34 @@ function handlePhotoSelection(event) {
         }
 
 
-        // ==================================================
+        // ------------------------------------------
         // DOUBLON
-        // ==================================================
+        // ------------------------------------------
 
         const alreadyExists =
             selectedFiles.some(
                 (existingFile) =>
-                    existingFile.name === file.name &&
-                    existingFile.size === file.size
+                    existingFile.name ===
+                        file.name &&
+                    existingFile.size ===
+                        file.size
             );
 
 
-        if (alreadyExists) {
+        if (
+            alreadyExists
+        ) {
             continue;
         }
 
 
-        // ==================================================
-        // MAXIMUM 8 IMAGES
-        // ==================================================
+        // ------------------------------------------
+        // MAXIMUM
+        // ------------------------------------------
 
         if (
-            selectedFiles.length >= MAX_IMAGES
+            selectedFiles.length >=
+            MAX_IMAGES
         ) {
 
             showMessage(
@@ -643,17 +853,24 @@ function handlePhotoSelection(event) {
         }
 
 
-        selectedFiles.push(file);
+        selectedFiles.push(
+            file
+        );
+
     }
 
 
     renderPhotoPreview();
 
 
-    // Permet de sélectionner à nouveau
-    // le même fichier après suppression.
-    event.target.value = "";
+    // Permet de sélectionner
+    // à nouveau le même fichier.
+
+    event.target.value =
+        "";
+
 }
+
 
 
 // ============================================================
@@ -662,10 +879,13 @@ function handlePhotoSelection(event) {
 
 function renderPhotoPreview() {
 
-    if (!photoPreview) return;
+    if (!photoPreview) {
+        return;
+    }
 
 
-    photoPreview.innerHTML = "";
+    photoPreview.innerHTML =
+        "";
 
 
     selectedFiles.forEach(
@@ -675,62 +895,75 @@ function renderPhotoPreview() {
                 new FileReader();
 
 
-            reader.onload = (event) => {
+            reader.onload =
+                (event) => {
 
-                const item =
-                    document.createElement("div");
-
-
-                item.className =
-                    "publish-photo-item";
-
-
-                item.innerHTML = `
-                    <img
-                        src="${event.target.result}"
-                        alt="Aperçu ${index + 1}"
-                    >
-
-                    <button
-                        type="button"
-                        class="publish-photo-remove"
-                        data-index="${index}"
-                        aria-label="Supprimer cette photo"
-                    >
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-
-                    <span class="publish-photo-number">
-                        ${index + 1}
-                    </span>
-                `;
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
 
 
-                const removeButton =
-                    item.querySelector(
-                        ".publish-photo-remove"
+                    item.className =
+                        "publish-photo-item";
+
+
+                    item.innerHTML = `
+                        <img
+                            src="${event.target.result}"
+                            alt="Aperçu ${index + 1}"
+                            class="publish-photo-image"
+                        >
+
+                        <button
+                            type="button"
+                            class="publish-photo-remove"
+                            aria-label="Supprimer cette photo"
+                        >
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <span
+                            class="publish-photo-number"
+                        >
+                            ${
+                                index === 0
+                                    ? "Principale"
+                                    : index + 1
+                            }
+                        </span>
+                    `;
+
+
+                    const removeButton =
+                        item.querySelector(
+                            ".publish-photo-remove"
+                        );
+
+
+                    if (
+                        removeButton
+                    ) {
+
+                        removeButton.addEventListener(
+                            "click",
+                            () => {
+
+                                removePhoto(
+                                    index
+                                );
+
+                            }
+                        );
+
+                    }
+
+
+                    photoPreview.appendChild(
+                        item
                     );
 
-
-                if (removeButton) {
-
-                    removeButton.addEventListener(
-                        "click",
-                        () => {
-
-                            removePhoto(index);
-
-                        }
-                    );
-
-                }
-
-
-                photoPreview.appendChild(
-                    item
-                );
-
-            };
+                };
 
 
             reader.readAsDataURL(
@@ -739,29 +972,38 @@ function renderPhotoPreview() {
 
         }
     );
+
 }
+
 
 
 // ============================================================
 // SUPPRIMER UNE PHOTO
 // ============================================================
 
-function removePhoto(index) {
+function removePhoto(
+    index
+) {
 
     selectedFiles.splice(
         index,
         1
     );
 
+
     renderPhotoPreview();
+
 }
+
 
 
 // ============================================================
 // UPLOAD CLOUDINARY
 // ============================================================
 
-async function uploadImageToCloudinary(file) {
+async function uploadImageToCloudinary(
+    file
+) {
 
     const formData =
         new FormData();
@@ -785,48 +1027,116 @@ async function uploadImageToCloudinary(file) {
     );
 
 
-    const response =
-        await fetch(
-            CLOUDINARY_UPLOAD_URL,
-            {
-                method: "POST",
-                body: formData
-            }
+    console.log(
+        "☁️ Cloudinary :",
+        file.name,
+        file.size,
+        file.type
+    );
+
+
+    let response;
+
+
+    // ========================================================
+    // REQUÊTE CLOUDINARY
+    // ========================================================
+
+    try {
+
+        response =
+            await fetch(
+                CLOUDINARY_UPLOAD_URL,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Erreur réseau Cloudinary :",
+            error
         );
 
 
+        throw new Error(
+            "Impossible de contacter Cloudinary. Vérifiez votre connexion Internet."
+        );
+
+    }
+
+
+    // ========================================================
+    // LIRE LA RÉPONSE
+    // ========================================================
+
     let result = null;
+
+
+    const responseText =
+        await response.text();
 
 
     try {
 
         result =
-            await response.json();
+            JSON.parse(
+                responseText
+            );
 
-    } catch (jsonError) {
+    } catch (error) {
+
+        console.error(
+            "Réponse Cloudinary non JSON :",
+            responseText
+        );
 
         throw new Error(
-            "Cloudinary a retourné une réponse invalide."
+            `Cloudinary a retourné une réponse invalide (${response.status}).`
         );
 
     }
 
 
-    if (!response.ok) {
+    // ========================================================
+    // ERREUR CLOUDINARY
+    // ========================================================
 
-        const cloudinaryError =
+    if (
+        !response.ok
+    ) {
+
+        const cloudinaryMessage =
             result?.error?.message ||
+            response.headers.get(
+                "X-Cld-Error"
+            ) ||
             `Erreur Cloudinary (${response.status})`;
 
 
+        console.error(
+            "❌ Cloudinary :",
+            response.status,
+            cloudinaryMessage
+        );
+
+
         throw new Error(
-            cloudinaryError
+            `Cloudinary (${response.status}) : ${cloudinaryMessage}`
         );
 
     }
 
 
-    if (!result.secure_url) {
+    // ========================================================
+    // VÉRIFIER URL
+    // ========================================================
+
+    if (
+        !result?.secure_url
+    ) {
 
         throw new Error(
             "Cloudinary n'a pas retourné l'URL de l'image."
@@ -835,8 +1145,16 @@ async function uploadImageToCloudinary(file) {
     }
 
 
+    console.log(
+        "✅ Image Cloudinary :",
+        result.secure_url
+    );
+
+
     return result.secure_url;
+
 }
+
 
 
 // ============================================================
@@ -864,6 +1182,12 @@ async function uploadAllImages() {
         );
 
 
+        console.log(
+            `☁️ Upload ${i + 1}/${selectedFiles.length}`,
+            file.name
+        );
+
+
         const url =
             await uploadImageToCloudinary(
                 file
@@ -873,11 +1197,14 @@ async function uploadAllImages() {
         imageURLs.push(
             url
         );
+
     }
 
 
     return imageURLs;
+
 }
+
 
 
 // ============================================================
@@ -887,41 +1214,58 @@ async function uploadAllImages() {
 function validateForm() {
 
     const title =
-        document.getElementById(
-            "publishTitle"
-        )?.value.trim();
+        document
+            .getElementById(
+                "publishTitle"
+            )
+            ?.value
+            .trim();
 
 
     const price =
-        document.getElementById(
-            "publishPrice"
-        )?.value;
+        document
+            .getElementById(
+                "publishPrice"
+            )
+            ?.value;
 
 
     const category =
-        publishCategory?.value.trim();
+        publishCategory
+            ?.value
+            .trim();
 
 
     const description =
-        document.getElementById(
-            "publishDescription"
-        )?.value.trim();
+        document
+            .getElementById(
+                "publishDescription"
+            )
+            ?.value
+            .trim();
 
 
     const city =
-        publishCity?.value.trim();
+        publishCity
+            ?.value
+            .trim();
 
 
     const whatsapp =
-        document.getElementById(
-            "publishWhatsapp"
-        )?.value.trim();
+        document
+            .getElementById(
+                "publishWhatsapp"
+            )
+            ?.value
+            .trim();
 
 
     const terms =
-        document.getElementById(
-            "publishTerms"
-        )?.checked;
+        document
+            .getElementById(
+                "publishTerms"
+            )
+            ?.checked;
 
 
     // ========================================================
@@ -946,7 +1290,9 @@ function validateForm() {
     if (
         price === "" ||
         price === null ||
-        Number.isNaN(Number(price)) ||
+        Number.isNaN(
+            Number(price)
+        ) ||
         Number(price) < 0
     ) {
 
@@ -1035,11 +1381,13 @@ function validateForm() {
 
 
     return true;
+
 }
 
 
+
 // ============================================================
-// SOUMISSION DU FORMULAIRE
+// SOUMISSION
 // ============================================================
 
 if (publishForm) {
@@ -1048,10 +1396,14 @@ if (publishForm) {
         "submit",
         handlePublish
     );
+
 }
 
 
-async function handlePublish(event) {
+
+async function handlePublish(
+    event
+) {
 
     event.preventDefault();
 
@@ -1078,13 +1430,16 @@ async function handlePublish(event) {
     // VALIDATION
     // ========================================================
 
-    if (!validateForm()) {
+    if (
+        !validateForm()
+    ) {
+
         return;
     }
 
 
     // ========================================================
-    // IMAGES
+    // PHOTOS
     // ========================================================
 
     if (
@@ -1101,7 +1456,7 @@ async function handlePublish(event) {
 
 
     // ========================================================
-    // DÉSACTIVER BOUTON
+    // BOUTON
     // ========================================================
 
     if (publishButton) {
@@ -1118,6 +1473,7 @@ async function handlePublish(event) {
             <i class="fa-solid fa-spinner fa-spin"></i>
             Publication en cours...
         `;
+
     }
 
 
@@ -1128,53 +1484,74 @@ async function handlePublish(event) {
         // ====================================================
 
         const title =
-            document.getElementById(
-                "publishTitle"
-            ).value.trim();
+            document
+                .getElementById(
+                    "publishTitle"
+                )
+                .value
+                .trim();
 
 
         const price =
             Number(
-                document.getElementById(
-                    "publishPrice"
-                ).value
+                document
+                    .getElementById(
+                        "publishPrice"
+                    )
+                    .value
             );
 
 
         const currency =
-            document.getElementById(
-                "publishCurrency"
-            ).value;
+            document
+                .getElementById(
+                    "publishCurrency"
+                )
+                .value;
 
 
         const category =
-            publishCategory.value.trim();
+            publishCategory
+                .value
+                .trim();
 
 
         const description =
-            document.getElementById(
-                "publishDescription"
-            ).value.trim();
+            document
+                .getElementById(
+                    "publishDescription"
+                )
+                .value
+                .trim();
 
 
         const city =
-            publishCity.value.trim();
+            publishCity
+                .value
+                .trim();
 
 
         const neighborhood =
-            document.getElementById(
-                "publishNeighborhood"
-            )?.value.trim() || "";
+            document
+                .getElementById(
+                    "publishNeighborhood"
+                )
+                ?.value
+                .trim() ||
+            "";
 
 
         const whatsapp =
-            document.getElementById(
-                "publishWhatsapp"
-            ).value.trim();
+            document
+                .getElementById(
+                    "publishWhatsapp"
+                )
+                .value
+                .trim();
 
 
         // ====================================================
-        // NOM UTILISATEUR
+        // PROPRIÉTAIRE
         // ====================================================
 
         const ownerName =
@@ -1186,6 +1563,7 @@ async function handlePublish(event) {
         const ownerEmail =
             currentUser.email ||
             "";
+
 
 
         // ====================================================
@@ -1210,7 +1588,14 @@ async function handlePublish(event) {
             throw new Error(
                 "Aucune image n'a pu être envoyée."
             );
+
         }
+
+
+        console.log(
+            "✅ Toutes les images sont sur Cloudinary :",
+            imageURLs
+        );
 
 
         // ====================================================
@@ -1229,56 +1614,91 @@ async function handlePublish(event) {
             title:
                 title,
 
+
             price:
                 price,
+
 
             currency:
                 currency,
 
+
             category:
                 category,
+
 
             description:
                 description,
 
+
             city:
                 city,
+
 
             neighborhood:
                 neighborhood,
 
+
             whatsapp:
                 whatsapp,
+
+
+            // ----------------------------------------------
+            // PROPRIÉTAIRE
+            // ----------------------------------------------
 
             userId:
                 currentUser.uid,
 
+
             ownerId:
                 currentUser.uid,
+
 
             ownerName:
                 ownerName,
 
+
             ownerEmail:
                 ownerEmail,
+
+
+            // ----------------------------------------------
+            // IMAGES
+            // ----------------------------------------------
 
             images:
                 imageURLs,
 
+
             imageURL:
-                imageURLs[0] || "",
+                imageURLs[0] ||
+                "",
+
 
             imageCount:
                 imageURLs.length,
 
+
+            // ----------------------------------------------
+            // STATUT
+            // ----------------------------------------------
+
             status:
                 "active",
+
+
+            // ----------------------------------------------
+            // DATES
+            // ----------------------------------------------
 
             createdAt:
                 serverTimestamp(),
 
+
             updatedAt:
                 serverTimestamp()
+
         };
 
 
@@ -1293,7 +1713,7 @@ async function handlePublish(event) {
 
 
         console.log(
-            "✅ Annonce créée :",
+            "✅ ANNONCE CRÉÉE :",
             annonceRef.id
         );
 
@@ -1308,10 +1728,14 @@ async function handlePublish(event) {
         );
 
 
-        // Nettoyage
+        // Nettoyer le formulaire
+
         publishForm.reset();
 
-        selectedFiles = [];
+
+        selectedFiles =
+            [];
+
 
         renderPhotoPreview();
 
@@ -1320,35 +1744,55 @@ async function handlePublish(event) {
         // REDIRECTION
         // ====================================================
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            window.location.href =
-                "compte.html";
+                window.location.href =
+                    "compte.html";
 
-        }, 1500);
+            },
+            1500
+        );
 
 
     } catch (error) {
 
         console.error(
-            "❌ Erreur publication :",
+            "======================================"
+        );
+
+
+        console.error(
+            "❌ ERREUR PUBLICATION"
+        );
+
+
+        console.error(
+            "Code :",
+            error?.code
+        );
+
+
+        console.error(
+            "Message :",
+            error?.message
+        );
+
+
+        console.error(
+            "Erreur complète :",
             error
         );
 
 
-        let message =
-            "Une erreur est survenue lors de la publication.";
-
-
-        if (error?.message) {
-
-            message =
-                error.message;
-        }
+        console.error(
+            "======================================"
+        );
 
 
         showMessage(
-            message,
+            error?.message ||
+            "Une erreur est survenue lors de la publication.",
             "error"
         );
 
@@ -1367,9 +1811,13 @@ async function handlePublish(event) {
                     <i class="fa-solid fa-paper-plane"></i>
                     Publier l'annonce
                 `;
+
         }
+
     }
+
 }
+
 
 
 // ============================================================
@@ -1378,12 +1826,24 @@ async function handlePublish(event) {
 
 async function initializePublishPage() {
 
+    if (pageInitialized) {
+        return;
+    }
+
+
+    pageInitialized =
+        true;
+
+
     console.log(
         "🚀 Initialisation de la page de publication..."
     );
 
 
     try {
+
+        // Les deux sont chargés
+        // après authentification.
 
         await Promise.all([
             loadCategories(),
@@ -1395,18 +1855,98 @@ async function initializePublishPage() {
             "✅ Catégories et villes chargées."
         );
 
+
     } catch (error) {
 
         console.error(
             "❌ Erreur initialisation :",
             error
         );
+
     }
+
 }
 
 
+
 // ============================================================
-// LANCEMENT
+// AUTHENTIFICATION
 // ============================================================
 
-initializePublishPage();
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        currentUser =
+            user;
+
+
+        console.log(
+            "🔐 État authentification :",
+            user
+                ? `Connecté (${user.uid})`
+                : "Non connecté"
+        );
+
+
+        // ====================================================
+        // PAS CONNECTÉ
+        // ====================================================
+
+        if (!user) {
+
+            showMessage(
+                "Vous devez être connecté pour publier une annonce.",
+                "error"
+            );
+
+
+            if (publishButton) {
+
+                publishButton.disabled =
+                    true;
+
+            }
+
+
+            return;
+        }
+
+
+        // ====================================================
+        // CONNECTÉ
+        // ====================================================
+
+        if (publishButton) {
+
+            publishButton.disabled =
+                false;
+
+        }
+
+
+        console.log(
+            "✅ Utilisateur connecté :",
+            user.uid
+        );
+
+
+        // ====================================================
+        // CHARGER CATÉGORIES + VILLES
+        // APRÈS AUTHENTIFICATION
+        // ====================================================
+
+        await initializePublishPage();
+
+    }
+);
+
+
+
+// ============================================================
+// FIN
+// ============================================================
+
+console.log(
+    "CAMU SERVICES : publier.js prêt."
+);
