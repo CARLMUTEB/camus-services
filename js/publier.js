@@ -1,8 +1,6 @@
 // ============================================================
 // CAMU SERVICES
-// publier.js
-// Publication d'une annonce
-// Firebase + Firestore + Cloudinary
+// PUBLICATION D'ANNONCE
 // ============================================================
 
 import {
@@ -23,83 +21,57 @@ import {
 
 
 // ============================================================
-// CONFIGURATION CLOUDINARY
+// CLOUDINARY
 // ============================================================
 
 const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+
 const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 // ============================================================
-// VARIABLES GLOBALES
+// VARIABLES
 // ============================================================
 
 let currentUser = null;
 
 let selectedImages = [];
 
-let uploadWidget = null;
+const MAX_IMAGES = 8;
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 
 // ============================================================
-// ELEMENTS HTML
+// ELEMENTS
 // ============================================================
 
 const publishForm =
     document.getElementById("publishForm");
 
-const photosInput =
-    document.getElementById("publishPhotos");
+const cameraButton =
+    document.getElementById("cameraButton");
+
+const galleryButton =
+    document.getElementById("galleryButton");
+
+const cameraInput =
+    document.getElementById("cameraInput");
+
+const galleryInput =
+    document.getElementById("galleryInput");
 
 const photoPreview =
     document.getElementById("photoPreview");
 
-const titleInput =
-    document.getElementById("publishTitle");
-
-const priceInput =
-    document.getElementById("publishPrice");
-
-const currencyInput =
-    document.getElementById("publishCurrency");
-
-const categoryInput =
+const categorySelect =
     document.getElementById("publishCategory");
 
-const descriptionInput =
-    document.getElementById("publishDescription");
-
-const cityInput =
+const citySelect =
     document.getElementById("publishCity");
-
-const neighborhoodInput =
-    document.getElementById("publishNeighborhood");
-
-const whatsappInput =
-    document.getElementById("publishWhatsapp");
-
-const termsInput =
-    document.getElementById("publishTerms");
-
-
-// ============================================================
-// VERIFICATION DES ELEMENTS
-// ============================================================
-
-console.log("=== CAMU SERVICES : publier.js ===");
-
-console.log("publishForm :", publishForm);
-console.log("publishPhotos :", photosInput);
-console.log("photoPreview :", photoPreview);
-console.log("publishTitle :", titleInput);
-console.log("publishPrice :", priceInput);
-console.log("publishCurrency :", currencyInput);
-console.log("publishCategory :", categoryInput);
-console.log("publishDescription :", descriptionInput);
-console.log("publishCity :", cityInput);
-console.log("publishNeighborhood :", neighborhoodInput);
-console.log("publishWhatsapp :", whatsappInput);
-console.log("publishTerms :", termsInput);
 
 
 // ============================================================
@@ -108,14 +80,7 @@ console.log("publishTerms :", termsInput);
 
 onAuthStateChanged(auth, async (user) => {
 
-    console.log(
-        "Etat authentification :",
-        user ? "connecté" : "non connecté"
-    );
-
     if (!user) {
-
-        currentUser = null;
 
         alert(
             "Vous devez être connecté pour publier une annonce."
@@ -131,125 +96,66 @@ onAuthStateChanged(auth, async (user) => {
 
     console.log(
         "Utilisateur connecté :",
-        currentUser.uid
+        user.uid
     );
 
-    console.log(
-        "Email :",
-        currentUser.email
-    );
+    await loadCategories();
 
-
-    // ========================================================
-    // CHARGEMENT DES DONNEES
-    // ========================================================
-
-    await Promise.all([
-        loadCategories(),
-        loadCities()
-    ]);
-
-
-    // ========================================================
-    // INITIALISATION CLOUDINARY
-    // ========================================================
-
-    initializeCloudinaryWidget();
+    await loadCities();
 
 });
 
 
 // ============================================================
-// CHARGER LES CATEGORIES
-// COLLECTION FIRESTORE : categories
+// CATEGORIES
 // ============================================================
 
 async function loadCategories() {
 
-    if (!categoryInput) {
-
-        console.error(
-            "L'élément #publishCategory est introuvable."
-        );
-
-        return;
-    }
+    if (!categorySelect) return;
 
     try {
 
-        categoryInput.innerHTML = `
+        categorySelect.innerHTML = `
             <option value="">
                 Chargement des catégories...
             </option>
         `;
 
-
         const snapshot =
             await getDocs(
-                collection(
-                    db,
-                    "categories"
-                )
+                collection(db, "categories")
             );
 
+        categorySelect.innerHTML = `
+            <option value="">
+                Sélectionner une catégorie
+            </option>
+        `;
 
         const categories = [];
 
-
-        snapshot.forEach((categoryDoc) => {
+        snapshot.forEach((docSnap) => {
 
             const data =
-                categoryDoc.data();
-
-
-            // ------------------------------------------------
-            // CATÉGORIE ACTIVE UNIQUEMENT
-            // ------------------------------------------------
-
-            if (data.active !== true) {
-                return;
-            }
-
-
-            // ------------------------------------------------
-            // NOM OBLIGATOIRE
-            // ------------------------------------------------
+                docSnap.data();
 
             if (
-                !data.name ||
-                !data.name.trim()
+                data.active !== true ||
+                !data.name
             ) {
                 return;
             }
 
-
             categories.push({
-
-                id:
-                    categoryDoc.id,
-
-                name:
-                    data.name.trim(),
-
-                icon:
-                    data.icon
-                        ? data.icon.trim()
-                        : "",
-
-                description:
-                    data.description || "",
-
+                name: data.name.trim(),
+                icon: data.icon || "",
                 order:
-                    Number(data.order) || 0
-
+                    Number(data.order || 0)
             });
 
         });
 
-
-        // ------------------------------------------------
-        // TRI PAR ORDRE
-        // ------------------------------------------------
 
         categories.sort(
             (a, b) =>
@@ -257,61 +163,26 @@ async function loadCategories() {
         );
 
 
-        // ------------------------------------------------
-        // RESET DU SELECT
-        // ------------------------------------------------
+        categories.forEach(
+            (category) => {
 
-        categoryInput.innerHTML = `
-            <option value="">
-                Sélectionner une catégorie
-            </option>
-        `;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
+                option.value =
+                    category.name;
 
-        // ------------------------------------------------
-        // AJOUT DES CATEGORIES
-        // ------------------------------------------------
+                option.textContent =
+                    category.name;
 
-        categories.forEach((category) => {
+                categorySelect.appendChild(
+                    option
+                );
 
-            const option =
-                document.createElement("option");
-
-
-            option.value =
-                category.name;
-
-
-            option.textContent =
-                category.name;
-
-
-            // Conserver l'icône
-            // pour une utilisation future
-            option.dataset.icon =
-                category.icon;
-
-
-            categoryInput.appendChild(
-                option
-            );
-
-        });
-
-
-        // ------------------------------------------------
-        // AUCUNE CATEGORIE
-        // ------------------------------------------------
-
-        if (categories.length === 0) {
-
-            categoryInput.innerHTML = `
-                <option value="">
-                    Aucune catégorie disponible
-                </option>
-            `;
-
-        }
+            }
+        );
 
 
         console.log(
@@ -319,33 +190,16 @@ async function loadCategories() {
             categories
         );
 
-        console.log(
-            "Nombre de catégories :",
-            categories.length
-        );
-
-
     } catch (error) {
 
         console.error(
-            "Erreur chargement catégories :",
+            "Erreur catégories :",
             error
         );
 
-        console.error(
-            "Code Firebase :",
-            error.code
-        );
-
-        console.error(
-            "Message Firebase :",
-            error.message
-        );
-
-
-        categoryInput.innerHTML = `
+        categorySelect.innerHTML = `
             <option value="">
-                Erreur de chargement des catégories
+                Erreur de chargement
             </option>
         `;
 
@@ -355,24 +209,16 @@ async function loadCategories() {
 
 
 // ============================================================
-// CHARGER LES VILLES
-// COLLECTION FIRESTORE : villes
+// VILLES
 // ============================================================
 
 async function loadCities() {
 
-    if (!cityInput) {
-
-        console.error(
-            "L'élément #publishCity est introuvable."
-        );
-
-        return;
-    }
+    if (!citySelect) return;
 
     try {
 
-        cityInput.innerHTML = `
+        citySelect.innerHTML = `
             <option value="">
                 Chargement des villes...
             </option>
@@ -381,67 +227,55 @@ async function loadCities() {
 
         const snapshot =
             await getDocs(
-                collection(
-                    db,
-                    "villes"
-                )
+                collection(db, "villes")
             );
+
+
+        citySelect.innerHTML = `
+            <option value="">
+                Sélectionner une ville
+            </option>
+        `;
 
 
         const cities = [];
 
 
-        snapshot.forEach((cityDoc) => {
+        snapshot.forEach(
+            (docSnap) => {
 
-            const data =
-                cityDoc.data();
-
-
-            // ------------------------------------------------
-            // VILLE ACTIVE UNIQUEMENT
-            // ------------------------------------------------
-
-            if (data.active !== true) {
-                return;
-            }
+                const data =
+                    docSnap.data();
 
 
-            // ------------------------------------------------
-            // NOM OBLIGATOIRE
-            // ------------------------------------------------
-
-            if (
-                !data.name ||
-                !data.name.trim()
-            ) {
-                return;
-            }
+                if (
+                    data.active !== true ||
+                    !data.name
+                ) {
+                    return;
+                }
 
 
-            cities.push({
+                cities.push({
 
-                id:
-                    cityDoc.id,
+                    name:
+                        data.name.trim(),
 
-                name:
-                    data.name.trim(),
-
-                province:
-                    data.province
+                    province:
+                        data.province
                         ? data.province.trim()
                         : "",
 
-                order:
-                    Number(data.order) || 0
+                    order:
+                        Number(
+                            data.order || 0
+                        )
 
-            });
+                });
 
-        });
+            }
+        );
 
-
-        // ------------------------------------------------
-        // TRI PAR ORDRE
-        // ------------------------------------------------
 
         cities.sort(
             (a, b) =>
@@ -449,61 +283,28 @@ async function loadCities() {
         );
 
 
-        // ------------------------------------------------
-        // RESET DU SELECT
-        // ------------------------------------------------
+        cities.forEach(
+            (city) => {
 
-        cityInput.innerHTML = `
-            <option value="">
-                Sélectionner une ville
-            </option>
-        `;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
+                option.value =
+                    city.name;
 
-        // ------------------------------------------------
-        // AJOUT DES VILLES
-        // ------------------------------------------------
-
-        cities.forEach((city) => {
-
-            const option =
-                document.createElement("option");
-
-
-            option.value =
-                city.name;
-
-
-            option.textContent =
-                city.province
+                option.textContent =
+                    city.province
                     ? `${city.name} — ${city.province}`
                     : city.name;
 
+                citySelect.appendChild(
+                    option
+                );
 
-            option.dataset.province =
-                city.province;
-
-
-            cityInput.appendChild(
-                option
-            );
-
-        });
-
-
-        // ------------------------------------------------
-        // AUCUNE VILLE
-        // ------------------------------------------------
-
-        if (cities.length === 0) {
-
-            cityInput.innerHTML = `
-                <option value="">
-                    Aucune ville disponible
-                </option>
-            `;
-
-        }
+            }
+        );
 
 
         console.log(
@@ -511,33 +312,18 @@ async function loadCities() {
             cities
         );
 
-        console.log(
-            "Nombre de villes :",
-            cities.length
-        );
-
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement villes :",
+            "Erreur villes :",
             error
         );
 
-        console.error(
-            "Code Firebase :",
-            error.code
-        );
 
-        console.error(
-            "Message Firebase :",
-            error.message
-        );
-
-
-        cityInput.innerHTML = `
+        citySelect.innerHTML = `
             <option value="">
-                Erreur de chargement des villes
+                Erreur de chargement
             </option>
         `;
 
@@ -547,320 +333,25 @@ async function loadCities() {
 
 
 // ============================================================
-// INITIALISER CLOUDINARY UPLOAD WIDGET
+// BOUTON CAMÉRA
 // ============================================================
 
-function initializeCloudinaryWidget() {
+if (cameraButton) {
 
-    // --------------------------------------------------------
-    // Vérifier si Cloudinary est disponible
-    // --------------------------------------------------------
-
-    if (
-        typeof cloudinary ===
-        "undefined"
-    ) {
-
-        console.error(
-            "Cloudinary Upload Widget n'est pas chargé."
-        );
-
-        return;
-    }
-
-
-    console.log(
-        "Initialisation Cloudinary..."
-    );
-
-
-    uploadWidget =
-        cloudinary.createUploadWidget(
-
-            {
-
-                cloudName:
-                    CLOUDINARY_CLOUD_NAME,
-
-                uploadPreset:
-                    CLOUDINARY_UPLOAD_PRESET,
-
-
-                // ------------------------------------------------
-                // SOURCE
-                // ------------------------------------------------
-
-                sources: [
-                    "local"
-                ],
-
-
-                // ------------------------------------------------
-                // MULTIPLE
-                // ------------------------------------------------
-
-                multiple: true,
-
-
-                // ------------------------------------------------
-                // MAXIMUM 8 IMAGES
-                // ------------------------------------------------
-
-                maxFiles: 8,
-
-
-                // ------------------------------------------------
-                // MAXIMUM 5 MB PAR IMAGE
-                // ------------------------------------------------
-
-                maxFileSize:
-                    5 * 1024 * 1024,
-
-
-                // ------------------------------------------------
-                // FORMATS
-                // ------------------------------------------------
-
-                clientAllowedFormats: [
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "webp"
-                ],
-
-
-                // ------------------------------------------------
-                // DOSSIER CLOUDINARY
-                // ------------------------------------------------
-
-                folder:
-                    "camu-services",
-
-
-                // ------------------------------------------------
-                // PAS DE CROP
-                // ------------------------------------------------
-
-                cropping:
-                    false,
-
-
-                // ------------------------------------------------
-                // MINIATURES
-                // ------------------------------------------------
-
-                thumbnails:
-                    true,
-
-
-                // ------------------------------------------------
-                // PERMETTRE D'AJOUTER PLUS
-                // ------------------------------------------------
-
-                showUploadMoreButton:
-                    true,
-
-
-                // ------------------------------------------------
-                // OPTIONS AVANCEES DESACTIVEES
-                // ------------------------------------------------
-
-                showAdvancedOptions:
-                    false,
-
-
-                // ------------------------------------------------
-                // MODE RESPONSIVE
-                // ------------------------------------------------
-
-                responsive:
-                    true,
-
-
-                // ------------------------------------------------
-                // LANGUE
-                // ------------------------------------------------
-
-                language:
-                    "fr"
-
-            },
-
-
-            // ====================================================
-            // CALLBACK CLOUDINARY
-            // ====================================================
-
-            (error, result) => {
-
-
-                // ------------------------------------------------
-                // ERREUR
-                // ------------------------------------------------
-
-                if (error) {
-
-                    console.error(
-                        "Erreur Cloudinary :",
-                        error
-                    );
-
-
-                    alert(
-                        "Une erreur est survenue pendant l'envoi de l'image."
-                    );
-
-
-                    return;
-                }
-
-
-                // ------------------------------------------------
-                // UPLOAD REUSSI
-                // ------------------------------------------------
-
-                if (
-                    result &&
-                    result.event ===
-                    "success"
-                ) {
-
-                    const image =
-                        result.info;
-
-
-                    console.log(
-                        "Image envoyée avec succès :",
-                        image
-                    );
-
-
-                    // ------------------------------------------------
-                    // SECURE URL
-                    // ------------------------------------------------
-
-                    if (
-                        !image.secure_url
-                    ) {
-
-                        console.error(
-                            "URL Cloudinary absente."
-                        );
-
-                        return;
-                    }
-
-
-                    // ------------------------------------------------
-                    // EVITER DOUBLONS
-                    // ------------------------------------------------
-
-                    const exists =
-                        selectedImages.some(
-                            item =>
-                                item.secure_url ===
-                                image.secure_url
-                        );
-
-
-                    if (!exists) {
-
-                        selectedImages.push({
-
-                            secure_url:
-                                image.secure_url,
-
-                            public_id:
-                                image.public_id ||
-                                "",
-
-                            width:
-                                image.width ||
-                                null,
-
-                            height:
-                                image.height ||
-                                null
-
-                        });
-
-                    }
-
-
-                    console.log(
-                        "Images sélectionnées :",
-                        selectedImages
-                    );
-
-
-                    updatePhotoPreview();
-
-                }
-
-            }
-
-        );
-
-
-    console.log(
-        "Cloudinary Widget prêt."
-    );
-
-}
-
-
-// ============================================================
-// OUVERTURE DU WIDGET CLOUDINARY
-// ============================================================
-
-if (photosInput) {
-
-    photosInput.addEventListener(
+    cameraButton.addEventListener(
         "click",
-        (event) => {
-
-            // Empêcher le sélecteur
-            // de fichiers HTML classique
-            event.preventDefault();
-
-
-            // ------------------------------------------------
-            // VERIFICATION AUTH
-            // ------------------------------------------------
+        () => {
 
             if (!currentUser) {
 
                 alert(
-                    "Veuillez vous connecter avant de publier."
+                    "Veuillez vous connecter."
                 );
 
                 return;
             }
 
-
-            // ------------------------------------------------
-            // VERIFICATION WIDGET
-            // ------------------------------------------------
-
-            if (!uploadWidget) {
-
-                alert(
-                    "Le système d'envoi des images n'est pas encore prêt."
-                );
-
-                console.error(
-                    "uploadWidget est null."
-                );
-
-                return;
-            }
-
-
-            // ------------------------------------------------
-            // OUVRIR CLOUDINARY
-            // ------------------------------------------------
-
-            uploadWidget.open();
+            cameraInput.click();
 
         }
     );
@@ -869,44 +360,289 @@ if (photosInput) {
 
 
 // ============================================================
-// APERCU DES PHOTOS
+// BOUTON GALERIE
 // ============================================================
 
-function updatePhotoPreview() {
+if (galleryButton) {
+
+    galleryButton.addEventListener(
+        "click",
+        () => {
+
+            if (!currentUser) {
+
+                alert(
+                    "Veuillez vous connecter."
+                );
+
+                return;
+            }
+
+            galleryInput.click();
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// PHOTO PRISE AVEC CAMERA
+// ============================================================
+
+if (cameraInput) {
+
+    cameraInput.addEventListener(
+        "change",
+        async (event) => {
+
+            const files =
+                Array.from(
+                    event.target.files || []
+                );
+
+            await processImages(files);
+
+            cameraInput.value = "";
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// PHOTOS DE LA GALERIE
+// ============================================================
+
+if (galleryInput) {
+
+    galleryInput.addEventListener(
+        "change",
+        async (event) => {
+
+            const files =
+                Array.from(
+                    event.target.files || []
+                );
+
+            await processImages(files);
+
+            galleryInput.value = "";
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// TRAITER LES IMAGES
+// ============================================================
+
+async function processImages(files) {
+
+    if (!files.length) {
+        return;
+    }
+
+
+    if (
+        selectedImages.length +
+        files.length >
+        MAX_IMAGES
+    ) {
+
+        alert(
+            `Vous pouvez avoir maximum ${MAX_IMAGES} images.`
+        );
+
+        return;
+    }
+
+
+    for (const file of files) {
+
+        // Vérifier type
+        if (!file.type.startsWith("image/")) {
+
+            alert(
+                `${file.name} n'est pas une image.`
+            );
+
+            continue;
+        }
+
+
+        // Vérifier taille
+        if (file.size > MAX_FILE_SIZE) {
+
+            alert(
+                `${file.name} dépasse 5 MB.`
+            );
+
+            continue;
+        }
+
+
+        // Aperçu immédiatement
+        addImagePreview(
+            file
+        );
+
+
+        // Upload
+        try {
+
+            const uploaded =
+                await uploadToCloudinary(
+                    file
+                );
+
+
+            if (uploaded) {
+
+                selectedImages.push(
+                    uploaded
+                );
+
+                updatePhotoCount();
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur upload :",
+                error
+            );
+
+            // Retirer le dernier aperçu
+            removeLastPreview();
+
+
+            alert(
+                `Impossible d'envoyer ${file.name}.`
+            );
+
+        }
+
+    }
+
+}
+
+
+// ============================================================
+// UPLOAD CLOUDINARY
+// ============================================================
+
+async function uploadToCloudinary(file) {
+
+    console.log(
+        "Upload :",
+        file.name
+    );
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file
+    );
+
+
+    formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+    );
+
+
+    formData.append(
+        "folder",
+        "camu-services"
+    );
+
+
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+    // Lire la réponse
+    const data =
+        await response.json();
+
+
+    console.log(
+        "Réponse Cloudinary :",
+        data
+    );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data?.error?.message ||
+            `Erreur Cloudinary ${response.status}`
+        );
+
+    }
+
+
+    if (!data.secure_url) {
+
+        throw new Error(
+            "Cloudinary n'a pas retourné d'URL."
+        );
+
+    }
+
+
+    return {
+
+        secure_url:
+            data.secure_url,
+
+        public_id:
+            data.public_id || "",
+
+        width:
+            data.width || null,
+
+        height:
+            data.height || null
+
+    };
+
+}
+
+
+// ============================================================
+// APERCU
+// ============================================================
+
+function addImagePreview(file) {
 
     if (!photoPreview) {
         return;
     }
 
 
-    photoPreview.innerHTML = "";
+    const reader =
+        new FileReader();
 
 
-    // --------------------------------------------------------
-    // AUCUNE IMAGE
-    // --------------------------------------------------------
-
-    if (
-        selectedImages.length ===
-        0
-    ) {
-
-        photoPreview.innerHTML = `
-            <p class="photo-empty">
-                Aucune image sélectionnée
-            </p>
-        `;
-
-        return;
-    }
-
-
-    // --------------------------------------------------------
-    // CREATION DES APERCUS
-    // --------------------------------------------------------
-
-    selectedImages.forEach(
-        (image, index) => {
+    reader.onload =
+        (event) => {
 
             const wrapper =
                 document.createElement(
@@ -918,6 +654,10 @@ function updatePhotoPreview() {
                 "photo-preview-item";
 
 
+            wrapper.dataset.fileName =
+                file.name;
+
+
             const img =
                 document.createElement(
                     "img"
@@ -925,53 +665,11 @@ function updatePhotoPreview() {
 
 
             img.src =
-                image.secure_url;
+                event.target.result;
 
 
             img.alt =
-                `Image ${index + 1}`;
-
-
-            // ------------------------------------------------
-            // BOUTON SUPPRIMER
-            // ------------------------------------------------
-
-            const removeButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            removeButton.type =
-                "button";
-
-
-            removeButton.className =
-                "remove-photo";
-
-
-            removeButton.innerHTML =
-                "&times;";
-
-
-            removeButton.title =
-                "Supprimer cette image";
-
-
-            removeButton.addEventListener(
-                "click",
-                () => {
-
-                    selectedImages.splice(
-                        index,
-                        1
-                    );
-
-
-                    updatePhotoPreview();
-
-                }
-            );
+                file.name;
 
 
             wrapper.appendChild(
@@ -979,23 +677,71 @@ function updatePhotoPreview() {
             );
 
 
-            wrapper.appendChild(
-                removeButton
-            );
-
-
             photoPreview.appendChild(
                 wrapper
             );
 
-        }
+        };
+
+
+    reader.readAsDataURL(
+        file
     );
 
 }
 
 
 // ============================================================
-// PUBLICATION DE L'ANNONCE
+// SUPPRIMER DERNIER APERCU
+// ============================================================
+
+function removeLastPreview() {
+
+    if (!photoPreview) {
+        return;
+    }
+
+
+    const items =
+        photoPreview.querySelectorAll(
+            ".photo-preview-item"
+        );
+
+
+    if (items.length) {
+
+        items[
+            items.length - 1
+        ].remove();
+
+    }
+
+}
+
+
+// ============================================================
+// COMPTEUR
+// ============================================================
+
+function updatePhotoCount() {
+
+    const help =
+        document.querySelector(
+            ".photo-help"
+        );
+
+
+    if (!help) return;
+
+
+    help.textContent =
+        `${selectedImages.length}/8 image(s) sélectionnée(s)`;
+
+}
+
+
+// ============================================================
+// PUBLICATION FIRESTORE
 // ============================================================
 
 if (publishForm) {
@@ -1007,96 +753,105 @@ if (publishForm) {
             event.preventDefault();
 
 
-            console.log(
-                "Début publication annonce..."
-            );
-
-
-            // =================================================
-            // VERIFICATION UTILISATEUR
-            // =================================================
-
             if (!currentUser) {
 
                 alert(
-                    "Vous devez être connecté pour publier."
+                    "Vous devez être connecté."
                 );
 
                 return;
             }
 
 
-            // =================================================
-            // RECUPERATION DES CHAMPS
-            // =================================================
+            // ------------------------------------------------
+            // CHAMPS
+            // ------------------------------------------------
 
             const title =
-                titleInput
-                    ? titleInput.value.trim()
-                    : "";
+                document
+                    .getElementById(
+                        "publishTitle"
+                    )
+                    ?.value
+                    .trim() || "";
 
 
             const price =
-                priceInput
-                    ? priceInput.value.trim()
-                    : "";
+                document
+                    .getElementById(
+                        "publishPrice"
+                    )
+                    ?.value
+                    .trim() || "";
 
 
             const currency =
-                currencyInput
-                    ? currencyInput.value
-                    : "USD";
+                document
+                    .getElementById(
+                        "publishCurrency"
+                    )
+                    ?.value || "USD";
 
 
             const category =
-                categoryInput
-                    ? categoryInput.value.trim()
-                    : "";
+                categorySelect
+                    ?.value
+                    .trim() || "";
 
 
             const description =
-                descriptionInput
-                    ? descriptionInput.value.trim()
-                    : "";
+                document
+                    .getElementById(
+                        "publishDescription"
+                    )
+                    ?.value
+                    .trim() || "";
 
 
             const city =
-                cityInput
-                    ? cityInput.value.trim()
-                    : "";
+                citySelect
+                    ?.value
+                    .trim() || "";
 
 
             const neighborhood =
-                neighborhoodInput
-                    ? neighborhoodInput.value.trim()
-                    : "";
+                document
+                    .getElementById(
+                        "publishNeighborhood"
+                    )
+                    ?.value
+                    .trim() || "";
 
 
             const whatsapp =
-                whatsappInput
-                    ? whatsappInput.value.trim()
-                    : "";
+                document
+                    .getElementById(
+                        "publishWhatsapp"
+                    )
+                    ?.value
+                    .trim() || "";
 
 
-            // =================================================
-            // VALIDATION TITRE
-            // =================================================
+            const terms =
+                document
+                    .getElementById(
+                        "publishTerms"
+                    );
+
+
+            // ------------------------------------------------
+            // VALIDATIONS
+            // ------------------------------------------------
 
             if (!title) {
 
                 alert(
-                    "Veuillez entrer le titre de l'annonce."
+                    "Veuillez entrer le titre."
                 );
-
-                titleInput?.focus();
 
                 return;
             }
 
-
-            // =================================================
-            // VALIDATION PRIX
-            // =================================================
 
             if (!price) {
 
@@ -1104,40 +859,9 @@ if (publishForm) {
                     "Veuillez entrer le prix."
                 );
 
-                priceInput?.focus();
-
                 return;
             }
 
-
-            const numericPrice =
-                Number(
-                    price.replace(
-                        /,/g,
-                        ""
-                    )
-                );
-
-
-            if (
-                Number.isNaN(
-                    numericPrice
-                )
-            ) {
-
-                alert(
-                    "Veuillez entrer un prix valide."
-                );
-
-                priceInput?.focus();
-
-                return;
-            }
-
-
-            // =================================================
-            // VALIDATION CATEGORIE
-            // =================================================
 
             if (!category) {
 
@@ -1145,15 +869,9 @@ if (publishForm) {
                     "Veuillez sélectionner une catégorie."
                 );
 
-                categoryInput?.focus();
-
                 return;
             }
 
-
-            // =================================================
-            // VALIDATION DESCRIPTION
-            // =================================================
 
             if (!description) {
 
@@ -1161,15 +879,9 @@ if (publishForm) {
                     "Veuillez entrer une description."
                 );
 
-                descriptionInput?.focus();
-
                 return;
             }
 
-
-            // =================================================
-            // VALIDATION VILLE
-            // =================================================
 
             if (!city) {
 
@@ -1177,15 +889,9 @@ if (publishForm) {
                     "Veuillez sélectionner une ville."
                 );
 
-                cityInput?.focus();
-
                 return;
             }
 
-
-            // =================================================
-            // VALIDATION WHATSAPP
-            // =================================================
 
             if (!whatsapp) {
 
@@ -1193,36 +899,25 @@ if (publishForm) {
                     "Veuillez entrer votre numéro WhatsApp."
                 );
 
-                whatsappInput?.focus();
-
                 return;
             }
 
 
-            // =================================================
-            // CONDITIONS
-            // =================================================
-
             if (
-                termsInput &&
-                !termsInput.checked
+                terms &&
+                !terms.checked
             ) {
 
                 alert(
-                    "Vous devez accepter les conditions."
+                    "Veuillez accepter les conditions."
                 );
 
                 return;
             }
 
 
-            // =================================================
-            // VALIDATION IMAGES
-            // =================================================
-
             if (
-                selectedImages.length ===
-                0
+                selectedImages.length === 0
             ) {
 
                 alert(
@@ -1233,42 +928,28 @@ if (publishForm) {
             }
 
 
-            if (
-                selectedImages.length >
-                8
-            ) {
+            // ------------------------------------------------
+            // BOUTON
+            // ------------------------------------------------
 
-                alert(
-                    "Vous pouvez ajouter maximum 8 images."
-                );
-
-                return;
-            }
-
-
-            // =================================================
-            // BOUTON SUBMIT
-            // =================================================
-
-            const submitButton =
+            const button =
                 publishForm.querySelector(
                     'button[type="submit"]'
                 );
 
 
-            const originalText =
-                submitButton
-                    ? submitButton.innerHTML
+            const oldText =
+                button
+                    ? button.innerHTML
                     : "";
 
 
-            if (submitButton) {
+            if (button) {
 
-                submitButton.disabled =
+                button.disabled =
                     true;
 
-
-                submitButton.innerHTML = `
+                button.innerHTML = `
                     <i class="fa-solid fa-spinner fa-spin"></i>
                     Publication...
                 `;
@@ -1276,15 +957,11 @@ if (publishForm) {
             }
 
 
-            // =================================================
-            // ENREGISTREMENT FIRESTORE
-            // =================================================
+            // ------------------------------------------------
+            // DONNÉES
+            // ------------------------------------------------
 
             try {
-
-                // ------------------------------------------------
-                // RECUPERATION URL IMAGES
-                // ------------------------------------------------
 
                 const imageURLs =
                     selectedImages.map(
@@ -1293,60 +970,25 @@ if (publishForm) {
                     );
 
 
-                console.log(
-                    "URLs des images :",
-                    imageURLs
-                );
+                const annonce = {
 
-
-                // ------------------------------------------------
-                // DONNEES ANNONCE
-                // ------------------------------------------------
-
-                const annonceData = {
-
-                    // ============================================
-                    // INFORMATIONS PRINCIPALES
-                    // ============================================
-
-                    title:
-                        title,
+                    title,
 
                     price:
-                        numericPrice,
+                        Number(price),
 
-                    currency:
-                        currency,
+                    currency,
 
-                    category:
-                        category,
+                    category,
 
-                    description:
-                        description,
+                    description,
 
+                    city,
 
-                    // ============================================
-                    // LOCALISATION
-                    // ============================================
+                    neighborhood,
 
-                    city:
-                        city,
+                    whatsapp,
 
-                    neighborhood:
-                        neighborhood,
-
-
-                    // ============================================
-                    // CONTACT
-                    // ============================================
-
-                    whatsapp:
-                        whatsapp,
-
-
-                    // ============================================
-                    // IMAGES
-                    // ============================================
 
                     images:
                         imageURLs,
@@ -1357,10 +999,6 @@ if (publishForm) {
                     imageCount:
                         imageURLs.length,
 
-
-                    // ============================================
-                    // PROPRIETAIRE
-                    // ============================================
 
                     userId:
                         currentUser.uid,
@@ -1377,17 +1015,9 @@ if (publishForm) {
                         "",
 
 
-                    // ============================================
-                    // STATUT
-                    // ============================================
-
                     status:
                         "active",
 
-
-                    // ============================================
-                    // DATES
-                    // ============================================
 
                     createdAt:
                         serverTimestamp(),
@@ -1398,78 +1028,36 @@ if (publishForm) {
                 };
 
 
-                console.log(
-                    "Données annonce :",
-                    annonceData
-                );
-
-
-                // ------------------------------------------------
-                // AJOUT DANS annonces
-                // ------------------------------------------------
-
-                const annonceRef =
+                const docRef =
                     await addDoc(
                         collection(
                             db,
                             "annonces"
                         ),
-                        annonceData
+                        annonce
                     );
 
 
                 console.log(
-                    "Annonce créée avec succès."
+                    "Annonce créée :",
+                    docRef.id
                 );
 
-
-                console.log(
-                    "ID annonce :",
-                    annonceRef.id
-                );
-
-
-                // =================================================
-                // SUCCES
-                // =================================================
 
                 alert(
                     "✅ Votre annonce a été publiée avec succès !"
                 );
 
 
-                // ------------------------------------------------
-                // REDIRECTION
-                // ------------------------------------------------
-
-                setTimeout(
-                    () => {
-
-                        window.location.href =
-                            "compte.html";
-
-                    },
-                    800
-                );
+                window.location.href =
+                    "compte.html";
 
 
             } catch (error) {
 
                 console.error(
-                    "Erreur lors de la publication :",
+                    "Erreur publication :",
                     error
-                );
-
-
-                console.error(
-                    "Code :",
-                    error.code
-                );
-
-
-                console.error(
-                    "Message :",
-                    error.message
                 );
 
 
@@ -1479,18 +1067,13 @@ if (publishForm) {
                 );
 
 
-                // ------------------------------------------------
-                // REACTIVER BOUTON
-                // ------------------------------------------------
+                if (button) {
 
-                if (submitButton) {
-
-                    submitButton.disabled =
+                    button.disabled =
                         false;
 
-
-                    submitButton.innerHTML =
-                        originalText;
+                    button.innerHTML =
+                        oldText;
 
                 }
 
@@ -1500,68 +1083,3 @@ if (publishForm) {
     );
 
 }
-
-
-// ============================================================
-// STYLE APERCU DES PHOTOS
-// ============================================================
-
-const previewStyle =
-    document.createElement(
-        "style"
-    );
-
-
-previewStyle.textContent = `
-
-.photo-preview-item {
-    position: relative;
-    width: 110px;
-    height: 110px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 5px;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.photo-preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.remove-photo {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 28px;
-    height: 28px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.75);
-    color: white;
-    font-size: 20px;
-    line-height: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
-.remove-photo:hover {
-    background: rgba(220, 0, 0, 0.9);
-}
-
-.photo-empty {
-    opacity: 0.7;
-    padding: 10px;
-}
-
-`;
-
-document.head.appendChild(
-    previewStyle
-);
