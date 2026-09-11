@@ -10,12 +10,30 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Publier une annonce — CAMU SERVICES</title>
-
     <meta
         name="description"
         content="Publiez facilement votre annonce sur CAMU SERVICES."
     >
+
+    <meta
+        name="theme-color"
+        content="#111827"
+    >
+
+    <title>
+        Publier une annonce — CAMU SERVICES
+    </title>
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
 
     <!-- =====================================================
          CSS PRINCIPAL
@@ -26,31 +44,779 @@
         href="css/style.css"
     >
 
-    <link
-        rel="stylesheet"
-        href="css/publier.css"
-    >
-
 
     <!-- =====================================================
-         FONT AWESOME
+         STYLE DE LA PAGE
     ====================================================== -->
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+    <style>
+
+        /* =================================================
+           RESET LOCAL
+        ================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
 
 
-    <!-- =====================================================
-         CLOUDINARY UPLOAD WIDGET
-    ====================================================== -->
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f5f6f8;
+        }
 
-    <script
-        src="https://upload-widget.cloudinary.com/global/all.js"
-        type="text/javascript">
-    </script>
 
+        /* =================================================
+           CONTENEUR
+        ================================================= */
+
+        .publish-page {
+            width: min(100%, 850px);
+            margin: 0 auto;
+            padding: 20px 16px 100px;
+        }
+
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .publish-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+
+        .publish-back {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+            color: #111827;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, .08);
+        }
+
+
+        .publish-header-text h1 {
+            margin: 0;
+
+            font-size: 24px;
+            line-height: 1.2;
+
+            color: #111827;
+        }
+
+
+        .publish-header-text p {
+            margin: 5px 0 0;
+
+            font-size: 13px;
+
+            color: #6b7280;
+        }
+
+
+        /* =================================================
+           CARTE FORMULAIRE
+        ================================================= */
+
+        .publish-card {
+            background: #ffffff;
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, .07);
+        }
+
+
+        /* =================================================
+           SECTIONS
+        ================================================= */
+
+        .publish-section {
+            margin-bottom: 28px;
+        }
+
+
+        .publish-section:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .publish-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 15px;
+
+            font-size: 17px;
+            font-weight: 800;
+
+            color: #111827;
+        }
+
+
+        .publish-section-title i {
+            color: #111827;
+        }
+
+
+        /* =================================================
+           FORM GROUP
+        ================================================= */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #1f2937;
+        }
+
+
+        .required {
+            color: #dc2626;
+        }
+
+
+        /* =================================================
+           INPUTS
+        ================================================= */
+
+        .form-control {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 11px;
+
+            background: #ffffff;
+
+            color: #111827;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease;
+
+        }
+
+
+        .form-control:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, .12);
+
+        }
+
+
+        textarea.form-control {
+
+            min-height: 130px;
+
+            resize: vertical;
+
+            line-height: 1.55;
+
+        }
+
+
+        select.form-control {
+
+            cursor: pointer;
+
+        }
+
+
+        /* =================================================
+           PRIX
+        ================================================= */
+
+        .price-row {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                130px;
+
+            gap: 10px;
+
+        }
+
+
+        /* =================================================
+           PHOTOS
+        ================================================= */
+
+        .publish-images-box {
+
+            padding: 15px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            background: #fafafa;
+
+        }
+
+
+        .photo-buttons {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+        }
+
+
+        .photo-action-btn {
+
+            min-height: 52px;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            padding: 12px;
+
+            background: #111827;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            transition:
+                transform .15s ease,
+                background .2s ease;
+
+        }
+
+
+        .photo-action-btn:hover {
+
+            background: #1f2937;
+
+        }
+
+
+        .photo-action-btn:active {
+
+            transform: scale(.98);
+
+        }
+
+
+        .photo-action-btn i {
+
+            font-size: 17px;
+
+        }
+
+
+        /* Galerie */
+
+        #galleryButton {
+
+            background: #374151;
+
+        }
+
+
+        /* =================================================
+           APERCU PHOTOS
+        ================================================= */
+
+        .photo-preview {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 9px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .photo-preview-item {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            border-radius: 11px;
+
+            background: #e5e7eb;
+
+        }
+
+
+        .photo-preview-item img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+        .photo-help {
+
+            margin: 10px 0 0;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            text-align: center;
+
+        }
+
+
+        /* =================================================
+           CONDITIONS
+        ================================================= */
+
+        .terms-box {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 14px;
+
+            border-radius: 12px;
+
+            background: #f9fafb;
+
+            border: 1px solid #e5e7eb;
+
+        }
+
+
+        .terms-box input {
+
+            width: 18px;
+
+            height: 18px;
+
+            margin-top: 1px;
+
+            flex-shrink: 0;
+
+            cursor: pointer;
+
+        }
+
+
+        .terms-box label {
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            color: #4b5563;
+
+            cursor: pointer;
+
+        }
+
+
+        .terms-box a {
+
+            color: #2563eb;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+        }
+
+
+        /* =================================================
+           MESSAGE
+        ================================================= */
+
+        #publishMessage {
+
+            display: none;
+
+            margin-bottom: 18px;
+
+            padding: 13px 15px;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        #publishMessage.error {
+
+            display: block;
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+
+        }
+
+
+        #publishMessage.success {
+
+            display: block;
+
+            background: #f0fdf4;
+
+            color: #15803d;
+
+            border: 1px solid #bbf7d0;
+
+        }
+
+
+        /* =================================================
+           BOUTON PUBLICATION
+        ================================================= */
+
+        .publish-submit {
+
+            width: 100%;
+
+            min-height: 54px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: #111827;
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            transition:
+                background .2s ease,
+                transform .15s ease;
+
+        }
+
+
+        .publish-submit:hover {
+
+            background: #1f2937;
+
+        }
+
+
+        .publish-submit:active {
+
+            transform: scale(.99);
+
+        }
+
+
+        .publish-submit:disabled {
+
+            opacity: .6;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =================================================
+           NOTE
+        ================================================= */
+
+        .publish-note {
+
+            margin-top: 12px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            color: #6b7280;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =================================================
+           NAVIGATION BAS DE PAGE
+        ================================================= */
+
+        .publish-bottom-nav {
+
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 100;
+
+            height: 68px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #ffffff;
+
+            border-top: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 -4px 18px
+                rgba(0, 0, 0, .06);
+
+        }
+
+
+        .publish-bottom-nav-inner {
+
+            width: min(100%, 600px);
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            height: 100%;
+
+        }
+
+
+        .publish-nav-item {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+            text-decoration: none;
+
+            color: #6b7280;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .publish-nav-item i {
+
+            font-size: 18px;
+
+        }
+
+
+        .publish-nav-item.active {
+
+            color: #111827;
+
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (max-width: 600px) {
+
+            .publish-page {
+
+                padding:
+                    15px
+                    12px
+                    90px;
+
+            }
+
+
+            .publish-card {
+
+                padding: 17px;
+
+                border-radius: 16px;
+
+            }
+
+
+            .publish-header-text h1 {
+
+                font-size: 21px;
+
+            }
+
+
+            .publish-header-text p {
+
+                font-size: 12px;
+
+            }
+
+
+            .price-row {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .photo-buttons {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .photo-preview {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .publish-section-title {
+
+                font-size: 16px;
+
+            }
+
+        }
+
+
+        /* =================================================
+           PETITS TELEPHONES
+        ================================================= */
+
+        @media (max-width: 380px) {
+
+            .publish-page {
+
+                padding-left: 9px;
+                padding-right: 9px;
+
+            }
+
+
+            .publish-card {
+
+                padding: 14px;
+
+            }
+
+
+            .photo-preview {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+                gap: 6px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -59,479 +825,60 @@
 
 
     <!-- =====================================================
-         OVERLAY MOBILE
+         PAGE
     ====================================================== -->
 
-    <div
-        class="sidebar-overlay"
-        id="sidebarOverlay"
-    ></div>
+    <main class="publish-page">
 
 
+        <!-- =================================================
+             HEADER
+        ================================================== -->
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
-
-        <!-- HEADER SIDEBAR -->
-
-        <div class="sidebar-header">
+        <header class="publish-header">
 
             <a
                 href="index.html"
-                class="sidebar-logo"
+                class="publish-back"
+                aria-label="Retour"
             >
 
-                <span class="logo-main">
-                    CAMU
-                </span>
-
-                <span class="logo-sub">
-                    SERVICES
-                </span>
+                <i class="fa-solid fa-arrow-left"></i>
 
             </a>
 
 
-            <button
-                type="button"
-                class="sidebar-close"
-                id="sidebarClose"
-                aria-label="Fermer le menu"
-            >
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-
-
-        <!-- =================================================
-             NAVIGATION
-        ================================================== -->
-
-        <nav class="sidebar-nav">
-
-
-            <!-- ACCUEIL -->
-
-            <a
-                href="index.html"
-                class="nav-item"
-            >
-
-                <i class="fa-solid fa-house"></i>
-
-                <span>
-                    Accueil
-                </span>
-
-            </a>
-
-
-
-            <!-- RECHERCHE -->
-
-            <a
-                href="recherche.html"
-                class="nav-item"
-            >
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <span>
-                    Rechercher
-                </span>
-
-            </a>
-
-
-
-            <!-- CATEGORIES -->
-
-            <a
-                href="categories.html"
-                class="nav-item"
-            >
-
-                <i class="fa-solid fa-layer-group"></i>
-
-                <span>
-                    Catégories
-                </span>
-
-            </a>
-
-
-
-            <!-- PUBLIER -->
-
-            <a
-                href="publier.html"
-                class="nav-item active"
-            >
-
-                <i class="fa-solid fa-circle-plus"></i>
-
-                <span>
-                    Publier
-                </span>
-
-            </a>
-
-
-
-            <!-- FAVORIS -->
-
-            <a
-                href="favoris.html"
-                class="nav-item"
-            >
-
-                <i class="fa-regular fa-heart"></i>
-
-                <span>
-                    Favoris
-                </span>
-
-            </a>
-
-
-
-            <!-- COMPTE -->
-
-            <a
-                href="compte.html"
-                class="nav-item"
-            >
-
-                <i class="fa-regular fa-user"></i>
-
-                <span>
-                    Mon compte
-                </span>
-
-            </a>
-
-
-
-            <!-- PARAMETRES -->
-
-            <a
-                href="parametres.html"
-                class="nav-item"
-            >
-
-                <i class="fa-solid fa-gear"></i>
-
-                <span>
-                    Paramètres
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-
-        <!-- =================================================
-             BAS SIDEBAR
-        ================================================== -->
-
-        <div class="sidebar-bottom">
-
-
-            <!-- CONNEXION -->
-
-            <a
-                href="connexion.html"
-                class="nav-item"
-                id="loginSidebarLink"
-            >
-
-                <i class="fa-solid fa-right-to-bracket"></i>
-
-                <span>
-                    Connexion
-                </span>
-
-            </a>
-
-
-
-            <!-- DECONNEXION -->
-
-            <button
-                type="button"
-                class="nav-item logout-item"
-                id="logoutButton"
-            >
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-                <span>
-                    Déconnexion
-                </span>
-
-            </button>
-
-
-        </div>
-
-
-    </aside>
-
-
-
-    <!-- =====================================================
-         CONTENU PRINCIPAL
-    ====================================================== -->
-
-    <div class="main-wrapper">
-
-
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
-
-        <header class="topbar">
-
-
-            <!-- MENU MOBILE -->
-
-            <button
-                type="button"
-                class="menu-button"
-                id="menuButton"
-                aria-label="Ouvrir le menu"
-            >
-
-                <i class="fa-solid fa-bars"></i>
-
-            </button>
-
-
-
-            <!-- LOGO MOBILE -->
-
-            <div class="mobile-logo">
-
-                <span>
-                    CAMU
-                </span>
-
-                <small>
-                    SERVICES
-                </small>
+            <div class="publish-header-text">
+
+                <h1>
+                    Publier une annonce
+                </h1>
+
+                <p>
+                    Présentez votre produit ou service
+                </p>
 
             </div>
-
-
-
-            <!-- TOPBAR DROITE -->
-
-            <div class="topbar-right">
-
-
-                <!-- FAVORIS -->
-
-                <a
-                    href="favoris.html"
-                    class="topbar-icon"
-                    aria-label="Favoris"
-                >
-
-                    <i class="fa-regular fa-heart"></i>
-
-                </a>
-
-
-
-                <!-- COMPTE -->
-
-                <a
-                    href="compte.html"
-                    class="profile-button"
-                    id="accountLink"
-                >
-
-                    <i class="fa-regular fa-user"></i>
-
-                    <span>
-                        Mon compte
-                    </span>
-
-                </a>
-
-
-            </div>
-
 
         </header>
 
 
 
         <!-- =================================================
-             CONTENU
+             CARTE
         ================================================== -->
 
-        <main class="main-content">
+        <section class="publish-card">
 
 
-            <div class="publish-v2">
+            <!-- =================================================
+                 FORMULAIRE
+            ================================================== -->
 
-
-                <!-- =================================================
-                     HERO
-                ================================================== -->
-
-                <div class="publish-hero">
-
-
-                    <div class="publish-hero-icon">
-
-                        <i class="fa-solid fa-bullhorn"></i>
-
-                    </div>
-
-
-
-                    <div>
-
-                        <span class="section-label">
-                            CAMU SERVICES
-                        </span>
-
-
-                        <h1>
-                            Publier une annonce
-                        </h1>
-
-
-                        <p>
-                            Présentez votre produit ou votre service
-                            et trouvez rapidement des intéressés.
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- =================================================
-                     PROGRESSION
-                ================================================== -->
-
-                <div class="publish-steps">
-
-
-                    <!-- ETAPE 1 -->
-
-                    <div class="publish-step active">
-
-                        <span>
-                            1
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Photos
-                            </strong>
-
-                            <small>
-                                Présentez votre annonce
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ETAPE 2 -->
-
-                    <div class="publish-step">
-
-                        <span>
-                            2
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Informations
-                            </strong>
-
-                            <small>
-                                Décrivez votre annonce
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ETAPE 3 -->
-
-                    <div class="publish-step">
-
-                        <span>
-                            3
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Localisation
-                            </strong>
-
-                            <small>
-                                Où se trouve-t-elle ?
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ETAPE 4 -->
-
-                    <div class="publish-step">
-
-                        <span>
-                            4
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Contact
-                            </strong>
-
-                            <small>
-                                Comment vous joindre ?
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
+            <form
+                id="publishForm"
+                novalidate
+            >
 
 
                 <!-- =================================================
@@ -540,104 +887,321 @@
 
                 <div
                     id="publishMessage"
-                    class="auth-message"
                     role="alert"
-                    aria-live="polite"
                 ></div>
 
 
 
                 <!-- =================================================
-                     FORMULAIRE
+                     INFORMATIONS PRINCIPALES
                 ================================================== -->
 
-                <form
-                    id="publishForm"
-                    class="publish-v2-form"
-                    novalidate
-                >
+                <section class="publish-section">
+
+                    <div class="publish-section-title">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            Informations de l'annonce
+                        </span>
+
+                    </div>
 
 
-                    <!-- =================================================
-                         01 — PHOTOS
-                    ================================================== -->
+                    <!-- TITRE -->
 
-                    <section class="publish-card">
+                    <div class="form-group">
 
-
-                        <div class="publish-card-header">
-
-
-                            <div class="publish-number">
-                                01
-                            </div>
+                        <label
+                            for="publishTitle"
+                            class="form-label"
+                        >
+                            Titre de l'annonce
+                            <span class="required">*</span>
+                        </label>
 
 
-                            <div>
+                        <input
+                            type="text"
+                            id="publishTitle"
+                            class="form-control"
+                            placeholder="Ex. Maison à vendre à Lubumbashi"
+                            maxlength="120"
+                            autocomplete="off"
+                            required
+                        >
 
-                                <h2>
-                                    Ajouter des photos
-                                </h2>
+                    </div>
 
-                                <p>
-                                    Une bonne photo attire davantage
-                                    de visiteurs.
-                                </p>
 
-                            </div>
 
+                    <!-- PRIX -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                        >
+                            Prix
+                            <span class="required">*</span>
+                        </label>
+
+
+                        <div class="price-row">
+
+                            <input
+                                type="number"
+                                id="publishPrice"
+                                class="form-control"
+                                placeholder="Ex. 15000"
+                                min="0"
+                                step="0.01"
+                                inputmode="decimal"
+                                required
+                            >
+
+
+                            <select
+                                id="publishCurrency"
+                                class="form-control"
+                                required
+                            >
+
+                                <option value="USD">
+                                    USD $
+                                </option>
+
+                                <option value="CDF">
+                                    CDF FC
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CATEGORIE -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="publishCategory"
+                            class="form-label"
+                        >
+                            Catégorie
+                            <span class="required">*</span>
+                        </label>
+
+
+                        <select
+                            id="publishCategory"
+                            class="form-control"
+                            required
+                        >
+
+                            <option value="">
+                                Chargement des catégories...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="publishDescription"
+                            class="form-label"
+                        >
+                            Description
+                            <span class="required">*</span>
+                        </label>
+
+
+                        <textarea
+                            id="publishDescription"
+                            class="form-control"
+                            placeholder="Décrivez votre produit ou service..."
+                            maxlength="3000"
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     LOCALISATION
+                ================================================== -->
+
+                <section class="publish-section">
+
+                    <div class="publish-section-title">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            Localisation
+                        </span>
+
+                    </div>
+
+
+                    <!-- VILLE -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="publishCity"
+                            class="form-label"
+                        >
+                            Ville
+                            <span class="required">*</span>
+                        </label>
+
+
+                        <select
+                            id="publishCity"
+                            class="form-control"
+                            required
+                        >
+
+                            <option value="">
+                                Chargement des villes...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- QUARTIER -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="publishNeighborhood"
+                            class="form-label"
+                        >
+                            Quartier / Commune
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="publishNeighborhood"
+                            class="form-control"
+                            placeholder="Ex. Kenya, Golf, Katuba..."
+                            maxlength="100"
+                            autocomplete="address-level3"
+                        >
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     PHOTOS
+                ================================================== -->
+
+                <section class="publish-section">
+
+                    <div class="publish-section-title">
+
+                        <i class="fa-solid fa-images"></i>
+
+                        <span>
+                            Photos
+                        </span>
+
+                    </div>
+
+
+                    <div class="publish-images-box">
+
+
+                        <!-- BOUTONS -->
+
+                        <div class="photo-buttons">
+
+
+                            <!-- CAMERA -->
+
+                            <button
+                                type="button"
+                                id="cameraButton"
+                                class="photo-action-btn"
+                            >
+
+                                <i
+                                    class="fa-solid fa-camera"
+                                ></i>
+
+                                <span>
+                                    Prendre une photo
+                                </span>
+
+                            </button>
+
+
+
+                            <!-- GALERIE -->
+
+                            <button
+                                type="button"
+                                id="galleryButton"
+                                class="photo-action-btn"
+                            >
+
+                                <i
+                                    class="fa-solid fa-images"
+                                ></i>
+
+                                <span>
+                                    Choisir dans la galerie
+                                </span>
+
+                            </button>
 
                         </div>
 
 
 
                         <!-- =================================================
-                             ZONE UPLOAD CLOUDINARY
-                        ================================================== -->
-
-                        <label
-                            for="publishPhotos"
-                            class="publish-upload-zone"
-                        >
-
-
-                            <div class="publish-upload-icon">
-
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-
-                            </div>
-
-
-                            <strong>
-                                Ajoutez vos photos
-                            </strong>
-
-
-                            <span>
-                                Cliquez ici pour sélectionner vos images
-                            </span>
-
-
-                            <small>
-                                JPG, PNG ou WEBP • 5 MB maximum par image
-                                • 8 images maximum
-                            </small>
-
-
-                        </label>
-
-
-
-                        <!-- =================================================
-                             INPUT FICHIER
-                             Le Widget Cloudinary sera ouvert par publier.js
+                             INPUT CAMERA
                         ================================================== -->
 
                         <input
                             type="file"
-                            id="publishPhotos"
-                            name="photos"
-                            accept="image/jpeg,image/png,image/webp"
+                            id="cameraInput"
+                            accept="image/*"
+                            capture="environment"
+                            hidden
+                        >
+
+
+
+                        <!-- =================================================
+                             INPUT GALERIE
+                        ================================================== -->
+
+                        <input
+                            type="file"
+                            id="galleryInput"
+                            accept="image/*"
                             multiple
                             hidden
                         >
@@ -649,689 +1213,220 @@
                         ================================================== -->
 
                         <div
-                            class="publish-photo-preview"
                             id="photoPreview"
+                            class="photo-preview"
                         ></div>
 
 
-                    </section>
+                        <p
+                            class="photo-help"
+                        >
+                            Maximum 8 images — 5 MB par image.
+                        </p>
 
+                    </div>
 
+                </section>
 
-                    <!-- =================================================
-                         02 — INFORMATIONS
-                    ================================================== -->
 
-                    <section class="publish-card">
 
+                <!-- =================================================
+                     CONTACT
+                ================================================== -->
 
-                        <div class="publish-card-header">
+                <section class="publish-section">
 
+                    <div class="publish-section-title">
 
-                            <div class="publish-number">
-                                02
-                            </div>
+                        <i class="fa-brands fa-whatsapp"></i>
 
+                        <span>
+                            Contact
+                        </span>
 
-                            <div>
+                    </div>
 
-                                <h2>
-                                    Informations de l'annonce
-                                </h2>
 
-                                <p>
-                                    Donnez suffisamment de détails
-                                    aux visiteurs.
-                                </p>
+                    <div class="form-group">
 
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             TITRE
-                        ================================================== -->
-
-                        <div class="publish-field">
-
-
-                            <label for="publishTitle">
-
-                                Titre de l'annonce
-
-                                <span>
-                                    *
-                                </span>
-
-                            </label>
-
-
-
-                            <input
-                                type="text"
-                                id="publishTitle"
-                                name="title"
-                                placeholder="Ex : Toyota Hilux 2022 à vendre"
-                                maxlength="100"
-                                autocomplete="off"
-                                required
-                            >
-
-
-
-                            <small>
-                                Choisissez un titre clair et précis.
-                            </small>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             PRIX + DEVISE
-                        ================================================== -->
-
-                        <div class="publish-grid-2">
-
-
-                            <!-- PRIX -->
-
-                            <div class="publish-field">
-
-
-                                <label for="publishPrice">
-
-                                    Prix
-
-                                    <span>
-                                        *
-                                    </span>
-
-                                </label>
-
-
-
-                                <input
-                                    type="number"
-                                    id="publishPrice"
-                                    name="price"
-                                    placeholder="Ex : 25000"
-                                    min="0"
-                                    step="1"
-                                    inputmode="decimal"
-                                    required
-                                >
-
-
-                            </div>
-
-
-
-                            <!-- DEVISE -->
-
-                            <div class="publish-field">
-
-
-                                <label for="publishCurrency">
-
-                                    Devise
-
-                                </label>
-
-
-
-                                <select
-                                    id="publishCurrency"
-                                    name="currency"
-                                >
-
-                                    <option value="USD">
-                                        USD ($)
-                                    </option>
-
-                                    <option value="CDF">
-                                        CDF (FC)
-                                    </option>
-
-                                </select>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             CATEGORIE FIRESTORE
-                        ================================================== -->
-
-                        <div class="publish-field">
-
-
-                            <label for="publishCategory">
-
-                                Catégorie
-
-                                <span>
-                                    *
-                                </span>
-
-                            </label>
-
-
-
-                            <select
-                                id="publishCategory"
-                                name="category"
-                                required
-                            >
-
-                                <option value="">
-                                    Chargement des catégories...
-                                </option>
-
-                            </select>
-
-
-
-                            <small>
-                                Les catégories sont chargées
-                                automatiquement depuis Firestore.
-                            </small>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             DESCRIPTION
-                        ================================================== -->
-
-                        <div class="publish-field">
-
-
-                            <label for="publishDescription">
-
-                                Description
-
-                                <span>
-                                    *
-                                </span>
-
-                            </label>
-
-
-
-                            <textarea
-                                id="publishDescription"
-                                name="description"
-                                rows="7"
-                                maxlength="2000"
-                                placeholder="Décrivez votre produit ou service : état, caractéristiques, conditions, disponibilité..."
-                                required
-                            ></textarea>
-
-
-
-                            <div class="publish-field-bottom">
-
-
-                                <small>
-                                    Soyez précis pour donner confiance
-                                    aux visiteurs.
-                                </small>
-
-
-                                <span>
-                                    2000 caractères maximum
-                                </span>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </section>
-
-
-
-                    <!-- =================================================
-                         03 — LOCALISATION
-                    ================================================== -->
-
-                    <section class="publish-card">
-
-
-                        <div class="publish-card-header">
-
-
-                            <div class="publish-number">
-                                03
-                            </div>
-
-
-                            <div>
-
-                                <h2>
-                                    Localisation
-                                </h2>
-
-                                <p>
-                                    Indiquez où se trouve votre produit
-                                    ou service.
-                                </p>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <div class="publish-grid-2">
-
-
-                            <!-- =================================================
-                                 VILLE
-                            ================================================== -->
-
-                            <div class="publish-field">
-
-
-                                <label for="publishCity">
-
-                                    Ville
-
-                                    <span>
-                                        *
-                                    </span>
-
-                                </label>
-
-
-
-                                <select
-                                    id="publishCity"
-                                    name="city"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Chargement des villes...
-                                    </option>
-
-                                </select>
-
-
-
-                                <small>
-                                    Les villes sont chargées depuis
-                                    Firestore.
-                                </small>
-
-
-                            </div>
-
-
-
-                            <!-- =================================================
-                                 QUARTIER
-                            ================================================== -->
-
-                            <div class="publish-field">
-
-
-                                <label for="publishNeighborhood">
-
-                                    Quartier
-
-                                </label>
-
-
-
-                                <input
-                                    type="text"
-                                    id="publishNeighborhood"
-                                    name="neighborhood"
-                                    placeholder="Ex : Golf"
-                                    maxlength="100"
-                                    autocomplete="address-level3"
-                                >
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </section>
-
-
-
-                    <!-- =================================================
-                         04 — CONTACT
-                    ================================================== -->
-
-                    <section class="publish-card">
-
-
-                        <div class="publish-card-header">
-
-
-                            <div class="publish-number">
-                                04
-                            </div>
-
-
-                            <div>
-
-                                <h2>
-                                    Contact WhatsApp
-                                </h2>
-
-                                <p>
-                                    Les personnes intéressées pourront
-                                    vous contacter directement.
-                                </p>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             WHATSAPP INFORMATION
-                        ================================================== -->
-
-                        <div class="publish-whatsapp-box">
-
-
-                            <div class="publish-whatsapp-icon">
-
-                                <i class="fa-brands fa-whatsapp"></i>
-
-                            </div>
-
-
-
-                            <div>
-
-                                <strong>
-                                    Numéro WhatsApp
-                                </strong>
-
-
-                                <span>
-                                    Votre numéro sera utilisé pour
-                                    permettre aux intéressés de vous
-                                    contacter.
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- =================================================
-                             NUMERO WHATSAPP
-                        ================================================== -->
-
-                        <div class="publish-field">
-
-
-                            <label for="publishWhatsapp">
-
-                                Votre numéro WhatsApp
-
-                                <span>
-                                    *
-                                </span>
-
-                            </label>
-
-
-
-                            <input
-                                type="tel"
-                                id="publishWhatsapp"
-                                name="whatsapp"
-                                placeholder="Ex : +243 8XX XXX XXX"
-                                maxlength="30"
-                                autocomplete="tel"
-                                required
-                            >
-
-
-                        </div>
-
-
-                    </section>
-
-
-
-                    <!-- =================================================
-                         CONDITIONS
-                    ================================================== -->
-
-                    <section class="publish-terms-card">
-
-
-                        <label class="publish-checkbox">
-
-
-                            <input
-                                type="checkbox"
-                                id="publishTerms"
-                                name="terms"
-                                required
-                            >
-
-
-
-                            <span class="publish-checkmark">
-
-                                <i class="fa-solid fa-check"></i>
-
-                            </span>
-
-
-
-                            <span class="publish-terms-text">
-
-                                J'accepte les
-
-                                <a
-                                    href="conditions.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    conditions d'utilisation
-                                </a>
-
-                                et les
-
-                                <a
-                                    href="conditions.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    règles de publication
-                                </a>
-
-                                de CAMU SERVICES.
-
-                            </span>
-
-
+                        <label
+                            for="publishWhatsapp"
+                            class="form-label"
+                        >
+                            Numéro WhatsApp
+                            <span class="required">*</span>
                         </label>
 
 
-                    </section>
-
-
-
-                    <!-- =================================================
-                         ACTIONS
-                    ================================================== -->
-
-                    <div class="publish-v2-actions">
-
-
-                        <!-- ANNULER -->
-
-                        <a
-                            href="index.html"
-                            class="secondary-button"
+                        <input
+                            type="tel"
+                            id="publishWhatsapp"
+                            class="form-control"
+                            placeholder="Ex. +243 81 000 00 00"
+                            autocomplete="tel"
+                            inputmode="tel"
+                            maxlength="25"
+                            required
                         >
-
-                            <i class="fa-solid fa-arrow-left"></i>
-
-                            Annuler
-
-                        </a>
-
-
-
-                        <!-- PUBLIER -->
-
-                        <button
-                            type="submit"
-                            class="primary-button publish-submit"
-                            id="publishButton"
-                        >
-
-                            <i class="fa-solid fa-paper-plane"></i>
-
-                            Publier l'annonce
-
-                        </button>
-
 
                     </div>
 
-
-                </form>
-
-
-            </div>
-
-
-        </main>
+                </section>
 
 
 
-        <!-- =====================================================
-             FOOTER
-        ====================================================== -->
+                <!-- =================================================
+                     CONDITIONS
+                ================================================== -->
 
-        <footer class="footer">
+                <section class="publish-section">
 
+                    <div class="terms-box">
 
-            <div class="footer-content">
-
-
-                <!-- MARQUE -->
-
-                <div class="footer-brand">
-
-
-                    <div class="logo">
+                        <input
+                            type="checkbox"
+                            id="publishTerms"
+                            required
+                        >
 
 
-                        <span class="logo-main">
-                            CAMU
-                        </span>
+                        <label
+                            for="publishTerms"
+                        >
 
+                            J'accepte les
 
-                        <span class="logo-sub">
-                            SERVICES
-                        </span>
+                            <a
+                                href="conditions.html"
+                                target="_blank"
+                            >
+                                conditions d'utilisation
+                            </a>
 
+                            et les règles de publication
+                            de CAMU SERVICES.
+
+                        </label>
 
                     </div>
 
-
-
-                    <p>
-                        Trouver • Acheter • Réserver
-                    </p>
-
-
-                </div>
+                </section>
 
 
 
-                <!-- LIENS -->
+                <!-- =================================================
+                     BOUTON
+                ================================================== -->
 
-                <div class="footer-links">
+                <button
+                    type="submit"
+                    id="publishButton"
+                    class="publish-submit"
+                >
 
+                    <i
+                        class="fa-solid fa-bullhorn"
+                    ></i>
 
-                    <a href="a-propos.html">
-                        À propos
-                    </a>
+                    Publier mon annonce
 
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-
-                    <a href="conditions.html">
-                        Mentions légales
-                    </a>
-
-
-                    <a href="conditions.html">
-                        Conditions d'utilisation
-                    </a>
+                </button>
 
 
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
+                <p class="publish-note">
 
+                    Votre annonce sera enregistrée après
+                    validation des informations.
 
-                    <a href="conditions.html">
-                        Règles de publication
-                    </a>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- COPYRIGHT -->
-
-            <div class="footer-bottom">
-
-                <p>
-                    © 2026 CAMU SERVICES. Tous droits réservés.
                 </p>
 
-            </div>
+
+            </form>
+
+        </section>
+
+    </main>
 
 
-        </footer>
+
+    <!-- =====================================================
+         NAVIGATION MOBILE
+    ====================================================== -->
+
+    <nav class="publish-bottom-nav">
+
+        <div class="publish-bottom-nav-inner">
 
 
-    </div>
+            <a
+                href="index.html"
+                class="publish-nav-item"
+            >
+
+                <i
+                    class="fa-solid fa-house"
+                ></i>
+
+                <span>
+                    Accueil
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="publier.html"
+                class="publish-nav-item active"
+            >
+
+                <i
+                    class="fa-solid fa-circle-plus"
+                ></i>
+
+                <span>
+                    Publier
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="chat.html"
+                class="publish-nav-item"
+            >
+
+                <i
+                    class="fa-solid fa-comments"
+                ></i>
+
+                <span>
+                    Chat
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="profil.html"
+                class="publish-nav-item"
+            >
+
+                <i
+                    class="fa-solid fa-user"
+                ></i>
+
+                <span>
+                    Profil
+                </span>
+
+            </a>
+
+        </div>
+
+    </nav>
 
 
 
@@ -1339,25 +1434,10 @@
          JAVASCRIPT
     ====================================================== -->
 
-    <!-- AUTH -->
     <script
         type="module"
-        src="js/auth.js">
-    </script>
-
-
-    <!-- APPLICATION -->
-    <script
-        type="module"
-        src="js/app.js">
-    </script>
-
-
-    <!-- PUBLICATION -->
-    <script
-        type="module"
-        src="js/publier.js">
-    </script>
+        src="js/publier.js"
+    ></script>
 
 
 </body>
