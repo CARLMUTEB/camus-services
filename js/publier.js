@@ -2,9 +2,11 @@
 // CAMU SERVICES
 // publier.js
 // Publication d'une annonce
-// Catégories + Villes depuis Firestore
-// Images depuis Cloudinary
-// Annonces enregistrées dans Firestore : annonces
+// Catégories depuis Firestore : categories
+// Villes depuis Firestore : villes
+// Champ ville : name
+// Images : Cloudinary
+// Annonces : annonces
 // ============================================================
 
 import { auth, db } from "./firebase-config.js";
@@ -82,7 +84,6 @@ function showMessage(message, type = "error") {
         `auth-message ${type}`;
 
     publishMessage.style.display = "block";
-
 }
 
 
@@ -96,7 +97,6 @@ function clearMessage() {
         "auth-message";
 
     publishMessage.style.display = "none";
-
 }
 
 
@@ -122,11 +122,14 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-
     if (publishButton) {
         publishButton.disabled = false;
     }
 
+    console.log(
+        "✅ Utilisateur connecté :",
+        user.uid
+    );
 });
 
 
@@ -137,8 +140,14 @@ onAuthStateChanged(auth, (user) => {
 
 async function loadCategories() {
 
-    if (!publishCategory) return;
+    if (!publishCategory) {
 
+        console.error(
+            "❌ Élément #publishCategory introuvable."
+        );
+
+        return;
+    }
 
     try {
 
@@ -148,44 +157,79 @@ async function loadCategories() {
             </option>
         `;
 
+        console.log(
+            "🔄 Chargement de la collection : categories"
+        );
 
         const snapshot =
             await getDocs(
                 collection(db, "categories")
             );
 
+        console.log(
+            "📦 Nombre de catégories :",
+            snapshot.size
+        );
 
         const categories = [];
-
 
         snapshot.forEach((docSnap) => {
 
             const data = docSnap.data();
 
+            console.log(
+                "📁 Catégorie :",
+                docSnap.id,
+                data
+            );
 
             // Ignorer les catégories désactivées
             if (data.active === false) {
                 return;
             }
 
-
-            // Ignorer les documents sans nom
-            if (!data.name) {
+            // Champ attendu : name
+            if (
+                !data.name ||
+                String(data.name).trim() === ""
+            ) {
                 return;
             }
 
-
             categories.push({
+
                 id: docSnap.id,
-                name: String(data.name).trim(),
-                icon: data.icon || ""
+
+                name:
+                    String(data.name).trim(),
+
+                icon:
+                    data.icon || ""
+
             });
 
         });
 
 
-        // Tri alphabétique
-        categories.sort((a, b) =>
+        // ====================================================
+        // SUPPRIMER LES DOUBLONS
+        // ====================================================
+
+        const uniqueCategories = [
+            ...new Map(
+                categories.map(category => [
+                    category.name.toLowerCase(),
+                    category
+                ])
+            ).values()
+        ];
+
+
+        // ====================================================
+        // TRI ALPHABÉTIQUE
+        // ====================================================
+
+        uniqueCategories.sort((a, b) =>
             a.name.localeCompare(
                 b.name,
                 "fr",
@@ -196,6 +240,10 @@ async function loadCategories() {
         );
 
 
+        // ====================================================
+        // RESET SELECT
+        // ====================================================
+
         publishCategory.innerHTML = `
             <option value="">
                 Sélectionner une catégorie
@@ -203,7 +251,7 @@ async function loadCategories() {
         `;
 
 
-        if (categories.length === 0) {
+        if (uniqueCategories.length === 0) {
 
             publishCategory.innerHTML = `
                 <option value="">
@@ -211,23 +259,28 @@ async function loadCategories() {
                 </option>
             `;
 
+            console.warn(
+                "⚠️ Aucune catégorie disponible."
+            );
+
             return;
         }
 
 
-        categories.forEach((category) => {
+        // ====================================================
+        // AJOUTER LES CATÉGORIES
+        // ====================================================
+
+        uniqueCategories.forEach((category) => {
 
             const option =
                 document.createElement("option");
 
-
             option.value =
                 category.name;
 
-
             option.textContent =
                 `${category.icon ? category.icon + " " : ""}${category.name}`;
-
 
             publishCategory.appendChild(option);
 
@@ -235,37 +288,42 @@ async function loadCategories() {
 
 
         console.log(
-            "Catégories chargées :",
-            categories.length
+            "✅ Catégories affichées :",
+            uniqueCategories.length
         );
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement catégories :",
+            "❌ Erreur chargement catégories :",
             error
         );
-
 
         publishCategory.innerHTML = `
             <option value="">
                 Erreur de chargement des catégories
             </option>
         `;
-
     }
-
 }
 
 
 // ============================================================
 // CHARGER LES VILLES
 // COLLECTION : villes
+// CHAMP : name
 // ============================================================
 
 async function loadCities() {
 
-    if (!publishCity) return;
+    if (!publishCity) {
+
+        console.error(
+            "❌ Élément #publishCity introuvable dans le HTML."
+        );
+
+        return;
+    }
 
 
     try {
@@ -277,43 +335,115 @@ async function loadCities() {
         `;
 
 
+        console.log(
+            "🔄 Chargement de la collection : villes"
+        );
+
+
+        // ====================================================
+        // RÉCUPÉRATION FIRESTORE
+        // ====================================================
+
         const snapshot =
             await getDocs(
                 collection(db, "villes")
             );
 
 
+        console.log(
+            "📦 Nombre de documents dans villes :",
+            snapshot.size
+        );
+
+
         const cities = [];
 
+
+        // ====================================================
+        // LECTURE DES DOCUMENTS
+        // ====================================================
 
         snapshot.forEach((docSnap) => {
 
             const data = docSnap.data();
 
 
-            // Si active existe et vaut false,
-            // on ne montre pas la ville.
+            console.log(
+                "🏙️ Document ville :",
+                docSnap.id,
+                data
+            );
+
+
+            // ==================================================
+            // VILLE DÉSACTIVÉE
+            // ==================================================
+
             if (data.active === false) {
+
+                console.log(
+                    "⛔ Ville désactivée :",
+                    data.name
+                );
+
                 return;
             }
 
 
-            // Le champ principal attendu est "name"
-            if (!data.name) {
+            // ==================================================
+            // CHAMP NAME
+            // ==================================================
+
+            if (
+                !data.name ||
+                String(data.name).trim() === ""
+            ) {
+
+                console.warn(
+                    "⚠️ Document sans champ 'name' :",
+                    docSnap.id
+                );
+
                 return;
             }
 
+
+            // ==================================================
+            // AJOUT DE LA VILLE
+            // ==================================================
 
             cities.push({
-                id: docSnap.id,
-                name: String(data.name).trim()
+
+                id:
+                    docSnap.id,
+
+                name:
+                    String(data.name).trim()
+
             });
 
         });
 
 
-        // Tri alphabétique
-        cities.sort((a, b) =>
+        // ====================================================
+        // SUPPRIMER LES DOUBLONS
+        // ====================================================
+
+        const uniqueCities = [
+            ...new Map(
+                cities.map(city => [
+                    city.name.toLowerCase(),
+                    city
+                ])
+            ).values()
+        ];
+
+
+        // ====================================================
+        // TRI ALPHABÉTIQUE
+        // ====================================================
+
+        uniqueCities.sort((a, b) =>
             a.name.localeCompare(
                 b.name,
                 "fr",
@@ -324,6 +454,10 @@ async function loadCities() {
         );
 
 
+        // ====================================================
+        // RESET DU SELECT
+        // ====================================================
+
         publishCity.innerHTML = `
             <option value="">
                 Sélectionner une ville
@@ -331,7 +465,11 @@ async function loadCities() {
         `;
 
 
-        if (cities.length === 0) {
+        // ====================================================
+        // AUCUNE VILLE
+        // ====================================================
+
+        if (uniqueCities.length === 0) {
 
             publishCity.innerHTML = `
                 <option value="">
@@ -339,11 +477,19 @@ async function loadCities() {
                 </option>
             `;
 
+            console.warn(
+                "⚠️ Aucun document exploitable trouvé dans la collection 'villes'."
+            );
+
             return;
         }
 
 
-        cities.forEach((city) => {
+        // ====================================================
+        // AJOUTER LES VILLES AU SELECT
+        // ====================================================
+
+        uniqueCities.forEach((city) => {
 
             const option =
                 document.createElement("option");
@@ -357,20 +503,30 @@ async function loadCities() {
                 city.name;
 
 
+            // ID Firestore disponible si nécessaire
+            option.dataset.cityId =
+                city.id;
+
+
             publishCity.appendChild(option);
 
         });
 
 
         console.log(
-            "Villes chargées :",
-            cities.length
+            "✅ Villes affichées :",
+            uniqueCities.length
+        );
+
+
+        console.table(
+            uniqueCities
         );
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement villes :",
+            "❌ Erreur chargement villes :",
             error
         );
 
@@ -380,9 +536,7 @@ async function loadCities() {
                 Erreur de chargement des villes
             </option>
         `;
-
     }
-
 }
 
 
@@ -396,14 +550,15 @@ if (publishPhotos) {
         "change",
         handlePhotoSelection
     );
-
 }
 
 
 function handlePhotoSelection(event) {
 
     const files =
-        Array.from(event.target.files || []);
+        Array.from(
+            event.target.files || []
+        );
 
 
     if (files.length === 0) {
@@ -418,12 +573,16 @@ function handlePhotoSelection(event) {
         5 * 1024 * 1024;
 
 
-    const MAX_IMAGES = 8;
+    const MAX_IMAGES =
+        8;
 
 
     for (const file of files) {
 
-        // Vérification du type
+        // ==================================================
+        // TYPE
+        // ==================================================
+
         if (!file.type.startsWith("image/")) {
 
             showMessage(
@@ -435,7 +594,10 @@ function handlePhotoSelection(event) {
         }
 
 
-        // Vérification taille
+        // ==================================================
+        // TAILLE
+        // ==================================================
+
         if (file.size > MAX_SIZE) {
 
             showMessage(
@@ -447,7 +609,10 @@ function handlePhotoSelection(event) {
         }
 
 
-        // Éviter les doublons
+        // ==================================================
+        // DOUBLON
+        // ==================================================
+
         const alreadyExists =
             selectedFiles.some(
                 (existingFile) =>
@@ -461,7 +626,13 @@ function handlePhotoSelection(event) {
         }
 
 
-        if (selectedFiles.length >= MAX_IMAGES) {
+        // ==================================================
+        // MAXIMUM 8 IMAGES
+        // ==================================================
+
+        if (
+            selectedFiles.length >= MAX_IMAGES
+        ) {
 
             showMessage(
                 "Vous pouvez sélectionner maximum 8 images.",
@@ -473,7 +644,6 @@ function handlePhotoSelection(event) {
 
 
         selectedFiles.push(file);
-
     }
 
 
@@ -483,7 +653,6 @@ function handlePhotoSelection(event) {
     // Permet de sélectionner à nouveau
     // le même fichier après suppression.
     event.target.value = "";
-
 }
 
 
@@ -543,26 +712,33 @@ function renderPhotoPreview() {
                     );
 
 
-                removeButton.addEventListener(
-                    "click",
-                    () => {
+                if (removeButton) {
 
-                        removePhoto(index);
+                    removeButton.addEventListener(
+                        "click",
+                        () => {
 
-                    }
+                            removePhoto(index);
+
+                        }
+                    );
+
+                }
+
+
+                photoPreview.appendChild(
+                    item
                 );
-
-
-                photoPreview.appendChild(item);
 
             };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
-
 }
 
 
@@ -572,10 +748,12 @@ function renderPhotoPreview() {
 
 function removePhoto(index) {
 
-    selectedFiles.splice(index, 1);
+    selectedFiles.splice(
+        index,
+        1
+    );
 
     renderPhotoPreview();
-
 }
 
 
@@ -658,7 +836,6 @@ async function uploadImageToCloudinary(file) {
 
 
     return result.secure_url;
-
 }
 
 
@@ -693,13 +870,13 @@ async function uploadAllImages() {
             );
 
 
-        imageURLs.push(url);
-
+        imageURLs.push(
+            url
+        );
     }
 
 
     return imageURLs;
-
 }
 
 
@@ -747,6 +924,10 @@ function validateForm() {
         )?.checked;
 
 
+    // ========================================================
+    // TITRE
+    // ========================================================
+
     if (!title) {
 
         showMessage(
@@ -758,9 +939,14 @@ function validateForm() {
     }
 
 
+    // ========================================================
+    // PRIX
+    // ========================================================
+
     if (
         price === "" ||
         price === null ||
+        Number.isNaN(Number(price)) ||
         Number(price) < 0
     ) {
 
@@ -773,6 +959,10 @@ function validateForm() {
     }
 
 
+    // ========================================================
+    // CATÉGORIE
+    // ========================================================
+
     if (!category) {
 
         showMessage(
@@ -783,6 +973,10 @@ function validateForm() {
         return false;
     }
 
+
+    // ========================================================
+    // DESCRIPTION
+    // ========================================================
 
     if (!description) {
 
@@ -795,6 +989,10 @@ function validateForm() {
     }
 
 
+    // ========================================================
+    // VILLE
+    // ========================================================
+
     if (!city) {
 
         showMessage(
@@ -806,6 +1004,10 @@ function validateForm() {
     }
 
 
+    // ========================================================
+    // WHATSAPP
+    // ========================================================
+
     if (!whatsapp) {
 
         showMessage(
@@ -816,6 +1018,10 @@ function validateForm() {
         return false;
     }
 
+
+    // ========================================================
+    // CONDITIONS
+    // ========================================================
 
     if (!terms) {
 
@@ -829,7 +1035,6 @@ function validateForm() {
 
 
     return true;
-
 }
 
 
@@ -843,7 +1048,6 @@ if (publishForm) {
         "submit",
         handlePublish
     );
-
 }
 
 
@@ -855,7 +1059,10 @@ async function handlePublish(event) {
     clearMessage();
 
 
-    // Vérifier connexion
+    // ========================================================
+    // UTILISATEUR
+    // ========================================================
+
     if (!currentUser) {
 
         showMessage(
@@ -867,14 +1074,22 @@ async function handlePublish(event) {
     }
 
 
-    // Vérifier formulaire
+    // ========================================================
+    // VALIDATION
+    // ========================================================
+
     if (!validateForm()) {
         return;
     }
 
 
-    // Vérifier images
-    if (selectedFiles.length === 0) {
+    // ========================================================
+    // IMAGES
+    // ========================================================
+
+    if (
+        selectedFiles.length === 0
+    ) {
 
         showMessage(
             "Veuillez ajouter au moins une photo.",
@@ -885,19 +1100,24 @@ async function handlePublish(event) {
     }
 
 
-    // Désactiver bouton
+    // ========================================================
+    // DÉSACTIVER BOUTON
+    // ========================================================
+
     if (publishButton) {
 
-        publishButton.disabled = true;
+        publishButton.disabled =
+            true;
+
 
         publishButton.dataset.originalText =
             publishButton.innerHTML;
+
 
         publishButton.innerHTML = `
             <i class="fa-solid fa-spinner fa-spin"></i>
             Publication en cours...
         `;
-
     }
 
 
@@ -944,7 +1164,7 @@ async function handlePublish(event) {
         const neighborhood =
             document.getElementById(
                 "publishNeighborhood"
-            ).value.trim();
+            )?.value.trim() || "";
 
 
         const whatsapp =
@@ -964,7 +1184,8 @@ async function handlePublish(event) {
 
 
         const ownerEmail =
-            currentUser.email || "";
+            currentUser.email ||
+            "";
 
 
         // ====================================================
@@ -989,7 +1210,6 @@ async function handlePublish(event) {
             throw new Error(
                 "Aucune image n'a pu être envoyée."
             );
-
         }
 
 
@@ -1006,31 +1226,44 @@ async function handlePublish(event) {
 
         const annonceData = {
 
-            title: title,
+            title:
+                title,
 
-            price: price,
+            price:
+                price,
 
-            currency: currency,
+            currency:
+                currency,
 
-            category: category,
+            category:
+                category,
 
-            description: description,
+            description:
+                description,
 
-            city: city,
+            city:
+                city,
 
-            neighborhood: neighborhood,
+            neighborhood:
+                neighborhood,
 
-            whatsapp: whatsapp,
+            whatsapp:
+                whatsapp,
 
-            userId: currentUser.uid,
+            userId:
+                currentUser.uid,
 
-            ownerId: currentUser.uid,
+            ownerId:
+                currentUser.uid,
 
-            ownerName: ownerName,
+            ownerName:
+                ownerName,
 
-            ownerEmail: ownerEmail,
+            ownerEmail:
+                ownerEmail,
 
-            images: imageURLs,
+            images:
+                imageURLs,
 
             imageURL:
                 imageURLs[0] || "",
@@ -1038,26 +1271,29 @@ async function handlePublish(event) {
             imageCount:
                 imageURLs.length,
 
-            status: "active",
+            status:
+                "active",
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
-
         };
 
 
         const annonceRef =
             await addDoc(
-                collection(db, "annonces"),
+                collection(
+                    db,
+                    "annonces"
+                ),
                 annonceData
             );
 
 
         console.log(
-            "Annonce créée :",
+            "✅ Annonce créée :",
             annonceRef.id
         );
 
@@ -1080,7 +1316,10 @@ async function handlePublish(event) {
         renderPhotoPreview();
 
 
-        // Redirection
+        // ====================================================
+        // REDIRECTION
+        // ====================================================
+
         setTimeout(() => {
 
             window.location.href =
@@ -1092,7 +1331,7 @@ async function handlePublish(event) {
     } catch (error) {
 
         console.error(
-            "Erreur publication :",
+            "❌ Erreur publication :",
             error
         );
 
@@ -1101,13 +1340,10 @@ async function handlePublish(event) {
             "Une erreur est survenue lors de la publication.";
 
 
-        if (
-            error?.message
-        ) {
+        if (error?.message) {
 
             message =
                 error.message;
-
         }
 
 
@@ -1121,7 +1357,8 @@ async function handlePublish(event) {
 
         if (publishButton) {
 
-            publishButton.disabled = false;
+            publishButton.disabled =
+                false;
 
 
             publishButton.innerHTML =
@@ -1130,11 +1367,8 @@ async function handlePublish(event) {
                     <i class="fa-solid fa-paper-plane"></i>
                     Publier l'annonce
                 `;
-
         }
-
     }
-
 }
 
 
@@ -1145,24 +1379,34 @@ async function handlePublish(event) {
 async function initializePublishPage() {
 
     console.log(
-        "Initialisation de la page de publication..."
+        "🚀 Initialisation de la page de publication..."
     );
 
 
-    // Charger catégories et villes
-    // en parallèle
-    await Promise.all([
-        loadCategories(),
-        loadCities()
-    ]);
+    try {
+
+        await Promise.all([
+            loadCategories(),
+            loadCities()
+        ]);
 
 
-    console.log(
-        "Catégories et villes chargées."
-    );
+        console.log(
+            "✅ Catégories et villes chargées."
+        );
 
+    } catch (error) {
+
+        console.error(
+            "❌ Erreur initialisation :",
+            error
+        );
+    }
 }
 
 
-// Lancer l'initialisation
+// ============================================================
+// LANCEMENT
+// ============================================================
+
 initializePublishPage();
