@@ -1,390 +1,449 @@
-/* =========================================================
-   CAMU SERVICES
-   PAGE CATÉGORIES
-   Chargement dynamique depuis Firestore
-========================================================= */
-
-import { db } from "./firebase-config.js";
+// ============================================================
+// CAMU SERVICES — categories.js
+// Gestion dynamique de la page Catégories
+// ============================================================
 
 import {
     collection,
-    getDocs,
-    query,
-    orderBy,
-    where
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { db } from "./firebase.js";
 
 
-/* =========================================================
-   ÉLÉMENTS
-========================================================= */
+// ============================================================
+// ÉLÉMENTS HTML
+// ============================================================
 
-const categorySearch =
-    document.getElementById("categorySearch");
+const categoriesGrid = document.getElementById("categoriesGrid");
+const categoriesCount = document.getElementById("categoriesCount");
+const categoriesEmpty = document.getElementById("categoriesEmpty");
+const categorySearch = document.getElementById("categorySearch");
 
-const categoriesGrid =
-    document.getElementById("categoriesGrid");
-
-const categoriesEmpty =
-    document.getElementById("categoriesEmpty");
-
-const categoriesCount =
-    document.getElementById("categoriesCount");
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const closeSidebar = document.getElementById("closeSidebar");
 
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+// ============================================================
+// VARIABLES
+// ============================================================
 
-let categoryCards = [];
-let allCategories = [];
+let categories = [];
 
 
-/* =========================================================
-   CHARGER LES CATÉGORIES DEPUIS FIRESTORE
-========================================================= */
+// ============================================================
+// INITIALISATION
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    console.log("CAMU SERVICES : categories.js chargé correctement.");
+
+    setupMenu();
+    setupSearch();
+    loadCategories();
+
+});
+
+
+// ============================================================
+// CHARGER LES CATÉGORIES DEPUIS FIRESTORE
+// ============================================================
 
 async function loadCategories() {
 
-    if (!categoriesGrid) return;
-
     try {
 
-        // État de chargement
-        categoriesGrid.innerHTML = `
-            <div class="category-loading">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                <span>Chargement des catégories...</span>
-            </div>
-        `;
+        showLoading();
 
-        /*
-         * Collection Firestore :
-         * categorie
-         */
-        const categoriesRef =
-            collection(db, "categorie");
+        console.log("Chargement des catégories depuis Firestore...");
 
+        const snapshot = await getDocs(
+            collection(db, "categories")
+        );
 
-        /*
-         * Récupérer uniquement
-         * les catégories actives.
-         */
-        let snapshot;
+        categories = [];
 
-        try {
+        snapshot.forEach((doc) => {
 
-            const q = query(
-                categoriesRef,
-                where("active", "==", true),
-                orderBy("ordre", "asc")
-            );
+            const data = doc.data();
 
-            snapshot = await getDocs(q);
+            // On affiche uniquement les catégories actives
+            if (data.active === true && data.name) {
 
-        } catch (error) {
+                categories.push({
+                    id: doc.id,
+                    name: data.name,
+                    icon: data.icon || "fa-solid fa-layer-group",
+                    description: data.description || "",
+                    order: Number(data.order) || 9999
+                });
 
-            /*
-             * Si l'index Firestore manque,
-             * on récupère quand même les catégories.
-             */
-            console.warn(
-                "Tri/filtre Firestore indisponible. Chargement simple.",
-                error
-            );
-
-            snapshot =
-                await getDocs(categoriesRef);
-        }
-
-
-        allCategories = [];
-
-
-        snapshot.forEach(documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
-
-
-            /*
-             * Si le premier chargement simple
-             * contient des catégories inactives,
-             * on les ignore ici.
-             */
-            if (
-                data.active !== undefined &&
-                data.active !== true
-            ) {
-                return;
             }
-
-
-            allCategories.push({
-
-                id: documentSnapshot.id,
-
-                nom:
-                    data.nom ||
-                    data.name ||
-                    "Catégorie",
-
-                icone:
-                    data.icone ||
-                    data.icon ||
-                    "fa-solid fa-folder",
-
-                description:
-                    data.description ||
-                    "Découvrez les annonces de cette catégorie.",
-
-                ordre:
-                    Number(data.ordre || data.order || 999)
-
-            });
 
         });
 
+        // Trier par ordre
+        categories.sort((a, b) => a.order - b.order);
 
-        /*
-         * Trier côté navigateur
-         * pour garantir l'ordre.
-         */
-        allCategories.sort(
-            (a, b) => a.ordre - b.ordre
+        console.log(
+            `${categories.length} catégorie(s) chargée(s).`
         );
 
+        updateCategoriesCount();
 
-        renderCategories(allCategories);
+        renderCategories(categories);
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement catégories :",
+            "Erreur lors du chargement des catégories :",
             error
         );
 
-
-        categoriesGrid.innerHTML = `
-            <div class="category-loading">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>
-                    Impossible de charger les catégories.
-                </span>
-            </div>
-        `;
-
-        updateCategoryCount(0);
+        showError();
 
     }
 
 }
 
 
-/* =========================================================
-   AFFICHER LES CATÉGORIES
-========================================================= */
+// ============================================================
+// AFFICHER LES CATÉGORIES
+// ============================================================
 
-function renderCategories(categories) {
+function renderCategories(list) {
 
     if (!categoriesGrid) return;
 
-
     categoriesGrid.innerHTML = "";
 
-
-    updateCategoryCount(
-        categories.length
-    );
-
-
-    if (categories.length === 0) {
+    // Aucune catégorie
+    if (!list || list.length === 0) {
 
         if (categoriesEmpty) {
-            categoriesEmpty.hidden = false;
+            categoriesEmpty.style.display = "block";
         }
 
         return;
-    }
 
+    }
 
     if (categoriesEmpty) {
-        categoriesEmpty.hidden = true;
+        categoriesEmpty.style.display = "none";
     }
 
 
-    categories.forEach(category => {
+    list.forEach((category) => {
 
-        const card =
-            document.createElement("article");
+        const card = document.createElement("article");
 
+        card.className = "category-card";
 
-        card.className =
-            "category-card";
-
-
-        /*
-         * Permet au système de recherche
-         * de retrouver la catégorie.
-         */
-        card.dataset.category =
-            category.nom;
-
+        card.dataset.categoryId = category.id;
 
         card.innerHTML = `
-
             <div class="category-icon">
-
-                <i class="${escapeHTML(category.icone)}"></i>
-
+                <i class="${escapeAttribute(category.icon)}"></i>
             </div>
 
             <div class="category-content">
 
                 <h3>
-                    ${escapeHTML(category.nom)}
+                    ${escapeHTML(category.name)}
                 </h3>
 
-                <p>
-                    ${escapeHTML(category.description)}
-                </p>
+                ${
+                    category.description
+                        ? `
+                            <p>
+                                ${escapeHTML(category.description)}
+                            </p>
+                          `
+                        : ""
+                }
 
             </div>
 
             <div class="category-arrow">
-
                 <i class="fa-solid fa-arrow-right"></i>
-
             </div>
-
         `;
 
 
-        /*
-         * Clic sur la catégorie.
-         */
-        card.addEventListener(
-            "click",
-            () => {
+        // Cliquer sur une catégorie
+        card.addEventListener("click", () => {
 
-                const url =
-                    `recherche.html?category=${encodeURIComponent(category.nom)}`;
+            const categoryName = encodeURIComponent(
+                category.name
+            );
 
-                window.location.href = url;
+            window.location.href =
+                `recherche.html?category=${categoryName}`;
 
-            }
-        );
+        });
 
 
         categoriesGrid.appendChild(card);
 
     });
 
-
-    /*
-     * Mettre à jour la liste
-     * des cartes après génération.
-     */
-    categoryCards =
-        Array.from(
-            categoriesGrid.querySelectorAll(
-                ".category-card"
-            )
-        );
-
 }
 
 
-/* =========================================================
-   RECHERCHE CATÉGORIE
-========================================================= */
+// ============================================================
+// RECHERCHE / FILTRE
+// ============================================================
 
-categorySearch?.addEventListener(
-    "input",
-    () => {
+function setupSearch() {
 
-        const search =
-            categorySearch.value
-                .trim()
-                .toLowerCase();
+    if (!categorySearch) return;
 
+    categorySearch.addEventListener("input", () => {
 
-        let visibleCount = 0;
+        const search = categorySearch.value
+            .trim()
+            .toLowerCase();
 
+        if (!search) {
 
-        categoryCards.forEach(card => {
+            renderCategories(categories);
 
-            const category =
-                card.dataset.category
-                    ?.toLowerCase() || "";
+            return;
 
-
-            const text =
-                card.textContent
-                    .toLowerCase();
+        }
 
 
-            const matches =
-                !search ||
-                category.includes(search) ||
-                text.includes(search);
+        const filtered = categories.filter((category) => {
 
+            const name =
+                category.name.toLowerCase();
 
-            card.style.display =
-                matches ? "grid" : "none";
+            const description =
+                category.description.toLowerCase();
 
-
-            if (matches) {
-                visibleCount++;
-            }
+            return (
+                name.includes(search) ||
+                description.includes(search)
+            );
 
         });
 
 
-        updateCategoryCount(
-            visibleCount
-        );
+        renderCategories(filtered);
 
-
-        if (categoriesEmpty) {
-
-            categoriesEmpty.hidden =
-                visibleCount !== 0;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   COMPTEUR
-========================================================= */
-
-function updateCategoryCount(count) {
-
-    if (!categoriesCount) return;
-
-
-    if (count === 1) {
-
-        categoriesCount.textContent =
-            "1 catégorie";
-
-        return;
-
-    }
-
-
-    categoriesCount.textContent =
-        `${count} catégories`;
+    });
 
 }
 
 
-/* =========================================================
-   SÉCURISER LE HTML
-========================================================= */
+// ============================================================
+// COMPTEUR DE CATÉGORIES
+// ============================================================
+
+function updateCategoriesCount() {
+
+    if (!categoriesCount) return;
+
+    const total = categories.length;
+
+    if (total === 0) {
+
+        categoriesCount.textContent =
+            "Aucune catégorie";
+
+    } else if (total === 1) {
+
+        categoriesCount.textContent =
+            "1 catégorie";
+
+    } else {
+
+        categoriesCount.textContent =
+            `${total} catégories`;
+
+    }
+
+}
+
+
+// ============================================================
+// ÉTAT DE CHARGEMENT
+// ============================================================
+
+function showLoading() {
+
+    if (!categoriesGrid) return;
+
+    if (categoriesEmpty) {
+        categoriesEmpty.style.display = "none";
+    }
+
+    categoriesGrid.innerHTML = `
+        <div class="categories-loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <span>
+                Chargement des catégories...
+            </span>
+
+        </div>
+    `;
+
+}
+
+
+// ============================================================
+// AFFICHER UNE ERREUR
+// ============================================================
+
+function showError() {
+
+    if (!categoriesGrid) return;
+
+    if (categoriesEmpty) {
+        categoriesEmpty.style.display = "none";
+    }
+
+    categoriesGrid.innerHTML = `
+        <div class="categories-error">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <h3>
+                Impossible de charger les catégories
+            </h3>
+
+            <p>
+                Vérifiez votre connexion Internet
+                puis rechargez la page.
+            </p>
+
+            <button
+                type="button"
+                id="retryCategories"
+                class="btn-primary">
+                <i class="fa-solid fa-rotate-right"></i>
+                Réessayer
+            </button>
+
+        </div>
+    `;
+
+
+    const retryButton =
+        document.getElementById("retryCategories");
+
+
+    if (retryButton) {
+
+        retryButton.addEventListener(
+            "click",
+            loadCategories
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// MENU LATÉRAL
+// ============================================================
+
+function setupMenu() {
+
+    if (!menuBtn || !sidebar) return;
+
+
+    // Ouvrir
+    menuBtn.addEventListener("click", () => {
+
+        sidebar.classList.add("active");
+
+        if (overlay) {
+            overlay.classList.add("active");
+        }
+
+        document.body.classList.add("menu-open");
+
+    });
+
+
+    // Fermer avec le bouton
+    if (closeSidebar) {
+
+        closeSidebar.addEventListener("click", closeMenu);
+
+    }
+
+
+    // Fermer avec l'overlay
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+    }
+
+
+    // Fermer avec Échap
+    document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape") {
+
+            closeMenu();
+
+        }
+
+    });
+
+
+    // Fermer après clic sur un lien
+    const sidebarLinks =
+        sidebar.querySelectorAll("a");
+
+
+    sidebarLinks.forEach((link) => {
+
+        link.addEventListener("click", () => {
+
+            closeMenu();
+
+        });
+
+    });
+
+}
+
+
+// ============================================================
+// FERMER LE MENU
+// ============================================================
+
+function closeMenu() {
+
+    if (sidebar) {
+        sidebar.classList.remove("active");
+    }
+
+    if (overlay) {
+        overlay.classList.remove("active");
+    }
+
+    document.body.classList.remove("menu-open");
+
+}
+
+
+// ============================================================
+// SÉCURITÉ HTML
+// ============================================================
 
 function escapeHTML(value) {
 
@@ -398,113 +457,14 @@ function escapeHTML(value) {
 }
 
 
-/* =========================================================
-   MENU MOBILE
-========================================================= */
+// ============================================================
+// SÉCURITÉ POUR LES ATTRIBUTS
+// ============================================================
 
-const categoriesMenuBtn =
-    document.getElementById(
-        "categoriesMenuBtn"
-    );
+function escapeAttribute(value) {
 
-const categoriesSidebar =
-    document.getElementById(
-        "categoriesSidebar"
-    );
-
-const categoriesSidebarClose =
-    document.getElementById(
-        "categoriesSidebarClose"
-    );
-
-const categoriesOverlay =
-    document.getElementById(
-        "categoriesOverlay"
-    );
-
-
-categoriesMenuBtn?.addEventListener(
-    "click",
-    openCategoriesMenu
-);
-
-
-categoriesSidebarClose?.addEventListener(
-    "click",
-    closeCategoriesMenu
-);
-
-
-categoriesOverlay?.addEventListener(
-    "click",
-    closeCategoriesMenu
-);
-
-
-function openCategoriesMenu() {
-
-    categoriesSidebar?.classList.add(
-        "open"
-    );
-
-
-    if (categoriesOverlay) {
-
-        categoriesOverlay.hidden =
-            false;
-
-    }
-
-
-    document.body.classList.add(
-        "categories-menu-open"
-    );
+    return String(value)
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
-
-
-function closeCategoriesMenu() {
-
-    categoriesSidebar?.classList.remove(
-        "open"
-    );
-
-
-    if (categoriesOverlay) {
-
-        categoriesOverlay.hidden =
-            true;
-
-    }
-
-
-    document.body.classList.remove(
-        "categories-menu-open"
-    );
-
-}
-
-
-/* =========================================================
-   FERMER AVEC ESC
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (event.key === "Escape") {
-
-            closeCategoriesMenu();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIALISATION
-========================================================= */
-
-loadCategories();
