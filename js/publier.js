@@ -1,29 +1,29 @@
-// =====================================================
+// ============================================================
 // CAMU SERVICES
-// PUBLICATION D'ANNONCE AVEC IMAGES
-// Firebase + Cloudinary
-// =====================================================
+// publier.js
+// Publication d'une annonce
+// Catégories + Villes depuis Firestore
+// Images depuis Cloudinary
+// Annonces enregistrées dans Firestore : annonces
+// ============================================================
 
 import { auth, db } from "./firebase-config.js";
 
 import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
     collection,
-    addDoc,
     getDocs,
+    addDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-console.log("CAMU SERVICES — publier.js chargé.");
-
-
-// =====================================================
+// ============================================================
 // CONFIGURATION CLOUDINARY
-// =====================================================
+// ============================================================
 
 const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
 
@@ -33,208 +33,211 @@ const CLOUDINARY_UPLOAD_URL =
     `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
-// =====================================================
+// ============================================================
 // VARIABLES
-// =====================================================
+// ============================================================
 
 let currentUser = null;
 
-let selectedImages = [];
+let selectedFiles = [];
 
 
-// =====================================================
-// ÉLÉMENTS HTML
-// =====================================================
+// ============================================================
+// ELEMENTS HTML
+// ============================================================
 
-const form =
+const publishForm =
     document.getElementById("publishForm");
 
-const button =
+const publishButton =
     document.getElementById("publishButton");
 
-const message =
+const publishMessage =
     document.getElementById("publishMessage");
 
-const photosInput =
+const publishPhotos =
     document.getElementById("publishPhotos");
 
 const photoPreview =
     document.getElementById("photoPreview");
 
-const categorySelect =
+const publishCategory =
     document.getElementById("publishCategory");
 
+const publishCity =
+    document.getElementById("publishCity");
 
-// =====================================================
-// AFFICHER UN MESSAGE
-// =====================================================
 
-function showMessage(text, type = "auth-message") {
+// ============================================================
+// MESSAGE
+// ============================================================
 
-    if (!message) {
-        return;
-    }
+function showMessage(message, type = "error") {
 
-    message.textContent = text;
+    if (!publishMessage) return;
 
-    message.className =
+    publishMessage.textContent = message;
+
+    publishMessage.className =
         `auth-message ${type}`;
+
+    publishMessage.style.display = "block";
+
 }
 
 
-// =====================================================
-// CHARGER LES CATÉGORIES DEPUIS FIRESTORE
-// =====================================================
+function clearMessage() {
 
-async function loadCategories() {
+    if (!publishMessage) return;
 
-    if (!categorySelect) {
+    publishMessage.textContent = "";
 
-        console.error(
-            "ERREUR : #publishCategory introuvable."
+    publishMessage.className =
+        "auth-message";
+
+    publishMessage.style.display = "none";
+
+}
+
+
+// ============================================================
+// AUTHENTIFICATION
+// ============================================================
+
+onAuthStateChanged(auth, (user) => {
+
+    currentUser = user;
+
+    if (!user) {
+
+        showMessage(
+            "Vous devez être connecté pour publier une annonce.",
+            "error"
         );
+
+        if (publishButton) {
+            publishButton.disabled = true;
+        }
 
         return;
     }
+
+
+    if (publishButton) {
+        publishButton.disabled = false;
+    }
+
+});
+
+
+// ============================================================
+// CHARGER LES CATÉGORIES
+// COLLECTION : categories
+// ============================================================
+
+async function loadCategories() {
+
+    if (!publishCategory) return;
 
 
     try {
 
-        categorySelect.disabled = true;
-
-        categorySelect.innerHTML = `
+        publishCategory.innerHTML = `
             <option value="">
                 Chargement des catégories...
             </option>
         `;
 
 
-        console.log(
-            "CAMU SERVICES : chargement des catégories..."
-        );
-
-
         const snapshot =
             await getDocs(
-                collection(
-                    db,
-                    "categories"
-                )
+                collection(db, "categories")
             );
 
 
-        categorySelect.innerHTML = `
+        const categories = [];
+
+
+        snapshot.forEach((docSnap) => {
+
+            const data = docSnap.data();
+
+
+            // Ignorer les catégories désactivées
+            if (data.active === false) {
+                return;
+            }
+
+
+            // Ignorer les documents sans nom
+            if (!data.name) {
+                return;
+            }
+
+
+            categories.push({
+                id: docSnap.id,
+                name: String(data.name).trim(),
+                icon: data.icon || ""
+            });
+
+        });
+
+
+        // Tri alphabétique
+        categories.sort((a, b) =>
+            a.name.localeCompare(
+                b.name,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            )
+        );
+
+
+        publishCategory.innerHTML = `
             <option value="">
                 Sélectionner une catégorie
             </option>
         `;
 
 
-        let activeCategories = 0;
+        if (categories.length === 0) {
 
-
-        snapshot.forEach(
-            (categoryDoc) => {
-
-                const category =
-                    categoryDoc.data();
-
-
-                // -----------------------------------------
-                // Vérifier que la catégorie est active
-                // -----------------------------------------
-
-                if (
-                    category.active !== true
-                ) {
-                    return;
-                }
-
-
-                // -----------------------------------------
-                // Vérifier le nom
-                // -----------------------------------------
-
-                if (
-                    !category.name ||
-                    !category.name.trim()
-                ) {
-                    return;
-                }
-
-
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-
-                // -----------------------------------------
-                // Valeur enregistrée dans l'annonce
-                // -----------------------------------------
-
-                option.value =
-                    category.name.trim();
-
-
-                // -----------------------------------------
-                // Texte affiché
-                // -----------------------------------------
-
-                const icon =
-                    category.icon
-                        ? category.icon.trim()
-                        : "";
-
-
-                option.textContent =
-                    `${icon} ${category.name.trim()}`.trim();
-
-
-                // -----------------------------------------
-                // Ajouter au select
-                // -----------------------------------------
-
-                categorySelect.appendChild(
-                    option
-                );
-
-
-                activeCategories++;
-
-            }
-        );
-
-
-        categorySelect.disabled = false;
-
-
-        console.log(
-            `CAMU SERVICES : ${activeCategories} catégorie(s) active(s) chargée(s).`
-        );
-
-
-        // ---------------------------------------------
-        // Aucune catégorie
-        // ---------------------------------------------
-
-        if (
-            activeCategories === 0
-        ) {
-
-            categorySelect.innerHTML = `
+            publishCategory.innerHTML = `
                 <option value="">
                     Aucune catégorie disponible
                 </option>
             `;
 
-            categorySelect.disabled = true;
-
-            console.warn(
-                "Aucune catégorie active trouvée."
-            );
+            return;
         }
 
+
+        categories.forEach((category) => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                category.name;
+
+
+            option.textContent =
+                `${category.icon ? category.icon + " " : ""}${category.name}`;
+
+
+            publishCategory.appendChild(option);
+
+        });
+
+
+        console.log(
+            "Catégories chargées :",
+            categories.length
+        );
 
     } catch (error) {
 
@@ -244,354 +247,318 @@ async function loadCategories() {
         );
 
 
-        categorySelect.innerHTML = `
+        publishCategory.innerHTML = `
             <option value="">
-                Impossible de charger les catégories
+                Erreur de chargement des catégories
             </option>
         `;
-
-
-        categorySelect.disabled = true;
-
-
-        if (message) {
-
-            message.textContent =
-                "Impossible de charger les catégories. Veuillez réessayer.";
-
-            message.className =
-                "auth-message error";
-        }
 
     }
 
 }
 
 
-// =====================================================
-// AUTHENTIFICATION
-// =====================================================
+// ============================================================
+// CHARGER LES VILLES
+// COLLECTION : villes
+// ============================================================
 
-onAuthStateChanged(
-    auth,
-    (user) => {
+async function loadCities() {
 
-        console.log(
-            "AUTH :",
-            user
+    if (!publishCity) return;
+
+
+    try {
+
+        publishCity.innerHTML = `
+            <option value="">
+                Chargement des villes...
+            </option>
+        `;
+
+
+        const snapshot =
+            await getDocs(
+                collection(db, "villes")
+            );
+
+
+        const cities = [];
+
+
+        snapshot.forEach((docSnap) => {
+
+            const data = docSnap.data();
+
+
+            // Si active existe et vaut false,
+            // on ne montre pas la ville.
+            if (data.active === false) {
+                return;
+            }
+
+
+            // Le champ principal attendu est "name"
+            if (!data.name) {
+                return;
+            }
+
+
+            cities.push({
+                id: docSnap.id,
+                name: String(data.name).trim()
+            });
+
+        });
+
+
+        // Tri alphabétique
+        cities.sort((a, b) =>
+            a.name.localeCompare(
+                b.name,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            )
         );
 
 
-        if (!user) {
+        publishCity.innerHTML = `
+            <option value="">
+                Sélectionner une ville
+            </option>
+        `;
 
-            currentUser = null;
 
+        if (cities.length === 0) {
 
-            if (message) {
-
-                message.textContent =
-                    "Vous devez être connecté pour publier.";
-
-                message.className =
-                    "auth-message error";
-            }
-
+            publishCity.innerHTML = `
+                <option value="">
+                    Aucune ville disponible
+                </option>
+            `;
 
             return;
         }
 
 
-        currentUser = user;
+        cities.forEach((city) => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                city.name;
+
+
+            option.textContent =
+                city.name;
+
+
+            publishCity.appendChild(option);
+
+        });
 
 
         console.log(
-            "UTILISATEUR CONNECTÉ :",
-            user.email
+            "Villes chargées :",
+            cities.length
         );
 
+    } catch (error) {
+
+        console.error(
+            "Erreur chargement villes :",
+            error
+        );
+
+
+        publishCity.innerHTML = `
+            <option value="">
+                Erreur de chargement des villes
+            </option>
+        `;
+
     }
-);
+
+}
 
 
-// =====================================================
-// SÉLECTION DES IMAGES
-// =====================================================
+// ============================================================
+// GESTION DES PHOTOS
+// ============================================================
 
-if (photosInput) {
+if (publishPhotos) {
 
-    photosInput.addEventListener(
+    publishPhotos.addEventListener(
         "change",
-        (event) => {
-
-            const files =
-                Array.from(
-                    event.target.files || []
-                );
-
-
-            if (
-                files.length === 0
-            ) {
-                return;
-            }
-
-
-            // ---------------------------------------------
-            // Vérification des images
-            // ---------------------------------------------
-
-            for (
-                const file of files
-            ) {
-
-
-                // -----------------------------------------
-                // Type
-                // -----------------------------------------
-
-                if (
-                    !file.type.startsWith(
-                        "image/"
-                    )
-                ) {
-
-                    alert(
-                        `${file.name} n'est pas une image valide.`
-                    );
-
-                    continue;
-                }
-
-
-                // -----------------------------------------
-                // Taille
-                // -----------------------------------------
-
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    alert(
-                        `${file.name} dépasse la limite de 5 MB.`
-                    );
-
-                    continue;
-                }
-
-
-                // -----------------------------------------
-                // Doublons
-                // -----------------------------------------
-
-                const alreadyExists =
-                    selectedImages.some(
-                        (existingFile) =>
-                            existingFile.name ===
-                                file.name &&
-                            existingFile.size ===
-                                file.size
-                    );
-
-
-                if (
-                    !alreadyExists
-                ) {
-
-                    selectedImages.push(
-                        file
-                    );
-
-                }
-
-            }
-
-
-            // ---------------------------------------------
-            // Maximum 8 images
-            // ---------------------------------------------
-
-            if (
-                selectedImages.length > 8
-            ) {
-
-                alert(
-                    "Vous pouvez sélectionner au maximum 8 images."
-                );
-
-
-                selectedImages =
-                    selectedImages.slice(
-                        0,
-                        8
-                    );
-
-            }
-
-
-            renderPhotoPreview();
-
-
-            // ---------------------------------------------
-            // Permet de sélectionner à nouveau
-            // les mêmes fichiers
-            // ---------------------------------------------
-
-            photosInput.value = "";
-
-        }
+        handlePhotoSelection
     );
 
 }
 
 
-// =====================================================
+function handlePhotoSelection(event) {
+
+    const files =
+        Array.from(event.target.files || []);
+
+
+    if (files.length === 0) {
+        return;
+    }
+
+
+    clearMessage();
+
+
+    const MAX_SIZE =
+        5 * 1024 * 1024;
+
+
+    const MAX_IMAGES = 8;
+
+
+    for (const file of files) {
+
+        // Vérification du type
+        if (!file.type.startsWith("image/")) {
+
+            showMessage(
+                `Le fichier "${file.name}" n'est pas une image.`,
+                "error"
+            );
+
+            continue;
+        }
+
+
+        // Vérification taille
+        if (file.size > MAX_SIZE) {
+
+            showMessage(
+                `L'image "${file.name}" dépasse 5 MB.`,
+                "error"
+            );
+
+            continue;
+        }
+
+
+        // Éviter les doublons
+        const alreadyExists =
+            selectedFiles.some(
+                (existingFile) =>
+                    existingFile.name === file.name &&
+                    existingFile.size === file.size
+            );
+
+
+        if (alreadyExists) {
+            continue;
+        }
+
+
+        if (selectedFiles.length >= MAX_IMAGES) {
+
+            showMessage(
+                "Vous pouvez sélectionner maximum 8 images.",
+                "error"
+            );
+
+            break;
+        }
+
+
+        selectedFiles.push(file);
+
+    }
+
+
+    renderPhotoPreview();
+
+
+    // Permet de sélectionner à nouveau
+    // le même fichier après suppression.
+    event.target.value = "";
+
+}
+
+
+// ============================================================
 // APERÇU DES PHOTOS
-// =====================================================
+// ============================================================
 
 function renderPhotoPreview() {
 
-    if (!photoPreview) {
-        return;
-    }
+    if (!photoPreview) return;
 
 
     photoPreview.innerHTML = "";
 
 
-    if (
-        selectedImages.length === 0
-    ) {
-        return;
-    }
-
-
-    selectedImages.forEach(
+    selectedFiles.forEach(
         (file, index) => {
 
-            const wrapper =
-                document.createElement(
-                    "div"
+            const reader =
+                new FileReader();
+
+
+            reader.onload = (event) => {
+
+                const item =
+                    document.createElement("div");
+
+
+                item.className =
+                    "publish-photo-item";
+
+
+                item.innerHTML = `
+                    <img
+                        src="${event.target.result}"
+                        alt="Aperçu ${index + 1}"
+                    >
+
+                    <button
+                        type="button"
+                        class="publish-photo-remove"
+                        data-index="${index}"
+                        aria-label="Supprimer cette photo"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                    <span class="publish-photo-number">
+                        ${index + 1}
+                    </span>
+                `;
+
+
+                const removeButton =
+                    item.querySelector(
+                        ".publish-photo-remove"
+                    );
+
+
+                removeButton.addEventListener(
+                    "click",
+                    () => {
+
+                        removePhoto(index);
+
+                    }
                 );
 
 
-            wrapper.className =
-                "publish-photo-item";
-
-
-            const image =
-                document.createElement(
-                    "img"
-                );
-
-
-            image.className =
-                "publish-photo-image";
-
-
-            image.alt =
-                `Photo ${index + 1}`;
-
-
-            const objectURL =
-                URL.createObjectURL(
-                    file
-                );
-
-
-            image.src =
-                objectURL;
-
-
-            image.onload = () => {
-
-                URL.revokeObjectURL(
-                    objectURL
-                );
+                photoPreview.appendChild(item);
 
             };
 
 
-            // -----------------------------------------
-            // Numéro
-            // -----------------------------------------
-
-            const number =
-                document.createElement(
-                    "span"
-                );
-
-
-            number.className =
-                "publish-photo-number";
-
-
-            number.textContent =
-                index === 0
-                    ? "Principale"
-                    : `${index + 1}`;
-
-
-            // -----------------------------------------
-            // Bouton supprimer
-            // -----------------------------------------
-
-            const removeButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            removeButton.type =
-                "button";
-
-
-            removeButton.className =
-                "publish-photo-remove";
-
-
-            removeButton.innerHTML =
-                '<i class="fa-solid fa-xmark"></i>';
-
-
-            removeButton.title =
-                "Supprimer cette photo";
-
-
-            removeButton.addEventListener(
-                "click",
-                () => {
-
-                    selectedImages.splice(
-                        index,
-                        1
-                    );
-
-
-                    renderPhotoPreview();
-
-                }
-            );
-
-
-            wrapper.appendChild(
-                image
-            );
-
-
-            wrapper.appendChild(
-                number
-            );
-
-
-            wrapper.appendChild(
-                removeButton
-            );
-
-
-            photoPreview.appendChild(
-                wrapper
-            );
+            reader.readAsDataURL(file);
 
         }
     );
@@ -599,13 +566,24 @@ function renderPhotoPreview() {
 }
 
 
-// =====================================================
-// UPLOAD IMAGE CLOUDINARY
-// =====================================================
+// ============================================================
+// SUPPRIMER UNE PHOTO
+// ============================================================
 
-async function uploadImageToCloudinary(
-    file
-) {
+function removePhoto(index) {
+
+    selectedFiles.splice(index, 1);
+
+    renderPhotoPreview();
+
+}
+
+
+// ============================================================
+// UPLOAD CLOUDINARY
+// ============================================================
+
+async function uploadImageToCloudinary(file) {
 
     const formData =
         new FormData();
@@ -629,149 +607,64 @@ async function uploadImageToCloudinary(
     );
 
 
-    console.log(
-        "Cloudinary : envoi de",
-        file.name
-    );
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
 
 
-    let response;
+    let result = null;
 
 
     try {
 
-        response =
-            await fetch(
-                CLOUDINARY_UPLOAD_URL,
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
+        result =
+            await response.json();
 
-    } catch (networkError) {
-
-        console.error(
-            "Erreur réseau Cloudinary :",
-            networkError
-        );
-
+    } catch (jsonError) {
 
         throw new Error(
-            "Impossible de contacter Cloudinary. Vérifiez votre connexion Internet."
+            "Cloudinary a retourné une réponse invalide."
         );
 
     }
 
-
-    // =================================================
-    // ERREUR CLOUDINARY
-    // =================================================
 
     if (!response.ok) {
 
-        const errorText =
-            await response.text();
-
-
-        console.error(
-            "================================="
-        );
-
-        console.error(
-            "ERREUR CLOUDINARY"
-        );
-
-        console.error(
-            "HTTP :",
-            response.status
-        );
-
-        console.error(
-            "Réponse :",
-            errorText
-        );
-
-        console.error(
-            "X-Cld-Error :",
-            response.headers.get(
-                "X-Cld-Error"
-            )
-        );
-
-        console.error(
-            "================================="
-        );
-
-
-        let errorMessage =
-            response.headers.get(
-                "X-Cld-Error"
-            ) ||
-            "Erreur Cloudinary";
-
-
-        try {
-
-            const errorData =
-                JSON.parse(
-                    errorText
-                );
-
-
-            errorMessage =
-                errorData?.error?.message ||
-                errorMessage;
-
-        } catch (parseError) {
-
-            console.warn(
-                "Réponse Cloudinary non JSON."
-            );
-
-        }
+        const cloudinaryError =
+            result?.error?.message ||
+            `Erreur Cloudinary (${response.status})`;
 
 
         throw new Error(
-            `Cloudinary (${response.status}) : ${errorMessage}`
+            cloudinaryError
         );
 
     }
 
 
-    // =================================================
-    // RÉPONSE CLOUDINARY
-    // =================================================
-
-    const data =
-        await response.json();
-
-
-    console.log(
-        "Réponse Cloudinary :",
-        data
-    );
-
-
-    if (
-        !data.secure_url
-    ) {
+    if (!result.secure_url) {
 
         throw new Error(
-            "Cloudinary n'a pas retourné l'adresse de l'image."
+            "Cloudinary n'a pas retourné l'URL de l'image."
         );
 
     }
 
 
-    return data.secure_url;
+    return result.secure_url;
 
 }
 
 
-// =====================================================
+// ============================================================
 // UPLOAD DE TOUTES LES IMAGES
-// =====================================================
+// ============================================================
 
 async function uploadAllImages() {
 
@@ -780,40 +673,27 @@ async function uploadAllImages() {
 
     for (
         let i = 0;
-        i < selectedImages.length;
+        i < selectedFiles.length;
         i++
     ) {
 
         const file =
-            selectedImages[i];
+            selectedFiles[i];
 
 
-        if (message) {
-
-            message.textContent =
-                `Envoi de la photo ${i + 1} sur ${selectedImages.length}...`;
-
-            message.className =
-                "auth-message";
-
-        }
-
-
-        console.log(
-            `Upload image ${i + 1}/${selectedImages.length} :`,
-            file.name
+        showMessage(
+            `Envoi de l'image ${i + 1} sur ${selectedFiles.length}...`,
+            "info"
         );
 
 
-        const imageURL =
+        const url =
             await uploadImageToCloudinary(
                 file
             );
 
 
-        imageURLs.push(
-            imageURL
-        );
+        imageURLs.push(url);
 
     }
 
@@ -823,507 +703,466 @@ async function uploadAllImages() {
 }
 
 
-// =====================================================
-// PUBLICATION
-// =====================================================
+// ============================================================
+// VALIDATION
+// ============================================================
 
-if (form) {
+function validateForm() {
 
-    form.addEventListener(
+    const title =
+        document.getElementById(
+            "publishTitle"
+        )?.value.trim();
+
+
+    const price =
+        document.getElementById(
+            "publishPrice"
+        )?.value;
+
+
+    const category =
+        publishCategory?.value.trim();
+
+
+    const description =
+        document.getElementById(
+            "publishDescription"
+        )?.value.trim();
+
+
+    const city =
+        publishCity?.value.trim();
+
+
+    const whatsapp =
+        document.getElementById(
+            "publishWhatsapp"
+        )?.value.trim();
+
+
+    const terms =
+        document.getElementById(
+            "publishTerms"
+        )?.checked;
+
+
+    if (!title) {
+
+        showMessage(
+            "Veuillez saisir le titre de l'annonce.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (
+        price === "" ||
+        price === null ||
+        Number(price) < 0
+    ) {
+
+        showMessage(
+            "Veuillez saisir un prix valide.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (!category) {
+
+        showMessage(
+            "Veuillez sélectionner une catégorie.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (!description) {
+
+        showMessage(
+            "Veuillez saisir une description.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (!city) {
+
+        showMessage(
+            "Veuillez sélectionner une ville.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (!whatsapp) {
+
+        showMessage(
+            "Veuillez saisir votre numéro WhatsApp.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (!terms) {
+
+        showMessage(
+            "Vous devez accepter les conditions d'utilisation.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    return true;
+
+}
+
+
+// ============================================================
+// SOUMISSION DU FORMULAIRE
+// ============================================================
+
+if (publishForm) {
+
+    publishForm.addEventListener(
         "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            console.log(
-                "================================="
-            );
-
-            console.log(
-                "SUBMIT DÉCLENCHÉ"
-            );
-
-            console.log(
-                "================================="
-            );
-
-
-            // ---------------------------------------------
-            // Vérifier connexion
-            // ---------------------------------------------
-
-            if (!currentUser) {
-
-                alert(
-                    "Vous devez être connecté pour publier."
-                );
-
-                return;
-
-            }
-
-
-            // ---------------------------------------------
-            // RÉCUPÉRATION DES CHAMPS
-            // ---------------------------------------------
-
-            const title =
-                document
-                    .getElementById(
-                        "publishTitle"
-                    )
-                    ?.value
-                    .trim();
-
-
-            const price =
-                document
-                    .getElementById(
-                        "publishPrice"
-                    )
-                    ?.value
-                    .trim();
-
-
-            const currency =
-                document
-                    .getElementById(
-                        "publishCurrency"
-                    )
-                    ?.value;
-
-
-            const category =
-                document
-                    .getElementById(
-                        "publishCategory"
-                    )
-                    ?.value;
-
-
-            const description =
-                document
-                    .getElementById(
-                        "publishDescription"
-                    )
-                    ?.value
-                    .trim();
-
-
-            const city =
-                document
-                    .getElementById(
-                        "publishCity"
-                    )
-                    ?.value;
-
-
-            const neighborhood =
-                document
-                    .getElementById(
-                        "publishNeighborhood"
-                    )
-                    ?.value
-                    .trim();
-
-
-            const whatsapp =
-                document
-                    .getElementById(
-                        "publishWhatsapp"
-                    )
-                    ?.value
-                    .trim();
-
-
-            const terms =
-                document
-                    .getElementById(
-                        "publishTerms"
-                    )
-                    ?.checked;
-
-
-            // ---------------------------------------------
-            // VALIDATION
-            // ---------------------------------------------
-
-            if (!title) {
-
-                alert(
-                    "Veuillez saisir le titre."
-                );
-
-                return;
-            }
-
-
-            if (!price) {
-
-                alert(
-                    "Veuillez saisir le prix."
-                );
-
-                return;
-            }
-
-
-            if (!category) {
-
-                alert(
-                    "Veuillez choisir une catégorie."
-                );
-
-                return;
-            }
-
-
-            if (!description) {
-
-                alert(
-                    "Veuillez saisir une description."
-                );
-
-                return;
-            }
-
-
-            if (!city) {
-
-                alert(
-                    "Veuillez choisir une ville."
-                );
-
-                return;
-            }
-
-
-            if (!whatsapp) {
-
-                alert(
-                    "Veuillez saisir votre numéro WhatsApp."
-                );
-
-                return;
-            }
-
-
-            if (!terms) {
-
-                alert(
-                    "Veuillez accepter les conditions."
-                );
-
-                return;
-            }
-
-
-            // ---------------------------------------------
-            // Validation des images
-            // ---------------------------------------------
-
-            if (
-                selectedImages.length === 0
-            ) {
-
-                alert(
-                    "Veuillez ajouter au moins une photo à votre annonce."
-                );
-
-                return;
-            }
-
-
-            // ---------------------------------------------
-            // Désactiver bouton
-            // ---------------------------------------------
-
-            if (button) {
-
-                button.disabled =
-                    true;
-
-
-                button.innerHTML =
-                    '<i class="fa-solid fa-spinner fa-spin"></i> Préparation...';
-
-            }
-
-
-            try {
-
-                // =========================================
-                // 1. CLOUDINARY
-                // =========================================
-
-                console.log(
-                    "Envoi des images vers Cloudinary..."
-                );
-
-
-                const imageURLs =
-                    await uploadAllImages();
-
-
-                console.log(
-                    "Images Cloudinary :",
-                    imageURLs
-                );
-
-
-                if (
-                    imageURLs.length === 0
-                ) {
-
-                    throw new Error(
-                        "Aucune image n'a pu être envoyée."
-                    );
-
-                }
-
-
-                // =========================================
-                // 2. FIRESTORE
-                // =========================================
-
-                if (message) {
-
-                    message.textContent =
-                        "Enregistrement de votre annonce...";
-
-                    message.className =
-                        "auth-message";
-
-                }
-
-
-                console.log(
-                    "Création de l'annonce dans Firestore..."
-                );
-
-
-                const listingRef =
-                    await addDoc(
-                        collection(
-                            db,
-                            "annonces"
-                        ),
-                        {
-
-                            title:
-                                title,
-
-
-                            price:
-                                Number(
-                                    price
-                                ),
-
-
-                            currency:
-                                currency,
-
-
-                            category:
-                                category,
-
-
-                            description:
-                                description,
-
-
-                            city:
-                                city,
-
-
-                            neighborhood:
-                                neighborhood,
-
-
-                            whatsapp:
-                                whatsapp,
-
-
-                            // ---------------------------------
-                            // PROPRIÉTAIRE
-                            // ---------------------------------
-
-                            userId:
-                                currentUser.uid,
-
-
-                            ownerId:
-                                currentUser.uid,
-
-
-                            ownerName:
-                                currentUser.displayName ||
-                                "Utilisateur",
-
-
-                            ownerEmail:
-                                currentUser.email ||
-                                "",
-
-
-                            // ---------------------------------
-                            // IMAGES
-                            // ---------------------------------
-
-                            images:
-                                imageURLs,
-
-
-                            imageURL:
-                                imageURLs[0] ||
-                                "",
-
-
-                            imageCount:
-                                imageURLs.length,
-
-
-                            // ---------------------------------
-                            // STATUT
-                            // ---------------------------------
-
-                            status:
-                                "active",
-
-
-                            // ---------------------------------
-                            // DATES
-                            // ---------------------------------
-
-                            createdAt:
-                                serverTimestamp(),
-
-
-                            updatedAt:
-                                serverTimestamp()
-
-                        }
-                    );
-
-
-                console.log(
-                    "ANNONCE CRÉÉE AVEC SUCCÈS :",
-                    listingRef.id
-                );
-
-
-                // =========================================
-                // SUCCÈS
-                // =========================================
-
-                if (message) {
-
-                    message.textContent =
-                        "Votre annonce a été publiée avec succès !";
-
-                    message.className =
-                        "auth-message success";
-
-                }
-
-
-                if (button) {
-
-                    button.innerHTML =
-                        '<i class="fa-solid fa-check"></i> Annonce publiée';
-
-                }
-
-
-                // =========================================
-                // REDIRECTION
-                // =========================================
-
-                setTimeout(
-                    () => {
-
-                        window.location.href =
-                            "compte.html";
-
-                    },
-                    1500
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "================================="
-                );
-
-                console.error(
-                    "ERREUR PUBLICATION"
-                );
-
-                console.error(
-                    error
-                );
-
-                console.error(
-                    "================================="
-                );
-
-
-                alert(
-                    "Erreur lors de la publication : " +
-                    error.message
-                );
-
-
-                if (message) {
-
-                    message.textContent =
-                        error.message ||
-                        "La publication a échoué.";
-
-                    message.className =
-                        "auth-message error";
-
-                }
-
-
-                if (button) {
-
-                    button.disabled =
-                        false;
-
-
-                    button.innerHTML =
-                        '<i class="fa-solid fa-paper-plane"></i> Publier l\'annonce';
-
-                }
-
-            }
-
-        }
-    );
-
-} else {
-
-    console.error(
-        "ERREUR : #publishForm INTROUVABLE !"
+        handlePublish
     );
 
 }
 
 
-// =====================================================
-// CHARGEMENT INITIAL DES CATÉGORIES
-// =====================================================
+async function handlePublish(event) {
 
-loadCategories();
+    event.preventDefault();
 
 
-// =====================================================
-// FIN
-// =====================================================
+    clearMessage();
 
-console.log(
-    "CAMU SERVICES : publier.js initialisé."
-);
+
+    // Vérifier connexion
+    if (!currentUser) {
+
+        showMessage(
+            "Vous devez être connecté pour publier une annonce.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    // Vérifier formulaire
+    if (!validateForm()) {
+        return;
+    }
+
+
+    // Vérifier images
+    if (selectedFiles.length === 0) {
+
+        showMessage(
+            "Veuillez ajouter au moins une photo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    // Désactiver bouton
+    if (publishButton) {
+
+        publishButton.disabled = true;
+
+        publishButton.dataset.originalText =
+            publishButton.innerHTML;
+
+        publishButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Publication en cours...
+        `;
+
+    }
+
+
+    try {
+
+        // ====================================================
+        // RÉCUPÉRATION DES INFORMATIONS
+        // ====================================================
+
+        const title =
+            document.getElementById(
+                "publishTitle"
+            ).value.trim();
+
+
+        const price =
+            Number(
+                document.getElementById(
+                    "publishPrice"
+                ).value
+            );
+
+
+        const currency =
+            document.getElementById(
+                "publishCurrency"
+            ).value;
+
+
+        const category =
+            publishCategory.value.trim();
+
+
+        const description =
+            document.getElementById(
+                "publishDescription"
+            ).value.trim();
+
+
+        const city =
+            publishCity.value.trim();
+
+
+        const neighborhood =
+            document.getElementById(
+                "publishNeighborhood"
+            ).value.trim();
+
+
+        const whatsapp =
+            document.getElementById(
+                "publishWhatsapp"
+            ).value.trim();
+
+
+        // ====================================================
+        // NOM UTILISATEUR
+        // ====================================================
+
+        const ownerName =
+            currentUser.displayName ||
+            currentUser.email ||
+            "Utilisateur";
+
+
+        const ownerEmail =
+            currentUser.email || "";
+
+
+        // ====================================================
+        // CLOUDINARY
+        // ====================================================
+
+        showMessage(
+            "Préparation des images...",
+            "info"
+        );
+
+
+        const imageURLs =
+            await uploadAllImages();
+
+
+        if (
+            !imageURLs ||
+            imageURLs.length === 0
+        ) {
+
+            throw new Error(
+                "Aucune image n'a pu être envoyée."
+            );
+
+        }
+
+
+        // ====================================================
+        // FIRESTORE
+        // COLLECTION : annonces
+        // ====================================================
+
+        showMessage(
+            "Enregistrement de votre annonce...",
+            "info"
+        );
+
+
+        const annonceData = {
+
+            title: title,
+
+            price: price,
+
+            currency: currency,
+
+            category: category,
+
+            description: description,
+
+            city: city,
+
+            neighborhood: neighborhood,
+
+            whatsapp: whatsapp,
+
+            userId: currentUser.uid,
+
+            ownerId: currentUser.uid,
+
+            ownerName: ownerName,
+
+            ownerEmail: ownerEmail,
+
+            images: imageURLs,
+
+            imageURL:
+                imageURLs[0] || "",
+
+            imageCount:
+                imageURLs.length,
+
+            status: "active",
+
+            createdAt:
+                serverTimestamp(),
+
+            updatedAt:
+                serverTimestamp()
+
+        };
+
+
+        const annonceRef =
+            await addDoc(
+                collection(db, "annonces"),
+                annonceData
+            );
+
+
+        console.log(
+            "Annonce créée :",
+            annonceRef.id
+        );
+
+
+        // ====================================================
+        // SUCCÈS
+        // ====================================================
+
+        showMessage(
+            "Votre annonce a été publiée avec succès !",
+            "success"
+        );
+
+
+        // Nettoyage
+        publishForm.reset();
+
+        selectedFiles = [];
+
+        renderPhotoPreview();
+
+
+        // Redirection
+        setTimeout(() => {
+
+            window.location.href =
+                "compte.html";
+
+        }, 1500);
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur publication :",
+            error
+        );
+
+
+        let message =
+            "Une erreur est survenue lors de la publication.";
+
+
+        if (
+            error?.message
+        ) {
+
+            message =
+                error.message;
+
+        }
+
+
+        showMessage(
+            message,
+            "error"
+        );
+
+
+    } finally {
+
+        if (publishButton) {
+
+            publishButton.disabled = false;
+
+
+            publishButton.innerHTML =
+                publishButton.dataset.originalText ||
+                `
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Publier l'annonce
+                `;
+
+        }
+
+    }
+
+}
+
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+
+async function initializePublishPage() {
+
+    console.log(
+        "Initialisation de la page de publication..."
+    );
+
+
+    // Charger catégories et villes
+    // en parallèle
+    await Promise.all([
+        loadCategories(),
+        loadCities()
+    ]);
+
+
+    console.log(
+        "Catégories et villes chargées."
+    );
+
+}
+
+
+// Lancer l'initialisation
+initializePublishPage();
