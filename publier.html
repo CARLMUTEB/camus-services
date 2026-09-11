@@ -17,6 +17,10 @@
         content="Publiez facilement votre annonce sur CAMU SERVICES."
     >
 
+    <!-- =====================================================
+         CSS PRINCIPAL
+    ====================================================== -->
+
     <link
         rel="stylesheet"
         href="css/style.css"
@@ -27,10 +31,26 @@
         href="css/publier.css"
     >
 
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
+
+
+    <!-- =====================================================
+         CLOUDINARY UPLOAD WIDGET
+    ====================================================== -->
+
+    <script
+        src="https://upload-widget.cloudinary.com/global/all.js"
+        type="text/javascript">
+    </script>
+
 
 </head>
 
@@ -57,6 +77,8 @@
         class="sidebar"
         id="sidebar"
     >
+
+        <!-- HEADER SIDEBAR -->
 
         <div class="sidebar-header">
 
@@ -91,10 +113,14 @@
 
 
 
-        <!-- NAVIGATION -->
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
 
         <nav class="sidebar-nav">
 
+
+            <!-- ACCUEIL -->
 
             <a
                 href="index.html"
@@ -111,6 +137,8 @@
 
 
 
+            <!-- RECHERCHE -->
+
             <a
                 href="recherche.html"
                 class="nav-item"
@@ -125,6 +153,8 @@
             </a>
 
 
+
+            <!-- CATEGORIES -->
 
             <a
                 href="categories.html"
@@ -141,6 +171,8 @@
 
 
 
+            <!-- PUBLIER -->
+
             <a
                 href="publier.html"
                 class="nav-item active"
@@ -155,6 +187,8 @@
             </a>
 
 
+
+            <!-- FAVORIS -->
 
             <a
                 href="favoris.html"
@@ -171,6 +205,8 @@
 
 
 
+            <!-- COMPTE -->
+
             <a
                 href="compte.html"
                 class="nav-item"
@@ -185,6 +221,8 @@
             </a>
 
 
+
+            <!-- PARAMETRES -->
 
             <a
                 href="parametres.html"
@@ -211,6 +249,8 @@
         <div class="sidebar-bottom">
 
 
+            <!-- CONNEXION -->
+
             <a
                 href="connexion.html"
                 class="nav-item"
@@ -226,6 +266,8 @@
             </a>
 
 
+
+            <!-- DECONNEXION -->
 
             <button
                 type="button"
@@ -244,6 +286,7 @@
 
         </div>
 
+
     </aside>
 
 
@@ -255,13 +298,14 @@
     <div class="main-wrapper">
 
 
-
         <!-- =================================================
              TOPBAR
         ================================================== -->
 
         <header class="topbar">
 
+
+            <!-- MENU MOBILE -->
 
             <button
                 type="button"
@@ -275,6 +319,8 @@
             </button>
 
 
+
+            <!-- LOGO MOBILE -->
 
             <div class="mobile-logo">
 
@@ -290,8 +336,12 @@
 
 
 
+            <!-- TOPBAR DROITE -->
+
             <div class="topbar-right">
 
+
+                <!-- FAVORIS -->
 
                 <a
                     href="favoris.html"
@@ -304,6 +354,8 @@
                 </a>
 
 
+
+                <!-- COMPTE -->
 
                 <a
                     href="compte.html"
@@ -322,19 +374,19 @@
 
             </div>
 
+
         </header>
 
 
 
         <!-- =================================================
-             MAIN
+             CONTENU
         ================================================== -->
 
         <main class="main-content">
 
 
             <div class="publish-v2">
-
 
 
                 <!-- =================================================
@@ -383,6 +435,8 @@
                 <div class="publish-steps">
 
 
+                    <!-- ETAPE 1 -->
+
                     <div class="publish-step active">
 
                         <span>
@@ -404,6 +458,8 @@
                     </div>
 
 
+
+                    <!-- ETAPE 2 -->
 
                     <div class="publish-step">
 
@@ -427,6 +483,8 @@
 
 
 
+                    <!-- ETAPE 3 -->
+
                     <div class="publish-step">
 
                         <span>
@@ -448,6 +506,8 @@
                     </div>
 
 
+
+                    <!-- ETAPE 4 -->
 
                     <div class="publish-step">
 
@@ -498,7 +558,6 @@
                 >
 
 
-
                     <!-- =================================================
                          01 — PHOTOS
                     ================================================== -->
@@ -532,7 +591,9 @@
 
 
 
-                        <!-- ZONE UPLOAD -->
+                        <!-- =================================================
+                             ZONE UPLOAD CLOUDINARY
+                        ================================================== -->
 
                         <label
                             for="publishPhotos"
@@ -559,12 +620,18 @@
 
                             <small>
                                 JPG, PNG ou WEBP • 5 MB maximum par image
+                                • 8 images maximum
                             </small>
 
 
                         </label>
 
 
+
+                        <!-- =================================================
+                             INPUT FICHIER
+                             Le Widget Cloudinary sera ouvert par publier.js
+                        ================================================== -->
 
                         <input
                             type="file"
@@ -577,7 +644,9 @@
 
 
 
-                        <!-- APERÇU -->
+                        <!-- =================================================
+                             APERCU
+                        ================================================== -->
 
                         <div
                             class="publish-photo-preview"
@@ -669,6 +738,8 @@
                         <div class="publish-grid-2">
 
 
+                            <!-- PRIX -->
+
                             <div class="publish-field">
 
 
@@ -699,6 +770,8 @@
                             </div>
 
 
+
+                            <!-- DEVISE -->
 
                             <div class="publish-field">
 
@@ -735,7 +808,7 @@
 
 
                         <!-- =================================================
-                             CATÉGORIE FIRESTORE
+                             CATEGORIE FIRESTORE
                         ================================================== -->
 
                         <div class="publish-field">
@@ -768,8 +841,8 @@
 
 
                             <small>
-                                Les catégories sont chargées depuis
-                                Firestore.
+                                Les catégories sont chargées
+                                automatiquement depuis Firestore.
                             </small>
 
 
@@ -867,9 +940,8 @@
                         <div class="publish-grid-2">
 
 
-
                             <!-- =================================================
-                                 VILLE FIRESTORE
+                                 VILLE
                             ================================================== -->
 
                             <div class="publish-field">
@@ -979,7 +1051,9 @@
 
 
 
-                        <!-- WHATSAPP -->
+                        <!-- =================================================
+                             WHATSAPP INFORMATION
+                        ================================================== -->
 
                         <div class="publish-whatsapp-box">
 
@@ -1011,6 +1085,10 @@
                         </div>
 
 
+
+                        <!-- =================================================
+                             NUMERO WHATSAPP
+                        ================================================== -->
 
                         <div class="publish-field">
 
@@ -1113,6 +1191,8 @@
                     <div class="publish-v2-actions">
 
 
+                        <!-- ANNULER -->
+
                         <a
                             href="index.html"
                             class="secondary-button"
@@ -1125,6 +1205,8 @@
                         </a>
 
 
+
+                        <!-- PUBLIER -->
 
                         <button
                             type="submit"
@@ -1162,6 +1244,8 @@
             <div class="footer-content">
 
 
+                <!-- MARQUE -->
+
                 <div class="footer-brand">
 
 
@@ -1190,6 +1274,8 @@
                 </div>
 
 
+
+                <!-- LIENS -->
 
                 <div class="footer-links">
 
@@ -1231,13 +1317,13 @@
 
 
 
-            <div class="footer-bottom">
+            <!-- COPYRIGHT -->
 
+            <div class="footer-bottom">
 
                 <p>
                     © 2026 CAMU SERVICES. Tous droits réservés.
                 </p>
-
 
             </div>
 
@@ -1253,22 +1339,25 @@
          JAVASCRIPT
     ====================================================== -->
 
+    <!-- AUTH -->
     <script
         type="module"
-        src="js/auth.js"
-    ></script>
+        src="js/auth.js">
+    </script>
 
 
+    <!-- APPLICATION -->
     <script
         type="module"
-        src="js/app.js"
-    ></script>
+        src="js/app.js">
+    </script>
 
 
+    <!-- PUBLICATION -->
     <script
         type="module"
-        src="js/publier.js"
-    ></script>
+        src="js/publier.js">
+    </script>
 
 
 </body>
