@@ -1,6 +1,7 @@
 /* =========================================================
    CAMU SERVICES
-   ADMIN — PAIEMENTS PREMIUM
+   ADMIN.CSS
+   TABLEAU DE BORD ADMINISTRATEUR
    ========================================================= */
 
 
@@ -8,29 +9,875 @@
    VARIABLES
    ========================================================= */
 
+:root {
+    --admin-primary: #2563eb;
+    --admin-primary-dark: #1d4ed8;
+    --admin-primary-light: #eff6ff;
+
+    --admin-success: #16a34a;
+    --admin-success-light: #ecfdf5;
+
+    --admin-danger: #dc2626;
+    --admin-danger-light: #fef2f2;
+
+    --admin-warning: #f59e0b;
+    --admin-warning-light: #fffbeb;
+
+    --admin-premium: #d4a72c;
+    --admin-premium-dark: #b8860b;
+    --admin-premium-light: #fff7d6;
+
+    --admin-bg: #f5f7fb;
+    --admin-card: #ffffff;
+
+    --admin-border: #e5e7eb;
+
+    --admin-text: #111827;
+    --admin-text-secondary: #374151;
+    --admin-muted: #6b7280;
+    --admin-light-text: #94a3b8;
+
+    --admin-radius: 14px;
+
+    --admin-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.admin-page {
+    min-height: 100vh;
+
+    background: var(--admin-bg);
+
+    color: var(--admin-text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.admin-layout {
+    display: flex;
+
+    min-height: 100vh;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.admin-sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    z-index: 1000;
+
+    width: 260px;
+    height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border-right: 1px solid var(--admin-border);
+
+    overflow-y: auto;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.admin-logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 72px;
+
+    padding: 0 22px;
+
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-logo-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--admin-primary);
+
+    color: #ffffff;
+
+    font-size: 18px;
+}
+
+.admin-logo-text {
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.1;
+}
+
+.admin-logo-text strong {
+    color: var(--admin-text);
+
+    font-size: 16px;
+
+    font-weight: 800;
+}
+
+.admin-logo-text span {
+    margin-top: 4px;
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.06em;
+}
+
+
+/* =========================================================
+   NAVIGATION SIDEBAR
+   ========================================================= */
+
+.admin-nav {
+    padding: 18px 12px;
+}
+
+.admin-nav-title {
+    padding: 0 10px;
+
+    margin-bottom: 8px;
+
+    color: var(--admin-light-text);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+}
+
+.admin-nav-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.admin-nav-link {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 44px;
+
+    padding: 0 12px;
+
+    border-radius: 10px;
+
+    color: var(--admin-text-secondary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.admin-nav-link:hover {
+    background: #f8fafc;
+
+    color: var(--admin-primary);
+}
+
+.admin-nav-link.active {
+    background: var(--admin-primary-light);
+
+    color: var(--admin-primary);
+
+    font-weight: 800;
+}
+
+.admin-nav-link i {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.admin-nav-icon.premium {
+    color: var(--admin-premium);
+}
+
+
+/* =========================================================
+   BADGE SIDEBAR
+   ========================================================= */
+
+.admin-nav-badge {
+    min-width: 20px;
+
+    height: 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-left: auto;
+
+    padding: 0 6px;
+
+    border-radius: 999px;
+
+    background: #eef2ff;
+
+    color: var(--admin-primary);
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   CONTENU PRINCIPAL
+   ========================================================= */
+
+.admin-main {
+    width: calc(100% - 260px);
+
+    margin-left: 260px;
+
+    min-width: 0;
+
+    padding: 28px;
+}
+
+
+/* =========================================================
+   HEADER ADMIN
+   ========================================================= */
+
+.admin-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.admin-header-left {
+    min-width: 0;
+}
+
+.admin-header h1 {
+    margin: 0;
+
+    color: var(--admin-text);
+
+    font-size: 25px;
+
+    font-weight: 800;
+}
+
+.admin-header p {
+    margin: 6px 0 0;
+
+    color: var(--admin-muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   HEADER DROITE
+   ========================================================= */
+
+.admin-header-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.admin-header-button {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--admin-border);
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: var(--admin-text-secondary);
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.admin-header-button:hover {
+    border-color: var(--admin-primary);
+
+    color: var(--admin-primary);
+
+    background: var(--admin-primary-light);
+}
+
+
+/* =========================================================
+   PROFIL ADMIN
+   ========================================================= */
+
+.admin-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.admin-profile-avatar {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--admin-primary-light);
+
+    color: var(--admin-primary);
+
+    font-size: 15px;
+}
+
+.admin-profile-info {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.admin-profile-info strong {
+    color: var(--admin-text);
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.admin-profile-info span {
+    margin-top: 2px;
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.admin-section {
+    display: none;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+
+/* =========================================================
+   EN-TÊTE DE SECTION
+   ========================================================= */
+
+.admin-section-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.admin-section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.admin-section-title i {
+    color: var(--admin-primary);
+
+    font-size: 19px;
+}
+
+.admin-section-title h2 {
+    margin: 0;
+
+    color: var(--admin-text);
+
+    font-size: 19px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   STATISTIQUES PRINCIPALES
+   ========================================================= */
+
+.admin-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.admin-stat-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 105px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--admin-border);
+
+    border-radius: var(--admin-radius);
+
+    background: #ffffff;
+
+    box-shadow: var(--admin-shadow);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 25px rgba(15, 23, 42, 0.08);
+}
+
+.admin-stat-icon {
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--admin-primary-light);
+
+    color: var(--admin-primary);
+
+    font-size: 19px;
+}
+
+.admin-stat-content {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.admin-stat-content span {
+    color: var(--admin-muted);
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.admin-stat-content strong {
+    color: var(--admin-text);
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   CARTES RAPIDES
+   ========================================================= */
+
+.admin-quick-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.admin-quick-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    border: 1px solid var(--admin-border);
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: var(--admin-text);
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.admin-quick-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #cbd5e1;
+
+    box-shadow: var(--admin-shadow);
+}
+
+.admin-quick-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 42px;
+
+    border-radius: 11px;
+
+    background: var(--admin-primary-light);
+
+    color: var(--admin-primary);
+}
+
+.admin-quick-icon.premium {
+    background: var(--admin-premium-light);
+
+    color: var(--admin-premium-dark);
+}
+
+.admin-quick-card strong {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.admin-quick-card span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   BLOCS DASHBOARD
+   ========================================================= */
+
+.admin-dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(300px, 1fr);
+
+    gap: 20px;
+}
+
+.admin-card {
+    border: 1px solid var(--admin-border);
+
+    border-radius: var(--admin-radius);
+
+    background: #ffffff;
+
+    box-shadow: var(--admin-shadow);
+
+    overflow: hidden;
+}
+
+.admin-card-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    min-height: 58px;
+
+    padding: 0 18px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-card-header h3 {
+    margin: 0;
+
+    color: var(--admin-text);
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.admin-card-body {
+    padding: 18px;
+}
+
+
+/* =========================================================
+   TABLEAUX
+   ========================================================= */
+
+.admin-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 12px;
+}
+
+.admin-table th {
+    padding: 12px;
+
+    border-bottom: 1px solid var(--admin-border);
+
+    color: var(--admin-muted);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+.admin-table td {
+    padding: 13px 12px;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    color: var(--admin-text-secondary);
+
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   BOUTONS ADMIN
+   ========================================================= */
+
+.admin-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 40px;
+
+    padding: 0 14px;
+
+    border: 1px solid transparent;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.admin-button-primary {
+    background: var(--admin-primary);
+
+    color: #ffffff;
+}
+
+.admin-button-primary:hover {
+    background: var(--admin-primary-dark);
+}
+
+.admin-button-danger {
+    background: var(--admin-danger);
+
+    color: #ffffff;
+}
+
+.admin-button-danger:hover {
+    background: #b91c1c;
+}
+
+.admin-button-success {
+    background: var(--admin-success);
+
+    color: #ffffff;
+}
+
+.admin-button-success:hover {
+    background: #15803d;
+}
+
+.admin-button-secondary {
+    border-color: var(--admin-border);
+
+    background: #ffffff;
+
+    color: var(--admin-text-secondary);
+}
+
+.admin-button-secondary:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   =========================================================
+   PAIEMENTS PREMIUM
+   =========================================================
+   ========================================================= */
+
 .admin-premium-section {
     --premium-gold: #d4a72c;
     --premium-gold-dark: #b8860b;
-
-    --premium-green: #16a34a;
-    --premium-green-dark: #15803d;
-
-    --premium-red: #dc2626;
-    --premium-red-dark: #b91c1c;
-
-    --premium-orange: #f59e0b;
-
-    --premium-bg: #f8fafc;
-    --premium-border: #e5e7eb;
-    --premium-text: #111827;
-    --premium-muted: #6b7280;
 
     scroll-margin-top: 30px;
 }
 
 
 /* =========================================================
-   DESCRIPTION
+   DESCRIPTION PREMIUM
    ========================================================= */
 
 .admin-premium-description {
@@ -41,16 +888,18 @@
     color: #64748b;
 
     font-size: 14px;
+
     line-height: 1.6;
 }
 
 
 /* =========================================================
-   BOUTON ACTUALISER
+   ACTUALISER
    ========================================================= */
 
 .admin-refresh-button {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -61,19 +910,22 @@
     padding: 0 16px;
 
     border: 1px solid #dfe3e8;
+
     border-radius: 10px;
 
     background: #ffffff;
+
     color: #374151;
 
     font-family: inherit;
+
     font-size: 13px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition:
-        all 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .admin-refresh-button:hover {
@@ -98,24 +950,6 @@
     transform: none;
 }
 
-.admin-refresh-button i {
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   ICÔNE PREMIUM — SIDEBAR / QUICK CARD
-   ========================================================= */
-
-.admin-nav-icon.premium {
-    color: #d4a72c;
-}
-
-.admin-quick-icon.premium {
-    background: #fff7d6;
-    color: #b8860b;
-}
-
 
 /* =========================================================
    STATISTIQUES PREMIUM
@@ -130,18 +964,15 @@
     gap: 18px;
 
     margin-top: 25px;
+
     margin-bottom: 24px;
 }
-
-
-/* =========================================================
-   CARTE STATISTIQUE
-   ========================================================= */
 
 .premium-payment-stat {
     position: relative;
 
     display: flex;
+
     align-items: center;
 
     gap: 15px;
@@ -153,6 +984,7 @@
     overflow: hidden;
 
     border: 1px solid #e5e7eb;
+
     border-radius: 15px;
 
     background: #ffffff;
@@ -172,9 +1004,6 @@
         0 8px 22px rgba(15, 23, 42, 0.08);
 }
 
-
-/* petite ligne supérieure */
-
 .premium-payment-stat::before {
     content: "";
 
@@ -191,7 +1020,7 @@
 
 
 /* =========================================================
-   ICÔNE STATISTIQUE
+   ICÔNES STATS PREMIUM
    ========================================================= */
 
 .premium-payment-stat-icon {
@@ -201,6 +1030,7 @@
     flex: 0 0 52px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -209,52 +1039,44 @@
     font-size: 20px;
 }
 
-
-/* EN ATTENTE */
-
 .premium-payment-stat.pending::before {
     background: #f59e0b;
 }
 
-.premium-payment-stat.pending
-.premium-payment-stat-icon {
+.premium-payment-stat.pending .premium-payment-stat-icon {
     background: #fff7ed;
+
     color: #d97706;
 }
-
-
-/* APPROUVÉS */
 
 .premium-payment-stat.approved::before {
     background: #16a34a;
 }
 
-.premium-payment-stat.approved
-.premium-payment-stat-icon {
+.premium-payment-stat.approved .premium-payment-stat-icon {
     background: #ecfdf5;
+
     color: #16a34a;
 }
-
-
-/* REFUSÉS */
 
 .premium-payment-stat.rejected::before {
     background: #dc2626;
 }
 
-.premium-payment-stat.rejected
-.premium-payment-stat-icon {
+.premium-payment-stat.rejected .premium-payment-stat-icon {
     background: #fef2f2;
+
     color: #dc2626;
 }
 
 
 /* =========================================================
-   TEXTE STATISTIQUES
+   TEXTE STATS
    ========================================================= */
 
 .premium-payment-stat > div:last-child {
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
@@ -264,6 +1086,7 @@
     color: #64748b;
 
     font-size: 13px;
+
     font-weight: 600;
 }
 
@@ -271,6 +1094,7 @@
     color: #111827;
 
     font-size: 27px;
+
     font-weight: 800;
 
     line-height: 1;
@@ -278,7 +1102,7 @@
 
 
 /* =========================================================
-   FILTRES
+   FILTRES PREMIUM
    ========================================================= */
 
 .premium-payment-filters {
@@ -322,31 +1146,28 @@
 
 .premium-search input {
     width: 100%;
+
     height: 46px;
 
-    padding:
-        0 15px 0 42px;
+    padding: 0 15px 0 42px;
 
     box-sizing: border-box;
 
     border: 1px solid #e2e8f0;
+
     border-radius: 10px;
 
     outline: none;
 
     background: #ffffff;
+
     color: #111827;
 
     font-family: inherit;
+
     font-size: 13px;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.premium-search input:hover {
-    border-color: #cbd5e1;
+    transition: 0.2s ease;
 }
 
 .premium-search input:focus {
@@ -362,39 +1183,37 @@
 
 
 /* =========================================================
-   SELECT
+   SELECT PREMIUM
    ========================================================= */
 
 .premium-filter-select {
     width: 100%;
+
     height: 46px;
 
-    padding:
-        0 14px;
+    padding: 0 14px;
 
     box-sizing: border-box;
 
     border: 1px solid #e2e8f0;
+
     border-radius: 10px;
 
     outline: none;
 
     background: #ffffff;
+
     color: #374151;
 
     font-family: inherit;
+
     font-size: 13px;
+
     font-weight: 600;
 
     cursor: pointer;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.premium-filter-select:hover {
-    border-color: #cbd5e1;
+    transition: 0.2s ease;
 }
 
 .premium-filter-select:focus {
@@ -406,7 +1225,7 @@
 
 
 /* =========================================================
-   LISTE
+   LISTE PAIEMENTS
    ========================================================= */
 
 .premium-payments-list {
@@ -421,7 +1240,7 @@
 
 
 /* =========================================================
-   CARTE DE PAIEMENT
+   CARTE PAIEMENT
    ========================================================= */
 
 .premium-payment-card {
@@ -432,6 +1251,7 @@
     padding: 20px;
 
     border: 1px solid #e5e7eb;
+
     border-radius: 15px;
 
     background: #ffffff;
@@ -456,7 +1276,7 @@
 
 
 /* =========================================================
-   HEADER CARTE
+   HEADER PAIEMENT
    ========================================================= */
 
 .premium-payment-card-header {
@@ -494,12 +1314,14 @@
     flex: 0 0 46px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
     background: #f1f5f9;
+
     color: #64748b;
 
     font-size: 17px;
@@ -511,6 +1333,7 @@
     color: #111827;
 
     font-size: 15px;
+
     font-weight: 800;
 
     line-height: 1.35;
@@ -548,38 +1371,33 @@
     border-radius: 999px;
 
     font-size: 11px;
+
     font-weight: 800;
 
     white-space: nowrap;
 }
 
-
-/* ATTENTE */
-
 .premium-payment-status.pending {
     background: #fff7ed;
+
     color: #c2410c;
 }
 
-
-/* APPROUVÉ */
-
 .premium-payment-status.approved {
     background: #ecfdf5;
+
     color: #047857;
 }
 
-
-/* REFUSÉ */
-
 .premium-payment-status.rejected {
     background: #fef2f2;
+
     color: #b91c1c;
 }
 
 
 /* =========================================================
-   DÉTAILS PAIEMENT
+   DÉTAILS
    ========================================================= */
 
 .premium-payment-details {
@@ -593,13 +1411,9 @@
     overflow: hidden;
 
     border: 1px solid #eef2f7;
+
     border-radius: 11px;
 }
-
-
-/* =========================================================
-   DÉTAIL
-   ========================================================= */
 
 .premium-payment-detail {
     min-width: 0;
@@ -609,6 +1423,7 @@
     background: #f8fafc;
 
     border-right: 1px solid #eef2f7;
+
     border-bottom: 1px solid #eef2f7;
 }
 
@@ -616,13 +1431,9 @@
     border-right: none;
 }
 
-
-/* enlever bordure dernière ligne */
-
 .premium-payment-detail:nth-last-child(-n + 3) {
     border-bottom: none;
 }
-
 
 .premium-payment-detail span {
     display: block;
@@ -632,13 +1443,13 @@
     color: #94a3b8;
 
     font-size: 10px;
+
     font-weight: 800;
 
     text-transform: uppercase;
 
     letter-spacing: 0.04em;
 }
-
 
 .premium-payment-detail strong {
     display: flex;
@@ -650,13 +1461,13 @@
     color: #334155;
 
     font-size: 13px;
-    font-weight: 750;
+
+    font-weight: 700;
 
     line-height: 1.4;
 
     word-break: break-word;
 }
-
 
 .premium-payment-detail strong i {
     color: var(--premium-gold);
@@ -680,16 +1491,15 @@
     padding: 13px 14px;
 
     border: 1px dashed #d5dce5;
+
     border-radius: 11px;
 
     background: #fafafa;
 }
 
-
 .premium-payment-reference > div {
     min-width: 0;
 }
-
 
 .premium-payment-reference span {
     display: block;
@@ -699,6 +1509,7 @@
     color: #94a3b8;
 
     font-size: 10px;
+
     font-weight: 800;
 
     text-transform: uppercase;
@@ -706,13 +1517,13 @@
     letter-spacing: 0.04em;
 }
 
-
 .premium-payment-reference strong {
     display: block;
 
     color: #111827;
 
     font-size: 14px;
+
     font-weight: 800;
 
     word-break: break-all;
@@ -730,19 +1541,21 @@
     flex: 0 0 38px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border: 1px solid #e2e8f0;
+
     border-radius: 9px;
 
     background: #ffffff;
+
     color: #64748b;
 
     cursor: pointer;
 
-    transition:
-        all 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .premium-copy-reference:hover {
@@ -769,11 +1582,6 @@
     margin-top: 16px;
 }
 
-
-/* =========================================================
-   BOUTONS
-   ========================================================= */
-
 .premium-action-button {
     display: inline-flex;
 
@@ -787,17 +1595,18 @@
     padding: 0 16px;
 
     border: none;
+
     border-radius: 9px;
 
     font-family: inherit;
 
     font-size: 12px;
+
     font-weight: 800;
 
     cursor: pointer;
 
-    transition:
-        all 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .premium-action-button:hover {
@@ -816,13 +1625,9 @@
     transform: none;
 }
 
-
-/* =========================================================
-   APPROUVER
-   ========================================================= */
-
 .premium-action-button.approve {
     background: #16a34a;
+
     color: #ffffff;
 
     box-shadow:
@@ -831,18 +1636,11 @@
 
 .premium-action-button.approve:hover {
     background: #15803d;
-
-    box-shadow:
-        0 5px 13px rgba(22, 163, 74, 0.25);
 }
-
-
-/* =========================================================
-   REFUSER
-   ========================================================= */
 
 .premium-action-button.reject {
     background: #dc2626;
+
     color: #ffffff;
 
     box-shadow:
@@ -851,9 +1649,6 @@
 
 .premium-action-button.reject:hover {
     background: #b91c1c;
-
-    box-shadow:
-        0 5px 13px rgba(220, 38, 38, 0.23);
 }
 
 
@@ -876,22 +1671,21 @@
     color: #15803d;
 
     font-size: 12px;
+
     font-weight: 800;
 }
-
 
 .premium-payment-validated i {
     font-size: 15px;
 }
 
-
 .premium-payment-validated small {
     color: #64748b;
 
     font-size: 11px;
+
     font-weight: 600;
 }
-
 
 .premium-payment-validated.rejected {
     color: #b91c1c;
@@ -917,13 +1711,13 @@
     box-sizing: border-box;
 
     border: 1px dashed #cbd5e1;
+
     border-radius: 14px;
 
     background: #ffffff;
 
     text-align: center;
 }
-
 
 .premium-payments-list .admin-empty > i {
     margin-bottom: 12px;
@@ -933,7 +1727,6 @@
     font-size: 32px;
 }
 
-
 .premium-payments-list .admin-empty h3 {
     margin: 0 0 6px;
 
@@ -941,7 +1734,6 @@
 
     font-size: 16px;
 }
-
 
 .premium-payments-list .admin-empty p {
     margin: 0;
@@ -980,59 +1772,83 @@
    TABLETTE
    ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
-    .premium-payment-stats {
+    .admin-stats {
         grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
-        gap: 12px;
+            repeat(2, minmax(0, 1fr));
     }
 
+    .admin-quick-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .premium-payment-stats {
+        gap: 12px;
+    }
 
     .premium-payment-stat {
         padding: 16px;
     }
 
-
     .premium-payment-stat strong {
         font-size: 23px;
     }
 
-
     .premium-payment-filters {
         grid-template-columns:
-            1fr
-            1fr
-            1fr;
+            1fr 1fr 1fr;
     }
-
 
     .premium-payment-details {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
 
-
     .premium-payment-detail:nth-child(3n) {
         border-right: 1px solid #eef2f7;
     }
-
 
     .premium-payment-detail:nth-child(2n) {
         border-right: none;
     }
 
-
     .premium-payment-detail:nth-last-child(-n + 3) {
         border-bottom: 1px solid #eef2f7;
     }
 
-
     .premium-payment-detail:nth-last-child(-n + 2) {
         border-bottom: none;
     }
+}
 
+
+/* =========================================================
+   TABLETTE PETITE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-sidebar {
+        width: 230px;
+    }
+
+    .admin-main {
+        width: calc(100% - 230px);
+
+        margin-left: 230px;
+
+        padding: 22px;
+    }
+
+    .admin-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .premium-payment-filters {
+        grid-template-columns: 1fr;
+    }
 }
 
 
@@ -1042,14 +1858,76 @@
 
 @media (max-width: 700px) {
 
-    .admin-premium-section {
-        scroll-margin-top: 20px;
+    .admin-layout {
+        display: block;
+    }
+
+    .admin-sidebar {
+        position: fixed;
+
+        left: -280px;
+
+        width: 260px;
+
+        transition: left 0.25s ease;
+    }
+
+    .admin-sidebar.open {
+        left: 0;
+    }
+
+    .admin-main {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding: 16px;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 14px;
+    }
+
+    .admin-header-actions {
+        width: 100%;
+    }
+
+    .admin-profile {
+        margin-left: auto;
+    }
+
+    .admin-section-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .admin-stats {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .admin-quick-grid {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .admin-card-body {
+        padding: 14px;
     }
 
 
-    /* ---------------------------------------------
-       HEADER
-    --------------------------------------------- */
+    /* PREMIUM */
+
+    .admin-premium-section {
+        scroll-margin-top: 20px;
+    }
 
     .admin-premium-section
     .admin-section-header {
@@ -1060,15 +1938,9 @@
         gap: 14px;
     }
 
-
     .admin-refresh-button {
         width: 100%;
     }
-
-
-    /* ---------------------------------------------
-       STATS
-    --------------------------------------------- */
 
     .premium-payment-stats {
         grid-template-columns: 1fr;
@@ -1078,13 +1950,11 @@
         margin-top: 18px;
     }
 
-
     .premium-payment-stat {
         min-height: 78px;
 
         padding: 14px;
     }
-
 
     .premium-payment-stat-icon {
         width: 44px;
@@ -1095,15 +1965,9 @@
         font-size: 17px;
     }
 
-
     .premium-payment-stat strong {
         font-size: 23px;
     }
-
-
-    /* ---------------------------------------------
-       FILTRES
-    --------------------------------------------- */
 
     .premium-payment-filters {
         grid-template-columns: 1fr;
@@ -1111,23 +1975,16 @@
         gap: 9px;
     }
 
-
     .premium-search input,
     .premium-filter-select {
         height: 44px;
     }
-
-
-    /* ---------------------------------------------
-       CARTE
-    --------------------------------------------- */
 
     .premium-payment-card {
         padding: 14px;
 
         border-radius: 13px;
     }
-
 
     .premium-payment-card-header {
         align-items: flex-start;
@@ -1137,22 +1994,15 @@
         gap: 11px;
     }
 
-
     .premium-payment-status {
         align-self: flex-start;
     }
-
-
-    /* ---------------------------------------------
-       DÉTAILS
-    --------------------------------------------- */
 
     .premium-payment-details {
         grid-template-columns: 1fr;
 
         margin-top: 14px;
     }
-
 
     .premium-payment-detail,
     .premium-payment-detail:nth-child(2n),
@@ -1162,39 +2012,25 @@
         border-bottom: 1px solid #eef2f7;
     }
 
-
     .premium-payment-detail:last-child {
         border-bottom: none;
     }
-
-
-    /* ---------------------------------------------
-       RÉFÉRENCE
-    --------------------------------------------- */
 
     .premium-payment-reference {
         padding: 11px;
     }
 
-
     .premium-payment-reference strong {
         font-size: 12px;
     }
 
-
-    /* ---------------------------------------------
-       ACTIONS
-    --------------------------------------------- */
-
     .premium-payment-actions {
         display: grid;
 
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
 
         gap: 8px;
     }
-
 
     .premium-action-button {
         width: 100%;
@@ -1206,11 +2042,9 @@
         font-size: 11px;
     }
 
-
     .premium-payment-validated {
         justify-content: flex-start;
     }
-
 }
 
 
@@ -1220,10 +2054,30 @@
 
 @media (max-width: 430px) {
 
-    .premium-payment-card {
+    .admin-main {
         padding: 12px;
     }
 
+    .admin-header h1 {
+        font-size: 21px;
+    }
+
+    .admin-stat-card {
+        min-height: 88px;
+
+        padding: 15px;
+    }
+
+    .admin-stat-icon {
+        width: 44px;
+        height: 44px;
+
+        flex-basis: 44px;
+    }
+
+    .premium-payment-card {
+        padding: 12px;
+    }
 
     .premium-payment-avatar {
         width: 40px;
@@ -1232,21 +2086,17 @@
         flex-basis: 40px;
     }
 
-
     .premium-payment-user h3 {
         font-size: 14px;
     }
-
 
     .premium-payment-user p {
         font-size: 11px;
     }
 
-
     .premium-payment-actions {
         grid-template-columns: 1fr;
     }
-
 
     .premium-action-button {
         min-height: 44px;
@@ -1254,16 +2104,34 @@
         font-size: 12px;
     }
 
-
     .premium-payment-detail {
         padding: 11px;
     }
 
-
     .premium-payment-detail strong {
         font-size: 12px;
     }
+}
 
+
+/* =========================================================
+   OVERLAY MOBILE
+   ========================================================= */
+
+.admin-sidebar-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.admin-sidebar-overlay.active {
+    display: block;
 }
 
 
@@ -1271,47 +2139,165 @@
    MODE SOMBRE
    ========================================================= */
 
-body.dark-mode .premium-payment-stat,
-body.dark-mode .premium-payment-card,
-body.dark-mode .premium-search input,
-body.dark-mode .premium-filter-select,
-body.dark-mode .premium-copy-reference,
-body.dark-mode .admin-refresh-button,
+body.dark-mode .admin-page,
+body.dark .admin-page {
+    background: #0f172a;
 
+    color: #f8fafc;
+}
+
+
+body.dark-mode .admin-sidebar,
+body.dark .admin-sidebar,
+
+body.dark-mode .admin-card,
+body.dark .admin-card,
+
+body.dark-mode .admin-stat-card,
+body.dark .admin-stat-card,
+
+body.dark-mode .admin-quick-card,
+body.dark .admin-quick-card,
+
+body.dark-mode .admin-header-button,
+body.dark .admin-header-button,
+
+body.dark-mode .admin-button-secondary,
+body.dark .admin-button-secondary,
+
+body.dark-mode .admin-refresh-button,
+body.dark .admin-refresh-button,
+
+body.dark-mode .premium-payment-stat,
 body.dark .premium-payment-stat,
+
+body.dark-mode .premium-payment-card,
 body.dark .premium-payment-card,
+
+body.dark-mode .premium-search input,
 body.dark .premium-search input,
+
+body.dark-mode .premium-filter-select,
 body.dark .premium-filter-select,
+
+body.dark-mode .premium-copy-reference,
 body.dark .premium-copy-reference,
-body.dark .admin-refresh-button {
+
+body.dark-mode .premium-payments-list .admin-empty,
+body.dark .premium-payments-list .admin-empty {
     background: #111827;
 
     border-color: #1f2937;
 }
 
 
-body.dark-mode .premium-payment-stat strong,
-body.dark-mode .premium-payment-user h3,
-body.dark-mode .premium-payment-detail strong,
-body.dark-mode .premium-payment-reference strong,
+body.dark-mode .admin-logo,
+body.dark .admin-logo,
 
+body.dark-mode .admin-card-header,
+body.dark .admin-card-header,
+
+body.dark-mode .premium-payment-card-header,
+body.dark .premium-payment-card-header {
+    border-color: #1f2937;
+}
+
+
+body.dark-mode .admin-logo-text strong,
+body.dark .admin-logo-text strong,
+
+body.dark-mode .admin-header h1,
+body.dark .admin-header h1,
+
+body.dark-mode .admin-section-title h2,
+body.dark .admin-section-title h2,
+
+body.dark-mode .admin-stat-content strong,
+body.dark .admin-stat-content strong,
+
+body.dark-mode .admin-quick-card strong,
+body.dark .admin-quick-card strong,
+
+body.dark-mode .admin-card-header h3,
+body.dark .admin-card-header h3,
+
+body.dark-mode .admin-profile-info strong,
+body.dark .admin-profile-info strong,
+
+body.dark-mode .premium-payment-stat strong,
 body.dark .premium-payment-stat strong,
+
+body.dark-mode .premium-payment-user h3,
 body.dark .premium-payment-user h3,
+
+body.dark-mode .premium-payment-detail strong,
 body.dark .premium-payment-detail strong,
+
+body.dark-mode .premium-payment-reference strong,
 body.dark .premium-payment-reference strong {
     color: #f8fafc;
 }
 
 
-body.dark-mode .premium-payment-stat span,
-body.dark-mode .premium-payment-user p,
-body.dark-mode .premium-payment-detail span,
-body.dark-mode .premium-payment-reference span,
+body.dark-mode .admin-header p,
+body.dark .admin-header p,
 
+body.dark-mode .admin-logo-text span,
+body.dark .admin-logo-text span,
+
+body.dark-mode .admin-profile-info span,
+body.dark .admin-profile-info span,
+
+body.dark-mode .admin-stat-content span,
+body.dark .admin-stat-content span,
+
+body.dark-mode .admin-quick-card span,
+body.dark .admin-quick-card span,
+
+body.dark-mode .premium-payment-stat span,
 body.dark .premium-payment-stat span,
+
+body.dark-mode .premium-payment-user p,
 body.dark .premium-payment-user p,
+
+body.dark-mode .premium-payment-detail span,
 body.dark .premium-payment-detail span,
+
+body.dark-mode .premium-payment-reference span,
 body.dark .premium-payment-reference span {
+    color: #94a3b8;
+}
+
+
+body.dark-mode .admin-nav-link,
+body.dark .admin-nav-link {
+    color: #cbd5e1;
+}
+
+body.dark-mode .admin-nav-link:hover,
+body.dark .admin-nav-link:hover {
+    background: #1e293b;
+}
+
+body.dark-mode .admin-nav-link.active,
+body.dark .admin-nav-link.active {
+    background: #172554;
+
+    color: #93c5fd;
+}
+
+
+body.dark-mode .admin-table td,
+body.dark .admin-table td {
+    border-color: #1f2937;
+
+    color: #cbd5e1;
+}
+
+body.dark-mode .admin-table th,
+body.dark .admin-table th {
+    border-color: #1f2937;
+
     color: #94a3b8;
 }
 
@@ -1354,17 +2340,10 @@ body.dark .premium-copy-reference:hover {
 
 body.dark-mode .premium-search input,
 body.dark .premium-search input,
+
 body.dark-mode .premium-filter-select,
 body.dark .premium-filter-select {
     color: #f8fafc;
-}
-
-
-body.dark-mode .premium-payments-list .admin-empty,
-body.dark .premium-payments-list .admin-empty {
-    background: #111827;
-
-    border-color: #334155;
 }
 
 
@@ -1381,5 +2360,5 @@ body.dark .premium-payments-list .admin-empty p {
 
 
 /* =========================================================
-   FIN
+   FIN ADMIN.CSS
    ========================================================= */
