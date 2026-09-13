@@ -69,6 +69,8 @@ function escapeHtml(value) {
 
 // =========================================================
 // NORMALISER LE TEXTE
+// Permet de rechercher sans tenir compte
+// des majuscules et des accents
 // =========================================================
 
 function normalize(value) {
@@ -103,7 +105,8 @@ function categoryName(category) {
 
     };
 
-    const key = normalize(category);
+    const key =
+        normalize(category);
 
     return categories[key] ||
         category ||
@@ -126,7 +129,7 @@ function getImage(ad) {
         return ad.images[0];
     }
 
-    // Différents noms possibles
+    // Image principale
     if (ad.imageURL) {
         return ad.imageURL;
     }
@@ -169,7 +172,8 @@ function formatPrice(
         return "Prix à discuter";
     }
 
-    const number = Number(price);
+    const number =
+        Number(price);
 
     if (Number.isNaN(number)) {
 
@@ -195,7 +199,8 @@ function createAdCard(ad) {
     const card =
         document.createElement("article");
 
-    card.className = "ad-card";
+    card.className =
+        "ad-card";
 
     const image =
         getImage(ad);
@@ -282,8 +287,8 @@ function createAdCard(ad) {
         "click",
         (event) => {
 
-            // Ne pas ouvrir l'annonce si on clique
-            // sur le bouton favoris
+            // Ne pas ouvrir l'annonce
+            // si on clique sur favoris
             if (
                 event.target.closest(
                     ".favorite-button"
@@ -293,9 +298,11 @@ function createAdCard(ad) {
             }
 
             if (!ad.id) {
+
                 console.error(
                     "CAMU SERVICES — ID annonce manquant."
                 );
+
                 return;
             }
 
@@ -376,6 +383,7 @@ function displayResults(ads) {
         return;
     }
 
+    // Vider les anciens résultats
     searchResults.innerHTML = "";
 
 
@@ -385,10 +393,17 @@ function displayResults(ads) {
 
     if (resultsCount) {
 
-        resultsCount.textContent =
-            ads.length === 1
-                ? "1 annonce"
-                : `${ads.length} annonces`;
+        if (ads.length === 1) {
+
+            resultsCount.textContent =
+                "1 annonce";
+
+        } else {
+
+            resultsCount.textContent =
+                `${ads.length} annonces`;
+
+        }
 
     }
 
@@ -414,8 +429,14 @@ function displayResults(ads) {
                 </h3>
 
                 <p>
-                    Essayez de modifier vos critères de recherche.
+                    Nous n'avons trouvé aucune annonce
+                    correspondant à votre recherche.
                 </p>
+
+                <small>
+                    Essayez un autre mot-clé ou
+                    modifiez vos critères.
+                </small>
 
             </div>
 
@@ -464,6 +485,10 @@ function filterAds() {
         );
 
 
+    // =====================================================
+    // FILTRAGE
+    // =====================================================
+
     const filtered =
         allAds.filter(
             (ad) => {
@@ -483,6 +508,8 @@ function filterAds() {
 
                 // =================================================
                 // MOT-CLÉ
+                // Recherche dans le titre
+                // ET la description
                 // =================================================
 
                 const keywordMatch =
@@ -508,6 +535,10 @@ function filterAds() {
                     !city ||
                     adCity === city;
 
+
+                // =================================================
+                // ANNONCE RETENUE
+                // =================================================
 
                 return (
                     keywordMatch &&
@@ -546,6 +577,13 @@ function filterAds() {
 
     // =====================================================
     // AFFICHAGE
+    //
+    // IMPORTANT :
+    // filtered peut être vide.
+    // Dans ce cas displayResults()
+    // affiche "Aucune annonce trouvée".
+    //
+    // ON NE REMPLACE PAS filtered PAR allAds.
     // =====================================================
 
     displayResults(filtered);
@@ -644,16 +682,11 @@ async function loadAds() {
 
 
         // =================================================
-        // AFFICHER TOUTES LES ANNONCES
-        // =================================================
-
-        displayResults(
-            allAds
-        );
-
-
-        // =================================================
-        // FILTRES URL
+        // APPLIQUER LES FILTRES URL
+        //
+        // IMPORTANT :
+        // On ne fait plus displayResults(allAds)
+        // avant les filtres.
         // =================================================
 
         applyUrlFilters();
@@ -690,7 +723,8 @@ async function loadAds() {
                 </p>
 
                 <small>
-                    Vérifiez votre connexion et les règles Firestore.
+                    Vérifiez votre connexion
+                    et les règles Firestore.
                 </small>
 
             </div>
@@ -704,10 +738,16 @@ async function loadAds() {
 
 // =========================================================
 // FILTRES URL
-// Exemple :
+//
+// Exemples :
+//
 // recherche.html?category=immobilier
+//
 // recherche.html?city=Lubumbashi
+//
 // recherche.html?q=iphone
+//
+// recherche.html?q=iphone&city=Lubumbashi
 // =========================================================
 
 function applyUrlFilters() {
@@ -738,7 +778,7 @@ function applyUrlFilters() {
     ) {
 
         searchCategory.value =
-            normalize(category);
+            category;
 
     }
 
@@ -753,7 +793,7 @@ function applyUrlFilters() {
     ) {
 
         searchCity.value =
-            normalize(city);
+            city;
 
     }
 
@@ -774,18 +814,45 @@ function applyUrlFilters() {
 
 
     // =====================================================
-    // APPLIQUER LES FILTRES
+    // DÉTERMINER S'IL Y A UNE RECHERCHE
     // =====================================================
 
-    if (
-        category ||
-        city ||
-        keyword
-    ) {
+    const hasFilters =
+        Boolean(
+            category ||
+            city ||
+            keyword
+        );
+
+
+    // =====================================================
+    // AVEC FILTRES
+    // =====================================================
+
+    if (hasFilters) {
 
         filterAds();
 
+        return;
+
     }
+
+
+    // =====================================================
+    // SANS FILTRES
+    //
+    // Ici seulement, on affiche toutes
+    // les annonces.
+    // =====================================================
+
+    if (resultsTitle) {
+
+        resultsTitle.textContent =
+            "Toutes les annonces";
+
+    }
+
+    displayResults(allAds);
 
 }
 
@@ -801,6 +868,63 @@ if (searchForm) {
         (event) => {
 
             event.preventDefault();
+
+            filterAds();
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// RECHERCHE EN TEMPS RÉEL
+//
+// Si ton champ existe, la recherche se met
+// également à jour pendant que l'utilisateur écrit.
+// =========================================================
+
+if (searchKeyword) {
+
+    searchKeyword.addEventListener(
+        "input",
+        () => {
+
+            filterAds();
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// CHANGEMENT CATÉGORIE
+// =========================================================
+
+if (searchCategory) {
+
+    searchCategory.addEventListener(
+        "change",
+        () => {
+
+            filterAds();
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// CHANGEMENT VILLE
+// =========================================================
+
+if (searchCity) {
+
+    searchCity.addEventListener(
+        "change",
+        () => {
 
             filterAds();
 
