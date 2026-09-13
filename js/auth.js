@@ -31,6 +31,7 @@ import {
 // =====================================================
 
 const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+
 const CLOUDINARY_UPLOAD_PRESET = "camu_services";
 
 const CLOUDINARY_UPLOAD_URL =
@@ -41,18 +42,32 @@ const CLOUDINARY_UPLOAD_URL =
 // MESSAGE GÉNÉRAL
 // =====================================================
 
-function showMessage(elementId, message, type = "error") {
+function showMessage(
+    elementId,
+    message,
+    type = "error"
+) {
 
-    const element = document.getElementById(elementId);
+    const element =
+        document.getElementById(elementId);
 
     if (!element) {
-        console.warn("Élément introuvable :", elementId);
+
+        console.warn(
+            "Élément introuvable :",
+            elementId
+        );
+
         return;
     }
 
     element.textContent = message;
-    element.className = `auth-message ${type}`;
-    element.style.display = "block";
+
+    element.className =
+        `auth-message ${type}`;
+
+    element.style.display =
+        "block";
 }
 
 
@@ -60,18 +75,33 @@ function showMessage(elementId, message, type = "error") {
 // MESSAGE PAGE COMPTE
 // =====================================================
 
-function showAccountMessage(message, type = "success") {
+function showAccountMessage(
+    message,
+    type = "success"
+) {
 
-    const element = document.getElementById("accountMessage");
+    const element =
+        document.getElementById(
+            "accountMessage"
+        );
 
     if (!element) return;
 
-    element.textContent = message;
-    element.className = `auth-message ${type}`;
-    element.style.display = "block";
+    element.textContent =
+        message;
+
+    element.className =
+        `auth-message ${type}`;
+
+    element.style.display =
+        "block";
+
 
     setTimeout(() => {
-        element.style.display = "none";
+
+        element.style.display =
+            "none";
+
     }, 3500);
 }
 
@@ -82,43 +112,70 @@ function showAccountMessage(message, type = "success") {
 
 function getFirebaseErrorMessage(error) {
 
-    console.error("Firebase Error :", error);
+    console.error(
+        "Firebase Error :",
+        error
+    );
+
 
     switch (error.code) {
 
         case "auth/invalid-credential":
+
         case "auth/invalid-login-credentials":
+
         case "auth/wrong-password":
+
             return "E-mail ou mot de passe incorrect.";
 
+
         case "auth/user-not-found":
+
             return "Aucun compte ne correspond à cette adresse e-mail.";
 
+
         case "auth/invalid-email":
+
             return "L'adresse e-mail n'est pas valide.";
 
+
         case "auth/email-already-in-use":
+
             return "Cette adresse e-mail est déjà utilisée.";
 
+
         case "auth/weak-password":
+
             return "Le mot de passe doit contenir au moins 6 caractères.";
 
+
         case "auth/password-does-not-meet-requirements":
+
             return "Le mot de passe ne respecte pas les exigences de sécurité.";
 
+
         case "auth/network-request-failed":
+
             return "Problème de connexion Internet.";
 
+
         case "auth/too-many-requests":
+
             return "Trop de tentatives. Veuillez patienter quelques minutes.";
 
+
         case "auth/user-disabled":
+
             return "Ce compte a été désactivé.";
 
+
         case "auth/operation-not-allowed":
+
             return "La connexion par e-mail n'est pas activée dans Firebase.";
 
+
         default:
+
             return "Une erreur est survenue. Veuillez réessayer.";
     }
 }
@@ -128,242 +185,387 @@ function getFirebaseErrorMessage(error) {
 // AFFICHER / MASQUER MOT DE PASSE
 // =====================================================
 
-document.addEventListener("click", function (event) {
+document.addEventListener(
+    "click",
+    function (event) {
 
-    const button = event.target.closest(".password-toggle");
+        const button =
+            event.target.closest(
+                ".password-toggle"
+            );
 
-    if (!button) return;
+        if (!button) return;
 
-    const target = button.dataset.target;
 
-    const input = document.getElementById(target);
+        const target =
+            button.dataset.target;
 
-    if (!input) return;
 
-    const icon = button.querySelector("i");
+        const input =
+            document.getElementById(
+                target
+            );
 
-    if (input.type === "password") {
+        if (!input) return;
 
-        input.type = "text";
 
-        if (icon) {
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        }
+        const icon =
+            button.querySelector("i");
 
-    } else {
 
-        input.type = "password";
+        if (
+            input.type === "password"
+        ) {
 
-        if (icon) {
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
+            input.type =
+                "text";
+
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "fa-eye"
+                );
+
+                icon.classList.add(
+                    "fa-eye-slash"
+                );
+            }
+
+        } else {
+
+            input.type =
+                "password";
+
+
+            if (icon) {
+
+                icon.classList.remove(
+                    "fa-eye-slash"
+                );
+
+                icon.classList.add(
+                    "fa-eye"
+                );
+            }
         }
     }
-});
+);
 
 
 // =====================================================
 // INSCRIPTION
 // =====================================================
 
-const registerForm = document.getElementById("registerForm");
+const registerForm =
+    document.getElementById(
+        "registerForm"
+    );
+
 
 if (registerForm) {
 
-    registerForm.addEventListener("submit", async function (event) {
+    registerForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const name =
-            document.getElementById("registerName")
-                ?.value
-                .trim();
-
-        const email =
-            document.getElementById("registerEmail")
-                ?.value
-                .trim()
-                .toLowerCase();
-
-        const phone =
-            document.getElementById("registerPhone")
-                ?.value
-                .trim();
-
-        const password =
-            document.getElementById("registerPassword")
-                ?.value;
-
-        const passwordConfirm =
-            document.getElementById("registerPasswordConfirm")
-                ?.value;
-
-        const terms =
-            document.getElementById("registerTerms")
-                ?.checked;
-
-        const button =
-            document.getElementById("registerButton");
-
-
-        // -------------------------------------------------
-        // VALIDATION
-        // -------------------------------------------------
-
-        if (
-            !name ||
-            !email ||
-            !phone ||
-            !password ||
-            !passwordConfirm
-        ) {
-
-            showMessage(
-                "registerMessage",
-                "Veuillez remplir tous les champs.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (password.length < 6) {
-
-            showMessage(
-                "registerMessage",
-                "Le mot de passe doit contenir au moins 6 caractères.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (password !== passwordConfirm) {
-
-            showMessage(
-                "registerMessage",
-                "Les deux mots de passe ne correspondent pas.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (!terms) {
-
-            showMessage(
-                "registerMessage",
-                "Veuillez accepter les conditions d'utilisation.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        // -------------------------------------------------
-        // CHARGEMENT
-        // -------------------------------------------------
-
-        if (button) {
-
-            button.disabled = true;
-
-            button.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Création...
-            `;
-        }
-
-
-        try {
 
             // -------------------------------------------------
-            // CRÉATION DU COMPTE FIREBASE
+            // RÉCUPÉRATION DES CHAMPS
             // -------------------------------------------------
 
-            const userCredential =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+            const name =
+                document.getElementById(
+                    "registerName"
+                )?.value
+                    .trim();
+
+
+            const email =
+                document.getElementById(
+                    "registerEmail"
+                )?.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const phone =
+                document.getElementById(
+                    "registerPhone"
+                )?.value
+                    .trim();
+
+
+            const password =
+                document.getElementById(
+                    "registerPassword"
+                )?.value;
+
+
+            const passwordConfirm =
+                document.getElementById(
+                    "registerPasswordConfirm"
+                )?.value;
+
+
+            const terms =
+                document.getElementById(
+                    "registerTerms"
+                )?.checked;
+
+
+            const button =
+                document.getElementById(
+                    "registerButton"
                 );
 
-            const user = userCredential.user;
+
+            // -------------------------------------------------
+            // VALIDATION
+            // -------------------------------------------------
+
+            if (
+                !name ||
+                !email ||
+                !phone ||
+                !password ||
+                !passwordConfirm
+            ) {
+
+                showMessage(
+                    "registerMessage",
+                    "Veuillez remplir tous les champs.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "registerMessage",
+                    "Le mot de passe doit contenir au moins 6 caractères.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                password !==
+                passwordConfirm
+            ) {
+
+                showMessage(
+                    "registerMessage",
+                    "Les deux mots de passe ne correspondent pas.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!terms) {
+
+                showMessage(
+                    "registerMessage",
+                    "Veuillez accepter les conditions d'utilisation.",
+                    "error"
+                );
+
+                return;
+            }
 
 
             // -------------------------------------------------
-            // NOM D'AFFICHAGE FIREBASE
+            // CHARGEMENT
             // -------------------------------------------------
-
-            await updateProfile(user, {
-                displayName: name
-            });
-
-
-            // -------------------------------------------------
-            // PROFIL FIRESTORE
-            // -------------------------------------------------
-
-            await setDoc(
-                doc(db, "users", user.uid),
-                {
-                    uid: user.uid,
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    description: "",
-                    photoURL: "",
-                    role: "user",
-                    status: "active",
-                    createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp()
-                }
-            );
-
-
-            // -------------------------------------------------
-            // SUCCÈS
-            // -------------------------------------------------
-
-            showMessage(
-                "registerMessage",
-                "Compte créé avec succès ! Redirection...",
-                "success"
-            );
-
-
-            setTimeout(() => {
-
-                window.location.href = "compte.html";
-
-            }, 1000);
-
-
-        } catch (error) {
-
-            showMessage(
-                "registerMessage",
-                getFirebaseErrorMessage(error),
-                "error"
-            );
-
 
             if (button) {
 
-                button.disabled = false;
+                button.disabled =
+                    true;
 
                 button.innerHTML = `
-                    <i class="fa-solid fa-user-plus"></i>
-                    Créer mon compte
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Création...
                 `;
             }
+
+
+            try {
+
+                // =============================================
+                // CRÉATION DU COMPTE FIREBASE
+                // =============================================
+
+                const userCredential =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    userCredential.user;
+
+
+                // =============================================
+                // NOM D'AFFICHAGE FIREBASE
+                // =============================================
+
+                await updateProfile(
+                    user,
+                    {
+                        displayName: name
+                    }
+                );
+
+
+                // =============================================
+                // ESSAI PREMIUM — 3 MOIS
+                // =============================================
+
+                const trialStart =
+                    new Date();
+
+
+                const trialEnd =
+                    new Date(
+                        trialStart
+                    );
+
+
+                trialEnd.setMonth(
+                    trialEnd.getMonth() + 3
+                );
+
+
+                // =============================================
+                // PROFIL FIRESTORE
+                // =============================================
+
+                await setDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
+                    {
+
+                        // -------------------------------
+                        // INFORMATIONS UTILISATEUR
+                        // -------------------------------
+
+                        uid: user.uid,
+
+                        name: name,
+
+                        email: email,
+
+                        phone: phone,
+
+                        description: "",
+
+                        photoURL: "",
+
+
+                        // -------------------------------
+                        // COMPTE
+                        // -------------------------------
+
+                        role: "user",
+
+                        status: "active",
+
+
+                        // -------------------------------
+                        // ABONNEMENT
+                        // -------------------------------
+
+                        plan: "premium",
+
+                        subscriptionStatus: "trial",
+
+                        trialStart: trialStart,
+
+                        trialEnd: trialEnd,
+
+
+                        // -------------------------------
+                        // DATES
+                        // -------------------------------
+
+                        createdAt:
+                            serverTimestamp(),
+
+                        updatedAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+                // =============================================
+                // SUCCÈS
+                // =============================================
+
+                showMessage(
+                    "registerMessage",
+                    "Compte créé avec succès ! Vous bénéficiez de 3 mois Premium gratuits.",
+                    "success"
+                );
+
+
+                // =============================================
+                // REDIRECTION
+                // =============================================
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "compte.html";
+
+                }, 1200);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur inscription :",
+                    error
+                );
+
+
+                showMessage(
+                    "registerMessage",
+                    getFirebaseErrorMessage(error),
+                    "error"
+                );
+
+
+                if (button) {
+
+                    button.disabled =
+                        false;
+
+                    button.innerHTML = `
+                        <i class="fa-solid fa-user-plus"></i>
+                        Créer mon compte
+                    `;
+                }
+            }
         }
-    });
+    );
 }
 
 
@@ -371,124 +573,143 @@ if (registerForm) {
 // CONNEXION
 // =====================================================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async function (event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        console.log(
-            "CAMU SERVICES : formulaire de connexion envoyé."
-        );
-
-
-        const email =
-            document.getElementById("loginEmail")
-                ?.value
-                .trim()
-                .toLowerCase();
-
-        const password =
-            document.getElementById("loginPassword")
-                ?.value;
-
-        const button =
-            document.getElementById("loginButton");
-
-
-        // -------------------------------------------------
-        // VALIDATION
-        // -------------------------------------------------
-
-        if (!email || !password) {
-
-            showMessage(
-                "loginMessage",
-                "Veuillez saisir votre e-mail et votre mot de passe.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        // -------------------------------------------------
-        // CHARGEMENT
-        // -------------------------------------------------
-
-        if (button) {
-
-            button.disabled = true;
-
-            button.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                <span>Connexion...</span>
-            `;
-        }
-
-
-        try {
 
             console.log(
-                "Connexion Firebase en cours..."
+                "CAMU SERVICES : formulaire de connexion envoyé."
             );
 
 
-            const userCredential =
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+            const email =
+                document.getElementById(
+                    "loginEmail"
+                )?.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const password =
+                document.getElementById(
+                    "loginPassword"
+                )?.value;
+
+
+            const button =
+                document.getElementById(
+                    "loginButton"
                 );
 
 
-            const user =
-                userCredential.user;
+            // -------------------------------------------------
+            // VALIDATION
+            // -------------------------------------------------
+
+            if (
+                !email ||
+                !password
+            ) {
+
+                showMessage(
+                    "loginMessage",
+                    "Veuillez saisir votre e-mail et votre mot de passe.",
+                    "error"
+                );
+
+                return;
+            }
 
 
-            console.log(
-                "Connexion réussie :",
-                user.email
-            );
-
-
-            showMessage(
-                "loginMessage",
-                "Connexion réussie ! Redirection...",
-                "success"
-            );
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "compte.html";
-
-            }, 800);
-
-
-        } catch (error) {
-
-            showMessage(
-                "loginMessage",
-                getFirebaseErrorMessage(error),
-                "error"
-            );
-
+            // -------------------------------------------------
+            // CHARGEMENT
+            // -------------------------------------------------
 
             if (button) {
 
-                button.disabled = false;
+                button.disabled =
+                    true;
 
                 button.innerHTML = `
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>Se connecter</span>
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Connexion...</span>
                 `;
             }
+
+
+            try {
+
+                console.log(
+                    "Connexion Firebase en cours..."
+                );
+
+
+                const userCredential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    userCredential.user;
+
+
+                console.log(
+                    "Connexion réussie :",
+                    user.email
+                );
+
+
+                showMessage(
+                    "loginMessage",
+                    "Connexion réussie ! Redirection...",
+                    "success"
+                );
+
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "compte.html";
+
+                }, 800);
+
+
+            } catch (error) {
+
+                showMessage(
+                    "loginMessage",
+                    getFirebaseErrorMessage(error),
+                    "error"
+                );
+
+
+                if (button) {
+
+                    button.disabled =
+                        false;
+
+                    button.innerHTML = `
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Se connecter</span>
+                    `;
+                }
+            }
         }
-    });
+    );
 }
 
 
@@ -497,63 +718,72 @@ if (loginForm) {
 // =====================================================
 
 const forgotPassword =
-    document.getElementById("forgotPassword");
+    document.getElementById(
+        "forgotPassword"
+    );
+
 
 if (forgotPassword) {
 
-    forgotPassword.addEventListener("click", async function (event) {
+    forgotPassword.addEventListener(
+        "click",
+        async function (event) {
 
-        event.preventDefault();
-
-
-        const emailInput =
-            document.getElementById("loginEmail");
-
-        const email =
-            emailInput
-                ?.value
-                .trim()
-                .toLowerCase();
+            event.preventDefault();
 
 
-        if (!email) {
+            const emailInput =
+                document.getElementById(
+                    "loginEmail"
+                );
 
-            showMessage(
-                "loginMessage",
-                "Veuillez d'abord saisir votre adresse e-mail.",
-                "error"
-            );
 
-            emailInput?.focus();
+            const email =
+                emailInput?.value
+                    .trim()
+                    .toLowerCase();
 
-            return;
+
+            if (!email) {
+
+                showMessage(
+                    "loginMessage",
+                    "Veuillez d'abord saisir votre adresse e-mail.",
+                    "error"
+                );
+
+
+                emailInput?.focus();
+
+                return;
+            }
+
+
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+
+                showMessage(
+                    "loginMessage",
+                    "Un e-mail de réinitialisation a été envoyé.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                showMessage(
+                    "loginMessage",
+                    getFirebaseErrorMessage(error),
+                    "error"
+                );
+            }
         }
-
-
-        try {
-
-            await sendPasswordResetEmail(
-                auth,
-                email
-            );
-
-
-            showMessage(
-                "loginMessage",
-                "Un e-mail de réinitialisation a été envoyé.",
-                "success"
-            );
-
-
-        } catch (error) {
-
-            showMessage(
-                "loginMessage",
-                getFirebaseErrorMessage(error),
-                "error"
-            );
-        }
-    });
+    );
 }
 
 
@@ -565,19 +795,32 @@ async function loadUserProfile(user) {
 
     if (!user) return;
 
+
     try {
 
         const userRef =
-            doc(db, "users", user.uid);
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
 
         const userSnap =
-            await getDoc(userRef);
+            await getDoc(
+                userRef
+            );
 
 
         let profile = {};
 
-        if (userSnap.exists()) {
-            profile = userSnap.data();
+
+        if (
+            userSnap.exists()
+        ) {
+
+            profile =
+                userSnap.data();
         }
 
 
@@ -615,10 +858,15 @@ async function loadUserProfile(user) {
         // -------------------------------------------------
 
         const nameElement =
-            document.getElementById("accountName");
+            document.getElementById(
+                "accountName"
+            );
+
 
         if (nameElement) {
-            nameElement.textContent = name;
+
+            nameElement.textContent =
+                name;
         }
 
 
@@ -627,10 +875,15 @@ async function loadUserProfile(user) {
         // -------------------------------------------------
 
         const emailElement =
-            document.getElementById("accountEmail");
+            document.getElementById(
+                "accountEmail"
+            );
+
 
         if (emailElement) {
-            emailElement.textContent = email;
+
+            emailElement.textContent =
+                email;
         }
 
 
@@ -639,11 +892,16 @@ async function loadUserProfile(user) {
         // -------------------------------------------------
 
         const phoneElement =
-            document.getElementById("accountPhone");
+            document.getElementById(
+                "accountPhone"
+            );
+
 
         if (phoneElement) {
+
             phoneElement.textContent =
-                phone || "Non renseigné";
+                phone ||
+                "Non renseigné";
         }
 
 
@@ -655,6 +913,7 @@ async function loadUserProfile(user) {
             document.getElementById(
                 "accountDescription"
             );
+
 
         if (descriptionElement) {
 
@@ -669,27 +928,43 @@ async function loadUserProfile(user) {
         // -------------------------------------------------
 
         const avatarImage =
-            document.getElementById("accountAvatarImage");
+            document.getElementById(
+                "accountAvatarImage"
+            );
+
 
         const avatarDefault =
-            document.getElementById("accountAvatarDefault");
+            document.getElementById(
+                "accountAvatarDefault"
+            );
 
 
-        if (avatarImage && avatarDefault) {
+        if (
+            avatarImage &&
+            avatarDefault
+        ) {
 
             if (photoURL) {
 
-                avatarImage.src = photoURL;
-                avatarImage.style.display = "block";
+                avatarImage.src =
+                    photoURL;
 
-                avatarDefault.style.display = "none";
+                avatarImage.style.display =
+                    "block";
+
+                avatarDefault.style.display =
+                    "none";
 
             } else {
 
-                avatarImage.src = "";
-                avatarImage.style.display = "none";
+                avatarImage.src =
+                    "";
 
-                avatarDefault.style.display = "flex";
+                avatarImage.style.display =
+                    "none";
+
+                avatarDefault.style.display =
+                    "flex";
             }
         }
 
@@ -703,8 +978,38 @@ async function loadUserProfile(user) {
                 "profilePhotoInput"
             );
 
+
         if (photoInput) {
-            photoInput.dataset.uid = user.uid;
+
+            photoInput.dataset.uid =
+                user.uid;
+        }
+
+
+        // -------------------------------------------------
+        // INFORMATIONS ABONNEMENT
+        // -------------------------------------------------
+
+        console.log(
+            "CAMU SERVICES — Plan :",
+            profile.plan || "basic"
+        );
+
+
+        console.log(
+            "CAMU SERVICES — Statut abonnement :",
+            profile.subscriptionStatus || "none"
+        );
+
+
+        if (
+            profile.trialEnd
+        ) {
+
+            console.log(
+                "CAMU SERVICES — Fin de l'essai :",
+                profile.trialEnd
+            );
         }
 
 
@@ -740,14 +1045,19 @@ onAuthStateChanged(
         const isAccountPage =
             window.location.pathname
                 .toLowerCase()
-                .endsWith("/compte.html");
+                .endsWith(
+                    "/compte.html"
+                );
 
 
         // -------------------------------------------------
         // PAGE COMPTE + PAS CONNECTÉ
         // -------------------------------------------------
 
-        if (isAccountPage && !user) {
+        if (
+            isAccountPage &&
+            !user
+        ) {
 
             console.log(
                 "CAMU SERVICES : accès compte refusé, utilisateur non connecté."
@@ -775,16 +1085,16 @@ onAuthStateChanged(
 
             if (isAccountPage) {
 
-                await loadUserProfile(user);
+                await loadUserProfile(
+                    user
+                );
             }
-        }
 
+        } else {
 
-        // -------------------------------------------------
-        // PERSONNE NON CONNECTÉE
-        // -------------------------------------------------
-
-        else {
+            // -------------------------------------------------
+            // PERSONNE NON CONNECTÉE
+            // -------------------------------------------------
 
             console.log(
                 "CAMU SERVICES : aucun utilisateur connecté."
@@ -836,14 +1146,19 @@ if (profilePhotoInput) {
             // VALIDATION TYPE
             // -------------------------------------------------
 
-            if (!file.type.startsWith("image/")) {
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
                 showAccountMessage(
                     "Veuillez sélectionner une image.",
                     "error"
                 );
 
-                this.value = "";
+                this.value =
+                    "";
 
                 return;
             }
@@ -853,14 +1168,18 @@ if (profilePhotoInput) {
             // VALIDATION TAILLE
             // -------------------------------------------------
 
-            if (file.size > 5 * 1024 * 1024) {
+            if (
+                file.size >
+                5 * 1024 * 1024
+            ) {
 
                 showAccountMessage(
                     "La photo ne doit pas dépasser 5 Mo.",
                     "error"
                 );
 
-                this.value = "";
+                this.value =
+                    "";
 
                 return;
             }
@@ -881,15 +1200,18 @@ if (profilePhotoInput) {
                 const formData =
                     new FormData();
 
+
                 formData.append(
                     "file",
                     file
                 );
 
+
                 formData.append(
                     "upload_preset",
                     CLOUDINARY_UPLOAD_PRESET
                 );
+
 
                 formData.append(
                     "folder",
@@ -915,12 +1237,16 @@ if (profilePhotoInput) {
                     await response.json();
 
 
-                if (!response.ok || !result.secure_url) {
+                if (
+                    !response.ok ||
+                    !result.secure_url
+                ) {
 
                     console.error(
                         "Cloudinary Error :",
                         result
                     );
+
 
                     throw new Error(
                         "L'envoi de la photo vers Cloudinary a échoué."
@@ -945,7 +1271,8 @@ if (profilePhotoInput) {
                 await updateProfile(
                     user,
                     {
-                        photoURL: photoURL
+                        photoURL:
+                            photoURL
                     }
                 );
 
@@ -955,10 +1282,17 @@ if (profilePhotoInput) {
                 // -------------------------------------------------
 
                 await setDoc(
-                    doc(db, "users", user.uid),
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
                     {
-                        photoURL: photoURL,
-                        updatedAt: serverTimestamp()
+                        photoURL:
+                            photoURL,
+
+                        updatedAt:
+                            serverTimestamp()
                     },
                     {
                         merge: true
@@ -974,6 +1308,7 @@ if (profilePhotoInput) {
                     document.getElementById(
                         "accountAvatarImage"
                     );
+
 
                 const avatarDefault =
                     document.getElementById(
@@ -1008,8 +1343,8 @@ if (profilePhotoInput) {
                 );
 
 
-                // Réinitialiser input
-                this.value = "";
+                this.value =
+                    "";
 
 
             } catch (error) {
@@ -1026,9 +1361,10 @@ if (profilePhotoInput) {
                     "error"
                 );
 
-                this.value = "";
-            }
 
+                this.value =
+                    "";
+            }
         }
     );
 }
@@ -1069,16 +1405,25 @@ if (editProfileButton) {
 
             let profile = {};
 
+
             try {
 
                 const snapshot =
                     await getDoc(
-                        doc(db, "users", user.uid)
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        )
                     );
 
 
-                if (snapshot.exists()) {
-                    profile = snapshot.data();
+                if (
+                    snapshot.exists()
+                ) {
+
+                    profile =
+                        snapshot.data();
                 }
 
             } catch (error) {
@@ -1117,7 +1462,10 @@ if (editProfileButton) {
                 );
 
 
-            if (newName === null) {
+            if (
+                newName === null
+            ) {
+
                 return;
             }
 
@@ -1148,7 +1496,10 @@ if (editProfileButton) {
                 );
 
 
-            if (newPhone === null) {
+            if (
+                newPhone === null
+            ) {
+
                 return;
             }
 
@@ -1164,7 +1515,10 @@ if (editProfileButton) {
                 );
 
 
-            if (newDescription === null) {
+            if (
+                newDescription === null
+            ) {
+
                 return;
             }
 
@@ -1178,7 +1532,8 @@ if (editProfileButton) {
                 await updateProfile(
                     user,
                     {
-                        displayName: cleanName
+                        displayName:
+                            cleanName
                     }
                 );
 
@@ -1188,12 +1543,23 @@ if (editProfileButton) {
                 // -------------------------------------------------
 
                 await setDoc(
-                    doc(db, "users", user.uid),
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
                     {
-                        name: cleanName,
-                        phone: newPhone.trim(),
-                        description: newDescription.trim(),
-                        updatedAt: serverTimestamp()
+                        name:
+                            cleanName,
+
+                        phone:
+                            newPhone.trim(),
+
+                        description:
+                            newDescription.trim(),
+
+                        updatedAt:
+                            serverTimestamp()
                     },
                     {
                         merge: true
@@ -1269,11 +1635,12 @@ if (editProfileButton) {
 
 
                 showAccountMessage(
-                    getFirebaseErrorMessage(error),
+                    getFirebaseErrorMessage(
+                        error
+                    ),
                     "error"
                 );
             }
-
         }
     );
 }
@@ -1301,7 +1668,9 @@ document.addEventListener(
 
         try {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
 
 
             window.location.href =
@@ -1321,7 +1690,6 @@ document.addEventListener(
                 "error"
             );
         }
-
     }
 );
 
@@ -1332,4 +1700,8 @@ document.addEventListener(
 
 console.log(
     "CAMU SERVICES : auth.js chargé correctement."
+);
+
+console.log(
+    "CAMU SERVICES : système d'essai Premium 3 mois activé."
 );
