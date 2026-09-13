@@ -4,13 +4,25 @@
 
    Paiement manuel :
    M-Pesa / Airtel Money
+
+   Fonctionnement :
+   1. L'utilisateur choisit une formule.
+   2. Il choisit M-Pesa ou Airtel Money.
+   3. Il effectue le paiement.
+   4. Il saisit la référence de transaction.
+   5. La demande est enregistrée dans premiumPayments.
+   6. L'administration vérifie le paiement.
+   7. L'administration valide ou rejette la demande.
    ========================================================= */
 
-import { auth, db } from "./firebase.js";
+
+import { auth, db } from "./firebase-config.js";
+
 
 import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 import {
     doc,
@@ -21,7 +33,8 @@ import {
     where,
     getDocs,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
 
 
 /* =========================================================
@@ -35,6 +48,7 @@ const PAYMENT_NUMBERS = {
     airtel: "+243 976 993 469"
 
 };
+
 
 
 /* =========================================================
@@ -84,6 +98,7 @@ const PLANS = {
 };
 
 
+
 /* =========================================================
    VARIABLES
    ========================================================= */
@@ -95,6 +110,7 @@ let selectedPlan = null;
 let selectedPaymentMethod = null;
 
 
+
 /* =========================================================
    ÉLÉMENTS HTML
    ========================================================= */
@@ -102,45 +118,54 @@ let selectedPaymentMethod = null;
 const planButtons =
     document.querySelectorAll(".plan-button");
 
+
 const paymentMethodInputs =
     document.querySelectorAll(
         'input[name="paymentMethod"]'
     );
+
 
 const paymentSection =
     document.getElementById(
         "paymentSection"
     );
 
+
 const paymentReference =
     document.getElementById(
         "paymentReference"
     );
+
 
 const submitPaymentButton =
     document.getElementById(
         "submitPaymentButton"
     );
 
+
 const paymentMessage =
     document.getElementById(
         "paymentMessage"
     );
+
 
 const selectedPlanName =
     document.getElementById(
         "selectedPlanName"
     );
 
+
 const selectedPlanAmount =
     document.getElementById(
         "selectedPlanAmount"
     );
 
+
 const mpesaNumber =
     document.getElementById(
         "mpesaNumber"
     );
+
 
 const airtelNumber =
     document.getElementById(
@@ -148,8 +173,9 @@ const airtelNumber =
     );
 
 
+
 /* =========================================================
-   AFFICHER LES NUMÉROS
+   AFFICHER LES NUMÉROS DE PAIEMENT
    ========================================================= */
 
 if (mpesaNumber) {
@@ -166,6 +192,7 @@ if (airtelNumber) {
         PAYMENT_NUMBERS.airtel;
 
 }
+
 
 
 /* =========================================================
@@ -198,10 +225,13 @@ onAuthStateChanged(
         );
 
 
-        await checkCurrentSubscription(user.uid);
+        await checkCurrentSubscription(
+            user.uid
+        );
 
     }
 );
+
 
 
 /* =========================================================
@@ -240,14 +270,35 @@ async function checkCurrentSubscription(uid) {
 
         console.log(
             "Plan actuel :",
-            profile.plan
+            profile.plan || "basic"
         );
+
 
         console.log(
             "Statut actuel :",
-            profile.subscriptionStatus
+            profile.subscriptionStatus || "aucun"
         );
 
+
+        /*
+         * Si l'utilisateur possède déjà
+         * un abonnement Premium actif,
+         * on peut l'informer.
+         */
+
+        if (
+            profile.plan === "premium" &&
+            (
+                profile.subscriptionStatus === "active" ||
+                profile.subscriptionStatus === "trial"
+            )
+        ) {
+
+            console.log(
+                "Cet utilisateur possède déjà Premium."
+            );
+
+        }
 
     } catch (error) {
 
@@ -259,6 +310,7 @@ async function checkCurrentSubscription(uid) {
     }
 
 }
+
 
 
 /* =========================================================
@@ -297,7 +349,9 @@ planButtons.forEach(
                     PLANS[planId];
 
 
-                /* Affichage du résumé */
+                /* -----------------------------------------
+                   Afficher le nom de la formule
+                   ----------------------------------------- */
 
                 if (selectedPlanName) {
 
@@ -307,6 +361,10 @@ planButtons.forEach(
                 }
 
 
+                /* -----------------------------------------
+                   Afficher le montant
+                   ----------------------------------------- */
+
                 if (selectedPlanAmount) {
 
                     selectedPlanAmount.textContent =
@@ -315,16 +373,18 @@ planButtons.forEach(
                 }
 
 
-                /*
-                 * Faire apparaître visuellement
-                 * la section de paiement.
-                 */
+                /* -----------------------------------------
+                   Faire défiler vers paiement
+                   ----------------------------------------- */
 
                 if (paymentSection) {
 
                     paymentSection.scrollIntoView({
+
                         behavior: "smooth",
+
                         block: "start"
+
                     });
 
                 }
@@ -348,6 +408,7 @@ planButtons.forEach(
 );
 
 
+
 /* =========================================================
    CHOIX DU MOYEN DE PAIEMENT
    ========================================================= */
@@ -369,9 +430,9 @@ paymentMethodInputs.forEach(
                 );
 
 
-                /*
-                 * Afficher le numéro correspondant
-                 */
+                /* -----------------------------------------
+                   M-Pesa
+                   ----------------------------------------- */
 
                 if (
                     selectedPaymentMethod ===
@@ -379,12 +440,16 @@ paymentMethodInputs.forEach(
                 ) {
 
                     showMessage(
-                        `Envoyez le montant au numéro M-Pesa ${PAYMENT_NUMBERS.mpesa}.`,
+                        `Envoyez le montant au numéro M-Pesa ${PAYMENT_NUMBERS.mpesa}. Après le paiement, saisissez votre référence de transaction ci-dessous.`,
                         "info"
                     );
 
                 }
 
+
+                /* -----------------------------------------
+                   Airtel Money
+                   ----------------------------------------- */
 
                 if (
                     selectedPaymentMethod ===
@@ -392,7 +457,7 @@ paymentMethodInputs.forEach(
                 ) {
 
                     showMessage(
-                        `Envoyez le montant au numéro Airtel Money ${PAYMENT_NUMBERS.airtel}.`,
+                        `Envoyez le montant au numéro Airtel Money ${PAYMENT_NUMBERS.airtel}. Après le paiement, saisissez votre référence de transaction ci-dessous.`,
                         "info"
                     );
 
@@ -403,6 +468,7 @@ paymentMethodInputs.forEach(
 
     }
 );
+
 
 
 /* =========================================================
@@ -419,15 +485,17 @@ if (submitPaymentButton) {
 }
 
 
+
 /* =========================================================
    FONCTION PRINCIPALE
    ========================================================= */
 
 async function submitPaymentRequest() {
 
-    /* -----------------------------------------------------
-       1. Vérifier connexion
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       1. VÉRIFIER LA CONNEXION
+       ===================================================== */
 
     if (!currentUser) {
 
@@ -440,9 +508,10 @@ async function submitPaymentRequest() {
     }
 
 
-    /* -----------------------------------------------------
-       2. Vérifier formule
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       2. VÉRIFIER LA FORMULE
+       ===================================================== */
 
     if (!selectedPlan) {
 
@@ -455,9 +524,10 @@ async function submitPaymentRequest() {
     }
 
 
-    /* -----------------------------------------------------
-       3. Vérifier moyen de paiement
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       3. VÉRIFIER LE MOYEN DE PAIEMENT
+       ===================================================== */
 
     const checkedMethod =
         document.querySelector(
@@ -480,9 +550,10 @@ async function submitPaymentRequest() {
         checkedMethod.value;
 
 
-    /* -----------------------------------------------------
-       4. Vérifier référence
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       4. RÉCUPÉRER LA RÉFÉRENCE
+       ===================================================== */
 
     const reference =
         paymentReference
@@ -493,9 +564,10 @@ async function submitPaymentRequest() {
     if (!reference) {
 
         showMessage(
-            "Veuillez entrer le numéro de référence de votre paiement.",
+            "Veuillez entrer la référence de votre paiement.",
             "error"
         );
+
 
         if (paymentReference) {
 
@@ -503,20 +575,22 @@ async function submitPaymentRequest() {
 
         }
 
+
         return;
     }
 
 
-    /* -----------------------------------------------------
-       5. Vérifier longueur
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       5. VÉRIFIER LA LONGUEUR
+       ===================================================== */
 
     if (
         reference.length < 5
     ) {
 
         showMessage(
-            "Le numéro de référence semble incorrect. Vérifiez votre reçu de paiement.",
+            "La référence semble incorrecte. Vérifiez votre reçu de paiement.",
             "error"
         );
 
@@ -524,9 +598,10 @@ async function submitPaymentRequest() {
     }
 
 
-    /* -----------------------------------------------------
-       6. Récupérer la formule
-    ----------------------------------------------------- */
+
+    /* =====================================================
+       6. RÉCUPÉRER LA FORMULE
+       ===================================================== */
 
     const plan =
         PLANS[selectedPlan];
@@ -543,25 +618,32 @@ async function submitPaymentRequest() {
     }
 
 
-    /* -----------------------------------------------------
-       7. Désactiver le bouton
-    ----------------------------------------------------- */
 
-    submitPaymentButton.disabled =
-        true;
+    /* =====================================================
+       7. DÉSACTIVER LE BOUTON
+       ===================================================== */
+
+    if (submitPaymentButton) {
+
+        submitPaymentButton.disabled =
+            true;
 
 
-    submitPaymentButton.innerHTML = `
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        Envoi de la demande...
-    `;
+        submitPaymentButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Envoi de la demande...
+        `;
+
+    }
+
 
 
     try {
 
-        /* -------------------------------------------------
-           8. Récupérer le profil Firestore
-        ------------------------------------------------- */
+
+        /* =================================================
+           8. RÉCUPÉRER LE PROFIL FIRESTORE
+           ================================================= */
 
         const userRef =
             doc(
@@ -588,9 +670,10 @@ async function submitPaymentRequest() {
             userSnapshot.data();
 
 
-        /* -------------------------------------------------
-           9. Vérifier si cette référence existe déjà
-        ------------------------------------------------- */
+
+        /* =================================================
+           9. COLLECTION DES PAIEMENTS
+           ================================================= */
 
         const paymentsRef =
             collection(
@@ -599,14 +682,30 @@ async function submitPaymentRequest() {
             );
 
 
+
+        /* =================================================
+           10. VÉRIFIER SI LA RÉFÉRENCE
+               A DÉJÀ ÉTÉ UTILISÉE PAR
+               CE COMPTE
+           ================================================= */
+
         const referenceQuery =
             query(
+
                 paymentsRef,
+
+                where(
+                    "userId",
+                    "==",
+                    currentUser.uid
+                ),
+
                 where(
                     "paymentReference",
                     "==",
                     reference
                 )
+
             );
 
 
@@ -621,19 +720,22 @@ async function submitPaymentRequest() {
         ) {
 
             showMessage(
-                "Cette référence de paiement a déjà été enregistrée. Vérifiez votre référence.",
+                "Cette référence a déjà été enregistrée avec votre compte.",
                 "error"
             );
 
+
             resetSubmitButton();
+
 
             return;
         }
 
 
-        /* -------------------------------------------------
-           10. Numéro destinataire
-        ------------------------------------------------- */
+
+        /* =================================================
+           11. NUMÉRO DESTINATAIRE
+           ================================================= */
 
         const receiverNumber =
             PAYMENT_NUMBERS[
@@ -641,64 +743,76 @@ async function submitPaymentRequest() {
             ];
 
 
-        /* -------------------------------------------------
-           11. Enregistrer la demande
-        ------------------------------------------------- */
 
-        await addDoc(
-            paymentsRef,
-            {
+        /* =================================================
+           12. ENREGISTRER LA DEMANDE
+           ================================================= */
 
-                userId:
-                    currentUser.uid,
+        const paymentData = {
 
-                userName:
-                    profile.name ||
-                    currentUser.displayName ||
-                    "Utilisateur CAMU",
+            userId:
+                currentUser.uid,
 
-                userEmail:
-                    profile.email ||
-                    currentUser.email ||
-                    "",
+            userName:
+                profile.name ||
+                currentUser.displayName ||
+                "Utilisateur CAMU",
 
-                plan:
-                    selectedPlan,
+            userEmail:
+                profile.email ||
+                currentUser.email ||
+                "",
 
-                amount:
-                    plan.amount,
+            plan:
+                selectedPlan,
 
-                duration:
-                    plan.duration,
+            amount:
+                plan.amount,
 
-                paymentMethod:
-                    selectedPaymentMethod,
+            duration:
+                plan.duration,
 
-                paymentReference:
-                    reference,
+            paymentMethod:
+                selectedPaymentMethod,
 
-                receiverNumber:
-                    receiverNumber,
+            paymentReference:
+                reference,
 
-                status:
-                    "pending",
+            receiverNumber:
+                receiverNumber,
 
-                createdAt:
-                    serverTimestamp(),
+            status:
+                "pending",
 
-                validatedAt:
-                    null,
+            createdAt:
+                serverTimestamp(),
 
-                validatedBy:
-                    ""
+            validatedAt:
+                null,
 
-            }
+            validatedBy:
+                ""
+
+        };
+
+
+        const paymentDoc =
+            await addDoc(
+                paymentsRef,
+                paymentData
+            );
+
+
+        console.log(
+            "Demande Premium créée :",
+            paymentDoc.id
         );
 
 
-        /* -------------------------------------------------
-           12. Succès
-        ------------------------------------------------- */
+
+        /* =================================================
+           13. MESSAGE DE SUCCÈS
+           ================================================= */
 
         showMessage(
             "Votre demande a été envoyée avec succès. Votre paiement sera vérifié par notre équipe avant l'activation de Premium.",
@@ -706,21 +820,29 @@ async function submitPaymentRequest() {
         );
 
 
-        /* Vider la référence */
+
+        /* =================================================
+           14. NETTOYER LA RÉFÉRENCE
+           ================================================= */
 
         if (paymentReference) {
 
-            paymentReference.value = "";
+            paymentReference.value =
+                "";
 
         }
 
 
-        /* Désélectionner le réseau */
+
+        /* =================================================
+           15. DÉSÉLECTIONNER LE MOYEN DE PAIEMENT
+           ================================================= */
 
         paymentMethodInputs.forEach(
             (input) => {
 
-                input.checked = false;
+                input.checked =
+                    false;
 
             }
         );
@@ -730,16 +852,11 @@ async function submitPaymentRequest() {
             null;
 
 
-        /*
-         * Garder la formule sélectionnée
-         * afin que l'utilisateur voie
-         * ce qu'il a demandé.
-         */
-
 
         console.log(
-            "Demande Premium enregistrée."
+            "Demande Premium enregistrée avec succès."
         );
+
 
 
     } catch (error) {
@@ -750,10 +867,28 @@ async function submitPaymentRequest() {
         );
 
 
-        showMessage(
-            "Impossible d'envoyer votre demande. Vérifiez votre connexion et réessayez.",
-            "error"
-        );
+        /* ---------------------------------------------
+           Message adapté selon l'erreur
+           --------------------------------------------- */
+
+        if (
+            error.code ===
+            "permission-denied"
+        ) {
+
+            showMessage(
+                "L'envoi de la demande a été refusé par les règles de sécurité. Vérifiez les règles Firestore de premiumPayments.",
+                "error"
+            );
+
+        } else {
+
+            showMessage(
+                "Impossible d'envoyer votre demande. Vérifiez votre connexion et réessayez.",
+                "error"
+            );
+
+        }
 
     }
 
@@ -761,6 +896,7 @@ async function submitPaymentRequest() {
     resetSubmitButton();
 
 }
+
 
 
 /* =========================================================
@@ -785,6 +921,7 @@ function resetSubmitButton() {
     `;
 
 }
+
 
 
 /* =========================================================
@@ -816,13 +953,17 @@ function showMessage(
 
 
     paymentMessage.scrollIntoView({
+
         behavior: "smooth",
+
         block: "nearest"
+
     });
 
 }
 
 
+
 /* =========================================================
-   FIN
+   FIN DU FICHIER
    ========================================================= */
