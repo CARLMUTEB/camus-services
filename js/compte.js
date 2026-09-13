@@ -1,6 +1,6 @@
 // =====================================================
 // CAMU SERVICES
-// COMPTE UTILISATEUR — V2
+// COMPTE UTILISATEUR — V3
 // Profil + Annonces + Favoris + Abonnement
 // =====================================================
 
@@ -23,9 +23,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-console.log(
-    "CAMU SERVICES — compte.js chargé."
-);
+// =====================================================
+// INITIALISATION
+// =====================================================
+
+console.log("CAMU SERVICES — compte.js chargé.");
 
 
 // =====================================================
@@ -90,6 +92,51 @@ const subscriptionButton =
 
 
 // =====================================================
+// NAVIGATION PREMIUM
+// =====================================================
+
+function goToPremium(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    console.log(
+        "CAMU SERVICES : ouverture de la page Premium..."
+    );
+
+    window.location.href = "premium.html";
+}
+
+
+// =====================================================
+// CONFIGURER LE BOUTON PREMIUM
+// =====================================================
+
+function setupPremiumButton() {
+
+    if (!subscriptionButton) {
+
+        console.warn(
+            "CAMU SERVICES : bouton Premium introuvable."
+        );
+
+        return;
+    }
+
+    // Toujours conserver l'adresse correcte
+    subscriptionButton.setAttribute(
+        "href",
+        "premium.html"
+    );
+
+    // Éviter plusieurs écouteurs
+    subscriptionButton.onclick = goToPremium;
+
+}
+
+
+// =====================================================
 // AFFICHER LA PHOTO DE PROFIL
 // =====================================================
 
@@ -102,10 +149,9 @@ function displayProfilePhoto(photoURL) {
         return;
     }
 
-
     if (
         photoURL &&
-        photoURL.trim() !== ""
+        String(photoURL).trim() !== ""
     ) {
 
         accountAvatarImage.src =
@@ -142,12 +188,10 @@ function formatDate(date) {
         return "";
     }
 
-
     const dateObject =
         date instanceof Date
             ? date
             : new Date(date);
-
 
     if (
         Number.isNaN(
@@ -156,7 +200,6 @@ function formatDate(date) {
     ) {
         return "";
     }
-
 
     return dateObject.toLocaleDateString(
         "fr-FR",
@@ -179,24 +222,19 @@ function firestoreDateToDate(value) {
         return null;
     }
 
-
     // Timestamp Firestore
     if (
         typeof value.toDate === "function"
     ) {
-
         return value.toDate();
     }
-
 
     // Date JavaScript
     if (
         value instanceof Date
     ) {
-
         return value;
     }
-
 
     // Millisecondes
     if (
@@ -213,11 +251,9 @@ function firestoreDateToDate(value) {
             : date;
     }
 
-
     // String / autre
     const date =
         new Date(value);
-
 
     return Number.isNaN(
         date.getTime()
@@ -237,31 +273,25 @@ function getRemainingDays(endDate) {
         return 0;
     }
 
-
     const now =
         new Date();
-
 
     const end =
         firestoreDateToDate(
             endDate
         );
 
-
     if (!end) {
         return 0;
     }
-
 
     const difference =
         end.getTime() -
         now.getTime();
 
-
     if (difference <= 0) {
         return 0;
     }
-
 
     return Math.ceil(
         difference /
@@ -279,9 +309,8 @@ async function displaySubscription(
     user
 ) {
 
-    if (
-        !subscriptionCard
-    ) {
+    if (!subscriptionCard) {
+
         console.warn(
             "CAMU SERVICES : carte abonnement introuvable."
         );
@@ -289,25 +318,17 @@ async function displaySubscription(
         return;
     }
 
-
-    // =================================================
-    // RÉCUPÉRER LES INFORMATIONS
-    // =================================================
-
     let plan =
         profile.plan ||
         "basic";
-
 
     let status =
         profile.subscriptionStatus ||
         "none";
 
-
     const trialEnd =
         profile.trialEnd ||
         null;
-
 
     const trialStart =
         profile.trialStart ||
@@ -315,14 +336,13 @@ async function displaySubscription(
 
 
     // =================================================
-    // CONVERSION DATE
+    // CONVERSION DES DATES
     // =================================================
 
     const endDate =
         firestoreDateToDate(
             trialEnd
         );
-
 
     const startDate =
         firestoreDateToDate(
@@ -331,7 +351,7 @@ async function displaySubscription(
 
 
     // =================================================
-    // VÉRIFIER L'EXPIRATION DE L'ESSAI
+    // VÉRIFIER EXPIRATION ESSAI
     // =================================================
 
     if (
@@ -342,7 +362,6 @@ async function displaySubscription(
         const now =
             new Date();
 
-
         if (
             now.getTime() >=
             endDate.getTime()
@@ -352,18 +371,11 @@ async function displaySubscription(
                 "CAMU SERVICES : essai Premium expiré."
             );
 
-
             plan =
                 "basic";
 
-
             status =
                 "expired";
-
-
-            // -----------------------------------------
-            // Mise à jour Firestore
-            // -----------------------------------------
 
             try {
 
@@ -384,7 +396,6 @@ async function displaySubscription(
                     }
                 );
 
-
                 console.log(
                     "CAMU SERVICES : utilisateur passé en Basic."
                 );
@@ -401,7 +412,7 @@ async function displaySubscription(
 
 
     // =================================================
-    // PREMIUM — ESSAI
+    // PREMIUM — ESSAI GRATUIT
     // =================================================
 
     if (
@@ -414,18 +425,9 @@ async function displaySubscription(
                 endDate
             );
 
-
-        // ---------------------------------------------
-        // TITRE
-        // ---------------------------------------------
-
         subscriptionPlan.textContent =
             "Premium";
 
-
-        // ---------------------------------------------
-        // INFORMATIONS
-        // ---------------------------------------------
 
         subscriptionInfo.innerHTML = `
 
@@ -443,10 +445,13 @@ async function displaySubscription(
                 startDate
                     ? `
                         <div class="subscription-date">
+
                             Début :
+
                             <strong>
                                 ${formatDate(startDate)}
                             </strong>
+
                         </div>
                     `
                     : ""
@@ -456,10 +461,13 @@ async function displaySubscription(
                 endDate
                     ? `
                         <div class="subscription-date">
+
                             Expire le :
+
                             <strong>
                                 ${formatDate(endDate)}
                             </strong>
+
                         </div>
                     `
                     : ""
@@ -468,9 +476,7 @@ async function displaySubscription(
         `;
 
 
-        // ---------------------------------------------
         // JOURS RESTANTS
-        // ---------------------------------------------
 
         if (
             remainingDays > 0
@@ -504,9 +510,7 @@ async function displaySubscription(
         }
 
 
-        // ---------------------------------------------
         // BOUTON
-        // ---------------------------------------------
 
         if (subscriptionButton) {
 
@@ -518,19 +522,13 @@ async function displaySubscription(
 
             `;
 
-            subscriptionButton.href =
-                "premium.html";
+            setupPremiumButton();
         }
 
-
-        // ---------------------------------------------
-        // CLASSE
-        // ---------------------------------------------
 
         subscriptionCard.classList.add(
             "subscription-premium"
         );
-
 
         return;
     }
@@ -587,15 +585,13 @@ async function displaySubscription(
 
             `;
 
-            subscriptionButton.href =
-                "premium.html";
+            setupPremiumButton();
         }
 
 
         subscriptionCard.classList.add(
             "subscription-premium"
         );
-
 
         return;
     }
@@ -651,8 +647,7 @@ async function displaySubscription(
 
         `;
 
-        subscriptionButton.href =
-            "premium.html";
+        setupPremiumButton();
     }
 
 
@@ -672,7 +667,6 @@ async function loadUserProfile(user) {
         return;
     }
 
-
     try {
 
         const userRef =
@@ -682,15 +676,12 @@ async function loadUserProfile(user) {
                 user.uid
             );
 
-
         const userSnap =
             await getDoc(
                 userRef
             );
 
-
         let profile = {};
-
 
         if (
             userSnap.exists()
@@ -711,12 +702,10 @@ async function loadUserProfile(user) {
             user.displayName ||
             "Utilisateur CAMU";
 
-
         const email =
             profile.email ||
             user.email ||
             "";
-
 
         const phone =
             profile.phone ||
@@ -724,11 +713,9 @@ async function loadUserProfile(user) {
             user.phoneNumber ||
             "";
 
-
         const description =
             profile.description ||
             "";
-
 
         const photoURL =
             profile.photoURL ||
@@ -738,7 +725,7 @@ async function loadUserProfile(user) {
 
 
         // =================================================
-        // AFFICHAGE NOM
+        // AFFICHAGE
         // =================================================
 
         if (accountName) {
@@ -747,21 +734,11 @@ async function loadUserProfile(user) {
                 name;
         }
 
-
-        // =================================================
-        // AFFICHAGE EMAIL
-        // =================================================
-
         if (accountEmail) {
 
             accountEmail.textContent =
                 email;
         }
-
-
-        // =================================================
-        // PROFIL
-        // =================================================
 
         if (profileName) {
 
@@ -769,13 +746,11 @@ async function loadUserProfile(user) {
                 name;
         }
 
-
         if (profileEmail) {
 
             profileEmail.textContent =
                 email;
         }
-
 
         if (profilePhone) {
 
@@ -783,7 +758,6 @@ async function loadUserProfile(user) {
                 phone ||
                 "Non renseigné";
         }
-
 
         if (profileDescription) {
 
@@ -816,7 +790,6 @@ async function loadUserProfile(user) {
             "CAMU SERVICES : profil chargé."
         );
 
-
     } catch (error) {
 
         console.error(
@@ -826,18 +799,16 @@ async function loadUserProfile(user) {
 
 
         // =================================================
-        // SECOURS FIREBASE AUTH
+        // SECOURS
         // =================================================
 
         const name =
             user.displayName ||
             "Utilisateur CAMU";
 
-
         const email =
             user.email ||
             "";
-
 
         const photoURL =
             user.photoURL ||
@@ -850,20 +821,17 @@ async function loadUserProfile(user) {
                 name;
         }
 
-
         if (accountEmail) {
 
             accountEmail.textContent =
                 email;
         }
 
-
         if (profileName) {
 
             profileName.textContent =
                 name;
         }
-
 
         if (profileEmail) {
 
@@ -887,7 +855,6 @@ async function loadUserProfile(user) {
                 "Basic";
         }
 
-
         if (subscriptionInfo) {
 
             subscriptionInfo.innerHTML = `
@@ -905,12 +872,15 @@ async function loadUserProfile(user) {
             `;
         }
 
-
         if (subscriptionDays) {
 
             subscriptionDays.textContent =
                 "Passez à Premium pour plus de fonctionnalités.";
         }
+
+        // Même en cas d'erreur Firestore,
+        // le bouton Premium reste fonctionnel.
+        setupPremiumButton();
     }
 }
 
@@ -928,12 +898,7 @@ async function loadMyAds(user) {
         return;
     }
 
-
     try {
-
-        // =================================================
-        // REQUÊTE ANNONCES
-        // =================================================
 
         const annoncesQuery =
             query(
@@ -948,15 +913,12 @@ async function loadMyAds(user) {
                 )
             );
 
-
         const snapshot =
             await getDocs(
                 annoncesQuery
             );
 
-
         const ads = [];
-
 
         snapshot.forEach(
             (document) => {
@@ -984,11 +946,9 @@ async function loadMyAds(user) {
                     a.createdAt?.seconds ||
                     0;
 
-
                 const dateB =
                     b.createdAt?.seconds ||
                     0;
-
 
                 return dateB - dateA;
             }
@@ -996,7 +956,7 @@ async function loadMyAds(user) {
 
 
         // =================================================
-        // NOMBRE D'ANNONCES
+        // NOMBRE
         // =================================================
 
         if (myAdsCount) {
@@ -1024,7 +984,6 @@ async function loadMyAds(user) {
                     "block";
             }
 
-
             return;
         }
 
@@ -1048,14 +1007,11 @@ async function loadMyAds(user) {
                         "article"
                     );
 
-
                 card.className =
                     "my-ad-card";
 
 
-                // =================================================
                 // IMAGE
-                // =================================================
 
                 const image =
                     ad.images?.[0] ||
@@ -1064,18 +1020,14 @@ async function loadMyAds(user) {
                     "";
 
 
-                // =================================================
                 // TITRE
-                // =================================================
 
                 const title =
                     ad.title ||
                     "Annonce sans titre";
 
 
-                // =================================================
                 // PRIX
-                // =================================================
 
                 const price =
                     ad.price !== undefined &&
@@ -1085,9 +1037,7 @@ async function loadMyAds(user) {
                         : "Prix sur demande";
 
 
-                // =================================================
                 // LOCALISATION
-                // =================================================
 
                 const location =
                     [
@@ -1104,7 +1054,6 @@ async function loadMyAds(user) {
 
                 let imageHTML =
                     "";
-
 
                 if (image) {
 
@@ -1160,13 +1109,11 @@ async function loadMyAds(user) {
                             ${escapeHTML(title)}
                         </h3>
 
-
                         <div class="my-ad-price">
 
                             ${escapeHTML(price)}
 
                         </div>
-
 
                         <div class="my-ad-location">
 
@@ -1179,40 +1126,29 @@ async function loadMyAds(user) {
 
                         </div>
 
-
                         <div class="my-ad-actions">
-
 
                             <a
                                 class="my-ad-view"
                                 href="explorer.html?id=${encodeURIComponent(ad.id)}"
                             >
-
                                 👁️ Voir
-
                             </a>
-
 
                             <a
                                 class="my-ad-edit"
                                 href="modifier.html?id=${encodeURIComponent(ad.id)}"
                             >
-
                                 ✏️ Modifier
-
                             </a>
-
 
                             <button
                                 type="button"
                                 class="my-ad-delete"
                                 data-id="${escapeHTML(ad.id)}"
                             >
-
                                 🗑️ Supprimer
-
                             </button>
-
 
                         </div>
 
@@ -1235,7 +1171,6 @@ async function loadMyAds(user) {
                         ".my-ad-delete"
                     );
 
-
                 if (deleteButton) {
 
                     deleteButton.addEventListener(
@@ -1245,10 +1180,6 @@ async function loadMyAds(user) {
                             const annonceId =
                                 deleteButton.dataset.id;
 
-
-                            // -------------------------------------
-                            // CONFIRMATION
-                            // -------------------------------------
 
                             const confirmation =
                                 confirm(
@@ -1266,14 +1197,9 @@ async function loadMyAds(user) {
                                 deleteButton.disabled =
                                     true;
 
-
                                 deleteButton.textContent =
                                     "Suppression...";
 
-
-                                // ---------------------------------
-                                // RÉFÉRENCE
-                                // ---------------------------------
 
                                 const annonceRef =
                                     doc(
@@ -1282,10 +1208,6 @@ async function loadMyAds(user) {
                                         annonceId
                                     );
 
-
-                                // ---------------------------------
-                                // RÉCUPÉRER
-                                // ---------------------------------
 
                                 const annonceSnap =
                                     await getDoc(
@@ -1301,11 +1223,9 @@ async function loadMyAds(user) {
                                         "Cette annonce n'existe plus."
                                     );
 
-
                                     await loadMyAds(
                                         auth.currentUser
                                     );
-
 
                                     return;
                                 }
@@ -1314,10 +1234,6 @@ async function loadMyAds(user) {
                                 const annonceData =
                                     annonceSnap.data();
 
-
-                                // ---------------------------------
-                                // PROPRIÉTAIRE
-                                // ---------------------------------
 
                                 if (
                                     annonceData.ownerId !==
@@ -1328,22 +1244,15 @@ async function loadMyAds(user) {
                                         "Vous ne pouvez supprimer que vos propres annonces."
                                     );
 
-
                                     deleteButton.disabled =
                                         false;
-
 
                                     deleteButton.textContent =
                                         "🗑️ Supprimer";
 
-
                                     return;
                                 }
 
-
-                                // ---------------------------------
-                                // SUPPRESSION
-                                // ---------------------------------
 
                                 await deleteDoc(
                                     annonceRef
@@ -1361,14 +1270,9 @@ async function loadMyAds(user) {
                                 );
 
 
-                                // ---------------------------------
-                                // ACTUALISER
-                                // ---------------------------------
-
                                 await loadMyAds(
                                     auth.currentUser
                                 );
-
 
                             } catch (error) {
 
@@ -1377,15 +1281,12 @@ async function loadMyAds(user) {
                                     error
                                 );
 
-
                                 alert(
                                     "Impossible de supprimer l'annonce."
                                 );
 
-
                                 deleteButton.disabled =
                                     false;
-
 
                                 deleteButton.textContent =
                                     "🗑️ Supprimer";
@@ -1401,14 +1302,12 @@ async function loadMyAds(user) {
             `CAMU SERVICES : ${ads.length} annonce(s) chargée(s).`
         );
 
-
     } catch (error) {
 
         console.error(
             "Erreur chargement annonces :",
             error
         );
-
 
         myAdsContainer.innerHTML = `
 
@@ -1427,7 +1326,6 @@ async function loadMyAds(user) {
                         margin-bottom:10px;
                     "
                 ></i>
-
 
                 <p>
                     Impossible de charger vos annonces.
@@ -1450,7 +1348,6 @@ function loadFavoritesCount() {
         return;
     }
 
-
     try {
 
         const stored =
@@ -1458,12 +1355,10 @@ function loadFavoritesCount() {
                 "camuFavorites"
             );
 
-
         const favorites =
             stored
                 ? JSON.parse(stored)
                 : [];
-
 
         if (
             Array.isArray(
@@ -1480,14 +1375,12 @@ function loadFavoritesCount() {
                 "0";
         }
 
-
     } catch (error) {
 
         console.error(
             "Erreur favoris :",
             error
         );
-
 
         favoritesCount.textContent =
             "0";
@@ -1513,10 +1406,8 @@ onAuthStateChanged(
                 "CAMU SERVICES : utilisateur non connecté."
             );
 
-
             window.location.href =
                 "connexion.html";
-
 
             return;
         }
@@ -1532,8 +1423,13 @@ onAuthStateChanged(
         );
 
 
+        // Garantir que le bouton Premium
+        // fonctionne immédiatement.
+        setupPremiumButton();
+
+
         // =================================================
-        // CHARGER PROFIL
+        // PROFIL
         // =================================================
 
         await loadUserProfile(
@@ -1542,7 +1438,7 @@ onAuthStateChanged(
 
 
         // =================================================
-        // CHARGER ANNONCES
+        // ANNONCES
         // =================================================
 
         await loadMyAds(
@@ -1569,14 +1465,12 @@ function formatPrice(value) {
     const number =
         Number(value);
 
-
     if (
         Number.isNaN(number)
     ) {
 
         return String(value);
     }
-
 
     return number.toLocaleString(
         "fr-FR"
