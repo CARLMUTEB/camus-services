@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Mon compte — CAMU SERVICES</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/compte.css">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="css/compte.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 </head>
 
+
 <body>
+
 
 <!-- =========================
      CONTENU
 ========================= -->
+
 <main class="account-main">
+
 
     <!-- =========================
          BARRE SUPÉRIEURE
     ========================= -->
+
     <div class="account-topbar">
 
-        <a href="index.html" class="back-button">
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
             <i class="fa-solid fa-arrow-left"></i>
+
             <span>Retour</span>
+
         </a>
 
-        <h1>Mon compte</h1>
+
+        <h1>
+            Mon compte
+        </h1>
 
     </div>
+
 
 
     <!-- =========================
          PROFIL
     ========================= -->
+
     <section class="account-user">
 
         <div class="account-avatar">
@@ -48,8 +80,11 @@
                 alt="Photo de profil"
             >
 
-            <div id="accountAvatarDefault"
-                 class="account-avatar-default">
+
+            <div
+                id="accountAvatarDefault"
+                class="account-avatar-default"
+            >
 
                 <i class="fa-solid fa-user"></i>
 
@@ -64,6 +99,7 @@
                 Utilisateur CAMU
             </h2>
 
+
             <p id="accountEmail">
                 Chargement...
             </p>
@@ -73,15 +109,24 @@
     </section>
 
 
+
     <!-- =========================
          CHANGER PHOTO
     ========================= -->
+
     <div class="photo-action">
 
-        <label for="profilePhotoInput" class="photo-button">
+        <label
+            for="profilePhotoInput"
+            class="photo-button"
+        >
+
             <i class="fa-solid fa-camera"></i>
+
             Changer la photo
+
         </label>
+
 
         <input
             type="file"
@@ -93,71 +138,118 @@
     </div>
 
 
+
     <!-- =========================
          MENU COMPTE
     ========================= -->
+
     <section class="account-menu">
 
 
         <!-- MES ANNONCES -->
-        <a href="#mes-annonces"
-           class="account-menu-item">
+
+        <a
+            href="#mes-annonces"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon">
+
                 <i class="fa-solid fa-bullhorn"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Mes annonces</strong>
+                <strong>
+                    Mes annonces
+                </strong>
+
 
                 <span>
-                    <span id="myAdsCount">0</span>
+
+                    <span id="myAdsCount">
+                        0
+                    </span>
+
                     annonce(s) publiée(s)
+
                 </span>
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
+
 
 
         <!-- FAVORIS -->
-        <a href="favoris.html"
-           class="account-menu-item">
+
+        <a
+            href="favoris.html"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon">
+
                 <i class="fa-solid fa-heart"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Mes favoris</strong>
+                <strong>
+                    Mes favoris
+                </strong>
+
 
                 <span>
-                    <span id="favoritesCount">0</span>
+
+                    <span id="favoritesCount">
+                        0
+                    </span>
+
                     favori(s)
+
                 </span>
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
 
 
+
         <!-- PUBLIER -->
-        <a href="publier.html"
-           class="account-menu-item">
+
+        <a
+            href="publier.html"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon publish-icon">
+
                 <i class="fa-solid fa-plus"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Publier une annonce</strong>
+                <strong>
+                    Publier une annonce
+                </strong>
+
 
                 <span>
                     Vendez ou proposez vos services
@@ -165,22 +257,35 @@
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
 
 
+
         <!-- MON PROFIL -->
-        <a href="#profil"
-           class="account-menu-item">
+
+        <a
+            href="#profil"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon">
+
                 <i class="fa-solid fa-user"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Mon profil</strong>
+                <strong>
+                    Mon profil
+                </strong>
+
 
                 <span>
                     Modifier mes informations
@@ -188,22 +293,35 @@
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
 
 
+
         <!-- PARAMÈTRES -->
-        <a href="parametres.html"
-           class="account-menu-item">
+
+        <a
+            href="parametres.html"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon">
+
                 <i class="fa-solid fa-gear"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Paramètres</strong>
+                <strong>
+                    Paramètres
+                </strong>
+
 
                 <span>
                     Gérer mon compte
@@ -211,22 +329,35 @@
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
 
 
+
         <!-- AIDE -->
-        <a href="aide.html"
-           class="account-menu-item">
+
+        <a
+            href="aide.html"
+            class="account-menu-item"
+        >
 
             <div class="menu-icon">
+
                 <i class="fa-solid fa-circle-question"></i>
+
             </div>
+
 
             <div class="menu-text">
 
-                <strong>Centre d'aide</strong>
+                <strong>
+                    Centre d'aide
+                </strong>
+
 
                 <span>
                     Besoin d'aide ?
@@ -234,26 +365,44 @@
 
             </div>
 
-            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+            <i
+                class="fa-solid fa-chevron-right menu-arrow"
+            ></i>
 
         </a>
 
+
     </section>
+
 
 
     <!-- =========================
          INFORMATIONS
     ========================= -->
-    <section id="profil" class="account-info-section">
+
+    <section
+        id="profil"
+        class="account-info-section"
+    >
 
         <div class="section-title">
+
             <i class="fa-solid fa-id-card"></i>
-            <h2>Mes informations</h2>
+
+            <h2>
+                Mes informations
+            </h2>
+
         </div>
+
 
         <div class="info-row">
 
-            <span>Nom</span>
+            <span>
+                Nom
+            </span>
+
 
             <strong id="profileName">
                 -
@@ -261,9 +410,13 @@
 
         </div>
 
+
         <div class="info-row">
 
-            <span>Email</span>
+            <span>
+                Email
+            </span>
+
 
             <strong id="profileEmail">
                 -
@@ -271,9 +424,13 @@
 
         </div>
 
+
         <div class="info-row">
 
-            <span>Téléphone</span>
+            <span>
+                Téléphone
+            </span>
+
 
             <strong id="profilePhone">
                 Non renseigné
@@ -281,9 +438,13 @@
 
         </div>
 
+
         <div class="info-row">
 
-            <span>Description</span>
+            <span>
+                Description
+            </span>
+
 
             <strong id="profileDescription">
                 Non renseignée
@@ -291,24 +452,148 @@
 
         </div>
 
-        <button id="editProfileButton"
-                class="edit-profile-button">
+
+        <button
+            id="editProfileButton"
+            class="edit-profile-button"
+        >
 
             <i class="fa-solid fa-pen"></i>
+
             Modifier mon profil
 
         </button>
 
+
     </section>
+
+
+
+    <!-- =========================
+         MON ABONNEMENT
+    ========================= -->
+
+    <section class="subscription-section">
+
+
+        <div class="section-title">
+
+            <i class="fa-solid fa-crown"></i>
+
+            <h2>
+                Mon abonnement
+            </h2>
+
+        </div>
+
+
+
+        <div
+            id="subscriptionCard"
+            class="subscription-card"
+        >
+
+
+            <!-- =========================
+                 EN-TÊTE ABONNEMENT
+            ========================= -->
+
+            <div class="subscription-header">
+
+
+                <div class="subscription-icon">
+
+                    <i class="fa-solid fa-crown"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="subscription-label">
+
+                        FORMULE ACTUELLE
+
+                    </span>
+
+
+                    <h3 id="subscriptionPlan">
+
+                        Chargement...
+
+                    </h3>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 INFORMATIONS
+            ========================= -->
+
+            <div
+                id="subscriptionInfo"
+                class="subscription-info"
+            >
+
+                Chargement de votre abonnement...
+
+            </div>
+
+
+
+            <!-- =========================
+                 JOURS RESTANTS
+            ========================= -->
+
+            <div
+                id="subscriptionDays"
+                class="subscription-days"
+            >
+
+            </div>
+
+
+
+            <!-- =========================
+                 BOUTON PREMIUM
+            ========================= -->
+
+            <a
+                href="premium.html"
+                id="subscriptionButton"
+                class="subscription-button"
+            >
+
+                <i class="fa-solid fa-crown"></i>
+
+                Voir Premium
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
 
 
     <!-- =========================
          MES ANNONCES
     ========================= -->
-    <section id="mes-annonces"
-             class="my-ads-section">
+
+    <section
+        id="mes-annonces"
+        class="my-ads-section"
+    >
+
 
         <div class="section-header">
+
 
             <div>
 
@@ -316,58 +601,86 @@
                     GESTION
                 </span>
 
-                <h2>Mes annonces</h2>
+
+                <h2>
+                    Mes annonces
+                </h2>
 
             </div>
 
-            <a href="publier.html"
-               class="new-ad-link">
+
+            <a
+                href="publier.html"
+                class="new-ad-link"
+            >
 
                 <i class="fa-solid fa-plus"></i>
+
                 Nouvelle annonce
 
             </a>
 
+
         </div>
 
 
-        <div id="myAdsContainer"
-             class="my-ads-container">
+
+        <div
+            id="myAdsContainer"
+            class="my-ads-container"
+        >
         </div>
 
 
-        <div id="myAdsEmpty"
-             class="empty-ads">
+
+        <div
+            id="myAdsEmpty"
+            class="empty-ads"
+        >
 
             <i class="fa-solid fa-bullhorn"></i>
 
-            <h3>Vous n'avez pas encore d'annonce</h3>
+
+            <h3>
+                Vous n'avez pas encore d'annonce
+            </h3>
+
 
             <p>
                 Publiez votre première annonce sur
                 CAMU SERVICES.
             </p>
 
-            <a href="publier.html"
-               class="publish-button">
+
+            <a
+                href="publier.html"
+                class="publish-button"
+            >
 
                 <i class="fa-solid fa-plus"></i>
+
                 Publier une annonce
 
             </a>
 
         </div>
 
+
     </section>
+
 
 
     <!-- =========================
          DÉCONNEXION
     ========================= -->
+
     <section class="logout-section">
 
-        <button id="logoutButton"
-                class="logout-button">
+
+        <button
+            id="logoutButton"
+            class="logout-button"
+        >
 
             <i class="fa-solid fa-right-from-bracket"></i>
 
@@ -375,28 +688,51 @@
 
         </button>
 
+
     </section>
+
 
 
     <!-- =========================
          FOOTER
     ========================= -->
+
     <footer class="account-footer">
 
         © 2026 CAMU SERVICES
 
     </footer>
 
+
 </main>
+
 
 
 <!-- =========================
      JAVASCRIPT
 ========================= -->
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/compte.js"></script>
-    <script src="js/theme.js"></script>
+
+<script
+    type="module"
+    src="js/auth.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/compte.js"
+></script>
+
+
+<script src="js/theme.js"></script>
+
 
 </body>
+
 </html>
