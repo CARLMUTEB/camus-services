@@ -1,0 +1,857 @@
+/* ============================================================
+   CAMU SERVICES — ADMIN PREMIUM
+   ============================================================ */
+
+
+/* ============================================================
+   SECTION
+   ============================================================ */
+
+.admin-premium-section {
+    width: 100%;
+}
+
+
+/* ============================================================
+   EN-TÊTE
+   ============================================================ */
+
+.admin-premium-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+
+.admin-premium-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+.admin-premium-title-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    background: rgba(255, 193, 7, 0.12);
+    color: #f5a400;
+}
+
+
+.admin-premium-title h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+
+.admin-premium-title p {
+    margin: 4px 0 0;
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   BOUTON ACTUALISER
+   ============================================================ */
+
+.admin-refresh-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #222;
+    color: #fff;
+    transition: 0.2s ease;
+}
+
+
+.admin-refresh-button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+
+/* ============================================================
+   COMPTEURS
+   ============================================================ */
+
+.premium-payment-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+
+.premium-payment-stat {
+    border-radius: 16px;
+    padding: 20px;
+    background: var(--card-bg, #fff);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+.premium-payment-stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.premium-payment-stat.pending
+.premium-payment-stat-icon {
+    background: rgba(255, 193, 7, 0.12);
+    color: #f5a400;
+}
+
+
+.premium-payment-stat.approved
+.premium-payment-stat-icon {
+    background: rgba(40, 167, 69, 0.12);
+    color: #218838;
+}
+
+
+.premium-payment-stat.rejected
+.premium-payment-stat-icon {
+    background: rgba(220, 53, 69, 0.12);
+    color: #dc3545;
+}
+
+
+.premium-payment-stat strong {
+    display: block;
+    font-size: 24px;
+}
+
+
+.premium-payment-stat span {
+    display: block;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+
+/* ============================================================
+   FILTRES
+   ============================================================ */
+
+.premium-payment-filters {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) 180px 180px;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+
+.premium-payment-filters input,
+.premium-payment-filters select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #fff;
+    font: inherit;
+    outline: none;
+}
+
+
+.premium-payment-filters input:focus,
+.premium-payment-filters select:focus {
+    border-color: #f5a400;
+}
+
+
+/* ============================================================
+   LISTE
+   ============================================================ */
+
+.premium-payments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+/* ============================================================
+   CARTE PAIEMENT
+   ============================================================ */
+
+.premium-payment-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+.premium-payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+
+.premium-payment-client {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.premium-client-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(245, 164, 0, 0.12);
+    color: #f5a400;
+    flex-shrink: 0;
+}
+
+
+.premium-payment-client h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+
+.premium-payment-client p {
+    margin: 0;
+    opacity: 0.65;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   STATUT
+   ============================================================ */
+
+.premium-payment-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+.premium-payment-status.pending {
+    background: rgba(255, 193, 7, 0.14);
+    color: #a86f00;
+}
+
+
+.premium-payment-status.verified {
+    background: rgba(0, 123, 255, 0.12);
+    color: #0069d9;
+}
+
+
+.premium-payment-status.approved {
+    background: rgba(40, 167, 69, 0.12);
+    color: #218838;
+}
+
+
+.premium-payment-status.rejected {
+    background: rgba(220, 53, 69, 0.12);
+    color: #c82333;
+}
+
+
+/* ============================================================
+   INFORMATIONS
+   ============================================================ */
+
+.premium-payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+
+.premium-payment-item {
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.025);
+}
+
+
+.premium-payment-item > span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+}
+
+
+.premium-payment-item strong {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+
+/* ============================================================
+   RÉFÉRENCE
+   ============================================================ */
+
+.premium-reference {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+
+.premium-copy-reference {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.07);
+    flex-shrink: 0;
+}
+
+
+.premium-copy-reference:hover {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.premium-payment-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+
+.premium-action-button {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 15px;
+    min-height: 42px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s ease;
+}
+
+
+.premium-action-button:hover {
+    transform: translateY(-1px);
+}
+
+
+.premium-verify-button {
+    background: rgba(0, 123, 255, 0.1);
+    color: #0069d9;
+}
+
+
+.premium-approve-button {
+    background: rgba(40, 167, 69, 0.12);
+    color: #218838;
+}
+
+
+.premium-reject-button {
+    background: rgba(220, 53, 69, 0.1);
+    color: #c82333;
+}
+
+
+/* ============================================================
+   RESULTAT
+   ============================================================ */
+
+.premium-payment-result {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 18px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.premium-payment-result.approved {
+    color: #218838;
+}
+
+
+.premium-payment-result.rejected {
+    color: #c82333;
+}
+
+
+/* ============================================================
+   MOTIF REFUS
+   ============================================================ */
+
+.premium-rejection-reason {
+    margin-top: 15px;
+    padding: 13px 15px;
+    border-radius: 10px;
+    background: rgba(220, 53, 69, 0.07);
+    color: #a51d2a;
+    font-size: 13px;
+}
+
+
+.premium-rejection-reason strong {
+    margin-right: 5px;
+}
+
+
+/* ============================================================
+   CHARGEMENT
+   ============================================================ */
+
+.premium-loading {
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0.7;
+}
+
+
+.premium-loading i {
+    font-size: 26px;
+}
+
+
+/* ============================================================
+   VIDE
+   ============================================================ */
+
+.premium-empty {
+    text-align: center;
+    padding: 60px 20px;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 18px;
+}
+
+
+.premium-empty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 24px;
+    opacity: 0.6;
+}
+
+
+.premium-empty h3 {
+    margin: 0 0 7px;
+}
+
+
+.premium-empty p {
+    margin: 0;
+    opacity: 0.65;
+}
+
+
+/* ============================================================
+   ERREUR
+   ============================================================ */
+
+.premium-error {
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 18px;
+    background: rgba(220, 53, 69, 0.05);
+}
+
+
+.premium-error > i {
+    font-size: 35px;
+    color: #dc3545;
+    margin-bottom: 12px;
+}
+
+
+.premium-error h3 {
+    margin: 0 0 8px;
+}
+
+
+.premium-error p {
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.premium-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+.premium-modal {
+    width: min(760px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+}
+
+
+.premium-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+.premium-modal-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #f5a400;
+    margin-bottom: 5px;
+}
+
+
+.premium-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+
+.premium-modal-close {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.06);
+    font-size: 17px;
+}
+
+
+.premium-modal-body {
+    padding: 24px;
+}
+
+
+/* ============================================================
+   ALERTE VÉRIFICATION
+   ============================================================ */
+
+.premium-verification-alert {
+    display: flex;
+    gap: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background: rgba(0, 123, 255, 0.07);
+    color: #005cbf;
+}
+
+
+.premium-verification-alert i {
+    margin-top: 2px;
+}
+
+
+.premium-verification-alert p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   DÉTAILS MODAL
+   ============================================================ */
+
+.premium-verification-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+
+.premium-verification-grid > div {
+    padding: 14px;
+    border-radius: 11px;
+    background: rgba(0, 0, 0, 0.035);
+}
+
+
+.premium-verification-grid span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 6px;
+}
+
+
+.premium-verification-grid strong {
+    display: block;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+
+.premium-verification-reference {
+    grid-column: 1 / -1;
+    border: 1px solid rgba(245, 164, 0, 0.35);
+    background: rgba(245, 164, 0, 0.07) !important;
+}
+
+
+/* ============================================================
+   CHECKLIST
+   ============================================================ */
+
+.premium-verification-checklist {
+    margin-top: 22px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.035);
+}
+
+
+.premium-verification-checklist h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+}
+
+
+.premium-verification-checklist label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 11px 0;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+
+.premium-verification-checklist input {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* ============================================================
+   FOOTER MODAL
+   ============================================================ */
+
+.premium-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+.premium-modal-secondary {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-height: 42px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.07);
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .premium-payment-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .premium-payment-filters {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .premium-payment-filters input {
+        grid-column: 1 / -1;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .premium-payment-stats {
+        grid-template-columns: 1fr;
+    }
+
+
+    .premium-payment-header {
+        flex-direction: column;
+    }
+
+
+    .premium-payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .premium-payment-filters {
+        grid-template-columns: 1fr;
+    }
+
+
+    .premium-payment-filters input {
+        grid-column: auto;
+    }
+
+
+    .premium-payment-actions {
+        flex-direction: column;
+    }
+
+
+    .premium-action-button {
+        width: 100%;
+    }
+
+
+    .premium-verification-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .premium-verification-reference {
+        grid-column: auto;
+    }
+
+
+    .premium-modal-overlay {
+        padding: 10px;
+    }
+
+
+    .premium-modal-header,
+    .premium-modal-body,
+    .premium-modal-footer {
+        padding: 18px;
+    }
+
+
+    .premium-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+
+    .premium-modal-footer button {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   MODE SOMBRE
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+
+    .premium-modal {
+        background: #171717;
+        color: #fff;
+    }
+
+    .premium-payment-filters input,
+    .premium-payment-filters select {
+        background: #202020;
+        color: #fff;
+        border-color: rgba(255,255,255,0.12);
+    }
+
+    .premium-payment-item,
+    .premium-verification-grid > div,
+    .premium-verification-checklist {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .premium-modal-header,
+    .premium-modal-footer,
+    .premium-payment-actions,
+    .premium-payment-result {
+        border-color: rgba(255,255,255,0.08);
+    }
+}
