@@ -1,6 +1,7 @@
 // ============================================================
 // CAMU SERVICES
 // PUBLICATION D'ANNONCE
+// BASIC + PREMIUM
 // PC + MOBILE
 // CLOUDINARY + FIRESTORE
 // ============================================================
@@ -13,7 +14,9 @@ import {
     collection,
     getDocs,
     addDoc,
-    serverTimestamp
+    serverTimestamp,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -35,10 +38,21 @@ const CLOUDINARY_UPLOAD_URL =
 
 
 // ============================================================
-// CONFIGURATION
+// LIMITES BASIC / PREMIUM
 // ============================================================
 
-const MAX_IMAGES = 8;
+const BASIC_MAX_ADS = 5;
+
+const PREMIUM_MAX_ADS = 30;
+
+const BASIC_MAX_IMAGES = 5;
+
+const PREMIUM_MAX_IMAGES = 10;
+
+
+// ============================================================
+// TAILLE MAXIMALE D'UNE IMAGE
+// ============================================================
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -49,7 +63,15 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 let currentUser = null;
 
+let currentUserData = null;
+
+let currentPlan = "basic";
+
+let currentSubscriptionStatus = "active";
+
 let selectedImages = [];
+
+let currentAdCount = 0;
 
 
 // ============================================================
@@ -106,7 +128,497 @@ function showMessage(message, type = "error") {
         type === "success"
             ? "1px solid #bbebc8"
             : "1px solid #fecaca";
+}
 
+
+// ============================================================
+// MASQUER MESSAGE
+// ============================================================
+
+function hideMessage() {
+
+    if (!publishMessage) return;
+
+    publishMessage.style.display = "none";
+}
+
+
+// ============================================================
+// UTILISATEUR PREMIUM ?
+/*
+    Premium actif :
+    plan = premium
+    ET
+    subscriptionStatus = active OU trial
+
+    Si l'abonnement est expiré, on repasse automatiquement
+    sur les limites Basic.
+*/
+// ============================================================
+
+function isPremiumUser() {
+
+    if (!currentUserData) {
+        return false;
+    }
+
+    const plan =
+        String(
+            currentUserData.plan || ""
+        ).toLowerCase().trim();
+
+    const status =
+        String(
+            currentUserData.subscriptionStatus || ""
+        ).toLowerCase().trim();
+
+
+    // Essai Premium
+    if (
+        plan === "premium" &&
+        status === "trial"
+    ) {
+        return true;
+    }
+
+
+    // Premium payé
+    if (
+        plan === "premium" &&
+        status === "active"
+    ) {
+
+        // Vérifier éventuellement la date
+        if (
+            currentUserData.subscriptionEnd
+        ) {
+
+            const end =
+                convertFirestoreDate(
+                    currentUserData.subscriptionEnd
+                );
+
+            if (
+                end &&
+                end.getTime() < Date.now()
+            ) {
+
+                console.warn(
+                    "Abonnement Premium expiré."
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    return false;
+}
+
+
+// ============================================================
+// CONVERSION DATE FIRESTORE
+// ============================================================
+
+function convertFirestoreDate(value) {
+
+    if (!value) {
+        return null;
+    }
+
+
+    // Timestamp Firestore
+    if (
+        typeof value.toDate === "function"
+    ) {
+
+        return value.toDate();
+    }
+
+
+    // Date JavaScript
+    if (
+        value instanceof Date
+    ) {
+
+        return value;
+    }
+
+
+    // String / nombre
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return null;
+    }
+
+
+    return date;
+}
+
+
+// ============================================================
+// CHARGER LE PROFIL UTILISATEUR
+// ============================================================
+
+async function loadUserProfile() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    try {
+
+        const usersQuery =
+            query(
+                collection(
+                    db,
+                    "users"
+                ),
+                where(
+                    "uid",
+                    "==",
+                    currentUser.uid
+                )
+            );
+
+
+        const snapshot =
+            await getDocs(
+                usersQuery
+            );
+
+
+        if (
+            !snapshot.empty
+        ) {
+
+            currentUserData =
+                snapshot.docs[0].data();
+
+        } else {
+
+            /*
+                Certains comptes peuvent avoir le UID
+                uniquement dans l'ID du document.
+            */
+
+            const allUsers =
+                await getDocs(
+                    collection(
+                        db,
+                        "users"
+                    )
+                );
+
+
+            let found = null;
+
+
+            allUsers.forEach(
+                docSnap => {
+
+                    if (
+                        docSnap.id ===
+                        currentUser.uid
+                    ) {
+
+                        found =
+                            docSnap.data();
+
+                    }
+
+                }
+            );
+
+
+            currentUserData =
+                found || {
+                    plan: "basic",
+                    subscriptionStatus: "active"
+                };
+        }
+
+
+        currentPlan =
+            isPremiumUser()
+                ? "premium"
+                : "basic";
+
+
+        currentSubscriptionStatus =
+            currentUserData.subscriptionStatus ||
+            "active";
+
+
+        console.log(
+            "Profil utilisateur :",
+            currentUserData
+        );
+
+
+        console.log(
+            "Plan actuel :",
+            currentPlan
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur chargement profil utilisateur :",
+            error
+        );
+
+
+        /*
+            En cas d'erreur, on applique Basic
+            par sécurité.
+        */
+
+        currentUserData = {
+            plan: "basic",
+            subscriptionStatus: "active"
+        };
+
+        currentPlan = "basic";
+    }
+}
+
+
+// ============================================================
+// NOMBRE MAXIMUM D'ANNONCES
+// ============================================================
+
+function getMaxAds() {
+
+    return isPremiumUser()
+        ? PREMIUM_MAX_ADS
+        : BASIC_MAX_ADS;
+}
+
+
+// ============================================================
+// NOMBRE MAXIMUM DE PHOTOS
+// ============================================================
+
+function getMaxImages() {
+
+    return isPremiumUser()
+        ? PREMIUM_MAX_IMAGES
+        : BASIC_MAX_IMAGES;
+}
+
+
+// ============================================================
+// COMPTER LES ANNONCES DE L'UTILISATEUR
+// ============================================================
+
+async function countUserAds() {
+
+    if (!currentUser) {
+        return 0;
+    }
+
+
+    try {
+
+        const adsQuery =
+            query(
+                collection(
+                    db,
+                    "annonces"
+                ),
+                where(
+                    "ownerId",
+                    "==",
+                    currentUser.uid
+                )
+            );
+
+
+        const snapshot =
+            await getDocs(
+                adsQuery
+            );
+
+
+        currentAdCount =
+            snapshot.size;
+
+
+        console.log(
+            "Nombre d'annonces :",
+            currentAdCount
+        );
+
+
+        return currentAdCount;
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur comptage annonces :",
+            error
+        );
+
+
+        /*
+            On arrête la publication si le compteur
+            ne peut pas être vérifié.
+        */
+
+        throw new Error(
+            "Impossible de vérifier le nombre de vos annonces."
+        );
+    }
+}
+
+
+// ============================================================
+// VÉRIFIER LA LIMITE D'ANNONCES
+// ============================================================
+
+async function checkAdLimit() {
+
+    const maxAds =
+        getMaxAds();
+
+
+    const count =
+        await countUserAds();
+
+
+    if (
+        count >= maxAds
+    ) {
+
+        if (
+            isPremiumUser()
+        ) {
+
+            showMessage(
+                `Vous avez atteint votre limite Premium de ${PREMIUM_MAX_ADS} annonces.`
+            );
+
+        } else {
+
+            showMessage(
+                `Vous avez atteint la limite Basic de ${BASIC_MAX_ADS} annonces. Passez à CAMU PREMIUM pour publier jusqu'à ${PREMIUM_MAX_ADS} annonces.`
+            );
+
+            showPremiumButton();
+        }
+
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+// ============================================================
+// BOUTON PREMIUM
+// ============================================================
+
+function showPremiumButton() {
+
+    if (!publishMessage) {
+        return;
+    }
+
+
+    let button =
+        document.getElementById(
+            "goPremiumButton"
+        );
+
+
+    if (button) {
+        return;
+    }
+
+
+    button =
+        document.createElement(
+            "a"
+        );
+
+
+    button.id =
+        "goPremiumButton";
+
+
+    button.href =
+        "premium.html";
+
+
+    button.innerHTML =
+        `<i class="fa-solid fa-crown"></i> Passer à Premium`;
+
+
+    button.style.display =
+        "inline-flex";
+
+
+    button.style.alignItems =
+        "center";
+
+
+    button.style.gap =
+        "8px";
+
+
+    button.style.marginTop =
+        "12px";
+
+
+    button.style.padding =
+        "10px 15px";
+
+
+    button.style.borderRadius =
+        "10px";
+
+
+    button.style.background =
+        "#d4a017";
+
+
+    button.style.color =
+        "#ffffff";
+
+
+    button.style.textDecoration =
+        "none";
+
+
+    button.style.fontWeight =
+        "700";
+
+
+    publishMessage.appendChild(
+        document.createElement("br")
+    );
+
+
+    publishMessage.appendChild(
+        button
+    );
 }
 
 
@@ -114,44 +626,93 @@ function showMessage(message, type = "error") {
 // AUTHENTIFICATION
 // ============================================================
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
-    if (!user) {
+        if (!user) {
 
-        showMessage(
-            "Vous devez être connecté pour publier une annonce."
+            showMessage(
+                "Vous devez être connecté pour publier une annonce."
+            );
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "connexion.html";
+
+            }, 1500);
+
+
+            return;
+        }
+
+
+        currentUser =
+            user;
+
+
+        console.log(
+            "Utilisateur connecté :",
+            currentUser.uid
         );
 
-        setTimeout(() => {
 
-            window.location.href =
-                "connexion.html";
+        try {
 
-        }, 1500);
+            // ------------------------------------------
+            // PROFIL
+            // ------------------------------------------
 
-        return;
+            await loadUserProfile();
+
+
+            // ------------------------------------------
+            // COMPTER LES ANNONCES
+            // ------------------------------------------
+
+            await countUserAds();
+
+
+            // ------------------------------------------
+            // CATÉGORIES
+            // ------------------------------------------
+
+            await loadCategories();
+
+
+            // ------------------------------------------
+            // VILLES
+            // ------------------------------------------
+
+            await loadCities();
+
+
+            // ------------------------------------------
+            // AFFICHAGE LIMITE PHOTOS
+            // ------------------------------------------
+
+            updatePhotoCount();
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur initialisation publication :",
+                error
+            );
+
+
+            showMessage(
+                error.message ||
+                "Impossible de préparer la publication."
+            );
+
+        }
+
     }
-
-
-    currentUser = user;
-
-
-    console.log(
-        "Utilisateur connecté :",
-        currentUser.uid
-    );
-
-
-    // Charger les catégories
-
-    await loadCategories();
-
-
-    // Charger les villes
-
-    await loadCities();
-
-});
+);
 
 
 // ============================================================
@@ -184,37 +745,45 @@ async function loadCategories() {
         const categories = [];
 
 
-        snapshot.forEach((docSnap) => {
+        snapshot.forEach(
+            (docSnap) => {
 
-            const data =
-                docSnap.data();
+                const data =
+                    docSnap.data();
 
 
-            if (
-                data.active !== true ||
-                !data.name
-            ) {
+                if (
+                    data.active !== true ||
+                    !data.name
+                ) {
 
-                return;
+                    return;
+                }
+
+
+                categories.push({
+
+                    name:
+                        String(
+                            data.name
+                        ).trim(),
+
+                    icon:
+                        data.icon
+                            ? String(
+                                data.icon
+                            ).trim()
+                            : "",
+
+                    order:
+                        Number(
+                            data.order || 0
+                        )
+
+                });
+
             }
-
-
-            categories.push({
-
-                name:
-                    String(data.name).trim(),
-
-                icon:
-                    data.icon
-                        ? String(data.icon).trim()
-                        : "",
-
-                order:
-                    Number(data.order || 0)
-
-            });
-
-        });
+        );
 
 
         categories.sort(
@@ -276,9 +845,7 @@ async function loadCategories() {
                 Impossible de charger les catégories
             </option>
         `;
-
     }
-
 }
 
 
@@ -312,39 +879,45 @@ async function loadCities() {
         const cities = [];
 
 
-        snapshot.forEach((docSnap) => {
+        snapshot.forEach(
+            (docSnap) => {
 
-            const data =
-                docSnap.data();
+                const data =
+                    docSnap.data();
 
 
-            if (
-                data.active !== true ||
-                !data.name
-            ) {
+                if (
+                    data.active !== true ||
+                    !data.name
+                ) {
 
-                return;
+                    return;
+                }
+
+
+                cities.push({
+
+                    name:
+                        String(
+                            data.name
+                        ).trim(),
+
+                    province:
+                        data.province
+                            ? String(
+                                data.province
+                            ).trim()
+                            : "",
+
+                    order:
+                        Number(
+                            data.order || 0
+                        )
+
+                });
+
             }
-
-
-            cities.push({
-
-                name:
-                    String(data.name).trim(),
-
-                province:
-                    data.province
-                        ? String(
-                            data.province
-                        ).trim()
-                        : "",
-
-                order:
-                    Number(data.order || 0)
-
-            });
-
-        });
+        );
 
 
         cities.sort(
@@ -406,9 +979,7 @@ async function loadCities() {
                 Impossible de charger les villes
             </option>
         `;
-
     }
-
 }
 
 
@@ -433,11 +1004,13 @@ if (publishPhotos) {
             }
 
 
-            await processImages(files);
+            await processImages(
+                files
+            );
 
 
-            // Permet de sélectionner à nouveau
-            // la même photo
+            // Permet de sélectionner
+            // à nouveau la même photo
 
             publishPhotos.value = "";
 
@@ -463,23 +1036,50 @@ async function processImages(files) {
     }
 
 
+    const maxImages =
+        getMaxImages();
+
+
     const remaining =
-        MAX_IMAGES -
+        maxImages -
         selectedImages.length;
 
 
-    if (remaining <= 0) {
+    // --------------------------------------------------------
+    // LIMITE
+    // --------------------------------------------------------
 
-        showMessage(
-            `Vous avez déjà atteint la limite de ${MAX_IMAGES} photos.`
-        );
+    if (
+        remaining <= 0
+    ) {
+
+        if (
+            isPremiumUser()
+        ) {
+
+            showMessage(
+                `Vous avez atteint la limite Premium de ${PREMIUM_MAX_IMAGES} photos par annonce.`
+            );
+
+        } else {
+
+            showMessage(
+                `La formule Basic autorise ${BASIC_MAX_IMAGES} photos maximum par annonce. Passez à Premium pour utiliser jusqu'à ${PREMIUM_MAX_IMAGES} photos.`
+            );
+
+            showPremiumButton();
+        }
+
 
         return;
     }
 
 
     const filesToProcess =
-        files.slice(0, remaining);
+        files.slice(
+            0,
+            remaining
+        );
 
 
     if (
@@ -487,14 +1087,33 @@ async function processImages(files) {
         remaining
     ) {
 
-        showMessage(
-            `Seulement ${MAX_IMAGES} photos maximum sont autorisées.`
-        );
+        if (
+            isPremiumUser()
+        ) {
 
+            showMessage(
+                `Votre formule Premium autorise ${PREMIUM_MAX_IMAGES} photos maximum par annonce.`
+            );
+
+        } else {
+
+            showMessage(
+                `La formule Basic autorise ${BASIC_MAX_IMAGES} photos maximum par annonce. Passez à Premium pour utiliser jusqu'à ${PREMIUM_MAX_IMAGES} photos.`
+            );
+
+            showPremiumButton();
+        }
     }
 
 
-    for (const file of filesToProcess) {
+    // --------------------------------------------------------
+    // UPLOAD DES IMAGES
+    // --------------------------------------------------------
+
+    for (
+        const file
+        of filesToProcess
+    ) {
 
         // --------------------------------------------
         // TYPE
@@ -502,7 +1121,9 @@ async function processImages(files) {
 
         if (
             !file.type ||
-            !file.type.startsWith("image/")
+            !file.type.startsWith(
+                "image/"
+            )
         ) {
 
             showMessage(
@@ -535,17 +1156,21 @@ async function processImages(files) {
         // --------------------------------------------
 
         const preview =
-            addImagePreview(file);
+            addImagePreview(
+                file
+            );
 
 
         try {
 
             // ----------------------------------------
-            // UPLOAD CLOUDINARY
+            // CLOUDINARY
             // ----------------------------------------
 
             const uploaded =
-                await uploadToCloudinary(file);
+                await uploadToCloudinary(
+                    file
+                );
 
 
             if (!uploaded) {
@@ -553,7 +1178,6 @@ async function processImages(files) {
                 throw new Error(
                     "Cloudinary n'a pas retourné les informations de l'image."
                 );
-
             }
 
 
@@ -562,13 +1186,14 @@ async function processImages(files) {
             );
 
 
-            // Marquer le preview comme envoyé
+            // ----------------------------------------
+            // PREVIEW ENVOYÉ
+            // ----------------------------------------
 
             if (preview) {
 
                 preview.dataset.uploaded =
                     "true";
-
             }
 
 
@@ -592,21 +1217,18 @@ async function processImages(files) {
             if (preview) {
 
                 preview.remove();
-
             }
 
 
             showMessage(
                 `Impossible d'envoyer ${file.name} : ${error.message}`
             );
-
         }
 
     }
 
 
     updatePhotoCount();
-
 }
 
 
@@ -669,7 +1291,6 @@ async function uploadToCloudinary(file) {
         throw new Error(
             "Connexion impossible à Cloudinary. Vérifiez votre connexion Internet."
         );
-
     }
 
 
@@ -688,10 +1309,10 @@ async function uploadToCloudinary(file) {
             jsonError
         );
 
+
         throw new Error(
             `Cloudinary a répondu avec le statut ${response.status}.`
         );
-
     }
 
 
@@ -701,13 +1322,14 @@ async function uploadToCloudinary(file) {
     );
 
 
-    if (!response.ok) {
+    if (
+        !response.ok
+    ) {
 
         throw new Error(
             data?.error?.message ||
             `Erreur Cloudinary ${response.status}`
         );
-
     }
 
 
@@ -719,7 +1341,6 @@ async function uploadToCloudinary(file) {
         throw new Error(
             "Cloudinary n'a pas retourné l'URL de l'image."
         );
-
     }
 
 
@@ -738,7 +1359,6 @@ async function uploadToCloudinary(file) {
             data.height || null
 
     };
-
 }
 
 
@@ -751,7 +1371,6 @@ function addImagePreview(file) {
     if (!photoPreview) {
 
         return null;
-
     }
 
 
@@ -814,7 +1433,6 @@ function addImagePreview(file) {
 
 
     return wrapper;
-
 }
 
 
@@ -830,13 +1448,15 @@ function updatePhotoCount() {
         );
 
 
+    const maxImages =
+        getMaxImages();
+
+
     if (help) {
 
         help.textContent =
-            `${selectedImages.length}/${MAX_IMAGES} image(s) sélectionnée(s)`;
-
+            `${selectedImages.length}/${maxImages} image(s) sélectionnée(s)`;
     }
-
 }
 
 
@@ -853,11 +1473,49 @@ if (publishForm) {
             event.preventDefault();
 
 
+            hideMessage();
+
+
             if (!currentUser) {
 
                 showMessage(
                     "Vous devez être connecté pour publier."
                 );
+
+                return;
+            }
+
+
+            // =================================================
+            // VÉRIFICATION DU NOMBRE D'ANNONCES
+            // =================================================
+
+            let canPublish;
+
+
+            try {
+
+                canPublish =
+                    await checkAdLimit();
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur vérification limite annonces :",
+                    error
+                );
+
+
+                showMessage(
+                    error.message
+                );
+
+
+                return;
+            }
+
+
+            if (!canPublish) {
 
                 return;
             }
@@ -890,7 +1548,8 @@ if (publishForm) {
                     .getElementById(
                         "publishCurrency"
                     )
-                    ?.value || "USD";
+                    ?.value ||
+                "USD";
 
 
             const category =
@@ -1027,12 +1686,33 @@ if (publishForm) {
             }
 
 
+            // =================================================
+            // PHOTOS
+            // =================================================
+
+            const maxImages =
+                getMaxImages();
+
+
             if (
                 selectedImages.length === 0
             ) {
 
                 showMessage(
                     "Veuillez ajouter au moins une photo."
+                );
+
+                return;
+            }
+
+
+            if (
+                selectedImages.length >
+                maxImages
+            ) {
+
+                showMessage(
+                    `Votre formule autorise ${maxImages} photos maximum par annonce.`
                 );
 
                 return;
@@ -1065,7 +1745,6 @@ if (publishForm) {
                     <i class="fa-solid fa-spinner fa-spin"></i>
                     Publication...
                 `;
-
             }
 
 
@@ -1097,13 +1776,13 @@ if (publishForm) {
 
                     button.innerHTML =
                         originalText;
-
                 }
 
 
                 showMessage(
                     "Aucune image valide n'a été reçue par Cloudinary."
                 );
+
 
                 return;
             }
@@ -1133,7 +1812,9 @@ if (publishForm) {
                 whatsapp,
 
 
+                // ------------------------------------------------
                 // PHOTOS
+                // ------------------------------------------------
 
                 images:
                     imageURLs,
@@ -1145,7 +1826,9 @@ if (publishForm) {
                     imageURLs.length,
 
 
+                // ------------------------------------------------
                 // PROPRIÉTAIRE
+                // ------------------------------------------------
 
                 userId:
                     currentUser.uid,
@@ -1162,13 +1845,27 @@ if (publishForm) {
                     "",
 
 
+                // ------------------------------------------------
+                // PLAN AU MOMENT DE LA PUBLICATION
+                // ------------------------------------------------
+
+                ownerPlan:
+                    isPremiumUser()
+                        ? "premium"
+                        : "basic",
+
+
+                // ------------------------------------------------
                 // STATUT
+                // ------------------------------------------------
 
                 status:
                     "active",
 
 
+                // ------------------------------------------------
                 // DATES
+                // ------------------------------------------------
 
                 createdAt:
                     serverTimestamp(),
@@ -1207,20 +1904,30 @@ if (publishForm) {
                 );
 
 
+                // Mettre à jour le compteur local
+
+                currentAdCount++;
+
+
                 showMessage(
                     "Votre annonce a été publiée avec succès !",
                     "success"
                 );
 
 
-                // Petit délai avant redirection
+                // ------------------------------------------------
+                // REDIRECTION
+                // ------------------------------------------------
 
-                setTimeout(() => {
+                setTimeout(
+                    () => {
 
-                    window.location.href =
-                        `explorer.html?id=${encodeURIComponent(docRef.id)}`;
+                        window.location.href =
+                            `explorer.html?id=${encodeURIComponent(docRef.id)}`;
 
-                }, 1000);
+                    },
+                    1000
+                );
 
 
             } catch (error) {
@@ -1244,7 +1951,6 @@ if (publishForm) {
 
                     button.innerHTML =
                         originalText;
-
                 }
 
             }
