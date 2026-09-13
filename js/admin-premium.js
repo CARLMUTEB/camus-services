@@ -1,7 +1,7 @@
-/* =========================================================
-   CAMU SERVICES
-   ADMIN — GESTION DES PAIEMENTS PREMIUM
-   ========================================================= */
+// ============================================================
+// CAMU SERVICES — ADMIN PREMIUM
+// Gestion : réception / vérification / validation / refus
+// ============================================================
 
 import { auth, db } from "./firebase-config.js";
 
@@ -15,105 +15,89 @@ import {
     getDoc,
     doc,
     updateDoc,
-    serverTimestamp
+    serverTimestamp,
+    writeBatch
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =========================================================
-   CONFIGURATION
-   ========================================================= */
+// ============================================================
+// CONFIGURATION
+// ============================================================
 
 const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
-const PAYMENTS_COLLECTION = "premiumPayments";
+const PREMIUM_PAYMENTS_COLLECTION = "premiumPayments";
 const USERS_COLLECTION = "users";
 
 
-/* =========================================================
-   VARIABLES
-   ========================================================= */
+// ============================================================
+// PLANS PREMIUM
+// ============================================================
 
-let currentAdmin = null;
-let allPremiumPayments = [];
+const PREMIUM_PLANS = {
+    weekly: {
+        name: "Premium — 1 semaine",
+        amount: 4,
+        duration: "1 semaine",
+        days: 7
+    },
+
+    monthly: {
+        name: "Premium — 1 mois",
+        amount: 11,
+        duration: "1 mois",
+        days: 30
+    },
+
+    yearly: {
+        name: "Premium — 1 an",
+        amount: 90,
+        duration: "1 an",
+        days: 365
+    }
+};
 
 
-/* =========================================================
-   ÉLÉMENTS HTML
-   ========================================================= */
+// ============================================================
+// ÉLÉMENTS DOM
+// ============================================================
 
-const pendingCountElement =
-    document.getElementById("premiumPendingCount");
-
-const approvedCountElement =
-    document.getElementById("premiumApprovedCount");
-
-const rejectedCountElement =
-    document.getElementById("premiumRejectedCount");
-
-const searchElement =
-    document.getElementById("premiumPaymentSearch");
-
-const statusFilterElement =
-    document.getElementById("premiumPaymentStatusFilter");
-
-const planFilterElement =
-    document.getElementById("premiumPaymentPlanFilter");
-
-const paymentsListElement =
+const premiumPaymentsList =
     document.getElementById("premiumPaymentsList");
 
-const refreshButton =
+const premiumPendingCount =
+    document.getElementById("premiumPendingCount");
+
+const premiumApprovedCount =
+    document.getElementById("premiumApprovedCount");
+
+const premiumRejectedCount =
+    document.getElementById("premiumRejectedCount");
+
+const premiumPaymentSearch =
+    document.getElementById("premiumPaymentSearch");
+
+const premiumPaymentStatusFilter =
+    document.getElementById("premiumPaymentStatusFilter");
+
+const premiumPaymentPlanFilter =
+    document.getElementById("premiumPaymentPlanFilter");
+
+const refreshPremiumPayments =
     document.getElementById("refreshPremiumPayments");
 
-const adminMessage =
-    document.getElementById("adminMessage");
+
+// ============================================================
+// VARIABLES
+// ============================================================
+
+let allPremiumPayments = [];
+let currentAdmin = null;
 
 
-/* =========================================================
-   VÉRIFIER QUE LES ÉLÉMENTS EXISTENT
-   ========================================================= */
-
-const premiumElementsExist =
-    pendingCountElement &&
-    approvedCountElement &&
-    rejectedCountElement &&
-    searchElement &&
-    statusFilterElement &&
-    planFilterElement &&
-    paymentsListElement &&
-    refreshButton;
-
-
-/* =========================================================
-   MESSAGE ADMIN
-   ========================================================= */
-
-function showAdminMessage(message, type = "success") {
-
-    if (!adminMessage) {
-        return;
-    }
-
-    adminMessage.textContent = message;
-
-    adminMessage.className =
-        `admin-message ${type}`;
-
-    adminMessage.hidden = false;
-
-    clearTimeout(showAdminMessage.timer);
-
-    showAdminMessage.timer = setTimeout(() => {
-
-        adminMessage.hidden = true;
-
-    }, 5000);
-}
-
-
-/* =========================================================
-   ÉCHAPPER LE HTML
-   ========================================================= */
+// ============================================================
+// UTILITAIRES
+// ============================================================
 
 function escapeHTML(value) {
 
@@ -130,9 +114,17 @@ function escapeHTML(value) {
 }
 
 
-/* =========================================================
-   FORMAT DATE
-   ========================================================= */
+// ------------------------------------------------------------
+
+function formatAmount(amount) {
+
+    const number = Number(amount) || 0;
+
+    return `${number.toLocaleString("fr-FR")} $`;
+}
+
+
+// ------------------------------------------------------------
 
 function formatDate(timestamp) {
 
@@ -144,7 +136,7 @@ function formatDate(timestamp) {
 
         let date;
 
-        if (typeof timestamp.toDate === "function") {
+        if (timestamp?.toDate) {
             date = timestamp.toDate();
         } else if (timestamp instanceof Date) {
             date = timestamp;
@@ -176,128 +168,17 @@ function formatDate(timestamp) {
 }
 
 
-/* =========================================================
-   NOM DU PLAN
-   ========================================================= */
+// ------------------------------------------------------------
 
-function getPlanName(plan) {
-
-    switch (plan) {
-
-        case "weekly":
-            return "Premium hebdomadaire";
-
-        case "monthly":
-            return "Premium mensuel";
-
-        case "yearly":
-            return "Premium annuel";
-
-        default:
-            return plan || "Formule inconnue";
-    }
-}
-
-
-/* =========================================================
-   DURÉE DU PLAN
-   ========================================================= */
-
-function getPlanDuration(plan) {
-
-    switch (plan) {
-
-        case "weekly":
-            return "1 semaine";
-
-        case "monthly":
-            return "1 mois";
-
-        case "yearly":
-            return "1 an";
-
-        default:
-            return "";
-    }
-}
-
-
-/* =========================================================
-   MONTANT DU PLAN
-   ========================================================= */
-
-function getPlanAmount(plan) {
-
-    switch (plan) {
-
-        case "weekly":
-            return 4;
-
-        case "monthly":
-            return 11;
-
-        case "yearly":
-            return 90;
-
-        default:
-            return 0;
-    }
-}
-
-
-/* =========================================================
-   NOM DU MOYEN DE PAIEMENT
-   ========================================================= */
-
-function getPaymentMethodName(method) {
-
-    switch (method) {
-
-        case "mpesa":
-            return "M-Pesa";
-
-        case "airtel":
-            return "Airtel Money";
-
-        default:
-            return method || "Inconnu";
-    }
-}
-
-
-/* =========================================================
-   CLASSE DU STATUT
-   ========================================================= */
-
-function getStatusClass(status) {
-
-    switch (status) {
-
-        case "pending":
-            return "pending";
-
-        case "approved":
-            return "approved";
-
-        case "rejected":
-            return "rejected";
-
-        default:
-            return "";
-    }
-}
-
-
-/* =========================================================
-   NOM DU STATUT
-   ========================================================= */
-
-function getStatusName(status) {
+function getStatusLabel(status) {
 
     switch (status) {
 
         case "pending":
             return "En attente";
+
+        case "verified":
+            return "Vérifié";
 
         case "approved":
             return "Approuvé";
@@ -311,93 +192,90 @@ function getStatusName(status) {
 }
 
 
-/* =========================================================
-   CALCUL DE LA DATE DE FIN PREMIUM
-   ========================================================= */
+// ------------------------------------------------------------
 
-function calculateEndDate(plan) {
+function getStatusClass(status) {
 
-    const startDate = new Date();
-    const endDate = new Date(startDate);
+    switch (status) {
 
-    switch (plan) {
+        case "pending":
+            return "pending";
 
-        case "weekly":
+        case "verified":
+            return "verified";
 
-            endDate.setDate(
-                endDate.getDate() + 7
-            );
+        case "approved":
+            return "approved";
 
-            break;
-
-
-        case "monthly":
-
-            endDate.setMonth(
-                endDate.getMonth() + 1
-            );
-
-            break;
-
-
-        case "yearly":
-
-            endDate.setFullYear(
-                endDate.getFullYear() + 1
-            );
-
-            break;
-
+        case "rejected":
+            return "rejected";
 
         default:
-
-            throw new Error(
-                "Formule Premium inconnue."
-            );
+            return "pending";
     }
-
-    return {
-        startDate,
-        endDate
-    };
 }
 
 
-/* =========================================================
-   CHARGER LES PAIEMENTS
-   ========================================================= */
+// ------------------------------------------------------------
+
+function getPaymentMethodLabel(method) {
+
+    switch (String(method || "").toLowerCase()) {
+
+        case "mpesa":
+        case "m-pesa":
+            return "M-Pesa";
+
+        case "airtel":
+        case "airtel_money":
+        case "airtel money":
+            return "Airtel Money";
+
+        default:
+            return method || "Non précisé";
+    }
+}
+
+
+// ------------------------------------------------------------
+
+function getPlanName(plan) {
+
+    return PREMIUM_PLANS[plan]?.name ||
+           plan ||
+           "Plan inconnu";
+}
+
+
+// ============================================================
+// CHARGEMENT DES PAIEMENTS
+// ============================================================
 
 async function loadPremiumPayments() {
 
-    if (!premiumElementsExist) {
-        console.warn(
-            "Éléments Premium introuvables dans admin.html."
-        );
+    if (!premiumPaymentsList) {
         return;
     }
 
-    paymentsListElement.innerHTML = `
-        <div class="admin-loading">
-
+    premiumPaymentsList.innerHTML = `
+        <div class="premium-loading">
             <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <span>
-                Chargement des paiements Premium...
-            </span>
-
+            <span>Chargement des demandes Premium...</span>
         </div>
     `;
 
-
     try {
 
-        const snapshot = await getDocs(
-            collection(db, PAYMENTS_COLLECTION)
-        );
+        const paymentsRef =
+            collection(
+                db,
+                PREMIUM_PAYMENTS_COLLECTION
+            );
 
+        const snapshot =
+            await getDocs(paymentsRef);
 
         allPremiumPayments = [];
-
 
         snapshot.forEach((paymentDoc) => {
 
@@ -409,27 +287,27 @@ async function loadPremiumPayments() {
         });
 
 
-        /* =================================================
-           TRI : PLUS RÉCENT EN PREMIER
-        ================================================= */
+        // ----------------------------------------------------
+        // Tri : plus récent en premier
+        // ----------------------------------------------------
 
         allPremiumPayments.sort((a, b) => {
 
             const dateA =
-                a.createdAt?.toMillis?.() || 0;
+                a.createdAt?.toDate?.() ||
+                new Date(0);
 
             const dateB =
-                b.createdAt?.toMillis?.() || 0;
+                b.createdAt?.toDate?.() ||
+                new Date(0);
 
             return dateB - dateA;
-
         });
 
 
         updatePremiumCounters();
 
         applyPremiumFilters();
-
 
     } catch (error) {
 
@@ -438,55 +316,58 @@ async function loadPremiumPayments() {
             error
         );
 
-
-        paymentsListElement.innerHTML = `
-            <div class="admin-empty">
-
+        premiumPaymentsList.innerHTML = `
+            <div class="premium-error">
                 <i class="fa-solid fa-triangle-exclamation"></i>
 
-                <h3>
-                    Impossible de charger les paiements
-                </h3>
+                <h3>Impossible de charger les demandes</h3>
 
                 <p>
-                    Vérifiez votre connexion et les règles
-                    Firestore.
+                    Une erreur s'est produite lors du chargement
+                    des paiements Premium.
                 </p>
 
+                <button
+                    type="button"
+                    id="retryPremiumPayments"
+                    class="admin-refresh-button"
+                >
+                    <i class="fa-solid fa-rotate-right"></i>
+                    Réessayer
+                </button>
             </div>
         `;
 
+        const retry =
+            document.getElementById(
+                "retryPremiumPayments"
+            );
 
-        showAdminMessage(
-            "Impossible de charger les paiements Premium.",
-            "error"
-        );
+        if (retry) {
+            retry.addEventListener(
+                "click",
+                loadPremiumPayments
+            );
+        }
     }
 }
 
 
-/* =========================================================
-   COMPTEURS
-   ========================================================= */
+// ============================================================
+// COMPTEURS
+// ============================================================
 
 function updatePremiumCounters() {
-
-    if (!premiumElementsExist) {
-        return;
-    }
-
 
     const pending =
         allPremiumPayments.filter(
             payment => payment.status === "pending"
         ).length;
 
-
     const approved =
         allPremiumPayments.filter(
             payment => payment.status === "approved"
         ).length;
-
 
     const rejected =
         allPremiumPayments.filter(
@@ -494,59 +375,50 @@ function updatePremiumCounters() {
         ).length;
 
 
-    pendingCountElement.textContent = pending;
+    if (premiumPendingCount) {
+        premiumPendingCount.textContent = pending;
+    }
 
-    approvedCountElement.textContent = approved;
+    if (premiumApprovedCount) {
+        premiumApprovedCount.textContent = approved;
+    }
 
-    rejectedCountElement.textContent = rejected;
+    if (premiumRejectedCount) {
+        premiumRejectedCount.textContent = rejected;
+    }
 }
 
 
-/* =========================================================
-   FILTRES
-   ========================================================= */
+// ============================================================
+// FILTRES
+// ============================================================
 
 function applyPremiumFilters() {
 
-    if (!premiumElementsExist) {
-        return;
-    }
+    let payments = [...allPremiumPayments];
 
+
+    // --------------------------------------------------------
+    // Recherche
+    // --------------------------------------------------------
 
     const search =
-        searchElement.value
-            .trim()
-            .toLowerCase();
+        premiumPaymentSearch?.value
+            ?.trim()
+            .toLowerCase() || "";
 
 
-    const selectedStatus =
-        statusFilterElement.value;
+    if (search) {
 
+        payments = payments.filter(payment => {
 
-    const selectedPlan =
-        planFilterElement.value;
-
-
-    const filtered =
-        allPremiumPayments.filter((payment) => {
-
-
-            /* =============================================
-               RECHERCHE
-            ============================================= */
-
-            const searchText = [
+            const text = [
 
                 payment.userName,
-
                 payment.userEmail,
-
                 payment.paymentReference,
-
-                payment.receiverNumber,
-
                 payment.paymentMethod,
-
+                payment.receiverNumber,
                 payment.plan
 
             ]
@@ -554,68 +426,72 @@ function applyPremiumFilters() {
                 .join(" ")
                 .toLowerCase();
 
-
-            const matchesSearch =
-                !search ||
-                searchText.includes(search);
-
-
-            /* =============================================
-               STATUT
-            ============================================= */
-
-            const matchesStatus =
-                selectedStatus === "all" ||
-                payment.status === selectedStatus;
-
-
-            /* =============================================
-               FORMULE
-            ============================================= */
-
-            const matchesPlan =
-                selectedPlan === "all" ||
-                payment.plan === selectedPlan;
-
-
-            return (
-                matchesSearch &&
-                matchesStatus &&
-                matchesPlan
-            );
-
+            return text.includes(search);
         });
+    }
 
 
-    renderPremiumPayments(filtered);
+    // --------------------------------------------------------
+    // Filtre statut
+    // --------------------------------------------------------
+
+    const status =
+        premiumPaymentStatusFilter?.value || "all";
+
+
+    if (status !== "all") {
+
+        payments = payments.filter(
+            payment => payment.status === status
+        );
+    }
+
+
+    // --------------------------------------------------------
+    // Filtre plan
+    // --------------------------------------------------------
+
+    const plan =
+        premiumPaymentPlanFilter?.value || "all";
+
+
+    if (plan !== "all") {
+
+        payments = payments.filter(
+            payment => payment.plan === plan
+        );
+    }
+
+
+    renderPremiumPayments(payments);
 }
 
 
-/* =========================================================
-   AFFICHER LES PAIEMENTS
-   ========================================================= */
+// ============================================================
+// AFFICHAGE DES PAIEMENTS
+// ============================================================
 
 function renderPremiumPayments(payments) {
 
-    if (!paymentsListElement) {
+    if (!premiumPaymentsList) {
         return;
     }
 
 
     if (!payments.length) {
 
-        paymentsListElement.innerHTML = `
-            <div class="admin-empty">
+        premiumPaymentsList.innerHTML = `
+            <div class="premium-empty">
 
-                <i class="fa-solid fa-receipt"></i>
+                <div class="premium-empty-icon">
+                    <i class="fa-solid fa-inbox"></i>
+                </div>
 
-                <h3>
-                    Aucun paiement trouvé
-                </h3>
+                <h3>Aucune demande Premium</h3>
 
                 <p>
-                    Aucun paiement Premium ne correspond
-                    aux critères sélectionnés.
+                    Aucune demande ne correspond aux
+                    critères sélectionnés.
                 </p>
 
             </div>
@@ -625,159 +501,237 @@ function renderPremiumPayments(payments) {
     }
 
 
-    paymentsListElement.innerHTML =
-        payments.map(
-            payment => createPaymentCard(payment)
-        ).join("");
+    premiumPaymentsList.innerHTML =
+        payments.map(renderPaymentCard).join("");
 
 
-    attachPaymentActions();
+    // --------------------------------------------------------
+    // Boutons
+    // --------------------------------------------------------
+
+    document
+        .querySelectorAll(".premium-verify-button")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const paymentId =
+                        button.dataset.paymentId;
+
+                    openVerification(paymentId);
+                }
+            );
+        });
+
+
+    document
+        .querySelectorAll(".premium-approve-button")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const paymentId =
+                        button.dataset.paymentId;
+
+                    approvePayment(paymentId);
+                }
+            );
+        });
+
+
+    document
+        .querySelectorAll(".premium-reject-button")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const paymentId =
+                        button.dataset.paymentId;
+
+                    rejectPayment(paymentId);
+                }
+            );
+        });
+
+
+    document
+        .querySelectorAll(".premium-copy-reference")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const reference =
+                        button.dataset.reference;
+
+                    copyReference(
+                        reference,
+                        button
+                    );
+                }
+            );
+        });
 }
 
 
-/* =========================================================
-   CARTE PAIEMENT
-   ========================================================= */
+// ============================================================
+// CARTE PAIEMENT
+// ============================================================
 
-function createPaymentCard(payment) {
+function renderPaymentCard(payment) {
+
+    const status =
+        payment.status || "pending";
+
+    const statusLabel =
+        getStatusLabel(status);
 
     const statusClass =
-        getStatusClass(payment.status);
+        getStatusClass(status);
 
-    const statusName =
-        getStatusName(payment.status);
 
     const planName =
         getPlanName(payment.plan);
 
-    const amount =
-        payment.amount ??
-        getPlanAmount(payment.plan);
-
 
     const paymentMethod =
-        getPaymentMethodName(
+        getPaymentMethodLabel(
             payment.paymentMethod
         );
 
 
-    const userName =
-        escapeHTML(
-            payment.userName || "Utilisateur"
-        );
+    let actions = "";
 
 
-    const userEmail =
-        escapeHTML(
-            payment.userEmail || "Email non disponible"
-        );
+    // --------------------------------------------------------
+    // DEMANDE EN ATTENTE
+    // --------------------------------------------------------
 
+    if (status === "pending") {
 
-    const reference =
-        escapeHTML(
-            payment.paymentReference ||
-            "Référence non renseignée"
-        );
-
-
-    const receiverNumber =
-        escapeHTML(
-            payment.receiverNumber || "-"
-        );
-
-
-    const createdAt =
-        formatDate(payment.createdAt);
-
-
-    const validatedAt =
-        payment.validatedAt
-            ? formatDate(payment.validatedAt)
-            : "";
-
-
-    let actionHTML = "";
-
-
-    /* =====================================================
-       ACTIONS
-    ===================================================== */
-
-    if (payment.status === "pending") {
-
-        actionHTML = `
+        actions = `
 
             <div class="premium-payment-actions">
 
                 <button
                     type="button"
-                    class="premium-action-button approve"
-                    data-action="approve"
+                    class="premium-action-button premium-verify-button"
                     data-payment-id="${escapeHTML(payment.id)}"
                 >
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    Approuver
-
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Vérifier
                 </button>
-
 
                 <button
                     type="button"
-                    class="premium-action-button reject"
-                    data-action="reject"
+                    class="premium-action-button premium-approve-button"
                     data-payment-id="${escapeHTML(payment.id)}"
                 >
+                    <i class="fa-solid fa-circle-check"></i>
+                    Approuver
+                </button>
 
+                <button
+                    type="button"
+                    class="premium-action-button premium-reject-button"
+                    data-payment-id="${escapeHTML(payment.id)}"
+                >
                     <i class="fa-solid fa-circle-xmark"></i>
-
                     Refuser
-
                 </button>
 
             </div>
-
         `;
+    }
 
-    } else if (payment.status === "approved") {
 
-        actionHTML = `
+    // --------------------------------------------------------
+    // VÉRIFIÉ
+    // --------------------------------------------------------
 
-            <div class="premium-payment-validated">
+    else if (status === "verified") {
+
+        actions = `
+
+            <div class="premium-payment-actions">
+
+                <button
+                    type="button"
+                    class="premium-action-button premium-verify-button"
+                    data-payment-id="${escapeHTML(payment.id)}"
+                >
+                    <i class="fa-solid fa-eye"></i>
+                    Consulter
+                </button>
+
+                <button
+                    type="button"
+                    class="premium-action-button premium-approve-button"
+                    data-payment-id="${escapeHTML(payment.id)}"
+                >
+                    <i class="fa-solid fa-circle-check"></i>
+                    Approuver
+                </button>
+
+                <button
+                    type="button"
+                    class="premium-action-button premium-reject-button"
+                    data-payment-id="${escapeHTML(payment.id)}"
+                >
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    Refuser
+                </button>
+
+            </div>
+        `;
+    }
+
+
+    // --------------------------------------------------------
+    // APPROUVÉ
+    // --------------------------------------------------------
+
+    else if (status === "approved") {
+
+        actions = `
+
+            <div class="premium-payment-result approved">
 
                 <i class="fa-solid fa-circle-check"></i>
 
-                Paiement validé
-
-                ${
-                    validatedAt
-                        ? `<small>${escapeHTML(validatedAt)}</small>`
-                        : ""
-                }
+                <span>
+                    Paiement validé — Premium activé
+                </span>
 
             </div>
-
         `;
+    }
 
-    } else if (payment.status === "rejected") {
 
-        actionHTML = `
+    // --------------------------------------------------------
+    // REFUSÉ
+    // --------------------------------------------------------
 
-            <div class="premium-payment-validated rejected">
+    else if (status === "rejected") {
+
+        actions = `
+
+            <div class="premium-payment-result rejected">
 
                 <i class="fa-solid fa-circle-xmark"></i>
 
-                Paiement refusé
-
-                ${
-                    validatedAt
-                        ? `<small>${escapeHTML(validatedAt)}</small>`
-                        : ""
-                }
+                <span>
+                    Paiement refusé
+                </span>
 
             </div>
-
         `;
     }
 
@@ -789,32 +743,33 @@ function createPaymentCard(payment) {
             data-payment-id="${escapeHTML(payment.id)}"
         >
 
+            <div class="premium-payment-header">
 
-            <div class="premium-payment-card-header">
+                <div class="premium-payment-client">
 
-
-                <div class="premium-payment-user">
-
-
-                    <div class="premium-payment-avatar">
+                    <div class="premium-client-avatar">
 
                         <i class="fa-solid fa-user"></i>
 
                     </div>
 
-
                     <div>
 
                         <h3>
-                            ${userName}
+                            ${escapeHTML(
+                                payment.userName ||
+                                "Client inconnu"
+                            )}
                         </h3>
 
                         <p>
-                            ${userEmail}
+                            ${escapeHTML(
+                                payment.userEmail ||
+                                "Email non disponible"
+                            )}
                         </p>
 
                     </div>
-
 
                 </div>
 
@@ -822,30 +777,17 @@ function createPaymentCard(payment) {
                 <span
                     class="premium-payment-status ${statusClass}"
                 >
-
-                    ${
-                        payment.status === "pending"
-                            ? '<i class="fa-solid fa-clock"></i>'
-                            : payment.status === "approved"
-                                ? '<i class="fa-solid fa-circle-check"></i>'
-                                : '<i class="fa-solid fa-circle-xmark"></i>'
-                    }
-
-                    ${statusName}
-
+                    ${escapeHTML(statusLabel)}
                 </span>
-
 
             </div>
 
 
+            <div class="premium-payment-grid">
 
-            <div class="premium-payment-details">
+                <div class="premium-payment-item">
 
-
-                <div class="premium-payment-detail">
-
-                    <span>
+                    <span class="premium-item-label">
                         Formule
                     </span>
 
@@ -857,42 +799,25 @@ function createPaymentCard(payment) {
                 </div>
 
 
+                <div class="premium-payment-item">
 
-                <div class="premium-payment-detail">
-
-                    <span>
+                    <span class="premium-item-label">
                         Montant
                     </span>
 
                     <strong>
-                        $${escapeHTML(amount)}
-                    </strong>
-
-                </div>
-
-
-
-                <div class="premium-payment-detail">
-
-                    <span>
-                        Durée
-                    </span>
-
-                    <strong>
                         ${escapeHTML(
-                            payment.duration ||
-                            getPlanDuration(payment.plan)
+                            formatAmount(payment.amount)
                         )}
                     </strong>
 
                 </div>
 
 
+                <div class="premium-payment-item">
 
-                <div class="premium-payment-detail">
-
-                    <span>
-                        Moyen de paiement
+                    <span class="premium-item-label">
+                        Réseau
                     </span>
 
                     <strong>
@@ -902,194 +827,107 @@ function createPaymentCard(payment) {
                 </div>
 
 
+                <div class="premium-payment-item">
 
-                <div class="premium-payment-detail">
-
-                    <span>
+                    <span class="premium-item-label">
                         Numéro destinataire
                     </span>
 
                     <strong>
-                        ${receiverNumber}
+                        ${escapeHTML(
+                            payment.receiverNumber ||
+                            "Non précisé"
+                        )}
                     </strong>
 
                 </div>
 
 
+                <div class="premium-payment-item">
 
-                <div class="premium-payment-detail">
-
-                    <span>
-                        Date
+                    <span class="premium-item-label">
+                        Date de demande
                     </span>
 
                     <strong>
-                        ${escapeHTML(createdAt)}
+                        ${escapeHTML(
+                            formatDate(payment.createdAt)
+                        )}
                     </strong>
 
                 </div>
 
+
+                <div class="premium-payment-item">
+
+                    <span class="premium-item-label">
+                        Référence transaction
+                    </span>
+
+                    <strong class="premium-reference">
+
+                        ${escapeHTML(
+                            payment.paymentReference ||
+                            "Non disponible"
+                        )}
+
+                        ${
+                            payment.paymentReference
+                                ? `
+                                    <button
+                                        type="button"
+                                        class="premium-copy-reference"
+                                        data-reference="${escapeHTML(
+                                            payment.paymentReference
+                                        )}"
+                                        title="Copier la référence"
+                                    >
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                  `
+                                : ""
+                        }
+
+                    </strong>
+
+                </div>
 
             </div>
 
 
+            ${
+                payment.rejectionReason
+                    ? `
+                        <div class="premium-rejection-reason">
 
-            <div class="premium-payment-reference">
+                            <strong>
+                                Motif du refus :
+                            </strong>
 
+                            <span>
+                                ${escapeHTML(
+                                    payment.rejectionReason
+                                )}
+                            </span>
 
-                <div>
-
-                    <span>
-                        Référence de transaction
-                    </span>
-
-                    <strong>
-                        ${reference}
-                    </strong>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="premium-copy-reference"
-                    data-reference="${reference}"
-                    title="Copier la référence"
-                >
-
-                    <i class="fa-regular fa-copy"></i>
-
-                </button>
+                        </div>
+                      `
+                    : ""
+            }
 
 
-            </div>
-
-
-
-            ${actionHTML}
-
+            ${actions}
 
         </article>
-
     `;
 }
 
 
-/* =========================================================
-   ATTACHER LES ACTIONS
-   ========================================================= */
+// ============================================================
+// VÉRIFICATION
+// ============================================================
 
-function attachPaymentActions() {
-
-
-    const actionButtons =
-        document.querySelectorAll(
-            "[data-action][data-payment-id]"
-        );
-
-
-    actionButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            handlePaymentAction
-        );
-
-    });
-
-
-    const copyButtons =
-        document.querySelectorAll(
-            ".premium-copy-reference"
-        );
-
-
-    copyButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            handleCopyReference
-        );
-
-    });
-}
-
-
-/* =========================================================
-   COPIER RÉFÉRENCE
-   ========================================================= */
-
-async function handleCopyReference(event) {
-
-    const button =
-        event.currentTarget;
-
-
-    const reference =
-        button.dataset.reference;
-
-
-    if (!reference) {
-        return;
-    }
-
-
-    try {
-
-        await navigator.clipboard.writeText(
-            reference
-        );
-
-
-        const oldHTML =
-            button.innerHTML;
-
-
-        button.innerHTML =
-            '<i class="fa-solid fa-check"></i>';
-
-
-        setTimeout(() => {
-
-            button.innerHTML =
-                oldHTML;
-
-        }, 1500);
-
-
-    } catch (error) {
-
-        console.error(
-            "Impossible de copier la référence :",
-            error
-        );
-
-    }
-}
-
-
-/* =========================================================
-   ACTION PAIEMENT
-   ========================================================= */
-
-async function handlePaymentAction(event) {
-
-    const button =
-        event.currentTarget;
-
-
-    const action =
-        button.dataset.action;
-
-
-    const paymentId =
-        button.dataset.paymentId;
-
-
-    if (!paymentId) {
-        return;
-    }
-
+function openVerification(paymentId) {
 
     const payment =
         allPremiumPayments.find(
@@ -1099,123 +937,477 @@ async function handlePaymentAction(event) {
 
     if (!payment) {
 
-        showAdminMessage(
-            "Paiement introuvable.",
-            "error"
+        alert(
+            "Cette demande Premium est introuvable."
         );
 
         return;
     }
 
 
-    if (payment.status !== "pending") {
+    // --------------------------------------------------------
+    // Création du modal
+    // --------------------------------------------------------
 
-        showAdminMessage(
-            "Ce paiement a déjà été traité.",
-            "error"
+    const oldModal =
+        document.getElementById(
+            "premiumVerificationModal"
         );
 
-        return;
+    if (oldModal) {
+        oldModal.remove();
     }
 
 
-    /* =====================================================
-       CONFIRMATION
-    ===================================================== */
+    const modal =
+        document.createElement("div");
 
-    if (action === "approve") {
+    modal.id =
+        "premiumVerificationModal";
 
-        const confirmed =
-            window.confirm(
-                `Voulez-vous vraiment approuver le paiement de ${payment.userName || "cet utilisateur"} pour ${payment.amount ?? getPlanAmount(payment.plan)} $ ?`
-            );
+    modal.className =
+        "premium-modal-overlay";
 
 
-        if (!confirmed) {
-            return;
-        }
+    modal.innerHTML = `
+
+        <div class="premium-modal">
+
+            <div class="premium-modal-header">
+
+                <div>
+
+                    <span class="premium-modal-label">
+                        VÉRIFICATION DU PAIEMENT
+                    </span>
+
+                    <h2>
+                        Vérifier la demande Premium
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="premium-modal-close"
+                    id="closePremiumVerification"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
 
 
-        await approvePayment(
-            payment,
-            button
+            <div class="premium-verification-body">
+
+                <div class="premium-verification-alert">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <p>
+                        Vérifiez cette transaction dans
+                        l'application ou le service du réseau
+                        concerné avant d'approuver le Premium.
+                    </p>
+
+                </div>
+
+
+                <div class="premium-verification-grid">
+
+                    <div>
+                        <span>Client</span>
+                        <strong>
+                            ${escapeHTML(
+                                payment.userName ||
+                                "Non disponible"
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>Email</span>
+                        <strong>
+                            ${escapeHTML(
+                                payment.userEmail ||
+                                "Non disponible"
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>Formule</span>
+                        <strong>
+                            ${escapeHTML(
+                                getPlanName(payment.plan)
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>Montant attendu</span>
+                        <strong>
+                            ${escapeHTML(
+                                formatAmount(payment.amount)
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>Réseau</span>
+                        <strong>
+                            ${escapeHTML(
+                                getPaymentMethodLabel(
+                                    payment.paymentMethod
+                                )
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>Numéro destinataire</span>
+                        <strong>
+                            ${escapeHTML(
+                                payment.receiverNumber ||
+                                "Non disponible"
+                            )}
+                        </strong>
+                    </div>
+
+
+                    <div class="premium-verification-reference">
+
+                        <span>
+                            Référence de transaction
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                payment.paymentReference ||
+                                "Non disponible"
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Date de demande
+                        </span>
+
+                        <strong>
+                            ${escapeHTML(
+                                formatDate(
+                                    payment.createdAt
+                                )
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="premium-verification-checklist">
+
+                    <h3>
+                        <i class="fa-solid fa-list-check"></i>
+                        Contrôle à effectuer
+                    </h3>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="checkPaymentReference"
+                        >
+                        La référence existe réellement.
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="checkPaymentAmount"
+                        >
+                        Le montant reçu correspond au montant demandé.
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="checkPaymentReceiver"
+                        >
+                        Le paiement a été envoyé au bon numéro.
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="checkPaymentNetwork"
+                        >
+                        Le réseau de paiement correspond à la demande.
+                    </label>
+
+                </div>
+
+
+                <div
+                    id="premiumVerificationMessage"
+                    class="premium-modal-message"
+                ></div>
+
+            </div>
+
+
+            <div class="premium-modal-footer">
+
+                <button
+                    type="button"
+                    class="premium-modal-secondary"
+                    id="closePremiumVerificationBottom"
+                >
+                    Fermer
+                </button>
+
+
+                ${
+                    payment.status === "pending" ||
+                    payment.status === "verified"
+
+                        ? `
+                            <button
+                                type="button"
+                                class="premium-action-button premium-approve-button"
+                                id="modalApprovePremium"
+                            >
+                                <i class="fa-solid fa-circle-check"></i>
+                                Approuver et activer Premium
+                            </button>
+                          `
+
+                        : ""
+                }
+
+            </div>
+
+        </div>
+    `;
+
+
+    document.body.appendChild(modal);
+
+
+    // --------------------------------------------------------
+    // Fermeture
+    // --------------------------------------------------------
+
+    const closeModal = () => {
+        modal.remove();
+    };
+
+
+    document
+        .getElementById(
+            "closePremiumVerification"
+        )
+        ?.addEventListener(
+            "click",
+            closeModal
         );
 
 
-    } else if (action === "reject") {
-
-        const confirmed =
-            window.confirm(
-                `Voulez-vous vraiment refuser le paiement de ${payment.userName || "cet utilisateur"} ?`
-            );
-
-
-        if (!confirmed) {
-            return;
-        }
-
-
-        await rejectPayment(
-            payment,
-            button
+    document
+        .getElementById(
+            "closePremiumVerificationBottom"
+        )
+        ?.addEventListener(
+            "click",
+            closeModal
         );
-    }
-}
 
 
-/* =========================================================
-   BOUTON CHARGEMENT
-   ========================================================= */
+    modal.addEventListener(
+        "click",
+        event => {
 
-function setButtonLoading(button, loading = true) {
-
-    if (!button) {
-        return;
-    }
-
-
-    if (loading) {
-
-        button.disabled = true;
-
-        button.dataset.originalHTML =
-            button.innerHTML;
-
-        button.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            Traitement...
-        `;
-
-    } else {
-
-        button.disabled = false;
-
-        if (button.dataset.originalHTML) {
-
-            button.innerHTML =
-                button.dataset.originalHTML;
+            if (
+                event.target === modal
+            ) {
+                closeModal();
+            }
         }
-    }
-}
-
-
-/* =========================================================
-   APPROUVER PAIEMENT
-   ========================================================= */
-
-async function approvePayment(payment, button) {
-
-    setButtonLoading(
-        button,
-        true
     );
+
+
+    // --------------------------------------------------------
+    // Approbation depuis le modal
+    // --------------------------------------------------------
+
+    document
+        .getElementById(
+            "modalApprovePremium"
+        )
+        ?.addEventListener(
+            "click",
+            async () => {
+
+                const checks = [
+
+                    document.getElementById(
+                        "checkPaymentReference"
+                    ),
+
+                    document.getElementById(
+                        "checkPaymentAmount"
+                    ),
+
+                    document.getElementById(
+                        "checkPaymentReceiver"
+                    ),
+
+                    document.getElementById(
+                        "checkPaymentNetwork"
+                    )
+
+                ];
+
+
+                const allChecked =
+                    checks.every(
+                        checkbox =>
+                            checkbox?.checked
+                    );
+
+
+                const message =
+                    document.getElementById(
+                        "premiumVerificationMessage"
+                    );
+
+
+                if (!allChecked) {
+
+                    if (message) {
+
+                        message.className =
+                            "premium-modal-message error";
+
+                        message.textContent =
+                            "Veuillez confirmer les quatre contrôles avant d'approuver le paiement.";
+                    }
+
+                    return;
+                }
+
+
+                closeModal();
+
+                await approvePayment(
+                    paymentId
+                );
+            }
+        );
+}
+
+
+// ============================================================
+// APPROUVER LE PAIEMENT
+// ============================================================
+
+async function approvePayment(paymentId) {
+
+    const payment =
+        allPremiumPayments.find(
+            item => item.id === paymentId
+        );
+
+
+    if (!payment) {
+
+        alert(
+            "Demande Premium introuvable."
+        );
+
+        return;
+    }
+
+
+    if (
+        payment.status !== "pending" &&
+        payment.status !== "verified"
+    ) {
+
+        alert(
+            "Cette demande a déjà été traitée."
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Confirmer l'approbation du paiement de ${payment.userName || "ce client"} ?\n\nLe compte sera automatiquement activé en Premium.`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
 
 
     try {
 
-        /* ================================================
-           VÉRIFIER L'UTILISATEUR
-        ================================================= */
+        const plan =
+            PREMIUM_PLANS[payment.plan];
+
+
+        if (!plan) {
+
+            throw new Error(
+                "Plan Premium invalide."
+            );
+        }
+
+
+        // ----------------------------------------------------
+        // Vérification du montant
+        // ----------------------------------------------------
+
+        const paidAmount =
+            Number(payment.amount);
+
+        const expectedAmount =
+            Number(plan.amount);
+
+
+        if (
+            paidAmount !== expectedAmount
+        ) {
+
+            throw new Error(
+                `Montant incorrect. Montant attendu : ${expectedAmount}$, montant enregistré : ${paidAmount}$.`
+            );
+        }
+
+
+        // ----------------------------------------------------
+        // Récupération utilisateur
+        // ----------------------------------------------------
+
+        if (!payment.userId) {
+
+            throw new Error(
+                "Cette demande ne contient aucun userId."
+            );
+        }
+
 
         const userRef =
             doc(
@@ -1232,373 +1424,74 @@ async function approvePayment(payment, button) {
         if (!userSnapshot.exists()) {
 
             throw new Error(
-                "Utilisateur introuvable dans la collection users."
+                "Le compte utilisateur est introuvable."
             );
         }
 
 
-        /* ================================================
-           VÉRIFIER LA FORMULE
-        ================================================= */
+        // ----------------------------------------------------
+        // Dates Premium
+        // ----------------------------------------------------
 
-        const validPlans = [
-            "weekly",
-            "monthly",
-            "yearly"
-        ];
+        const startDate =
+            new Date();
 
 
-        if (!validPlans.includes(payment.plan)) {
-
-            throw new Error(
-                "Formule Premium invalide."
-            );
-        }
+        const endDate =
+            new Date(startDate);
 
 
-        /* ================================================
-           VÉRIFIER LE MONTANT
-        ================================================= */
-
-        const expectedAmount =
-            getPlanAmount(payment.plan);
-
-
-        const paymentAmount =
-            Number(payment.amount);
-
-
-        if (
-            !Number.isFinite(paymentAmount) ||
-            paymentAmount !== expectedAmount
-        ) {
-
-            throw new Error(
-                `Le montant du paiement ne correspond pas à la formule. Montant attendu : ${expectedAmount} $.`
-            );
-        }
-
-
-        /* ================================================
-           CALCUL ABONNEMENT
-        ================================================= */
-
-        const {
-            startDate,
-            endDate
-        } = calculateEndDate(
-            payment.plan
+        endDate.setDate(
+            endDate.getDate() + plan.days
         );
 
 
-        /* ================================================
-           METTRE À JOUR UTILISATEUR
-        ================================================= */
+        // ----------------------------------------------------
+        // BATCH FIRESTORE
+        // ----------------------------------------------------
+        // Les deux opérations sont effectuées ensemble :
+        // 1. activation utilisateur
+        // 2. validation paiement
+        // ----------------------------------------------------
 
-        await updateDoc(
+        const batch =
+            writeBatch(db);
+
+
+        batch.update(
             userRef,
             {
 
                 plan: "premium",
 
-                subscriptionStatus: "active",
+                subscriptionStatus:
+                    "active",
 
-                subscriptionStart: startDate,
+                subscriptionStart:
+                    startDate,
 
-                subscriptionEnd: endDate,
+                subscriptionEnd:
+                    endDate,
 
-                updatedAt: serverTimestamp()
+                updatedAt:
+                    serverTimestamp()
 
             }
         );
 
 
-        /* ================================================
-           METTRE À JOUR PAIEMENT
-        ================================================= */
-
         const paymentRef =
             doc(
                 db,
-                PAYMENTS_COLLECTION,
-                payment.id
+                PREMIUM_PAYMENTS_COLLECTION,
+                paymentId
             );
 
 
-        await updateDoc(
+        batch.update(
             paymentRef,
             {
 
                 status: "approved",
 
-                validatedAt: serverTimestamp(),
-
-                validatedBy:
-                    currentAdmin?.uid || ""
-
-            }
-        );
-
-
-        /* ================================================
-           METTRE À JOUR LOCAL
-        ================================================= */
-
-        payment.status =
-            "approved";
-
-        payment.validatedAt =
-            {
-                toDate: () => new Date()
-            };
-
-        payment.validatedBy =
-            currentAdmin?.uid || "";
-
-
-        updatePremiumCounters();
-
-        applyPremiumFilters();
-
-
-        showAdminMessage(
-            `Le paiement de ${payment.userName || "l'utilisateur"} a été approuvé. Premium activé.`,
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur approbation paiement :",
-            error
-        );
-
-
-        showAdminMessage(
-            error.message ||
-            "Impossible d'approuver le paiement.",
-            "error"
-        );
-
-
-        setButtonLoading(
-            button,
-            false
-        );
-    }
-}
-
-
-/* =========================================================
-   REFUSER PAIEMENT
-   ========================================================= */
-
-async function rejectPayment(payment, button) {
-
-    setButtonLoading(
-        button,
-        true
-    );
-
-
-    try {
-
-        const paymentRef =
-            doc(
-                db,
-                PAYMENTS_COLLECTION,
-                payment.id
-            );
-
-
-        await updateDoc(
-            paymentRef,
-            {
-
-                status: "rejected",
-
-                validatedAt:
-                    serverTimestamp(),
-
-                validatedBy:
-                    currentAdmin?.uid || ""
-
-            }
-        );
-
-
-        /* ================================================
-           METTRE À JOUR LOCAL
-        ================================================= */
-
-        payment.status =
-            "rejected";
-
-        payment.validatedAt =
-            {
-                toDate: () => new Date()
-            };
-
-        payment.validatedBy =
-            currentAdmin?.uid || "";
-
-
-        updatePremiumCounters();
-
-        applyPremiumFilters();
-
-
-        showAdminMessage(
-            `Le paiement de ${payment.userName || "l'utilisateur"} a été refusé.`,
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur refus paiement :",
-            error
-        );
-
-
-        showAdminMessage(
-            error.message ||
-            "Impossible de refuser le paiement.",
-            "error"
-        );
-
-
-        setButtonLoading(
-            button,
-            false
-        );
-    }
-}
-
-
-/* =========================================================
-   ÉVÉNEMENTS FILTRES
-   ========================================================= */
-
-if (premiumElementsExist) {
-
-    searchElement.addEventListener(
-        "input",
-        applyPremiumFilters
-    );
-
-
-    statusFilterElement.addEventListener(
-        "change",
-        applyPremiumFilters
-    );
-
-
-    planFilterElement.addEventListener(
-        "change",
-        applyPremiumFilters
-    );
-
-
-    refreshButton.addEventListener(
-        "click",
-        async () => {
-
-            const oldHTML =
-                refreshButton.innerHTML;
-
-
-            refreshButton.disabled =
-                true;
-
-
-            refreshButton.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Actualisation...
-            `;
-
-
-            await loadPremiumPayments();
-
-
-            refreshButton.disabled =
-                false;
-
-
-            refreshButton.innerHTML =
-                oldHTML;
-        }
-    );
-}
-
-
-/* =========================================================
-   AUTHENTIFICATION ADMIN
-   ========================================================= */
-
-onAuthStateChanged(
-    auth,
-    async (user) => {
-
-        if (!user) {
-
-            console.warn(
-                "Aucun utilisateur connecté."
-            );
-
-            return;
-        }
-
-
-        currentAdmin = user;
-
-
-        /* =================================================
-           VÉRIFICATION ADMIN
-        ================================================= */
-
-        if (
-            user.email?.toLowerCase() !==
-            ADMIN_EMAIL.toLowerCase()
-        ) {
-
-            console.warn(
-                "Accès Premium refusé : utilisateur non administrateur."
-            );
-
-            return;
-        }
-
-
-        console.log(
-            "Administration Premium autorisée."
-        );
-
-
-        /* =================================================
-           CHARGER PAIEMENTS
-        ================================================= */
-
-        if (premiumElementsExist) {
-
-            await loadPremiumPayments();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   EXPORT POUR DEBUG
-   ========================================================= */
-
-window.CAMU_ADMIN_PREMIUM = {
-
-    reload: loadPremiumPayments,
-
-    filter: applyPremiumFilters
-
-};
+                validated
