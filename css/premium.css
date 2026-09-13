@@ -509,6 +509,333 @@
 
 
 /* =========================================================
+   PAIEMENT PREMIUM
+   ========================================================= */
+
+.premium-payment-section {
+    margin-bottom: 55px;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================================
+   ÉTAPES DE PAIEMENT
+   ========================================================= */
+
+.payment-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.payment-step:last-of-type {
+    border-bottom: none;
+}
+
+.payment-step-number {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #111827;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.payment-step-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.payment-step-content h3 {
+    margin: 0 0 7px;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.payment-step-content p {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   MOYENS DE PAIEMENT
+   ========================================================= */
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.payment-method {
+    position: relative;
+    cursor: pointer;
+}
+
+.payment-method input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.payment-method-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 70px;
+    padding: 13px 15px;
+    box-sizing: border-box;
+    border-radius: 13px;
+    border: 2px solid #e5e7eb;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.payment-method-box:hover {
+    border-color: #9ca3af;
+}
+
+.payment-method-box > i {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f3f4f6;
+    font-size: 18px;
+}
+
+.payment-method-box strong {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.payment-method-box span {
+    display: block;
+    font-size: 12px;
+    opacity: 0.65;
+}
+
+
+/* Moyen sélectionné */
+
+.payment-method input:checked + .payment-method-box {
+    border-color: #f59e0b;
+    background: #fffbeb;
+}
+
+.payment-method input:checked + .payment-method-box > i {
+    background: #fef3c7;
+}
+
+
+/* =========================================================
+   NUMÉROS DE PAIEMENT
+   ========================================================= */
+
+.payment-numbers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 5px 0 10px 49px;
+}
+
+.payment-number-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 13px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.payment-number-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #ffffff;
+    font-size: 16px;
+}
+
+.payment-number-card span {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    opacity: 0.65;
+}
+
+.payment-number-card strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   RÉSUMÉ FORMULE
+   ========================================================= */
+
+.selected-plan-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.selected-plan-summary span {
+    font-size: 12px;
+    opacity: 0.65;
+}
+
+.selected-plan-summary strong {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.selected-plan-summary b {
+    font-size: 16px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   CHAMP RÉFÉRENCE
+   ========================================================= */
+
+.payment-input-label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.payment-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.payment-input:focus {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+.payment-help {
+    display: block;
+    margin-top: 7px;
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   BOUTON ENVOYER
+   ========================================================= */
+
+.submit-payment-button {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 25px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    background: #f59e0b;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.submit-payment-button:hover {
+    background: #d97706;
+    transform: translateY(-1px);
+}
+
+.submit-payment-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.payment-message {
+    display: none;
+    margin-top: 15px;
+    padding: 13px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.payment-message-info {
+    display: block;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+}
+
+.payment-message-success {
+    display: block;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+}
+
+.payment-message-error {
+    display: block;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+}
+
+
+/* =========================================================
    COMPARAISON
    ========================================================= */
 
@@ -555,15 +882,6 @@
 
 .comparison-table td:first-child {
     font-weight: 600;
-}
-
-.comparison-table td .fa-check {
-    font-size: 14px;
-}
-
-.comparison-table td .fa-xmark {
-    font-size: 14px;
-    opacity: 0.4;
 }
 
 
@@ -693,6 +1011,15 @@
     .plan-popular:hover {
         transform: translateY(-3px);
     }
+
+    .payment-methods,
+    .payment-numbers {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-numbers {
+        margin-left: 49px;
+    }
 }
 
 
@@ -707,7 +1034,7 @@
     }
 
 
-    /* Barre supérieure */
+    /* Barre */
 
     .premium-topbar {
         margin-bottom: 22px;
@@ -810,14 +1137,6 @@
         padding: 17px;
     }
 
-    .benefit-card h3 {
-        font-size: 15px;
-    }
-
-    .benefit-card p {
-        font-size: 12px;
-    }
-
 
     /* Plans */
 
@@ -844,6 +1163,83 @@
 
     .plan-features li {
         font-size: 12px;
+    }
+
+
+    /* Paiement */
+
+    .premium-payment-section {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .payment-step {
+        gap: 11px;
+        padding: 17px 0;
+    }
+
+    .payment-step-number {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        font-size: 12px;
+    }
+
+    .payment-step-content h3 {
+        font-size: 15px;
+    }
+
+    .payment-step-content p {
+        font-size: 12px;
+    }
+
+
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-method-box {
+        min-height: 65px;
+    }
+
+
+    .payment-numbers {
+        grid-template-columns: 1fr;
+        margin-left: 41px;
+    }
+
+    .payment-number-card {
+        padding: 13px;
+    }
+
+    .payment-number-card strong {
+        font-size: 13px;
+    }
+
+
+    .selected-plan-summary {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .selected-plan-summary strong {
+        width: 100%;
+    }
+
+    .selected-plan-summary b {
+        font-size: 15px;
+    }
+
+
+    .payment-input {
+        min-height: 46px;
+        font-size: 13px;
+    }
+
+    .submit-payment-button {
+        min-height: 48px;
+        font-size: 13px;
     }
 
 
@@ -909,5 +1305,13 @@
 
     .plan-price strong {
         font-size: 28px;
+    }
+
+    .premium-payment-section {
+        padding: 15px;
+    }
+
+    .payment-numbers {
+        margin-left: 0;
     }
 }
