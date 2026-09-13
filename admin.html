@@ -34,6 +34,12 @@
         href="css/admin.css"
     >
 
+    <!-- CSS PAIEMENTS PREMIUM -->
+    <link
+        rel="stylesheet"
+        href="css/admin-premium.css"
+    >
+
     <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
@@ -213,6 +219,29 @@
 
             <span>
                 Utilisateurs
+            </span>
+
+        </a>
+
+
+        <!-- =================================================
+             PAIEMENTS PREMIUM
+        ================================================== -->
+
+        <a
+            href="#paiements-premium"
+            class="admin-nav-link"
+            data-section="paiements-premium"
+        >
+
+            <span class="admin-nav-icon premium">
+
+                <i class="fa-solid fa-crown"></i>
+
+            </span>
+
+            <span>
+                Paiements Premium
             </span>
 
         </a>
@@ -434,9 +463,9 @@
 
                 <p>
                     Gérez les annonces, les utilisateurs,
-                    les catégories, les villes et les
-                    signalements depuis votre espace
-                    administrateur.
+                    les catégories, les villes, les
+                    paiements Premium et les signalements
+                    depuis votre espace administrateur.
                 </p>
 
             </div>
@@ -679,6 +708,41 @@
 
                         <small>
                             Consulter les comptes utilisateurs
+                        </small>
+
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <!-- =================================================
+                     PAIEMENTS PREMIUM
+                ================================================== -->
+
+                <button
+                    type="button"
+                    class="admin-quick-card"
+                    data-section="paiements-premium"
+                >
+
+                    <span class="admin-quick-icon premium">
+
+                        <i class="fa-solid fa-crown"></i>
+
+                    </span>
+
+
+                    <span class="admin-quick-text">
+
+                        <strong>
+                            Paiements Premium
+                        </strong>
+
+                        <small>
+                            Vérifier et valider les abonnements Premium
                         </small>
 
                     </span>
@@ -947,6 +1011,252 @@
 
 
         <!-- =================================================
+             PAIEMENTS PREMIUM
+        ================================================== -->
+
+        <section
+            id="paiements-premium"
+            class="admin-section admin-premium-section"
+        >
+
+
+            <!-- EN-TÊTE -->
+
+            <div class="admin-section-header">
+
+
+                <div>
+
+                    <span class="admin-section-label">
+                        Abonnements
+                    </span>
+
+
+                    <h2>
+                        Paiements Premium
+                    </h2>
+
+
+                    <p class="admin-premium-description">
+                        Vérifiez les paiements reçus et activez
+                        les abonnements Premium des utilisateurs.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="refreshPremiumPayments"
+                    class="admin-refresh-button"
+                >
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Actualiser
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 STATISTIQUES PAIEMENTS
+            ================================================== -->
+
+            <div class="premium-payment-stats">
+
+
+                <!-- EN ATTENTE -->
+
+                <div class="premium-payment-stat pending">
+
+                    <div class="premium-payment-stat-icon">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            En attente
+                        </span>
+
+
+                        <strong id="premiumPendingCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPROUVÉS -->
+
+                <div class="premium-payment-stat approved">
+
+                    <div class="premium-payment-stat-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Approuvés
+                        </span>
+
+
+                        <strong id="premiumApprovedCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REFUSÉS -->
+
+                <div class="premium-payment-stat rejected">
+
+                    <div class="premium-payment-stat-icon">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Refusés
+                        </span>
+
+
+                        <strong id="premiumRejectedCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 FILTRES
+            ================================================== -->
+
+            <div class="premium-payment-filters">
+
+
+                <!-- RECHERCHE -->
+
+                <div class="premium-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+
+                    <input
+                        type="search"
+                        id="premiumPaymentSearch"
+                        placeholder="Rechercher un client ou une référence..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- STATUT -->
+
+                <select
+                    id="premiumPaymentStatusFilter"
+                    class="premium-filter-select"
+                >
+
+                    <option value="all">
+                        Tous les paiements
+                    </option>
+
+                    <option value="pending">
+                        En attente
+                    </option>
+
+                    <option value="approved">
+                        Approuvés
+                    </option>
+
+                    <option value="rejected">
+                        Refusés
+                    </option>
+
+                </select>
+
+
+                <!-- FORMULE -->
+
+                <select
+                    id="premiumPaymentPlanFilter"
+                    class="premium-filter-select"
+                >
+
+                    <option value="all">
+                        Toutes les formules
+                    </option>
+
+                    <option value="weekly">
+                        Hebdomadaire
+                    </option>
+
+                    <option value="monthly">
+                        Mensuel
+                    </option>
+
+                    <option value="yearly">
+                        Annuel
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LISTE DES PAIEMENTS
+            ================================================== -->
+
+            <div
+                id="premiumPaymentsList"
+                class="premium-payments-list"
+            >
+
+                <div class="admin-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <span>
+                        Chargement des paiements Premium...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
              FOOTER
         ================================================== -->
 
@@ -998,6 +1308,16 @@
 <script
     type="module"
     src="js/admin.js"
+></script>
+
+
+<!-- =====================================================
+     JAVASCRIPT PAIEMENTS PREMIUM
+===================================================== -->
+
+<script
+    type="module"
+    src="js/admin-premium.js"
 ></script>
 
 
