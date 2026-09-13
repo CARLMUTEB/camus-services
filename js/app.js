@@ -1,14 +1,22 @@
 /* =========================================================
-   CAMU SERVICES — APP.JS V1
+   CAMU SERVICES — APP.JS V2
    Interactions générales + Firebase Auth
+   + Compteur global des visites
 ========================================================= */
 
-import { auth } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    doc,
+    updateDoc,
+    increment
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+
     /* =====================================================
        ADMINISTRATION
     ===================================================== */
@@ -58,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "meschackmuteb@gmail.com";
 
 
+
     /* =====================================================
        AUTHENTIFICATION FIREBASE
     ===================================================== */
@@ -65,11 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentUser = null;
 
 
+
     onAuthStateChanged(
         auth,
         user => {
 
             currentUser = user;
+
 
 
             /* ---------------------------------------------
@@ -84,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+
                 /* -----------------------------------------
                    MON COMPTE
                 ----------------------------------------- */
@@ -96,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     }
                 );
+
 
 
                 /* -----------------------------------------
@@ -123,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 /* -----------------------------------------
                    DÉCONNEXION
                 ----------------------------------------- */
@@ -137,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
+
             /* ---------------------------------------------
                UTILISATEUR NON CONNECTÉ
             --------------------------------------------- */
@@ -148,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+
                 /* Cacher Administration */
 
                 if (adminNavItem) {
@@ -156,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         "none";
 
                 }
+
 
 
                 /* -----------------------------------------
@@ -170,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     }
                 );
+
 
 
                 /* -----------------------------------------
@@ -189,6 +208,149 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+
+    /* =====================================================
+       COMPTEUR GLOBAL DES VISITES
+    ===================================================== */
+
+    async function enregistrerVisite() {
+
+        /*
+         * Une seule visite par session de navigateur.
+         *
+         * sessionStorage est conservé pendant la navigation
+         * entre les pages du site.
+         *
+         * Lorsque le navigateur ferme la session,
+         * une nouvelle visite pourra être comptabilisée.
+         */
+
+        const VISITE_SESSION_KEY =
+            "camu_services_visit_counted";
+
+
+
+        /* ---------------------------------------------
+           VÉRIFIER SI LA SESSION A DÉJÀ ÉTÉ COMPTÉE
+        --------------------------------------------- */
+
+        try {
+
+            if (
+                sessionStorage.getItem(
+                    VISITE_SESSION_KEY
+                )
+            ) {
+
+                console.log(
+                    "Visite déjà comptabilisée pour cette session."
+                );
+
+                return;
+
+            }
+
+        }
+
+        catch (error) {
+
+            /*
+             * Si sessionStorage n'est pas disponible,
+             * on continue quand même afin de ne pas
+             * bloquer le fonctionnement du site.
+             */
+
+            console.warn(
+                "sessionStorage indisponible :",
+                error
+            );
+
+        }
+
+
+
+        /* ---------------------------------------------
+           RÉFÉRENCE FIRESTORE
+        --------------------------------------------- */
+
+        const visiteRef =
+            doc(
+                db,
+                "visites",
+                "global"
+            );
+
+
+
+        /* ---------------------------------------------
+           INCRÉMENTATION
+        --------------------------------------------- */
+
+        try {
+
+            await updateDoc(
+                visiteRef,
+                {
+                    total: increment(1),
+                    today: increment(1),
+                    week: increment(1),
+                    month: increment(1)
+                }
+            );
+
+
+
+            /* -----------------------------------------
+               MARQUER LA SESSION COMME COMPTÉE
+            ----------------------------------------- */
+
+            try {
+
+                sessionStorage.setItem(
+                    VISITE_SESSION_KEY,
+                    "true"
+                );
+
+            }
+
+            catch (storageError) {
+
+                console.warn(
+                    "Impossible d'enregistrer la session :",
+                    storageError
+                );
+
+            }
+
+
+
+            console.log(
+                "Visite CAMU SERVICES enregistrée."
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Erreur lors de l'enregistrement de la visite :",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       LANCER LE COMPTEUR
+    ===================================================== */
+
+    enregistrerVisite();
+
+
+
     /* =====================================================
        MENU
     ===================================================== */
@@ -198,9 +360,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!sidebar) return;
 
 
+
         sidebar.classList.add(
             "open"
         );
+
 
 
         if (sidebarOverlay) {
@@ -212,10 +376,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+
         document.body.style.overflow =
             "hidden";
 
     }
+
 
 
     function closeSidebar() {
@@ -223,9 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!sidebar) return;
 
 
+
         sidebar.classList.remove(
             "open"
         );
+
 
 
         if (sidebarOverlay) {
@@ -237,10 +405,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+
         document.body.style.overflow =
             "";
 
     }
+
 
 
     /* =====================================================
@@ -257,6 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
     /* =====================================================
        FERMER LE MENU
     ===================================================== */
@@ -269,6 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     }
+
 
 
     /* =====================================================
@@ -285,6 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
     /* =====================================================
        FERMER LE MENU APRÈS UN CLIC
     ===================================================== */
@@ -293,6 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(
             ".sidebar .nav-item"
         );
+
 
 
     navLinks.forEach(
@@ -317,6 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+
     /* =====================================================
        FERMER AVEC ESC
     ===================================================== */
@@ -337,6 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+
     /* =====================================================
        RECHERCHE
     ===================================================== */
@@ -350,6 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
+
                 /* -----------------------------------------
                    MOT-CLÉ
                 ----------------------------------------- */
@@ -357,6 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const keyword =
                     searchKeyword?.value.trim()
                     || "";
+
 
 
                 /* -----------------------------------------
@@ -368,12 +546,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     || "";
 
 
+
                 /* -----------------------------------------
                    PARAMÈTRES URL
                 ----------------------------------------- */
 
                 const params =
                     new URLSearchParams();
+
 
 
                 if (keyword) {
@@ -386,6 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 if (city) {
 
                     params.set(
@@ -396,12 +577,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 /* -----------------------------------------
                    REDIRECTION
                 ----------------------------------------- */
 
                 const queryString =
                     params.toString();
+
 
 
                 if (queryString) {
@@ -424,6 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
     /* =====================================================
        DÉCONNEXION — FIREBASE
     ===================================================== */
@@ -435,6 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
             async event => {
 
                 event.preventDefault();
+
 
 
                 /* -----------------------------------------
@@ -451,6 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 /* -----------------------------------------
                    CONFIRMATION
                 ----------------------------------------- */
@@ -461,11 +647,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
+
                 if (!confirmLogout) {
 
                     return;
 
                 }
+
 
 
                 /* -----------------------------------------
@@ -477,6 +665,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     await signOut(
                         auth
                     );
+
 
 
                     if (
@@ -492,6 +681,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
+
                     setTimeout(
                         () => {
 
@@ -505,12 +695,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 catch (error) {
 
                     console.error(
                         "Erreur de déconnexion :",
                         error
                     );
+
 
 
                     if (
@@ -533,6 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
     /* =====================================================
        ANIMATION DES CARTES
     ===================================================== */
@@ -543,6 +736,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+
     cards.forEach(
         (card, index) => {
 
@@ -551,6 +745,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     );
+
 
 
     /* =====================================================
@@ -573,11 +768,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+
             if (existing) {
 
                 existing.remove();
 
             }
+
 
 
             /* ---------------------------------------------
@@ -590,17 +787,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+
             notification.className =
                 `camu-message camu-message-${type}`;
+
 
 
             notification.textContent =
                 message;
 
 
+
             document.body.appendChild(
                 notification
             );
+
 
 
             /* ---------------------------------------------
@@ -613,6 +814,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     notification.classList.add(
                         "hide"
                     );
+
 
 
                     setTimeout(
@@ -631,12 +833,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
+
     /* =====================================================
        FIN
     ===================================================== */
 
     console.log(
-        "CAMU SERVICES V1 — application chargée."
+        "CAMU SERVICES V2 — application chargée."
     );
 
 });
