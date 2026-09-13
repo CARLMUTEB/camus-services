@@ -1,6 +1,7 @@
 // =====================================================
 // CAMU SERVICES
-// COMPTE UTILISATEUR — V1
+// COMPTE UTILISATEUR — V2
+// Profil + Annonces + Favoris + Abonnement
 // =====================================================
 
 import { auth, db } from "./firebase-config.js";
@@ -16,11 +17,15 @@ import {
     query,
     where,
     getDocs,
-    deleteDoc
+    deleteDoc,
+    updateDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-console.log("CAMU SERVICES — compte.js chargé.");
+console.log(
+    "CAMU SERVICES — compte.js chargé."
+);
 
 
 // =====================================================
@@ -65,6 +70,26 @@ const favoritesCount =
 
 
 // =====================================================
+// ÉLÉMENTS ABONNEMENT
+// =====================================================
+
+const subscriptionCard =
+    document.getElementById("subscriptionCard");
+
+const subscriptionPlan =
+    document.getElementById("subscriptionPlan");
+
+const subscriptionInfo =
+    document.getElementById("subscriptionInfo");
+
+const subscriptionDays =
+    document.getElementById("subscriptionDays");
+
+const subscriptionButton =
+    document.getElementById("subscriptionButton");
+
+
+// =====================================================
 // AFFICHER LA PHOTO DE PROFIL
 // =====================================================
 
@@ -77,12 +102,14 @@ function displayProfilePhoto(photoURL) {
         return;
     }
 
+
     if (
         photoURL &&
         photoURL.trim() !== ""
     ) {
 
-        accountAvatarImage.src = photoURL;
+        accountAvatarImage.src =
+            photoURL;
 
         accountAvatarImage.style.display =
             "block";
@@ -92,7 +119,9 @@ function displayProfilePhoto(photoURL) {
 
     } else {
 
-        accountAvatarImage.removeAttribute("src");
+        accountAvatarImage.removeAttribute(
+            "src"
+        );
 
         accountAvatarImage.style.display =
             "none";
@@ -100,6 +129,536 @@ function displayProfilePhoto(photoURL) {
         accountAvatarDefault.style.display =
             "flex";
     }
+}
+
+
+// =====================================================
+// FORMATTER UNE DATE
+// =====================================================
+
+function formatDate(date) {
+
+    if (!date) {
+        return "";
+    }
+
+
+    const dateObject =
+        date instanceof Date
+            ? date
+            : new Date(date);
+
+
+    if (
+        Number.isNaN(
+            dateObject.getTime()
+        )
+    ) {
+        return "";
+    }
+
+
+    return dateObject.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+}
+
+
+// =====================================================
+// CONVERTIR UNE DATE FIRESTORE
+// =====================================================
+
+function firestoreDateToDate(value) {
+
+    if (!value) {
+        return null;
+    }
+
+
+    // Timestamp Firestore
+    if (
+        typeof value.toDate === "function"
+    ) {
+
+        return value.toDate();
+    }
+
+
+    // Date JavaScript
+    if (
+        value instanceof Date
+    ) {
+
+        return value;
+    }
+
+
+    // Millisecondes
+    if (
+        typeof value === "number"
+    ) {
+
+        const date =
+            new Date(value);
+
+        return Number.isNaN(
+            date.getTime()
+        )
+            ? null
+            : date;
+    }
+
+
+    // String / autre
+    const date =
+        new Date(value);
+
+
+    return Number.isNaN(
+        date.getTime()
+    )
+        ? null
+        : date;
+}
+
+
+// =====================================================
+// CALCULER LES JOURS RESTANTS
+// =====================================================
+
+function getRemainingDays(endDate) {
+
+    if (!endDate) {
+        return 0;
+    }
+
+
+    const now =
+        new Date();
+
+
+    const end =
+        firestoreDateToDate(
+            endDate
+        );
+
+
+    if (!end) {
+        return 0;
+    }
+
+
+    const difference =
+        end.getTime() -
+        now.getTime();
+
+
+    if (difference <= 0) {
+        return 0;
+    }
+
+
+    return Math.ceil(
+        difference /
+        (1000 * 60 * 60 * 24)
+    );
+}
+
+
+// =====================================================
+// AFFICHER L'ABONNEMENT
+// =====================================================
+
+async function displaySubscription(
+    profile,
+    user
+) {
+
+    if (
+        !subscriptionCard
+    ) {
+        console.warn(
+            "CAMU SERVICES : carte abonnement introuvable."
+        );
+
+        return;
+    }
+
+
+    // =================================================
+    // RÉCUPÉRER LES INFORMATIONS
+    // =================================================
+
+    let plan =
+        profile.plan ||
+        "basic";
+
+
+    let status =
+        profile.subscriptionStatus ||
+        "none";
+
+
+    const trialEnd =
+        profile.trialEnd ||
+        null;
+
+
+    const trialStart =
+        profile.trialStart ||
+        null;
+
+
+    // =================================================
+    // CONVERSION DATE
+    // =================================================
+
+    const endDate =
+        firestoreDateToDate(
+            trialEnd
+        );
+
+
+    const startDate =
+        firestoreDateToDate(
+            trialStart
+        );
+
+
+    // =================================================
+    // VÉRIFIER L'EXPIRATION DE L'ESSAI
+    // =================================================
+
+    if (
+        status === "trial" &&
+        endDate
+    ) {
+
+        const now =
+            new Date();
+
+
+        if (
+            now.getTime() >=
+            endDate.getTime()
+        ) {
+
+            console.log(
+                "CAMU SERVICES : essai Premium expiré."
+            );
+
+
+            plan =
+                "basic";
+
+
+            status =
+                "expired";
+
+
+            // -----------------------------------------
+            // Mise à jour Firestore
+            // -----------------------------------------
+
+            try {
+
+                await updateDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
+                    {
+                        plan: "basic",
+
+                        subscriptionStatus:
+                            "expired",
+
+                        updatedAt:
+                            serverTimestamp()
+                    }
+                );
+
+
+                console.log(
+                    "CAMU SERVICES : utilisateur passé en Basic."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Impossible de mettre à jour le statut :",
+                    error
+                );
+            }
+        }
+    }
+
+
+    // =================================================
+    // PREMIUM — ESSAI
+    // =================================================
+
+    if (
+        plan === "premium" &&
+        status === "trial"
+    ) {
+
+        const remainingDays =
+            getRemainingDays(
+                endDate
+            );
+
+
+        // ---------------------------------------------
+        // TITRE
+        // ---------------------------------------------
+
+        subscriptionPlan.textContent =
+            "Premium";
+
+
+        // ---------------------------------------------
+        // INFORMATIONS
+        // ---------------------------------------------
+
+        subscriptionInfo.innerHTML = `
+
+            <div class="subscription-status premium-status">
+
+                <i class="fa-solid fa-gift"></i>
+
+                <span>
+                    Essai Premium gratuit de 3 mois
+                </span>
+
+            </div>
+
+            ${
+                startDate
+                    ? `
+                        <div class="subscription-date">
+                            Début :
+                            <strong>
+                                ${formatDate(startDate)}
+                            </strong>
+                        </div>
+                    `
+                    : ""
+            }
+
+            ${
+                endDate
+                    ? `
+                        <div class="subscription-date">
+                            Expire le :
+                            <strong>
+                                ${formatDate(endDate)}
+                            </strong>
+                        </div>
+                    `
+                    : ""
+            }
+
+        `;
+
+
+        // ---------------------------------------------
+        // JOURS RESTANTS
+        // ---------------------------------------------
+
+        if (
+            remainingDays > 0
+        ) {
+
+            subscriptionDays.innerHTML = `
+
+                <i class="fa-solid fa-clock"></i>
+
+                <strong>
+                    ${remainingDays}
+                </strong>
+
+                ${
+                    remainingDays === 1
+                        ? "jour restant"
+                        : "jours restants"
+                }
+
+            `;
+
+        } else {
+
+            subscriptionDays.innerHTML = `
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                Essai Premium terminé
+
+            `;
+        }
+
+
+        // ---------------------------------------------
+        // BOUTON
+        // ---------------------------------------------
+
+        if (subscriptionButton) {
+
+            subscriptionButton.innerHTML = `
+
+                <i class="fa-solid fa-crown"></i>
+
+                Découvrir Premium
+
+            `;
+
+            subscriptionButton.href =
+                "premium.html";
+        }
+
+
+        // ---------------------------------------------
+        // CLASSE
+        // ---------------------------------------------
+
+        subscriptionCard.classList.add(
+            "subscription-premium"
+        );
+
+
+        return;
+    }
+
+
+    // =================================================
+    // PREMIUM PAYANT
+    // =================================================
+
+    if (
+        plan === "premium" &&
+        (
+            status === "active" ||
+            status === "paid"
+        )
+    ) {
+
+        subscriptionPlan.textContent =
+            "Premium";
+
+
+        subscriptionInfo.innerHTML = `
+
+            <div class="subscription-status premium-status">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <span>
+                    Abonnement Premium actif
+                </span>
+
+            </div>
+
+        `;
+
+
+        subscriptionDays.innerHTML = `
+
+            <i class="fa-solid fa-crown"></i>
+
+            Vous bénéficiez actuellement
+            des avantages Premium.
+
+        `;
+
+
+        if (subscriptionButton) {
+
+            subscriptionButton.innerHTML = `
+
+                <i class="fa-solid fa-gear"></i>
+
+                Gérer mon abonnement
+
+            `;
+
+            subscriptionButton.href =
+                "premium.html";
+        }
+
+
+        subscriptionCard.classList.add(
+            "subscription-premium"
+        );
+
+
+        return;
+    }
+
+
+    // =================================================
+    // BASIC
+    // =================================================
+
+    subscriptionPlan.textContent =
+        "Basic";
+
+
+    subscriptionInfo.innerHTML = `
+
+        <div class="subscription-status basic-status">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span>
+                Formule gratuite
+            </span>
+
+        </div>
+
+        <div class="subscription-date">
+
+            Vous utilisez actuellement
+            la formule Basic.
+
+        </div>
+
+    `;
+
+
+    subscriptionDays.innerHTML = `
+
+        <i class="fa-solid fa-star"></i>
+
+        Passez à Premium pour obtenir
+        plus de fonctionnalités.
+
+    `;
+
+
+    if (subscriptionButton) {
+
+        subscriptionButton.innerHTML = `
+
+            <i class="fa-solid fa-crown"></i>
+
+            Passer à Premium
+
+        `;
+
+        subscriptionButton.href =
+            "premium.html";
+    }
+
+
+    subscriptionCard.classList.add(
+        "subscription-basic"
+    );
 }
 
 
@@ -113,6 +672,7 @@ async function loadUserProfile(user) {
         return;
     }
 
+
     try {
 
         const userRef =
@@ -122,15 +682,28 @@ async function loadUserProfile(user) {
                 user.uid
             );
 
+
         const userSnap =
-            await getDoc(userRef);
+            await getDoc(
+                userRef
+            );
+
 
         let profile = {};
 
-        if (userSnap.exists()) {
-            profile = userSnap.data();
+
+        if (
+            userSnap.exists()
+        ) {
+
+            profile =
+                userSnap.data();
         }
 
+
+        // =================================================
+        // DONNÉES
+        // =================================================
 
         const name =
             profile.name ||
@@ -164,38 +737,79 @@ async function loadUserProfile(user) {
             "";
 
 
-        // ---------------------------------------------
-        // Affichage
-        // ---------------------------------------------
+        // =================================================
+        // AFFICHAGE NOM
+        // =================================================
 
         if (accountName) {
-            accountName.textContent = name;
+
+            accountName.textContent =
+                name;
         }
+
+
+        // =================================================
+        // AFFICHAGE EMAIL
+        // =================================================
 
         if (accountEmail) {
-            accountEmail.textContent = email;
+
+            accountEmail.textContent =
+                email;
         }
+
+
+        // =================================================
+        // PROFIL
+        // =================================================
 
         if (profileName) {
-            profileName.textContent = name;
+
+            profileName.textContent =
+                name;
         }
+
 
         if (profileEmail) {
-            profileEmail.textContent = email;
+
+            profileEmail.textContent =
+                email;
         }
+
 
         if (profilePhone) {
+
             profilePhone.textContent =
-                phone || "Non renseigné";
+                phone ||
+                "Non renseigné";
         }
 
+
         if (profileDescription) {
+
             profileDescription.textContent =
                 description ||
                 "Aucune description pour le moment.";
         }
 
-        displayProfilePhoto(photoURL);
+
+        // =================================================
+        // PHOTO
+        // =================================================
+
+        displayProfilePhoto(
+            photoURL
+        );
+
+
+        // =================================================
+        // ABONNEMENT
+        // =================================================
+
+        await displaySubscription(
+            profile,
+            user
+        );
 
 
         console.log(
@@ -211,17 +825,19 @@ async function loadUserProfile(user) {
         );
 
 
-        // ---------------------------------------------
-        // Solution de secours avec Firebase Auth
-        // ---------------------------------------------
+        // =================================================
+        // SECOURS FIREBASE AUTH
+        // =================================================
 
         const name =
             user.displayName ||
             "Utilisateur CAMU";
 
+
         const email =
             user.email ||
             "";
+
 
         const photoURL =
             user.photoURL ||
@@ -229,22 +845,72 @@ async function loadUserProfile(user) {
 
 
         if (accountName) {
-            accountName.textContent = name;
+
+            accountName.textContent =
+                name;
         }
+
 
         if (accountEmail) {
-            accountEmail.textContent = email;
+
+            accountEmail.textContent =
+                email;
         }
+
 
         if (profileName) {
-            profileName.textContent = name;
+
+            profileName.textContent =
+                name;
         }
+
 
         if (profileEmail) {
-            profileEmail.textContent = email;
+
+            profileEmail.textContent =
+                email;
         }
 
-        displayProfilePhoto(photoURL);
+
+        displayProfilePhoto(
+            photoURL
+        );
+
+
+        // =================================================
+        // ABONNEMENT PAR DÉFAUT
+        // =================================================
+
+        if (subscriptionPlan) {
+
+            subscriptionPlan.textContent =
+                "Basic";
+        }
+
+
+        if (subscriptionInfo) {
+
+            subscriptionInfo.innerHTML = `
+
+                <div class="subscription-status basic-status">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        Formule gratuite
+                    </span>
+
+                </div>
+
+            `;
+        }
+
+
+        if (subscriptionDays) {
+
+            subscriptionDays.textContent =
+                "Passez à Premium pour plus de fonctionnalités.";
+        }
     }
 }
 
@@ -266,7 +932,7 @@ async function loadMyAds(user) {
     try {
 
         // =================================================
-        // COLLECTION ANNONCES
+        // REQUÊTE ANNONCES
         // =================================================
 
         const annoncesQuery =
@@ -296,17 +962,20 @@ async function loadMyAds(user) {
             (document) => {
 
                 ads.push({
+
                     id: document.id,
+
                     ...document.data()
+
                 });
 
             }
         );
 
 
-        // ---------------------------------------------
-        // Trier du plus récent au plus ancien
-        // ---------------------------------------------
+        // =================================================
+        // TRI
+        // =================================================
 
         ads.sort(
             (a, b) => {
@@ -315,18 +984,20 @@ async function loadMyAds(user) {
                     a.createdAt?.seconds ||
                     0;
 
+
                 const dateB =
                     b.createdAt?.seconds ||
                     0;
+
 
                 return dateB - dateA;
             }
         );
 
 
-        // ---------------------------------------------
-        // Nombre d'annonces
-        // ---------------------------------------------
+        // =================================================
+        // NOMBRE D'ANNONCES
+        // =================================================
 
         if (myAdsCount) {
 
@@ -339,17 +1010,20 @@ async function loadMyAds(user) {
             "";
 
 
-        // ---------------------------------------------
-        // Aucune annonce
-        // ---------------------------------------------
+        // =================================================
+        // AUCUNE ANNONCE
+        // =================================================
 
-        if (ads.length === 0) {
+        if (
+            ads.length === 0
+        ) {
 
             if (myAdsEmpty) {
 
                 myAdsEmpty.style.display =
                     "block";
             }
+
 
             return;
         }
@@ -374,13 +1048,14 @@ async function loadMyAds(user) {
                         "article"
                     );
 
+
                 card.className =
                     "my-ad-card";
 
 
-                // -----------------------------------------
-                // Image
-                // -----------------------------------------
+                // =================================================
+                // IMAGE
+                // =================================================
 
                 const image =
                     ad.images?.[0] ||
@@ -389,28 +1064,30 @@ async function loadMyAds(user) {
                     "";
 
 
-                // -----------------------------------------
-                // Titre
-                // -----------------------------------------
+                // =================================================
+                // TITRE
+                // =================================================
 
                 const title =
                     ad.title ||
                     "Annonce sans titre";
 
 
-                // -----------------------------------------
-                // Prix
-                // -----------------------------------------
+                // =================================================
+                // PRIX
+                // =================================================
 
                 const price =
-                    ad.price
+                    ad.price !== undefined &&
+                    ad.price !== null &&
+                    ad.price !== ""
                         ? `${formatPrice(ad.price)} ${ad.currency || "USD"}`
                         : "Prix sur demande";
 
 
-                // -----------------------------------------
-                // Localisation
-                // -----------------------------------------
+                // =================================================
+                // LOCALISATION
+                // =================================================
 
                 const location =
                     [
@@ -421,26 +1098,32 @@ async function loadMyAds(user) {
                     .join(", ");
 
 
-                // -----------------------------------------
-                // Image HTML
-                // -----------------------------------------
+                // =================================================
+                // IMAGE HTML
+                // =================================================
 
-                let imageHTML = "";
+                let imageHTML =
+                    "";
 
 
                 if (image) {
 
                     imageHTML = `
+
                         <img
                             class="my-ad-image"
                             src="${escapeHTML(image)}"
                             alt="${escapeHTML(title)}"
+                            loading="lazy"
+                            onerror="this.style.display='none';"
                         >
+
                     `;
 
                 } else {
 
                     imageHTML = `
+
                         <div
                             class="my-ad-image"
                             style="
@@ -451,11 +1134,14 @@ async function loadMyAds(user) {
                                 color:#94a3b8;
                             "
                         >
+
                             <i
                                 class="fa-solid fa-image"
                                 style="font-size:35px;"
                             ></i>
+
                         </div>
+
                     `;
                 }
 
@@ -474,9 +1160,13 @@ async function loadMyAds(user) {
                             ${escapeHTML(title)}
                         </h3>
 
+
                         <div class="my-ad-price">
+
                             ${escapeHTML(price)}
+
                         </div>
+
 
                         <div class="my-ad-location">
 
@@ -490,15 +1180,16 @@ async function loadMyAds(user) {
                         </div>
 
 
-                        <!-- ACTIONS -->
-
                         <div class="my-ad-actions">
+
 
                             <a
                                 class="my-ad-view"
                                 href="explorer.html?id=${encodeURIComponent(ad.id)}"
                             >
+
                                 👁️ Voir
+
                             </a>
 
 
@@ -506,7 +1197,9 @@ async function loadMyAds(user) {
                                 class="my-ad-edit"
                                 href="modifier.html?id=${encodeURIComponent(ad.id)}"
                             >
+
                                 ✏️ Modifier
+
                             </a>
 
 
@@ -515,12 +1208,16 @@ async function loadMyAds(user) {
                                 class="my-ad-delete"
                                 data-id="${escapeHTML(ad.id)}"
                             >
+
                                 🗑️ Supprimer
+
                             </button>
+
 
                         </div>
 
                     </div>
+
                 `;
 
 
@@ -530,7 +1227,7 @@ async function loadMyAds(user) {
 
 
                 // =================================================
-                // BOUTON SUPPRIMER
+                // SUPPRESSION
                 // =================================================
 
                 const deleteButton =
@@ -550,7 +1247,7 @@ async function loadMyAds(user) {
 
 
                             // -------------------------------------
-                            // Confirmation
+                            // CONFIRMATION
                             // -------------------------------------
 
                             const confirmation =
@@ -569,12 +1266,13 @@ async function loadMyAds(user) {
                                 deleteButton.disabled =
                                     true;
 
+
                                 deleteButton.textContent =
                                     "Suppression...";
 
 
                                 // ---------------------------------
-                                // Récupérer l'annonce
+                                // RÉFÉRENCE
                                 // ---------------------------------
 
                                 const annonceRef =
@@ -584,6 +1282,10 @@ async function loadMyAds(user) {
                                         annonceId
                                     );
 
+
+                                // ---------------------------------
+                                // RÉCUPÉRER
+                                // ---------------------------------
 
                                 const annonceSnap =
                                     await getDoc(
@@ -599,9 +1301,11 @@ async function loadMyAds(user) {
                                         "Cette annonce n'existe plus."
                                     );
 
+
                                     await loadMyAds(
                                         auth.currentUser
                                     );
+
 
                                     return;
                                 }
@@ -612,7 +1316,7 @@ async function loadMyAds(user) {
 
 
                                 // ---------------------------------
-                                // Vérification du propriétaire
+                                // PROPRIÉTAIRE
                                 // ---------------------------------
 
                                 if (
@@ -624,18 +1328,21 @@ async function loadMyAds(user) {
                                         "Vous ne pouvez supprimer que vos propres annonces."
                                     );
 
+
                                     deleteButton.disabled =
                                         false;
 
+
                                     deleteButton.textContent =
                                         "🗑️ Supprimer";
+
 
                                     return;
                                 }
 
 
                                 // ---------------------------------
-                                // Suppression Firebase
+                                // SUPPRESSION
                                 // ---------------------------------
 
                                 await deleteDoc(
@@ -655,7 +1362,7 @@ async function loadMyAds(user) {
 
 
                                 // ---------------------------------
-                                // Actualiser la liste
+                                // ACTUALISER
                                 // ---------------------------------
 
                                 await loadMyAds(
@@ -679,14 +1386,13 @@ async function loadMyAds(user) {
                                 deleteButton.disabled =
                                     false;
 
+
                                 deleteButton.textContent =
                                     "🗑️ Supprimer";
                             }
-
                         }
                     );
                 }
-
             }
         );
 
@@ -721,6 +1427,7 @@ async function loadMyAds(user) {
                         margin-bottom:10px;
                     "
                 ></i>
+
 
                 <p>
                     Impossible de charger vos annonces.
@@ -781,6 +1488,7 @@ function loadFavoritesCount() {
             error
         );
 
+
         favoritesCount.textContent =
             "0";
     }
@@ -795,9 +1503,9 @@ onAuthStateChanged(
     auth,
     async (user) => {
 
-        // ---------------------------------------------
-        // Utilisateur non connecté
-        // ---------------------------------------------
+        // =================================================
+        // NON CONNECTÉ
+        // =================================================
 
         if (!user) {
 
@@ -809,9 +1517,14 @@ onAuthStateChanged(
             window.location.href =
                 "connexion.html";
 
+
             return;
         }
 
+
+        // =================================================
+        // CONNECTÉ
+        // =================================================
 
         console.log(
             "CAMU SERVICES : utilisateur connecté :",
@@ -819,19 +1532,27 @@ onAuthStateChanged(
         );
 
 
-        // ---------------------------------------------
-        // Charger les données
-        // ---------------------------------------------
+        // =================================================
+        // CHARGER PROFIL
+        // =================================================
 
         await loadUserProfile(
             user
         );
 
 
+        // =================================================
+        // CHARGER ANNONCES
+        // =================================================
+
         await loadMyAds(
             user
         );
 
+
+        // =================================================
+        // FAVORIS
+        // =================================================
 
         loadFavoritesCount();
 
