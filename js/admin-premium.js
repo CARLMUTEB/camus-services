@@ -1,6 +1,6 @@
 // ============================================================
 // CAMU SERVICES — ADMIN PREMIUM
-// Gestion : réception / vérification / validation / refus
+// Réception • Vérification • Approbation • Refus
 // ============================================================
 
 import { auth, db } from "./firebase-config.js";
@@ -26,15 +26,15 @@ import {
 
 const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
-const PREMIUM_PAYMENTS_COLLECTION = "premiumPayments";
+const PAYMENTS_COLLECTION = "premiumPayments";
 const USERS_COLLECTION = "users";
 
 
 // ============================================================
-// PLANS PREMIUM
+// PLANS
 // ============================================================
 
-const PREMIUM_PLANS = {
+const PLANS = {
     weekly: {
         name: "Premium — 1 semaine",
         amount: 4,
@@ -59,31 +59,31 @@ const PREMIUM_PLANS = {
 
 
 // ============================================================
-// ÉLÉMENTS DOM
+// DOM
 // ============================================================
 
-const premiumPaymentsList =
+const paymentsList =
     document.getElementById("premiumPaymentsList");
 
-const premiumPendingCount =
+const pendingCount =
     document.getElementById("premiumPendingCount");
 
-const premiumApprovedCount =
+const approvedCount =
     document.getElementById("premiumApprovedCount");
 
-const premiumRejectedCount =
+const rejectedCount =
     document.getElementById("premiumRejectedCount");
 
-const premiumPaymentSearch =
+const searchInput =
     document.getElementById("premiumPaymentSearch");
 
-const premiumPaymentStatusFilter =
+const statusFilter =
     document.getElementById("premiumPaymentStatusFilter");
 
-const premiumPaymentPlanFilter =
+const planFilter =
     document.getElementById("premiumPaymentPlanFilter");
 
-const refreshPremiumPayments =
+const refreshButton =
     document.getElementById("refreshPremiumPayments");
 
 
@@ -91,12 +91,12 @@ const refreshPremiumPayments =
 // VARIABLES
 // ============================================================
 
-let allPremiumPayments = [];
+let payments = [];
 let currentAdmin = null;
 
 
 // ============================================================
-// UTILITAIRES
+// PROTECTION HTML
 // ============================================================
 
 function escapeHTML(value) {
@@ -114,21 +114,13 @@ function escapeHTML(value) {
 }
 
 
-// ------------------------------------------------------------
+// ============================================================
+// DATE
+// ============================================================
 
-function formatAmount(amount) {
+function formatDate(value) {
 
-    const number = Number(amount) || 0;
-
-    return `${number.toLocaleString("fr-FR")} $`;
-}
-
-
-// ------------------------------------------------------------
-
-function formatDate(timestamp) {
-
-    if (!timestamp) {
+    if (!value) {
         return "Date inconnue";
     }
 
@@ -136,12 +128,12 @@ function formatDate(timestamp) {
 
         let date;
 
-        if (timestamp?.toDate) {
-            date = timestamp.toDate();
-        } else if (timestamp instanceof Date) {
-            date = timestamp;
+        if (typeof value.toDate === "function") {
+            date = value.toDate();
+        } else if (value instanceof Date) {
+            date = value;
         } else {
-            date = new Date(timestamp);
+            date = new Date(value);
         }
 
         if (Number.isNaN(date.getTime())) {
@@ -158,106 +150,106 @@ function formatDate(timestamp) {
 
     } catch (error) {
 
-        console.error(
-            "Erreur formatage date :",
-            error
-        );
-
         return "Date inconnue";
     }
 }
 
 
-// ------------------------------------------------------------
+// ============================================================
+// MONTANT
+// ============================================================
 
-function getStatusLabel(status) {
+function formatAmount(value) {
 
-    switch (status) {
+    const amount = Number(value) || 0;
 
-        case "pending":
-            return "En attente";
-
-        case "verified":
-            return "Vérifié";
-
-        case "approved":
-            return "Approuvé";
-
-        case "rejected":
-            return "Refusé";
-
-        default:
-            return status || "Inconnu";
-    }
-}
-
-
-// ------------------------------------------------------------
-
-function getStatusClass(status) {
-
-    switch (status) {
-
-        case "pending":
-            return "pending";
-
-        case "verified":
-            return "verified";
-
-        case "approved":
-            return "approved";
-
-        case "rejected":
-            return "rejected";
-
-        default:
-            return "pending";
-    }
-}
-
-
-// ------------------------------------------------------------
-
-function getPaymentMethodLabel(method) {
-
-    switch (String(method || "").toLowerCase()) {
-
-        case "mpesa":
-        case "m-pesa":
-            return "M-Pesa";
-
-        case "airtel":
-        case "airtel_money":
-        case "airtel money":
-            return "Airtel Money";
-
-        default:
-            return method || "Non précisé";
-    }
-}
-
-
-// ------------------------------------------------------------
-
-function getPlanName(plan) {
-
-    return PREMIUM_PLANS[plan]?.name ||
-           plan ||
-           "Plan inconnu";
+    return `${amount.toLocaleString("fr-FR")} $`;
 }
 
 
 // ============================================================
-// CHARGEMENT DES PAIEMENTS
+// STATUT
 // ============================================================
 
-async function loadPremiumPayments() {
+function statusLabel(status) {
 
-    if (!premiumPaymentsList) {
+    const labels = {
+        pending: "En attente",
+        verified: "Vérifié",
+        approved: "Approuvé",
+        rejected: "Refusé"
+    };
+
+    return labels[status] || "Inconnu";
+}
+
+
+function statusClass(status) {
+
+    if (
+        status === "pending" ||
+        status === "verified" ||
+        status === "approved" ||
+        status === "rejected"
+    ) {
+        return status;
+    }
+
+    return "pending";
+}
+
+
+// ============================================================
+// RÉSEAU
+// ============================================================
+
+function paymentMethodLabel(method) {
+
+    const value =
+        String(method || "").toLowerCase();
+
+    if (
+        value === "mpesa" ||
+        value === "m-pesa"
+    ) {
+        return "M-Pesa";
+    }
+
+    if (
+        value === "airtel" ||
+        value === "airtel_money" ||
+        value === "airtel money"
+    ) {
+        return "Airtel Money";
+    }
+
+    return method || "Non précisé";
+}
+
+
+// ============================================================
+// PLAN
+// ============================================================
+
+function planLabel(plan) {
+
+    return PLANS[plan]?.name ||
+        plan ||
+        "Plan inconnu";
+}
+
+
+// ============================================================
+// CHARGER LES PAIEMENTS
+// ============================================================
+
+async function loadPayments() {
+
+    if (!paymentsList) {
         return;
     }
 
-    premiumPaymentsList.innerHTML = `
+    paymentsList.innerHTML = `
         <div class="premium-loading">
             <i class="fa-solid fa-spinner fa-spin"></i>
             <span>Chargement des demandes Premium...</span>
@@ -266,20 +258,18 @@ async function loadPremiumPayments() {
 
     try {
 
-        const paymentsRef =
+        const snapshot = await getDocs(
             collection(
                 db,
-                PREMIUM_PAYMENTS_COLLECTION
-            );
+                PAYMENTS_COLLECTION
+            )
+        );
 
-        const snapshot =
-            await getDocs(paymentsRef);
+        payments = [];
 
-        allPremiumPayments = [];
+        snapshot.forEach(paymentDoc => {
 
-        snapshot.forEach((paymentDoc) => {
-
-            allPremiumPayments.push({
+            payments.push({
                 id: paymentDoc.id,
                 ...paymentDoc.data()
             });
@@ -287,50 +277,42 @@ async function loadPremiumPayments() {
         });
 
 
-        // ----------------------------------------------------
-        // Tri : plus récent en premier
-        // ----------------------------------------------------
-
-        allPremiumPayments.sort((a, b) => {
+        payments.sort((a, b) => {
 
             const dateA =
-                a.createdAt?.toDate?.() ||
-                new Date(0);
+                a.createdAt?.toDate?.()?.getTime() || 0;
 
             const dateB =
-                b.createdAt?.toDate?.() ||
-                new Date(0);
+                b.createdAt?.toDate?.()?.getTime() || 0;
 
             return dateB - dateA;
         });
 
 
-        updatePremiumCounters();
-
-        applyPremiumFilters();
+        updateCounters();
+        applyFilters();
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement paiements Premium :",
+            "Erreur chargement Premium :",
             error
         );
 
-        premiumPaymentsList.innerHTML = `
+        paymentsList.innerHTML = `
             <div class="premium-error">
                 <i class="fa-solid fa-triangle-exclamation"></i>
 
-                <h3>Impossible de charger les demandes</h3>
+                <h3>Erreur de chargement</h3>
 
                 <p>
-                    Une erreur s'est produite lors du chargement
-                    des paiements Premium.
+                    Impossible de charger les demandes Premium.
                 </p>
 
                 <button
                     type="button"
-                    id="retryPremiumPayments"
                     class="admin-refresh-button"
+                    id="retryPremiumButton"
                 >
                     <i class="fa-solid fa-rotate-right"></i>
                     Réessayer
@@ -338,17 +320,12 @@ async function loadPremiumPayments() {
             </div>
         `;
 
-        const retry =
-            document.getElementById(
-                "retryPremiumPayments"
-            );
-
-        if (retry) {
-            retry.addEventListener(
+        document
+            .getElementById("retryPremiumButton")
+            ?.addEventListener(
                 "click",
-                loadPremiumPayments
+                loadPayments
             );
-        }
     }
 }
 
@@ -357,60 +334,56 @@ async function loadPremiumPayments() {
 // COMPTEURS
 // ============================================================
 
-function updatePremiumCounters() {
+function updateCounters() {
 
     const pending =
-        allPremiumPayments.filter(
-            payment => payment.status === "pending"
+        payments.filter(
+            item => item.status === "pending"
         ).length;
 
     const approved =
-        allPremiumPayments.filter(
-            payment => payment.status === "approved"
+        payments.filter(
+            item => item.status === "approved"
         ).length;
 
     const rejected =
-        allPremiumPayments.filter(
-            payment => payment.status === "rejected"
+        payments.filter(
+            item => item.status === "rejected"
         ).length;
 
 
-    if (premiumPendingCount) {
-        premiumPendingCount.textContent = pending;
+    if (pendingCount) {
+        pendingCount.textContent = pending;
     }
 
-    if (premiumApprovedCount) {
-        premiumApprovedCount.textContent = approved;
+    if (approvedCount) {
+        approvedCount.textContent = approved;
     }
 
-    if (premiumRejectedCount) {
-        premiumRejectedCount.textContent = rejected;
+    if (rejectedCount) {
+        rejectedCount.textContent = rejected;
     }
 }
 
 
 // ============================================================
-// FILTRES
+// FILTRAGE
 // ============================================================
 
-function applyPremiumFilters() {
+function applyFilters() {
 
-    let payments = [...allPremiumPayments];
+    let result = [...payments];
 
-
-    // --------------------------------------------------------
-    // Recherche
-    // --------------------------------------------------------
 
     const search =
-        premiumPaymentSearch?.value
+        searchInput?.value
             ?.trim()
             .toLowerCase() || "";
 
 
     if (search) {
 
-        payments = payments.filter(payment => {
+        result = result.filter(payment => {
 
             const text = [
 
@@ -431,56 +404,50 @@ function applyPremiumFilters() {
     }
 
 
-    // --------------------------------------------------------
-    // Filtre statut
-    // --------------------------------------------------------
-
     const status =
-        premiumPaymentStatusFilter?.value || "all";
+        statusFilter?.value || "all";
 
 
     if (status !== "all") {
 
-        payments = payments.filter(
-            payment => payment.status === status
+        result = result.filter(
+            payment =>
+                payment.status === status
         );
     }
 
 
-    // --------------------------------------------------------
-    // Filtre plan
-    // --------------------------------------------------------
-
     const plan =
-        premiumPaymentPlanFilter?.value || "all";
+        planFilter?.value || "all";
 
 
     if (plan !== "all") {
 
-        payments = payments.filter(
-            payment => payment.plan === plan
+        result = result.filter(
+            payment =>
+                payment.plan === plan
         );
     }
 
 
-    renderPremiumPayments(payments);
+    renderPayments(result);
 }
 
 
 // ============================================================
-// AFFICHAGE DES PAIEMENTS
+// AFFICHAGE
 // ============================================================
 
-function renderPremiumPayments(payments) {
+function renderPayments(list) {
 
-    if (!premiumPaymentsList) {
+    if (!paymentsList) {
         return;
     }
 
 
-    if (!payments.length) {
+    if (!list.length) {
 
-        premiumPaymentsList.innerHTML = `
+        paymentsList.innerHTML = `
             <div class="premium-empty">
 
                 <div class="premium-empty-icon">
@@ -490,8 +457,8 @@ function renderPremiumPayments(payments) {
                 <h3>Aucune demande Premium</h3>
 
                 <p>
-                    Aucune demande ne correspond aux
-                    critères sélectionnés.
+                    Aucune demande ne correspond
+                    aux critères sélectionnés.
                 </p>
 
             </div>
@@ -501,13 +468,9 @@ function renderPremiumPayments(payments) {
     }
 
 
-    premiumPaymentsList.innerHTML =
-        payments.map(renderPaymentCard).join("");
+    paymentsList.innerHTML =
+        list.map(renderPayment).join("");
 
-
-    // --------------------------------------------------------
-    // Boutons
-    // --------------------------------------------------------
 
     document
         .querySelectorAll(".premium-verify-button")
@@ -515,13 +478,9 @@ function renderPremiumPayments(payments) {
 
             button.addEventListener(
                 "click",
-                () => {
-
-                    const paymentId =
-                        button.dataset.paymentId;
-
-                    openVerification(paymentId);
-                }
+                () => openVerification(
+                    button.dataset.paymentId
+                )
             );
         });
 
@@ -532,13 +491,9 @@ function renderPremiumPayments(payments) {
 
             button.addEventListener(
                 "click",
-                () => {
-
-                    const paymentId =
-                        button.dataset.paymentId;
-
-                    approvePayment(paymentId);
-                }
+                () => approvePayment(
+                    button.dataset.paymentId
+                )
             );
         });
 
@@ -549,13 +504,9 @@ function renderPremiumPayments(payments) {
 
             button.addEventListener(
                 "click",
-                () => {
-
-                    const paymentId =
-                        button.dataset.paymentId;
-
-                    rejectPayment(paymentId);
-                }
+                () => rejectPayment(
+                    button.dataset.paymentId
+                )
             );
         });
 
@@ -566,58 +517,37 @@ function renderPremiumPayments(payments) {
 
             button.addEventListener(
                 "click",
-                () => {
-
-                    const reference =
-                        button.dataset.reference;
-
-                    copyReference(
-                        reference,
-                        button
-                    );
-                }
+                () => copyReference(
+                    button.dataset.reference,
+                    button
+                )
             );
         });
 }
 
 
 // ============================================================
-// CARTE PAIEMENT
+// CARTE
 // ============================================================
 
-function renderPaymentCard(payment) {
+function renderPayment(payment) {
 
     const status =
         payment.status || "pending";
 
-    const statusLabel =
-        getStatusLabel(status);
-
-    const statusClass =
-        getStatusClass(status);
-
-
-    const planName =
-        getPlanName(payment.plan);
-
-
-    const paymentMethod =
-        getPaymentMethodLabel(
-            payment.paymentMethod
-        );
+    const plan =
+        PLANS[payment.plan];
 
 
     let actions = "";
 
 
-    // --------------------------------------------------------
-    // DEMANDE EN ATTENTE
-    // --------------------------------------------------------
-
-    if (status === "pending") {
+    if (
+        status === "pending" ||
+        status === "verified"
+    ) {
 
         actions = `
-
             <div class="premium-payment-actions">
 
                 <button
@@ -649,59 +579,10 @@ function renderPaymentCard(payment) {
 
             </div>
         `;
-    }
 
-
-    // --------------------------------------------------------
-    // VÉRIFIÉ
-    // --------------------------------------------------------
-
-    else if (status === "verified") {
+    } else if (status === "approved") {
 
         actions = `
-
-            <div class="premium-payment-actions">
-
-                <button
-                    type="button"
-                    class="premium-action-button premium-verify-button"
-                    data-payment-id="${escapeHTML(payment.id)}"
-                >
-                    <i class="fa-solid fa-eye"></i>
-                    Consulter
-                </button>
-
-                <button
-                    type="button"
-                    class="premium-action-button premium-approve-button"
-                    data-payment-id="${escapeHTML(payment.id)}"
-                >
-                    <i class="fa-solid fa-circle-check"></i>
-                    Approuver
-                </button>
-
-                <button
-                    type="button"
-                    class="premium-action-button premium-reject-button"
-                    data-payment-id="${escapeHTML(payment.id)}"
-                >
-                    <i class="fa-solid fa-circle-xmark"></i>
-                    Refuser
-                </button>
-
-            </div>
-        `;
-    }
-
-
-    // --------------------------------------------------------
-    // APPROUVÉ
-    // --------------------------------------------------------
-
-    else if (status === "approved") {
-
-        actions = `
-
             <div class="premium-payment-result approved">
 
                 <i class="fa-solid fa-circle-check"></i>
@@ -712,17 +593,10 @@ function renderPaymentCard(payment) {
 
             </div>
         `;
-    }
 
-
-    // --------------------------------------------------------
-    // REFUSÉ
-    // --------------------------------------------------------
-
-    else if (status === "rejected") {
+    } else if (status === "rejected") {
 
         actions = `
-
             <div class="premium-payment-result rejected">
 
                 <i class="fa-solid fa-circle-xmark"></i>
@@ -737,7 +611,6 @@ function renderPaymentCard(payment) {
 
 
     return `
-
         <article
             class="premium-payment-card"
             data-payment-id="${escapeHTML(payment.id)}"
@@ -748,9 +621,7 @@ function renderPaymentCard(payment) {
                 <div class="premium-payment-client">
 
                     <div class="premium-client-avatar">
-
                         <i class="fa-solid fa-user"></i>
-
                     </div>
 
                     <div>
@@ -775,9 +646,11 @@ function renderPaymentCard(payment) {
 
 
                 <span
-                    class="premium-payment-status ${statusClass}"
+                    class="premium-payment-status ${statusClass(status)}"
                 >
-                    ${escapeHTML(statusLabel)}
+                    ${escapeHTML(
+                        statusLabel(status)
+                    )}
                 </span>
 
             </div>
@@ -786,52 +659,43 @@ function renderPaymentCard(payment) {
             <div class="premium-payment-grid">
 
                 <div class="premium-payment-item">
-
-                    <span class="premium-item-label">
-                        Formule
-                    </span>
+                    <span>Formule</span>
 
                     <strong>
                         <i class="fa-solid fa-crown"></i>
-                        ${escapeHTML(planName)}
+                        ${escapeHTML(
+                            planLabel(payment.plan)
+                        )}
                     </strong>
-
                 </div>
 
 
                 <div class="premium-payment-item">
-
-                    <span class="premium-item-label">
-                        Montant
-                    </span>
+                    <span>Montant</span>
 
                     <strong>
                         ${escapeHTML(
                             formatAmount(payment.amount)
                         )}
                     </strong>
-
                 </div>
 
 
                 <div class="premium-payment-item">
-
-                    <span class="premium-item-label">
-                        Réseau
-                    </span>
+                    <span>Réseau</span>
 
                     <strong>
-                        ${escapeHTML(paymentMethod)}
+                        ${escapeHTML(
+                            paymentMethodLabel(
+                                payment.paymentMethod
+                            )
+                        )}
                     </strong>
-
                 </div>
 
 
                 <div class="premium-payment-item">
-
-                    <span class="premium-item-label">
-                        Numéro destinataire
-                    </span>
+                    <span>Numéro destinataire</span>
 
                     <strong>
                         ${escapeHTML(
@@ -839,28 +703,25 @@ function renderPaymentCard(payment) {
                             "Non précisé"
                         )}
                     </strong>
-
                 </div>
 
 
                 <div class="premium-payment-item">
-
-                    <span class="premium-item-label">
-                        Date de demande
-                    </span>
+                    <span>Date de demande</span>
 
                     <strong>
                         ${escapeHTML(
-                            formatDate(payment.createdAt)
+                            formatDate(
+                                payment.createdAt
+                            )
                         )}
                     </strong>
-
                 </div>
 
 
                 <div class="premium-payment-item">
 
-                    <span class="premium-item-label">
+                    <span>
                         Référence transaction
                     </span>
 
@@ -880,11 +741,11 @@ function renderPaymentCard(payment) {
                                         data-reference="${escapeHTML(
                                             payment.paymentReference
                                         )}"
-                                        title="Copier la référence"
+                                        title="Copier"
                                     >
                                         <i class="fa-regular fa-copy"></i>
                                     </button>
-                                  `
+                                `
                                 : ""
                         }
 
@@ -911,7 +772,7 @@ function renderPaymentCard(payment) {
                             </span>
 
                         </div>
-                      `
+                    `
                     : ""
             }
 
@@ -930,7 +791,7 @@ function renderPaymentCard(payment) {
 function openVerification(paymentId) {
 
     const payment =
-        allPremiumPayments.find(
+        payments.find(
             item => item.id === paymentId
         );
 
@@ -938,29 +799,23 @@ function openVerification(paymentId) {
     if (!payment) {
 
         alert(
-            "Cette demande Premium est introuvable."
+            "Demande Premium introuvable."
         );
 
         return;
     }
 
 
-    // --------------------------------------------------------
-    // Création du modal
-    // --------------------------------------------------------
-
-    const oldModal =
-        document.getElementById(
+    document
+        .getElementById(
             "premiumVerificationModal"
-        );
-
-    if (oldModal) {
-        oldModal.remove();
-    }
+        )
+        ?.remove();
 
 
     const modal =
         document.createElement("div");
+
 
     modal.id =
         "premiumVerificationModal";
@@ -970,7 +825,6 @@ function openVerification(paymentId) {
 
 
     modal.innerHTML = `
-
         <div class="premium-modal">
 
             <div class="premium-modal-header">
@@ -982,7 +836,7 @@ function openVerification(paymentId) {
                     </span>
 
                     <h2>
-                        Vérifier la demande Premium
+                        Vérifier la transaction
                     </h2>
 
                 </div>
@@ -990,7 +844,7 @@ function openVerification(paymentId) {
                 <button
                     type="button"
                     class="premium-modal-close"
-                    id="closePremiumVerification"
+                    id="closePremiumModal"
                 >
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -998,16 +852,16 @@ function openVerification(paymentId) {
             </div>
 
 
-            <div class="premium-verification-body">
+            <div class="premium-modal-body">
 
                 <div class="premium-verification-alert">
 
                     <i class="fa-solid fa-circle-info"></i>
 
                     <p>
-                        Vérifiez cette transaction dans
-                        l'application ou le service du réseau
-                        concerné avant d'approuver le Premium.
+                        Vérifiez la transaction auprès du
+                        réseau de paiement avant d'approuver
+                        la demande.
                     </p>
 
                 </div>
@@ -1017,6 +871,7 @@ function openVerification(paymentId) {
 
                     <div>
                         <span>Client</span>
+
                         <strong>
                             ${escapeHTML(
                                 payment.userName ||
@@ -1028,6 +883,7 @@ function openVerification(paymentId) {
 
                     <div>
                         <span>Email</span>
+
                         <strong>
                             ${escapeHTML(
                                 payment.userEmail ||
@@ -1039,16 +895,18 @@ function openVerification(paymentId) {
 
                     <div>
                         <span>Formule</span>
+
                         <strong>
                             ${escapeHTML(
-                                getPlanName(payment.plan)
+                                planLabel(payment.plan)
                             )}
                         </strong>
                     </div>
 
 
                     <div>
-                        <span>Montant attendu</span>
+                        <span>Montant</span>
+
                         <strong>
                             ${escapeHTML(
                                 formatAmount(payment.amount)
@@ -1059,9 +917,10 @@ function openVerification(paymentId) {
 
                     <div>
                         <span>Réseau</span>
+
                         <strong>
                             ${escapeHTML(
-                                getPaymentMethodLabel(
+                                paymentMethodLabel(
                                     payment.paymentMethod
                                 )
                             )}
@@ -1071,6 +930,7 @@ function openVerification(paymentId) {
 
                     <div>
                         <span>Numéro destinataire</span>
+
                         <strong>
                             ${escapeHTML(
                                 payment.receiverNumber ||
@@ -1097,10 +957,7 @@ function openVerification(paymentId) {
 
 
                     <div>
-
-                        <span>
-                            Date de demande
-                        </span>
+                        <span>Date</span>
 
                         <strong>
                             ${escapeHTML(
@@ -1109,7 +966,6 @@ function openVerification(paymentId) {
                                 )
                             )}
                         </strong>
-
                     </div>
 
                 </div>
@@ -1119,48 +975,42 @@ function openVerification(paymentId) {
 
                     <h3>
                         <i class="fa-solid fa-list-check"></i>
-                        Contrôle à effectuer
+                        Contrôle
                     </h3>
 
                     <label>
                         <input
                             type="checkbox"
-                            id="checkPaymentReference"
+                            id="verifyReference"
                         >
-                        La référence existe réellement.
+                        Référence vérifiée
                     </label>
 
                     <label>
                         <input
                             type="checkbox"
-                            id="checkPaymentAmount"
+                            id="verifyAmount"
                         >
-                        Le montant reçu correspond au montant demandé.
+                        Montant vérifié
                     </label>
 
                     <label>
                         <input
                             type="checkbox"
-                            id="checkPaymentReceiver"
+                            id="verifyReceiver"
                         >
-                        Le paiement a été envoyé au bon numéro.
+                        Numéro destinataire vérifié
                     </label>
 
                     <label>
                         <input
                             type="checkbox"
-                            id="checkPaymentNetwork"
+                            id="verifyNetwork"
                         >
-                        Le réseau de paiement correspond à la demande.
+                        Réseau de paiement vérifié
                     </label>
 
                 </div>
-
-
-                <div
-                    id="premiumVerificationMessage"
-                    class="premium-modal-message"
-                ></div>
 
             </div>
 
@@ -1170,16 +1020,13 @@ function openVerification(paymentId) {
                 <button
                     type="button"
                     class="premium-modal-secondary"
-                    id="closePremiumVerificationBottom"
+                    id="closePremiumModalBottom"
                 >
                     Fermer
                 </button>
 
-
                 ${
-                    payment.status === "pending" ||
-                    payment.status === "verified"
-
+                    statusCanBeProcessed(payment.status)
                         ? `
                             <button
                                 type="button"
@@ -1187,10 +1034,9 @@ function openVerification(paymentId) {
                                 id="modalApprovePremium"
                             >
                                 <i class="fa-solid fa-circle-check"></i>
-                                Approuver et activer Premium
+                                Approuver
                             </button>
-                          `
-
+                        `
                         : ""
                 }
 
@@ -1203,19 +1049,13 @@ function openVerification(paymentId) {
     document.body.appendChild(modal);
 
 
-    // --------------------------------------------------------
-    // Fermeture
-    // --------------------------------------------------------
-
     const closeModal = () => {
         modal.remove();
     };
 
 
     document
-        .getElementById(
-            "closePremiumVerification"
-        )
+        .getElementById("closePremiumModal")
         ?.addEventListener(
             "click",
             closeModal
@@ -1223,9 +1063,7 @@ function openVerification(paymentId) {
 
 
     document
-        .getElementById(
-            "closePremiumVerificationBottom"
-        )
+        .getElementById("closePremiumModalBottom")
         ?.addEventListener(
             "click",
             closeModal
@@ -1236,23 +1074,15 @@ function openVerification(paymentId) {
         "click",
         event => {
 
-            if (
-                event.target === modal
-            ) {
+            if (event.target === modal) {
                 closeModal();
             }
         }
     );
 
 
-    // --------------------------------------------------------
-    // Approbation depuis le modal
-    // --------------------------------------------------------
-
     document
-        .getElementById(
-            "modalApprovePremium"
-        )
+        .getElementById("modalApprovePremium")
         ?.addEventListener(
             "click",
             async () => {
@@ -1260,47 +1090,36 @@ function openVerification(paymentId) {
                 const checks = [
 
                     document.getElementById(
-                        "checkPaymentReference"
+                        "verifyReference"
                     ),
 
                     document.getElementById(
-                        "checkPaymentAmount"
+                        "verifyAmount"
                     ),
 
                     document.getElementById(
-                        "checkPaymentReceiver"
+                        "verifyReceiver"
                     ),
 
                     document.getElementById(
-                        "checkPaymentNetwork"
+                        "verifyNetwork"
                     )
 
                 ];
 
 
-                const allChecked =
+                const valid =
                     checks.every(
                         checkbox =>
-                            checkbox?.checked
+                            checkbox?.checked === true
                     );
 
 
-                const message =
-                    document.getElementById(
-                        "premiumVerificationMessage"
+                if (!valid) {
+
+                    alert(
+                        "Veuillez confirmer les quatre contrôles avant d'approuver."
                     );
-
-
-                if (!allChecked) {
-
-                    if (message) {
-
-                        message.className =
-                            "premium-modal-message error";
-
-                        message.textContent =
-                            "Veuillez confirmer les quatre contrôles avant d'approuver le paiement.";
-                    }
 
                     return;
                 }
@@ -1317,13 +1136,26 @@ function openVerification(paymentId) {
 
 
 // ============================================================
-// APPROUVER LE PAIEMENT
+// STATUT TRAITABLE
+// ============================================================
+
+function statusCanBeProcessed(status) {
+
+    return (
+        status === "pending" ||
+        status === "verified"
+    );
+}
+
+
+// ============================================================
+// APPROBATION
 // ============================================================
 
 async function approvePayment(paymentId) {
 
     const payment =
-        allPremiumPayments.find(
+        payments.find(
             item => item.id === paymentId
         );
 
@@ -1331,7 +1163,7 @@ async function approvePayment(paymentId) {
     if (!payment) {
 
         alert(
-            "Demande Premium introuvable."
+            "Demande introuvable."
         );
 
         return;
@@ -1339,8 +1171,9 @@ async function approvePayment(paymentId) {
 
 
     if (
-        payment.status !== "pending" &&
-        payment.status !== "verified"
+        !statusCanBeProcessed(
+            payment.status
+        )
     ) {
 
         alert(
@@ -1351,24 +1184,24 @@ async function approvePayment(paymentId) {
     }
 
 
-    const confirmed =
+    const confirmation =
         confirm(
-            `Confirmer l'approbation du paiement de ${payment.userName || "ce client"} ?\n\nLe compte sera automatiquement activé en Premium.`
+            `Approuver le paiement de ${payment.userName || "ce client"} ?\n\nLe compte sera activé automatiquement en Premium.`
         );
 
 
-    if (!confirmed) {
+    if (!confirmation) {
         return;
     }
 
 
     try {
 
-        const plan =
-            PREMIUM_PLANS[payment.plan];
+        const selectedPlan =
+            PLANS[payment.plan];
 
 
-        if (!plan) {
+        if (!selectedPlan) {
 
             throw new Error(
                 "Plan Premium invalide."
@@ -1376,35 +1209,25 @@ async function approvePayment(paymentId) {
         }
 
 
-        // ----------------------------------------------------
-        // Vérification du montant
-        // ----------------------------------------------------
-
-        const paidAmount =
+        const amount =
             Number(payment.amount);
-
-        const expectedAmount =
-            Number(plan.amount);
 
 
         if (
-            paidAmount !== expectedAmount
+            amount !==
+            Number(selectedPlan.amount)
         ) {
 
             throw new Error(
-                `Montant incorrect. Montant attendu : ${expectedAmount}$, montant enregistré : ${paidAmount}$.`
+                `Montant incorrect. Attendu : ${selectedPlan.amount}$ — enregistré : ${amount}$.`
             );
         }
 
 
-        // ----------------------------------------------------
-        // Récupération utilisateur
-        // ----------------------------------------------------
-
         if (!payment.userId) {
 
             throw new Error(
-                "Cette demande ne contient aucun userId."
+                "Le userId de cette demande est absent."
             );
         }
 
@@ -1424,14 +1247,10 @@ async function approvePayment(paymentId) {
         if (!userSnapshot.exists()) {
 
             throw new Error(
-                "Le compte utilisateur est introuvable."
+                "Le compte utilisateur n'existe pas."
             );
         }
 
-
-        // ----------------------------------------------------
-        // Dates Premium
-        // ----------------------------------------------------
 
         const startDate =
             new Date();
@@ -1442,16 +1261,13 @@ async function approvePayment(paymentId) {
 
 
         endDate.setDate(
-            endDate.getDate() + plan.days
+            endDate.getDate() +
+            selectedPlan.days
         );
 
 
         // ----------------------------------------------------
-        // BATCH FIRESTORE
-        // ----------------------------------------------------
-        // Les deux opérations sont effectuées ensemble :
-        // 1. activation utilisateur
-        // 2. validation paiement
+        // BATCH ATOMIQUE
         // ----------------------------------------------------
 
         const batch =
@@ -1461,11 +1277,9 @@ async function approvePayment(paymentId) {
         batch.update(
             userRef,
             {
-
                 plan: "premium",
 
-                subscriptionStatus:
-                    "active",
+                subscriptionStatus: "active",
 
                 subscriptionStart:
                     startDate,
@@ -1475,7 +1289,6 @@ async function approvePayment(paymentId) {
 
                 updatedAt:
                     serverTimestamp()
-
             }
         );
 
@@ -1483,7 +1296,7 @@ async function approvePayment(paymentId) {
         const paymentRef =
             doc(
                 db,
-                PREMIUM_PAYMENTS_COLLECTION,
+                PAYMENTS_COLLECTION,
                 paymentId
             );
 
@@ -1491,7 +1304,329 @@ async function approvePayment(paymentId) {
         batch.update(
             paymentRef,
             {
-
                 status: "approved",
 
-                validated
+                validatedAt:
+                    serverTimestamp(),
+
+                validatedBy:
+                    currentAdmin?.uid || "",
+
+                rejectionReason: ""
+            }
+        );
+
+
+        await batch.commit();
+
+
+        payment.status =
+            "approved";
+
+
+        payment.rejectionReason =
+            "";
+
+
+        updateCounters();
+        applyFilters();
+
+
+        alert(
+            `✓ Paiement approuvé.\n\n${payment.userName || "Le client"} est maintenant Premium.\n\nExpiration : ${endDate.toLocaleDateString("fr-FR")}`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur approbation Premium :",
+            error
+        );
+
+
+        alert(
+            `Impossible d'approuver la demande.\n\n${error.message}`
+        );
+    }
+}
+
+
+// ============================================================
+// REFUS
+// ============================================================
+
+async function rejectPayment(paymentId) {
+
+    const payment =
+        payments.find(
+            item => item.id === paymentId
+        );
+
+
+    if (!payment) {
+
+        alert(
+            "Demande introuvable."
+        );
+
+        return;
+    }
+
+
+    if (
+        !statusCanBeProcessed(
+            payment.status
+        )
+    ) {
+
+        alert(
+            "Cette demande a déjà été traitée."
+        );
+
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Motif du refus de la demande Premium :"
+        );
+
+
+    if (reason === null) {
+        return;
+    }
+
+
+    const cleanReason =
+        reason.trim();
+
+
+    if (!cleanReason) {
+
+        alert(
+            "Le motif du refus est obligatoire."
+        );
+
+        return;
+    }
+
+
+    const confirmation =
+        confirm(
+            `Confirmer le refus ?\n\nMotif : ${cleanReason}`
+        );
+
+
+    if (!confirmation) {
+        return;
+    }
+
+
+    try {
+
+        const paymentRef =
+            doc(
+                db,
+                PAYMENTS_COLLECTION,
+                paymentId
+            );
+
+
+        await updateDoc(
+            paymentRef,
+            {
+                status: "rejected",
+
+                rejectionReason:
+                    cleanReason,
+
+                validatedAt:
+                    serverTimestamp(),
+
+                validatedBy:
+                    currentAdmin?.uid || ""
+            }
+        );
+
+
+        payment.status =
+            "rejected";
+
+
+        payment.rejectionReason =
+            cleanReason;
+
+
+        updateCounters();
+        applyFilters();
+
+
+        alert(
+            "La demande Premium a été refusée."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur refus Premium :",
+            error
+        );
+
+
+        alert(
+            `Impossible de refuser la demande.\n\n${error.message}`
+        );
+    }
+}
+
+
+// ============================================================
+// COPIER RÉFÉRENCE
+// ============================================================
+
+async function copyReference(
+    reference,
+    button
+) {
+
+    if (!reference) {
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            reference
+        );
+
+
+        const oldHTML =
+            button.innerHTML;
+
+
+        button.innerHTML =
+            `<i class="fa-solid fa-check"></i>`;
+
+
+        setTimeout(() => {
+
+            button.innerHTML =
+                oldHTML;
+
+        }, 1500);
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur copie :",
+            error
+        );
+
+
+        alert(
+            `Référence : ${reference}`
+        );
+    }
+}
+
+
+// ============================================================
+// ÉVÉNEMENTS
+// ============================================================
+
+searchInput?.addEventListener(
+    "input",
+    applyFilters
+);
+
+
+statusFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+planFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+refreshButton?.addEventListener(
+    "click",
+    loadPayments
+);
+
+
+// ============================================================
+// AUTH ADMIN
+// ============================================================
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            console.warn(
+                "Premium Admin : aucun utilisateur connecté."
+            );
+
+            return;
+        }
+
+
+        currentAdmin =
+            user;
+
+
+        if (
+            user.email?.toLowerCase() !==
+            ADMIN_EMAIL.toLowerCase()
+        ) {
+
+            console.warn(
+                "Premium Admin : accès refusé."
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "CAMU SERVICES : administrateur Premium connecté."
+        );
+
+
+        await loadPayments();
+    }
+);
+
+
+// ============================================================
+// API GLOBALE
+// ============================================================
+
+window.CAMU_ADMIN_PREMIUM = {
+
+    reload: loadPayments,
+
+    filter: applyFilters,
+
+    verify: openVerification,
+
+    approve: approvePayment,
+
+    reject: rejectPayment
+
+};
+
+
+console.log(
+    "CAMU SERVICES : admin-premium.js chargé correctement."
+);
