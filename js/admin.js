@@ -11,8 +11,11 @@ import {
 
 import {
     collection,
-    getDocs
+    getDocs,
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
 
 
 /* =========================================================
@@ -22,61 +25,104 @@ import {
 const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 
+
 /* =========================================================
    ÉLÉMENTS HTML
    ========================================================= */
 
-const totalUsers = document.getElementById("totalUsers");
-const totalAds = document.getElementById("totalAds");
-const totalReports = document.getElementById("totalReports");
-const totalCategories = document.getElementById("totalCategories");
+const totalUsers =
+    document.getElementById("totalUsers");
 
-const recentActivity = document.getElementById("recentActivity");
-const categoryStats = document.getElementById("categoryStats");
-const cityStats = document.getElementById("cityStats");
+const totalAds =
+    document.getElementById("totalAds");
 
-const adminMessage = document.getElementById("adminMessage");
+const totalReports =
+    document.getElementById("totalReports");
 
-const adminSidebar = document.getElementById("adminSidebar");
-const adminOverlay = document.getElementById("adminOverlay");
-const adminMenuButton = document.getElementById("adminMenuButton");
-const adminCloseSidebar = document.getElementById("adminCloseSidebar");
+const totalCategories =
+    document.getElementById("totalCategories");
+
+const totalVisits =
+    document.getElementById("totalVisits");
+
+const recentActivity =
+    document.getElementById("recentActivity");
+
+const categoryStats =
+    document.getElementById("categoryStats");
+
+const cityStats =
+    document.getElementById("cityStats");
+
+const adminMessage =
+    document.getElementById("adminMessage");
+
+const adminSidebar =
+    document.getElementById("adminSidebar");
+
+const adminOverlay =
+    document.getElementById("adminOverlay");
+
+const adminMenuButton =
+    document.getElementById("adminMenuButton");
+
+const adminCloseSidebar =
+    document.getElementById("adminCloseSidebar");
 
 const adminLogoutButton =
     document.getElementById("adminLogoutButton");
+
 
 
 /* =========================================================
    MESSAGE
    ========================================================= */
 
-function showAdminMessage(message, type = "success") {
+function showAdminMessage(
+    message,
+    type = "success"
+) {
 
     if (!adminMessage) return;
 
-    adminMessage.textContent = message;
+    adminMessage.textContent =
+        message;
 
-    adminMessage.hidden = false;
+    adminMessage.hidden =
+        false;
 
     if (type === "error") {
 
-        adminMessage.style.background = "#fef2f2";
-        adminMessage.style.color = "#b91c1c";
-        adminMessage.style.borderColor = "#fecaca";
+        adminMessage.style.background =
+            "#fef2f2";
+
+        adminMessage.style.color =
+            "#b91c1c";
+
+        adminMessage.style.borderColor =
+            "#fecaca";
 
     } else {
 
-        adminMessage.style.background = "#ecfdf3";
-        adminMessage.style.color = "#15803d";
-        adminMessage.style.borderColor = "#bbf7d0";
+        adminMessage.style.background =
+            "#ecfdf3";
+
+        adminMessage.style.color =
+            "#15803d";
+
+        adminMessage.style.borderColor =
+            "#bbf7d0";
+
     }
 
     setTimeout(() => {
 
-        adminMessage.hidden = true;
+        adminMessage.hidden =
+            true;
 
     }, 5000);
 }
+
 
 
 /* =========================================================
@@ -86,10 +132,14 @@ function showAdminMessage(message, type = "success") {
 function getDateValue(timestamp) {
 
     if (!timestamp) {
+
         return 0;
     }
 
-    if (typeof timestamp.toMillis === "function") {
+    if (
+        typeof timestamp.toMillis ===
+        "function"
+    ) {
 
         return timestamp.toMillis();
     }
@@ -106,7 +156,8 @@ function getDateValue(timestamp) {
 
     if (typeof timestamp === "string") {
 
-        const parsed = Date.parse(timestamp);
+        const parsed =
+            Date.parse(timestamp);
 
         return Number.isNaN(parsed)
             ? 0
@@ -117,23 +168,29 @@ function getDateValue(timestamp) {
 }
 
 
+
 function formatDate(timestamp) {
 
-    const value = getDateValue(timestamp);
+    const value =
+        getDateValue(timestamp);
 
     if (!value) {
 
         return "Date inconnue";
     }
 
-    return new Intl.DateTimeFormat("fr-FR", {
-
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-
-    }).format(new Date(value));
+    return new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    ).format(
+        new Date(value)
+    );
 }
+
 
 
 /* =========================================================
@@ -144,24 +201,33 @@ async function loadUsers() {
 
     try {
 
-        const snapshot = await getDocs(
-            collection(db, "users")
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "users"
+                )
+            );
 
-        const count = snapshot.size;
+        const count =
+            snapshot.size;
 
         if (totalUsers) {
 
-            totalUsers.textContent = count;
+            totalUsers.textContent =
+                count;
         }
 
-        return snapshot.docs.map(documentSnapshot => ({
+        return snapshot.docs.map(
+            documentSnapshot => ({
 
-            id: documentSnapshot.id,
+                id:
+                    documentSnapshot.id,
 
-            ...documentSnapshot.data()
+                ...documentSnapshot.data()
 
-        }));
+            })
+        );
 
     } catch (error) {
 
@@ -172,12 +238,14 @@ async function loadUsers() {
 
         if (totalUsers) {
 
-            totalUsers.textContent = "—";
+            totalUsers.textContent =
+                "—";
         }
 
         return [];
     }
 }
+
 
 
 /* =========================================================
@@ -190,24 +258,33 @@ async function loadAds() {
 
     try {
 
-        const snapshot = await getDocs(
-            collection(db, "annonces")
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "annonces"
+                )
+            );
 
-        const count = snapshot.size;
+        const count =
+            snapshot.size;
 
         if (totalAds) {
 
-            totalAds.textContent = count;
+            totalAds.textContent =
+                count;
         }
 
-        return snapshot.docs.map(documentSnapshot => ({
+        return snapshot.docs.map(
+            documentSnapshot => ({
 
-            id: documentSnapshot.id,
+                id:
+                    documentSnapshot.id,
 
-            ...documentSnapshot.data()
+                ...documentSnapshot.data()
 
-        }));
+            })
+        );
 
     } catch (error) {
 
@@ -218,12 +295,14 @@ async function loadAds() {
 
         if (totalAds) {
 
-            totalAds.textContent = "—";
+            totalAds.textContent =
+                "—";
         }
 
         return [];
     }
 }
+
 
 
 /* =========================================================
@@ -234,24 +313,33 @@ async function loadReports() {
 
     try {
 
-        const snapshot = await getDocs(
-            collection(db, "reports")
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "reports"
+                )
+            );
 
-        const count = snapshot.size;
+        const count =
+            snapshot.size;
 
         if (totalReports) {
 
-            totalReports.textContent = count;
+            totalReports.textContent =
+                count;
         }
 
-        return snapshot.docs.map(documentSnapshot => ({
+        return snapshot.docs.map(
+            documentSnapshot => ({
 
-            id: documentSnapshot.id,
+                id:
+                    documentSnapshot.id,
 
-            ...documentSnapshot.data()
+                ...documentSnapshot.data()
 
-        }));
+            })
+        );
 
     } catch (error) {
 
@@ -262,12 +350,86 @@ async function loadReports() {
 
         if (totalReports) {
 
-            totalReports.textContent = "—";
+            totalReports.textContent =
+                "—";
         }
 
         return [];
     }
 }
+
+
+
+/* =========================================================
+   CHARGEMENT VISITES
+   Firestore :
+   visites/global
+   ========================================================= */
+
+async function loadVisits() {
+
+    try {
+
+        const visitsRef =
+            doc(
+                db,
+                "visites",
+                "global"
+            );
+
+        const snapshot =
+            await getDoc(
+                visitsRef
+            );
+
+        if (!snapshot.exists()) {
+
+            console.warn(
+                "Le document visites/global n'existe pas."
+            );
+
+            if (totalVisits) {
+
+                totalVisits.textContent =
+                    "0";
+            }
+
+            return 0;
+        }
+
+        const data =
+            snapshot.data();
+
+        const total =
+            Number(data.total) || 0;
+
+        if (totalVisits) {
+
+            totalVisits.textContent =
+                total.toLocaleString(
+                    "fr-FR"
+                );
+        }
+
+        return total;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur chargement visites :",
+            error
+        );
+
+        if (totalVisits) {
+
+            totalVisits.textContent =
+                "—";
+        }
+
+        return 0;
+    }
+}
+
 
 
 /* =========================================================
@@ -293,9 +455,13 @@ function renderCategoryStats(ads) {
     });
 
 
-    const entries = Object.entries(categories)
 
-        .sort((a, b) => b[1] - a[1]);
+    const entries =
+        Object.entries(categories)
+            .sort(
+                (a, b) => b[1] - a[1]
+            );
+
 
 
     if (!entries.length) {
@@ -316,57 +482,59 @@ function renderCategoryStats(ads) {
     }
 
 
+
     const maxValue =
         Math.max(
-            ...entries.map(item => item[1])
+            ...entries.map(
+                item => item[1]
+            )
         );
 
 
-    categoryStats.innerHTML = entries
 
-        .slice(0, 8)
+    categoryStats.innerHTML =
+        entries
+            .slice(0, 8)
+            .map(
+                ([category, count]) => {
 
-        .map(([category, count]) => {
+                    const percentage =
+                        maxValue > 0
+                            ? (count / maxValue) * 100
+                            : 0;
 
-            const percentage =
-                maxValue > 0
-                    ? (count / maxValue) * 100
-                    : 0;
+                    return `
 
-            return `
+                        <div class="admin-simple-stat">
 
-                <div class="admin-simple-stat">
+                            <span class="admin-simple-stat-name">
 
-                    <span class="admin-simple-stat-name">
+                                ${escapeHTML(category)}
 
-                        ${escapeHTML(category)}
+                            </span>
 
-                    </span>
+                            <div class="admin-simple-stat-bar">
 
+                                <span
+                                    style="width:${percentage}%"
+                                ></span>
 
-                    <div class="admin-simple-stat-bar">
+                            </div>
 
-                        <span
-                            style="width:${percentage}%"
-                        ></span>
+                            <strong class="admin-simple-stat-value">
 
-                    </div>
+                                ${count}
 
+                            </strong>
 
-                    <strong class="admin-simple-stat-value">
+                        </div>
 
-                        ${count}
-
-                    </strong>
-
-                </div>
-
-            `;
-
-        })
-
-        .join("");
+                    `;
+                }
+            )
+            .join("");
 }
+
 
 
 /* =========================================================
@@ -392,9 +560,13 @@ function renderCityStats(ads) {
     });
 
 
-    const entries = Object.entries(cities)
 
-        .sort((a, b) => b[1] - a[1]);
+    const entries =
+        Object.entries(cities)
+            .sort(
+                (a, b) => b[1] - a[1]
+            );
+
 
 
     if (!entries.length) {
@@ -415,57 +587,59 @@ function renderCityStats(ads) {
     }
 
 
+
     const maxValue =
         Math.max(
-            ...entries.map(item => item[1])
+            ...entries.map(
+                item => item[1]
+            )
         );
 
 
-    cityStats.innerHTML = entries
 
-        .slice(0, 8)
+    cityStats.innerHTML =
+        entries
+            .slice(0, 8)
+            .map(
+                ([city, count]) => {
 
-        .map(([city, count]) => {
+                    const percentage =
+                        maxValue > 0
+                            ? (count / maxValue) * 100
+                            : 0;
 
-            const percentage =
-                maxValue > 0
-                    ? (count / maxValue) * 100
-                    : 0;
+                    return `
 
-            return `
+                        <div class="admin-simple-stat">
 
-                <div class="admin-simple-stat">
+                            <span class="admin-simple-stat-name">
 
-                    <span class="admin-simple-stat-name">
+                                ${escapeHTML(city)}
 
-                        ${escapeHTML(city)}
+                            </span>
 
-                    </span>
+                            <div class="admin-simple-stat-bar">
 
+                                <span
+                                    style="width:${percentage}%"
+                                ></span>
 
-                    <div class="admin-simple-stat-bar">
+                            </div>
 
-                        <span
-                            style="width:${percentage}%"
-                        ></span>
+                            <strong class="admin-simple-stat-value">
 
-                    </div>
+                                ${count}
 
+                            </strong>
 
-                    <strong class="admin-simple-stat-value">
+                        </div>
 
-                        ${count}
-
-                    </strong>
-
-                </div>
-
-            `;
-
-        })
-
-        .join("");
+                    `;
+                }
+            )
+            .join("");
 }
+
 
 
 /* =========================================================
@@ -477,19 +651,16 @@ function renderRecentActivity(ads) {
     if (!recentActivity) return;
 
 
-    const recentAds = [...ads]
 
-        .sort(
+    const recentAds =
+        [...ads]
+            .sort(
+                (a, b) =>
+                    getDateValue(b.createdAt) -
+                    getDateValue(a.createdAt)
+            )
+            .slice(0, 6);
 
-            (a, b) =>
-
-                getDateValue(b.createdAt) -
-
-                getDateValue(a.createdAt)
-
-        )
-
-        .slice(0, 6);
 
 
     if (!recentAds.length) {
@@ -510,72 +681,62 @@ function renderRecentActivity(ads) {
     }
 
 
-    recentActivity.innerHTML = recentAds
 
-        .map(ad => {
+    recentActivity.innerHTML =
+        recentAds
+            .map(ad => {
 
-            const title =
-                ad.title ||
-                "Nouvelle annonce";
+                const title =
+                    ad.title ||
+                    "Nouvelle annonce";
 
+                const owner =
+                    ad.ownerName ||
+                    ad.ownerDisplayName ||
+                    ad.sellerName ||
+                    "Utilisateur";
 
-            const owner =
-                ad.ownerName ||
+                return `
 
-                ad.ownerDisplayName ||
+                    <div class="admin-activity-row">
 
-                ad.sellerName ||
+                        <div class="admin-activity-icon">
 
-                "Utilisateur";
+                            <i class="fa-solid fa-bullhorn"></i>
 
+                        </div>
 
-            return `
+                        <div class="admin-activity-content">
 
-                <div class="admin-activity-row">
+                            <strong>
 
+                                ${escapeHTML(title)}
 
-                    <div class="admin-activity-icon">
+                            </strong>
 
-                        <i class="fa-solid fa-bullhorn"></i>
+                            <span>
+
+                                Publiée par
+
+                                ${escapeHTML(owner)}
+
+                            </span>
+
+                        </div>
+
+                        <time class="admin-activity-date">
+
+                            ${formatDate(ad.createdAt)}
+
+                        </time>
 
                     </div>
 
-
-                    <div class="admin-activity-content">
-
-                        <strong>
-
-                            ${escapeHTML(title)}
-
-                        </strong>
-
-
-                        <span>
-
-                            Publiée par
-
-                            ${escapeHTML(owner)}
-
-                        </span>
-
-                    </div>
-
-
-                    <time class="admin-activity-date">
-
-                        ${formatDate(ad.createdAt)}
-
-                    </time>
-
-
-                </div>
-
-            `;
-
-        })
-
-        .join("");
+                `;
+            })
+            .join("");
 }
+
 
 
 /* =========================================================
@@ -596,12 +757,14 @@ function updateCategoryCount() {
     ];
 
 
+
     if (totalCategories) {
 
         totalCategories.textContent =
             categories.length;
     }
 }
+
 
 
 /* =========================================================
@@ -611,17 +774,13 @@ function updateCategoryCount() {
 function escapeHTML(value) {
 
     return String(value ?? "")
-
         .replace(/&/g, "&amp;")
-
         .replace(/</g, "&lt;")
-
         .replace(/>/g, "&gt;")
-
         .replace(/"/g, "&quot;")
-
         .replace(/'/g, "&#039;");
 }
+
 
 
 /* =========================================================
@@ -635,28 +794,45 @@ async function loadDashboard() {
     );
 
 
+
     if (totalUsers) {
 
-        totalUsers.textContent = "...";
+        totalUsers.textContent =
+            "...";
     }
+
 
 
     if (totalAds) {
 
-        totalAds.textContent = "...";
+        totalAds.textContent =
+            "...";
     }
+
 
 
     if (totalReports) {
 
-        totalReports.textContent = "...";
+        totalReports.textContent =
+            "...";
     }
+
 
 
     if (totalCategories) {
 
-        totalCategories.textContent = "...";
+        totalCategories.textContent =
+            "...";
     }
+
+
+
+    if (totalVisits) {
+
+        totalVisits.textContent =
+            "...";
+    }
+
 
 
     try {
@@ -667,7 +843,9 @@ async function loadDashboard() {
 
             ads,
 
-            reports
+            reports,
+
+            visits
 
         ] = await Promise.all([
 
@@ -675,21 +853,28 @@ async function loadDashboard() {
 
             loadAds(),
 
-            loadReports()
+            loadReports(),
+
+            loadVisits()
 
         ]);
 
 
+
         updateCategoryCount();
 
+        renderCategoryStats(
+            ads
+        );
 
-        renderCategoryStats(ads);
+        renderCityStats(
+            ads
+        );
 
+        renderRecentActivity(
+            ads
+        );
 
-        renderCityStats(ads);
-
-
-        renderRecentActivity(ads);
 
 
         console.log(
@@ -698,16 +883,21 @@ async function loadDashboard() {
 
             {
 
-                users: users.length,
+                users:
+                    users.length,
 
-                ads: ads.length,
+                ads:
+                    ads.length,
 
-                reports: reports.length
+                reports:
+                    reports.length,
+
+                visits:
+                    visits
 
             }
 
         );
-
 
     } catch (error) {
 
@@ -718,7 +908,6 @@ async function loadDashboard() {
             error
 
         );
-
 
         showAdminMessage(
 
@@ -731,55 +920,62 @@ async function loadDashboard() {
 }
 
 
+
 /* =========================================================
    MENU MOBILE
    ========================================================= */
 
 function openAdminMenu() {
 
-    adminSidebar?.classList.add("open");
+    adminSidebar?.classList.add(
+        "open"
+    );
 
-    adminOverlay?.classList.add("open");
+    adminOverlay?.classList.add(
+        "open"
+    );
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+        "hidden";
 }
+
 
 
 function closeAdminMenu() {
 
-    adminSidebar?.classList.remove("open");
+    adminSidebar?.classList.remove(
+        "open"
+    );
 
-    adminOverlay?.classList.remove("open");
+    adminOverlay?.classList.remove(
+        "open"
+    );
 
-    document.body.style.overflow = "";
+    document.body.style.overflow =
+        "";
 }
 
 
+
 adminMenuButton?.addEventListener(
-
     "click",
-
     openAdminMenu
-
 );
+
 
 
 adminCloseSidebar?.addEventListener(
-
     "click",
-
     closeAdminMenu
-
 );
+
 
 
 adminOverlay?.addEventListener(
-
     "click",
-
     closeAdminMenu
-
 );
+
 
 
 /* =========================================================
@@ -787,88 +983,105 @@ adminOverlay?.addEventListener(
    ========================================================= */
 
 document
+    .querySelectorAll(
+        "[data-section]"
+    )
+    .forEach(
+        element => {
 
-    .querySelectorAll("[data-section]")
+            element.addEventListener(
+                "click",
+                event => {
 
-    .forEach(element => {
-
-        element.addEventListener(
-
-            "click",
-
-            event => {
-
-                const section =
-                    element.dataset.section;
-
-
-                if (!section) return;
+                    const section =
+                        element.dataset.section;
 
 
-                /* =========================
-                   ANNONCES
-                   ========================= */
 
-                if (section === "annonces") {
+                    if (!section) return;
 
-                    event.preventDefault();
 
-                    window.location.href =
-                        "admin-annonces.html";
 
-                    return;
+                    /* =========================
+                       ANNONCES
+                    ========================= */
+
+                    if (
+                        section ===
+                        "annonces"
+                    ) {
+
+                        event.preventDefault();
+
+                        window.location.href =
+                            "admin-annonces.html";
+
+                        return;
+                    }
+
+
+
+                    /* =========================
+                       UTILISATEURS
+                    ========================= */
+
+                    if (
+                        section ===
+                        "utilisateurs"
+                    ) {
+
+                        event.preventDefault();
+
+                        window.location.href =
+                            "admin-utilisateurs.html";
+
+                        return;
+                    }
+
+
+
+                    /* =========================
+                       SIGNALEMENTS
+                    ========================= */
+
+                    if (
+                        section ===
+                        "signalements"
+                    ) {
+
+                        event.preventDefault();
+
+                        window.location.href =
+                            "admin-signalements.html";
+
+                        return;
+                    }
+
+
+
+                    /* =========================
+                       PARAMÈTRES
+                    ========================= */
+
+                    if (
+                        section ===
+                        "parametres"
+                    ) {
+
+                        event.preventDefault();
+
+                        window.location.href =
+                            "admin-parametres.html";
+
+                        return;
+                    }
+
                 }
+            );
 
+        }
+    );
 
-                /* =========================
-                   UTILISATEURS
-                   ========================= */
-
-                if (section === "utilisateurs") {
-
-                    event.preventDefault();
-
-                    window.location.href =
-                        "admin-utilisateurs.html";
-
-                    return;
-                }
-
-
-                /* =========================
-                   SIGNALEMENTS
-                   ========================= */
-
-                if (section === "signalements") {
-
-                    event.preventDefault();
-
-                    window.location.href =
-                        "admin-signalements.html";
-
-                    return;
-                }
-
-
-                /* =========================
-                   PARAMÈTRES
-                   ========================= */
-
-                if (section === "parametres") {
-
-                    event.preventDefault();
-
-                    window.location.href =
-                        "admin-parametres.html";
-
-                    return;
-                }
-
-            }
-
-        );
-
-    });
 
 
 /* =========================================================
@@ -882,12 +1095,10 @@ adminLogoutButton?.addEventListener(
     async () => {
 
         const confirmation =
-
             confirm(
-
                 "Voulez-vous vraiment vous déconnecter ?"
-
             );
+
 
 
         if (!confirmation) {
@@ -896,13 +1107,18 @@ adminLogoutButton?.addEventListener(
         }
 
 
+
         try {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
+
 
 
             window.location.href =
                 "connexion.html";
+
 
 
         } catch (error) {
@@ -914,6 +1130,7 @@ adminLogoutButton?.addEventListener(
                 error
 
             );
+
 
 
             showAdminMessage(
@@ -930,6 +1147,7 @@ adminLogoutButton?.addEventListener(
 );
 
 
+
 /* =========================================================
    AUTHENTIFICATION + PROTECTION ADMIN
    ========================================================= */
@@ -940,10 +1158,9 @@ onAuthStateChanged(
 
     async user => {
 
-
         /* =========================
            PAS CONNECTÉ
-           ========================= */
+        ========================= */
 
         if (!user) {
 
@@ -952,6 +1169,7 @@ onAuthStateChanged(
 
             return;
         }
+
 
 
         console.log(
@@ -963,9 +1181,10 @@ onAuthStateChanged(
         );
 
 
+
         /* =========================
            VÉRIFICATION ADMIN
-           ========================= */
+        ========================= */
 
         if (
 
@@ -974,7 +1193,6 @@ onAuthStateChanged(
             ADMIN_EMAIL.toLowerCase()
 
         ) {
-
 
             console.warn(
 
@@ -985,6 +1203,7 @@ onAuthStateChanged(
             );
 
 
+
             alert(
 
                 "Accès réservé à l'administrateur CAMU SERVICES."
@@ -992,23 +1211,27 @@ onAuthStateChanged(
             );
 
 
+
             window.location.href =
                 "index.html";
+
 
 
             return;
         }
 
 
+
         /* =========================
            CHARGER DASHBOARD
-           ========================= */
+        ========================= */
 
         await loadDashboard();
 
     }
 
 );
+
 
 
 /* =========================================================
