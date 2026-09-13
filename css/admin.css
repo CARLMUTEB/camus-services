@@ -1,16 +1,30 @@
 /* =========================================================
    CAMU SERVICES
    ADMIN — PAIEMENTS PREMIUM
-   css/admin-premium.css
    ========================================================= */
 
 
 /* =========================================================
-   SECTION PREMIUM
+   VARIABLES
    ========================================================= */
 
 .admin-premium-section {
-    position: relative;
+    --premium-gold: #d4a72c;
+    --premium-gold-dark: #b8860b;
+
+    --premium-green: #16a34a;
+    --premium-green-dark: #15803d;
+
+    --premium-red: #dc2626;
+    --premium-red-dark: #b91c1c;
+
+    --premium-orange: #f59e0b;
+
+    --premium-bg: #f8fafc;
+    --premium-border: #e5e7eb;
+    --premium-text: #111827;
+    --premium-muted: #6b7280;
+
     scroll-margin-top: 30px;
 }
 
@@ -20,9 +34,12 @@
    ========================================================= */
 
 .admin-premium-description {
-    margin: 8px 0 0;
-    max-width: 700px;
+    margin: 7px 0 0;
+
+    max-width: 680px;
+
     color: #64748b;
+
     font-size: 14px;
     line-height: 1.6;
 }
@@ -36,37 +53,37 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
+
+    gap: 8px;
 
     min-height: 42px;
+
     padding: 0 16px;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #dfe3e8;
     border-radius: 10px;
 
     background: #ffffff;
-    color: #334155;
+    color: #374151;
 
-    font-size: 14px;
+    font-family: inherit;
+    font-size: 13px;
     font-weight: 700;
 
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        all 0.2s ease;
 }
 
 .admin-refresh-button:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
+    border-color: var(--premium-gold);
+
+    background: #fffbeb;
+
+    color: #92400e;
 
     transform: translateY(-1px);
-
-    box-shadow:
-        0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .admin-refresh-button:active {
@@ -74,24 +91,34 @@
 }
 
 .admin-refresh-button:disabled {
-    opacity: 0.65;
+    opacity: 0.6;
+
     cursor: not-allowed;
+
     transform: none;
 }
 
-
-/* =========================================================
-   ICÔNE PREMIUM DANS LE MENU ADMIN
-   ========================================================= */
-
-.admin-nav-icon.premium,
-.admin-quick-icon.premium {
-    color: #b7791f;
+.admin-refresh-button i {
+    font-size: 13px;
 }
 
 
 /* =========================================================
-   STATISTIQUES PAIEMENTS
+   ICÔNE PREMIUM — SIDEBAR / QUICK CARD
+   ========================================================= */
+
+.admin-nav-icon.premium {
+    color: #d4a72c;
+}
+
+.admin-quick-icon.premium {
+    background: #fff7d6;
+    color: #b8860b;
+}
+
+
+/* =========================================================
+   STATISTIQUES PREMIUM
    ========================================================= */
 
 .premium-payment-stats {
@@ -102,7 +129,7 @@
 
     gap: 18px;
 
-    margin-top: 24px;
+    margin-top: 25px;
     margin-bottom: 24px;
 }
 
@@ -112,21 +139,26 @@
    ========================================================= */
 
 .premium-payment-stat {
+    position: relative;
+
     display: flex;
     align-items: center;
+
     gap: 15px;
 
-    min-height: 96px;
+    min-height: 100px;
 
-    padding: 18px 20px;
+    padding: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
 
     background: #ffffff;
 
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-
     box-shadow:
-        0 4px 14px rgba(15, 23, 42, 0.05);
+        0 3px 12px rgba(15, 23, 42, 0.05);
 
     transition:
         transform 0.2s ease,
@@ -137,7 +169,24 @@
     transform: translateY(-2px);
 
     box-shadow:
-        0 8px 20px rgba(15, 23, 42, 0.08);
+        0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+
+/* petite ligne supérieure */
+
+.premium-payment-stat::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: #cbd5e1;
 }
 
 
@@ -146,16 +195,16 @@
    ========================================================= */
 
 .premium-payment-stat-icon {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
 
-    flex: 0 0 50px;
+    flex: 0 0 52px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
     font-size: 20px;
 }
@@ -163,23 +212,35 @@
 
 /* EN ATTENTE */
 
+.premium-payment-stat.pending::before {
+    background: #f59e0b;
+}
+
 .premium-payment-stat.pending
 .premium-payment-stat-icon {
     background: #fff7ed;
-    color: #ea580c;
+    color: #d97706;
 }
 
 
 /* APPROUVÉS */
 
+.premium-payment-stat.approved::before {
+    background: #16a34a;
+}
+
 .premium-payment-stat.approved
 .premium-payment-stat-icon {
     background: #ecfdf5;
-    color: #059669;
+    color: #16a34a;
 }
 
 
 /* REFUSÉS */
+
+.premium-payment-stat.rejected::before {
+    background: #dc2626;
+}
 
 .premium-payment-stat.rejected
 .premium-payment-stat-icon {
@@ -195,7 +256,8 @@
 .premium-payment-stat > div:last-child {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+
+    gap: 4px;
 }
 
 .premium-payment-stat span {
@@ -206,12 +268,12 @@
 }
 
 .premium-payment-stat strong {
-    color: #0f172a;
+    color: #111827;
 
-    font-size: 28px;
-    line-height: 1;
-
+    font-size: 27px;
     font-weight: 800;
+
+    line-height: 1;
 }
 
 
@@ -223,9 +285,9 @@
     display: grid;
 
     grid-template-columns:
-        minmax(240px, 1fr)
-        minmax(180px, 220px)
-        minmax(180px, 220px);
+        minmax(250px, 1fr)
+        210px
+        210px;
 
     gap: 12px;
 
@@ -240,84 +302,88 @@
 .premium-search {
     position: relative;
 
-    display: flex;
-    align-items: center;
+    width: 100%;
 }
 
-.premium-search > i {
+.premium-search i {
     position: absolute;
 
+    top: 50%;
     left: 15px;
 
     color: #94a3b8;
 
-    font-size: 15px;
+    font-size: 14px;
+
+    transform: translateY(-50%);
 
     pointer-events: none;
 }
 
 .premium-search input {
     width: 100%;
-
-    min-height: 46px;
+    height: 46px;
 
     padding:
-        0 15px 0 43px;
+        0 15px 0 42px;
 
-    border:
-        1px solid #e2e8f0;
+    box-sizing: border-box;
 
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
 
     outline: none;
 
     background: #ffffff;
-    color: #0f172a;
+    color: #111827;
 
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
 
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
 
+.premium-search input:hover {
+    border-color: #cbd5e1;
+}
+
+.premium-search input:focus {
+    border-color: var(--premium-gold);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 167, 44, 0.12);
+}
+
 .premium-search input::placeholder {
     color: #94a3b8;
 }
 
-.premium-search input:focus {
-    border-color: #94a3b8;
-
-    box-shadow:
-        0 0 0 3px rgba(100, 116, 139, 0.10);
-}
-
 
 /* =========================================================
-   SELECT FILTRES
+   SELECT
    ========================================================= */
 
 .premium-filter-select {
     width: 100%;
-
-    min-height: 46px;
+    height: 46px;
 
     padding:
-        0 38px 0 14px;
+        0 14px;
 
-    border:
-        1px solid #e2e8f0;
+    box-sizing: border-box;
 
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
 
     outline: none;
 
-    background-color: #ffffff;
-    color: #334155;
+    background: #ffffff;
+    color: #374151;
 
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
 
     cursor: pointer;
@@ -327,77 +393,83 @@
         box-shadow 0.2s ease;
 }
 
+.premium-filter-select:hover {
+    border-color: #cbd5e1;
+}
+
 .premium-filter-select:focus {
-    border-color: #94a3b8;
+    border-color: var(--premium-gold);
 
     box-shadow:
-        0 0 0 3px rgba(100, 116, 139, 0.10);
+        0 0 0 3px rgba(212, 167, 44, 0.12);
 }
 
 
 /* =========================================================
-   LISTE DES PAIEMENTS
+   LISTE
    ========================================================= */
 
 .premium-payments-list {
     display: flex;
+
     flex-direction: column;
-    gap: 16px;
+
+    gap: 15px;
 
     width: 100%;
 }
 
 
 /* =========================================================
-   CARTE PAIEMENT
+   CARTE DE PAIEMENT
    ========================================================= */
 
 .premium-payment-card {
     width: 100%;
 
+    box-sizing: border-box;
+
     padding: 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
 
     background: #ffffff;
 
-    border:
-        1px solid #e2e8f0;
-
-    border-radius: 16px;
-
     box-shadow:
-        0 4px 14px rgba(15, 23, 42, 0.05);
+        0 3px 12px rgba(15, 23, 42, 0.04);
 
     transition:
-        transform 0.2s ease,
+        border-color 0.2s ease,
         box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        transform 0.2s ease;
 }
 
 .premium-payment-card:hover {
-    transform: translateY(-2px);
-
-    border-color: #cbd5e1;
+    border-color: #d6b65a;
 
     box-shadow:
-        0 10px 25px rgba(15, 23, 42, 0.08);
+        0 8px 22px rgba(15, 23, 42, 0.07);
+
+    transform: translateY(-1px);
 }
 
 
 /* =========================================================
-   EN-TÊTE CARTE
+   HEADER CARTE
    ========================================================= */
 
 .premium-payment-card-header {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
-    gap: 16px;
+    gap: 15px;
 
-    padding-bottom: 17px;
+    padding-bottom: 16px;
 
-    border-bottom:
-        1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 
@@ -407,16 +479,13 @@
 
 .premium-payment-user {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 
     min-width: 0;
 }
-
-
-/* =========================================================
-   AVATAR
-   ========================================================= */
 
 .premium-payment-avatar {
     width: 46px;
@@ -436,22 +505,15 @@
     font-size: 17px;
 }
 
-
-/* =========================================================
-   NOM UTILISATEUR
-   ========================================================= */
-
 .premium-payment-user h3 {
     margin: 0;
 
-    color: #0f172a;
+    color: #111827;
 
     font-size: 15px;
     font-weight: 800;
 
-    line-height: 1.3;
-
-    word-break: break-word;
+    line-height: 1.35;
 }
 
 .premium-payment-user p {
@@ -459,11 +521,9 @@
 
     color: #64748b;
 
-    font-size: 13px;
+    font-size: 12px;
 
     line-height: 1.4;
-
-    word-break: break-word;
 }
 
 
@@ -473,6 +533,7 @@
 
 .premium-payment-status {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -480,18 +541,20 @@
 
     flex-shrink: 0;
 
-    padding: 7px 11px;
+    min-height: 30px;
+
+    padding: 0 11px;
 
     border-radius: 999px;
 
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 
     white-space: nowrap;
 }
 
 
-/* EN ATTENTE */
+/* ATTENTE */
 
 .premium-payment-status.pending {
     background: #fff7ed;
@@ -516,7 +579,7 @@
 
 
 /* =========================================================
-   DÉTAILS
+   DÉTAILS PAIEMENT
    ========================================================= */
 
 .premium-payment-details {
@@ -525,40 +588,36 @@
     grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
-    gap: 0;
-
-    margin-top: 18px;
-
-    border:
-        1px solid #f1f5f9;
-
-    border-radius: 12px;
+    margin-top: 17px;
 
     overflow: hidden;
+
+    border: 1px solid #eef2f7;
+    border-radius: 11px;
 }
 
 
 /* =========================================================
-   DÉTAIL INDIVIDUEL
+   DÉTAIL
    ========================================================= */
 
 .premium-payment-detail {
     min-width: 0;
 
-    padding: 14px 15px;
+    padding: 13px 14px;
 
     background: #f8fafc;
 
-    border-right:
-        1px solid #f1f5f9;
-
-    border-bottom:
-        1px solid #f1f5f9;
+    border-right: 1px solid #eef2f7;
+    border-bottom: 1px solid #eef2f7;
 }
 
 .premium-payment-detail:nth-child(3n) {
     border-right: none;
 }
+
+
+/* enlever bordure dernière ligne */
 
 .premium-payment-detail:nth-last-child(-n + 3) {
     border-bottom: none;
@@ -568,27 +627,30 @@
 .premium-payment-detail span {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
     color: #94a3b8;
 
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10px;
+    font-weight: 800;
 
     text-transform: uppercase;
+
     letter-spacing: 0.04em;
 }
 
 
 .premium-payment-detail strong {
     display: flex;
+
     align-items: center;
+
     gap: 6px;
 
     color: #334155;
 
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 750;
 
     line-height: 1.4;
 
@@ -597,31 +659,30 @@
 
 
 .premium-payment-detail strong i {
-    color: #b7791f;
+    color: var(--premium-gold);
 }
 
 
 /* =========================================================
-   RÉFÉRENCE DE TRANSACTION
+   RÉFÉRENCE
    ========================================================= */
 
 .premium-payment-reference {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
-    gap: 15px;
+    gap: 12px;
 
-    margin-top: 16px;
+    margin-top: 15px;
 
     padding: 13px 14px;
 
-    background: #f8fafc;
-
-    border:
-        1px dashed #cbd5e1;
-
+    border: 1px dashed #d5dce5;
     border-radius: 11px;
+
+    background: #fafafa;
 }
 
 
@@ -637,10 +698,11 @@
 
     color: #94a3b8;
 
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10px;
+    font-weight: 800;
 
     text-transform: uppercase;
+
     letter-spacing: 0.04em;
 }
 
@@ -648,7 +710,7 @@
 .premium-payment-reference strong {
     display: block;
 
-    color: #0f172a;
+    color: #111827;
 
     font-size: 14px;
     font-weight: 800;
@@ -658,7 +720,7 @@
 
 
 /* =========================================================
-   BOUTON COPIER
+   COPIER
    ========================================================= */
 
 .premium-copy-reference {
@@ -671,29 +733,24 @@
     align-items: center;
     justify-content: center;
 
-    border:
-        1px solid #e2e8f0;
-
+    border: 1px solid #e2e8f0;
     border-radius: 9px;
 
     background: #ffffff;
-
     color: #64748b;
 
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        all 0.2s ease;
 }
 
 .premium-copy-reference:hover {
-    background: #f1f5f9;
+    border-color: var(--premium-gold);
 
-    color: #0f172a;
+    background: #fffbeb;
 
-    border-color: #cbd5e1;
+    color: #a16207;
 }
 
 
@@ -703,21 +760,23 @@
 
 .premium-payment-actions {
     display: flex;
+
     align-items: center;
     justify-content: flex-end;
 
-    gap: 10px;
+    gap: 9px;
 
-    margin-top: 17px;
+    margin-top: 16px;
 }
 
 
 /* =========================================================
-   BOUTONS ACTION
+   BOUTONS
    ========================================================= */
 
 .premium-action-button {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -725,38 +784,32 @@
 
     min-height: 40px;
 
-    padding: 0 15px;
+    padding: 0 16px;
 
     border: none;
-
     border-radius: 9px;
 
     font-family: inherit;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
 
     cursor: pointer;
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        opacity 0.2s ease;
+        all 0.2s ease;
 }
-
 
 .premium-action-button:hover {
     transform: translateY(-1px);
 }
 
-
 .premium-action-button:active {
     transform: translateY(0);
 }
 
-
 .premium-action-button:disabled {
-    opacity: 0.65;
+    opacity: 0.6;
 
     cursor: not-allowed;
 
@@ -769,16 +822,18 @@
    ========================================================= */
 
 .premium-action-button.approve {
-    background: #059669;
+    background: #16a34a;
     color: #ffffff;
 
     box-shadow:
-        0 4px 10px rgba(5, 150, 105, 0.18);
+        0 3px 8px rgba(22, 163, 74, 0.18);
 }
 
 .premium-action-button.approve:hover {
+    background: #15803d;
+
     box-shadow:
-        0 7px 16px rgba(5, 150, 105, 0.24);
+        0 5px 13px rgba(22, 163, 74, 0.25);
 }
 
 
@@ -791,37 +846,42 @@
     color: #ffffff;
 
     box-shadow:
-        0 4px 10px rgba(220, 38, 38, 0.16);
+        0 3px 8px rgba(220, 38, 38, 0.16);
 }
 
 .premium-action-button.reject:hover {
+    background: #b91c1c;
+
     box-shadow:
-        0 7px 16px rgba(220, 38, 38, 0.22);
+        0 5px 13px rgba(220, 38, 38, 0.23);
 }
 
 
 /* =========================================================
-   PAIEMENT VALIDÉ
+   VALIDATION
    ========================================================= */
 
 .premium-payment-validated {
     display: flex;
+
     align-items: center;
     justify-content: flex-end;
 
+    flex-wrap: wrap;
+
     gap: 7px;
 
-    margin-top: 17px;
+    margin-top: 16px;
 
-    color: #047857;
+    color: #15803d;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
 }
 
 
-.premium-payment-validated > i {
-    font-size: 16px;
+.premium-payment-validated i {
+    font-size: 15px;
 }
 
 
@@ -844,22 +904,24 @@
 
 .premium-payments-list .admin-empty {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
-    min-height: 230px;
+    min-height: 220px;
 
     padding: 30px;
 
-    text-align: center;
+    box-sizing: border-box;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
 
     background: #ffffff;
 
-    border:
-        1px dashed #cbd5e1;
-
-    border-radius: 14px;
+    text-align: center;
 }
 
 
@@ -895,11 +957,12 @@
 
 
 /* =========================================================
-   LOADING
+   CHARGEMENT
    ========================================================= */
 
 .premium-payments-list .admin-loading {
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -909,24 +972,15 @@
 
     color: #64748b;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
 /* =========================================================
-   MESSAGE ADMIN
+   TABLETTE
    ========================================================= */
 
-.admin-message {
-    margin-bottom: 20px;
-}
-
-
-/* =========================================================
-   RESPONSIVE — TABLETTE
-   ========================================================= */
-
-@media (max-width: 1100px) {
+@media (max-width: 1000px) {
 
     .premium-payment-stats {
         grid-template-columns:
@@ -937,20 +991,20 @@
 
 
     .premium-payment-stat {
-        padding: 15px;
+        padding: 16px;
     }
 
 
     .premium-payment-stat strong {
-        font-size: 24px;
+        font-size: 23px;
     }
 
 
     .premium-payment-filters {
         grid-template-columns:
-            minmax(220px, 1fr)
-            minmax(160px, 1fr)
-            minmax(160px, 1fr);
+            1fr
+            1fr
+            1fr;
     }
 
 
@@ -961,8 +1015,7 @@
 
 
     .premium-payment-detail:nth-child(3n) {
-        border-right:
-            1px solid #f1f5f9;
+        border-right: 1px solid #eef2f7;
     }
 
 
@@ -972,8 +1025,7 @@
 
 
     .premium-payment-detail:nth-last-child(-n + 3) {
-        border-bottom:
-            1px solid #f1f5f9;
+        border-bottom: 1px solid #eef2f7;
     }
 
 
@@ -985,32 +1037,37 @@
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
+   MOBILE
    ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
 
     .admin-premium-section {
         scroll-margin-top: 20px;
     }
 
 
-    .admin-premium-description {
-        font-size: 13px;
+    /* ---------------------------------------------
+       HEADER
+    --------------------------------------------- */
+
+    .admin-premium-section
+    .admin-section-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 14px;
     }
 
 
     .admin-refresh-button {
-        min-height: 40px;
-
-        padding: 0 12px;
-
-        font-size: 13px;
+        width: 100%;
     }
 
 
     /* ---------------------------------------------
-       STATISTIQUES
+       STATS
     --------------------------------------------- */
 
     .premium-payment-stats {
@@ -1025,7 +1082,7 @@
     .premium-payment-stat {
         min-height: 78px;
 
-        padding: 14px 15px;
+        padding: 14px;
     }
 
 
@@ -1035,7 +1092,7 @@
 
         flex-basis: 44px;
 
-        font-size: 18px;
+        font-size: 17px;
     }
 
 
@@ -1052,14 +1109,12 @@
         grid-template-columns: 1fr;
 
         gap: 9px;
-
-        margin-bottom: 16px;
     }
 
 
     .premium-search input,
     .premium-filter-select {
-        min-height: 44px;
+        height: 44px;
     }
 
 
@@ -1068,7 +1123,7 @@
     --------------------------------------------- */
 
     .premium-payment-card {
-        padding: 15px;
+        padding: 14px;
 
         border-radius: 13px;
     }
@@ -1079,7 +1134,7 @@
 
         flex-direction: column;
 
-        gap: 12px;
+        gap: 11px;
     }
 
 
@@ -1104,8 +1159,7 @@
     .premium-payment-detail:nth-child(3n) {
         border-right: none;
 
-        border-bottom:
-            1px solid #f1f5f9;
+        border-bottom: 1px solid #eef2f7;
     }
 
 
@@ -1119,16 +1173,12 @@
     --------------------------------------------- */
 
     .premium-payment-reference {
-        align-items: center;
-
         padding: 11px;
-
-        gap: 10px;
     }
 
 
     .premium-payment-reference strong {
-        font-size: 13px;
+        font-size: 12px;
     }
 
 
@@ -1151,16 +1201,14 @@
 
         min-height: 42px;
 
-        padding: 0 10px;
+        padding: 0 9px;
 
-        font-size: 12px;
+        font-size: 11px;
     }
 
 
     .premium-payment-validated {
         justify-content: flex-start;
-
-        flex-wrap: wrap;
     }
 
 }
@@ -1170,15 +1218,10 @@
    PETIT MOBILE
    ========================================================= */
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
 
     .premium-payment-card {
-        padding: 13px;
-    }
-
-
-    .premium-payment-user {
-        width: 100%;
+        padding: 12px;
     }
 
 
@@ -1187,8 +1230,6 @@
         height: 40px;
 
         flex-basis: 40px;
-
-        font-size: 15px;
     }
 
 
@@ -1198,22 +1239,7 @@
 
 
     .premium-payment-user p {
-        font-size: 12px;
-    }
-
-
-    .premium-payment-detail {
-        padding: 12px;
-    }
-
-
-    .premium-payment-detail span {
-        font-size: 10px;
-    }
-
-
-    .premium-payment-detail strong {
-        font-size: 12px;
+        font-size: 11px;
     }
 
 
@@ -1224,14 +1250,18 @@
 
     .premium-action-button {
         min-height: 44px;
+
+        font-size: 12px;
     }
 
 
-    .premium-copy-reference {
-        width: 36px;
-        height: 36px;
+    .premium-payment-detail {
+        padding: 11px;
+    }
 
-        flex-basis: 36px;
+
+    .premium-payment-detail strong {
+        font-size: 12px;
     }
 
 }
@@ -1239,8 +1269,6 @@
 
 /* =========================================================
    MODE SOMBRE
-   Compatible si ton style.css utilise .dark-mode
-   ou body.dark
    ========================================================= */
 
 body.dark-mode .premium-payment-stat,
@@ -1249,6 +1277,7 @@ body.dark-mode .premium-search input,
 body.dark-mode .premium-filter-select,
 body.dark-mode .premium-copy-reference,
 body.dark-mode .admin-refresh-button,
+
 body.dark .premium-payment-stat,
 body.dark .premium-payment-card,
 body.dark .premium-search input,
@@ -1261,27 +1290,29 @@ body.dark .admin-refresh-button {
 }
 
 
-body.dark-mode .premium-payment-stat span,
-body.dark-mode .premium-payment-user p,
-body.dark-mode .premium-payment-detail span,
-body.dark-mode .premium-payment-reference span,
-body.dark .premium-payment-stat span,
-body.dark .premium-payment-user p,
-body.dark .premium-payment-detail span,
-body.dark .premium-payment-reference span {
-    color: #94a3b8;
-}
-
-
 body.dark-mode .premium-payment-stat strong,
 body.dark-mode .premium-payment-user h3,
 body.dark-mode .premium-payment-detail strong,
 body.dark-mode .premium-payment-reference strong,
+
 body.dark .premium-payment-stat strong,
 body.dark .premium-payment-user h3,
 body.dark .premium-payment-detail strong,
 body.dark .premium-payment-reference strong {
     color: #f8fafc;
+}
+
+
+body.dark-mode .premium-payment-stat span,
+body.dark-mode .premium-payment-user p,
+body.dark-mode .premium-payment-detail span,
+body.dark-mode .premium-payment-reference span,
+
+body.dark .premium-payment-stat span,
+body.dark .premium-payment-user p,
+body.dark .premium-payment-detail span,
+body.dark .premium-payment-reference span {
+    color: #94a3b8;
 }
 
 
@@ -1310,25 +1341,42 @@ body.dark .premium-payment-reference {
 body.dark-mode .premium-payment-avatar,
 body.dark .premium-payment-avatar {
     background: #1e293b;
+
     color: #cbd5e1;
 }
 
 
-body.dark-mode .premium-refresh-button:hover,
-body.dark .admin-refresh-button:hover {
+body.dark-mode .premium-copy-reference:hover,
+body.dark .premium-copy-reference:hover {
     background: #1e293b;
 }
 
 
 body.dark-mode .premium-search input,
-body.dark .premium-search input {
+body.dark .premium-search input,
+body.dark-mode .premium-filter-select,
+body.dark .premium-filter-select {
     color: #f8fafc;
 }
 
 
-body.dark-mode .premium-filter-select,
-body.dark .premium-filter-select {
+body.dark-mode .premium-payments-list .admin-empty,
+body.dark .premium-payments-list .admin-empty {
+    background: #111827;
+
+    border-color: #334155;
+}
+
+
+body.dark-mode .premium-payments-list .admin-empty h3,
+body.dark .premium-payments-list .admin-empty h3 {
     color: #f8fafc;
+}
+
+
+body.dark-mode .premium-payments-list .admin-empty p,
+body.dark .premium-payments-list .admin-empty p {
+    color: #94a3b8;
 }
 
 
