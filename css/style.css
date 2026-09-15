@@ -1,15 +1,16 @@
 /* =========================================================
-   CAMU SERVICES — STYLE.CSS
-   Version professionnelle PC / TABLETTE / MOBILE
+   CAMU SERVICES
+   STYLE.CSS — VERSION RESPONSIVE PC + MOBILE
    ========================================================= */
 
-/* =========================
+/* =========================================================
    VARIABLES
-========================= */
+   ========================================================= */
+
 :root {
-    --primary: #0757a0;
-    --primary-dark: #043b70;
-    --primary-light: #eaf4ff;
+    --blue: #0757a0;
+    --blue-dark: #043b70;
+    --blue-light: #eaf4ff;
 
     --green: #16a34a;
     --green-dark: #087f35;
@@ -17,17 +18,13 @@
 
     --white: #ffffff;
     --black: #111827;
-    --text: #1f2937;
+    --text: #263244;
     --muted: #6b7280;
 
-    --bg: #f5f7fb;
-    --surface: #ffffff;
-    --border: #e5e7eb;
+    --background: #f5f7fb;
+    --border: #e2e8f0;
 
-    --danger: #dc2626;
-    --warning: #f59e0b;
-
-    --sidebar-width: 268px;
+    --sidebar-width: 260px;
     --topbar-height: 72px;
 
     --radius-sm: 8px;
@@ -36,15 +33,17 @@
     --radius-xl: 28px;
 
     --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
-    --shadow-md: 0 8px 25px rgba(15, 23, 42, 0.08);
-    --shadow-lg: 0 15px 45px rgba(15, 23, 42, 0.12);
+    --shadow-md: 0 8px 25px rgba(15, 23, 42, 0.09);
+    --shadow-lg: 0 15px 40px rgba(15, 23, 42, 0.13);
 
     --transition: 0.25s ease;
 }
 
-/* =========================
+
+/* =========================================================
    RESET
-========================= */
+   ========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -65,9 +64,11 @@ body {
         Arial,
         sans-serif;
 
-    background: var(--bg);
+    background: var(--background);
     color: var(--text);
+
     line-height: 1.6;
+
     overflow-x: hidden;
 }
 
@@ -92,13 +93,11 @@ button {
     cursor: pointer;
 }
 
-ul {
-    list-style: none;
-}
 
-/* =========================
+/* =========================================================
    SCROLLBAR
-========================= */
+   ========================================================= */
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -116,11 +115,14 @@ ul {
     background: #94a3b8;
 }
 
+
 /* =========================================================
-   SIDEBAR
-========================================================= */
+   SIDEBAR PC
+   ========================================================= */
+
 .sidebar {
     position: fixed;
+
     top: 0;
     left: 0;
 
@@ -128,6 +130,7 @@ ul {
     height: 100vh;
 
     background: var(--white);
+
     border-right: 1px solid var(--border);
 
     display: flex;
@@ -135,49 +138,54 @@ ul {
 
     z-index: 1000;
 
-    transition:
-        transform var(--transition),
-        width var(--transition);
-
     overflow-y: auto;
+
+    transition: transform var(--transition);
 }
 
-/* =========================
+
+/* =========================================================
    LOGO SIDEBAR
-========================= */
+   ========================================================= */
+
 .sidebar .logo-image {
-    height: 100px;
+    height: 105px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 12px 20px;
+    padding: 10px 20px;
 
     border-bottom: 1px solid var(--border);
 }
 
 .sidebar .logo-image img {
-    width: 190px;
+    width: 175px;
+
     height: auto;
-    max-height: 78px;
+
+    max-height: 75px;
+
     object-fit: contain;
 }
 
-/* =========================
-   NAVIGATION
-========================= */
+
+/* =========================================================
+   MENU SIDEBAR
+   ========================================================= */
+
 .sidebar nav {
-    padding: 18px 14px;
-    flex: 1;
+    padding: 18px 13px;
 }
 
 .sidebar nav a {
+    min-height: 48px;
+
     display: flex;
     align-items: center;
-    gap: 13px;
 
-    min-height: 48px;
+    gap: 13px;
 
     padding: 11px 14px;
 
@@ -188,6 +196,7 @@ ul {
     color: #475569;
 
     font-size: 14px;
+
     font-weight: 600;
 
     transition:
@@ -198,68 +207,87 @@ ul {
 
 .sidebar nav a i {
     width: 22px;
+
     text-align: center;
+
     font-size: 17px;
 }
 
 .sidebar nav a:hover {
-    background: var(--primary-light);
-    color: var(--primary);
+    background: var(--blue-light);
+
+    color: var(--blue);
+
     transform: translateX(2px);
 }
 
 .sidebar nav a.active {
-    background: var(--primary);
+    background: var(--blue);
+
     color: var(--white);
-    box-shadow: 0 5px 15px rgba(7, 87, 160, 0.2);
+
+    box-shadow:
+        0 6px 15px rgba(7, 87, 160, 0.20);
 }
+
 
 /* =========================================================
    OVERLAY MOBILE
-========================================================= */
+   ========================================================= */
+
 .sidebar-overlay {
     display: none;
 
     position: fixed;
+
     inset: 0;
 
     background: rgba(15, 23, 42, 0.55);
 
-    z-index: 999;
-
     backdrop-filter: blur(2px);
+
+    z-index: 999;
 }
 
 .sidebar-overlay.active {
     display: block;
 }
 
+
 /* =========================================================
-   MAIN
-========================================================= */
+   CONTENU PRINCIPAL
+   ========================================================= */
+
 .main-wrapper {
     margin-left: var(--sidebar-width);
+
     min-height: 100vh;
 
     transition: margin-left var(--transition);
 }
 
+
 /* =========================================================
    TOPBAR
-========================================================= */
+   ========================================================= */
+
 .topbar {
     position: sticky;
+
     top: 0;
 
     height: var(--topbar-height);
 
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.97);
+
     backdrop-filter: blur(12px);
 
     border-bottom: 1px solid var(--border);
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     padding: 0 28px;
@@ -270,66 +298,149 @@ ul {
 .topbar-left,
 .topbar-right {
     display: flex;
+
     align-items: center;
-    gap: 12px;
+
+    gap: 14px;
 }
+
+
+/* =========================================================
+   BOUTON MENU
+   ========================================================= */
 
 .menu-toggle {
     width: 42px;
+
     height: 42px;
 
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
     border: 1px solid var(--border);
+
     background: var(--white);
 
     border-radius: 10px;
 
-    display: none;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--primary);
+    color: var(--blue);
 }
 
 .menu-toggle:hover {
-    background: var(--primary-light);
+    background: var(--blue-light);
 }
 
+
 /* =========================================================
-   MOBILE LOGO
-========================================================= */
+   LOGO MOBILE
+   Petit + centré
+   ========================================================= */
+
 .mobile-logo {
     display: none;
+
     align-items: center;
+
+    justify-content: center;
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
 }
 
 .mobile-logo img {
-    width: 115px;
+    width: 86px;
+
     height: auto;
-    max-height: 52px;
+
+    max-height: 45px;
+
     object-fit: contain;
 }
 
+
+/* =========================================================
+   ICONE COMPTE
+   IMPORTANT :
+   uniquement l'icône
+   ========================================================= */
+
+.account-link {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 44px;
+
+    height: 44px;
+
+    border-radius: 50%;
+
+    color: var(--text);
+
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.account-link:hover {
+    background: var(--blue-light);
+
+    color: var(--blue);
+}
+
+.account-link i {
+    font-size: 24px;
+}
+
+
+/* Si ton HTML contient encore le texte "Mon compte",
+   cette règle le masque sur mobile. */
+
+@media (max-width: 768px) {
+
+    .account-link span,
+    .account-link .account-text {
+        display: none !important;
+    }
+}
+
+
 /* =========================================================
    HERO
-========================================================= */
+   ========================================================= */
+
 .hero {
     position: relative;
 
     min-height: 445px;
 
     display: flex;
+
     align-items: center;
 
-    padding: 65px 45px;
+    padding: 60px 40px;
 
     overflow: hidden;
 
     background:
         linear-gradient(
             135deg,
-            rgba(4, 59, 112, 0.98),
-            rgba(7, 87, 160, 0.94)
+            #0757a0 0%,
+            #0866b5 55%,
+            #0b8a9b 100%
         );
+
+    color: var(--white);
 }
 
 .hero::before {
@@ -337,13 +448,15 @@ ul {
 
     position: absolute;
 
-    width: 500px;
-    height: 500px;
+    width: 550px;
+
+    height: 550px;
 
     border-radius: 50%;
 
-    right: -180px;
-    top: -200px;
+    right: -200px;
+
+    top: -250px;
 
     background: rgba(255, 255, 255, 0.07);
 }
@@ -353,40 +466,45 @@ ul {
 
     position: absolute;
 
-    width: 350px;
-    height: 350px;
+    width: 400px;
+
+    height: 400px;
 
     border-radius: 50%;
 
-    left: -160px;
-    bottom: -190px;
+    left: -200px;
 
-    background: rgba(22, 163, 74, 0.15);
+    bottom: -250px;
+
+    background: rgba(22, 163, 74, 0.16);
 }
 
 .hero-content {
     position: relative;
+
     z-index: 2;
 
     width: 100%;
-    max-width: 1000px;
 
-    margin: auto;
+    max-width: 1050px;
 
-    color: var(--white);
+    margin: 0 auto;
+
+    text-align: center;
 }
 
 .hero h1 {
-    max-width: 760px;
+    max-width: 850px;
 
-    font-size: clamp(34px, 5vw, 58px);
+    margin: 0 auto 18px;
+
+    font-size: clamp(38px, 5vw, 60px);
+
     line-height: 1.08;
 
     font-weight: 800;
 
     letter-spacing: -1.5px;
-
-    margin-bottom: 18px;
 }
 
 .hero h1 span {
@@ -394,22 +512,28 @@ ul {
 }
 
 .hero p {
-    max-width: 700px;
+    max-width: 760px;
+
+    margin: 0 auto 30px;
 
     font-size: 18px;
+
     line-height: 1.7;
 
-    color: rgba(255, 255, 255, 0.88);
-
-    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.90);
 }
 
+
 /* =========================================================
-   SEARCH FORM
-========================================================= */
+   RECHERCHE
+   ========================================================= */
+
 .search-container {
     width: 100%;
+
     max-width: 950px;
+
+    margin: 0 auto;
 
     background: var(--white);
 
@@ -424,9 +548,8 @@ ul {
     display: grid;
 
     grid-template-columns:
-        minmax(200px, 2fr)
-        minmax(150px, 1fr)
-        minmax(150px, 1fr)
+        minmax(220px, 2fr)
+        minmax(160px, 1fr)
         auto;
 
     gap: 9px;
@@ -435,11 +558,13 @@ ul {
 .search-form input,
 .search-form select {
     width: 100%;
+
     height: 52px;
 
     padding: 0 15px;
 
     border: 1px solid var(--border);
+
     border-radius: 11px;
 
     background: #f8fafc;
@@ -447,20 +572,16 @@ ul {
     color: var(--text);
 
     outline: none;
-
-    transition:
-        border var(--transition),
-        box-shadow var(--transition),
-        background var(--transition);
 }
 
 .search-form input:focus,
 .search-form select:focus {
     background: var(--white);
 
-    border-color: var(--primary);
+    border-color: var(--blue);
 
-    box-shadow: 0 0 0 3px rgba(7, 87, 160, 0.1);
+    box-shadow:
+        0 0 0 3px rgba(7, 87, 160, 0.10);
 }
 
 .search-form button {
@@ -469,16 +590,21 @@ ul {
     padding: 0 23px;
 
     border: none;
+
     border-radius: 11px;
 
     background: var(--green);
+
     color: var(--white);
 
     font-weight: 700;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 8px;
 
     transition:
@@ -488,24 +614,30 @@ ul {
 
 .search-form button:hover {
     background: var(--green-dark);
+
     transform: translateY(-1px);
 }
 
+
 /* =========================================================
    SECTIONS
-========================================================= */
+   ========================================================= */
+
 .section {
-    padding: 65px 40px;
+    padding: 60px 40px;
 }
 
 .section-container {
     max-width: 1250px;
+
     margin: 0 auto;
 }
 
 .section-header {
     display: flex;
+
     align-items: flex-end;
+
     justify-content: space-between;
 
     gap: 20px;
@@ -515,6 +647,7 @@ ul {
 
 .section-title {
     font-size: 30px;
+
     line-height: 1.2;
 
     font-weight: 800;
@@ -531,44 +664,52 @@ ul {
 }
 
 .section-link {
-    color: var(--primary);
+    color: var(--blue);
+
     font-weight: 700;
+
     font-size: 14px;
 
     white-space: nowrap;
 }
 
-.section-link:hover {
-    color: var(--green);
-}
 
 /* =========================================================
    CATEGORIES
-========================================================= */
+   ========================================================= */
+
 .categories-grid {
     display: grid;
 
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
 
     gap: 18px;
 }
 
-.category-card {
-    position: relative;
 
+/* CARTE CATEGORIE */
+
+.category-card {
     background: var(--white);
 
     border: 1px solid var(--border);
 
-    border-radius: var(--radius-md);
+    border-radius: 17px;
 
-    padding: 24px 20px;
+    padding: 25px 18px;
 
-    min-height: 150px;
+    min-height: 175px;
 
     display: flex;
+
     flex-direction: column;
+
+    align-items: center;
+
     justify-content: center;
+
+    text-align: center;
 
     transition:
         transform var(--transition),
@@ -584,32 +725,69 @@ ul {
     box-shadow: var(--shadow-md);
 }
 
-.category-icon {
-    width: 52px;
-    height: 52px;
 
-    border-radius: 14px;
+/* =========================================================
+   ICONES DES CATEGORIES
+   CENTREES
+   ========================================================= */
+
+.category-icon {
+    width: 58px;
+
+    height: 58px;
+
+    flex-shrink: 0;
+
+    margin: 0 auto 15px;
+
+    border-radius: 16px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    background: var(--primary-light);
-    color: var(--primary);
+    background: var(--blue-light);
 
-    font-size: 22px;
+    color: var(--blue);
 
-    margin-bottom: 14px;
+    font-size: 24px;
+
+    text-align: center;
 }
+
+.category-icon i {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 100%;
+}
+
+
+/* TITRE CATEGORIE */
 
 .category-card h3 {
     font-size: 17px;
+
+    line-height: 1.35;
+
     font-weight: 750;
 
     color: var(--black);
 
-    margin-bottom: 5px;
+    text-align: center;
+
+    margin-bottom: 6px;
 }
+
+
+/* DESCRIPTION */
 
 .category-card p {
     color: var(--muted);
@@ -617,15 +795,22 @@ ul {
     font-size: 13px;
 
     line-height: 1.5;
+
+    text-align: center;
+
+    max-width: 230px;
 }
 
+
 /* =========================================================
-   ADS GRID
-========================================================= */
+   ANNONCES
+   ========================================================= */
+
 .ads-grid {
     display: grid;
 
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
     gap: 20px;
 }
@@ -637,28 +822,24 @@ ul {
 
     border: 1px solid var(--border);
 
-    border-radius: var(--radius-md);
+    border-radius: 15px;
 
     box-shadow: var(--shadow-sm);
 
     transition:
         transform var(--transition),
-        box-shadow var(--transition),
-        border-color var(--transition);
+        box-shadow var(--transition);
 }
 
 .ad-card:hover {
     transform: translateY(-5px);
 
-    border-color: #d3dce8;
-
     box-shadow: var(--shadow-md);
 }
 
 .ad-image {
-    position: relative;
-
     width: 100%;
+
     aspect-ratio: 4 / 3;
 
     overflow: hidden;
@@ -668,6 +849,7 @@ ul {
 
 .ad-image img {
     width: 100%;
+
     height: 100%;
 
     object-fit: cover;
@@ -685,25 +867,29 @@ ul {
 
 .ad-title {
     font-size: 16px;
+
     font-weight: 750;
+
+    line-height: 1.4;
 
     color: var(--black);
 
     display: -webkit-box;
+
     -webkit-box-orient: vertical;
+
     -webkit-line-clamp: 2;
 
     overflow: hidden;
-
-    min-height: 48px;
 }
 
 .ad-price {
     margin-top: 10px;
 
-    color: var(--primary);
+    color: var(--blue);
 
     font-size: 18px;
+
     font-weight: 800;
 }
 
@@ -715,47 +901,27 @@ ul {
     font-size: 13px;
 
     display: flex;
+
     align-items: center;
+
     gap: 5px;
 }
 
-/* =========================================================
-   BADGES
-========================================================= */
-.badge {
-    display: inline-flex;
-    align-items: center;
-
-    padding: 5px 9px;
-
-    border-radius: 999px;
-
-    font-size: 11px;
-    font-weight: 750;
-}
-
-.badge-premium {
-    background: #fff7d6;
-    color: #946200;
-}
-
-.badge-active {
-    background: var(--green-light);
-    color: var(--green-dark);
-}
 
 /* =========================================================
    CTA
-========================================================= */
+   ========================================================= */
+
 .cta-section {
-    padding: 70px 40px;
+    padding: 65px 40px;
 }
 
 .cta {
     position: relative;
 
     max-width: 1250px;
-    margin: auto;
+
+    margin: 0 auto;
 
     overflow: hidden;
 
@@ -766,8 +932,8 @@ ul {
     background:
         linear-gradient(
             135deg,
-            var(--primary-dark),
-            var(--primary)
+            var(--blue-dark),
+            var(--blue)
         );
 
     color: var(--white);
@@ -775,24 +941,9 @@ ul {
     box-shadow: var(--shadow-lg);
 }
 
-.cta::after {
-    content: "";
-
-    position: absolute;
-
-    width: 300px;
-    height: 300px;
-
-    border-radius: 50%;
-
-    right: -100px;
-    top: -150px;
-
-    background: rgba(255, 255, 255, 0.07);
-}
-
 .cta-content {
     position: relative;
+
     z-index: 2;
 
     max-width: 700px;
@@ -800,6 +951,7 @@ ul {
 
 .cta h2 {
     font-size: 34px;
+
     line-height: 1.2;
 
     margin-bottom: 12px;
@@ -813,8 +965,11 @@ ul {
 
 .cta-button {
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 8px;
 
     min-height: 48px;
@@ -824,64 +979,91 @@ ul {
     border-radius: 11px;
 
     background: var(--green);
+
     color: var(--white);
 
     font-weight: 750;
-
-    transition:
-        background var(--transition),
-        transform var(--transition);
 }
 
 .cta-button:hover {
     background: var(--green-dark);
-    transform: translateY(-2px);
 }
+
 
 /* =========================================================
    FOOTER
-========================================================= */
+   ========================================================= */
+
 footer {
     background: #071a2d;
 
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.78);
 
     padding: 55px 40px 25px;
 }
 
 .footer-container {
     max-width: 1250px;
-    margin: auto;
+
+    margin: 0 auto;
 }
 
 .footer-grid {
     display: grid;
 
-    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    grid-template-columns:
+        1.5fr 1fr 1fr 1fr;
 
-    gap: 45px;
+    gap: 40px;
 
-    padding-bottom: 40px;
+    padding-bottom: 35px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
 }
 
-.footer-logo {
-    display: inline-flex;
 
-    margin-bottom: 18px;
+/* =========================================================
+   LOGO FOOTER
+   PETIT + CENTRE + TRANSPARENT
+   ========================================================= */
 
-    background: var(--white);
+footer .footer-logo {
+    display: flex;
 
-    border-radius: 12px;
+    align-items: center;
 
-    padding: 7px 12px;
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 0 auto 15px;
+
+    padding: 0;
+
+    background: transparent !important;
+
+    border: none;
+
+    box-shadow: none;
 }
 
-.footer-logo img {
-    width: 160px;
+footer .footer-logo img {
+    width: 125px;
+
     height: auto;
+
+    max-height: 70px;
+
+    object-fit: contain;
+
+    background: transparent !important;
 }
+
+
+/* =========================================================
+   TEXTE FOOTER
+   ========================================================= */
 
 footer h3,
 footer h4 {
@@ -890,16 +1072,9 @@ footer h4 {
     margin-bottom: 15px;
 }
 
-footer h3 {
-    font-size: 18px;
-}
-
-footer h4 {
-    font-size: 15px;
-}
-
 footer p {
     font-size: 13px;
+
     line-height: 1.7;
 }
 
@@ -908,11 +1083,9 @@ footer ul li {
 }
 
 footer ul a {
+    color: rgba(255, 255, 255, 0.70);
+
     font-size: 13px;
-
-    color: rgba(255, 255, 255, 0.7);
-
-    transition: color var(--transition);
 }
 
 footer ul a:hover {
@@ -924,350 +1097,158 @@ footer ul a:hover {
 
     text-align: center;
 
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.50);
 
     font-size: 12px;
 }
 
-/* =========================================================
-   BUTTONS GENERAUX
-========================================================= */
-.btn {
-    border: none;
-
-    min-height: 44px;
-
-    padding: 0 17px;
-
-    border-radius: 10px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    font-weight: 700;
-
-    transition:
-        transform var(--transition),
-        box-shadow var(--transition),
-        background var(--transition);
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: var(--white);
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-}
-
-.btn-success {
-    background: var(--green);
-    color: var(--white);
-}
-
-.btn-success:hover {
-    background: var(--green-dark);
-}
-
-.btn-outline {
-    background: var(--white);
-
-    color: var(--primary);
-
-    border: 1px solid var(--primary);
-}
-
-/* =========================================================
-   FORMULAIRES GENERAUX
-========================================================= */
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    color: var(--black);
-
-    font-size: 14px;
-    font-weight: 650;
-}
-
-.form-control {
-    width: 100%;
-
-    min-height: 48px;
-
-    padding: 10px 13px;
-
-    background: var(--white);
-
-    border: 1px solid var(--border);
-
-    border-radius: 10px;
-
-    outline: none;
-
-    color: var(--text);
-
-    transition:
-        border var(--transition),
-        box-shadow var(--transition);
-}
-
-.form-control:focus {
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(7, 87, 160, 0.1);
-}
-
-textarea.form-control {
-    min-height: 120px;
-
-    resize: vertical;
-}
-
-/* =========================================================
-   CARDS GENERALES
-========================================================= */
-.card {
-    background: var(--white);
-
-    border: 1px solid var(--border);
-
-    border-radius: var(--radius-md);
-
-    padding: 22px;
-
-    box-shadow: var(--shadow-sm);
-}
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-.empty-state {
-    padding: 55px 20px;
-
-    text-align: center;
-
-    background: var(--white);
-
-    border: 1px dashed #cbd5e1;
-
-    border-radius: var(--radius-md);
-}
-
-.empty-state i {
-    font-size: 42px;
-
-    color: #94a3b8;
-
-    margin-bottom: 14px;
-}
-
-.empty-state h3 {
-    color: var(--black);
-
-    font-size: 20px;
-
-    margin-bottom: 7px;
-}
-
-.empty-state p {
-    color: var(--muted);
-
-    font-size: 14px;
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
-.loading {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    min-height: 180px;
-
-    color: var(--muted);
-}
-
-.spinner {
-    width: 32px;
-    height: 32px;
-
-    border: 3px solid #dbe4ee;
-    border-top-color: var(--primary);
-
-    border-radius: 50%;
-
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* =========================================================
-   ALERTS
-========================================================= */
-.alert {
-    padding: 13px 15px;
-
-    border-radius: 10px;
-
-    margin-bottom: 15px;
-
-    font-size: 14px;
-}
-
-.alert-success {
-    background: var(--green-light);
-    color: var(--green-dark);
-}
-
-.alert-danger {
-    background: #fef2f2;
-    color: var(--danger);
-}
-
-.alert-warning {
-    background: #fffbeb;
-    color: #92400e;
-}
 
 /* =========================================================
    TABLETTE
-========================================================= */
+   ========================================================= */
+
 @media (max-width: 1150px) {
 
     :root {
         --sidebar-width: 235px;
     }
 
-    .sidebar .logo-image img {
-        width: 170px;
-    }
-
-    .section {
-        padding-left: 28px;
-        padding-right: 28px;
-    }
-
-    .hero {
-        padding-left: 32px;
-        padding-right: 32px;
-    }
-
     .ads-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
     }
 
     .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 }
 
+
 /* =========================================================
    MOBILE
-========================================================= */
+   ========================================================= */
+
 @media (max-width: 768px) {
 
     :root {
         --sidebar-width: 270px;
+
         --topbar-height: 64px;
     }
 
-    body {
-        font-size: 14px;
-    }
 
     /* SIDEBAR */
+
     .sidebar {
         transform: translateX(-100%);
 
-        box-shadow: 10px 0 30px rgba(15, 23, 42, 0.15);
+        box-shadow:
+            10px 0 30px rgba(15, 23, 42, 0.18);
     }
 
     .sidebar.open {
         transform: translateX(0);
     }
 
-    .sidebar .logo-image {
-        height: 88px;
-    }
 
     /* MAIN */
+
     .main-wrapper {
         margin-left: 0;
     }
 
+
     /* TOPBAR */
+
     .topbar {
-        height: var(--topbar-height);
+        position: relative;
+
+        height: 64px;
 
         padding: 0 15px;
     }
 
+
+    /* MENU */
+
     .menu-toggle {
         display: flex;
+
+        position: relative;
+
+        z-index: 2;
     }
+
+
+    /* LOGO */
 
     .mobile-logo {
         display: flex;
     }
 
+    .mobile-logo img {
+        width: 82px;
+
+        max-height: 43px;
+    }
+
+
+    /* COMPTE */
+
+    .topbar-right {
+        gap: 5px;
+    }
+
+    .account-link {
+        width: 42px;
+
+        height: 42px;
+    }
+
+    .account-link i {
+        font-size: 23px;
+    }
+
+
     /* HERO */
+
     .hero {
         min-height: auto;
 
-        padding: 42px 18px 38px;
-
-        text-align: center;
-    }
-
-    .hero-content {
-        width: 100%;
+        padding: 48px 16px 42px;
     }
 
     .hero h1 {
-        font-size: clamp(30px, 9vw, 43px);
+        font-size: clamp(31px, 8.5vw, 43px);
+
+        line-height: 1.08;
 
         letter-spacing: -0.8px;
 
-        margin-bottom: 13px;
+        margin-bottom: 15px;
     }
 
     .hero p {
         font-size: 15px;
 
-        line-height: 1.6;
+        line-height: 1.65;
 
-        margin: 0 auto 22px;
+        margin-bottom: 24px;
     }
 
+
     /* SEARCH */
+
     .search-container {
         padding: 8px;
 
-        border-radius: 15px;
+        border-radius: 16px;
     }
 
     .search-form {
         display: flex;
+
         flex-direction: column;
 
         gap: 8px;
@@ -1278,11 +1259,14 @@ textarea.form-control {
     .search-form button {
         width: 100%;
 
-        height: 48px;
-        min-height: 48px;
+        height: 50px;
+
+        min-height: 50px;
     }
 
+
     /* SECTIONS */
+
     .section {
         padding: 42px 16px;
     }
@@ -1292,70 +1276,87 @@ textarea.form-control {
 
         flex-direction: column;
 
-        margin-bottom: 20px;
+        gap: 7px;
 
-        gap: 8px;
+        margin-bottom: 22px;
     }
 
     .section-title {
-        font-size: 25px;
+        font-size: 27px;
     }
 
     .section-subtitle {
         font-size: 14px;
     }
 
+
     /* CATEGORIES */
+
     .categories-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
 
         gap: 11px;
     }
 
     .category-card {
-        min-height: 145px;
+        min-height: 160px;
 
-        padding: 17px 14px;
+        padding: 18px 12px;
 
-        border-radius: 13px;
+        border-radius: 14px;
     }
 
     .category-icon {
-        width: 44px;
-        height: 44px;
+        width: 50px;
 
-        font-size: 19px;
+        height: 50px;
 
-        margin-bottom: 11px;
+        margin: 0 auto 12px;
+
+        font-size: 21px;
+
+        border-radius: 14px;
     }
 
     .category-card h3 {
         font-size: 14px;
+
+        line-height: 1.35;
+
+        text-align: center;
     }
 
     .category-card p {
-        font-size: 12px;
+        font-size: 11.5px;
+
+        line-height: 1.45;
+
+        text-align: center;
     }
 
-    /* ADS */
-    .ads-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
 
-        gap: 11px;
+    /* ANNONCES */
+
+    .ads-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
     }
 
     .ad-card {
-        border-radius: 12px;
+        border-radius: 13px;
     }
 
     .ad-content {
-        padding: 12px;
+        padding: 11px;
     }
 
     .ad-title {
-        font-size: 14px;
+        font-size: 13px;
 
-        min-height: 42px;
+        line-height: 1.4;
     }
 
     .ad-price {
@@ -1368,13 +1369,15 @@ textarea.form-control {
         font-size: 11px;
     }
 
+
     /* CTA */
+
     .cta-section {
         padding: 42px 16px;
     }
 
     .cta {
-        padding: 36px 22px;
+        padding: 36px 21px;
 
         border-radius: 20px;
 
@@ -1393,31 +1396,68 @@ textarea.form-control {
         width: 100%;
     }
 
+
     /* FOOTER */
+
     footer {
-        padding: 42px 20px 22px;
+        padding: 40px 18px 23px;
+
+        text-align: center;
     }
 
     .footer-grid {
         grid-template-columns: 1fr;
 
-        gap: 28px;
+        gap: 25px;
     }
 
-    .footer-logo img {
-        width: 145px;
+    footer .footer-logo {
+        justify-content: center;
+
+        margin-bottom: 14px;
     }
 
+    footer .footer-logo img {
+        width: 105px;
+
+        max-height: 60px;
+    }
+
+    footer p {
+        font-size: 13px;
+    }
+
+    footer ul {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 7px 15px;
+    }
+
+    footer ul li {
+        margin: 0;
+    }
+
+    footer ul a {
+        font-size: 12px;
+    }
+
+    .footer-bottom {
+        padding-top: 20px;
+
+        font-size: 11px;
+    }
 }
+
 
 /* =========================================================
    PETIT MOBILE
-========================================================= */
-@media (max-width: 420px) {
+   ========================================================= */
 
-    .mobile-logo img {
-        width: 100px;
-    }
+@media (max-width: 420px) {
 
     .topbar {
         padding: 0 11px;
@@ -1425,11 +1465,31 @@ textarea.form-control {
 
     .menu-toggle {
         width: 39px;
+
         height: 39px;
     }
 
+    .mobile-logo img {
+        width: 76px;
+
+        max-height: 40px;
+    }
+
+    .account-link {
+        width: 40px;
+
+        height: 40px;
+    }
+
+    .account-link i {
+        font-size: 22px;
+    }
+
+
+    /* HERO */
+
     .hero {
-        padding: 35px 13px 32px;
+        padding: 38px 12px 34px;
     }
 
     .hero h1 {
@@ -1440,26 +1500,27 @@ textarea.form-control {
         font-size: 14px;
     }
 
-    .section {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
+
+    /* CATEGORIES */
 
     .categories-grid {
         gap: 8px;
     }
 
     .category-card {
-        min-height: 135px;
+        min-height: 145px;
 
-        padding: 14px 11px;
+        padding: 15px 9px;
     }
 
     .category-icon {
-        width: 40px;
-        height: 40px;
+        width: 46px;
 
-        font-size: 17px;
+        height: 46px;
+
+        font-size: 19px;
+
+        margin-bottom: 10px;
     }
 
     .category-card h3 {
@@ -1467,41 +1528,51 @@ textarea.form-control {
     }
 
     .category-card p {
-        font-size: 11px;
+        font-size: 10.5px;
     }
+
+
+    /* ADS */
 
     .ads-grid {
         gap: 8px;
     }
 
     .ad-content {
-        padding: 10px;
+        padding: 9px;
     }
 
     .ad-title {
-        font-size: 13px;
+        font-size: 12.5px;
     }
 
     .ad-price {
         font-size: 15px;
     }
 
-    .cta {
-        padding: 30px 17px;
+
+    /* FOOTER */
+
+    footer {
+        padding-left: 12px;
+
+        padding-right: 12px;
     }
 
-    .cta h2 {
-        font-size: 24px;
+    footer .footer-logo img {
+        width: 95px;
     }
 }
 
+
 /* =========================================================
    TRES PETIT TELEPHONE
-========================================================= */
+   ========================================================= */
+
 @media (max-width: 350px) {
 
     .mobile-logo img {
-        width: 90px;
+        width: 70px;
     }
 
     .hero h1 {
@@ -1513,7 +1584,7 @@ textarea.form-control {
     }
 
     .category-card {
-        min-height: 115px;
+        min-height: 125px;
     }
 
     .ads-grid {
@@ -1523,16 +1594,27 @@ textarea.form-control {
     .ad-image {
         aspect-ratio: 16 / 10;
     }
+
+    footer .footer-logo img {
+        width: 90px;
+    }
 }
+
 
 /* =========================================================
    ACCESSIBILITE
-========================================================= */
+   ========================================================= */
+
 :focus-visible {
     outline: 3px solid rgba(22, 163, 74, 0.35);
 
     outline-offset: 2px;
 }
+
+
+/* =========================================================
+   REDUCTION DES ANIMATIONS
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1542,6 +1624,7 @@ textarea.form-control {
         scroll-behavior: auto !important;
 
         animation-duration: 0.01ms !important;
+
         animation-iteration-count: 1 !important;
 
         transition-duration: 0.01ms !important;
