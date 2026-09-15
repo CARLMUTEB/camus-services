@@ -2,10 +2,13 @@
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>CAMU IMMO — Espace Immobilier</title>
 
@@ -14,280 +17,361 @@
         content="CAMU IMMO — Vente, location, estimation et services immobiliers."
     >
 
-    <!-- CSS PRINCIPAL -->
-   <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/immobilier.css">
-    <!-- FONT AWESOME -->
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
+
+    <!-- =====================================================
+         CSS IMMOBILIER UNIQUEMENT
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/immobilier.css"
+    >
+
 </head>
 
 
 <body>
 
 
-<!-- =====================================================
-     SIDEBAR
-     ===================================================== -->
+<!-- =========================================================
+     HEADER CAMU IMMO
+========================================================= -->
 
-<aside class="sidebar" id="sidebar">
+<header class="immo-header">
 
-    <div class="sidebar-header">
+    <div class="immo-header-inner">
 
-        <a href="index.html" class="logo-image">
+
+        <!-- LOGO -->
+
+        <a
+            href="index.html"
+            class="immo-logo"
+        >
+
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
+
         </a>
 
-        <button
-            class="sidebar-close"
-            id="sidebarClose"
-            type="button"
-            aria-label="Fermer le menu"
-        >
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+
+        <!-- NOM ESPACE -->
+
+        <div class="immo-brand-name">
+
+            <span>
+                CAMU
+            </span>
+
+            <strong>
+                IMMO
+            </strong>
+
+        </div>
+
+
+        <!-- MENU DESKTOP -->
+
+        <nav class="immo-nav">
+
+            <a
+                href="immobilier.html"
+                class="active"
+            >
+                <i class="fa-solid fa-house"></i>
+                Accueil
+            </a>
+
+            <a href="#vente">
+                <i class="fa-solid fa-tag"></i>
+                Vente
+            </a>
+
+            <a href="#location">
+                <i class="fa-solid fa-key"></i>
+                Location
+            </a>
+
+            <a href="#estimation">
+                <i class="fa-solid fa-calculator"></i>
+                Estimation
+            </a>
+
+            <a href="#agents">
+                <i class="fa-solid fa-user-tie"></i>
+                Agents
+            </a>
+
+            <a href="#actualites">
+                <i class="fa-solid fa-newspaper"></i>
+                Actualités
+            </a>
+
+        </nav>
+
+
+        <!-- ACTIONS -->
+
+        <div class="immo-header-actions">
+
+            <a
+                href="index.html"
+                class="immo-back"
+                title="Retour à CAMU SERVICES"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                <span>
+                    CAMU SERVICES
+                </span>
+
+            </a>
+
+
+            <button
+                type="button"
+                class="immo-menu-button"
+                id="immoMenuButton"
+                aria-label="Ouvrir le menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
 
     </div>
 
 
-    <nav class="sidebar-nav">
+    <!-- MENU MOBILE -->
 
-        <a href="index.html" class="nav-item">
+    <nav
+        class="immo-mobile-nav"
+        id="immoMobileNav"
+    >
+
+        <a
+            href="immobilier.html"
+            class="active"
+        >
             <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
+            Accueil
         </a>
 
-
-        <a href="immobilier.html"
-           class="nav-item active">
-
-            <i class="fa-solid fa-building"></i>
-
-            <span>Espace Immobilier</span>
-
+        <a href="#vente">
+            <i class="fa-solid fa-tag"></i>
+            Vente
         </a>
 
-
-        <a href="recherche.html" class="nav-item">
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-            <span>Rechercher</span>
-
+        <a href="#location">
+            <i class="fa-solid fa-key"></i>
+            Location
         </a>
 
-
-        <a href="categories.html" class="nav-item">
-
-            <i class="fa-solid fa-layer-group"></i>
-
-            <span>Catégories</span>
-
+        <a href="#estimation">
+            <i class="fa-solid fa-calculator"></i>
+            Estimation
         </a>
 
-
-        <a href="manifestations.html" class="nav-item">
-
-            <i class="fa-solid fa-calendar-days"></i>
-
-            <span>Manifestations</span>
-
+        <a href="#agents">
+            <i class="fa-solid fa-user-tie"></i>
+            Agents immobiliers
         </a>
 
+        <a href="#actualites">
+            <i class="fa-solid fa-newspaper"></i>
+            Actualités
+        </a>
 
-        <a href="publier.html" class="nav-item">
-
-            <i class="fa-solid fa-plus"></i>
-
-            <span>Publier une annonce</span>
-
+        <a href="index.html">
+            <i class="fa-solid fa-arrow-left"></i>
+            Retour à CAMU SERVICES
         </a>
 
     </nav>
 
-
-    <div class="sidebar-bottom">
-
-        <a href="compte.html" class="nav-item">
-
-            <i class="fa-solid fa-user"></i>
-
-            <span>Mon compte</span>
-
-        </a>
-
-    </div>
-
-</aside>
+</header>
 
 
-<!-- =====================================================
-     OVERLAY MOBILE
-     ===================================================== -->
 
-<div
-    class="sidebar-overlay"
-    id="sidebarOverlay">
-</div>
+<!-- =========================================================
+     CONTENU
+========================================================= -->
+
+<main class="immo-main">
 
 
-<!-- =====================================================
-     CONTENU PRINCIPAL
-     ===================================================== -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-<div class="main-wrapper">
+<section class="immo-hero">
 
+    <div class="immo-hero-overlay"></div>
 
-    <!-- =================================================
-         TOPBAR
-         ================================================= -->
+    <div class="immo-container">
 
-    <header class="topbar">
-
-
-        <!-- MENU MOBILE -->
-
-        <button
-            class="menu-button"
-            id="menuButton"
-            type="button"
-            aria-label="Ouvrir le menu"
-        >
-
-            <i class="fa-solid fa-bars"></i>
-
-        </button>
+        <div class="immo-hero-content">
 
 
-        <!-- LOGO PC -->
+            <div class="immo-hero-logo">
 
-        <a
-            href="index.html"
-            class="desktop-logo"
-        >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
 
-            <img
-                src="assets/logo/camu-services-logo.png"
-                alt="CAMU SERVICES"
-            >
-
-        </a>
+            </div>
 
 
-        <!-- LOGO MOBILE -->
-
-        <a
-            href="index.html"
-            class="mobile-logo"
-        >
-
-            <img
-                src="assets/logo/camu-services-logo.png"
-                alt="CAMU SERVICES"
-            >
-
-        </a>
+            <span class="immo-kicker">
+                CAMU SERVICES
+            </span>
 
 
-        <!-- DROITE -->
-
-        <div class="topbar-right">
-
-
-            <a
-                href="favoris.html"
-                class="topbar-icon"
-                aria-label="Mes favoris"
-            >
-
-                <i class="fa-regular fa-heart"></i>
-
-            </a>
+            <h1>
+                ESPACE IMMOBILIER
+            </h1>
 
 
-            <a
-                href="compte.html"
-                class="profile-button"
-            >
+            <div class="immo-title-line"></div>
 
-                <i class="fa-regular fa-user"></i>
 
-                <span>Mon compte</span>
+            <p class="immo-hero-text">
 
-            </a>
+                Bienvenue dans
 
+                <strong>
+                    CAMU IMMO
+                </strong>
+
+                , votre espace dédié à
+                l'immobilier.
+
+            </p>
+
+
+            <p class="immo-hero-subtext">
+
+                Achetez, vendez, louez ou faites
+                estimer votre bien avec une solution
+                simple et professionnelle.
+
+            </p>
+
+
+            <div class="immo-hero-buttons">
+
+                <a
+                    href="#vente"
+                    class="immo-btn immo-btn-primary"
+                >
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Trouver un bien
+
+                </a>
+
+
+                <a
+                    href="demande-immobilier.html"
+                    class="immo-btn immo-btn-outline"
+                >
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Mon projet immobilier
+
+                </a>
+
+            </div>
 
         </div>
 
-    </header>
+    </div>
+
+</section>
 
 
 
-    <!-- =================================================
-         ESPACE IMMOBILIER
-         ================================================= -->
+<!-- =========================================================
+     RECHERCHE
+========================================================= -->
 
-    <main class="immo-page">
+<section class="immo-search-section">
 
+    <div class="immo-container">
 
-        <!-- =================================================
-             HERO IMMOBILIER
-             ================================================= -->
-
-        <section class="immo-hero">
+        <div class="immo-search-box">
 
 
-            <div class="immo-hero-content">
+            <div class="immo-search-heading">
 
+                <span>
+                    RECHERCHE IMMOBILIÈRE
+                </span>
 
-                <div class="immo-badge">
-
-                    <i class="fa-solid fa-building"></i>
-
-                    CAMU IMMO
-
-                </div>
-
-
-                <h1>
-                    Espace Immobilier
-                </h1>
-
+                <h2>
+                    Quel bien recherchez-vous ?
+                </h2>
 
                 <p>
-                    Trouvez, vendez, louez ou faites estimer
-                    votre bien immobilier avec CAMU IMMO.
+                    Recherchez rapidement parmi
+                    les biens disponibles.
                 </p>
 
-
-                <!-- RECHERCHE -->
-
-                <form
-                    class="immo-search"
-                    id="immoSearchForm"
-                >
+            </div>
 
 
-                    <div class="immo-search-field">
+            <form
+                id="immoSearchForm"
+                class="immo-search-form"
+            >
+
+
+                <div class="immo-field">
+
+                    <label for="immoKeyword">
+                        Recherche
+                    </label>
+
+                    <div class="immo-input">
 
                         <i class="fa-solid fa-magnifying-glass"></i>
 
                         <input
-                            type="text"
-                            id="immoSearch"
-                            placeholder="Rechercher une maison, un terrain..."
+                            type="search"
+                            id="immoKeyword"
+                            placeholder="Maison, appartement, terrain..."
                             autocomplete="off"
                         >
 
                     </div>
 
+                </div>
 
-                    <div class="immo-search-field">
+
+
+                <div class="immo-field">
+
+                    <label for="immoCity">
+                        Ville
+                    </label>
+
+                    <div class="immo-input">
 
                         <i class="fa-solid fa-location-dot"></i>
 
@@ -301,741 +385,850 @@
 
                     </div>
 
-
-                    <button
-                        type="submit"
-                        class="immo-search-button"
-                    >
-
-                        <i class="fa-solid fa-search"></i>
-
-                        Rechercher
-
-                    </button>
-
-
-                </form>
-
-            </div>
-
-        </section>
+                </div>
 
 
 
-        <!-- =================================================
-             SERVICES IMMOBILIERS
-             ================================================= -->
+                <div class="immo-field">
 
-        <section class="immo-section">
+                    <label for="immoType">
+                        Opération
+                    </label>
+
+                    <div class="immo-input">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        <select id="immoType">
+
+                            <option value="">
+                                Vente ou location
+                            </option>
+
+                            <option value="vente">
+                                Vente
+                            </option>
+
+                            <option value="location">
+                                Location
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
 
 
-            <div class="immo-section-header">
 
-                <span class="immo-section-label">
-                    NOS SERVICES
+                <button
+                    type="submit"
+                    class="immo-search-btn"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Rechercher
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SERVICES
+========================================================= -->
+
+<section class="immo-section">
+
+    <div class="immo-container">
+
+
+        <div class="immo-section-heading">
+
+            <span>
+                CAMU IMMO
+            </span>
+
+            <h2>
+                Nos services immobiliers
+            </h2>
+
+            <p>
+                Des solutions adaptées à vos projets
+                immobiliers.
+            </p>
+
+        </div>
+
+
+
+        <div class="immo-services-grid">
+
+
+            <!-- VENTE -->
+
+            <article
+                class="immo-service"
+                id="vente"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-house-circle-check"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    01
+                </span>
+
+                <h3>
+                    Vente
+                </h3>
+
+                <p>
+                    Découvrez des maisons,
+                    appartements, terrains et
+                    autres biens immobiliers
+                    disponibles à la vente.
+                </p>
+
+                <a
+                    href="recherche.html?category=immobilier&type=vente"
+                >
+
+                    Voir les biens
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- LOCATION -->
+
+            <article
+                class="immo-service"
+                id="location"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-key"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    02
+                </span>
+
+                <h3>
+                    Location
+                </h3>
+
+                <p>
+                    Trouvez une maison,
+                    un appartement, un bureau
+                    ou un autre logement
+                    à louer.
+                </p>
+
+                <a
+                    href="recherche.html?category=immobilier&type=location"
+                >
+
+                    Voir les locations
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- ESTIMATION -->
+
+            <article
+                class="immo-service"
+                id="estimation"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    03
+                </span>
+
+                <h3>
+                    Estimation
+                </h3>
+
+                <p>
+                    Vous souhaitez connaître
+                    la valeur de votre maison,
+                    terrain ou appartement ?
+                </p>
+
+                <a
+                    href="demande-immobilier.html?type=estimation"
+                >
+
+                    Demander une estimation
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- AGENTS -->
+
+            <article
+                class="immo-service"
+                id="agents"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    04
+                </span>
+
+                <h3>
+                    Agents immobiliers
+                </h3>
+
+                <p>
+                    Découvrez prochainement
+                    les agents immobiliers
+                    et professionnels présents
+                    sur CAMU IMMO.
+                </p>
+
+                <a href="#agents-section">
+
+                    Découvrir les agents
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- ACTUALITES -->
+
+            <article
+                class="immo-service"
+                id="actualites"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-newspaper"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    05
+                </span>
+
+                <h3>
+                    Actualités
+                </h3>
+
+                <p>
+                    Conseils, informations,
+                    tendances et actualités
+                    du secteur immobilier.
+                </p>
+
+                <a href="#actualites-section">
+
+                    Lire les actualités
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+
+            <!-- DEMANDE -->
+
+            <article
+                class="immo-service immo-service-highlight"
+            >
+
+                <div class="immo-service-icon">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                </div>
+
+                <span class="immo-service-number">
+                    06
+                </span>
+
+                <h3>
+                    Demande à la Direction
+                </h3>
+
+                <p>
+                    Vous avez un projet,
+                    une question ou une
+                    demande particulière ?
+                    Contactez la Direction
+                    CAMU IMMO.
+                </p>
+
+                <a
+                    href="demande-immobilier.html"
+                >
+
+                    Laisser une demande
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     TYPES DE BIENS
+========================================================= -->
+
+<section class="immo-types-section">
+
+    <div class="immo-container">
+
+
+        <div class="immo-section-heading">
+
+            <span>
+                BIENS IMMOBILIERS
+            </span>
+
+            <h2>
+                Que recherchez-vous ?
+            </h2>
+
+        </div>
+
+
+        <div class="immo-types-grid">
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="maison"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-house"></i>
+                </span>
+
+                <strong>
+                    Maison
+                </strong>
+
+                <small>
+                    Maisons disponibles
+                </small>
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="appartement"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-building"></i>
+                </span>
+
+                <strong>
+                    Appartement
+                </strong>
+
+                <small>
+                    Appartements disponibles
+                </small>
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="terrain"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-map"></i>
+                </span>
+
+                <strong>
+                    Terrain
+                </strong>
+
+                <small>
+                    Terrains disponibles
+                </small>
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="bureau"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </span>
+
+                <strong>
+                    Bureau
+                </strong>
+
+                <small>
+                    Espaces professionnels
+                </small>
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="commerce"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-store"></i>
+                </span>
+
+                <strong>
+                    Commerce
+                </strong>
+
+                <small>
+                    Locaux commerciaux
+                </small>
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="immo-type"
+                data-type="villa"
+            >
+
+                <span class="immo-type-icon">
+                    <i class="fa-solid fa-house-chimney"></i>
+                </span>
+
+                <strong>
+                    Villa
+                </strong>
+
+                <small>
+                    Villas disponibles
+                </small>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ANNONCES
+========================================================= -->
+
+<section class="immo-listings-section">
+
+    <div class="immo-container">
+
+
+        <div class="immo-listings-heading">
+
+            <div>
+
+                <span>
+                    ANNONCES IMMOBILIÈRES
                 </span>
 
                 <h2>
-                    Tout l'immobilier au même endroit
+                    Les biens disponibles
                 </h2>
 
                 <p>
-                    Découvrez les services proposés par
+                    Découvrez les dernières annonces
+                    immobilières publiées sur CAMU SERVICES.
+                </p>
+
+            </div>
+
+
+            <a
+                href="recherche.html?category=immobilier"
+                class="immo-see-all"
+            >
+
+                Voir toutes les annonces
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+
+        <div
+            id="immoAds"
+            class="immo-ads-grid"
+        >
+
+            <div class="immo-loading">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <span>
+                    Chargement des biens...
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     AGENTS
+========================================================= -->
+
+<section
+    id="agents-section"
+    class="immo-feature-section"
+>
+
+    <div class="immo-container">
+
+        <div class="immo-feature-card">
+
+
+            <div class="immo-feature-icon">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+            </div>
+
+
+            <div class="immo-feature-content">
+
+                <span>
+                    PROFESSIONNELS DE L'IMMOBILIER
+                </span>
+
+                <h2>
+                    Agents immobiliers
+                </h2>
+
+                <p>
+                    CAMU IMMO prépare un espace dédié
+                    aux agents immobiliers et aux
+                    professionnels du secteur.
+                </p>
+
+                <p>
+                    Les professionnels pourront
+                    prochainement présenter leurs
+                    services et leurs biens.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ACTUALITES
+========================================================= -->
+
+<section
+    id="actualites-section"
+    class="immo-feature-section immo-feature-light"
+>
+
+    <div class="immo-container">
+
+        <div class="immo-feature-card">
+
+
+            <div class="immo-feature-icon">
+
+                <i class="fa-solid fa-newspaper"></i>
+
+            </div>
+
+
+            <div class="immo-feature-content">
+
+                <span>
+                    CAMU IMMO
+                </span>
+
+                <h2>
+                    Actualités immobilières
+                </h2>
+
+                <p>
+                    Retrouvez prochainement les
+                    actualités, conseils et informations
+                    utiles concernant l'immobilier.
+                </p>
+
+                <p>
+                    Cette rubrique sera régulièrement
+                    enrichie avec de nouveaux contenus.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     DEMANDE DIRECTION
+========================================================= -->
+
+<section class="immo-request">
+
+    <div class="immo-container">
+
+        <div class="immo-request-inner">
+
+
+            <div class="immo-request-icon">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+
+            <div class="immo-request-text">
+
+                <span>
+                    CAMU IMMO
+                </span>
+
+                <h2>
+                    Vous avez un projet immobilier ?
+                </h2>
+
+                <p>
+                    Vente, location, estimation ou
+                    toute autre demande immobilière :
+                    laissez votre message à la Direction
                     CAMU IMMO.
                 </p>
 
             </div>
 
 
-            <div class="immo-services-grid">
-
-
-                <!-- VENTE -->
-
-                <a
-                    href="#vente"
-                    class="immo-service-card"
-                >
-
-                    <div class="immo-service-icon vente">
-
-                        <i class="fa-solid fa-house"></i>
-
-                    </div>
-
-                    <h3>
-                        Vente
-                    </h3>
-
-                    <p>
-                        Découvrez les biens immobiliers
-                        disponibles à la vente.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Voir les biens
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-
-                <!-- LOCATION -->
-
-                <a
-                    href="#location"
-                    class="immo-service-card"
-                >
-
-                    <div class="immo-service-icon location">
-
-                        <i class="fa-solid fa-key"></i>
-
-                    </div>
-
-                    <h3>
-                        Location
-                    </h3>
-
-                    <p>
-                        Trouvez une maison, un appartement
-                        ou un local à louer.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Voir les locations
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-
-                <!-- ESTIMATION -->
-
-                <a
-                    href="#estimation"
-                    class="immo-service-card"
-                >
-
-                    <div class="immo-service-icon estimation">
-
-                        <i class="fa-solid fa-ruler-combined"></i>
-
-                    </div>
-
-                    <h3>
-                        Estimation
-                    </h3>
-
-                    <p>
-                        Obtenez une estimation de la valeur
-                        de votre bien immobilier.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Demander une estimation
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-
-                <!-- AGENTS -->
-
-                <a
-                    href="#agents"
-                    class="immo-service-card"
-                >
-
-                    <div class="immo-service-icon agents">
-
-                        <i class="fa-solid fa-user-tie"></i>
-
-                    </div>
-
-                    <h3>
-                        Agents immobiliers
-                    </h3>
-
-                    <p>
-                        Découvrez les agents et professionnels
-                        immobiliers présents sur CAMU IMMO.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Voir les agents
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-
-                <!-- ACTUALITÉS -->
-
-                <a
-                    href="#actualites"
-                    class="immo-service-card"
-                >
-
-                    <div class="immo-service-icon actualites">
-
-                        <i class="fa-solid fa-newspaper"></i>
-
-                    </div>
-
-                    <h3>
-                        Actualités
-                    </h3>
-
-                    <p>
-                        Retrouvez les actualités et informations
-                        du secteur immobilier.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Lire les actualités
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-
-                <!-- DEMANDE CAMU IMMO -->
-
-                <a
-                    href="#demande"
-                    class="immo-service-card immo-service-special"
-                >
-
-                    <div class="immo-service-icon demande">
-
-                        <i class="fa-solid fa-paper-plane"></i>
-
-                    </div>
-
-                    <h3>
-                        Laisser une demande
-                    </h3>
-
-                    <p>
-                        Vous ne trouvez pas le bien recherché ?
-                        Envoyez directement votre demande à
-                        la Direction CAMU IMMO.
-                    </p>
-
-                    <span class="immo-service-link">
-
-                        Faire une demande
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </a>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             TYPES DE BIENS
-             ================================================= -->
-
-        <section class="immo-section immo-types">
-
-
-            <div class="immo-section-header">
-
-                <span class="immo-section-label">
-                    IMMOBILIER
-                </span>
-
-                <h2>
-                    Quel type de bien recherchez-vous ?
-                </h2>
-
-            </div>
-
-
-            <div class="immo-types-grid">
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Maison"
-                >
-
-                    <i class="fa-solid fa-house"></i>
-
-                    <span>Maisons</span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Appartement"
-                >
-
-                    <i class="fa-solid fa-building"></i>
-
-                    <span>Appartements</span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Terrain"
-                >
-
-                    <i class="fa-solid fa-tree-city"></i>
-
-                    <span>Terrains</span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Immeuble"
-                >
-
-                    <i class="fa-solid fa-city"></i>
-
-                    <span>Immeubles</span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Bureau"
-                >
-
-                    <i class="fa-solid fa-briefcase"></i>
-
-                    <span>Bureaux</span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="immo-type"
-                    data-type="Local commercial"
-                >
-
-                    <i class="fa-solid fa-shop"></i>
-
-                    <span>Locaux commerciaux</span>
-
-                </button>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             ANNONCES IMMOBILIÈRES
-             ================================================= -->
-
-        <section
-            class="immo-section"
-            id="vente"
-        >
-
-
-            <div class="immo-section-header-row">
-
-                <div>
-
-                    <span class="immo-section-label">
-                        CAMU IMMO
-                    </span>
-
-                    <h2>
-                        Biens immobiliers
-                    </h2>
-
-                </div>
-
-
-                <a
-                    href="recherche.html?category=Immobilier"
-                    class="immo-see-all"
-                >
-
-                    Voir tout
-
-                    <i class="fa-solid fa-arrow-right"></i>
-
-                </a>
-
-            </div>
-
-
-            <div
-                class="immo-ads-grid"
-                id="immoAds"
+            <a
+                href="demande-immobilier.html"
+                class="immo-request-btn"
             >
 
+                Laisser ma demande
 
-                <div class="immo-loading">
+                <i class="fa-solid fa-arrow-right"></i>
 
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-
-                    <span>
-                        Chargement des biens...
-                    </span>
-
-                </div>
+            </a>
 
 
-            </div>
+        </div>
 
+    </div>
 
-        </section>
+</section>
 
 
 
-        <!-- =================================================
-             DEMANDE À LA DIRECTION
-             ================================================= -->
-
-        <section
-            class="immo-request-section"
-            id="demande"
-        >
+</main>
 
 
-            <div class="immo-request-content">
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="immo-footer">
+
+    <div class="immo-container">
+
+        <div class="immo-footer-grid">
 
 
-                <div class="immo-request-icon">
+            <div class="immo-footer-brand">
 
-                    <i class="fa-solid fa-building-circle-check"></i>
-
-                </div>
-
-
-                <div class="immo-request-text">
-
-                    <span>
-                        BESOIN D'UN BIEN ?
-                    </span>
-
-                    <h2>
-                        Laissez votre demande à la
-                        Direction CAMU IMMO
-                    </h2>
-
-                    <p>
-                        Vous recherchez un bien spécifique
-                        et vous ne le trouvez pas dans nos
-                        annonces ? Décrivez votre besoin.
-                        Notre équipe pourra vous accompagner
-                        dans votre recherche.
-                    </p>
-
-                </div>
-
-
-                <a
-                    href="demande-immobilier.html"
-                    class="immo-request-button"
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
                 >
 
-                    <i class="fa-solid fa-paper-plane"></i>
+                <h3>
+                    CAMU IMMO
+                </h3>
 
-                    Laisser une demande
+                <p>
+                    L'espace immobilier de
+                    CAMU SERVICES.
+                </p>
 
+            </div>
+
+
+            <div>
+
+                <h4>
+                    CAMU IMMO
+                </h4>
+
+                <a href="#vente">
+                    Vente
                 </a>
 
+                <a href="#location">
+                    Location
+                </a>
 
-            </div>
+                <a href="#estimation">
+                    Estimation
+                </a>
 
-        </section>
-
-
-
-        <!-- =================================================
-             FOOTER
-             ================================================= -->
-
-        <footer class="footer">
-
-
-            <div class="footer-content">
-
-
-                <div class="footer-brand">
-
-                    <a
-                        href="index.html"
-                        class="logo-image footer-logo"
-                    >
-
-                        <img
-                            src="assets/logo/camu-services-logo.png"
-                            alt="CAMU SERVICES"
-                        >
-
-                    </a>
-
-
-                    <p>
-                        CAMU IMMO — Une solution immobilière
-                        de CAMU SERVICES.
-                    </p>
-
-                </div>
-
-
-                <div class="footer-links">
-
-                    <a href="index.html">
-                        Accueil
-                    </a>
-
-                    <a href="immobilier.html">
-                        Espace Immobilier
-                    </a>
-
-                    <a href="a-propos.html">
-                        À propos
-                    </a>
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-                    <a href="conditions.html">
-                        Conditions
-                    </a>
-
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
-
-                </div>
+                <a href="#agents-section">
+                    Agents immobiliers
+                </a>
 
             </div>
 
 
-            <div class="footer-bottom">
+            <div>
 
-                © 2026 CAMU SERVICES — CAMU IMMO.
+                <h4>
+                    Informations
+                </h4>
+
+                <a href="#actualites-section">
+                    Actualités
+                </a>
+
+                <a href="demande-immobilier.html">
+                    Demande à la Direction
+                </a>
+
+                <a href="index.html">
+                    CAMU SERVICES
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="immo-footer-bottom">
+
+            <span>
+                © 2026 CAMU SERVICES — CAMU IMMO
+            </span>
+
+            <span>
                 Tous droits réservés.
+            </span>
 
-            </div>
+        </div>
 
+    </div>
 
-        </footer>
+</footer>
 
 
-    </main>
 
-</div>
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
-
-
-<!-- =====================================================
-     JAVASCRIPT MENU
-     ===================================================== -->
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const sidebar =
-        document.getElementById("sidebar");
-
-    const menuButton =
-        document.getElementById("menuButton");
-
-    const sidebarClose =
-        document.getElementById("sidebarClose");
-
-    const sidebarOverlay =
-        document.getElementById("sidebarOverlay");
-
-
-    function openSidebar() {
-
-        sidebar.classList.add("open");
-
-        sidebarOverlay.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-    }
-
-
-    function closeSidebar() {
-
-        sidebar.classList.remove("open");
-
-        sidebarOverlay.classList.remove("active");
-
-        document.body.style.overflow = "";
-
-    }
-
-
-    if (menuButton) {
-
-        menuButton.addEventListener(
-            "click",
-            openSidebar
-        );
-
-    }
-
-
-    if (sidebarClose) {
-
-        sidebarClose.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-    }
-
-
-    if (sidebarOverlay) {
-
-        sidebarOverlay.addEventListener(
-            "click",
-            closeSidebar
-        );
-
-    }
-
-
-    document
-        .querySelectorAll(".sidebar .nav-item")
-        .forEach(function (item) {
-
-            item.addEventListener(
-                "click",
-                closeSidebar
-            );
-
-        });
-
-
-    /*
-     * Recherche rapide
-     */
-
-    const searchForm =
-        document.getElementById("immoSearchForm");
-
-    const searchInput =
-        document.getElementById("immoSearch");
-
-
-    if (searchForm) {
-
-        searchForm.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                const keyword =
-                    searchInput.value.trim();
-
-                if (keyword) {
-
-                    window.location.href =
-                        "recherche.html?search=" +
-                        encodeURIComponent(keyword) +
-                        "&category=Immobilier";
-
-                } else {
-
-                    window.location.href =
-                        "recherche.html?category=Immobilier";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /*
-     * Boutons types de biens
-     */
-
-    document
-        .querySelectorAll(".immo-type")
-        .forEach(function (button) {
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    const type =
-                        button.dataset.type;
-
-                    window.location.href =
-                        "recherche.html?category=Immobilier&keyword=" +
-                        encodeURIComponent(type);
-
-                }
-            );
-
-        });
-
-});
-
-</script>
-
-
-<!-- =====================================================
-     FIREBASE / IMMOBILIER
-     ===================================================== -->
-
-<script
-    type="module"
-    src="js/immobilier.js">
-</script>
+<script type="module" src="js/immobilier.js"></script>
 
 
 </body>
+
 </html>
