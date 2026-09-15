@@ -1,7 +1,7 @@
 // =========================================================
 // CAMU SERVICES — INDEX.JS
-// Accueil :
-// - Annonces
+// Accueil
+// - Annonces Firestore
 // - Favoris
 // - Catégories dynamiques
 // - Villes dynamiques
@@ -28,24 +28,15 @@ import {
 // ELEMENTS HTML
 // =========================================================
 
-const recentAds =
-    document.getElementById("recentAds");
-
-const citySelect =
-    document.getElementById("citySelect");
-
-const homeCategories =
-    document.getElementById("homeCategories");
-
-const homeSearchForm =
-    document.getElementById("homeSearchForm");
-
-const searchKeyword =
-    document.getElementById("searchKeyword");
+const recentAds = document.getElementById("recentAds");
+const citySelect = document.getElementById("citySelect");
+const homeCategories = document.getElementById("homeCategories");
+const homeSearchForm = document.getElementById("homeSearchForm");
+const searchKeyword = document.getElementById("searchKeyword");
 
 
 // =========================================================
-// UTILISATEUR CONNECTE
+// UTILISATEUR
 // =========================================================
 
 let currentUser = null;
@@ -55,21 +46,20 @@ let currentUser = null;
 // AUTHENTIFICATION
 // =========================================================
 
-onAuthStateChanged(
-    auth,
-    user => {
+onAuthStateChanged(auth, user => {
 
-        currentUser = user;
+    currentUser = user;
 
-        console.log(
-            "INDEX — utilisateur :",
-            user
-                ? user.email
-                : "non connecté"
-        );
+    console.log(
+        "INDEX — utilisateur :",
+        user ? user.email : "non connecté"
+    );
 
+    if (currentUser) {
+        restoreFavoriteButtons();
     }
-);
+
+});
 
 
 // =========================================================
@@ -98,153 +88,101 @@ function escapeHtml(value) {
 // FORMAT PRIX
 // =========================================================
 
-function formatPrice(
-    price,
-    currency = "USD"
-) {
+function formatPrice(price, currency = "USD") {
 
     if (
         price === null ||
         price === undefined ||
         price === ""
     ) {
-
         return "Prix à discuter";
-
     }
 
-
-    const number =
-        Number(price);
-
+    const number = Number(price);
 
     if (Number.isNaN(number)) {
-
         return escapeHtml(price);
-
     }
 
-
-    const formatted =
-        new Intl.NumberFormat(
-            "fr-FR",
-            {
-                maximumFractionDigits: 0
-            }
-        ).format(number);
-
+    const formatted = new Intl.NumberFormat(
+        "fr-FR",
+        {
+            maximumFractionDigits: 0
+        }
+    ).format(number);
 
     if (
         currency === "USD" ||
         currency === "$"
     ) {
-
         return `${formatted} $`;
-
     }
-
 
     if (
         currency === "CDF" ||
         currency === "FC"
     ) {
-
         return `${formatted} FC`;
-
     }
-
 
     return `${formatted} ${escapeHtml(currency)}`;
 }
 
 
 // =========================================================
-// IMAGE D'UNE ANNONCE
+// IMAGE ANNONCE
 // =========================================================
 
 function getImage(ad) {
 
     if (
         Array.isArray(ad.images) &&
-        ad.images.length > 0
+        ad.images.length > 0 &&
+        ad.images[0]
     ) {
-
-        return (
-            ad.images[0] ||
-            "logo.png"
-        );
-
+        return ad.images[0];
     }
 
-
-    if (
-        ad.imageURL
-    ) {
-
+    if (ad.imageURL) {
         return ad.imageURL;
-
     }
 
-
-    if (
-        ad.imageUrl
-    ) {
-
+    if (ad.imageUrl) {
         return ad.imageUrl;
-
     }
 
-
-    if (
-        ad.image
-    ) {
-
+    if (ad.image) {
         return ad.image;
-
     }
 
-
-    return "logo.png";
+    return "assets/logo/camu-services-logo.png";
 }
 
 
 // =========================================================
-// NOM DE CATEGORIE
+// CATEGORIE
 // =========================================================
 
-async function getCategoryName(
-    categoryId
-) {
+async function getCategoryName(categoryId) {
 
     if (!categoryId) {
-
         return "Autres";
-
     }
-
 
     try {
 
-        const categoryRef =
-            doc(
-                db,
-                "categories",
-                categoryId
-            );
+        const categoryRef = doc(
+            db,
+            "categories",
+            categoryId
+        );
 
+        const snapshot = await getDoc(categoryRef);
 
-        const categorySnapshot =
-            await getDoc(
-                categoryRef
-            );
-
-
-        if (
-            categorySnapshot.exists()
-        ) {
+        if (snapshot.exists()) {
 
             return (
-                categorySnapshot.data().name ||
+                snapshot.data().name ||
                 categoryId
             );
 
@@ -260,8 +198,6 @@ async function getCategoryName(
 
     }
 
-
-    // Si l'annonce contient déjà un nom
     return categoryId;
 }
 
@@ -273,103 +209,58 @@ async function getCategoryName(
 async function loadCities() {
 
     if (!citySelect) {
-
-        console.warn(
-            "INDEX : #citySelect introuvable."
-        );
-
         return;
-
     }
-
 
     try {
 
-        console.log(
-            "INDEX : chargement des villes..."
+        const snapshot = await getDocs(
+            collection(db, "villes")
         );
-
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "villes"
-                )
-            );
-
 
         const cities = [];
 
+        snapshot.forEach(document => {
 
-        snapshot.forEach(
-            document => {
+            const data = document.data();
 
-                const data =
-                    document.data();
+            if (data.active === true) {
 
+                cities.push({
 
-                // Seulement les villes actives
-                if (
-                    data.active === true
-                ) {
+                    id: document.id,
 
-                    cities.push({
+                    name: data.name || "",
 
-                        id:
-                            document.id,
+                    province: data.province || "",
 
-                        name:
-                            data.name ||
-                            "",
+                    order:
+                        Number(data.order) || 999
 
-                        province:
-                            data.province ||
-                            "",
-
-                        order:
-                            Number(data.order) ||
-                            999
-
-                    });
-
-                }
+                });
 
             }
-        );
+
+        });
 
 
-        // Trier
-        cities.sort(
-            (a, b) => {
+        cities.sort((a, b) => {
 
-                if (
-                    a.order !==
-                    b.order
-                ) {
-
-                    return (
-                        a.order -
-                        b.order
-                    );
-
-                }
-
-
-                return a.name.localeCompare(
-                    b.name,
-                    "fr",
-                    {
-                        sensitivity:
-                            "base"
-                    }
-                );
-
+            if (a.order !== b.order) {
+                return a.order - b.order;
             }
-        );
+
+            return a.name.localeCompare(
+                b.name,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            );
+
+        });
 
 
-        // Réinitialiser
         citySelect.innerHTML = `
             <option value="">
                 Toutes les villes
@@ -377,45 +268,31 @@ async function loadCities() {
         `;
 
 
-        // Ajouter les villes
-        cities.forEach(
-            city => {
+        cities.forEach(city => {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+            const option =
+                document.createElement("option");
 
+            option.value = city.id;
 
-                option.value =
-                    city.id;
+            option.textContent = city.name;
 
+            citySelect.appendChild(option);
 
-                option.textContent =
-                    city.name;
-
-
-                citySelect.appendChild(
-                    option
-                );
-
-            }
-        );
+        });
 
 
         console.log(
-            "INDEX : villes chargées :",
+            "INDEX — villes chargées :",
             cities.length
         );
-
 
     } catch (error) {
 
         console.error(
-            "INDEX : erreur chargement villes :",
+            "INDEX — erreur villes :",
             error
         );
-
 
         citySelect.innerHTML = `
             <option value="">
@@ -434,114 +311,70 @@ async function loadCities() {
 async function loadCategories() {
 
     if (!homeCategories) {
-
-        console.warn(
-            "INDEX : #homeCategories introuvable."
-        );
-
         return;
-
     }
-
 
     try {
 
-        console.log(
-            "INDEX : chargement des catégories..."
+        const snapshot = await getDocs(
+            collection(db, "categories")
         );
-
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "categories"
-                )
-            );
-
 
         const categories = [];
 
+        snapshot.forEach(document => {
 
-        snapshot.forEach(
-            document => {
+            const data = document.data();
 
-                const data =
-                    document.data();
+            if (data.active === true) {
 
+                categories.push({
 
-                // Seulement les catégories actives
-                if (
-                    data.active === true
-                ) {
+                    id: document.id,
 
-                    categories.push({
+                    name:
+                        data.name ||
+                        "Catégorie",
 
-                        id:
-                            document.id,
+                    icon:
+                        data.icon ||
+                        "fa-solid fa-layer-group",
 
-                        name:
-                            data.name ||
-                            "Catégorie",
+                    description:
+                        data.description ||
+                        "Découvrez nos annonces",
 
-                        icon:
-                            data.icon ||
-                            "fa-solid fa-layer-group",
+                    order:
+                        Number(data.order) || 999
 
-                        description:
-                            data.description ||
-                            "Découvrez nos annonces",
-
-                        order:
-                            Number(data.order) ||
-                            999
-
-                    });
-
-                }
+                });
 
             }
-        );
+
+        });
 
 
-        // Trier
-        categories.sort(
-            (a, b) => {
+        categories.sort((a, b) => {
 
-                if (
-                    a.order !==
-                    b.order
-                ) {
-
-                    return (
-                        a.order -
-                        b.order
-                    );
-
-                }
-
-
-                return a.name.localeCompare(
-                    b.name,
-                    "fr",
-                    {
-                        sensitivity:
-                            "base"
-                    }
-                );
-
+            if (a.order !== b.order) {
+                return a.order - b.order;
             }
-        );
+
+            return a.name.localeCompare(
+                b.name,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            );
+
+        });
 
 
-        // Vider
         homeCategories.innerHTML = "";
 
 
-        // Aucune catégorie
-        if (
-            categories.length === 0
-        ) {
+        if (categories.length === 0) {
 
             homeCategories.innerHTML = `
                 <div class="category-empty">
@@ -556,111 +389,57 @@ async function loadCategories() {
             `;
 
             return;
-
         }
 
 
-        // Créer les cartes
-        categories.forEach(
-            category => {
+        categories.forEach(category => {
 
-                const card =
-                    document.createElement(
-                        "a"
-                    );
+            const card =
+                document.createElement("a");
 
+            card.className = "category-card";
 
-                card.className =
-                    "category-card";
+            card.href =
+                `recherche.html?category=${encodeURIComponent(category.id)}`;
 
 
-                card.href =
-                    `recherche.html?category=${encodeURIComponent(category.id)}`;
+            card.innerHTML = `
+
+                <div class="category-icon">
+
+                    <i class="${escapeHtml(category.icon)}"></i>
+
+                </div>
 
 
-                // Icône
-                const icon =
-                    document.createElement(
-                        "div"
-                    );
+                <h3>
+                    ${escapeHtml(category.name)}
+                </h3>
 
 
-                icon.className =
-                    "category-icon";
+                <p>
+                    ${escapeHtml(category.description)}
+                </p>
+
+            `;
 
 
-                const iconElement =
-                    document.createElement(
-                        "i"
-                    );
+            homeCategories.appendChild(card);
 
-
-                iconElement.className =
-                    category.icon;
-
-
-                icon.appendChild(
-                    iconElement
-                );
-
-
-                // Nom
-                const title =
-                    document.createElement(
-                        "h3"
-                    );
-
-
-                title.textContent =
-                    category.name;
-
-
-                // Description
-                const description =
-                    document.createElement(
-                        "p"
-                    );
-
-
-                description.textContent =
-                    category.description;
-
-
-                // Assemblage
-                card.appendChild(
-                    icon
-                );
-
-                card.appendChild(
-                    title
-                );
-
-                card.appendChild(
-                    description
-                );
-
-
-                homeCategories.appendChild(
-                    card
-                );
-
-            }
-        );
+        });
 
 
         console.log(
-            "INDEX : catégories chargées :",
+            "INDEX — catégories chargées :",
             categories.length
         );
-
 
     } catch (error) {
 
         console.error(
-            "INDEX : erreur chargement catégories :",
+            "INDEX — erreur catégories :",
             error
         );
-
 
         homeCategories.innerHTML = `
             <div class="category-empty">
@@ -679,28 +458,22 @@ async function loadCategories() {
 
 
 // =========================================================
-// VERIFIER SI UNE ANNONCE EST FAVORITE
+// VERIFIER FAVORI
 // =========================================================
 
-async function checkFavorite(
-    listingId
-) {
+async function checkFavorite(listingId) {
 
     if (
         !currentUser ||
         !listingId
     ) {
-
         return false;
-
     }
-
 
     try {
 
         const favoriteId =
             `${currentUser.uid}_${listingId}`;
-
 
         const favoriteRef =
             doc(
@@ -709,12 +482,8 @@ async function checkFavorite(
                 favoriteId
             );
 
-
         const snapshot =
-            await getDoc(
-                favoriteRef
-            );
-
+            await getDoc(favoriteRef);
 
         return snapshot.exists();
 
@@ -725,15 +494,13 @@ async function checkFavorite(
             error
         );
 
-
         return false;
-
     }
 }
 
 
 // =========================================================
-// METTRE A JOUR LE BOUTON FAVORI
+// BOUTON FAVORI
 // =========================================================
 
 function updateFavoriteButton(
@@ -741,28 +508,23 @@ function updateFavoriteButton(
     isFavorite
 ) {
 
-    if (!button) return;
-
+    if (!button) {
+        return;
+    }
 
     const icon =
-        button.querySelector(
-            "i"
-        );
+        button.querySelector("i");
 
-
-    if (!icon) return;
-
+    if (!icon) {
+        return;
+    }
 
     if (isFavorite) {
 
         icon.className =
             "fa-solid fa-heart";
 
-
-        button.classList.add(
-            "active"
-        );
-
+        button.classList.add("active");
 
         button.setAttribute(
             "aria-label",
@@ -774,11 +536,7 @@ function updateFavoriteButton(
         icon.className =
             "fa-regular fa-heart";
 
-
-        button.classList.remove(
-            "active"
-        );
-
+        button.classList.remove("active");
 
         button.setAttribute(
             "aria-label",
@@ -790,7 +548,7 @@ function updateFavoriteButton(
 
 
 // =========================================================
-// AFFICHER UN MESSAGE
+// MESSAGE
 // =========================================================
 
 function showMessage(
@@ -807,12 +565,10 @@ function showMessage(
 
 
 // =========================================================
-// AJOUTER / RETIRER DES FAVORIS
+// AJOUTER / RETIRER FAVORI
 // =========================================================
 
-async function toggleFavorite(
-    button
-) {
+async function toggleFavorite(button) {
 
     if (!currentUser) {
 
@@ -821,24 +577,18 @@ async function toggleFavorite(
             "info"
         );
 
-
         window.location.href =
             "connexion.html";
 
-
         return;
-
     }
 
 
     const listingId =
         button.dataset.listingId;
 
-
     if (!listingId) {
-
         return;
-
     }
 
 
@@ -847,7 +597,6 @@ async function toggleFavorite(
         const favoriteId =
             `${currentUser.uid}_${listingId}`;
 
-
         const favoriteRef =
             doc(
                 db,
@@ -855,27 +604,20 @@ async function toggleFavorite(
                 favoriteId
             );
 
-
         const snapshot =
-            await getDoc(
-                favoriteRef
-            );
+            await getDoc(favoriteRef);
 
 
-        if (
-            snapshot.exists()
-        ) {
+        if (snapshot.exists()) {
 
             await deleteDoc(
                 favoriteRef
             );
 
-
             updateFavoriteButton(
                 button,
                 false
             );
-
 
         } else {
 
@@ -893,22 +635,18 @@ async function toggleFavorite(
                 }
             );
 
-
             updateFavoriteButton(
                 button,
                 true
             );
-
         }
-
 
     } catch (error) {
 
         console.error(
-            "Erreur Firestore favoris :",
+            "Erreur favoris :",
             error
         );
-
 
         showMessage(
             "Impossible de modifier les favoris.",
@@ -920,190 +658,163 @@ async function toggleFavorite(
 
 
 // =========================================================
-// RESTAURER LES FAVORIS
+// RESTAURER FAVORIS
 // =========================================================
 
 async function restoreFavoriteButtons() {
 
     if (!currentUser) {
-
         return;
-
     }
-
 
     const buttons =
         document.querySelectorAll(
             ".favorite-button"
         );
 
-
-    for (
-        const button
-        of buttons
-    ) {
+    for (const button of buttons) {
 
         const listingId =
             button.dataset.listingId;
 
-
         if (!listingId) {
-
             continue;
-
         }
 
-
         const isFavorite =
-            await checkFavorite(
-                listingId
-            );
-
+            await checkFavorite(listingId);
 
         updateFavoriteButton(
             button,
             isFavorite
         );
-
     }
 }
 
 
 // =========================================================
 // CHARGER LES ANNONCES
+// COLLECTION : annonces
 // =========================================================
 
 async function loadRecentAds() {
 
     if (!recentAds) {
-
-        console.warn(
-            "CAMU SERVICES : #recentAds introuvable."
-        );
-
         return;
-
     }
-
 
     try {
 
-        // -------------------------------------------------
-        // CHARGEMENT
-        // -------------------------------------------------
-
         recentAds.innerHTML = `
-            <div class="account-empty">
+            <div class="loading-state">
 
-                <div class="account-empty-icon">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                </div>
+                <i class="fa-solid fa-spinner fa-spin"></i>
 
-                <h3>
+                <span>
                     Chargement des annonces...
-                </h3>
+                </span>
 
             </div>
         `;
 
 
-        // -------------------------------------------------
-        // RECUPERATION DES ANNONCES
-        // -------------------------------------------------
-
-        const annoncesRef =
-            collection(
-                db,
-                "annonces"
-            );
-
+        // =================================================
+        // FIRESTORE
+        // =================================================
 
         const snapshot =
             await getDocs(
-                annoncesRef
+                collection(
+                    db,
+                    "annonces"
+                )
             );
 
 
-        // -------------------------------------------------
+        // =================================================
         // TRANSFORMATION
-        // -------------------------------------------------
+        // =================================================
 
         const ads =
-            snapshot.docs.map(
-                document => ({
+            snapshot.docs.map(document => ({
 
-                    id:
-                        document.id,
+                id: document.id,
 
-                    ...document.data()
+                ...document.data()
 
-                })
-            );
+            }));
 
 
-        // -------------------------------------------------
+        // =================================================
+        // FILTRER LES ANNONCES ACTIVES
+        // =================================================
+
+        const activeAds =
+            ads.filter(ad => {
+
+                if (
+                    ad.status === undefined ||
+                    ad.status === null ||
+                    ad.status === ""
+                ) {
+                    return true;
+                }
+
+                return ad.status === "active";
+
+            });
+
+
+        // =================================================
         // TRI PAR DATE
-        // -------------------------------------------------
+        // =================================================
 
-        ads.sort(
-            (a, b) => {
+        activeAds.sort((a, b) => {
 
-                const dateA =
-                    a.createdAt &&
-                    typeof a.createdAt.toMillis ===
-                    "function"
+            const dateA =
+                a.createdAt &&
+                typeof a.createdAt.toMillis === "function"
+                    ? a.createdAt.toMillis()
+                    : 0;
 
-                        ? a.createdAt.toMillis()
+            const dateB =
+                b.createdAt &&
+                typeof b.createdAt.toMillis === "function"
+                    ? b.createdAt.toMillis()
+                    : 0;
 
-                        : 0;
+            return dateB - dateA;
 
-
-                const dateB =
-                    b.createdAt &&
-                    typeof b.createdAt.toMillis ===
-                    "function"
-
-                        ? b.createdAt.toMillis()
-
-                        : 0;
+        });
 
 
-                return dateB - dateA;
-
-            }
-        );
-
-
-        // -------------------------------------------------
-        // 8 DERNIERES
-        // -------------------------------------------------
+        // =================================================
+        // 8 ANNONCES RECENTES
+        // =================================================
 
         const recent =
-            ads.slice(
-                0,
-                8
-            );
+            activeAds.slice(0, 8);
 
 
         console.log(
-            "CAMU SERVICES : annonces trouvées :",
-            ads.length
+            "CAMU SERVICES — annonces trouvées :",
+            activeAds.length
         );
 
 
-        // -------------------------------------------------
+        // =================================================
         // AUCUNE ANNONCE
-        // -------------------------------------------------
+        // =================================================
 
-        if (
-            recent.length === 0
-        ) {
+        if (recent.length === 0) {
 
             recentAds.innerHTML = `
-                <div class="account-empty">
+                <div class="empty-state">
 
-                    <div class="account-empty-icon">
+                    <div class="empty-state-icon">
+
                         <i class="fa-solid fa-box-open"></i>
+
                     </div>
 
                     <h3>
@@ -1118,79 +829,64 @@ async function loadRecentAds() {
                 </div>
             `;
 
-
             return;
-
         }
 
 
-        // -------------------------------------------------
+        // =================================================
         // VIDER
-        // -------------------------------------------------
+        // =================================================
 
         recentAds.innerHTML = "";
 
 
-        // -------------------------------------------------
+        // =================================================
         // CREER LES CARTES
-        // -------------------------------------------------
+        // =================================================
 
-        for (
-            const ad
-            of recent
-        ) {
+        for (const ad of recent) {
 
             const image =
                 getImage(ad);
-
 
             const title =
                 ad.title ||
                 "Annonce sans titre";
 
-
             const city =
                 ad.city ||
                 "Ville non précisée";
-
 
             const category =
                 await getCategoryName(
                     ad.category
                 );
 
-
             const price =
                 formatPrice(
                     ad.price,
-                    ad.currency ||
-                    "USD"
+                    ad.currency || "USD"
                 );
 
-
-            // -------------------------------------------------
-            // CARTE
-            // -------------------------------------------------
 
             const card =
-                document.createElement(
-                    "article"
-                );
-
+                document.createElement("article");
 
             card.className =
                 "ad-card";
 
 
             card.innerHTML = `
+
                 <div class="ad-image">
 
                     <img
                         src="${escapeHtml(image)}"
                         alt="${escapeHtml(title)}"
                         loading="lazy"
-                        onerror="this.src='logo.png'"
+                        onerror="this.src='assets/logo/camu-services-logo.png'"
                     >
+
 
                     <button
                         type="button"
@@ -1198,10 +894,9 @@ async function loadRecentAds() {
                         aria-label="Ajouter aux favoris"
                         data-listing-id="${escapeHtml(ad.id)}"
                     >
-
                         <i class="fa-regular fa-heart"></i>
-
                     </button>
+
 
                     <span class="ad-category">
                         ${escapeHtml(category)}
@@ -1212,7 +907,7 @@ async function loadRecentAds() {
 
                 <div class="ad-content">
 
-                    <h3>
+                    <h3 class="ad-title">
                         ${escapeHtml(title)}
                     </h3>
 
@@ -1221,24 +916,25 @@ async function loadRecentAds() {
 
                         <i class="fa-solid fa-location-dot"></i>
 
-                        ${escapeHtml(city)}
+                        <span>
+                            ${escapeHtml(city)}
+                        </span>
 
                     </div>
 
 
                     <div class="ad-price">
-
                         ${price}
-
                     </div>
 
                 </div>
+
             `;
 
 
-            // -------------------------------------------------
-            // CLIC SUR LA CARTE
-            // -------------------------------------------------
+            // =================================================
+            // OUVRIR ANNONCE
+            // =================================================
 
             card.addEventListener(
                 "click",
@@ -1249,11 +945,8 @@ async function loadRecentAds() {
                             ".favorite-button"
                         )
                     ) {
-
                         return;
-
                     }
-
 
                     window.location.href =
                         `explorer.html?id=${encodeURIComponent(ad.id)}`;
@@ -1262,15 +955,14 @@ async function loadRecentAds() {
             );
 
 
-            // -------------------------------------------------
-            // BOUTON FAVORI
-            // -------------------------------------------------
+            // =================================================
+            // FAVORI
+            // =================================================
 
             const favoriteButton =
                 card.querySelector(
                     ".favorite-button"
                 );
-
 
             if (favoriteButton) {
 
@@ -1282,7 +974,6 @@ async function loadRecentAds() {
 
                         event.stopPropagation();
 
-
                         await toggleFavorite(
                             favoriteButton
                         );
@@ -1293,20 +984,14 @@ async function loadRecentAds() {
             }
 
 
-            // -------------------------------------------------
-            // AJOUTER LA CARTE
-            // -------------------------------------------------
-
-            recentAds.appendChild(
-                card
-            );
+            recentAds.appendChild(card);
 
         }
 
 
-        // -------------------------------------------------
-        // RESTAURER FAVORIS
-        // -------------------------------------------------
+        // =================================================
+        // FAVORIS
+        // =================================================
 
         await restoreFavoriteButtons();
 
@@ -1314,15 +999,14 @@ async function loadRecentAds() {
     } catch (error) {
 
         console.error(
-            "CAMU SERVICES : erreur chargement annonces :",
+            "CAMU SERVICES — erreur annonces :",
             error
         );
 
-
         recentAds.innerHTML = `
-            <div class="account-empty">
+            <div class="empty-state">
 
-                <div class="account-empty-icon">
+                <div class="empty-state-icon">
 
                     <i class="fa-solid fa-triangle-exclamation"></i>
 
@@ -1345,7 +1029,7 @@ async function loadRecentAds() {
 
 
 // =========================================================
-// RECHERCHE DEPUIS L'ACCUEIL
+// RECHERCHE ACCUEIL
 // =========================================================
 
 if (homeSearchForm) {
@@ -1415,13 +1099,9 @@ if (homeSearchForm) {
 async function initHomePage() {
 
     console.log(
-        "CAMU SERVICES — initialisation de l'accueil..."
+        "CAMU SERVICES — initialisation..."
     );
 
-
-    // Les trois chargements sont indépendants.
-    // Si les catégories ont un problème,
-    // les annonces continuent quand même.
 
     await Promise.allSettled([
 
