@@ -1,119 +1,70 @@
 /* =========================================================
-   CAMU IMMO
-   IMMOBILIER.CSS
-   DESIGN COMPLET
+   CAMU IMMO — IMMOBILIER.CSS
+   Compatible avec immobilier.html
    PC + TABLETTE + MOBILE
 ========================================================= */
-
 
 /* =========================================================
    VARIABLES
 ========================================================= */
 
 :root {
-
-    --immo-blue: #0757a0;
-    --immo-blue-dark: #043b70;
-    --immo-blue-light: #eaf4fc;
-
-    --immo-green: #2fa66a;
-    --immo-green-dark: #21804f;
-    --immo-green-light: #edf9f2;
+    --immo-blue: #063b78;
+    --immo-blue-dark: #042b59;
+    --immo-blue-light: #0d5ca8;
+    --immo-green: #28a745;
+    --immo-green-dark: #198754;
 
     --immo-white: #ffffff;
-    --immo-black: #17202a;
-    --immo-text: #4d5965;
-    --immo-muted: #7b8794;
+    --immo-black: #111827;
+    --immo-text: #374151;
+    --immo-muted: #6b7280;
 
-    --immo-border: #e4e9ee;
-    --immo-background: #f6f8fa;
+    --immo-bg: #f5f7fa;
+    --immo-light: #eef4f8;
+    --immo-border: #e5e7eb;
 
-    --immo-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.07);
+    --immo-radius: 14px;
+    --immo-radius-small: 10px;
 
-    --immo-radius: 16px;
+    --immo-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --immo-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.13);
 
+    --immo-container: 1200px;
 }
 
 
 /* =========================================================
-   RESET
+   RESET LOCAL
 ========================================================= */
 
-* {
-
+.immo-main,
+.immo-header,
+.immo-footer {
     box-sizing: border-box;
-
-    margin: 0;
-
-    padding: 0;
-
 }
 
-
-html {
-
-    scroll-behavior: smooth;
-
+.immo-main *,
+.immo-header *,
+.immo-footer * {
+    box-sizing: border-box;
 }
 
-
-body {
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-        var(--immo-background);
-
-    color:
-        var(--immo-black);
-
-    line-height: 1.6;
-
+.immo-main img,
+.immo-header img,
+.immo-footer img {
+    max-width: 100%;
 }
 
-
-a {
-
+.immo-main a,
+.immo-header a,
+.immo-footer a {
     text-decoration: none;
-
-    color: inherit;
-
 }
-
-
-button,
-input,
-select {
-
-    font: inherit;
-
-}
-
-
-button {
-
-    cursor: pointer;
-
-}
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
 
 .immo-container {
-
-    width: min(
-        1180px,
-        calc(100% - 40px)
-    );
-
+    width: min(100% - 40px, var(--immo-container));
     margin: 0 auto;
-
 }
 
 
@@ -122,42 +73,28 @@ button {
 ========================================================= */
 
 .immo-header {
-
     position: sticky;
-
     top: 0;
-
     z-index: 1000;
 
-    background:
-        rgba(255, 255, 255, 0.97);
+    width: 100%;
+    background: rgba(255, 255, 255, 0.97);
 
-    border-bottom:
-        1px solid var(--immo-border);
+    border-bottom: 1px solid var(--immo-border);
 
-    box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 18px rgba(0, 0, 0, 0.06);
 
+    backdrop-filter: blur(12px);
 }
 
-
 .immo-header-inner {
-
-    width: min(
-        1400px,
-        calc(100% - 40px)
-    );
-
+    width: min(100% - 40px, 1400px);
     min-height: 82px;
-
-    margin: auto;
+    margin: 0 auto;
 
     display: flex;
-
     align-items: center;
-
-    gap: 24px;
-
+    gap: 25px;
 }
 
 
@@ -166,223 +103,224 @@ button {
 ========================================================= */
 
 .immo-logo {
+    flex: 0 0 auto;
 
-    width: 145px;
-
-    flex-shrink: 0;
+    width: 150px;
+    height: 62px;
 
     display: flex;
-
     align-items: center;
-
+    justify-content: center;
 }
 
-
 .immo-logo img {
+    width: 145px;
+    height: auto;
 
     display: block;
 
-    width: 100%;
-
-    height: auto;
-
+    object-fit: contain;
 }
 
 
 /* =========================================================
-   BRAND
+   NOM CAMU IMMO
 ========================================================= */
 
 .immo-brand-name {
-
     display: flex;
-
-    align-items: baseline;
-
+    align-items: center;
     gap: 5px;
-
-    font-size: 22px;
 
     white-space: nowrap;
 
+    font-size: 22px;
+    line-height: 1;
 }
-
 
 .immo-brand-name span {
-
-    color:
-        var(--immo-blue);
-
+    color: var(--immo-blue);
     font-weight: 800;
-
 }
 
-
 .immo-brand-name strong {
-
-    color:
-        var(--immo-green);
-
+    color: var(--immo-green);
     font-weight: 800;
-
 }
 
 
 /* =========================================================
-   NAVIGATION
+   MENU DESKTOP
 ========================================================= */
 
 .immo-nav {
-
-    margin-left: auto;
+    flex: 1;
 
     display: flex;
-
     align-items: center;
+    justify-content: center;
 
-    gap: 4px;
-
+    gap: 5px;
 }
 
-
 .immo-nav a {
+    position: relative;
 
-    display: flex;
-
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
 
     gap: 8px;
 
-    padding:
-        10px 13px;
+    min-height: 44px;
+    padding: 8px 13px;
 
-    border-radius:
-        9px;
+    color: var(--immo-text);
 
-    color:
-        var(--immo-text);
+    border-radius: 9px;
 
     font-size: 14px;
-
     font-weight: 600;
 
     transition:
-        0.2s ease;
-
+        color 0.2s ease,
+        background 0.2s ease;
 }
 
+.immo-nav a i {
+    font-size: 14px;
+}
 
 .immo-nav a:hover {
-
-    color:
-        var(--immo-blue);
-
-    background:
-        var(--immo-blue-light);
-
+    color: var(--immo-blue);
+    background: var(--immo-light);
 }
-
 
 .immo-nav a.active {
-
-    color:
-        var(--immo-blue);
-
-    background:
-        var(--immo-blue-light);
-
+    color: var(--immo-blue);
+    background: #edf5fc;
 }
 
+.immo-nav a.active::after {
+    content: "";
 
-.immo-nav i {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: 3px;
 
-    font-size: 14px;
+    height: 2px;
 
+    background: var(--immo-green);
+    border-radius: 5px;
 }
 
 
 /* =========================================================
-   HEADER ACTIONS
+   ACTIONS HEADER
 ========================================================= */
 
 .immo-header-actions {
-
     display: flex;
+    align-items: center;
+    gap: 10px;
 
+    flex: 0 0 auto;
+}
+
+.immo-back {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 8px 13px;
+
+    color: var(--immo-blue);
+
+    border: 1px solid #dbe7f2;
+    border-radius: 9px;
+
+    background: #f7fbff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.immo-back:hover {
+    color: var(--immo-white);
+    background: var(--immo-blue);
+    border-color: var(--immo-blue);
+}
+
+.immo-menu-button {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid var(--immo-border);
+    border-radius: 9px;
+
+    background: var(--immo-white);
+
+    color: var(--immo-blue);
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+.immo-mobile-nav {
+    display: none;
+
+    width: 100%;
+
+    padding: 10px 20px 18px;
+
+    background: var(--immo-white);
+
+    border-top: 1px solid var(--immo-border);
+}
+
+.immo-mobile-nav a {
+    display: flex;
     align-items: center;
 
     gap: 12px;
 
-}
+    width: 100%;
+    min-height: 48px;
 
+    padding: 10px 13px;
 
-.immo-back {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding:
-        10px 14px;
-
-    border:
-        1px solid var(--immo-border);
-
-    border-radius:
-        9px;
-
-    color:
-        var(--immo-blue);
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    transition:
-        0.2s ease;
-
-}
-
-
-.immo-back:hover {
-
-    background:
-        var(--immo-blue-light);
-
-}
-
-
-.immo-menu-button {
-
-    display: none;
-
-    width: 42px;
-
-    height: 42px;
-
-    border: none;
+    color: var(--immo-text);
 
     border-radius: 9px;
 
-    background:
-        var(--immo-blue);
-
-    color:
-        white;
-
+    font-size: 15px;
+    font-weight: 600;
 }
 
+.immo-mobile-nav a:hover,
+.immo-mobile-nav a.active {
+    color: var(--immo-blue);
+    background: var(--immo-light);
+}
 
-/* =========================================================
-   MOBILE NAV
-========================================================= */
-
-.immo-mobile-nav {
-
-    display: none;
-
+.immo-mobile-nav a i {
+    width: 22px;
+    text-align: center;
 }
 
 
@@ -391,565 +329,384 @@ button {
 ========================================================= */
 
 .immo-hero {
-
     position: relative;
 
-    min-height: 520px;
+    min-height: 560px;
 
     display: flex;
-
     align-items: center;
 
     overflow: hidden;
 
     background:
         linear-gradient(
-            120deg,
-            #043b70 0%,
-            #0757a0 55%,
-            #08704d 100%
+            115deg,
+            #062f60 0%,
+            #07518c 55%,
+            #0b6b79 100%
         );
-
 }
-
-
-.immo-hero::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 500px;
-
-    height: 500px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.15);
-
-    right: -120px;
-
-    top: -160px;
-
-}
-
-
-.immo-hero::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 380px;
-
-    height: 380px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-    left: -160px;
-
-    bottom: -200px;
-
-}
-
 
 .immo-hero-overlay {
-
     position: absolute;
-
     inset: 0;
 
+    pointer-events: none;
+
     background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.22),
-            transparent
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(40, 167, 69, 0.22),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(255, 255, 255, 0.08),
+            transparent 35%
         );
-
 }
-
 
 .immo-hero .immo-container {
-
     position: relative;
-
     z-index: 2;
-
 }
-
 
 .immo-hero-content {
+    max-width: 760px;
 
-    max-width: 720px;
-
-    padding:
-        75px 0;
-
-    color:
-        white;
-
+    padding: 80px 0;
 }
-
 
 .immo-hero-logo {
+    width: 190px;
+    height: auto;
 
-    width: 210px;
-
-    margin-bottom: 20px;
-
-    background:
-        white;
-
-    border-radius:
-        12px;
-
-    padding:
-        10px 18px;
-
-    display: inline-flex;
-
+    margin-bottom: 25px;
 }
-
 
 .immo-hero-logo img {
-
     width: 100%;
+    height: auto;
 
     display: block;
-
 }
-
 
 .immo-kicker {
+    display: inline-block;
 
-    display: block;
+    margin-bottom: 12px;
 
-    color:
-        #b9e8ce;
+    color: #a8e6b5;
 
     font-size: 13px;
-
     font-weight: 800;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom: 8px;
-
+    letter-spacing: 2px;
 }
 
-
 .immo-hero h1 {
+    margin: 0;
 
-    font-size:
-        clamp(40px, 6vw, 70px);
+    color: var(--immo-white);
 
+    font-size: clamp(38px, 5vw, 68px);
     line-height: 1.05;
 
     font-weight: 900;
-
-    letter-spacing:
-        -2px;
-
+    letter-spacing: -1.5px;
 }
-
 
 .immo-title-line {
-
     width: 80px;
+    height: 4px;
 
-    height: 5px;
+    margin: 24px 0;
+
+    background: var(--immo-green);
 
     border-radius: 10px;
-
-    background:
-        var(--immo-green);
-
-    margin:
-        24px 0;
-
 }
-
 
 .immo-hero-text {
-
     max-width: 650px;
 
-    font-size: 22px;
+    margin: 0 0 12px;
 
-    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.95);
 
+    font-size: 21px;
+    line-height: 1.55;
 }
-
 
 .immo-hero-text strong {
-
-    color:
-        #b9e8ce;
-
+    color: #8ee49e;
 }
-
 
 .immo-hero-subtext {
-
     max-width: 620px;
 
-    color:
-        rgba(255,255,255,0.82);
+    margin: 0 0 30px;
+
+    color: rgba(255, 255, 255, 0.78);
 
     font-size: 16px;
-
+    line-height: 1.7;
 }
 
-
 .immo-hero-buttons {
-
-    margin-top: 30px;
-
     display: flex;
-
+    align-items: center;
     flex-wrap: wrap;
 
     gap: 12px;
-
-}
-
-
-.immo-btn {
-
-    min-height: 48px;
-
-    padding:
-        0 20px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    border-radius:
-        9px;
-
-    font-weight: 800;
-
-    font-size: 14px;
-
-    transition:
-        0.2s ease;
-
-}
-
-
-.immo-btn-primary {
-
-    background:
-        var(--immo-green);
-
-    color:
-        white;
-
-}
-
-
-.immo-btn-primary:hover {
-
-    background:
-        var(--immo-green-dark);
-
-    transform:
-        translateY(-2px);
-
-}
-
-
-.immo-btn-outline {
-
-    border:
-        1px solid
-        rgba(255,255,255,0.5);
-
-    color:
-        white;
-
-}
-
-
-.immo-btn-outline:hover {
-
-    background:
-        rgba(255,255,255,0.1);
-
 }
 
 
 /* =========================================================
-   SEARCH
+   BOUTONS HERO
+========================================================= */
+
+.immo-btn {
+    min-height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 11px 20px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition: 0.2s ease;
+}
+
+.immo-btn-primary {
+    color: var(--immo-white);
+    background: var(--immo-green);
+}
+
+.immo-btn-primary:hover {
+    background: var(--immo-green-dark);
+    transform: translateY(-2px);
+}
+
+.immo-btn-outline {
+    color: var(--immo-white);
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.immo-btn-outline:hover {
+    background: var(--immo-white);
+    color: var(--immo-blue);
+}
+
+
+/* =========================================================
+   RECHERCHE
 ========================================================= */
 
 .immo-search-section {
-
-    margin-top:
-        -45px;
-
     position: relative;
-
     z-index: 10;
 
-}
+    margin-top: -50px;
 
+    padding-bottom: 30px;
+}
 
 .immo-search-box {
+    padding: 30px;
 
-    background:
-        white;
+    background: var(--immo-white);
 
-    border-radius:
-        var(--immo-radius);
+    border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius);
 
-    box-shadow:
-        var(--immo-shadow);
-
-    padding:
-        30px;
-
+    box-shadow: var(--immo-shadow);
 }
-
 
 .immo-search-heading {
-
     margin-bottom: 22px;
-
 }
 
-
 .immo-search-heading span,
-.immo-section-heading span,
+.immo-section-heading > span,
 .immo-listings-heading span,
 .immo-feature-content > span,
 .immo-request-text > span {
-
     display: block;
-
-    color:
-        var(--immo-green);
-
-    font-size: 12px;
-
-    font-weight: 900;
-
-    letter-spacing:
-        1.5px;
-
-    margin-bottom: 6px;
-
-}
-
-
-.immo-search-heading h2 {
-
-    font-size: 25px;
-
-    margin-bottom: 3px;
-
-}
-
-
-.immo-search-heading p {
-
-    color:
-        var(--immo-muted);
-
-}
-
-
-.immo-search-form {
-
-    display: grid;
-
-    grid-template-columns:
-        1.5fr 1fr 1fr auto;
-
-    gap: 14px;
-
-    align-items: end;
-
-}
-
-
-.immo-field label {
-
-    display: block;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    color:
-        var(--immo-text);
 
     margin-bottom: 7px;
 
+    color: var(--immo-green);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
 }
 
+.immo-search-heading h2 {
+    margin: 0 0 5px;
+
+    color: var(--immo-black);
+
+    font-size: 25px;
+}
+
+.immo-search-heading p {
+    margin: 0;
+
+    color: var(--immo-muted);
+
+    font-size: 14px;
+}
+
+.immo-search-form {
+    display: grid;
+
+    grid-template-columns:
+        minmax(200px, 1.5fr)
+        minmax(160px, 1fr)
+        minmax(160px, 1fr)
+        auto;
+
+    gap: 12px;
+
+    align-items: end;
+}
+
+.immo-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--immo-text);
+
+    font-size: 12px;
+    font-weight: 700;
+}
 
 .immo-input {
+    position: relative;
 
-    height: 50px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    border:
-        1px solid var(--immo-border);
-
-    border-radius:
-        9px;
-
-    padding:
-        0 14px;
-
-    background:
-        white;
-
+    width: 100%;
 }
 
+.immo-input > i {
+    position: absolute;
 
-.immo-input:focus-within {
+    left: 13px;
+    top: 50%;
 
-    border-color:
-        var(--immo-blue);
+    transform: translateY(-50%);
 
-    box-shadow:
-        0 0 0 3px
-        rgba(7,87,160,0.08);
+    color: var(--immo-blue);
 
+    pointer-events: none;
 }
-
-
-.immo-input i {
-
-    color:
-        var(--immo-blue);
-
-}
-
 
 .immo-input input,
 .immo-input select {
-
     width: 100%;
+    height: 48px;
 
-    height: 100%;
+    padding: 0 13px 0 40px;
 
-    border: none;
+    border: 1px solid #d8e0e8;
+    border-radius: 9px;
+
+    background: #fbfcfd;
+
+    color: var(--immo-black);
+
+    font: inherit;
+    font-size: 14px;
 
     outline: none;
 
-    background: transparent;
-
-    color:
-        var(--immo-black);
-
+    transition: 0.2s ease;
 }
 
+.immo-input input:focus,
+.immo-input select:focus {
+    border-color: var(--immo-blue-light);
+
+    background: var(--immo-white);
+
+    box-shadow: 0 0 0 3px rgba(13, 92, 168, 0.10);
+}
 
 .immo-search-btn {
+    height: 48px;
 
-    height: 50px;
+    padding: 0 20px;
 
-    padding:
-        0 22px;
-
-    border: none;
-
-    border-radius:
-        9px;
-
-    background:
-        var(--immo-blue);
-
-    color:
-        white;
-
-    display: flex;
-
+    display: inline-flex;
     align-items: center;
-
     justify-content: center;
 
-    gap: 9px;
+    gap: 8px;
 
+    border: 0;
+    border-radius: 9px;
+
+    background: var(--immo-blue);
+
+    color: var(--immo-white);
+
+    font: inherit;
+    font-size: 14px;
     font-weight: 800;
 
-    transition:
-        0.2s ease;
+    cursor: pointer;
 
+    transition: 0.2s ease;
 }
 
-
 .immo-search-btn:hover {
-
-    background:
-        var(--immo-blue-dark);
-
-    transform:
-        translateY(-1px);
-
+    background: var(--immo-blue-dark);
+    transform: translateY(-1px);
 }
 
 
 /* =========================================================
-   SECTIONS
+   SECTIONS GÉNÉRALES
 ========================================================= */
 
 .immo-section {
-
-    padding:
-        90px 0;
-
+    padding: 85px 0;
+    background: var(--immo-white);
 }
-
 
 .immo-section-heading {
+    max-width: 680px;
 
-    max-width: 700px;
-
-    margin-bottom: 38px;
-
+    margin-bottom: 35px;
 }
-
 
 .immo-section-heading h2 {
+    margin: 0 0 10px;
 
-    font-size:
-        clamp(28px, 4vw, 42px);
+    color: var(--immo-black);
 
+    font-size: clamp(28px, 3vw, 40px);
     line-height: 1.15;
-
-    margin-bottom: 8px;
-
 }
 
-
 .immo-section-heading p {
+    margin: 0;
 
-    color:
-        var(--immo-muted);
+    color: var(--immo-muted);
 
-    font-size: 16px;
-
+    font-size: 15px;
+    line-height: 1.7;
 }
 
 
@@ -958,870 +715,513 @@ button {
 ========================================================= */
 
 .immo-services-grid {
-
     display: grid;
 
-    grid-template-columns:
-        repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 20px;
-
 }
 
-
 .immo-service {
-
     position: relative;
 
-    background:
-        white;
+    min-height: 330px;
 
-    border:
-        1px solid var(--immo-border);
+    padding: 28px;
 
-    border-radius:
-        var(--immo-radius);
+    background: var(--immo-white);
 
-    padding:
-        28px;
+    border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius);
 
-    min-height: 310px;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.03);
-
-    transition:
-        0.25s ease;
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.045);
 
     overflow: hidden;
 
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
-
 
 .immo-service:hover {
+    transform: translateY(-5px);
 
-    transform:
-        translateY(-6px);
+    border-color: #cbdceb;
 
-    box-shadow:
-        var(--immo-shadow);
-
-    border-color:
-        rgba(7,87,160,0.2);
-
+    box-shadow: var(--immo-shadow-hover);
 }
 
-
 .immo-service-icon {
-
     width: 58px;
-
     height: 58px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    border-radius:
-        14px;
+    margin-bottom: 18px;
 
-    background:
-        var(--immo-blue-light);
+    border-radius: 13px;
 
-    color:
-        var(--immo-blue);
+    background: #edf5fc;
 
-    font-size: 22px;
+    color: var(--immo-blue);
 
-    margin-bottom: 22px;
-
+    font-size: 23px;
 }
-
 
 .immo-service-number {
-
     position: absolute;
 
-    right: 22px;
-
     top: 20px;
+    right: 23px;
 
-    font-size: 13px;
+    color: #dce8f2;
 
-    color:
-        var(--immo-muted);
-
-    font-weight: 800;
-
+    font-size: 34px;
+    font-weight: 900;
 }
-
 
 .immo-service h3 {
+    margin: 0 0 12px;
+
+    color: var(--immo-black);
 
     font-size: 22px;
-
-    margin-bottom: 10px;
-
 }
-
 
 .immo-service p {
+    min-height: 95px;
 
-    color:
-        var(--immo-text);
+    margin: 0 0 18px;
+
+    color: var(--immo-muted);
 
     font-size: 14px;
-
-    margin-bottom: 22px;
-
+    line-height: 1.7;
 }
 
-
 .immo-service > a {
-
     display: inline-flex;
-
     align-items: center;
 
     gap: 8px;
 
-    color:
-        var(--immo-blue);
+    color: var(--immo-blue);
 
-    font-size: 13px;
-
+    font-size: 14px;
     font-weight: 800;
-
 }
 
-
-.immo-service > a:hover {
-
-    color:
-        var(--immo-green);
-
+.immo-service > a i {
+    transition: transform 0.2s ease;
 }
 
+.immo-service > a:hover i {
+    transform: translateX(4px);
+}
 
 .immo-service-highlight {
-
     background:
         linear-gradient(
-            135deg,
-            var(--immo-blue),
-            var(--immo-blue-dark)
+            145deg,
+            #063b78,
+            #07518c
         );
 
-    color:
-        white;
-
-    border: none;
-
+    border-color: transparent;
 }
-
 
 .immo-service-highlight .immo-service-icon {
-
-    background:
-        rgba(255,255,255,0.13);
-
-    color:
-        white;
-
+    background: rgba(255, 255, 255, 0.13);
+    color: #8ee49e;
 }
-
 
 .immo-service-highlight .immo-service-number {
-
-    color:
-        rgba(255,255,255,0.65);
-
+    color: rgba(255, 255, 255, 0.12);
 }
 
+.immo-service-highlight h3 {
+    color: var(--immo-white);
+}
 
 .immo-service-highlight p {
-
-    color:
-        rgba(255,255,255,0.8);
-
+    color: rgba(255, 255, 255, 0.75);
 }
 
-
 .immo-service-highlight > a {
-
-    color:
-        white;
-
+    color: #8ee49e;
 }
 
 
 /* =========================================================
-   TYPES
+   TYPES DE BIENS
 ========================================================= */
 
 .immo-types-section {
+    padding: 85px 0;
 
-    padding:
-        85px 0;
-
-    background:
-        white;
-
+    background: var(--immo-bg);
 }
-
 
 .immo-types-grid {
-
     display: grid;
 
-    grid-template-columns:
-        repeat(6, 1fr);
+    grid-template-columns: repeat(6, 1fr);
 
     gap: 14px;
-
 }
 
-
 .immo-type {
-
-    border:
-        1px solid var(--immo-border);
-
-    background:
-        white;
-
-    border-radius:
-        14px;
-
-    padding:
-        24px 12px;
-
     min-height: 155px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
-    text-align: center;
+    padding: 18px 12px;
 
-    gap: 7px;
+    border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius-small);
+
+    background: var(--immo-white);
+
+    color: var(--immo-black);
+
+    cursor: pointer;
+
+    font: inherit;
 
     transition:
-        0.2s ease;
-
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
-
 
 .immo-type:hover {
+    transform: translateY(-4px);
 
-    border-color:
-        var(--immo-blue);
+    border-color: #bcd3e6;
 
-    background:
-        var(--immo-blue-light);
-
-    transform:
-        translateY(-3px);
-
+    box-shadow: var(--immo-shadow);
 }
-
 
 .immo-type-icon {
-
-    width: 50px;
-
-    height: 50px;
+    width: 52px;
+    height: 52px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    border-radius:
-        50%;
+    margin-bottom: 12px;
 
-    background:
-        var(--immo-green-light);
+    border-radius: 50%;
 
-    color:
-        var(--immo-green);
+    background: #edf5fc;
+
+    color: var(--immo-blue);
 
     font-size: 20px;
-
-    margin-bottom: 4px;
-
 }
-
 
 .immo-type strong {
+    margin-bottom: 5px;
 
     font-size: 14px;
-
 }
 
-
 .immo-type small {
-
-    color:
-        var(--immo-muted);
+    color: var(--immo-muted);
 
     font-size: 11px;
-
 }
 
 
 /* =========================================================
-   LISTINGS
+   ANNONCES
 ========================================================= */
 
 .immo-listings-section {
+    padding: 85px 0;
 
-    padding:
-        90px 0;
-
+    background: var(--immo-white);
 }
-
 
 .immo-listings-heading {
-
     display: flex;
-
+    align-items: flex-end;
     justify-content: space-between;
 
-    align-items: end;
+    gap: 25px;
 
-    gap: 30px;
-
-    margin-bottom: 35px;
-
+    margin-bottom: 30px;
 }
-
 
 .immo-listings-heading h2 {
+    margin: 0 0 8px;
 
-    font-size:
-        clamp(28px, 4vw, 40px);
+    color: var(--immo-black);
 
+    font-size: clamp(27px, 3vw, 38px);
 }
-
 
 .immo-listings-heading p {
+    margin: 0;
 
-    color:
-        var(--immo-muted);
+    color: var(--immo-muted);
 
-    margin-top: 6px;
-
+    font-size: 14px;
 }
 
-
 .immo-see-all {
-
-    flex-shrink: 0;
+    flex: 0 0 auto;
 
     display: inline-flex;
-
     align-items: center;
 
     gap: 8px;
 
-    color:
-        var(--immo-blue);
+    color: var(--immo-blue);
 
+    font-size: 14px;
     font-weight: 800;
-
-    font-size: 13px;
-
 }
 
+.immo-see-all i {
+    transition: transform 0.2s ease;
+}
+
+.immo-see-all:hover i {
+    transform: translateX(4px);
+}
 
 .immo-ads-grid {
-
     display: grid;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
     gap: 18px;
-
 }
 
+.immo-loading {
+    grid-column: 1 / -1;
 
-.immo-ad-card {
-
-    background:
-        white;
-
-    border:
-        1px solid var(--immo-border);
-
-    border-radius:
-        14px;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    transition:
-        0.25s ease;
-
-}
-
-
-.immo-ad-card:hover {
-
-    transform:
-        translateY(-5px);
-
-    box-shadow:
-        var(--immo-shadow);
-
-}
-
-
-.immo-ad-image {
-
-    position: relative;
-
-    height: 210px;
-
-    background:
-        #edf0f3;
-
-    overflow: hidden;
-
-}
-
-
-.immo-ad-image img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    display: block;
-
-}
-
-
-.immo-ad-badge {
-
-    position: absolute;
-
-    left: 12px;
-
-    top: 12px;
-
-    padding:
-        5px 9px;
-
-    border-radius:
-        6px;
-
-    background:
-        var(--immo-blue);
-
-    color:
-        white;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-}
-
-
-.immo-ad-content {
-
-    padding:
-        18px;
-
-}
-
-
-.immo-ad-content h3 {
-
-    font-size: 16px;
-
-    line-height: 1.3;
-
-    margin-bottom: 10px;
-
-}
-
-
-.immo-ad-location {
+    min-height: 160px;
 
     display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    color:
-        var(--immo-muted);
-
-    font-size: 12px;
-
-    margin-bottom: 12px;
-
-}
-
-
-.immo-ad-location i {
-
-    color:
-        var(--immo-green);
-
-}
-
-
-.immo-ad-price {
-
-    color:
-        var(--immo-blue);
-
-    font-size: 18px;
-
-    font-weight: 900;
-
-}
-
-
-.immo-ad-link {
-
-    margin-top: 14px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    color:
-        var(--immo-text);
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-}
-
-
-.immo-loading,
-.immo-empty {
-
-    grid-column:
-        1 / -1;
-
-    min-height: 180px;
-
-    display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
-    text-align: center;
+    gap: 12px;
 
-    gap: 10px;
+    color: var(--immo-muted);
 
-    color:
-        var(--immo-muted);
-
+    font-size: 14px;
 }
 
+.immo-loading i {
+    color: var(--immo-blue);
 
-.immo-loading i,
-.immo-empty > i {
-
-    color:
-        var(--immo-blue);
-
-    font-size: 28px;
-
-}
-
-
-.immo-empty h3 {
-
-    color:
-        var(--immo-black);
-
+    font-size: 25px;
 }
 
 
 /* =========================================================
-   FEATURE
+   SECTIONS AGENTS / ACTUALITÉS
 ========================================================= */
 
 .immo-feature-section {
+    padding: 75px 0;
 
-    padding:
-        75px 0;
-
-    background:
-        var(--immo-blue);
-
+    background: var(--immo-blue);
 }
-
 
 .immo-feature-light {
-
-    background:
-        white;
-
+    background: var(--immo-bg);
 }
 
-
 .immo-feature-card {
-
     display: grid;
 
-    grid-template-columns:
-        100px 1fr;
+    grid-template-columns: 90px 1fr;
 
     gap: 30px;
 
-    align-items: center;
+    align-items: start;
 
-    padding:
-        42px;
+    padding: 42px;
 
-    border-radius:
-        var(--immo-radius);
+    border-radius: var(--immo-radius);
 
-    background:
-        rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
 
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
-
 
 .immo-feature-light .immo-feature-card {
+    background: var(--immo-white);
 
-    background:
-        var(--immo-background);
+    border-color: var(--immo-border);
 
+    box-shadow: var(--immo-shadow);
 }
-
 
 .immo-feature-icon {
-
-    width: 90px;
-
-    height: 90px;
+    width: 78px;
+    height: 78px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    border-radius:
-        20px;
+    border-radius: 18px;
 
-    background:
-        rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.12);
 
-    color:
-        white;
+    color: #8ee49e;
 
-    font-size: 32px;
-
+    font-size: 30px;
 }
-
 
 .immo-feature-light .immo-feature-icon {
+    background: #edf5fc;
 
-    background:
-        var(--immo-blue-light);
-
-    color:
-        var(--immo-blue);
-
+    color: var(--immo-blue);
 }
-
-
-.immo-feature-content {
-
-    color:
-        white;
-
-}
-
-
-.immo-feature-light .immo-feature-content {
-
-    color:
-        var(--immo-black);
-
-}
-
 
 .immo-feature-content h2 {
+    margin: 0 0 15px;
 
-    font-size:
-        32px;
+    color: var(--immo-white);
 
-    margin-bottom: 10px;
-
+    font-size: clamp(27px, 3vw, 38px);
 }
 
+.immo-feature-light .immo-feature-content h2 {
+    color: var(--immo-black);
+}
 
 .immo-feature-content p {
-
     max-width: 800px;
 
-    color:
-        rgba(255,255,255,0.78);
+    margin: 0 0 12px;
 
-    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.76);
 
+    font-size: 15px;
+    line-height: 1.75;
 }
 
-
 .immo-feature-light .immo-feature-content p {
-
-    color:
-        var(--immo-text);
-
+    color: var(--immo-muted);
 }
 
 
 /* =========================================================
-   REQUEST
+   DEMANDE À LA DIRECTION
 ========================================================= */
 
 .immo-request {
-
-    padding:
-        80px 0;
-
-}
-
-
-.immo-request-inner {
-
-    padding:
-        42px;
-
-    border-radius:
-        20px;
+    padding: 65px 0;
 
     background:
         linear-gradient(
-            135deg,
-            var(--immo-green),
-            var(--immo-green-dark)
+            120deg,
+            #063b78,
+            #075c87
         );
+}
 
-    color:
-        white;
-
-    display: grid;
-
-    grid-template-columns:
-        80px 1fr auto;
-
+.immo-request-inner {
+    display: flex;
     align-items: center;
 
     gap: 25px;
 
-}
+    padding: 35px 40px;
 
+    border-radius: var(--immo-radius);
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
 .immo-request-icon {
+    width: 65px;
+    height: 65px;
 
-    width: 72px;
-
-    height: 72px;
+    flex: 0 0 auto;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    border-radius:
-        18px;
+    border-radius: 15px;
 
-    background:
-        rgba(255,255,255,0.14);
+    background: rgba(255, 255, 255, 0.12);
 
-    font-size: 27px;
+    color: #8ee49e;
 
+    font-size: 25px;
 }
 
+.immo-request-text {
+    flex: 1;
+}
 
 .immo-request-text h2 {
+    margin: 0 0 8px;
 
-    font-size:
-        clamp(24px, 4vw, 34px);
+    color: var(--immo-white);
 
-    margin-bottom: 6px;
-
+    font-size: clamp(23px, 3vw, 34px);
 }
-
 
 .immo-request-text p {
+    max-width: 700px;
 
-    max-width: 680px;
+    margin: 0;
 
-    color:
-        rgba(255,255,255,0.82);
+    color: rgba(255, 255, 255, 0.75);
 
+    font-size: 14px;
+    line-height: 1.65;
 }
 
-
 .immo-request-btn {
+    flex: 0 0 auto;
 
-    min-height: 50px;
-
-    padding:
-        0 20px;
+    min-height: 48px;
 
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
 
     gap: 8px;
 
-    border-radius:
-        9px;
+    padding: 11px 19px;
 
-    background:
-        white;
+    border-radius: 9px;
 
-    color:
-        var(--immo-green-dark);
+    background: var(--immo-green);
 
-    font-size: 13px;
+    color: var(--immo-white);
 
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 800;
 
-    white-space: nowrap;
-
+    transition: 0.2s ease;
 }
 
-
 .immo-request-btn:hover {
+    background: var(--immo-green-dark);
 
-    transform:
-        translateY(-2px);
-
+    transform: translateY(-2px);
 }
 
 
@@ -1830,128 +1230,85 @@ button {
 ========================================================= */
 
 .immo-footer {
+    padding: 55px 0 0;
 
-    background:
-        #102131;
+    background: #071d35;
 
-    color:
-        white;
-
-    padding:
-        55px 0 0;
-
+    color: var(--immo-white);
 }
 
-
 .immo-footer-grid {
-
     display: grid;
 
-    grid-template-columns:
-        2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
 
     gap: 50px;
 
-    padding-bottom:
-        45px;
-
+    padding-bottom: 45px;
 }
-
 
 .immo-footer-brand img {
-
-    width: 150px;
-
-    background:
-        white;
-
-    padding:
-        8px 12px;
-
-    border-radius:
-        8px;
+    width: 145px;
+    height: auto;
 
     display: block;
 
-    margin-bottom: 18px;
-
+    margin-bottom: 15px;
 }
-
 
 .immo-footer-brand h3 {
+    margin: 0 0 8px;
 
-    font-size: 21px;
+    color: var(--immo-white);
 
-    color:
-        #7de0a7;
-
-    margin-bottom: 5px;
-
+    font-size: 20px;
 }
-
 
 .immo-footer-brand p {
+    margin: 0;
 
-    color:
-        rgba(255,255,255,0.65);
+    color: rgba(255, 255, 255, 0.62);
 
     font-size: 13px;
-
+    line-height: 1.6;
 }
-
 
 .immo-footer h4 {
+    margin: 0 0 15px;
 
-    margin-bottom:
-        15px;
+    color: var(--immo-white);
 
     font-size: 14px;
-
 }
-
 
 .immo-footer-grid > div:not(.immo-footer-brand) a {
-
     display: block;
 
-    color:
-        rgba(255,255,255,0.65);
+    margin-bottom: 10px;
+
+    color: rgba(255, 255, 255, 0.62);
 
     font-size: 13px;
-
-    margin-bottom: 9px;
-
 }
-
 
 .immo-footer-grid > div:not(.immo-footer-brand) a:hover {
-
-    color:
-        white;
-
+    color: #8ee49e;
 }
 
-
 .immo-footer-bottom {
-
     min-height: 65px;
 
-    border-top:
-        1px solid rgba(255,255,255,0.1);
-
     display: flex;
-
+    align-items: center;
     justify-content: space-between;
 
-    align-items: center;
+    gap: 15px;
 
-    gap: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
 
-    color:
-        rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.48);
 
-    font-size: 11px;
-
+    font-size: 12px;
 }
 
 
@@ -1959,131 +1316,123 @@ button {
    TABLETTE
 ========================================================= */
 
-@media (max-width: 1050px) {
+@media (max-width: 1100px) {
+
+    .immo-header-inner {
+        gap: 15px;
+    }
+
+    .immo-brand-name {
+        font-size: 19px;
+    }
 
     .immo-nav {
-
-        display: none;
-
+        gap: 0;
     }
 
-
-    .immo-menu-button {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-    }
-
-
-    .immo-mobile-nav {
-
-        display: none;
-
-        padding:
-            12px 20px 20px;
-
-        background:
-            white;
-
-        border-top:
-            1px solid var(--immo-border);
-
-    }
-
-
-    .immo-mobile-nav.open {
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 5px;
-
-    }
-
-
-    .immo-mobile-nav a {
-
-        padding:
-            12px;
-
-        border-radius:
-            8px;
-
-        color:
-            var(--immo-text);
+    .immo-nav a {
+        padding-left: 9px;
+        padding-right: 9px;
 
         font-size: 13px;
-
-        font-weight: 700;
-
     }
 
-
-    .immo-mobile-nav a:hover,
-    .immo-mobile-nav a.active {
-
-        background:
-            var(--immo-blue-light);
-
-        color:
-            var(--immo-blue);
-
+    .immo-back span {
+        display: none;
     }
 
-
-    .immo-mobile-nav i {
-
-        width: 22px;
-
-        text-align: center;
-
+    .immo-back {
+        width: 42px;
+        padding: 0;
     }
-
 
     .immo-services-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, 1fr);
     }
-
 
     .immo-types-grid {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
+        grid-template-columns: repeat(3, 1fr);
     }
-
 
     .immo-ads-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(3, 1fr);
     }
-
 
     .immo-search-form {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, 1fr);
     }
-
 
     .immo-search-btn {
-
         width: 100%;
+    }
+}
 
+
+/* =========================================================
+   TABLETTE PETITE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .immo-header-inner {
+        min-height: 72px;
     }
 
+    .immo-logo {
+        width: 125px;
+        height: 55px;
+    }
+
+    .immo-logo img {
+        width: 125px;
+    }
+
+    .immo-brand-name {
+        display: none;
+    }
+
+    .immo-nav {
+        display: none;
+    }
+
+    .immo-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .immo-header-actions {
+        margin-left: auto;
+    }
+
+    .immo-mobile-nav.is-open {
+        display: block;
+    }
+
+    .immo-hero {
+        min-height: 500px;
+    }
+
+    .immo-hero-content {
+        padding: 65px 0;
+    }
+
+    .immo-feature-card {
+        grid-template-columns: 70px 1fr;
+        gap: 22px;
+
+        padding: 30px;
+    }
+
+    .immo-feature-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .immo-footer-grid {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 30px;
+    }
 }
 
 
@@ -2091,412 +1440,379 @@ button {
    MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 
     .immo-container {
-
-        width:
-            min(
-                100% - 28px,
-                1180px
-            );
-
+        width: min(100% - 28px, var(--immo-container));
     }
 
+    /* HEADER */
 
     .immo-header-inner {
+        width: calc(100% - 24px);
 
-        min-height: 70px;
+        min-height: 65px;
 
-        width:
-            calc(100% - 24px);
-
-        gap: 10px;
-
+        gap: 8px;
     }
-
 
     .immo-logo {
-
-        width: 105px;
-
+        width: 125px;
+        height: 52px;
     }
 
-
-    .immo-brand-name {
-
-        font-size: 18px;
-
+    .immo-logo img {
+        width: 120px;
     }
-
-
-    .immo-back span {
-
-        display: none;
-
-    }
-
 
     .immo-back {
-
         width: 40px;
-
         height: 40px;
+        min-height: 40px;
 
-        padding: 0;
-
-        justify-content: center;
-
+        font-size: 15px;
     }
 
-
-    .immo-mobile-nav.open {
-
-        grid-template-columns:
-            1fr;
-
+    .immo-menu-button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
     }
 
+    .immo-mobile-nav {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    /* HERO */
 
     .immo-hero {
-
-        min-height: 570px;
-
+        min-height: auto;
     }
-
 
     .immo-hero-content {
-
-        padding:
-            60px 0;
-
+        padding: 55px 0 70px;
     }
-
 
     .immo-hero-logo {
-
-        width: 175px;
-
+        width: 145px;
+        margin-bottom: 22px;
     }
 
+    .immo-kicker {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+    }
 
     .immo-hero h1 {
-
-        font-size:
-            40px;
-
-        letter-spacing:
-            -1px;
-
+        font-size: 37px;
+        letter-spacing: -0.8px;
     }
 
+    .immo-title-line {
+        width: 60px;
+        height: 3px;
+
+        margin: 18px 0;
+    }
 
     .immo-hero-text {
-
-        font-size:
-            18px;
-
+        font-size: 17px;
+        line-height: 1.55;
     }
-
 
     .immo-hero-subtext {
-
-        font-size:
-            14px;
-
+        font-size: 14px;
+        line-height: 1.65;
     }
-
 
     .immo-hero-buttons {
-
-        flex-direction:
-            column;
-
-        align-items:
-            stretch;
-
+        flex-direction: column;
+        align-items: stretch;
     }
-
 
     .immo-btn {
-
         width: 100%;
-
     }
 
+    /* SEARCH */
 
     .immo-search-section {
-
-        margin-top:
-            -30px;
-
+        margin-top: -30px;
     }
-
 
     .immo-search-box {
-
-        padding:
-            20px;
-
+        padding: 20px 16px;
     }
 
+    .immo-search-heading h2 {
+        font-size: 21px;
+    }
 
     .immo-search-form {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
+        gap: 13px;
     }
 
+    .immo-search-btn {
+        height: 49px;
+    }
+
+    /* SECTIONS */
 
     .immo-section,
+    .immo-types-section,
     .immo-listings-section {
-
-        padding:
-            60px 0;
-
+        padding: 60px 0;
     }
-
 
     .immo-section-heading {
-
-        margin-bottom:
-            25px;
-
+        margin-bottom: 25px;
     }
 
+    .immo-section-heading h2,
+    .immo-listings-heading h2 {
+        font-size: 27px;
+    }
+
+    /* SERVICES */
 
     .immo-services-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
-
 
     .immo-service {
+        min-height: auto;
 
-        min-height:
-            auto;
-
+        padding: 23px;
     }
 
-
-    .immo-types-section {
-
-        padding:
-            60px 0;
-
+    .immo-service p {
+        min-height: auto;
     }
 
+    /* TYPES */
 
     .immo-types-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
-
-
-    .immo-ads-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .immo-ad-image {
-
-        height:
-            230px;
-
-    }
-
-
-    .immo-listings-heading {
-
-        flex-direction:
-            column;
-
-        align-items:
-            flex-start;
-
-    }
-
-
-    .immo-feature-section {
-
-        padding:
-            55px 0;
-
-    }
-
-
-    .immo-feature-card {
-
-        grid-template-columns:
-            1fr;
-
-        padding:
-            25px;
-
-    }
-
-
-    .immo-feature-icon {
-
-        width: 65px;
-
-        height: 65px;
-
-        font-size: 24px;
-
-    }
-
-
-    .immo-feature-content h2 {
-
-        font-size:
-            27px;
-
-    }
-
-
-    .immo-request {
-
-        padding:
-            55px 0;
-
-    }
-
-
-    .immo-request-inner {
-
-        grid-template-columns:
-            1fr;
-
-        padding:
-            28px;
-
-    }
-
-
-    .immo-request-btn {
-
-        width:
-            100%;
-
-    }
-
-
-    .immo-footer-grid {
-
-        grid-template-columns:
-            1fr;
-
-        gap:
-            30px;
-
-    }
-
-
-    .immo-footer-bottom {
-
-        flex-direction:
-            column;
-
-        justify-content:
-            center;
-
-        text-align:
-            center;
-
-        padding:
-            18px 0;
-
-    }
-
-}
-
-
-/* =========================================================
-   PETITS TELEPHONES
-========================================================= */
-
-@media (max-width: 420px) {
-
-    .immo-logo {
-
-        width:
-            90px;
-
-    }
-
-
-    .immo-brand-name {
-
-        font-size:
-            16px;
-
-    }
-
-
-    .immo-hero h1 {
-
-        font-size:
-            34px;
-
-    }
-
-
-    .immo-types-grid {
-
-        gap:
-            9px;
-
-    }
-
 
     .immo-type {
-
-        min-height:
-            140px;
-
-        padding:
-            15px 8px;
-
+        min-height: 135px;
     }
 
+    /* LISTINGS */
 
-    .immo-type small {
-
-        display:
-            none;
-
+    .immo-listings-heading {
+        display: block;
+        margin-bottom: 23px;
     }
 
+    .immo-see-all {
+        margin-top: 15px;
+    }
+
+    .immo-ads-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* FEATURES */
+
+    .immo-feature-section {
+        padding: 55px 0;
+    }
+
+    .immo-feature-card {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        padding: 25px 20px;
+    }
+
+    .immo-feature-icon {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 14px;
+
+        font-size: 23px;
+    }
+
+    .immo-feature-content h2 {
+        font-size: 27px;
+    }
+
+    /* REQUEST */
+
+    .immo-request {
+        padding: 45px 0;
+    }
+
+    .immo-request-inner {
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 25px 20px;
+    }
+
+    .immo-request-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .immo-request-text h2 {
+        font-size: 25px;
+    }
+
+    .immo-request-btn {
+        width: 100%;
+    }
+
+    /* FOOTER */
+
+    .immo-footer {
+        padding-top: 45px;
+    }
+
+    .immo-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+
+        padding-bottom: 30px;
+    }
+
+    .immo-footer-brand img {
+        width: 130px;
+    }
+
+    .immo-footer-bottom {
+        min-height: auto;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 18px 0;
+    }
 }
 
 
 /* =========================================================
-   ACCESSIBILITE
+   PETIT MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .immo-container {
+        width: calc(100% - 22px);
+    }
+
+    .immo-logo {
+        width: 110px;
+    }
+
+    .immo-logo img {
+        width: 108px;
+    }
+
+    .immo-hero h1 {
+        font-size: 32px;
+    }
+
+    .immo-hero-logo {
+        width: 125px;
+    }
+
+    .immo-types-grid {
+        gap: 8px;
+    }
+
+    .immo-type {
+        min-height: 125px;
+        padding: 14px 8px;
+    }
+
+    .immo-type-icon {
+        width: 46px;
+        height: 46px;
+
+        margin-bottom: 9px;
+    }
+
+    .immo-type strong {
+        font-size: 13px;
+    }
+
+    .immo-type small {
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   TRÈS PETIT ÉCRAN
+========================================================= */
+
+@media (max-width: 340px) {
+
+    .immo-header-inner {
+        width: calc(100% - 16px);
+    }
+
+    .immo-logo {
+        width: 95px;
+    }
+
+    .immo-logo img {
+        width: 95px;
+    }
+
+    .immo-back,
+    .immo-menu-button {
+        width: 37px;
+        min-width: 37px;
+        height: 37px;
+    }
+
+    .immo-hero h1 {
+        font-size: 29px;
+    }
+
+    .immo-types-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+========================================================= */
+
+.immo-main a:focus-visible,
+.immo-header a:focus-visible,
+.immo-footer a:focus-visible,
+.immo-main button:focus-visible,
+.immo-header button:focus-visible,
+.immo-main input:focus-visible,
+.immo-main select:focus-visible {
+    outline: 3px solid rgba(40, 167, 69, 0.35);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RÉDUCTION DES ANIMATIONS
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
-    html {
-
-        scroll-behavior:
-            auto;
-
+    .immo-main *,
+    .immo-header *,
+    .immo-footer * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
     }
-
-    * {
-
-        transition:
-            none !important;
-
-    }
-
 }
