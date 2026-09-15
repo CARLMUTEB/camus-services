@@ -2047,3 +2047,418 @@ textarea {
         scroll-behavior: auto !important;
     }
 }
+
+/* =========================================================
+   CORRECTION FINALE DES LOGOS
+   ========================================================= */
+
+
+/* =========================================================
+   LOGO PC — EN-TÊTE
+   ========================================================= */
+
+.desktop-logo {
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    text-decoration: none;
+}
+
+.desktop-logo img {
+    display: block;
+
+    width: 135px;
+    height: auto;
+
+    max-width: none;
+    max-height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   LOGO MOBILE
+   ========================================================= */
+
+.mobile-logo {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 65px;
+
+    z-index: 10;
+}
+
+.mobile-logo img {
+    display: block;
+
+    width: 140px;
+    height: auto;
+
+    max-width: none;
+    max-height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   TOPBAR PC
+   ========================================================= */
+
+@media (min-width: 769px) {
+
+    .topbar {
+        position: sticky;
+
+        top: 0;
+
+        height: 70px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 28px;
+
+        background: rgba(255, 255, 255, 0.97);
+
+        border-bottom: 1px solid #e5e7eb;
+
+        z-index: 900;
+    }
+
+    .desktop-logo {
+        display: flex !important;
+    }
+
+    .mobile-logo {
+        display: none !important;
+    }
+
+    .menu-button {
+        display: none !important;
+    }
+
+    .topbar-right {
+        margin-left: auto;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .topbar {
+        position: relative;
+
+        height: 72px;
+
+        width: 100%;
+
+        padding: 0 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        background: #ffffff;
+
+        border-bottom: 1px solid #e5e7eb;
+
+        z-index: 900;
+    }
+
+
+    /* PC LOGO CACHÉ */
+
+    .desktop-logo {
+        display: none !important;
+    }
+
+
+    /* MENU */
+
+    .menu-button {
+        display: flex !important;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 46px;
+        height: 46px;
+
+        flex-shrink: 0;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        color: #0757a0;
+
+        font-size: 23px;
+
+        cursor: pointer;
+
+        z-index: 20;
+    }
+
+
+    /* =====================================================
+       LOGO MOBILE — PLUS GROS
+       ===================================================== */
+
+    .mobile-logo {
+        display: flex !important;
+
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        width: 155px;
+        height: 68px;
+
+        align-items: center;
+        justify-content: center;
+
+        z-index: 15;
+    }
+
+    .mobile-logo img {
+        display: block;
+
+        width: 140px;
+
+        height: auto;
+
+        max-width: none;
+
+        max-height: 60px;
+
+        object-fit: contain;
+    }
+
+
+    /* DROITE */
+
+    .topbar-right {
+        display: flex;
+
+        align-items: center;
+
+        gap: 2px;
+
+        margin-left: auto;
+
+        z-index: 20;
+    }
+
+
+    /* FAVORIS */
+
+    .topbar-icon {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border-radius: 50%;
+    }
+
+    .topbar-icon i {
+        font-size: 24px;
+    }
+
+
+    /* =====================================================
+       COMPTE — ICÔNE SEULEMENT
+       ===================================================== */
+
+    .profile-button {
+        width: 44px;
+        height: 44px;
+
+        padding: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        gap: 0;
+    }
+
+    .profile-button span {
+        display: none !important;
+    }
+
+    .profile-button i {
+        font-size: 25px;
+    }
+
+}
+
+
+/* =========================================================
+   PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .topbar {
+        height: 70px;
+    }
+
+    .mobile-logo {
+        width: 150px;
+        height: 64px;
+    }
+
+    .mobile-logo img {
+        width: 132px;
+        max-height: 57px;
+    }
+
+}
+
+
+/* =========================================================
+   TRÈS PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+    .mobile-logo img {
+        width: 125px;
+        max-height: 54px;
+    }
+
+}
+
+
+/* =========================================================
+   LOGO FOOTER
+   ========================================================= */
+
+.footer-logo {
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+
+    margin: 0 auto 12px;
+
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+.footer-logo img {
+    display: block;
+
+    width: 115px;
+
+    height: auto;
+
+    max-width: none;
+
+    max-height: 65px;
+
+    object-fit: contain;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    background: transparent !important;
+
+    /*
+       Permet au fond blanc du PNG de se
+       fondre visuellement avec le footer.
+    */
+    mix-blend-mode: darken;
+}
+
+
+/* =========================================================
+   FOOTER MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .footer-logo {
+        margin-left: auto;
+        margin-right: auto;
+
+        background: transparent !important;
+
+        border: none !important;
+
+        box-shadow: none !important;
+    }
+
+    .footer-logo img {
+        width: 105px;
+
+        max-height: 60px;
+
+        background: transparent !important;
+
+        border: none !important;
+
+        box-shadow: none !important;
+
+        mix-blend-mode: darken;
+    }
+
+}
