@@ -334,21 +334,31 @@ textarea {
 
 
 /* =========================================================
-   LOGO PC — PLUS GROS
+   LOGO PC — GROS ET PARFAITEMENT CENTRÉ
    ========================================================= */
 
 @media (min-width: 769px) {
 
+    .topbar {
+        position: relative;
+    }
+
     .desktop-logo {
         display: flex !important;
 
-        align-items: center;
-        justify-content: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
 
         width: 190px;
         height: 80px;
 
-        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        z-index: 10;
     }
 
     .desktop-logo img {
@@ -357,14 +367,13 @@ textarea {
         width: 165px !important;
         height: auto !important;
 
-        max-width: 165px !important;
+        max-width: none !important;
         max-height: 70px !important;
 
         object-fit: contain;
     }
 
 }
-
 
 /* =========================================================
    LOGO MOBILE
