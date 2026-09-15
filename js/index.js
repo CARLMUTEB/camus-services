@@ -6,6 +6,12 @@
 // - Catégories dynamiques
 // - Villes dynamiques
 // - Recherche
+// - ESPACE IMMOBILIER
+// =========================================================
+
+
+// =========================================================
+// IMPORTS
 // =========================================================
 
 import { auth, db } from "./firebase-config.js";
@@ -28,11 +34,20 @@ import {
 // ELEMENTS HTML
 // =========================================================
 
-const recentAds = document.getElementById("recentAds");
-const citySelect = document.getElementById("citySelect");
-const homeCategories = document.getElementById("homeCategories");
-const homeSearchForm = document.getElementById("homeSearchForm");
-const searchKeyword = document.getElementById("searchKeyword");
+const recentAds =
+    document.getElementById("recentAds");
+
+const citySelect =
+    document.getElementById("citySelect");
+
+const homeCategories =
+    document.getElementById("homeCategories");
+
+const homeSearchForm =
+    document.getElementById("homeSearchForm");
+
+const searchKeyword =
+    document.getElementById("searchKeyword");
 
 
 // =========================================================
@@ -88,7 +103,10 @@ function escapeHtml(value) {
 // FORMAT PRIX
 // =========================================================
 
-function formatPrice(price, currency = "USD") {
+function formatPrice(
+    price,
+    currency = "USD"
+) {
 
     if (
         price === null ||
@@ -104,12 +122,13 @@ function formatPrice(price, currency = "USD") {
         return escapeHtml(price);
     }
 
-    const formatted = new Intl.NumberFormat(
-        "fr-FR",
-        {
-            maximumFractionDigits: 0
-        }
-    ).format(number);
+    const formatted =
+        new Intl.NumberFormat(
+            "fr-FR",
+            {
+                maximumFractionDigits: 0
+            }
+        ).format(number);
 
     if (
         currency === "USD" ||
@@ -171,13 +190,15 @@ async function getCategoryName(categoryId) {
 
     try {
 
-        const categoryRef = doc(
-            db,
-            "categories",
-            categoryId
-        );
+        const categoryRef =
+            doc(
+                db,
+                "categories",
+                categoryId
+            );
 
-        const snapshot = await getDoc(categoryRef);
+        const snapshot =
+            await getDoc(categoryRef);
 
         if (snapshot.exists()) {
 
@@ -214,25 +235,33 @@ async function loadCities() {
 
     try {
 
-        const snapshot = await getDocs(
-            collection(db, "villes")
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "villes"
+                )
+            );
 
         const cities = [];
 
         snapshot.forEach(document => {
 
-            const data = document.data();
+            const data =
+                document.data();
 
             if (data.active === true) {
 
                 cities.push({
 
-                    id: document.id,
+                    id:
+                        document.id,
 
-                    name: data.name || "",
+                    name:
+                        data.name || "",
 
-                    province: data.province || "",
+                    province:
+                        data.province || "",
 
                     order:
                         Number(data.order) || 999
@@ -243,6 +272,10 @@ async function loadCities() {
 
         });
 
+
+        // -----------------------------------------------------
+        // TRI
+        // -----------------------------------------------------
 
         cities.sort((a, b) => {
 
@@ -261,6 +294,10 @@ async function loadCities() {
         });
 
 
+        // -----------------------------------------------------
+        // SELECT
+        // -----------------------------------------------------
+
         citySelect.innerHTML = `
             <option value="">
                 Toutes les villes
@@ -271,13 +308,19 @@ async function loadCities() {
         cities.forEach(city => {
 
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
 
-            option.value = city.id;
+            option.value =
+                city.id;
 
-            option.textContent = city.name;
+            option.textContent =
+                city.name;
 
-            citySelect.appendChild(option);
+            citySelect.appendChild(
+                option
+            );
 
         });
 
@@ -286,6 +329,7 @@ async function loadCities() {
             "INDEX — villes chargées :",
             cities.length
         );
+
 
     } catch (error) {
 
@@ -301,6 +345,7 @@ async function loadCities() {
         `;
 
     }
+
 }
 
 
@@ -316,21 +361,28 @@ async function loadCategories() {
 
     try {
 
-        const snapshot = await getDocs(
-            collection(db, "categories")
-        );
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "categories"
+                )
+            );
 
         const categories = [];
 
+
         snapshot.forEach(document => {
 
-            const data = document.data();
+            const data =
+                document.data();
 
             if (data.active === true) {
 
                 categories.push({
 
-                    id: document.id,
+                    id:
+                        document.id,
 
                     name:
                         data.name ||
@@ -354,6 +406,10 @@ async function loadCategories() {
         });
 
 
+        // -----------------------------------------------------
+        // TRI
+        // -----------------------------------------------------
+
         categories.sort((a, b) => {
 
             if (a.order !== b.order) {
@@ -374,6 +430,10 @@ async function loadCategories() {
         homeCategories.innerHTML = "";
 
 
+        // -----------------------------------------------------
+        // AUCUNE CATEGORIE
+        // -----------------------------------------------------
+
         if (categories.length === 0) {
 
             homeCategories.innerHTML = `
@@ -392,42 +452,91 @@ async function loadCategories() {
         }
 
 
+        // -----------------------------------------------------
+        // CREER LES CARTES
+        // -----------------------------------------------------
+
         categories.forEach(category => {
 
             const card =
                 document.createElement("a");
 
-            card.className = "category-card";
+            card.className =
+                "category-card";
 
-            if (category.name.toLowerCase() === "immobilier") {
-    card.href = "immobilier.html";
-} else {
-    card.href = `recherche.html?category=${encodeURIComponent(category.id)}`;
-}
 
+            // =================================================
+            // ESPACE IMMOBILIER
+            // =================================================
+            // Si la catégorie est Immobilier,
+            // on ouvre directement immobilier.html.
+            // =================================================
+
+            const categoryName =
+                String(
+                    category.name || ""
+                )
+                .trim()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                );
+
+
+            if (
+                categoryName === "immobilier" ||
+                categoryName.includes("immobilier")
+            ) {
+
+                card.href =
+                    "immobilier.html";
+
+            } else {
+
+                card.href =
+                    `recherche.html?category=${encodeURIComponent(
+                        category.id
+                    )}`;
+
+            }
+
+
+            // -------------------------------------------------
+            // CONTENU CARTE
+            // -------------------------------------------------
 
             card.innerHTML = `
 
                 <div class="category-icon">
 
-                    <i class="${escapeHtml(category.icon)}"></i>
+                    <i class="${escapeHtml(
+                        category.icon
+                    )}"></i>
 
                 </div>
 
 
                 <h3>
-                    ${escapeHtml(category.name)}
+                    ${escapeHtml(
+                        category.name
+                    )}
                 </h3>
 
 
                 <p>
-                    ${escapeHtml(category.description)}
+                    ${escapeHtml(
+                        category.description
+                    )}
                 </p>
 
             `;
 
 
-            homeCategories.appendChild(card);
+            homeCategories.appendChild(
+                card
+            );
 
         });
 
@@ -436,6 +545,7 @@ async function loadCategories() {
             "INDEX — catégories chargées :",
             categories.length
         );
+
 
     } catch (error) {
 
@@ -457,6 +567,7 @@ async function loadCategories() {
         `;
 
     }
+
 }
 
 
@@ -486,9 +597,12 @@ async function checkFavorite(listingId) {
             );
 
         const snapshot =
-            await getDoc(favoriteRef);
+            await getDoc(
+                favoriteRef
+            );
 
         return snapshot.exists();
+
 
     } catch (error) {
 
@@ -498,7 +612,9 @@ async function checkFavorite(listingId) {
         );
 
         return false;
+
     }
+
 }
 
 
@@ -522,12 +638,15 @@ function updateFavoriteButton(
         return;
     }
 
+
     if (isFavorite) {
 
         icon.className =
             "fa-solid fa-heart";
 
-        button.classList.add("active");
+        button.classList.add(
+            "active"
+        );
 
         button.setAttribute(
             "aria-label",
@@ -539,7 +658,9 @@ function updateFavoriteButton(
         icon.className =
             "fa-regular fa-heart";
 
-        button.classList.remove("active");
+        button.classList.remove(
+            "active"
+        );
 
         button.setAttribute(
             "aria-label",
@@ -547,6 +668,7 @@ function updateFavoriteButton(
         );
 
     }
+
 }
 
 
@@ -608,7 +730,9 @@ async function toggleFavorite(button) {
             );
 
         const snapshot =
-            await getDoc(favoriteRef);
+            await getDoc(
+                favoriteRef
+            );
 
 
         if (snapshot.exists()) {
@@ -621,6 +745,7 @@ async function toggleFavorite(button) {
                 button,
                 false
             );
+
 
         } else {
 
@@ -642,7 +767,9 @@ async function toggleFavorite(button) {
                 button,
                 true
             );
+
         }
+
 
     } catch (error) {
 
@@ -657,6 +784,7 @@ async function toggleFavorite(button) {
         );
 
     }
+
 }
 
 
@@ -675,6 +803,7 @@ async function restoreFavoriteButtons() {
             ".favorite-button"
         );
 
+
     for (const button of buttons) {
 
         const listingId =
@@ -685,13 +814,17 @@ async function restoreFavoriteButtons() {
         }
 
         const isFavorite =
-            await checkFavorite(listingId);
+            await checkFavorite(
+                listingId
+            );
 
         updateFavoriteButton(
             button,
             isFavorite
         );
+
     }
+
 }
 
 
@@ -721,9 +854,9 @@ async function loadRecentAds() {
         `;
 
 
-        // =================================================
+        // -----------------------------------------------------
         // FIRESTORE
-        // =================================================
+        // -----------------------------------------------------
 
         const snapshot =
             await getDocs(
@@ -734,23 +867,26 @@ async function loadRecentAds() {
             );
 
 
-        // =================================================
+        // -----------------------------------------------------
         // TRANSFORMATION
-        // =================================================
+        // -----------------------------------------------------
 
         const ads =
-            snapshot.docs.map(document => ({
+            snapshot.docs.map(
+                document => ({
 
-                id: document.id,
+                    id:
+                        document.id,
 
-                ...document.data()
+                    ...document.data()
 
-            }));
+                })
+            );
 
 
-        // =================================================
+        // -----------------------------------------------------
         // FILTRER LES ANNONCES ACTIVES
-        // =================================================
+        // -----------------------------------------------------
 
         const activeAds =
             ads.filter(ad => {
@@ -768,35 +904,44 @@ async function loadRecentAds() {
             });
 
 
-        // =================================================
+        // -----------------------------------------------------
         // TRI PAR DATE
-        // =================================================
+        // -----------------------------------------------------
 
-        activeAds.sort((a, b) => {
+        activeAds.sort(
+            (a, b) => {
 
-            const dateA =
-                a.createdAt &&
-                typeof a.createdAt.toMillis === "function"
-                    ? a.createdAt.toMillis()
-                    : 0;
+                const dateA =
+                    a.createdAt &&
+                    typeof
+                        a.createdAt.toMillis ===
+                        "function"
+                        ? a.createdAt.toMillis()
+                        : 0;
 
-            const dateB =
-                b.createdAt &&
-                typeof b.createdAt.toMillis === "function"
-                    ? b.createdAt.toMillis()
-                    : 0;
+                const dateB =
+                    b.createdAt &&
+                    typeof
+                        b.createdAt.toMillis ===
+                        "function"
+                        ? b.createdAt.toMillis()
+                        : 0;
 
-            return dateB - dateA;
+                return dateB - dateA;
 
-        });
+            }
+        );
 
 
-        // =================================================
+        // -----------------------------------------------------
         // 8 ANNONCES RECENTES
-        // =================================================
+        // -----------------------------------------------------
 
         const recent =
-            activeAds.slice(0, 8);
+            activeAds.slice(
+                0,
+                8
+            );
 
 
         console.log(
@@ -805,9 +950,9 @@ async function loadRecentAds() {
         );
 
 
-        // =================================================
+        // -----------------------------------------------------
         // AUCUNE ANNONCE
-        // =================================================
+        // -----------------------------------------------------
 
         if (recent.length === 0) {
 
@@ -836,16 +981,16 @@ async function loadRecentAds() {
         }
 
 
-        // =================================================
+        // -----------------------------------------------------
         // VIDER
-        // =================================================
+        // -----------------------------------------------------
 
         recentAds.innerHTML = "";
 
 
-        // =================================================
+        // -----------------------------------------------------
         // CREER LES CARTES
-        // =================================================
+        // -----------------------------------------------------
 
         for (const ad of recent) {
 
@@ -868,12 +1013,15 @@ async function loadRecentAds() {
             const price =
                 formatPrice(
                     ad.price,
-                    ad.currency || "USD"
+                    ad.currency ||
+                    "USD"
                 );
 
 
             const card =
-                document.createElement("article");
+                document.createElement(
+                    "article"
+                );
 
             card.className =
                 "ad-card";
@@ -884,10 +1032,16 @@ async function loadRecentAds() {
                 <div class="ad-image">
 
                     <img
-                        src="${escapeHtml(image)}"
-                        alt="${escapeHtml(title)}"
+                        src="${escapeHtml(
+                            image
+                        )}"
+                        alt="${escapeHtml(
+                            title
+                        )}"
                         loading="lazy"
-                        onerror="this.src='assets/logo/camu-services-logo.png'"
+                        onerror="
+                            this.src='assets/logo/camu-services-logo.png'
+                        "
                     >
 
 
@@ -895,14 +1049,22 @@ async function loadRecentAds() {
                         type="button"
                         class="favorite-button"
                         aria-label="Ajouter aux favoris"
-                        data-listing-id="${escapeHtml(ad.id)}"
+                        data-listing-id="${escapeHtml(
+                            ad.id
+                        )}"
                     >
+
                         <i class="fa-regular fa-heart"></i>
+
                     </button>
 
 
                     <span class="ad-category">
-                        ${escapeHtml(category)}
+
+                        ${escapeHtml(
+                            category
+                        )}
+
                     </span>
 
                 </div>
@@ -911,7 +1073,11 @@ async function loadRecentAds() {
                 <div class="ad-content">
 
                     <h3 class="ad-title">
-                        ${escapeHtml(title)}
+
+                        ${escapeHtml(
+                            title
+                        )}
+
                     </h3>
 
 
@@ -920,14 +1086,20 @@ async function loadRecentAds() {
                         <i class="fa-solid fa-location-dot"></i>
 
                         <span>
-                            ${escapeHtml(city)}
+
+                            ${escapeHtml(
+                                city
+                            )}
+
                         </span>
 
                     </div>
 
 
                     <div class="ad-price">
+
                         ${price}
+
                     </div>
 
                 </div>
@@ -935,9 +1107,9 @@ async function loadRecentAds() {
             `;
 
 
-            // =================================================
+            // -------------------------------------------------
             // OUVRIR ANNONCE
-            // =================================================
+            // -------------------------------------------------
 
             card.addEventListener(
                 "click",
@@ -952,20 +1124,23 @@ async function loadRecentAds() {
                     }
 
                     window.location.href =
-                        `explorer.html?id=${encodeURIComponent(ad.id)}`;
+                        `explorer.html?id=${encodeURIComponent(
+                            ad.id
+                        )}`;
 
                 }
             );
 
 
-            // =================================================
+            // -------------------------------------------------
             // FAVORI
-            // =================================================
+            // -------------------------------------------------
 
             const favoriteButton =
                 card.querySelector(
                     ".favorite-button"
                 );
+
 
             if (favoriteButton) {
 
@@ -987,14 +1162,16 @@ async function loadRecentAds() {
             }
 
 
-            recentAds.appendChild(card);
+            recentAds.appendChild(
+                card
+            );
 
         }
 
 
-        // =================================================
-        // FAVORIS
-        // =================================================
+        // -----------------------------------------------------
+        // RESTAURER FAVORIS
+        // -----------------------------------------------------
 
         await restoreFavoriteButtons();
 
@@ -1028,6 +1205,7 @@ async function loadRecentAds() {
         `;
 
     }
+
 }
 
 
