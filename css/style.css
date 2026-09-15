@@ -1,8 +1,9 @@
 /* =========================================================
    CAMU SERVICES
    STYLE.CSS
-   VERSION MOBILE + PC
+   VERSION PROPRE — PC + TABLETTE + MOBILE
    ========================================================= */
+
 
 /* =========================================================
    VARIABLES
@@ -68,7 +69,9 @@ body {
 
     background: var(--background);
     color: var(--text);
+
     line-height: 1.6;
+
     overflow-x: hidden;
 }
 
@@ -96,6 +99,7 @@ textarea {
 
 .sidebar {
     position: fixed;
+
     top: 0;
     left: 0;
 
@@ -103,15 +107,20 @@ textarea {
     height: 100vh;
 
     background: var(--white);
-    border-right: 1px solid var(--border);
+
+    border-right:
+        1px solid var(--border);
 
     display: flex;
+
     flex-direction: column;
 
     z-index: 1000;
+
     overflow-y: auto;
 
-    transition: transform var(--transition);
+    transition:
+        transform var(--transition);
 }
 
 
@@ -121,13 +130,16 @@ textarea {
 
 .sidebar-header {
     position: relative;
+
     min-height: 105px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom:
+        1px solid var(--border);
 }
 
 
@@ -137,26 +149,33 @@ textarea {
 
 .logo-image {
     display: flex;
+
     align-items: center;
     justify-content: center;
+
+    text-decoration: none;
 }
 
 .sidebar .logo-image img {
     width: 170px;
+
     height: auto;
+
     max-height: 75px;
+
     object-fit: contain;
 }
 
 
 /* =========================================================
-   FERMER SIDEBAR
+   BOUTON FERMER SIDEBAR
    ========================================================= */
 
 .sidebar-close {
     display: none;
 
     position: absolute;
+
     right: 12px;
     top: 12px;
 
@@ -164,32 +183,41 @@ textarea {
     height: 36px;
 
     border: none;
+
     background: #f1f5f9;
 
     border-radius: 50%;
+
     color: var(--text);
 
     align-items: center;
     justify-content: center;
+
+    cursor: pointer;
 }
 
 
 /* =========================================================
-   NAVIGATION
+   NAVIGATION SIDEBAR
    ========================================================= */
 
 .sidebar-nav {
     padding: 18px 13px;
+
     flex: 1;
 }
 
 .nav-item {
     display: flex;
+
     align-items: center;
+
     gap: 13px;
 
     min-height: 48px;
+
     padding: 11px 14px;
+
     margin-bottom: 5px;
 
     border-radius: 12px;
@@ -197,6 +225,7 @@ textarea {
     color: #475569;
 
     font-size: 14px;
+
     font-weight: 600;
 
     transition:
@@ -207,17 +236,23 @@ textarea {
 
 .nav-item i {
     width: 22px;
+
     text-align: center;
+
     font-size: 17px;
+
+    flex-shrink: 0;
 }
 
 .nav-item:hover {
     background: var(--blue-light);
+
     color: var(--blue);
 }
 
 .nav-item.active {
     background: var(--blue);
+
     color: var(--white);
 
     box-shadow:
@@ -226,21 +261,25 @@ textarea {
 
 .sidebar-bottom {
     padding: 12px 13px 18px;
-    border-top: 1px solid var(--border);
+
+    border-top:
+        1px solid var(--border);
 }
 
 
 /* =========================================================
-   OVERLAY
+   OVERLAY MOBILE
    ========================================================= */
 
 .sidebar-overlay {
     display: none;
 
     position: fixed;
+
     inset: 0;
 
-    background: rgba(15, 23, 42, 0.55);
+    background:
+        rgba(15, 23, 42, 0.55);
 
     z-index: 999;
 
@@ -253,11 +292,12 @@ textarea {
 
 
 /* =========================================================
-   MAIN
+   CONTENU PRINCIPAL
    ========================================================= */
 
 .main-wrapper {
     margin-left: var(--sidebar-width);
+
     min-height: 100vh;
 }
 
@@ -268,17 +308,23 @@ textarea {
 
 .topbar {
     position: sticky;
+
     top: 0;
 
     height: 70px;
 
-    background: rgba(255, 255, 255, 0.96);
+    background:
+        rgba(255, 255, 255, 0.97);
+
     backdrop-filter: blur(12px);
 
-    border-bottom: 1px solid var(--border);
+    border-bottom:
+        1px solid var(--border);
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     padding: 0 28px;
@@ -286,11 +332,93 @@ textarea {
     z-index: 900;
 }
 
-.topbar-left,
+
+/* =========================================================
+   LOGO PC — EN-TÊTE
+   ========================================================= */
+
+.desktop-logo {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 145px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    text-decoration: none;
+}
+
+.desktop-logo img {
+    display: block;
+
+    width: 125px;
+
+    height: auto;
+
+    max-width: 125px;
+
+    max-height: 55px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   LOGO MOBILE
+   CACHÉ SUR PC
+   ========================================================= */
+
+.mobile-logo {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 160px;
+    height: 68px;
+
+    z-index: 20;
+}
+
+.mobile-logo img {
+    display: block;
+
+    width: 135px;
+
+    height: auto;
+
+    max-width: 135px;
+
+    max-height: 60px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   TOPBAR DROITE
+   ========================================================= */
+
 .topbar-right {
     display: flex;
+
     align-items: center;
-    gap: 10px;
+
+    gap: 8px;
+
+    margin-left: auto;
 }
 
 
@@ -299,18 +427,25 @@ textarea {
    ========================================================= */
 
 .menu-button {
-    width: 42px;
-    height: 42px;
-
     display: none;
+
     align-items: center;
+
     justify-content: center;
 
-    border: 1px solid var(--border);
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border:
+        1px solid var(--border);
+
     background: var(--white);
+
     color: var(--blue);
 
-    border-radius: 10px;
+    border-radius: 11px;
 
     cursor: pointer;
 }
@@ -321,33 +456,7 @@ textarea {
 
 
 /* =========================================================
-   LOGO MOBILE
-   ========================================================= */
-
-.mobile-logo {
-    display: none;
-
-    position: absolute;
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    align-items: center;
-    justify-content: center;
-}
-
-.mobile-logo img {
-    width: 105px;
-    height: auto;
-    max-height: 48px;
-
-    object-fit: contain;
-}
-
-
-/* =========================================================
-   FAVORIS
+   FAVORIS TOPBAR
    ========================================================= */
 
 .topbar-icon {
@@ -355,7 +464,9 @@ textarea {
     height: 44px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border-radius: 50%;
@@ -369,11 +480,12 @@ textarea {
 
 .topbar-icon:hover {
     background: var(--blue-light);
+
     color: var(--blue);
 }
 
 .topbar-icon i {
-    font-size: 21px;
+    font-size: 22px;
 }
 
 
@@ -385,10 +497,13 @@ textarea {
     min-height: 44px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
+
     padding: 0 14px;
 
     border-radius: 10px;
@@ -396,11 +511,13 @@ textarea {
     color: var(--text);
 
     font-size: 14px;
+
     font-weight: 600;
 }
 
 .profile-button:hover {
     background: var(--blue-light);
+
     color: var(--blue);
 }
 
@@ -415,6 +532,7 @@ textarea {
 
 .hero {
     position: relative;
+
     overflow: hidden;
 
     min-height: 450px;
@@ -422,6 +540,7 @@ textarea {
     padding: 60px 35px;
 
     display: flex;
+
     align-items: center;
 
     background:
@@ -471,9 +590,11 @@ textarea {
 
 .hero-content {
     position: relative;
+
     z-index: 2;
 
     width: 100%;
+
     max-width: 1000px;
 
     margin: auto;
@@ -490,9 +611,10 @@ textarea {
     display: inline-flex;
 
     align-items: center;
+
     gap: 7px;
 
-    padding: 8px 13px;
+    padding: 8px 15px;
 
     border-radius: 999px;
 
@@ -500,9 +622,10 @@ textarea {
         rgba(255, 255, 255, 0.13);
 
     border:
-        1px solid rgba(255, 255, 255, 0.16);
+        1px solid rgba(255, 255, 255, 0.18);
 
-    font-size: 13px;
+    font-size: 14px;
+
     font-weight: 600;
 
     margin-bottom: 17px;
@@ -538,18 +661,19 @@ textarea {
     font-size: 18px;
 
     color:
-        rgba(255, 255, 255, 0.88);
+        rgba(255, 255, 255, 0.90);
 
     line-height: 1.7;
 }
 
 
 /* =========================================================
-   SEARCH BOX
+   RECHERCHE
    ========================================================= */
 
 .search-box {
     width: 100%;
+
     max-width: 900px;
 
     margin: auto;
@@ -576,13 +700,15 @@ textarea {
     min-height: 52px;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
 
     padding: 0 14px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 11px;
 
@@ -591,7 +717,10 @@ textarea {
 
 .search-field i {
     color: var(--blue);
-    font-size: 16px;
+
+    font-size: 17px;
+
+    flex-shrink: 0;
 }
 
 .search-field input,
@@ -601,6 +730,7 @@ textarea {
     height: 48px;
 
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -637,19 +767,21 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
 
+    cursor: pointer;
+
     transition:
         background var(--transition),
         transform var(--transition);
-
-    cursor: pointer;
 }
 
 .search-button:hover {
     background: var(--green-dark);
+
     transform: translateY(-1px);
 }
 
@@ -671,6 +803,7 @@ textarea {
     display: flex;
 
     align-items: flex-end;
+
     justify-content: space-between;
 
     gap: 20px;
@@ -682,6 +815,7 @@ textarea {
     color: var(--green);
 
     font-size: 12px;
+
     font-weight: 800;
 
     text-transform: uppercase;
@@ -713,6 +847,8 @@ textarea {
     font-size: 14px;
 
     font-weight: 700;
+
+    white-space: nowrap;
 }
 
 .see-all:hover {
@@ -721,7 +857,7 @@ textarea {
 
 
 /* =========================================================
-   CATEGORIES
+   CATÉGORIES
    ========================================================= */
 
 .categories-grid {
@@ -739,7 +875,7 @@ textarea {
 
 
 /* =========================================================
-   CARTE CATEGORIE
+   CARTE CATÉGORIE
    ========================================================= */
 
 .category-card {
@@ -752,13 +888,15 @@ textarea {
     flex-direction: column;
 
     align-items: center;
+
     justify-content: center;
 
     text-align: center;
 
     background: var(--white);
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 17px;
 
@@ -779,7 +917,7 @@ textarea {
 
 
 /* =========================================================
-   ICONE CATEGORIE
+   ICÔNE CATÉGORIE
    TOUJOURS CENTRÉE
    ========================================================= */
 
@@ -787,11 +925,13 @@ textarea {
     width: 56px;
     height: 56px;
 
-    margin: 0 auto 13px;
+    margin:
+        0 auto 13px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
@@ -814,9 +954,12 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     text-align: center;
+
+    line-height: 1;
 }
 
 .category-card h3 {
@@ -836,7 +979,11 @@ textarea {
 }
 
 .category-card p {
+    width: 100%;
+
     max-width: 210px;
+
+    margin: 0 auto;
 
     color: var(--muted);
 
@@ -859,6 +1006,7 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 10px;
@@ -890,7 +1038,8 @@ textarea {
 
     background: var(--white);
 
-    border: 1px dashed #cbd5e1;
+    border:
+        1px dashed #cbd5e1;
 
     border-radius: 16px;
 }
@@ -949,7 +1098,8 @@ textarea {
 
     background: var(--white);
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 15px;
 
@@ -1016,6 +1166,7 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     border: none;
@@ -1045,7 +1196,7 @@ textarea {
 
 
 /* =========================================================
-   CATEGORIE SUR IMAGE
+   CATÉGORIE SUR IMAGE
    ========================================================= */
 
 .ad-category {
@@ -1128,19 +1279,21 @@ textarea {
 
 
 /* =========================================================
-   CTA
+   CTA PUBLICATION
    ========================================================= */
 
 .publish-cta {
     max-width: 1250px;
 
-    margin: 5px auto 65px;
+    margin:
+        5px auto 65px;
 
     padding: 35px 40px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 30px;
@@ -1176,6 +1329,7 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     border-radius: 15px;
@@ -1184,16 +1338,6 @@ textarea {
         rgba(255, 255, 255, 0.12);
 
     font-size: 22px;
-}
-
-.cta-label {
-    color: #5ee58b;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
 }
 
 .publish-cta h2 {
@@ -1221,6 +1365,7 @@ textarea {
     display: inline-flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
@@ -1236,10 +1381,16 @@ textarea {
     font-weight: 750;
 
     cursor: pointer;
+
+    transition:
+        background var(--transition),
+        transform var(--transition);
 }
 
 .primary-button:hover {
     background: var(--green-dark);
+
+    transform: translateY(-1px);
 }
 
 
@@ -1253,7 +1404,8 @@ textarea {
     color:
         rgba(255, 255, 255, 0.75);
 
-    padding: 48px 40px 22px;
+    padding:
+        48px 40px 22px;
 }
 
 .footer-content {
@@ -1264,6 +1416,7 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 40px;
@@ -1277,7 +1430,7 @@ textarea {
 
 /* =========================================================
    LOGO FOOTER
-   PETIT + CENTRÉ + SANS CADRE
+   PETIT + CENTRÉ
    ========================================================= */
 
 .footer-brand {
@@ -1288,11 +1441,15 @@ textarea {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    padding: 0 !important;
+    width: fit-content;
 
-    margin: 0 auto 10px;
+    margin:
+        0 auto 10px;
+
+    padding: 0 !important;
 
     background: transparent !important;
 
@@ -1302,19 +1459,27 @@ textarea {
 }
 
 .footer-logo img {
+    display: block;
+
     width: 105px;
 
     height: auto;
+
+    max-width: 105px;
 
     max-height: 60px;
 
     object-fit: contain;
 
-    background: transparent !important;
-
     border: none !important;
 
     box-shadow: none !important;
+
+    /*
+       Le fichier PNG actuel possède probablement
+       un fond blanc intégré.
+    */
+    mix-blend-mode: multiply;
 }
 
 .footer-brand p {
@@ -1345,12 +1510,18 @@ textarea {
 
     font-size: 12px;
 
-    transition: color var(--transition);
+    transition:
+        color var(--transition);
 }
 
 .footer-links a:hover {
     color: #5ee58b;
 }
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
 
 .footer-bottom {
     padding-top: 20px;
@@ -1381,6 +1552,7 @@ textarea {
 
     .publish-cta {
         margin-left: 25px;
+
         margin-right: 25px;
     }
 }
@@ -1397,14 +1569,18 @@ textarea {
     }
 
 
-    /* SIDEBAR */
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
 
     .sidebar {
-        transform: translateX(-100%);
+        transform:
+            translateX(-100%);
     }
 
     .sidebar.open {
-        transform: translateX(0);
+        transform:
+            translateX(0);
     }
 
     .sidebar-close {
@@ -1412,82 +1588,189 @@ textarea {
     }
 
 
-    /* MAIN */
+    /* =====================================================
+       MAIN
+       ===================================================== */
 
     .main-wrapper {
         margin-left: 0;
     }
 
 
-    /* TOPBAR */
+    /* =====================================================
+       TOPBAR MOBILE
+       ===================================================== */
 
     .topbar {
         position: relative;
 
-        height: 70px;
+        width: 100%;
+
+        height: 72px;
 
         padding: 0 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        background: #ffffff;
+
+        border-bottom:
+            1px solid var(--border);
+
+        z-index: 1000;
     }
 
 
-    /* MENU */
+    /* =====================================================
+       CACHER LE LOGO PC
+       ===================================================== */
+
+    .desktop-logo,
+    .desktop-logo img {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       MENU
+       ===================================================== */
 
     .menu-button {
-        display: flex;
+        display: flex !important;
 
-        width: 44px;
-        height: 44px;
+        align-items: center;
 
-        border-radius: 11px;
+        justify-content: center;
+
+        width: 46px;
+        height: 46px;
+
+        padding: 0;
+
+        flex-shrink: 0;
+
+        border:
+            1px solid var(--border);
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        color: var(--blue);
+
+        font-size: 23px;
+
+        z-index: 30;
     }
 
 
     /* =====================================================
        LOGO MOBILE
-       UN PEU PLUS GROS + TOUJOURS CENTRÉ
+       PLUS GROS ET CENTRÉ
        ===================================================== */
 
     .mobile-logo {
-        display: flex;
+        display: flex !important;
+
+        position: absolute !important;
+
+        left: 50% !important;
+
+        top: 50% !important;
+
+        transform:
+            translate(-50%, -50%) !important;
+
+        width: 165px !important;
+
+        height: 70px !important;
+
+        align-items: center;
+
+        justify-content: center;
+
+        z-index: 25;
     }
 
     .mobile-logo img {
-        width: 105px;
+        display: block !important;
 
-        height: auto;
+        width: 140px !important;
 
-        max-height: 48px;
+        height: auto !important;
 
-        object-fit: contain;
-    }
+        max-width: 140px !important;
 
+        max-height: 61px !important;
 
-    /* TOPBAR */
-
-    .topbar-right {
-        gap: 2px;
-    }
-
-    .topbar-icon {
-        width: 44px;
-        height: 44px;
-    }
-
-    .topbar-icon i {
-        font-size: 22px;
+        object-fit: contain !important;
     }
 
 
     /* =====================================================
-       COMPTE
-       UNIQUEMENT L'ICÔNE
+       TOPBAR DROITE
        ===================================================== */
 
-    .profile-button {
+    .topbar-right {
+        display: flex !important;
+
+        align-items: center;
+
+        gap: 2px;
+
+        margin-left: auto;
+
+        z-index: 30;
+    }
+
+
+    /* =====================================================
+       FAVORIS
+       ===================================================== */
+
+    .topbar-icon {
         width: 44px;
+
         height: 44px;
 
         padding: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+    .topbar-icon i {
+        font-size: 25px;
+    }
+
+
+    /* =====================================================
+       COMPTE — ICÔNE SEULEMENT
+       ===================================================== */
+
+    .profile-button {
+        width: 44px !important;
+
+        height: 44px !important;
+
+        min-height: 44px;
+
+        padding: 0 !important;
+
+        display: flex !important;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 0;
 
         border-radius: 50%;
     }
@@ -1497,100 +1780,121 @@ textarea {
     }
 
     .profile-button i {
-        font-size: 23px;
+        font-size: 26px;
     }
 
 
-    /* HERO */
+    /* =====================================================
+       HERO MOBILE
+       ===================================================== */
 
     .hero {
         min-height: auto;
 
-        padding: 42px 14px 38px;
+        padding:
+            42px 14px 38px;
     }
 
     .hero-badge {
-        font-size: 12px;
+        font-size: 13px;
 
-        padding: 8px 13px;
+        padding:
+            9px 14px;
 
-        margin-bottom: 17px;
+        margin-bottom: 18px;
     }
 
     .hero h1 {
         font-size:
-            clamp(30px, 9vw, 42px);
+            clamp(30px, 9vw, 43px);
 
-        letter-spacing: -0.7px;
+        letter-spacing:
+            -0.8px;
 
-        margin-bottom: 13px;
+        line-height: 1.08;
+
+        margin-bottom: 14px;
     }
 
     .hero p {
-        max-width: 360px;
+        max-width: 380px;
 
         font-size: 15px;
 
         line-height: 1.6;
 
-        margin-bottom: 23px;
+        margin-bottom: 25px;
     }
 
 
-    /* RECHERCHE */
+    /* =====================================================
+       RECHERCHE MOBILE
+       ===================================================== */
 
     .search-box {
         display: flex;
 
         flex-direction: column;
 
-        gap: 8px;
+        gap: 9px;
 
         padding: 9px;
 
-        border-radius: 17px;
+        border-radius: 18px;
+
+        width: 100%;
     }
 
     .search-field {
-        min-height: 50px;
+        min-height: 54px;
 
-        height: 50px;
+        height: 54px;
 
-        padding: 0 15px;
+        padding:
+            0 16px;
+
+        border-radius: 13px;
     }
 
     .search-field input,
     .search-field select {
-        height: 46px;
+        height: 50px;
 
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .search-field i {
-        font-size: 19px;
+        font-size: 20px;
     }
 
     .search-button {
-        min-height: 52px;
-
-        height: 52px;
-
         width: 100%;
 
-        font-size: 16px;
+        min-height: 54px;
+
+        height: 54px;
+
+        font-size: 17px;
+
+        border-radius: 13px;
     }
 
 
-    /* SECTION */
+    /* =====================================================
+       SECTIONS MOBILE
+       ===================================================== */
 
     .section {
-        padding: 42px 14px;
+        padding:
+            43px 14px;
     }
 
     .section-header {
-        margin-bottom: 21px;
+        margin-bottom: 22px;
 
         align-items: flex-end;
+
+        gap: 10px;
     }
 
     .section-header h2 {
@@ -1609,8 +1913,8 @@ textarea {
 
 
     /* =====================================================
-       CATEGORIES
-       3 COLONNES MOBILE
+       CATÉGORIES MOBILE
+       3 COLONNES
        ===================================================== */
 
     .categories-grid {
@@ -1623,37 +1927,50 @@ textarea {
     .category-card {
         min-height: 155px;
 
-        padding: 15px 5px;
+        padding:
+            15px 5px;
 
         border-radius: 14px;
     }
 
 
     /* =====================================================
-       ICONE CATÉGORIE
-       CENTRÉE
+       ICÔNES CATÉGORIES
        ===================================================== */
 
     .category-icon {
-        width: 48px;
-        height: 48px;
+        width: 50px;
+
+        height: 50px;
 
         margin:
-            0 auto 9px;
+            0 auto 10px;
 
-        border-radius: 13px;
+        border-radius: 14px;
 
-        font-size: 20px;
+        font-size: 21px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
     }
 
     .category-icon i {
         width: 100%;
+
         height: 100%;
 
         display: flex;
 
         align-items: center;
+
         justify-content: center;
+
+        text-align: center;
+
+        line-height: 1;
     }
 
     .category-card h3 {
@@ -1669,20 +1986,23 @@ textarea {
     }
 
     .category-card p {
-        font-size: 10px;
-
-        line-height: 1.35;
+        width: 100%;
 
         max-width: 105px;
 
-        margin: 0 auto;
+        margin:
+            0 auto;
+
+        font-size: 10px;
+
+        line-height: 1.35;
 
         text-align: center;
     }
 
 
     /* =====================================================
-       ANNONCES
+       ANNONCES MOBILE
        ===================================================== */
 
     .ads-grid {
@@ -1697,14 +2017,17 @@ textarea {
     }
 
     .ad-image {
-        aspect-ratio: 1 / 0.82;
+        aspect-ratio:
+            1 / 0.82;
     }
 
     .favorite-button {
         width: 35px;
+
         height: 35px;
 
         top: 7px;
+
         right: 7px;
     }
 
@@ -1719,7 +2042,8 @@ textarea {
 
         font-size: 8px;
 
-        padding: 4px 7px;
+        padding:
+            4px 7px;
     }
 
     .ad-content {
@@ -1747,14 +2071,15 @@ textarea {
 
 
     /* =====================================================
-       CTA
+       CTA MOBILE
        ===================================================== */
 
     .publish-cta {
         margin:
             0 14px 42px;
 
-        padding: 28px 18px;
+        padding:
+            28px 18px;
 
         flex-direction: column;
 
@@ -1773,6 +2098,7 @@ textarea {
 
     .publish-cta-icon {
         width: 50px;
+
         height: 50px;
 
         font-size: 19px;
@@ -1815,10 +2141,13 @@ textarea {
     }
 
 
-    /* LOGO FOOTER PETIT + CENTRÉ */
+    /* =====================================================
+       LOGO FOOTER
+       PETIT + CENTRÉ
+       ===================================================== */
 
     .footer-logo {
-        display: flex;
+        display: flex !important;
 
         width: fit-content;
 
@@ -1835,11 +2164,15 @@ textarea {
     }
 
     .footer-logo img {
-        width: 100px;
+        display: block !important;
 
-        height: auto;
+        width: 100px !important;
 
-        max-height: 58px;
+        height: auto !important;
+
+        max-width: 100px !important;
+
+        max-height: 58px !important;
 
         object-fit: contain;
 
@@ -1848,6 +2181,8 @@ textarea {
         border: none !important;
 
         box-shadow: none !important;
+
+        mix-blend-mode: multiply;
     }
 
     .footer-brand p {
@@ -1871,78 +2206,121 @@ textarea {
 
 
 /* =========================================================
-   PETIT TELEPHONE
+   PETIT TÉLÉPHONE
    ========================================================= */
 
 @media (max-width: 420px) {
 
-    /* LOGO HAUT */
+    /* -----------------------------------------------------
+       LOGO MOBILE
+       ----------------------------------------------------- */
+
+    .mobile-logo {
+        width: 155px !important;
+
+        height: 66px !important;
+    }
 
     .mobile-logo img {
-        width: 98px;
+        width: 130px !important;
 
-        max-height: 46px;
+        max-width: 130px !important;
+
+        max-height: 58px !important;
     }
 
 
-    /* HERO */
+    /* -----------------------------------------------------
+       HERO
+       ----------------------------------------------------- */
 
     .hero {
         padding:
             35px 10px 32px;
     }
 
+    .hero-badge {
+        font-size: 12px;
+
+        padding:
+            8px 12px;
+    }
+
     .hero h1 {
         font-size: 29px;
+
+        line-height: 1.1;
     }
 
     .hero p {
         font-size: 13px;
+
+        line-height: 1.55;
     }
 
 
-    /* SECTION */
+    /* -----------------------------------------------------
+       SECTION
+       ----------------------------------------------------- */
 
     .section {
         padding:
-            34px 10px;
+            35px 10px;
     }
 
     .section-header h2 {
         font-size: 23px;
     }
 
+    .see-all {
+        font-size: 12px;
+    }
 
-    /* CATEGORIES */
+
+    /* -----------------------------------------------------
+       CATÉGORIES
+       ----------------------------------------------------- */
 
     .categories-grid {
         gap: 7px;
     }
 
     .category-card {
-        min-height: 140px;
+        min-height: 145px;
 
         padding:
             12px 3px;
     }
 
     .category-icon {
-        width: 42px;
-        height: 42px;
+        width: 44px;
 
-        font-size: 18px;
+        height: 44px;
+
+        font-size: 19px;
+
+        margin:
+            0 auto 9px;
     }
 
     .category-card h3 {
         font-size: 10.5px;
+
+        line-height: 1.25;
     }
 
     .category-card p {
         font-size: 8.5px;
+
+        line-height: 1.3;
+
+        max-width: 100px;
     }
 
 
-    /* ANNONCES */
+    /* -----------------------------------------------------
+       ANNONCES
+       ----------------------------------------------------- */
 
     .ads-grid {
         gap: 7px;
@@ -1962,12 +2340,16 @@ textarea {
     }
 
 
-    /* FOOTER */
+    /* -----------------------------------------------------
+       FOOTER
+       ----------------------------------------------------- */
 
     .footer-logo img {
-        width: 95px;
+        width: 95px !important;
 
-        max-height: 55px;
+        max-width: 95px !important;
+
+        max-height: 55px !important;
     }
 }
 
@@ -1978,29 +2360,40 @@ textarea {
 
 @media (max-width: 350px) {
 
-    .mobile-logo img {
-        width: 92px;
+    /* LOGO */
 
-        max-height: 44px;
+    .mobile-logo img {
+        width: 120px !important;
+
+        max-width: 120px !important;
+
+        max-height: 54px !important;
     }
+
+
+    /* HERO */
 
     .hero h1 {
         font-size: 26px;
     }
+
+
+    /* CATÉGORIES */
 
     .categories-grid {
         gap: 5px;
     }
 
     .category-card {
-        min-height: 128px;
+        min-height: 130px;
     }
 
     .category-icon {
-        width: 37px;
-        height: 37px;
+        width: 38px;
 
-        font-size: 15px;
+        height: 38px;
+
+        font-size: 16px;
     }
 
     .category-card h3 {
@@ -2009,10 +2402,17 @@ textarea {
 
     .category-card p {
         font-size: 8px;
+
+        max-width: 90px;
     }
 
+
+    /* FOOTER */
+
     .footer-logo img {
-        width: 90px;
+        width: 90px !important;
+
+        max-width: 90px !important;
     }
 }
 
@@ -2030,7 +2430,7 @@ textarea {
 
 
 /* =========================================================
-   REDUCTION ANIMATIONS
+   RÉDUCTION DES ANIMATIONS
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2038,427 +2438,17 @@ textarea {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
 
-        animation-iteration-count: 1 !important;
+        animation-duration:
+            0.01ms !important;
 
-        transition-duration: 0.01ms !important;
+        animation-iteration-count:
+            1 !important;
 
-        scroll-behavior: auto !important;
+        transition-duration:
+            0.01ms !important;
+
+        scroll-behavior:
+            auto !important;
     }
-}
-
-/* =========================================================
-   CORRECTION FINALE DES LOGOS
-   ========================================================= */
-
-
-/* =========================================================
-   LOGO PC — EN-TÊTE
-   ========================================================= */
-
-.desktop-logo {
-    display: flex !important;
-
-    align-items: center;
-    justify-content: center;
-
-    width: 150px;
-    height: 70px;
-
-    flex-shrink: 0;
-
-    text-decoration: none;
-}
-
-.desktop-logo img {
-    display: block;
-
-    width: 135px;
-    height: auto;
-
-    max-width: none;
-    max-height: 58px;
-
-    object-fit: contain;
-}
-
-
-/* =========================================================
-   LOGO MOBILE
-   ========================================================= */
-
-.mobile-logo {
-    display: none;
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    align-items: center;
-    justify-content: center;
-
-    width: 150px;
-    height: 65px;
-
-    z-index: 10;
-}
-
-.mobile-logo img {
-    display: block;
-
-    width: 140px;
-    height: auto;
-
-    max-width: none;
-    max-height: 58px;
-
-    object-fit: contain;
-}
-
-
-/* =========================================================
-   TOPBAR PC
-   ========================================================= */
-
-@media (min-width: 769px) {
-
-    .topbar {
-        position: sticky;
-
-        top: 0;
-
-        height: 70px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        padding: 0 28px;
-
-        background: rgba(255, 255, 255, 0.97);
-
-        border-bottom: 1px solid #e5e7eb;
-
-        z-index: 900;
-    }
-
-    .desktop-logo {
-        display: flex !important;
-    }
-
-    .mobile-logo {
-        display: none !important;
-    }
-
-    .menu-button {
-        display: none !important;
-    }
-
-    .topbar-right {
-        margin-left: auto;
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 8px;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .topbar {
-        position: relative;
-
-        height: 72px;
-
-        width: 100%;
-
-        padding: 0 12px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        background: #ffffff;
-
-        border-bottom: 1px solid #e5e7eb;
-
-        z-index: 900;
-    }
-
-
-    /* PC LOGO CACHÉ */
-
-    .desktop-logo {
-        display: none !important;
-    }
-
-
-    /* MENU */
-
-    .menu-button {
-        display: flex !important;
-
-        align-items: center;
-        justify-content: center;
-
-        width: 46px;
-        height: 46px;
-
-        flex-shrink: 0;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 12px;
-
-        background: #ffffff;
-
-        color: #0757a0;
-
-        font-size: 23px;
-
-        cursor: pointer;
-
-        z-index: 20;
-    }
-
-
-    /* =====================================================
-       LOGO MOBILE — PLUS GROS
-       ===================================================== */
-
-    .mobile-logo {
-        display: flex !important;
-
-        position: absolute;
-
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        width: 155px;
-        height: 68px;
-
-        align-items: center;
-        justify-content: center;
-
-        z-index: 15;
-    }
-
-    .mobile-logo img {
-        display: block;
-
-        width: 140px;
-
-        height: auto;
-
-        max-width: none;
-
-        max-height: 60px;
-
-        object-fit: contain;
-    }
-
-
-    /* DROITE */
-
-    .topbar-right {
-        display: flex;
-
-        align-items: center;
-
-        gap: 2px;
-
-        margin-left: auto;
-
-        z-index: 20;
-    }
-
-
-    /* FAVORIS */
-
-    .topbar-icon {
-        width: 44px;
-        height: 44px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        padding: 0;
-
-        border-radius: 50%;
-    }
-
-    .topbar-icon i {
-        font-size: 24px;
-    }
-
-
-    /* =====================================================
-       COMPTE — ICÔNE SEULEMENT
-       ===================================================== */
-
-    .profile-button {
-        width: 44px;
-        height: 44px;
-
-        padding: 0;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 50%;
-
-        gap: 0;
-    }
-
-    .profile-button span {
-        display: none !important;
-    }
-
-    .profile-button i {
-        font-size: 25px;
-    }
-
-}
-
-
-/* =========================================================
-   PETIT MOBILE
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-    .topbar {
-        height: 70px;
-    }
-
-    .mobile-logo {
-        width: 150px;
-        height: 64px;
-    }
-
-    .mobile-logo img {
-        width: 132px;
-        max-height: 57px;
-    }
-
-}
-
-
-/* =========================================================
-   TRÈS PETIT MOBILE
-   ========================================================= */
-
-@media (max-width: 350px) {
-
-    .mobile-logo img {
-        width: 125px;
-        max-height: 54px;
-    }
-
-}
-
-
-/* =========================================================
-   LOGO FOOTER
-   ========================================================= */
-
-.footer-logo {
-    display: flex !important;
-
-    align-items: center;
-    justify-content: center;
-
-    width: fit-content;
-
-    margin: 0 auto 12px;
-
-    padding: 0 !important;
-
-    background: transparent !important;
-
-    border: none !important;
-
-    box-shadow: none !important;
-}
-
-.footer-logo img {
-    display: block;
-
-    width: 115px;
-
-    height: auto;
-
-    max-width: none;
-
-    max-height: 65px;
-
-    object-fit: contain;
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    background: transparent !important;
-
-    /*
-       Permet au fond blanc du PNG de se
-       fondre visuellement avec le footer.
-    */
-    mix-blend-mode: darken;
-}
-
-
-/* =========================================================
-   FOOTER MOBILE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .footer-logo {
-        margin-left: auto;
-        margin-right: auto;
-
-        background: transparent !important;
-
-        border: none !important;
-
-        box-shadow: none !important;
-    }
-
-    .footer-logo img {
-        width: 105px;
-
-        max-height: 60px;
-
-        background: transparent !important;
-
-        border: none !important;
-
-        box-shadow: none !important;
-
-        mix-blend-mode: darken;
-    }
-
 }
