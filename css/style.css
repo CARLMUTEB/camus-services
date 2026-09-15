@@ -1807,3 +1807,69 @@ textarea:focus-visible {
     font-size: 40px;
     color: #64748b;
 }
+
+/* =====================================================
+   LOGO OFFICIEL CAMU SERVICES
+===================================================== */
+
+.logo-image {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-image img {
+    display: block;
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* =====================================================
+   LOGO MOBILE
+===================================================== */
+
+.mobile-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-logo img {
+    display: block;
+    width: 105px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* =====================================================
+   LOGO FOOTER
+===================================================== */
+
+.footer-logo img {
+    width: 170px;
+    height: auto;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .logo-image img {
+        width: 125px;
+    }
+
+    .mobile-logo img {
+        width: 95px;
+    }
+
+    .footer-logo img {
+        width: 145px;
+    }
+
+}
