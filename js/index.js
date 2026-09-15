@@ -399,8 +399,11 @@ async function loadCategories() {
 
             card.className = "category-card";
 
-            card.href =
-                `recherche.html?category=${encodeURIComponent(category.id)}`;
+            if (category.name.toLowerCase() === "immobilier") {
+    card.href = "immobilier.html";
+} else {
+    card.href = `recherche.html?category=${encodeURIComponent(category.id)}`;
+}
 
 
             card.innerHTML = `
