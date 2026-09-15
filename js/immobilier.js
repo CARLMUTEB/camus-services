@@ -1,244 +1,456 @@
 // =========================================================
-// CAMU IMMO
-// IMMOBILIER.JS
+// CAMU IMMO — IMMOBILIER.JS
+// ESPACE IMMOBILIER
 // =========================================================
+
+
+import { db } from "./firebase-config.js";
+
 
 import {
     collection,
     getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-    db
-} from "./firebase.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 // =========================================================
-// ÉLÉMENTS
+// ELEMENTS
 // =========================================================
 
-const immoAdsContainer =
+const adsContainer =
     document.getElementById("immoAds");
 
-const immoSearchForm =
-    document.getElementById("immoSearchForm");
-
-const immoSearchInput =
-    document.getElementById("immoSearch");
-
-const immoCitySelect =
+const citySelect =
     document.getElementById("immoCity");
 
+const searchForm =
+    document.getElementById("immoSearchForm");
+
+const keywordInput =
+    document.getElementById("immoKeyword");
+
+const typeSelect =
+    document.getElementById("immoType");
+
+const menuButton =
+    document.getElementById("immoMenuButton");
+
+const mobileNav =
+    document.getElementById("immoMobileNav");
+
 
 // =========================================================
-// DONNÉES
+// DONNEES
 // =========================================================
 
-let allImmoAds = [];
-
-let currentSearch = "";
-
-let currentCity = "";
-
-let immobilierCategoryId = "";
-
-let immobilierCategoryName = "Immobilier";
+let allAds = [];
 
 
 // =========================================================
-// UTILITAIRES
+// MENU MOBILE
+// =========================================================
+
+if (menuButton && mobileNav) {
+
+    menuButton.addEventListener(
+        "click",
+        () => {
+
+            mobileNav.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+    mobileNav
+        .querySelectorAll("a")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    mobileNav.classList.remove(
+                        "open"
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+// =========================================================
+// ESCAPE HTML
+// =========================================================
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+// =========================================================
+// NORMALISER
 // =========================================================
 
 function normalizeText(value) {
 
-    return String(value || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
+    return String(
+        value || ""
+    )
+
         .toLowerCase()
+
+        .normalize("NFD")
+
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+
         .trim();
 
 }
 
 
-function escapeHTML(value) {
+// =========================================================
+// PRIX
+// =========================================================
 
-    return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-function formatPrice(price, currency = "") {
+function formatPrice(
+    price,
+    currency = "USD"
+) {
 
     if (
-        price === undefined ||
         price === null ||
+        price === undefined ||
         price === ""
     ) {
-        return "Prix sur demande";
+
+        return "Prix à discuter";
+
     }
 
-    const number = Number(price);
 
-    if (Number.isNaN(number)) {
-        return `${escapeHTML(price)} ${escapeHTML(currency)}`;
-    }
+    const number =
+        Number(price);
 
-    const formatted =
-        new Intl.NumberFormat("fr-FR").format(number);
-
-    return `${formatted} ${escapeHTML(currency)}`.trim();
-
-}
-
-
-function getFirstImage(ad) {
 
     if (
-        Array.isArray(ad.images) &&
-        ad.images.length > 0
+        Number.isNaN(number)
     ) {
-        return ad.images[0];
-    }
 
-    if (ad.imageURL) {
-        return ad.imageURL;
-    }
-
-    return "assets/images/no-image.jpg";
-
-}
-
-
-function getAdId(ad) {
-
-    return ad.id || "";
-
-}
-
-
-// =========================================================
-// CHARGER LA CATÉGORIE IMMOBILIER
-// =========================================================
-
-async function loadImmobilierCategory() {
-
-    try {
-
-        const snapshot =
-            await getDocs(
-                collection(db, "categories")
-            );
-
-        snapshot.forEach((docSnap) => {
-
-            const data = docSnap.data();
-
-            const name =
-                String(data.name || "").trim();
-
-            if (
-                normalizeText(name) ===
-                normalizeText("Immobilier")
-            ) {
-
-                immobilierCategoryId =
-                    docSnap.id;
-
-                immobilierCategoryName =
-                    name || "Immobilier";
-
-            }
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Erreur chargement catégorie Immobilier :",
-            error
+        return escapeHtml(
+            price
         );
 
     }
 
+
+    const formatted =
+        new Intl.NumberFormat(
+            "fr-FR",
+            {
+                maximumFractionDigits: 0
+            }
+        ).format(number);
+
+
+    if (
+        currency === "USD" ||
+        currency === "$"
+    ) {
+
+        return `${formatted} $`;
+
+    }
+
+
+    if (
+        currency === "CDF" ||
+        currency === "FC"
+    ) {
+
+        return `${formatted} FC`;
+
+    }
+
+
+    return `${formatted} ${escapeHtml(currency)}`;
+
 }
 
 
 // =========================================================
-// CHARGER LES VILLES
+// IMAGE
+// =========================================================
+
+function getImage(ad) {
+
+    if (
+        Array.isArray(ad.images) &&
+        ad.images.length > 0 &&
+        ad.images[0]
+    ) {
+
+        return ad.images[0];
+
+    }
+
+
+    if (ad.imageURL) {
+
+        return ad.imageURL;
+
+    }
+
+
+    if (ad.imageUrl) {
+
+        return ad.imageUrl;
+
+    }
+
+
+    if (ad.image) {
+
+        return ad.image;
+
+    }
+
+
+    return "assets/logo/camu-services-logo.png";
+
+}
+
+
+// =========================================================
+// VERIFIER CATEGORIE IMMOBILIER
+// =========================================================
+
+function isImmobilier(ad) {
+
+    const category =
+        normalizeText(
+            ad.category
+        );
+
+
+    const title =
+        normalizeText(
+            ad.title
+        );
+
+
+    const description =
+        normalizeText(
+            ad.description
+        );
+
+
+    return (
+
+        category === "immobilier" ||
+
+        category.includes(
+            "immobilier"
+        ) ||
+
+        category === "immo" ||
+
+        title.includes("maison") ||
+
+        title.includes("appartement") ||
+
+        title.includes("terrain") ||
+
+        title.includes("villa") ||
+
+        title.includes("parcelle") ||
+
+        description.includes(
+            "immobilier"
+        )
+
+    );
+
+}
+
+
+// =========================================================
+// CHARGER VILLES
 // =========================================================
 
 async function loadCities() {
 
-    if (!immoCitySelect) {
+    if (!citySelect) {
+
         return;
+
     }
+
 
     try {
 
         const snapshot =
             await getDocs(
-                collection(db, "villes")
+                collection(
+                    db,
+                    "villes"
+                )
             );
+
 
         const cities = [];
 
-        snapshot.forEach((docSnap) => {
 
-            const data = docSnap.data();
+        snapshot.forEach(
+            document => {
 
-            if (data.active === false) {
-                return;
+                const data =
+                    document.data();
+
+
+                if (
+                    data.active === true
+                ) {
+
+                    cities.push({
+
+                        id:
+                            document.id,
+
+                        name:
+                            data.name || "",
+
+                        order:
+                            Number(
+                                data.order
+                            ) || 999
+
+                    });
+
+                }
+
             }
-
-            const name =
-                String(data.name || "").trim();
-
-            if (!name) {
-                return;
-            }
-
-            cities.push({
-                id: docSnap.id,
-                name: name
-            });
-
-        });
-
-
-        cities.sort((a, b) =>
-            a.name.localeCompare(
-                b.name,
-                "fr"
-            )
         );
 
 
-        cities.forEach((city) => {
+        cities.sort(
+            (a, b) => {
 
-            const option =
-                document.createElement("option");
+                if (
+                    a.order !==
+                    b.order
+                ) {
 
-            option.value = city.id;
+                    return (
+                        a.order -
+                        b.order
+                    );
 
-            option.textContent = city.name;
+                }
 
-            option.dataset.name =
-                city.name;
 
-            immoCitySelect.appendChild(option);
+                return a.name.localeCompare(
+                    b.name,
+                    "fr",
+                    {
+                        sensitivity:
+                            "base"
+                    }
+                );
 
-        });
+            }
+        );
+
+
+        citySelect.innerHTML = `
+
+            <option value="">
+                Toutes les villes
+            </option>
+
+        `;
+
+
+        cities.forEach(
+            city => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    city.id;
+
+
+                option.textContent =
+                    city.name;
+
+
+                citySelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        console.log(
+            "CAMU IMMO — villes :",
+            cities.length
+        );
 
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement villes :",
+            "CAMU IMMO — erreur villes :",
             error
         );
 
@@ -248,123 +460,141 @@ async function loadCities() {
 
 
 // =========================================================
-// CHARGER LES ANNONCES
+// CHARGER ANNONCES
 // =========================================================
 
-async function loadImmobilierAds() {
+async function loadAds() {
 
-    if (!immoAdsContainer) {
+    if (!adsContainer) {
+
         return;
+
     }
-
-    immoAdsContainer.innerHTML = `
-
-        <div class="immo-loading">
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <span>
-                Chargement des biens immobiliers...
-            </span>
-
-        </div>
-
-    `;
 
 
     try {
 
+        adsContainer.innerHTML = `
+
+            <div class="immo-loading">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <span>
+                    Chargement des biens...
+                </span>
+
+            </div>
+
+        `;
+
+
         const snapshot =
             await getDocs(
-                collection(db, "annonces")
+                collection(
+                    db,
+                    "annonces"
+                )
             );
 
-        allImmoAds = [];
+
+        allAds =
+            snapshot.docs
+
+                .map(
+                    document => ({
+
+                        id:
+                            document.id,
+
+                        ...document.data()
+
+                    })
+                )
+
+                .filter(
+                    ad => {
+
+                        if (
+                            ad.status ===
+                                undefined ||
+                            ad.status ===
+                                null ||
+                            ad.status === ""
+                        ) {
+
+                            return true;
+
+                        }
 
 
-        snapshot.forEach((docSnap) => {
+                        return (
+                            ad.status ===
+                            "active"
+                        );
 
-            const data =
-                docSnap.data();
+                    }
+                )
+
+                .filter(
+                    isImmobilier
+                );
 
 
-            // -------------------------------------------------
-            // Ignorer les annonces désactivées
-            // -------------------------------------------------
+        allAds.sort(
+            (a, b) => {
 
-            if (
-                data.status &&
-                normalizeText(data.status) !== "active"
-            ) {
-                return;
+                const dateA =
+                    a.createdAt &&
+                    typeof
+                        a.createdAt.toMillis ===
+                        "function"
+
+                        ? a.createdAt.toMillis()
+
+                        : 0;
+
+
+                const dateB =
+                    b.createdAt &&
+                    typeof
+                        b.createdAt.toMillis ===
+                        "function"
+
+                        ? b.createdAt.toMillis()
+
+                        : 0;
+
+
+                return (
+                    dateB -
+                    dateA
+                );
+
             }
+        );
 
 
-            // -------------------------------------------------
-            // Vérifier la catégorie
-            // -------------------------------------------------
-
-            const adCategory =
-                normalizeText(data.category);
-
-            const categoryId =
-                normalizeText(immobilierCategoryId);
-
-            const categoryName =
-                normalizeText(immobilierCategoryName);
+        displayAds(
+            allAds
+        );
 
 
-            const isImmobilier =
-                adCategory === categoryName ||
-                adCategory === categoryId ||
-                adCategory === "immobilier";
-
-
-            if (!isImmobilier) {
-                return;
-            }
-
-
-            allImmoAds.push({
-
-                id: docSnap.id,
-
-                ...data
-
-            });
-
-        });
-
-
-        // -----------------------------------------------------
-        // Trier par date
-        // -----------------------------------------------------
-
-        allImmoAds.sort((a, b) => {
-
-            const dateA =
-                getTimestampValue(a.createdAt);
-
-            const dateB =
-                getTimestampValue(b.createdAt);
-
-            return dateB - dateA;
-
-        });
-
-
-        displayAds(allImmoAds);
+        console.log(
+            "CAMU IMMO — annonces :",
+            allAds.length
+        );
 
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement annonces immobilières :",
+            "CAMU IMMO — erreur annonces :",
             error
         );
 
 
-        immoAdsContainer.innerHTML = `
+        adsContainer.innerHTML = `
 
             <div class="immo-empty">
 
@@ -375,8 +605,8 @@ async function loadImmobilierAds() {
                 </h3>
 
                 <p>
-                    Une erreur est survenue lors du chargement
-                    des annonces immobilières.
+                    Une erreur est survenue
+                    lors du chargement.
                 </p>
 
             </div>
@@ -389,72 +619,37 @@ async function loadImmobilierAds() {
 
 
 // =========================================================
-// TIMESTAMP FIREBASE
+// AFFICHER ANNONCES
 // =========================================================
 
-function getTimestampValue(timestamp) {
+function displayAds(
+    ads
+) {
 
-    if (!timestamp) {
-        return 0;
-    }
+    if (!adsContainer) {
 
-
-    if (
-        typeof timestamp.toMillis === "function"
-    ) {
-        return timestamp.toMillis();
-    }
-
-
-    if (
-        timestamp.seconds !== undefined
-    ) {
-        return timestamp.seconds * 1000;
-    }
-
-
-    if (
-        timestamp instanceof Date
-    ) {
-        return timestamp.getTime();
-    }
-
-
-    return 0;
-
-}
-
-
-// =========================================================
-// AFFICHER LES ANNONCES
-// =========================================================
-
-function displayAds(ads) {
-
-    if (!immoAdsContainer) {
         return;
+
     }
 
 
-    if (!ads.length) {
+    if (
+        ads.length === 0
+    ) {
 
-        immoAdsContainer.innerHTML = `
+        adsContainer.innerHTML = `
 
             <div class="immo-empty">
 
-                <div class="immo-empty-icon">
-
-                    <i class="fa-solid fa-house-circle-exclamation"></i>
-
-                </div>
+                <i class="fa-solid fa-house-circle-exclamation"></i>
 
                 <h3>
-                    Aucun bien immobilier trouvé
+                    Aucun bien immobilier
                 </h3>
 
                 <p>
-                    Aucun bien ne correspond actuellement
-                    à votre recherche.
+                    Aucune annonce immobilière
+                    n'est actuellement disponible.
                 </p>
 
             </div>
@@ -462,270 +657,133 @@ function displayAds(ads) {
         `;
 
         return;
+
     }
 
 
-    immoAdsContainer.innerHTML = "";
-
-
-    ads.forEach((ad) => {
-
-        const card =
-            createAdCard(ad);
-
-        immoAdsContainer.appendChild(card);
-
-    });
-
-}
-
-
-// =========================================================
-// CRÉER UNE CARTE
-// =========================================================
-
-function createAdCard(ad) {
-
-    const card =
-        document.createElement("a");
-
-
-    card.className =
-        "immo-ad-card";
-
-
-    const id =
-        getAdId(ad);
-
-
-    card.href =
-        `explorer.html?id=${encodeURIComponent(id)}`;
-
-
-    const image =
-        getFirstImage(ad);
-
-
-    const title =
-        ad.title ||
-        "Bien immobilier";
-
-
-    const city =
-        ad.city ||
-        "Ville non précisée";
-
-
-    const neighborhood =
-        ad.neighborhood ||
+    adsContainer.innerHTML =
         "";
 
 
-    const price =
-        formatPrice(
-            ad.price,
-            ad.currency
-        );
+    ads
+        .slice(
+            0,
+            12
+        )
+        .forEach(
+            ad => {
 
+                const image =
+                    getImage(ad);
 
-    const type =
-        ad.propertyType ||
-        ad.type ||
-        ad.subcategory ||
-        "";
 
+                const title =
+                    ad.title ||
+                    "Bien immobilier";
 
-    const transaction =
-        ad.transactionType ||
-        ad.operation ||
-        ad.offerType ||
-        "";
 
+                const city =
+                    ad.city ||
+                    "Ville non précisée";
 
-    let badge =
-        transaction ||
-        type ||
-        "Immobilier";
 
-
-    card.innerHTML = `
-
-        <div class="immo-ad-image">
-
-            <img
-                src="${escapeHTML(image)}"
-                alt="${escapeHTML(title)}"
-                loading="lazy"
-                onerror="this.src='assets/images/no-image.jpg'"
-            >
-
-
-            <span class="immo-ad-badge">
-
-                ${escapeHTML(badge)}
-
-            </span>
-
-        </div>
-
-
-        <div class="immo-ad-content">
-
-
-            <h3 class="immo-ad-title">
-
-                ${escapeHTML(title)}
-
-            </h3>
-
-
-            <div class="immo-ad-location">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-                <span>
-
-                    ${escapeHTML(city)}
-
-                    ${
-                        neighborhood
-                            ? ` • ${escapeHTML(neighborhood)}`
-                            : ""
-                    }
-
-                </span>
-
-            </div>
-
-
-            <div class="immo-ad-price">
-
-                ${price}
-
-            </div>
-
-
-        </div>
-
-    `;
-
-
-    return card;
-
-}
-
-
-// =========================================================
-// FILTRAGE
-// =========================================================
-
-function filterAds() {
-
-    currentSearch =
-        normalizeText(
-            immoSearchInput
-                ? immoSearchInput.value
-                : ""
-        );
-
-
-    currentCity =
-        normalizeText(
-            immoCitySelect
-                ? immoCitySelect.value
-                : ""
-        );
-
-
-    const selectedOption =
-        immoCitySelect &&
-        immoCitySelect.selectedOptions.length
-            ? immoCitySelect.selectedOptions[0]
-            : null;
-
-
-    const selectedCityName =
-        selectedOption
-            ? normalizeText(
-                selectedOption.dataset.name ||
-                selectedOption.textContent
-            )
-            : "";
-
-
-    const filtered =
-        allImmoAds.filter((ad) => {
-
-
-            // ---------------------------------------------
-            // RECHERCHE
-            // ---------------------------------------------
-
-            if (currentSearch) {
-
-                const text = normalizeText(
-
-                    [
-                        ad.title,
-                        ad.description,
-                        ad.city,
-                        ad.neighborhood,
-                        ad.propertyType,
-                        ad.type,
-                        ad.subcategory,
-                        ad.transactionType,
-                        ad.operation
-                    ]
-                        .filter(Boolean)
-                        .join(" ")
-
-                );
-
-
-                if (
-                    !text.includes(currentSearch)
-                ) {
-                    return false;
-                }
-
-            }
-
-
-            // ---------------------------------------------
-            // VILLE
-            // ---------------------------------------------
-
-            if (currentCity) {
-
-                const adCity =
-                    normalizeText(ad.city);
-
-
-                const adCityId =
-                    normalizeText(
-                        ad.cityId
+                const price =
+                    formatPrice(
+                        ad.price,
+                        ad.currency ||
+                            "USD"
                     );
 
 
-                const matchesCity =
-                    adCity === selectedCityName ||
-                    adCity === currentCity ||
-                    adCityId === currentCity;
+                const card =
+                    document.createElement(
+                        "article"
+                    );
 
 
-                if (!matchesCity) {
-                    return false;
-                }
+                card.className =
+                    "immo-ad-card";
+
+
+                card.innerHTML = `
+
+                    <div class="immo-ad-image">
+
+                        <img
+                            src="${escapeHtml(image)}"
+                            alt="${escapeHtml(title)}"
+                            loading="lazy"
+                            onerror="
+                                this.src='assets/logo/camu-services-logo.png'
+                            "
+                        >
+
+                        <span class="immo-ad-badge">
+                            Immobilier
+                        </span>
+
+                    </div>
+
+
+                    <div class="immo-ad-content">
+
+                        <h3>
+                            ${escapeHtml(title)}
+                        </h3>
+
+
+                        <div class="immo-ad-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <span>
+                                ${escapeHtml(city)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="immo-ad-price">
+
+                            ${price}
+
+                        </div>
+
+
+                        <div class="immo-ad-link">
+
+                            <span>
+                                Voir le bien
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                card.addEventListener(
+                    "click",
+                    () => {
+
+                        window.location.href =
+                            `explorer.html?id=${encodeURIComponent(
+                                ad.id
+                            )}`;
+
+                    }
+                );
+
+
+                adsContainer.appendChild(
+                    card
+                );
 
             }
-
-
-            return true;
-
-        });
-
-
-    displayAds(filtered);
+        );
 
 }
 
@@ -734,15 +792,132 @@ function filterAds() {
 // RECHERCHE
 // =========================================================
 
-if (immoSearchForm) {
+function searchAds() {
 
-    immoSearchForm.addEventListener(
+    const keyword =
+        normalizeText(
+            keywordInput
+                ? keywordInput.value
+                : ""
+        );
+
+
+    const city =
+        citySelect
+            ? citySelect.value
+            : "";
+
+
+    const type =
+        normalizeText(
+            typeSelect
+                ? typeSelect.value
+                : ""
+        );
+
+
+    const results =
+        allAds.filter(
+            ad => {
+
+                const title =
+                    normalizeText(
+                        ad.title
+                    );
+
+
+                const description =
+                    normalizeText(
+                        ad.description
+                    );
+
+
+                const adCity =
+                    String(
+                        ad.city ||
+                        ""
+                    );
+
+
+                const adType =
+                    normalizeText(
+                        ad.type ||
+                        ad.transactionType ||
+                        ad.operation ||
+                        ad.saleType ||
+                        ""
+                    );
+
+
+                const keywordMatch =
+
+                    !keyword ||
+
+                    title.includes(
+                        keyword
+                    ) ||
+
+                    description.includes(
+                        keyword
+                    );
+
+
+                const cityMatch =
+
+                    !city ||
+
+                    adCity === city;
+
+
+                const typeMatch =
+
+                    !type ||
+
+                    adType === type ||
+
+                    title.includes(
+                        type
+                    ) ||
+
+                    description.includes(
+                        type
+                    );
+
+
+                return (
+
+                    keywordMatch &&
+
+                    cityMatch &&
+
+                    typeMatch
+
+                );
+
+            }
+        );
+
+
+    displayAds(
+        results
+    );
+
+}
+
+
+// =========================================================
+// FORMULAIRE RECHERCHE
+// =========================================================
+
+if (searchForm) {
+
+    searchForm.addEventListener(
         "submit",
-        function (event) {
+        event => {
 
             event.preventDefault();
 
-            filterAds();
+            searchAds();
 
         }
     );
@@ -751,36 +926,28 @@ if (immoSearchForm) {
 
 
 // =========================================================
-// RECHERCHE EN DIRECT
+// VILLE
 // =========================================================
 
-if (immoSearchInput) {
+if (citySelect) {
 
-    immoSearchInput.addEventListener(
-        "input",
-        function () {
-
-            filterAds();
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// CHANGEMENT VILLE
-// =========================================================
-
-if (immoCitySelect) {
-
-    immoCitySelect.addEventListener(
+    citySelect.addEventListener(
         "change",
-        function () {
+        searchAds
+    );
 
-            filterAds();
+}
 
-        }
+
+// =========================================================
+// TYPE
+// =========================================================
+
+if (typeSelect) {
+
+    typeSelect.addEventListener(
+        "change",
+        searchAds
     );
 
 }
@@ -791,48 +958,63 @@ if (immoCitySelect) {
 // =========================================================
 
 document
-    .querySelectorAll(".immo-type")
-    .forEach((button) => {
+    .querySelectorAll(
+        ".immo-type"
+    )
+    .forEach(
+        button => {
 
-        button.addEventListener(
-            "click",
-            function () {
+            button.addEventListener(
+                "click",
+                () => {
 
-                const type =
-                    button.dataset.type || "";
+                    const type =
+                        button.dataset.type;
 
 
-                if (immoSearchInput) {
+                    if (!type) {
 
-                    immoSearchInput.value =
-                        type;
+                        return;
+
+                    }
+
+
+                    if (keywordInput) {
+
+                        keywordInput.value =
+                            type;
+
+                    }
+
+
+                    searchAds();
+
+
+                    const listings =
+                        document.getElementById(
+                            "immoAds"
+                        );
+
+
+                    if (listings) {
+
+                        listings.scrollIntoView({
+
+                            behavior:
+                                "smooth",
+
+                            block:
+                                "start"
+
+                        });
+
+                    }
 
                 }
+            );
 
-
-                filterAds();
-
-
-                const adsSection =
-                    document.getElementById("vente");
-
-
-                if (adsSection) {
-
-                    adsSection.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "start"
-
-                    });
-
-                }
-
-            }
-        );
-
-    });
+        }
+    );
 
 
 // =========================================================
@@ -841,13 +1023,29 @@ document
 
 async function initImmobilier() {
 
-    await loadImmobilierCategory();
+    console.log(
+        "CAMU IMMO — initialisation..."
+    );
 
-    await loadCities();
 
-    await loadImmobilierAds();
+    await Promise.allSettled([
+
+        loadCities(),
+
+        loadAds()
+
+    ]);
+
+
+    console.log(
+        "CAMU IMMO — espace chargé."
+    );
 
 }
 
+
+// =========================================================
+// LANCER
+// =========================================================
 
 initImmobilier();
