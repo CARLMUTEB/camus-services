@@ -4,7 +4,6 @@
    VERSION MOBILE + PC
    ========================================================= */
 
-
 /* =========================================================
    VARIABLES
    ========================================================= */
@@ -68,11 +67,8 @@ body {
         sans-serif;
 
     background: var(--background);
-
     color: var(--text);
-
     line-height: 1.6;
-
     overflow-x: hidden;
 }
 
@@ -100,7 +96,6 @@ textarea {
 
 .sidebar {
     position: fixed;
-
     top: 0;
     left: 0;
 
@@ -108,18 +103,15 @@ textarea {
     height: 100vh;
 
     background: var(--white);
-
     border-right: 1px solid var(--border);
 
     display: flex;
     flex-direction: column;
 
     z-index: 1000;
-
     overflow-y: auto;
 
-    transition:
-        transform var(--transition);
+    transition: transform var(--transition);
 }
 
 
@@ -129,13 +121,10 @@ textarea {
 
 .sidebar-header {
     position: relative;
-
     min-height: 105px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     border-bottom: 1px solid var(--border);
@@ -143,24 +132,19 @@ textarea {
 
 
 /* =========================================================
-   LOGO
+   LOGO SIDEBAR
    ========================================================= */
 
 .logo-image {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
 .sidebar .logo-image img {
     width: 170px;
-
     height: auto;
-
     max-height: 75px;
-
     object-fit: contain;
 }
 
@@ -173,7 +157,6 @@ textarea {
     display: none;
 
     position: absolute;
-
     right: 12px;
     top: 12px;
 
@@ -181,12 +164,13 @@ textarea {
     height: 36px;
 
     border: none;
-
     background: #f1f5f9;
 
     border-radius: 50%;
-
     color: var(--text);
+
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -196,21 +180,16 @@ textarea {
 
 .sidebar-nav {
     padding: 18px 13px;
-
     flex: 1;
 }
 
 .nav-item {
     display: flex;
-
     align-items: center;
-
     gap: 13px;
 
     min-height: 48px;
-
     padding: 11px 14px;
-
     margin-bottom: 5px;
 
     border-radius: 12px;
@@ -218,7 +197,6 @@ textarea {
     color: #475569;
 
     font-size: 14px;
-
     font-weight: 600;
 
     transition:
@@ -229,21 +207,17 @@ textarea {
 
 .nav-item i {
     width: 22px;
-
     text-align: center;
-
     font-size: 17px;
 }
 
 .nav-item:hover {
     background: var(--blue-light);
-
     color: var(--blue);
 }
 
 .nav-item.active {
     background: var(--blue);
-
     color: var(--white);
 
     box-shadow:
@@ -252,7 +226,6 @@ textarea {
 
 .sidebar-bottom {
     padding: 12px 13px 18px;
-
     border-top: 1px solid var(--border);
 }
 
@@ -265,7 +238,6 @@ textarea {
     display: none;
 
     position: fixed;
-
     inset: 0;
 
     background: rgba(15, 23, 42, 0.55);
@@ -286,7 +258,6 @@ textarea {
 
 .main-wrapper {
     margin-left: var(--sidebar-width);
-
     min-height: 100vh;
 }
 
@@ -297,21 +268,17 @@ textarea {
 
 .topbar {
     position: sticky;
-
     top: 0;
 
     height: 70px;
 
     background: rgba(255, 255, 255, 0.96);
-
     backdrop-filter: blur(12px);
 
     border-bottom: 1px solid var(--border);
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     padding: 0 28px;
@@ -322,9 +289,7 @@ textarea {
 .topbar-left,
 .topbar-right {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 }
 
@@ -335,22 +300,19 @@ textarea {
 
 .menu-button {
     width: 42px;
-
     height: 42px;
 
     display: none;
-
     align-items: center;
-
     justify-content: center;
 
     border: 1px solid var(--border);
-
     background: var(--white);
-
     color: var(--blue);
 
     border-radius: 10px;
+
+    cursor: pointer;
 }
 
 .menu-button:hover {
@@ -360,31 +322,25 @@ textarea {
 
 /* =========================================================
    LOGO MOBILE
-   PETIT + CENTRÉ
    ========================================================= */
 
 .mobile-logo {
     display: none;
 
     position: absolute;
-
     left: 50%;
-
     top: 50%;
 
     transform: translate(-50%, -50%);
 
     align-items: center;
-
     justify-content: center;
 }
 
 .mobile-logo img {
-    width: 88px;
-
+    width: 105px;
     height: auto;
-
-    max-height: 42px;
+    max-height: 48px;
 
     object-fit: contain;
 }
@@ -396,13 +352,10 @@ textarea {
 
 .topbar-icon {
     width: 44px;
-
     height: 44px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     border-radius: 50%;
@@ -416,7 +369,6 @@ textarea {
 
 .topbar-icon:hover {
     background: var(--blue-light);
-
     color: var(--blue);
 }
 
@@ -433,13 +385,10 @@ textarea {
     min-height: 44px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     gap: 8px;
-
     padding: 0 14px;
 
     border-radius: 10px;
@@ -447,13 +396,11 @@ textarea {
     color: var(--text);
 
     font-size: 14px;
-
     font-weight: 600;
 }
 
 .profile-button:hover {
     background: var(--blue-light);
-
     color: var(--blue);
 }
 
@@ -468,7 +415,6 @@ textarea {
 
 .hero {
     position: relative;
-
     overflow: hidden;
 
     min-height: 450px;
@@ -476,7 +422,6 @@ textarea {
     padding: 60px 35px;
 
     display: flex;
-
     align-items: center;
 
     background:
@@ -496,13 +441,11 @@ textarea {
     position: absolute;
 
     width: 550px;
-
     height: 550px;
 
     border-radius: 50%;
 
     right: -220px;
-
     top: -280px;
 
     background:
@@ -515,13 +458,11 @@ textarea {
     position: absolute;
 
     width: 420px;
-
     height: 420px;
 
     border-radius: 50%;
 
     left: -220px;
-
     bottom: -280px;
 
     background:
@@ -530,11 +471,9 @@ textarea {
 
 .hero-content {
     position: relative;
-
     z-index: 2;
 
     width: 100%;
-
     max-width: 1000px;
 
     margin: auto;
@@ -551,7 +490,6 @@ textarea {
     display: inline-flex;
 
     align-items: center;
-
     gap: 7px;
 
     padding: 8px 13px;
@@ -565,7 +503,6 @@ textarea {
         1px solid rgba(255, 255, 255, 0.16);
 
     font-size: 13px;
-
     font-weight: 600;
 
     margin-bottom: 17px;
@@ -613,7 +550,6 @@ textarea {
 
 .search-box {
     width: 100%;
-
     max-width: 900px;
 
     margin: auto;
@@ -640,7 +576,6 @@ textarea {
     min-height: 52px;
 
     display: flex;
-
     align-items: center;
 
     gap: 10px;
@@ -656,7 +591,6 @@ textarea {
 
 .search-field i {
     color: var(--blue);
-
     font-size: 16px;
 }
 
@@ -667,7 +601,6 @@ textarea {
     height: 48px;
 
     border: none;
-
     outline: none;
 
     background: transparent;
@@ -704,7 +637,6 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 8px;
@@ -712,11 +644,12 @@ textarea {
     transition:
         background var(--transition),
         transform var(--transition);
+
+    cursor: pointer;
 }
 
 .search-button:hover {
     background: var(--green-dark);
-
     transform: translateY(-1px);
 }
 
@@ -738,7 +671,6 @@ textarea {
     display: flex;
 
     align-items: flex-end;
-
     justify-content: space-between;
 
     gap: 20px;
@@ -750,7 +682,6 @@ textarea {
     color: var(--green);
 
     font-size: 12px;
-
     font-weight: 800;
 
     text-transform: uppercase;
@@ -821,7 +752,6 @@ textarea {
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
@@ -850,21 +780,18 @@ textarea {
 
 /* =========================================================
    ICONE CATEGORIE
-   PARFAITEMENT CENTRÉE
+   TOUJOURS CENTRÉE
    ========================================================= */
 
 .category-icon {
     width: 56px;
-
     height: 56px;
 
-    margin:
-        0 auto 13px;
+    margin: 0 auto 13px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     flex-shrink: 0;
@@ -882,14 +809,14 @@ textarea {
 
 .category-icon i {
     width: 100%;
-
     height: 100%;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
+
+    text-align: center;
 }
 
 .category-card h3 {
@@ -932,7 +859,6 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 10px;
@@ -1061,7 +987,6 @@ textarea {
 
 .ad-image img {
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -1083,17 +1008,14 @@ textarea {
     position: absolute;
 
     top: 10px;
-
     right: 10px;
 
     width: 38px;
-
     height: 38px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     border: none;
@@ -1109,6 +1031,8 @@ textarea {
         0 3px 10px rgba(0, 0, 0, 0.10);
 
     z-index: 5;
+
+    cursor: pointer;
 }
 
 .favorite-button i {
@@ -1128,7 +1052,6 @@ textarea {
     position: absolute;
 
     left: 10px;
-
     bottom: 10px;
 
     padding: 5px 9px;
@@ -1154,7 +1077,8 @@ textarea {
     padding: 14px;
 }
 
-.ad-title {
+.ad-title,
+.ad-content h3 {
     min-height: 44px;
 
     margin-bottom: 7px;
@@ -1217,7 +1141,6 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     gap: 30px;
@@ -1246,7 +1169,6 @@ textarea {
 
 .publish-cta-icon {
     width: 58px;
-
     height: 58px;
 
     flex-shrink: 0;
@@ -1254,7 +1176,6 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     border-radius: 15px;
@@ -1300,7 +1221,6 @@ textarea {
     display: inline-flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 8px;
@@ -1314,6 +1234,8 @@ textarea {
     color: var(--white);
 
     font-weight: 750;
+
+    cursor: pointer;
 }
 
 .primary-button:hover {
@@ -1342,7 +1264,6 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     gap: 40px;
@@ -1356,7 +1277,7 @@ textarea {
 
 /* =========================================================
    LOGO FOOTER
-   PETIT + CENTRÉ + TRANSPARENT
+   PETIT + CENTRÉ + SANS CADRE
    ========================================================= */
 
 .footer-brand {
@@ -1367,18 +1288,17 @@ textarea {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    padding: 0;
+    padding: 0 !important;
 
     margin: 0 auto 10px;
 
     background: transparent !important;
 
-    border: none;
+    border: none !important;
 
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .footer-logo img {
@@ -1389,6 +1309,12 @@ textarea {
     max-height: 60px;
 
     object-fit: contain;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
 }
 
 .footer-brand p {
@@ -1483,10 +1409,6 @@ textarea {
 
     .sidebar-close {
         display: flex;
-
-        align-items: center;
-
-        justify-content: center;
     }
 
 
@@ -1502,9 +1424,9 @@ textarea {
     .topbar {
         position: relative;
 
-        height: 62px;
+        height: 70px;
 
-        padding: 0 11px;
+        padding: 0 12px;
     }
 
 
@@ -1513,22 +1435,30 @@ textarea {
     .menu-button {
         display: flex;
 
-        width: 40px;
+        width: 44px;
+        height: 44px;
 
-        height: 40px;
+        border-radius: 11px;
     }
 
 
-    /* LOGO */
+    /* =====================================================
+       LOGO MOBILE
+       UN PEU PLUS GROS + TOUJOURS CENTRÉ
+       ===================================================== */
 
     .mobile-logo {
         display: flex;
     }
 
     .mobile-logo img {
-        width: 78px;
+        width: 105px;
 
-        max-height: 40px;
+        height: auto;
+
+        max-height: 48px;
+
+        object-fit: contain;
     }
 
 
@@ -1539,34 +1469,35 @@ textarea {
     }
 
     .topbar-icon {
-        width: 40px;
-
-        height: 40px;
+        width: 44px;
+        height: 44px;
     }
 
     .topbar-icon i {
-        font-size: 19px;
+        font-size: 22px;
     }
 
 
-    /* COMPTE :
-       uniquement icône
-    */
+    /* =====================================================
+       COMPTE
+       UNIQUEMENT L'ICÔNE
+       ===================================================== */
 
     .profile-button {
-        width: 40px;
-
-        height: 40px;
+        width: 44px;
+        height: 44px;
 
         padding: 0;
+
+        border-radius: 50%;
     }
 
     .profile-button span {
-        display: none;
+        display: none !important;
     }
 
     .profile-button i {
-        font-size: 21px;
+        font-size: 23px;
     }
 
 
@@ -1579,16 +1510,16 @@ textarea {
     }
 
     .hero-badge {
-        font-size: 11px;
+        font-size: 12px;
 
-        padding: 7px 11px;
+        padding: 8px 13px;
 
-        margin-bottom: 14px;
+        margin-bottom: 17px;
     }
 
     .hero h1 {
         font-size:
-            clamp(30px, 9vw, 40px);
+            clamp(30px, 9vw, 42px);
 
         letter-spacing: -0.7px;
 
@@ -1596,13 +1527,13 @@ textarea {
     }
 
     .hero p {
-        max-width: 340px;
+        max-width: 360px;
 
-        font-size: 14px;
+        font-size: 15px;
 
         line-height: 1.6;
 
-        margin-bottom: 21px;
+        margin-bottom: 23px;
     }
 
 
@@ -1613,128 +1544,156 @@ textarea {
 
         flex-direction: column;
 
-        gap: 7px;
+        gap: 8px;
 
-        padding: 8px;
+        padding: 9px;
 
-        border-radius: 16px;
+        border-radius: 17px;
     }
 
     .search-field {
-        min-height: 48px;
+        min-height: 50px;
 
-        height: 48px;
+        height: 50px;
+
+        padding: 0 15px;
     }
 
     .search-field input,
     .search-field select {
-        height: 44px;
+        height: 46px;
 
-        font-size: 13px;
+        font-size: 14px;
+    }
+
+    .search-field i {
+        font-size: 19px;
     }
 
     .search-button {
-        min-height: 48px;
+        min-height: 52px;
 
-        height: 48px;
+        height: 52px;
 
         width: 100%;
+
+        font-size: 16px;
     }
 
 
     /* SECTION */
 
     .section {
-        padding: 38px 12px;
+        padding: 42px 14px;
     }
 
     .section-header {
-        margin-bottom: 19px;
+        margin-bottom: 21px;
 
-        align-items: flex-start;
+        align-items: flex-end;
     }
 
     .section-header h2 {
-        font-size: 25px;
+        font-size: 27px;
     }
 
     .section-label {
-        font-size: 10px;
+        font-size: 11px;
 
         letter-spacing: 1.2px;
     }
 
     .see-all {
-        font-size: 12px;
+        font-size: 13px;
     }
 
 
     /* =====================================================
        CATEGORIES
-       3 COLONNES SUR MOBILE
-    ====================================================== */
+       3 COLONNES MOBILE
+       ===================================================== */
 
     .categories-grid {
         grid-template-columns:
             repeat(3, minmax(0, 1fr));
 
-        gap: 8px;
+        gap: 9px;
     }
 
     .category-card {
-        min-height: 145px;
+        min-height: 155px;
 
-        padding: 13px 5px;
+        padding: 15px 5px;
 
-        border-radius: 13px;
+        border-radius: 14px;
     }
 
 
-    /* ICONE CENTRÉE */
+    /* =====================================================
+       ICONE CATÉGORIE
+       CENTRÉE
+       ===================================================== */
 
     .category-icon {
-        width: 43px;
-
-        height: 43px;
+        width: 48px;
+        height: 48px;
 
         margin:
-            0 auto 8px;
+            0 auto 9px;
 
-        border-radius: 12px;
+        border-radius: 13px;
 
-        font-size: 18px;
+        font-size: 20px;
+    }
+
+    .category-icon i {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
     }
 
     .category-card h3 {
-        font-size: 11.5px;
+        width: 100%;
+
+        font-size: 12px;
 
         line-height: 1.3;
 
-        margin-bottom: 3px;
+        margin-bottom: 4px;
+
+        text-align: center;
     }
 
     .category-card p {
-        font-size: 9.5px;
+        font-size: 10px;
 
         line-height: 1.35;
 
-        max-width: 95px;
+        max-width: 105px;
+
+        margin: 0 auto;
+
+        text-align: center;
     }
 
 
     /* =====================================================
        ANNONCES
-    ====================================================== */
+       ===================================================== */
 
     .ads-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
 
-        gap: 9px;
+        gap: 10px;
     }
 
     .ad-card {
-        border-radius: 12px;
+        border-radius: 13px;
     }
 
     .ad-image {
@@ -1742,12 +1701,10 @@ textarea {
     }
 
     .favorite-button {
-        width: 34px;
-
-        height: 34px;
+        width: 35px;
+        height: 35px;
 
         top: 7px;
-
         right: 7px;
     }
 
@@ -1769,8 +1726,9 @@ textarea {
         padding: 10px;
     }
 
-    .ad-title {
-        min-height: 37px;
+    .ad-title,
+    .ad-content h3 {
+        min-height: 38px;
 
         font-size: 12px;
 
@@ -1790,13 +1748,13 @@ textarea {
 
     /* =====================================================
        CTA
-    ====================================================== */
+       ===================================================== */
 
     .publish-cta {
         margin:
-            0 12px 40px;
+            0 14px 42px;
 
-        padding: 27px 17px;
+        padding: 28px 18px;
 
         flex-direction: column;
 
@@ -1815,7 +1773,6 @@ textarea {
 
     .publish-cta-icon {
         width: 50px;
-
         height: 50px;
 
         font-size: 19px;
@@ -1835,12 +1792,12 @@ textarea {
 
 
     /* =====================================================
-       FOOTER
-    ====================================================== */
+       FOOTER MOBILE
+       ===================================================== */
 
     .footer {
         padding:
-            38px 14px 20px;
+            40px 16px 22px;
 
         text-align: center;
     }
@@ -1850,23 +1807,57 @@ textarea {
 
         gap: 25px;
 
-        padding-bottom: 25px;
+        padding-bottom: 26px;
     }
 
     .footer-brand {
         width: 100%;
     }
 
-    .footer-logo img {
-        width: 90px;
 
-        max-height: 55px;
+    /* LOGO FOOTER PETIT + CENTRÉ */
+
+    .footer-logo {
+        display: flex;
+
+        width: fit-content;
+
+        margin:
+            0 auto 12px;
+
+        padding: 0 !important;
+
+        background: transparent !important;
+
+        border: none !important;
+
+        box-shadow: none !important;
+    }
+
+    .footer-logo img {
+        width: 100px;
+
+        height: auto;
+
+        max-height: 58px;
+
+        object-fit: contain;
+
+        background: transparent !important;
+
+        border: none !important;
+
+        box-shadow: none !important;
+    }
+
+    .footer-brand p {
+        font-size: 12px;
     }
 
     .footer-links {
         justify-content: center;
 
-        gap: 8px 15px;
+        gap: 9px 16px;
     }
 
     .footer-links a {
@@ -1885,9 +1876,16 @@ textarea {
 
 @media (max-width: 420px) {
 
+    /* LOGO HAUT */
+
     .mobile-logo img {
-        width: 72px;
+        width: 98px;
+
+        max-height: 46px;
     }
+
+
+    /* HERO */
 
     .hero {
         padding:
@@ -1902,6 +1900,9 @@ textarea {
         font-size: 13px;
     }
 
+
+    /* SECTION */
+
     .section {
         padding:
             34px 10px;
@@ -1911,23 +1912,25 @@ textarea {
         font-size: 23px;
     }
 
+
+    /* CATEGORIES */
+
     .categories-grid {
-        gap: 6px;
+        gap: 7px;
     }
 
     .category-card {
-        min-height: 138px;
+        min-height: 140px;
 
         padding:
-            11px 3px;
+            12px 3px;
     }
 
     .category-icon {
-        width: 40px;
+        width: 42px;
+        height: 42px;
 
-        height: 40px;
-
-        font-size: 17px;
+        font-size: 18px;
     }
 
     .category-card h3 {
@@ -1938,6 +1941,9 @@ textarea {
         font-size: 8.5px;
     }
 
+
+    /* ANNONCES */
+
     .ads-grid {
         gap: 7px;
     }
@@ -1946,7 +1952,8 @@ textarea {
         padding: 8px;
     }
 
-    .ad-title {
+    .ad-title,
+    .ad-content h3 {
         font-size: 11.5px;
     }
 
@@ -1954,8 +1961,13 @@ textarea {
         font-size: 13px;
     }
 
+
+    /* FOOTER */
+
     .footer-logo img {
-        width: 85px;
+        width: 95px;
+
+        max-height: 55px;
     }
 }
 
@@ -1967,7 +1979,9 @@ textarea {
 @media (max-width: 350px) {
 
     .mobile-logo img {
-        width: 65px;
+        width: 92px;
+
+        max-height: 44px;
     }
 
     .hero h1 {
@@ -1984,7 +1998,6 @@ textarea {
 
     .category-icon {
         width: 37px;
-
         height: 37px;
 
         font-size: 15px;
@@ -1996,6 +2009,10 @@ textarea {
 
     .category-card p {
         font-size: 8px;
+    }
+
+    .footer-logo img {
+        width: 90px;
     }
 }
 
