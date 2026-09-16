@@ -1,34 +1,92 @@
 // ============================================================
-// CAMU SERVICES - FIREBASE
+// CAMU SERVICES - FIREBASE CONFIG
+// ============================================================
+// Firebase version : 10.12.2
+// Services :
+// - Firebase App
+// - Authentication
+// - Firestore
+// - Storage
+// - Analytics
 // ============================================================
 
-// Import Firebase App
+
+// ============================================================
+// FIREBASE APP
+// ============================================================
+
 import {
     initializeApp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-// Import Firebase Analytics
+// ============================================================
+// FIREBASE ANALYTICS
+// ============================================================
+
 import {
     getAnalytics
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
 
-// Import Firebase Authentication
+// ============================================================
+// FIREBASE AUTHENTICATION
+// ============================================================
+
 import {
-    getAuth
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    sendPasswordResetEmail,
+    sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-// Import Firestore
+// ============================================================
+// FIREBASE FIRESTORE
+// ============================================================
+
 import {
-    getFirestore
+    getFirestore,
+
+    collection,
+    getDocs,
+    getDoc,
+
+    doc,
+
+    addDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+
+    query,
+    where,
+    orderBy,
+    limit,
+
+    serverTimestamp,
+
+    onSnapshot,
+
+    Timestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// Import Firebase Storage
+// ============================================================
+// FIREBASE STORAGE
+// ============================================================
+
 import {
-    getStorage
+    getStorage,
+    ref,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL,
+    deleteObject
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
@@ -37,13 +95,27 @@ import {
 // ============================================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-    authDomain: "camu-services.firebaseapp.com",
-    projectId: "camu-services",
-    storageBucket: "camu-services.appspot.com",
-    messagingSenderId: "879100396449",
-    appId: "1:879100396449:web:9d7ffe441a3df2daf841e0",
-    measurementId: "G-RQ16SX2SNV"
+
+    apiKey:
+        "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+
+    authDomain:
+        "camu-services.firebaseapp.com",
+
+    projectId:
+        "camu-services",
+
+    storageBucket:
+        "camu-services.appspot.com",
+
+    messagingSenderId:
+        "879100396449",
+
+    appId:
+        "1:879100396449:web:9d7ffe441a3df2daf841e0",
+
+    measurementId:
+        "G-RQ16SX2SNV"
 };
 
 
@@ -52,6 +124,27 @@ const firebaseConfig = {
 // ============================================================
 
 const app = initializeApp(firebaseConfig);
+
+
+// ============================================================
+// AUTHENTIFICATION
+// ============================================================
+
+const auth = getAuth(app);
+
+
+// ============================================================
+// FIRESTORE
+// ============================================================
+
+const db = getFirestore(app);
+
+
+// ============================================================
+// STORAGE
+// ============================================================
+
+const storage = getStorage(app);
 
 
 // ============================================================
@@ -71,7 +164,7 @@ try {
 } catch (error) {
 
     console.warn(
-        "Firebase Analytics non disponible :",
+        "CAMU SERVICES : Firebase Analytics non disponible.",
         error
     );
 
@@ -79,31 +172,77 @@ try {
 
 
 // ============================================================
-// SERVICES FIREBASE
-// ============================================================
-
-export const auth =
-    getAuth(app);
-
-
-export const db =
-    getFirestore(app);
-
-
-export const storage =
-    getStorage(app);
-
-
-// ============================================================
-// EXPORT APP
+// EXPORTS PRINCIPAUX
 // ============================================================
 
 export {
+
+    // Firebase
     app,
-    analytics
+
+    // Services
+    auth,
+    db,
+    storage,
+    analytics,
+
+    // Authentication
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    sendPasswordResetEmail,
+    sendEmailVerification,
+
+    // Firestore
+    collection,
+    getDocs,
+    getDoc,
+    doc,
+
+    addDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+
+    query,
+    where,
+    orderBy,
+    limit,
+
+    serverTimestamp,
+    onSnapshot,
+    Timestamp,
+
+    // Storage
+    ref,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL,
+    deleteObject
 };
 
 
+// ============================================================
+// CONFIRMATION
+// ============================================================
+
 console.log(
     "CAMU SERVICES : Firebase initialisé correctement."
+);
+
+console.log(
+    "CAMU SERVICES : Auth disponible.",
+    !!auth
+);
+
+console.log(
+    "CAMU SERVICES : Firestore disponible.",
+    !!db
+);
+
+console.log(
+    "CAMU SERVICES : Storage disponible.",
+    !!storage
 );
