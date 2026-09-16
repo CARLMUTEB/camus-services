@@ -1,27 +1,30 @@
 /* =========================================================
    CAMU IMMO
-   CSS DÉDIÉ À immobilier.html
+   CSS INDÉPENDANT
 ========================================================= */
 
 :root {
-    --immo-blue: #0756a8;
-    --immo-blue-dark: #063b78;
-    --immo-blue-light: #eaf3ff;
-    --immo-green: #39a935;
-    --immo-green-dark: #258128;
+    --immo-blue: #063b73;
+    --immo-blue-dark: #04294f;
+    --immo-green: #20a86b;
+    --immo-green-dark: #168653;
     --immo-white: #ffffff;
-    --immo-black: #17202a;
-    --immo-gray: #667085;
     --immo-light: #f5f7fa;
-    --immo-border: #e4e7ec;
-    --immo-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --immo-radius: 16px;
+    --immo-border: #e2e7ee;
+    --immo-text: #1d2939;
+    --immo-muted: #667085;
+    --immo-danger: #d92d20;
+    --immo-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --immo-radius: 14px;
 }
-
 
 /* =========================================================
    BASE
 ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
 
 html {
     scroll-behavior: smooth;
@@ -29,8 +32,20 @@ html {
 
 body {
     margin: 0;
-    background: #f7f9fc;
-    color: var(--immo-black);
+    background: var(--immo-light);
+    color: var(--immo-text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font: inherit;
 }
 
 
@@ -40,36 +55,25 @@ body {
 
 .immo-sidebar {
     position: fixed;
-    left: 0;
     top: 0;
-    width: 260px;
+    left: 0;
+    width: 245px;
     height: 100vh;
-
-    background: var(--immo-blue-dark);
-
-    z-index: 2000;
-
+    background: var(--immo-blue);
+    color: #fff;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
-
-    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.12);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, .12);
 }
-
-
-/* Logo */
 
 .immo-sidebar-logo {
-    padding: 24px 20px 20px;
-
-    text-align: center;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.immo-sidebar-logo a {
+    height: 105px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: #fff;
 }
 
 .immo-sidebar-logo img {
@@ -79,119 +83,62 @@ body {
     display: block;
 }
 
-.immo-brand-name {
-    margin-top: 10px;
-
+.immo-menu {
+    padding: 18px 12px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
-.immo-brand-name strong {
-    color: #ffffff;
-    font-size: 19px;
-    letter-spacing: 1px;
-}
-
-.immo-brand-name span {
-    margin-top: 3px;
-
-    color: #a9d6ff;
-
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.4px;
-}
-
-
-/* Navigation */
-
-.immo-nav {
-    padding: 20px 14px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-
-    overflow-y: auto;
-}
-
-.immo-nav-link {
-    min-height: 48px;
-
-    padding: 0 15px;
-
+.immo-menu-link {
     display: flex;
     align-items: center;
-
     gap: 13px;
-
-    color: #dcecff;
-
-    text-decoration: none;
-
-    border-radius: 10px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+    min-height: 46px;
+    padding: 10px 13px;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, .88);
+    transition: .2s ease;
 }
 
-.immo-nav-link i {
-    width: 22px;
-
+.immo-menu-link i {
+    width: 21px;
     text-align: center;
-
-    font-size: 17px;
+    font-size: 16px;
 }
 
-.immo-nav-link:hover {
-    background: rgba(255, 255, 255, 0.10);
-    color: #ffffff;
-    transform: translateX(2px);
+.immo-menu-link span {
+    font-size: 14px;
 }
 
-.immo-nav-link.active {
+.immo-menu-link:hover {
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+
+.immo-menu-link.active {
     background: var(--immo-green);
-    color: #ffffff;
+    color: #fff;
 }
-
-
-/* Bottom */
 
 .immo-sidebar-bottom {
     margin-top: auto;
-
-    padding: 16px;
+    padding: 15px 12px;
+    border-top: 1px solid rgba(255, 255, 255, .12);
 }
 
 .immo-sidebar-bottom a {
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-
+    gap: 10px;
     padding: 12px;
-
-    color: #ffffff;
-
-    text-decoration: none;
-
-    font-size: 12px;
-
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 10px;
-
-    transition: 0.2s ease;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
 }
 
 .immo-sidebar-bottom a:hover {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, .1);
 }
 
 
@@ -200,17 +147,67 @@ body {
 ========================================================= */
 
 .immo-main {
-    margin-left: 260px;
     min-height: 100vh;
+    margin-left: 245px;
 }
 
 
 /* =========================================================
-   MOBILE HEADER
+   TOPBAR
 ========================================================= */
 
-.immo-mobile-header {
+.immo-topbar {
+    position: sticky;
+    top: 0;
+    height: 82px;
+    background: #fff;
+    border-bottom: 1px solid var(--immo-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 25px;
+    z-index: 900;
+}
+
+.immo-top-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 190px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.immo-top-logo img {
+    width: 175px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.immo-top-actions {
+    margin-left: auto;
+}
+
+.immo-top-actions a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--immo-blue);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.immo-menu-button {
     display: none;
+    border: 0;
+    background: transparent;
+    color: var(--immo-blue);
+    font-size: 22px;
+    cursor: pointer;
 }
 
 
@@ -219,203 +216,46 @@ body {
 ========================================================= */
 
 .immo-hero {
-    min-height: 430px;
-
-    padding: 70px 7%;
-
-    display: flex;
-    align-items: center;
-
-    position: relative;
-
-    overflow: hidden;
-
     background:
         linear-gradient(
             110deg,
-            rgba(4, 54, 108, 0.97),
-            rgba(7, 86, 168, 0.90)
+            rgba(4, 41, 79, .96),
+            rgba(6, 59, 115, .90)
         );
-}
-
-.immo-hero::after {
-    content: "";
-
-    position: absolute;
-
-    width: 480px;
-    height: 480px;
-
-    right: -170px;
-    top: -180px;
-
-    border: 80px solid rgba(57, 169, 53, 0.15);
-
-    border-radius: 50%;
+    color: #fff;
+    padding: 65px 7%;
 }
 
 .immo-hero-content {
-    position: relative;
-    z-index: 2;
-
-    max-width: 700px;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
 }
 
-.immo-hero-badge {
+.immo-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-
-    padding: 8px 13px;
-
-    color: #ffffff;
-
-    background: rgba(255, 255, 255, 0.12);
-
-    border: 1px solid rgba(255, 255, 255, 0.20);
-
-    border-radius: 30px;
-
-    font-size: 12px;
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .2);
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 13px;
     font-weight: 700;
 }
 
 .immo-hero h1 {
-    margin: 22px 0 15px;
-
-    color: #ffffff;
-
-    font-size: clamp(40px, 5vw, 70px);
-
-    line-height: 0.95;
-
-    letter-spacing: -2px;
-}
-
-.immo-hero h1 strong {
-    color: #66d95f;
+    margin: 18px 0 12px;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.05;
 }
 
 .immo-hero p {
-    max-width: 620px;
-
-    margin: 0;
-
-    color: #dcecff;
-
+    margin: 0 auto;
+    max-width: 700px;
+    color: rgba(255, 255, 255, .88);
     font-size: 17px;
-
     line-height: 1.7;
-}
-
-.immo-hero-buttons {
-    margin-top: 28px;
-
-    display: flex;
-    gap: 12px;
-
-    flex-wrap: wrap;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.immo-btn {
-    min-height: 46px;
-
-    padding: 0 19px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-
-    border-radius: 9px;
-
-    text-decoration: none;
-
-    border: none;
-
-    cursor: pointer;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    transition: 0.2s ease;
-}
-
-.immo-btn-primary {
-    color: #ffffff;
-    background: var(--immo-green);
-}
-
-.immo-btn-primary:hover {
-    background: var(--immo-green-dark);
-    transform: translateY(-2px);
-}
-
-.immo-btn-light {
-    color: var(--immo-blue-dark);
-    background: #ffffff;
-}
-
-.immo-btn-light:hover {
-    transform: translateY(-2px);
-}
-
-
-/* =========================================================
-   SECTIONS
-========================================================= */
-
-.immo-section {
-    padding: 70px 6%;
-}
-
-.immo-section:nth-child(even) {
-    background: #ffffff;
-}
-
-.immo-section-heading {
-    margin-bottom: 28px;
-}
-
-.immo-section-heading > span,
-.immo-small-title,
-.immo-request-content > span {
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: var(--immo-green);
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-}
-
-.immo-section-heading h2 {
-    margin: 0;
-
-    color: var(--immo-blue-dark);
-
-    font-size: 30px;
-
-    line-height: 1.2;
-}
-
-.immo-section-heading p {
-    max-width: 650px;
-
-    margin: 10px 0 0;
-
-    color: var(--immo-gray);
-
-    line-height: 1.6;
 }
 
 
@@ -424,90 +264,98 @@ body {
 ========================================================= */
 
 .immo-search-section {
-    padding: 50px 6%;
-
-    background: #ffffff;
-
-    border-bottom: 1px solid var(--immo-border);
+    padding: 0 6%;
+    margin-top: -28px;
+    position: relative;
+    z-index: 5;
 }
 
 .immo-search-box {
-    max-width: 1000px;
-
-    padding: 10px;
-
-    display: grid;
-    grid-template-columns: 1.5fr 1fr auto;
-
-    gap: 10px;
-
-    background: #ffffff;
-
-    border: 1px solid var(--immo-border);
-
-    border-radius: 14px;
-
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: var(--immo-radius);
     box-shadow: var(--immo-shadow);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr auto;
+    gap: 12px;
 }
 
-.immo-search-field {
-    min-height: 48px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 0 14px;
-
-    background: #f8fafc;
-
-    border: 1px solid var(--immo-border);
-
-    border-radius: 9px;
+.immo-field {
+    min-width: 0;
 }
 
-.immo-search-field i {
-    color: var(--immo-blue);
+.immo-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--immo-muted);
 }
 
-.immo-search-field input,
-.immo-search-field select {
+.immo-field input,
+.immo-field select {
     width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--immo-border);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--immo-text);
+}
 
-    border: 0;
-    outline: 0;
-
-    background: transparent;
-
-    color: var(--immo-black);
-
-    font-size: 14px;
+.immo-field input:focus,
+.immo-field select:focus {
+    border-color: var(--immo-blue);
 }
 
 .immo-search-button {
-    min-height: 48px;
-
-    padding: 0 25px;
-
+    align-self: end;
+    height: 44px;
     border: 0;
-
-    border-radius: 9px;
-
-    background: var(--immo-blue);
-
-    color: #ffffff;
-
-    font-size: 14px;
+    padding: 0 18px;
+    border-radius: 8px;
+    background: var(--immo-green);
+    color: #fff;
     font-weight: 700;
-
     cursor: pointer;
-
-    transition: 0.2s ease;
 }
 
 .immo-search-button:hover {
-    background: var(--immo-blue-dark);
+    background: var(--immo-green-dark);
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.immo-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 65px 6% 10px;
+}
+
+.immo-section-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.immo-section-title span,
+.immo-section-heading span {
+    color: var(--immo-green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.immo-section-title h2,
+.immo-section-heading h2 {
+    margin: 8px 0 0;
+    color: var(--immo-blue);
+    font-size: 30px;
 }
 
 
@@ -515,115 +363,51 @@ body {
    SERVICES
 ========================================================= */
 
-.immo-services-section {
-    background: #f7f9fc;
-}
-
 .immo-services-grid {
     display: grid;
-
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
 
 .immo-service-card {
-    min-height: 180px;
-
-    padding: 22px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    background: #ffffff;
-
+    background: #fff;
     border: 1px solid var(--immo-border);
-
     border-radius: var(--immo-radius);
-
-    text-decoration: none;
-
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
-
-    transition: 0.2s ease;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    transition: .2s ease;
 }
 
 .immo-service-card:hover {
-    transform: translateY(-5px);
-
-    border-color: rgba(7, 86, 168, 0.25);
-
+    transform: translateY(-3px);
     box-shadow: var(--immo-shadow);
 }
 
 .immo-service-icon {
-    width: 50px;
-    height: 50px;
-
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: rgba(32, 168, 107, .1);
+    color: var(--immo-green);
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 13px;
-
-    color: var(--immo-blue);
-
-    background: var(--immo-blue-light);
-
-    font-size: 21px;
+    font-size: 23px;
 }
 
 .immo-service-card h3 {
-    margin: 16px 0 7px;
-
-    color: var(--immo-blue-dark);
-
+    margin: 0 0 9px;
+    color: var(--immo-blue);
     font-size: 17px;
 }
 
 .immo-service-card p {
     margin: 0;
-
-    color: var(--immo-gray);
-
+    color: var(--immo-muted);
     font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   SECTION TITLE
-========================================================= */
-
-.immo-section-title-row {
-    margin-bottom: 28px;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-
-    gap: 20px;
-}
-
-.immo-section-title-row .immo-section-heading {
-    margin-bottom: 0;
-}
-
-.immo-count {
-    padding: 8px 12px;
-
-    color: var(--immo-blue);
-
-    background: var(--immo-blue-light);
-
-    border-radius: 30px;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    white-space: nowrap;
+    line-height: 1.6;
 }
 
 
@@ -631,151 +415,114 @@ body {
    LISTINGS
 ========================================================= */
 
-.immo-listings-grid {
+.immo-section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.immo-count {
+    color: var(--immo-muted) !important;
+    font-size: 13px !important;
+    letter-spacing: normal !important;
+}
+
+.immo-listings {
     display: grid;
-
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
 
-.immo-property-card {
-    overflow: hidden;
-
-    background: #ffffff;
-
+.immo-loading,
+.immo-empty {
+    grid-column: 1 / -1;
+    background: #fff;
     border: 1px solid var(--immo-border);
-
-    border-radius: 14px;
-
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-
-    transition: 0.2s ease;
+    border-radius: var(--immo-radius);
+    padding: 35px;
+    text-align: center;
+    color: var(--immo-muted);
 }
 
-.immo-property-card:hover {
-    transform: translateY(-4px);
+.immo-loading i {
+    margin-right: 7px;
+}
 
+.immo-empty i {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: var(--immo-muted);
+}
+
+.immo-property {
+    background: #fff;
+    border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    transition: .2s ease;
+}
+
+.immo-property:hover {
+    transform: translateY(-3px);
     box-shadow: var(--immo-shadow);
 }
 
 .immo-property-image {
     height: 190px;
-
-    position: relative;
-
-    background: #edf1f5;
+    background: #e9edf2;
+    overflow: hidden;
 }
 
 .immo-property-image img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     display: block;
 }
 
-.immo-property-type {
-    position: absolute;
-
-    left: 12px;
-    top: 12px;
-
-    padding: 6px 9px;
-
-    color: #ffffff;
-
-    background: var(--immo-blue);
-
-    border-radius: 7px;
-
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.immo-property-body {
+.immo-property-content {
     padding: 17px;
 }
 
-.immo-property-body h3 {
-    margin: 0 0 8px;
+.immo-property-type {
+    color: var(--immo-green);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
 
-    color: var(--immo-blue-dark);
-
-    font-size: 16px;
+.immo-property h3 {
+    margin: 7px 0;
+    color: var(--immo-blue);
+    font-size: 17px;
 }
 
 .immo-property-location {
-    display: flex;
-    align-items: center;
-
-    gap: 6px;
-
-    color: var(--immo-gray);
-
-    font-size: 12px;
+    color: var(--immo-muted);
+    font-size: 13px;
+    margin-bottom: 12px;
 }
 
 .immo-property-location i {
-    color: var(--immo-green);
+    margin-right: 5px;
 }
 
 .immo-property-price {
-    margin-top: 13px;
-
-    color: var(--immo-blue);
-
     font-size: 18px;
     font-weight: 800;
+    color: var(--immo-blue);
 }
 
 .immo-property-link {
-    margin-top: 13px;
-
     display: inline-flex;
-    align-items: center;
-
-    gap: 6px;
-
-    color: var(--immo-blue);
-
-    text-decoration: none;
-
-    font-size: 12px;
+    margin-top: 13px;
+    color: var(--immo-green);
+    font-size: 13px;
     font-weight: 700;
-}
-
-.immo-property-link:hover {
-    color: var(--immo-green-dark);
-}
-
-
-/* =========================================================
-   EMPTY / LOADING
-========================================================= */
-
-.immo-loading,
-.immo-empty {
-    grid-column: 1 / -1;
-
-    padding: 45px 20px;
-
-    text-align: center;
-
-    color: var(--immo-gray);
-
-    background: #ffffff;
-
-    border: 1px dashed var(--immo-border);
-
-    border-radius: 14px;
-}
-
-.immo-loading i {
-    margin-right: 8px;
-
-    color: var(--immo-blue);
 }
 
 
@@ -784,62 +531,61 @@ body {
 ========================================================= */
 
 .immo-estimation {
-    background: var(--immo-blue-light) !important;
+    max-width: 1200px;
+    margin: 55px auto 10px;
+    padding: 35px 6%;
 }
 
-.immo-info-card {
-    max-width: 1000px;
-
-    margin: auto;
-
+.immo-estimation-content {
+    background: var(--immo-blue);
+    color: #fff;
+    border-radius: var(--immo-radius);
     padding: 35px;
-
     display: flex;
-
-    gap: 25px;
-
-    background: #ffffff;
-
-    border-radius: 18px;
-
-    box-shadow: var(--immo-shadow);
+    align-items: center;
+    gap: 22px;
 }
 
-.immo-info-icon {
-    flex: 0 0 65px;
-
+.immo-estimation-icon {
     width: 65px;
     height: 65px;
-
+    flex: 0 0 65px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
     display: flex;
     align-items: center;
     justify-content: center;
-
-    color: #ffffff;
-
-    background: var(--immo-green);
-
-    border-radius: 15px;
-
     font-size: 25px;
 }
 
-.immo-info-content h2 {
-    margin: 0 0 12px;
-
-    color: var(--immo-blue-dark);
-
-    font-size: 28px;
+.immo-estimation-content span,
+.immo-direction-content > span {
+    color: #80e0b4;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
 }
 
-.immo-info-content p {
-    max-width: 700px;
+.immo-estimation-content h2 {
+    margin: 7px 0;
+    font-size: 24px;
+}
 
-    margin: 0 0 20px;
+.immo-estimation-content p {
+    margin: 0;
+    color: rgba(255, 255, 255, .8);
+    line-height: 1.5;
+}
 
-    color: var(--immo-gray);
-
-    line-height: 1.7;
+.immo-primary-button {
+    margin-left: auto;
+    white-space: nowrap;
+    background: var(--immo-green);
+    color: #fff;
+    padding: 13px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 
@@ -848,110 +594,95 @@ body {
 ========================================================= */
 
 .immo-agent-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    max-width: 700px;
     margin-bottom: 25px;
-
-    display: flex;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-}
-
-.immo-agent-filters select {
-    min-height: 45px;
-
-    min-width: 210px;
-
-    padding: 0 13px;
-
-    background: #ffffff;
-
-    border: 1px solid var(--immo-border);
-
-    border-radius: 9px;
-
-    outline: 0;
-
-    color: var(--immo-black);
 }
 
 .immo-agents-grid {
     display: grid;
-
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
 
-.immo-agent-card {
-    padding: 20px;
-
-    display: flex;
-    gap: 15px;
-
-    background: #ffffff;
-
+.immo-agent {
+    background: #fff;
     border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius);
+    padding: 22px;
+}
 
-    border-radius: 14px;
-
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+.immo-agent-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
 .immo-agent-avatar {
-    width: 60px;
-    height: 60px;
-
-    flex: 0 0 60px;
-
-    overflow: hidden;
-
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: rgba(6, 59, 115, .1);
+    color: var(--immo-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-
-    color: #ffffff;
-
-    background: var(--immo-blue);
-
-    border-radius: 50%;
-
-    font-size: 21px;
+    font-size: 22px;
+    overflow: hidden;
+    flex: 0 0 55px;
 }
 
 .immo-agent-avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
-.immo-agent-info h3 {
-    margin: 0 0 5px;
-
-    color: var(--immo-blue-dark);
-
+.immo-agent h3 {
+    margin: 0 0 4px;
+    color: var(--immo-blue);
     font-size: 16px;
 }
 
 .immo-agent-role {
     color: var(--immo-green);
-
     font-size: 11px;
     font-weight: 700;
 }
 
 .immo-agent-location {
-    margin-top: 7px;
-
-    color: var(--immo-gray);
-
-    font-size: 12px;
+    margin: 15px 0;
+    color: var(--immo-muted);
+    font-size: 13px;
 }
 
-.immo-agent-location i {
-    margin-right: 4px;
+.immo-agent-location div {
+    margin-top: 5px;
+}
 
+.immo-agent-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.immo-agent-actions a {
+    flex: 1;
+    padding: 10px;
+    border-radius: 7px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.immo-agent-whatsapp {
+    background: #e7f8ef;
+    color: #168653;
+}
+
+.immo-agent-contact {
+    background: #edf3fa;
     color: var(--immo-blue);
 }
 
@@ -960,210 +691,135 @@ body {
    ACTUALITÉS
 ========================================================= */
 
-.immo-news-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 18px;
-}
-
-.immo-news-card {
-    padding: 22px;
-
-    display: flex;
-
-    gap: 18px;
-
-    background: #ffffff;
-
+.immo-news-box {
+    background: #fff;
     border: 1px solid var(--immo-border);
-
-    border-radius: 14px;
+    border-radius: var(--immo-radius);
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.immo-news-icon {
-    width: 52px;
-    height: 52px;
-
-    flex: 0 0 52px;
-
+.immo-news-box > i {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    color: var(--immo-blue);
-
-    background: var(--immo-blue-light);
-
-    border-radius: 12px;
-
-    font-size: 20px;
-}
-
-.immo-news-card span {
+    background: rgba(32, 168, 107, .1);
     color: var(--immo-green);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 1px;
+    font-size: 22px;
+    flex: 0 0 58px;
 }
 
-.immo-news-card h3 {
-    margin: 7px 0;
-
-    color: var(--immo-blue-dark);
-
-    font-size: 17px;
+.immo-news-box h3 {
+    margin: 0 0 7px;
+    color: var(--immo-blue);
 }
 
-.immo-news-card p {
+.immo-news-box p {
     margin: 0;
-
-    color: var(--immo-gray);
-
-    font-size: 13px;
-
+    color: var(--immo-muted);
     line-height: 1.6;
 }
 
 
 /* =========================================================
-   DEMANDE
+   DIRECTION
 ========================================================= */
 
-.immo-request {
-    padding: 35px;
-
-    display: grid;
-
-    grid-template-columns: 0.9fr 1.1fr;
-
-    gap: 40px;
-
-    background: var(--immo-blue-dark);
-
-    border-radius: 18px;
+.immo-direction {
+    max-width: 1200px;
+    margin: 65px auto 0;
+    padding: 0 6% 30px;
 }
 
-.immo-request-content > span {
-    color: #68d961;
+.immo-direction-content {
+    background: #fff;
+    border: 1px solid var(--immo-border);
+    border-radius: var(--immo-radius);
+    padding: 40px;
+    text-align: center;
+    box-shadow: var(--immo-shadow);
 }
 
-.immo-request-content h2 {
-    margin: 0 0 15px;
-
-    color: #ffffff;
-
-    font-size: 32px;
+.immo-direction-content h2 {
+    color: var(--immo-blue);
+    margin: 9px auto;
+    font-size: 30px;
 }
 
-.immo-request-content p {
-    margin: 0;
-
-    color: #cfe3fa;
-
+.immo-direction-content p {
+    max-width: 720px;
+    margin: 0 auto 25px;
+    color: var(--immo-muted);
     line-height: 1.7;
 }
 
-.immo-request-form {
+.immo-direction-buttons {
     display: flex;
-    flex-direction: column;
-
-    gap: 11px;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.immo-request-form input,
-.immo-request-form select,
-.immo-request-form textarea {
-    width: 100%;
-
-    box-sizing: border-box;
-
-    padding: 13px 14px;
-
-    color: var(--immo-black);
-
-    background: #ffffff;
-
-    border: 1px solid transparent;
-
+.immo-whatsapp-button,
+.immo-email-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 13px 20px;
     border-radius: 8px;
-
-    outline: 0;
-
-    font-family: inherit;
-
+    color: #fff;
     font-size: 13px;
+    font-weight: 700;
 }
 
-.immo-request-form textarea {
-    resize: vertical;
+.immo-whatsapp-button {
+    background: #20a86b;
 }
 
-.immo-request-form input:focus,
-.immo-request-form select:focus,
-.immo-request-form textarea:focus {
-    border-color: var(--immo-green);
-}
-
-.immo-request-form .immo-btn {
-    align-self: flex-start;
+.immo-email-button {
+    background: var(--immo-blue);
 }
 
 
 /* =========================================================
    FOOTER
+   PAS DE LOGO
 ========================================================= */
 
 .immo-footer {
-    padding: 30px 6%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-
-    background: #ffffff;
-
     border-top: 1px solid var(--immo-border);
-}
-
-.immo-footer img {
-    width: 125px;
-    height: auto;
-
-    display: block;
-}
-
-.immo-footer > div {
+    background: #fff;
+    padding: 25px 6%;
     display: flex;
-    flex-direction: column;
-}
-
-.immo-footer strong {
-    color: var(--immo-blue-dark);
-
-    font-size: 15px;
-}
-
-.immo-footer span {
-    color: var(--immo-green);
-
-    font-size: 9px;
-    font-weight: 700;
-
-    letter-spacing: 1px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    color: var(--immo-muted);
+    font-size: 12px;
 }
 
 .immo-footer p {
     margin: 0;
+}
 
-    color: var(--immo-gray);
+.immo-footer a {
+    color: var(--immo-blue);
+    font-weight: 700;
+}
 
-    font-size: 11px;
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+.immo-overlay {
+    display: none;
 }
 
 
@@ -1173,14 +829,37 @@ body {
 
 @media (max-width: 1100px) {
 
-    .immo-listings-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    .immo-search-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .immo-keyword {
+        grid-column: span 2;
+    }
+
+    .immo-search-button {
+        width: 100%;
+    }
+
+    .immo-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .immo-listings {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .immo-agents-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 
+    .immo-estimation-content {
+        flex-wrap: wrap;
+    }
+
+    .immo-primary-button {
+        margin-left: 0;
+    }
 }
 
 
@@ -1190,399 +869,195 @@ body {
 
 @media (max-width: 768px) {
 
-    body {
-        overflow-x: hidden;
-    }
-
-
-    /* Sidebar */
-
     .immo-sidebar {
-        width: 270px;
-
         transform: translateX(-100%);
-
-        transition: transform 0.25s ease;
+        transition: transform .25s ease;
+        width: 280px;
     }
 
     .immo-sidebar.open {
         transform: translateX(0);
     }
 
-
-    /* Overlay */
-
-    .immo-overlay {
-        display: none;
-
-        position: fixed;
-
-        inset: 0;
-
-        background: rgba(0, 0, 0, 0.45);
-
-        z-index: 1900;
-    }
-
     .immo-overlay.active {
         display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .45);
+        z-index: 999;
     }
-
-
-    /* Mobile header */
-
-    .immo-mobile-header {
-        position: sticky;
-
-        top: 0;
-
-        height: 64px;
-
-        display: grid;
-
-        grid-template-columns: 50px 1fr 50px;
-
-        align-items: center;
-
-        background: #ffffff;
-
-        border-bottom: 1px solid var(--immo-border);
-
-        z-index: 1500;
-
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
-    }
-
-    .immo-menu-button,
-    .immo-home-button {
-        width: 40px;
-        height: 40px;
-
-        margin: auto;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border: 0;
-
-        background: transparent;
-
-        color: var(--immo-blue-dark);
-
-        font-size: 20px;
-
-        cursor: pointer;
-
-        text-decoration: none;
-    }
-
-    .immo-mobile-logo {
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        height: 100%;
-    }
-
-    .immo-mobile-logo img {
-        width: 125px;
-
-        max-width: 100%;
-
-        height: auto;
-
-        display: block;
-    }
-
-
-    /* Main */
 
     .immo-main {
         margin-left: 0;
     }
 
-
-    /* Hero */
-
-    .immo-hero {
-        min-height: 390px;
-
-        padding: 50px 22px;
-
-        text-align: center;
-
-        justify-content: center;
+    .immo-topbar {
+        height: 72px;
+        padding: 0 15px;
     }
 
-    .immo-hero-content {
-        max-width: 100%;
+    .immo-menu-button {
+        display: block;
+        position: absolute;
+        left: 15px;
+    }
+
+    .immo-top-logo {
+        width: 155px;
+        height: 62px;
+    }
+
+    .immo-top-logo img {
+        width: 140px;
+    }
+
+    .immo-top-actions span {
+        display: none;
+    }
+
+    .immo-top-actions {
+        position: absolute;
+        right: 15px;
+    }
+
+    .immo-hero {
+        padding: 50px 20px;
     }
 
     .immo-hero h1 {
-        font-size: 45px;
-
-        letter-spacing: -1.5px;
+        font-size: 34px;
     }
 
     .immo-hero p {
         font-size: 14px;
     }
 
-    .immo-hero-buttons {
-        justify-content: center;
+    .immo-search-section {
+        padding: 0 15px;
+        margin-top: -20px;
     }
 
+    .immo-search-box {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
 
-    /* Sections */
+    .immo-keyword {
+        grid-column: auto;
+    }
 
     .immo-section {
-        padding: 45px 16px;
+        padding: 45px 15px 10px;
     }
 
-    .immo-search-section {
-        padding: 35px 16px;
-    }
-
+    .immo-section-title h2,
     .immo-section-heading h2 {
         font-size: 25px;
     }
 
-
-    /* Search */
-
-    .immo-search-box {
-        grid-template-columns: 1fr;
-
-        padding: 8px;
-
-        box-shadow: none;
-    }
-
-    .immo-search-button {
-        width: 100%;
-    }
-
-
-    /* SERVICES :
-       3 ICÔNES/CARTES PAR LIGNE
-    */
-
     .immo-services-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-
-        gap: 9px;
+        grid-template-columns: 1fr;
     }
 
-    .immo-service-card {
-        min-height: 145px;
-
-        padding: 11px 7px;
-
-        align-items: center;
-
-        text-align: center;
-
-        border-radius: 11px;
-    }
-
-    .immo-service-icon {
-        width: 43px;
-        height: 43px;
-
-        border-radius: 11px;
-
-        font-size: 17px;
-    }
-
-    .immo-service-card h3 {
-        margin: 9px 0 5px;
-
-        font-size: 12px;
-
-        line-height: 1.2;
-    }
-
-    .immo-service-card p {
-        display: none;
-    }
-
-
-    /* Listings */
-
-    .immo-listings-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        gap: 10px;
+    .immo-listings {
+        grid-template-columns: 1fr;
     }
 
     .immo-property-image {
-        height: 140px;
+        height: 210px;
     }
-
-    .immo-property-body {
-        padding: 12px;
-    }
-
-    .immo-property-body h3 {
-        font-size: 13px;
-    }
-
-    .immo-property-price {
-        font-size: 15px;
-    }
-
-
-    /* Section title */
-
-    .immo-section-title-row {
-        align-items: center;
-    }
-
-    .immo-count {
-        font-size: 10px;
-    }
-
-
-    /* Estimation */
-
-    .immo-info-card {
-        padding: 22px;
-
-        flex-direction: column;
-
-        gap: 18px;
-    }
-
-    .immo-info-icon {
-        width: 52px;
-        height: 52px;
-
-        flex-basis: 52px;
-    }
-
-    .immo-info-content h2 {
-        font-size: 23px;
-    }
-
-
-    /* Agents */
 
     .immo-agent-filters {
-        flex-direction: column;
-    }
-
-    .immo-agent-filters select {
-        width: 100%;
-        min-width: 0;
+        grid-template-columns: 1fr;
     }
 
     .immo-agents-grid {
         grid-template-columns: 1fr;
     }
 
-
-    /* Actualités */
-
-    .immo-news-grid {
-        grid-template-columns: 1fr;
+    .immo-estimation {
+        padding: 35px 15px 10px;
     }
 
-
-    /* Demande */
-
-    .immo-request {
-        padding: 23px;
-
-        grid-template-columns: 1fr;
-
-        gap: 25px;
+    .immo-estimation-content {
+        padding: 25px;
     }
 
-    .immo-request-content h2 {
-        font-size: 25px;
+    .immo-estimation-icon {
+        width: 55px;
+        height: 55px;
+        flex-basis: 55px;
     }
 
+    .immo-estimation-content h2 {
+        font-size: 21px;
+    }
 
-    /* Footer */
-
-    .immo-footer {
-        padding: 25px 16px;
-
-        flex-direction: column;
-
+    .immo-primary-button {
+        width: 100%;
         text-align: center;
     }
 
-    .immo-footer img {
-        width: 105px;
+    .immo-news-box {
+        align-items: flex-start;
+        padding: 22px;
     }
 
+    .immo-direction {
+        padding: 0 15px 25px;
+    }
+
+    .immo-direction-content {
+        padding: 28px 20px;
+    }
+
+    .immo-direction-content h2 {
+        font-size: 25px;
+    }
+
+    .immo-direction-buttons {
+        flex-direction: column;
+    }
+
+    .immo-whatsapp-button,
+    .immo-email-button {
+        width: 100%;
+    }
+
+    .immo-footer {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 
 /* =========================================================
-   PETITS TÉLÉPHONES
+   PETITS ÉCRANS
 ========================================================= */
 
-@media (max-width: 390px) {
+@media (max-width: 420px) {
 
-    .immo-mobile-header {
-        height: 60px;
+    .immo-top-logo img {
+        width: 125px;
     }
 
-    .immo-mobile-logo img {
-        width: 112px;
+    .immo-hero h1 {
+        font-size: 29px;
     }
 
-    .immo-services-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    .immo-hero {
+        padding: 40px 15px;
+    }
 
+    .immo-section-title h2,
+    .immo-section-heading h2 {
+        font-size: 22px;
+    }
+
+    .immo-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
         gap: 7px;
-    }
-
-    .immo-service-card {
-        min-height: 130px;
-
-        padding: 8px 4px;
-    }
-
-    .immo-service-icon {
-        width: 38px;
-        height: 38px;
-
-        font-size: 15px;
-    }
-
-    .immo-service-card h3 {
-        font-size: 10px;
-    }
-
-    .immo-listings-grid {
-        gap: 8px;
-    }
-
-    .immo-property-image {
-        height: 125px;
-    }
-
-}
-
-
-/* =========================================================
-   TRÈS PETITS ÉCRANS
-========================================================= */
-
-@media (max-width: 340px) {
-
-    .immo-service-card h3 {
-        font-size: 9px;
-    }
-
-    .immo-service-icon {
-        width: 35px;
-        height: 35px;
     }
 
 }
