@@ -1,44 +1,86 @@
 // ============================================================
 // CAMU SERVICES — ESPACE IMMOBILIER
-// immobilier.js
+// ============================================================
+// Gestion de :
+// - Villes dynamiques depuis Firestore
+// - Communes dynamiques
+// - Vente
+// - Location
+// - Recherche immobilière
+// - Agents immobiliers
+// - Filtres ville / commune
 // ============================================================
 
 import {
-    db,
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
     collection,
     getDocs
-} from "./firebase-config.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 // ============================================================
-// CONFIGURATION
+// 1. CONFIGURATION FIREBASE
 // ============================================================
 
-const FIRESTORE_VERSION = "10.12.2";
-
-const state = {
-    villes: [],
-    communes: [],
-    annonces: [],
-    agents: []
+const firebaseConfig = {
+    apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
+    authDomain: "camu-services.firebaseapp.com",
+    projectId: "camu-services",
+    storageBucket: "camu-services.appspot.com",
+    messagingSenderId: "879100396449",
+    appId: "1:879100396449:web:9d7ffe441a3df2daf841e0",
+    measurementId: "G-RQ16SX2SNV"
 };
 
 
 // ============================================================
-// UTILITAIRES
+// 2. INITIALISATION FIREBASE
+// ============================================================
+
+let immoApp;
+
+const existingApps = getApps();
+
+if (existingApps.some(app => app.name === "camu-immo")) {
+    immoApp = getApp("camu-immo");
+} else {
+    immoApp = initializeApp(firebaseConfig, "camu-immo");
+}
+
+const db = getFirestore(immoApp);
+
+
+// ============================================================
+// 3. VARIABLES GLOBALES
+// ============================================================
+
+let villes = [];
+let communes = [];
+let annonces = [];
+let agents = [];
+
+
+// ============================================================
+// 4. OUTILS
 // ============================================================
 
 function normalize(value) {
     return String(value || "")
-        .trim()
-        .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
 }
 
 
 function escapeHtml(value) {
-    return String(value ?? "")
+    return String(value || "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -47,274 +89,178 @@ function escapeHtml(value) {
 }
 
 
-function firstValue(object, keys, fallback = "") {
-
-    for (const key of keys) {
-
+function firstValue(...values) {
+    for (const value of values) {
         if (
-            object &&
-            object[key] !== undefined &&
-            object[key] !== null &&
-            String(object[key]).trim() !== ""
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
         ) {
-            return object[key];
+            return value;
         }
-
     }
 
-    return fallback;
+    return "";
 }
 
 
 function formatPrice(price, currency = "USD") {
 
+    const numericPrice = Number(price);
+
+    if (!Number.isFinite(numericPrice)) {
+        return "Prix à négocier";
+    }
+
+    let symbol = "$";
+
+    const currencyNormalized = normalize(currency);
+
     if (
-        price === undefined ||
-        price === null ||
-        price === ""
+        currencyNormalized === "cdf" ||
+        currencyNormalized === "fc" ||
+        currencyNormalized === "franc congolais"
     ) {
-        return "Prix sur demande";
+        symbol = "FC";
     }
 
-    const number = Number(price);
+    return `${numericPrice.toLocaleString("fr-FR")} ${symbol}`;
+}
 
-    if (Number.isNaN(number)) {
-        return `${price} ${currency}`;
-    }
 
-    return (
-        new Intl.NumberFormat("fr-FR").format(number) +
-        ` ${currency}`
+function getAnnonceCity(annonce) {
+
+    return firstValue(
+        annonce.city,
+        annonce.ville,
+        annonce.cityName,
+        annonce.villeName,
+        annonce.localisation,
+        annonce.location
     );
 }
 
 
-function getAnnonceCity(ad) {
+function getAnnonceCommune(annonce) {
 
-    return firstValue(ad, [
-        "city",
-        "ville",
-        "cityName",
-        "villeName",
-        "localisation"
-    ]);
-
-}
-
-
-function getAnnonceCategory(ad) {
-
-    return firstValue(ad, [
-        "category",
-        "categorie",
-        "categoryName",
-        "categorieName"
-    ]);
-
-}
-
-
-function getTransactionType(ad) {
-
-    return normalize(
-        firstValue(ad, [
-            "typeTransaction",
-            "transactionType",
-            "type",
-            "transaction",
-            "operation"
-        ])
+    return firstValue(
+        annonce.commune,
+        annonce.communeName,
+        annonce.quartier
     );
+}
 
+
+function getAnnonceCategory(annonce) {
+
+    return firstValue(
+        annonce.category,
+        annonce.categorie,
+        annonce.categoryName
+    );
+}
+
+
+function getTransactionType(annonce) {
+
+    return firstValue(
+        annonce.typeTransaction,
+        annonce.transactionType,
+        annonce.transaction,
+        annonce.type,
+        annonce.operation
+    );
 }
 
 
 function getUserName(user) {
 
-    const nom = firstValue(
-        user,
-        ["nom", "lastName", "lastname"]
+    const fullName = firstValue(
+        user.nomComplet,
+        user.fullName,
+        user.name
     );
+
+    if (fullName) {
+        return fullName;
+    }
 
     const prenom = firstValue(
-        user,
-        ["prenom", "firstName", "firstname"]
+        user.prenom,
+        user.firstName
     );
 
-    const displayName = firstValue(
-        user,
-        ["displayName", "name", "fullName"]
+    const nom = firstValue(
+        user.nom,
+        user.lastName
     );
 
-    if (prenom && nom) {
-        return `${prenom} ${nom}`;
-    }
+    const result = `${prenom} ${nom}`.trim();
 
-    if (displayName) {
-        return displayName;
-    }
-
-    if (prenom) {
-        return prenom;
-    }
-
-    if (nom) {
-        return nom;
-    }
-
-    return "Agent immobilier";
+    return result || "Agent immobilier";
 }
 
 
 // ============================================================
-// ELEMENTS DOM
+// 5. MENU MOBILE
 // ============================================================
-
-const $ = (id) => document.getElementById(id);
-
-const elements = {
-
-    sidebar: $("immoSidebar"),
-
-    overlay: $("immoOverlay"),
-
-    menuButton: $("immoMenuButton"),
-
-    transaction: $("immoTransaction"),
-
-    ville: $("immoVille"),
-
-    commune: $("immoCommune"),
-
-    keyword: $("immoKeyword"),
-
-    searchButton: $("immoSearchButton"),
-
-    venteListings: $("venteListings"),
-
-    venteCount: $("venteCount"),
-
-    locationListings: $("locationListings"),
-
-    locationCount: $("locationCount"),
-
-    agentVille: $("agentVille"),
-
-    agentCommune: $("agentCommune"),
-
-    agentsGrid: $("agentsGrid"),
-
-    year: $("immoYear")
-
-};
-
-
-// ============================================================
-// VERIFICATION FIREBASE
-// ============================================================
-
-function verifyFirebase() {
-
-    console.log("==========================================");
-
-    console.log(
-        "CAMU IMMO — Vérification Firebase"
-    );
-
-    console.log(
-        "Firebase SDK :",
-        FIRESTORE_VERSION
-    );
-
-    console.log(
-        "db :",
-        db
-    );
-
-    console.log(
-        "Type db :",
-        db?.constructor?.name
-    );
-
-    console.log(
-        "collection :",
-        collection
-    );
-
-    console.log(
-        "getDocs :",
-        getDocs
-    );
-
-    console.log("==========================================");
-
-    if (!db) {
-
-        console.error(
-            "CAMU IMMO — db est indisponible."
-        );
-
-        return false;
-    }
-
-    return true;
-}
-
-
-// ============================================================
-// MENU MOBILE
-// ============================================================
-
-function openSidebar() {
-
-    elements.sidebar?.classList.add("active");
-
-    elements.overlay?.classList.add("active");
-
-    document.body.classList.add(
-        "immo-menu-open"
-    );
-}
-
-
-function closeSidebar() {
-
-    elements.sidebar?.classList.remove("active");
-
-    elements.overlay?.classList.remove("active");
-
-    document.body.classList.remove(
-        "immo-menu-open"
-    );
-}
-
 
 function setupMobileMenu() {
 
-    elements.menuButton?.addEventListener(
-        "click",
-        openSidebar
-    );
+    const menuButton = document.getElementById("immoMenuButton");
+    const sidebar = document.getElementById("immoSidebar");
+    const overlay = document.getElementById("immoOverlay");
 
-    elements.overlay?.addEventListener(
-        "click",
-        closeSidebar
-    );
+    if (!menuButton || !sidebar) {
+        return;
+    }
 
-    document.querySelectorAll(
-        ".immoSidebar a"
-    ).forEach((link) => {
 
-        link.addEventListener(
-            "click",
-            () => {
+    function openMenu() {
 
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
-                }
+        sidebar.classList.add("active");
 
-            }
-        );
+        if (overlay) {
+            overlay.classList.add("active");
+        }
+
+        document.body.classList.add("immo-menu-open");
+    }
+
+
+    function closeMenu() {
+
+        sidebar.classList.remove("active");
+
+        if (overlay) {
+            overlay.classList.remove("active");
+        }
+
+        document.body.classList.remove("immo-menu-open");
+    }
+
+
+    menuButton.addEventListener("click", () => {
+
+        if (sidebar.classList.contains("active")) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+
+    });
+
+
+    if (overlay) {
+        overlay.addEventListener("click", closeMenu);
+    }
+
+
+    sidebar.querySelectorAll("a").forEach(link => {
+
+        link.addEventListener("click", () => {
+            closeMenu();
+        });
 
     });
 
@@ -322,97 +268,71 @@ function setupMobileMenu() {
 
 
 // ============================================================
-// ANNEE
-// ============================================================
-
-function setCurrentYear() {
-
-    if (elements.year) {
-
-        elements.year.textContent =
-            new Date().getFullYear();
-
-    }
-
-}
-
-
-// ============================================================
-// VILLES
+// 6. CHARGER LES VILLES
 // ============================================================
 
 async function loadVilles() {
 
-    if (!verifyFirebase()) {
-        return;
-    }
-
     try {
 
-        const villesRef =
-            collection(db, "villes");
+        console.log("CAMU IMMO — chargement des villes...");
 
-        const snapshot =
-            await getDocs(villesRef);
+        const snapshot = await getDocs(
+            collection(db, "villes")
+        );
 
-        state.villes = [];
 
-        snapshot.forEach((docSnap) => {
+        villes = [];
 
-            const data =
-                docSnap.data();
+        snapshot.forEach(docSnap => {
+
+            const data = docSnap.data();
 
             if (data.active === false) {
                 return;
             }
 
-            state.villes.push({
-
+            villes.push({
                 id: docSnap.id,
-
-                name:
-                    data.name ||
-                    docSnap.id,
-
-                province:
-                    data.province ||
-                    "",
-
-                order:
-                    Number(data.order) ||
-                    999
-
+                name: firstValue(
+                    data.name,
+                    data.nom
+                ),
+                province: firstValue(
+                    data.province
+                ),
+                order: Number(data.order) || 999,
+                communes: Array.isArray(data.communes)
+                    ? data.communes
+                    : []
             });
 
         });
 
 
-        state.villes.sort((a, b) => {
+        villes.sort((a, b) => {
 
             if (a.order !== b.order) {
                 return a.order - b.order;
             }
 
             return normalize(a.name)
-                .localeCompare(
-                    normalize(b.name)
-                );
+                .localeCompare(normalize(b.name));
 
         });
 
 
-        populateVilleSelect(
-            elements.ville
-        );
-
-        populateVilleSelect(
-            elements.agentVille
-        );
-
-
         console.log(
-            "CAMU IMMO — villes chargées :",
-            state.villes.length
+            `CAMU IMMO — ${villes.length} ville(s) chargée(s).`
+        );
+
+
+        populateVilleSelect(
+            document.getElementById("immoVille")
+        );
+
+        populateVilleSelect(
+            document.getElementById("agentVille")
         );
 
 
@@ -429,7 +349,7 @@ async function loadVilles() {
 
 
 // ============================================================
-// SELECT VILLES
+// 7. REMPLIR LES SELECTS VILLES
 // ============================================================
 
 function populateVilleSelect(select) {
@@ -438,26 +358,24 @@ function populateVilleSelect(select) {
         return;
     }
 
-    const currentValue =
-        select.value;
+
+    const currentValue = select.value;
+
 
     select.innerHTML = `
-        <option value="">
-            Toutes les villes
-        </option>
+        <option value="">Toutes les villes</option>
     `;
 
 
-    state.villes.forEach((ville) => {
+    villes.forEach(ville => {
 
-        const option =
-            document.createElement("option");
+        const option = document.createElement("option");
 
-        option.value =
-            ville.id;
+        option.value = ville.id;
 
         option.textContent =
-            ville.name;
+            ville.name ||
+            "Ville";
 
         select.appendChild(option);
 
@@ -467,256 +385,234 @@ function populateVilleSelect(select) {
     if (
         currentValue &&
         [...select.options].some(
-            option =>
-                option.value === currentValue
+            option => option.value === currentValue
         )
     ) {
-
-        select.value =
-            currentValue;
-
+        select.value = currentValue;
     }
 
 }
 
 
 // ============================================================
-// COMMUNES
+// 8. CHARGER LES COMMUNES
 // ============================================================
 
 async function loadCommunesForVille(villeId) {
 
+    communes = [];
+
+
     if (!villeId) {
 
-        state.communes = [];
-
         populateCommuneSelect(
-            elements.commune
+            document.getElementById("immoCommune"),
+            []
         );
 
         populateCommuneSelect(
-            elements.agentCommune
+            document.getElementById("agentCommune"),
+            []
         );
 
         return;
+
     }
 
-
-    const ville =
-        state.villes.find(
-            item => item.id === villeId
-        );
-
-
-    if (!ville) {
-        return;
-    }
-
-
-    const communesMap =
-        new Map();
-
-
-    // ========================================================
-    // 1. SOUS-COLLECTION
-    // villes/{villeId}/communes
-    // ========================================================
 
     try {
 
-        const communesRef =
-            collection(
-                db,
-                "villes",
-                villeId,
-                "communes"
+        // ----------------------------------------------------
+        // A. Chercher les communes dans la collection racine
+        // ----------------------------------------------------
+
+        const rootSnapshot = await getDocs(
+            collection(db, "communes")
+        );
+
+
+        rootSnapshot.forEach(docSnap => {
+
+            const data = docSnap.data();
+
+
+            const dataVilleId = firstValue(
+                data.villeId,
+                data.cityId
             );
 
-        const snapshot =
-            await getDocs(
-                communesRef
+
+            const dataVilleName = firstValue(
+                data.villeName,
+                data.cityName,
+                data.ville,
+                data.city
             );
 
 
-        snapshot.forEach((docSnap) => {
+            const selectedVille = villes.find(
+                ville => ville.id === villeId
+            );
 
-            const data =
-                docSnap.data();
 
-            if (data.active === false) {
-                return;
-            }
+            const matchesId =
+                dataVilleId &&
+                String(dataVilleId) === String(villeId);
 
-            const name =
-                data.name ||
-                docSnap.id;
 
-            communesMap.set(
-                normalize(name),
-                {
+            const matchesName =
+                selectedVille &&
+                dataVilleName &&
+                normalize(dataVilleName) ===
+                normalize(selectedVille.name);
 
-                    id:
-                        docSnap.id,
 
-                    name:
-                        name,
+            if (
+                matchesId ||
+                matchesName
+            ) {
 
-                    villeId:
-                        villeId,
-
-                    villeName:
-                        ville.name
-
+                if (data.active === false) {
+                    return;
                 }
-            );
+
+
+                communes.push({
+                    id: docSnap.id,
+                    name: firstValue(
+                        data.name,
+                        data.nom
+                    ),
+                    villeId: villeId
+                });
+
+            }
 
         });
 
 
-    } catch (error) {
+        // ----------------------------------------------------
+        // B. Vérifier aussi les communes stockées dans la ville
+        // ----------------------------------------------------
 
-        console.log(
-            "CAMU IMMO — sous-collection communes non disponible :",
-            error.message
+        const selectedVille = villes.find(
+            ville => ville.id === villeId
         );
 
-    }
+
+        if (
+            selectedVille &&
+            Array.isArray(selectedVille.communes)
+        ) {
+
+            selectedVille.communes.forEach(
+                (commune, index) => {
+
+                    let name = "";
+
+                    let id = `embedded-${villeId}-${index}`;
 
 
-    // ========================================================
-    // 2. COLLECTION RACINE communes
-    // ========================================================
+                    if (typeof commune === "string") {
 
-    try {
+                        name = commune;
 
-        const communesRef =
-            collection(
-                db,
-                "communes"
-            );
+                    } else if (
+                        commune &&
+                        typeof commune === "object"
+                    ) {
 
-        const snapshot =
-            await getDocs(
-                communesRef
-            );
+                        name = firstValue(
+                            commune.name,
+                            commune.nom
+                        );
 
+                        id = firstValue(
+                            commune.id,
+                            commune.communeId,
+                            id
+                        );
 
-        snapshot.forEach((docSnap) => {
-
-            const data =
-                docSnap.data();
-
-            if (data.active === false) {
-                return;
-            }
+                    }
 
 
-            const communeVilleId =
-                firstValue(
-                    data,
-                    [
-                        "villeId",
-                        "cityId"
-                    ]
-                );
+                    if (
+                        name &&
+                        !communes.some(
+                            item =>
+                                normalize(item.name) ===
+                                normalize(name)
+                        )
+                    ) {
 
+                        communes.push({
+                            id,
+                            name,
+                            villeId
+                        });
 
-            const communeVilleName =
-                firstValue(
-                    data,
-                    [
-                        "villeName",
-                        "cityName",
-                        "ville",
-                        "city"
-                    ]
-                );
-
-
-            const sameVille =
-                communeVilleId === villeId ||
-                normalize(communeVilleName) ===
-                normalize(ville.name);
-
-
-            if (!sameVille) {
-                return;
-            }
-
-
-            const name =
-                data.name ||
-                docSnap.id;
-
-
-            communesMap.set(
-                normalize(name),
-                {
-
-                    id:
-                        docSnap.id,
-
-                    name:
-                        name,
-
-                    villeId:
-                        villeId,
-
-                    villeName:
-                        ville.name
+                    }
 
                 }
             );
 
-        });
+        }
+
+
+        communes.sort((a, b) =>
+            normalize(a.name)
+                .localeCompare(
+                    normalize(b.name)
+                )
+        );
+
+
+        console.log(
+            `CAMU IMMO — ${communes.length} commune(s) pour ${selectedVille?.name || villeId}.`
+        );
+
+
+        populateCommuneSelect(
+            document.getElementById("immoCommune"),
+            communes
+        );
+
+
+        populateCommuneSelect(
+            document.getElementById("agentCommune"),
+            communes
+        );
 
 
     } catch (error) {
 
-        console.log(
-            "CAMU IMMO — collection communes non disponible :",
-            error.message
+        console.error(
+            "CAMU IMMO — erreur chargement communes :",
+            error
+        );
+
+
+        populateCommuneSelect(
+            document.getElementById("immoCommune"),
+            []
+        );
+
+
+        populateCommuneSelect(
+            document.getElementById("agentCommune"),
+            []
         );
 
     }
-
-
-    // ========================================================
-    // RESULTAT
-    // ========================================================
-
-    state.communes =
-        [...communesMap.values()].sort(
-            (a, b) =>
-                normalize(a.name)
-                    .localeCompare(
-                        normalize(b.name)
-                    )
-        );
-
-
-    populateCommuneSelect(
-        elements.commune
-    );
-
-    populateCommuneSelect(
-        elements.agentCommune
-    );
-
-
-    console.log(
-        `CAMU IMMO — communes chargées pour ${ville.name} :`,
-        state.communes.length
-    );
 
 }
 
 
 // ============================================================
-// SELECT COMMUNES
+// 9. REMPLIR LES COMMUNES
 // ============================================================
 
-function populateCommuneSelect(select) {
+function populateCommuneSelect(select, items) {
 
     if (!select) {
         return;
@@ -724,195 +620,141 @@ function populateCommuneSelect(select) {
 
 
     select.innerHTML = `
-        <option value="">
-            Toutes les communes
-        </option>
+        <option value="">Toutes les communes</option>
     `;
 
 
-    state.communes.forEach(
-        (commune) => {
+    items.forEach(commune => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+        const option = document.createElement("option");
 
-            option.value =
-                commune.id;
+        option.value = commune.name;
 
-            option.dataset.name =
-                commune.name;
+        option.textContent = commune.name;
 
-            option.textContent =
-                commune.name;
+        select.appendChild(option);
 
-            select.appendChild(
-                option
-            );
-
-        }
-    );
+    });
 
 }
 
 
 // ============================================================
-// IMMOBILIER
+// 10. IDENTIFIER UNE ANNONCE IMMOBILIÈRE
 // ============================================================
 
-function isImmobilierAnnonce(ad) {
+function isImmobilierAnnonce(annonce) {
 
-    const category =
-        normalize(
-            getAnnonceCategory(ad)
-        );
+    const category = normalize(
+        getAnnonceCategory(annonce)
+    );
 
 
     return (
         category === "immobilier" ||
-        category.includes("immobilier")
+        category.includes("immobilier") ||
+        category === "immo"
     );
 
 }
 
 
 // ============================================================
-// VENTE
+// 11. IDENTIFIER UNE VENTE
 // ============================================================
 
-function isVente(ad) {
+function isVente(annonce) {
 
-    const type =
-        getTransactionType(ad);
-
-
-    return (
-
-        type.includes("vente") ||
-
-        type.includes("vendre") ||
-
-        type === "sale" ||
-
-        type === "sell"
-
+    const type = normalize(
+        getTransactionType(annonce)
     );
+
+
+    return [
+        "vente",
+        "vendre",
+        "sell",
+        "sale",
+        "achat"
+    ].includes(type);
 
 }
 
 
 // ============================================================
-// LOCATION
+// 12. IDENTIFIER UNE LOCATION
 // ============================================================
 
-function isLocation(ad) {
+function isLocation(annonce) {
 
-    const type =
-        getTransactionType(ad);
-
-
-    return (
-
-        type.includes("location") ||
-
-        type.includes("louer") ||
-
-        type.includes("locatif") ||
-
-        type === "rent" ||
-
-        type === "rental"
-
+    const type = normalize(
+        getTransactionType(annonce)
     );
+
+
+    return [
+        "location",
+        "louer",
+        "rent",
+        "rental"
+    ].includes(type);
 
 }
 
 
 // ============================================================
-// CHARGER ANNONCES
+// 13. CHARGER LES ANNONCES
 // ============================================================
 
 async function loadAnnonces() {
 
-    if (!verifyFirebase()) {
-        return;
-    }
-
-
     try {
 
-        const annoncesRef =
-            collection(
-                db,
-                "annonces"
-            );
-
-
-        const snapshot =
-            await getDocs(
-                annoncesRef
-            );
-
-
-        state.annonces = [];
-
-
-        snapshot.forEach(
-            (docSnap) => {
-
-                const data =
-                    docSnap.data();
-
-
-                if (
-                    data.status &&
-                    normalize(data.status) !==
-                    "active"
-                ) {
-                    return;
-                }
-
-
-                if (
-                    !isImmobilierAnnonce(data)
-                ) {
-                    return;
-                }
-
-
-                state.annonces.push({
-
-                    id:
-                        docSnap.id,
-
-                    ...data
-
-                });
-
-            }
+        console.log(
+            "CAMU IMMO — chargement des annonces..."
         );
+
+
+        const snapshot = await getDocs(
+            collection(db, "annonces")
+        );
+
+
+        annonces = [];
+
+
+        snapshot.forEach(docSnap => {
+
+            const data = docSnap.data();
+
+
+            if (
+                data.status &&
+                normalize(data.status) !== "active"
+            ) {
+                return;
+            }
+
+
+            if (!isImmobilierAnnonce(data)) {
+                return;
+            }
+
+
+            annonces.push({
+                id: docSnap.id,
+                ...data
+            });
+
+        });
 
 
         console.log(
-            "CAMU IMMO — annonces immobilières :",
-            state.annonces.length
+            `CAMU IMMO — ${annonces.length} annonce(s) immobilière(s).`
         );
 
 
-        renderVente(
-            state.annonces.filter(
-                ad => isVente(ad)
-            )
-        );
-
-
-        renderLocation(
-            state.annonces.filter(
-                ad => isLocation(ad)
-            )
-        );
-
+        filterAnnonces();
 
     } catch (error) {
 
@@ -923,13 +765,6 @@ async function loadAnnonces() {
 
 
         showError(
-            elements.venteListings,
-            "Impossible de charger les annonces immobilières."
-        );
-
-
-        showError(
-            elements.locationListings,
             "Impossible de charger les annonces immobilières."
         );
 
@@ -939,92 +774,96 @@ async function loadAnnonces() {
 
 
 // ============================================================
-// FILTRAGE
+// 14. FILTRER LES ANNONCES
 // ============================================================
 
-function filterAnnonces(list) {
+function filterAnnonces() {
 
-    const transaction =
-        normalize(
-            elements.transaction?.value
-        );
+    const villeSelect =
+        document.getElementById("immoVille");
+
+    const communeSelect =
+        document.getElementById("immoCommune");
+
+    const transactionSelect =
+        document.getElementById("immoTransaction");
+
+    const keywordInput =
+        document.getElementById("immoKeyword");
 
 
     const villeId =
-        elements.ville?.value || "";
+        villeSelect?.value || "";
 
 
-    const communeId =
-        elements.commune?.value || "";
+    const commune =
+        communeSelect?.value || "";
+
+
+    const transaction =
+        transactionSelect?.value || "";
 
 
     const keyword =
         normalize(
-            elements.keyword?.value
+            keywordInput?.value || ""
         );
 
 
-    const communeOption =
-        elements.commune
-            ?.selectedOptions?.[0];
-
-
-    const communeName =
-        normalize(
-            communeOption?.dataset?.name ||
-            ""
+    const selectedVille =
+        villes.find(
+            ville =>
+                String(ville.id) ===
+                String(villeId)
         );
 
 
-    return list.filter(
-        (ad) => {
+    const villeName =
+        selectedVille?.name || "";
 
 
-            // ------------------------------------------------
-            // TRANSACTION
-            // ------------------------------------------------
+    const filtered = annonces.filter(
+        annonce => {
 
-            if (
-                transaction === "vente" &&
-                !isVente(ad)
-            ) {
-                return false;
-            }
-
-
-            if (
-                transaction === "location" &&
-                !isLocation(ad)
-            ) {
-                return false;
-            }
-
-
-            // ------------------------------------------------
-            // VILLE
-            // ------------------------------------------------
+            // ----------------------------------------------
+            // Ville
+            // ----------------------------------------------
 
             if (villeId) {
 
-                const ville =
-                    state.villes.find(
-                        item =>
-                            item.id === villeId
+                const annonceCity =
+                    normalize(
+                        getAnnonceCity(annonce)
                     );
 
 
-                const adCity =
+                const matchVille =
+                    annonceCity ===
+                    normalize(villeName);
+
+
+                if (!matchVille) {
+                    return false;
+                }
+
+            }
+
+
+            // ----------------------------------------------
+            // Commune
+            // ----------------------------------------------
+
+            if (commune) {
+
+                const annonceCommune =
                     normalize(
-                        getAnnonceCity(ad)
+                        getAnnonceCommune(annonce)
                     );
 
 
                 if (
-                    ville &&
-                    adCity !==
-                        normalize(ville.name) &&
-                    adCity !==
-                        normalize(ville.id)
+                    annonceCommune !==
+                    normalize(commune)
                 ) {
 
                     return false;
@@ -1034,31 +873,23 @@ function filterAnnonces(list) {
             }
 
 
-            // ------------------------------------------------
-            // COMMUNE
-            // ------------------------------------------------
+            // ----------------------------------------------
+            // Transaction
+            // ----------------------------------------------
 
-            if (
-                communeId &&
-                communeName
-            ) {
+            if (transaction) {
 
-                const adCommune =
+                const type =
                     normalize(
-                        firstValue(
-                            ad,
-                            [
-                                "commune",
-                                "communeName"
-                            ]
+                        getTransactionType(
+                            annonce
                         )
                     );
 
 
                 if (
-                    adCommune &&
-                    adCommune !==
-                    communeName
+                    normalize(transaction) !==
+                    type
                 ) {
 
                     return false;
@@ -1068,50 +899,29 @@ function filterAnnonces(list) {
             }
 
 
-            // ------------------------------------------------
-            // MOT-CLE
-            // ------------------------------------------------
+            // ----------------------------------------------
+            // Mot-clé
+            // ----------------------------------------------
 
             if (keyword) {
 
-                const searchable =
-                    normalize(
-
-                        [
-
-                            ad.title,
-
-                            ad.description,
-
-                            ad.category,
-
-                            ad.city,
-
-                            ad.ville,
-
-                            ad.commune,
-
-                            ad.quartier,
-
-                            ad.typeBien,
-
-                            ad.propertyType,
-
-                            ad.type
-
-                        ].join(" ")
-
-                    );
+                const text = normalize(
+                    [
+                        annonce.title,
+                        annonce.description,
+                        annonce.city,
+                        annonce.ville,
+                        annonce.commune,
+                        annonce.quartier,
+                        annonce.typeBien
+                    ]
+                        .filter(Boolean)
+                        .join(" ")
+                );
 
 
-                if (
-                    !searchable.includes(
-                        keyword
-                    )
-                ) {
-
+                if (!text.includes(keyword)) {
                     return false;
-
                 }
 
             }
@@ -1122,67 +932,17 @@ function filterAnnonces(list) {
         }
     );
 
-}
-
-
-// ============================================================
-// RECHERCHE
-// ============================================================
-
-function performSearch() {
-
-    const filtered =
-        filterAnnonces(
-            state.annonces
-        );
-
-
-    const transaction =
-        normalize(
-            elements.transaction?.value
-        );
-
-
-    if (
-        transaction === "vente"
-    ) {
-
-        renderVente(
-            filtered
-        );
-
-        renderLocation([]);
-
-        return;
-
-    }
-
-
-    if (
-        transaction === "location"
-    ) {
-
-        renderVente([]);
-
-        renderLocation(
-            filtered
-        );
-
-        return;
-
-    }
-
 
     renderVente(
         filtered.filter(
-            ad => isVente(ad)
+            annonce => isVente(annonce)
         )
     );
 
 
     renderLocation(
         filtered.filter(
-            ad => isLocation(ad)
+            annonce => isLocation(annonce)
         )
     );
 
@@ -1190,210 +950,158 @@ function performSearch() {
 
 
 // ============================================================
-// CARTE ANNONCE
+// 15. RECHERCHE
 // ============================================================
 
-function createAnnonceCard(ad) {
+function performSearch() {
 
-    const title =
-        firstValue(
-            ad,
-            [
-                "title",
-                "titre",
-                "name"
-            ],
-            "Bien immobilier"
-        );
+    filterAnnonces();
 
 
-    const description =
-        firstValue(
-            ad,
-            [
-                "description",
-                "details",
-                "detail"
-            ],
-            "Aucune description disponible."
-        );
+    const venteSection =
+        document.getElementById("vente");
 
 
-    const city =
-        getAnnonceCity(ad);
+    if (venteSection) {
 
-
-    const commune =
-        firstValue(
-            ad,
-            [
-                "commune",
-                "communeName"
-            ]
-        );
-
-
-    const price =
-        firstValue(
-            ad,
-            [
-                "price",
-                "prix"
-            ]
-        );
-
-
-    const currency =
-        firstValue(
-            ad,
-            [
-                "currency",
-                "devise"
-            ],
-            "USD"
-        );
-
-
-    let image = "";
-
-
-    if (
-        Array.isArray(ad.images) &&
-        ad.images.length > 0
-    ) {
-
-        image =
-            ad.images[0];
+        venteSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
     }
 
+}
 
-    if (!image) {
 
-        image =
-            firstValue(
-                ad,
-                [
-                    "imageURL",
-                    "imageUrl",
-                    "photo",
-                    "photoURL"
-                ]
-            );
+// ============================================================
+// 16. CRÉER UNE CARTE D'ANNONCE
+// ============================================================
 
-    }
-
+function createAnnonceCard(annonce) {
 
     const card =
-        document.createElement(
-            "article"
-        );
-
+        document.createElement("article");
 
     card.className =
         "immo-listing-card";
 
 
+    const images =
+        Array.isArray(annonce.images)
+            ? annonce.images
+            : [];
+
+
+    const imageURL =
+        firstValue(
+            images[0],
+            annonce.imageURL,
+            annonce.photo,
+            "assets/logo/camu-services-logo.png"
+        );
+
+
+    const title =
+        firstValue(
+            annonce.title,
+            annonce.titre,
+            "Bien immobilier"
+        );
+
+
+    const city =
+        getAnnonceCity(annonce);
+
+
+    const commune =
+        getAnnonceCommune(annonce);
+
+
+    const price =
+        formatPrice(
+            annonce.price,
+            annonce.currency
+        );
+
+
+    const typeBien =
+        firstValue(
+            annonce.typeBien,
+            annonce.propertyType,
+            annonce.typePropriete,
+            ""
+        );
+
+
+    const locationText =
+        [commune, city]
+            .filter(Boolean)
+            .join(", ");
+
+
     card.innerHTML = `
 
         <a
-            href="explorer.html?id=${encodeURIComponent(ad.id)}"
-            class="immo-listing-image"
+            href="explorer.html?id=${encodeURIComponent(annonce.id)}"
+            class="immo-listing-image-link"
         >
 
-            ${
-                image
-
-                    ? `
-
-                        <img
-                            src="${escapeHtml(image)}"
-                            alt="${escapeHtml(title)}"
-                            loading="lazy"
-                        >
-
-                    `
-
-                    : `
-
-                        <div class="immo-no-image">
-
-                            <i class="fa-solid fa-house"></i>
-
-                        </div>
-
-                    `
-            }
+            <img
+                src="${escapeHtml(imageURL)}"
+                alt="${escapeHtml(title)}"
+                class="immo-listing-image"
+                loading="lazy"
+                onerror="this.src='assets/logo/camu-services-logo.png'"
+            >
 
         </a>
 
 
         <div class="immo-listing-content">
 
-            <h3>
+            <div class="immo-listing-price">
+                ${escapeHtml(price)}
+            </div>
+
+
+            <h3 class="immo-listing-title">
+
                 ${escapeHtml(title)}
+
             </h3>
 
 
-            <div class="immo-listing-price">
-
-                ${escapeHtml(
-                    formatPrice(
-                        price,
-                        currency
-                    )
-                )}
-
-            </div>
-
-
-            <div class="immo-listing-location">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-                <span>
-
-                    ${escapeHtml(
-                        city ||
-                        "Ville non précisée"
-                    )}
-
-                    ${
-                        commune
-                            ? ` — ${escapeHtml(
-                                commune
-                            )}`
-                            : ""
-                    }
-
-                </span>
-
-            </div>
+            ${
+                typeBien
+                    ? `
+                        <div class="immo-listing-type">
+                            <i class="fa-solid fa-house"></i>
+                            ${escapeHtml(typeBien)}
+                        </div>
+                    `
+                    : ""
+            }
 
 
-            <p class="immo-listing-description">
-
-                ${escapeHtml(
-                    description.length > 120
-                        ? description.substring(
-                            0,
-                            120
-                        ) + "..."
-                        : description
-                )}
-
-            </p>
+            ${
+                locationText
+                    ? `
+                        <div class="immo-listing-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            ${escapeHtml(locationText)}
+                        </div>
+                    `
+                    : ""
+            }
 
 
             <a
-                href="explorer.html?id=${encodeURIComponent(ad.id)}"
+                href="explorer.html?id=${encodeURIComponent(annonce.id)}"
                 class="immo-listing-button"
             >
-
                 Voir le bien
-
                 <i class="fa-solid fa-arrow-right"></i>
-
             </a>
 
         </div>
@@ -1407,44 +1115,50 @@ function createAnnonceCard(ad) {
 
 
 // ============================================================
-// RENDU VENTE
+// 17. AFFICHER LES VENTES
 // ============================================================
 
-function renderVente(list) {
+function renderVente(items) {
 
-    if (!elements.venteListings) {
+    const container =
+        document.getElementById(
+            "venteListings"
+        );
+
+
+    const count =
+        document.getElementById(
+            "venteCount"
+        );
+
+
+    if (!container) {
         return;
     }
 
 
-    elements.venteListings.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    if (elements.venteCount) {
-
-        elements.venteCount.textContent =
-            list.length;
-
+    if (count) {
+        count.textContent =
+            `${items.length} annonce${items.length > 1 ? "s" : ""}`;
     }
 
 
-    if (!list.length) {
+    if (items.length === 0) {
 
-        elements.venteListings.innerHTML = `
+        container.innerHTML = `
 
-            <div class="immo-empty-state">
+            <div class="immo-empty">
 
                 <i class="fa-solid fa-house-circle-xmark"></i>
 
-                <h3>
-                    Aucun bien à vendre
-                </h3>
+                <h3>Aucun bien à vendre</h3>
 
                 <p>
                     Aucune annonce immobilière
-                    correspondant à vos critères
-                    n'est disponible.
+                    ne correspond à vos critères.
                 </p>
 
             </div>
@@ -1455,58 +1169,64 @@ function renderVente(list) {
     }
 
 
-    list.forEach(
-        (ad) => {
+    items.forEach(annonce => {
 
-            elements.venteListings.appendChild(
-                createAnnonceCard(ad)
-            );
+        container.appendChild(
+            createAnnonceCard(annonce)
+        );
 
-        }
-    );
+    });
 
 }
 
 
 // ============================================================
-// RENDU LOCATION
+// 18. AFFICHER LES LOCATIONS
 // ============================================================
 
-function renderLocation(list) {
+function renderLocation(items) {
 
-    if (!elements.locationListings) {
+    const container =
+        document.getElementById(
+            "locationListings"
+        );
+
+
+    const count =
+        document.getElementById(
+            "locationCount"
+        );
+
+
+    if (!container) {
         return;
     }
 
 
-    elements.locationListings.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    if (elements.locationCount) {
+    if (count) {
 
-        elements.locationCount.textContent =
-            list.length;
+        count.textContent =
+            `${items.length} annonce${items.length > 1 ? "s" : ""}`;
 
     }
 
 
-    if (!list.length) {
+    if (items.length === 0) {
 
-        elements.locationListings.innerHTML = `
+        container.innerHTML = `
 
-            <div class="immo-empty-state">
+            <div class="immo-empty">
 
                 <i class="fa-solid fa-key"></i>
 
-                <h3>
-                    Aucun bien à louer
-                </h3>
+                <h3>Aucun bien à louer</h3>
 
                 <p>
                     Aucune annonce immobilière
-                    correspondant à vos critères
-                    n'est disponible.
+                    ne correspond à vos critères.
                 </p>
 
             </div>
@@ -1517,21 +1237,19 @@ function renderLocation(list) {
     }
 
 
-    list.forEach(
-        (ad) => {
+    items.forEach(annonce => {
 
-            elements.locationListings.appendChild(
-                createAnnonceCard(ad)
-            );
+        container.appendChild(
+            createAnnonceCard(annonce)
+        );
 
-        }
-    );
+    });
 
 }
 
 
 // ============================================================
-// AGENTS IMMOBILIERS
+// 19. IDENTIFIER UN AGENT IMMOBILIER
 // ============================================================
 
 function isAgentImmobilier(user) {
@@ -1539,151 +1257,81 @@ function isAgentImmobilier(user) {
     const role =
         normalize(
             firstValue(
-                user,
-                [
-                    "role",
-                    "userRole",
-                    "type",
-                    "accountType"
-                ]
-            )
-        );
-
-
-    const profession =
-        normalize(
-            firstValue(
-                user,
-                [
-                    "profession",
-                    "metier",
-                    "job"
-                ]
-            )
-        );
-
-
-    const specialite =
-        normalize(
-            firstValue(
-                user,
-                [
-                    "specialite",
-                    "speciality",
-                    "specialityName"
-                ]
+                user.role,
+                user.type,
+                user.profession,
+                user.categorie
             )
         );
 
 
     return (
-
-        (
-            role.includes("agent") &&
-            role.includes("immobilier")
-        )
-
-        ||
-
-        profession.includes(
-            "agent immobilier"
-        )
-
-        ||
-
-        profession.includes(
-            "immobilier"
-        )
-
-        ||
-
-        specialite.includes(
-            "immobilier"
-        )
-
+        role.includes("agent immobilier") ||
+        role.includes("agent immobilier") ||
+        role === "agent" ||
+        role === "agent_immo" ||
+        role === "agent-immo" ||
+        role === "immobilier" ||
+        role === "immo"
     );
 
 }
 
 
 // ============================================================
-// CHARGER AGENTS
+// 20. CHARGER LES AGENTS
 // ============================================================
 
 async function loadAgents() {
 
-    if (!verifyFirebase()) {
-        return;
-    }
-
-
-    if (!elements.agentsGrid) {
-        return;
-    }
-
-
     try {
 
-        const usersRef =
-            collection(
-                db,
-                "users"
-            );
-
-
-        const snapshot =
-            await getDocs(
-                usersRef
-            );
-
-
-        state.agents = [];
-
-
-        snapshot.forEach(
-            (docSnap) => {
-
-                const data =
-                    docSnap.data();
-
-
-                if (
-                    normalize(data.status) ===
-                    "blocked"
-                ) {
-                    return;
-                }
-
-
-                if (
-                    !isAgentImmobilier(data)
-                ) {
-                    return;
-                }
-
-
-                state.agents.push({
-
-                    id:
-                        docSnap.id,
-
-                    ...data
-
-                });
-
-            }
+        console.log(
+            "CAMU IMMO — chargement des agents..."
         );
+
+
+        const snapshot = await getDocs(
+            collection(db, "users")
+        );
+
+
+        agents = [];
+
+
+        snapshot.forEach(docSnap => {
+
+            const data =
+                docSnap.data();
+
+
+            if (
+                data.status &&
+                normalize(data.status) === "inactive"
+            ) {
+                return;
+            }
+
+
+            if (!isAgentImmobilier(data)) {
+                return;
+            }
+
+
+            agents.push({
+                id: docSnap.id,
+                ...data
+            });
+
+        });
 
 
         console.log(
-            "CAMU IMMO — agents immobiliers :",
-            state.agents.length
+            `CAMU IMMO — ${agents.length} agent(s) immobilier(s).`
         );
 
 
-        renderAgents(
-            state.agents
-        );
+        filterAgents();
 
 
     } catch (error) {
@@ -1694,24 +1342,32 @@ async function loadAgents() {
         );
 
 
-        elements.agentsGrid.innerHTML = `
+        const container =
+            document.getElementById(
+                "agentsGrid"
+            );
 
-            <div class="immo-empty-state">
 
-                <i class="fa-solid fa-user-slash"></i>
+        if (container) {
 
-                <h3>
-                    Agents indisponibles
-                </h3>
+            container.innerHTML = `
 
-                <p>
-                    Impossible de charger les agents
-                    immobiliers pour le moment.
-                </p>
+                <div class="immo-empty">
 
-            </div>
+                    <i class="fa-solid fa-user-slash"></i>
 
-        `;
+                    <h3>Agents indisponibles</h3>
+
+                    <p>
+                        Impossible de charger
+                        les agents immobiliers.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
 
     }
 
@@ -1719,255 +1375,240 @@ async function loadAgents() {
 
 
 // ============================================================
-// FILTRER AGENTS
+// 21. FILTRER LES AGENTS
 // ============================================================
 
 function filterAgents() {
 
+    const villeSelect =
+        document.getElementById(
+            "agentVille"
+        );
+
+
+    const communeSelect =
+        document.getElementById(
+            "agentCommune"
+        );
+
+
     const villeId =
-        elements.agentVille?.value ||
-        "";
+        villeSelect?.value || "";
 
 
-    const communeId =
-        elements.agentCommune?.value ||
-        "";
+    const commune =
+        communeSelect?.value || "";
 
 
-    const ville =
-        state.villes.find(
-            item =>
-                item.id === villeId
+    const selectedVille =
+        villes.find(
+            ville =>
+                String(ville.id) ===
+                String(villeId)
         );
 
 
-    const communeOption =
-        elements.agentCommune
-            ?.selectedOptions?.[0];
-
-
-    const communeName =
-        normalize(
-            communeOption?.dataset?.name ||
-            ""
-        );
+    const villeName =
+        selectedVille?.name || "";
 
 
     const filtered =
-        state.agents.filter(
-            (agent) => {
+        agents.filter(agent => {
+
+            if (villeId) {
+
+                const agentVille =
+                    normalize(
+                        firstValue(
+                            agent.ville,
+                            agent.city,
+                            agent.villeName,
+                            agent.cityName,
+                            agent.localisation
+                        )
+                    );
 
 
                 if (
-                    villeId &&
-                    ville
+                    agentVille !==
+                    normalize(villeName)
                 ) {
 
-                    const agentVille =
-                        normalize(
-                            firstValue(
-                                agent,
-                                [
-                                    "ville",
-                                    "city",
-                                    "villeName",
-                                    "cityName"
-                                ]
-                            )
-                        );
-
-
-                    if (
-                        agentVille &&
-                        agentVille !==
-                            normalize(ville.name) &&
-                        agentVille !==
-                            normalize(ville.id)
-                    ) {
-
-                        return false;
-
-                    }
+                    return false;
 
                 }
-
-
-                if (
-                    communeId &&
-                    communeName
-                ) {
-
-                    const agentCommune =
-                        normalize(
-                            firstValue(
-                                agent,
-                                [
-                                    "commune",
-                                    "communeName"
-                                ]
-                            )
-                        );
-
-
-                    if (
-                        agentCommune &&
-                        agentCommune !==
-                            communeName
-                    ) {
-
-                        return false;
-
-                    }
-
-                }
-
-
-                return true;
 
             }
-        );
 
 
-    renderAgents(
-        filtered
-    );
+            if (commune) {
+
+                const agentCommune =
+                    normalize(
+                        firstValue(
+                            agent.commune,
+                            agent.communeName
+                        )
+                    );
+
+
+                if (
+                    agentCommune !==
+                    normalize(commune)
+                ) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
+
+        });
+
+
+    renderAgents(filtered);
 
 }
 
 
 // ============================================================
-// CARTE AGENT
+// 22. CRÉER UNE CARTE AGENT
 // ============================================================
 
 function createAgentCard(agent) {
 
-    const name =
-        getUserName(agent);
-
-
-    const telephone =
-        firstValue(
-            agent,
-            [
-                "telephone",
-                "phone",
-                "whatsapp"
-            ]
-        );
-
-
-    const whatsapp =
-        firstValue(
-            agent,
-            [
-                "whatsapp",
-                "telephone",
-                "phone"
-            ]
-        );
-
-
-    const ville =
-        firstValue(
-            agent,
-            [
-                "ville",
-                "city",
-                "villeName",
-                "cityName"
-            ]
-        );
-
-
-    const commune =
-        firstValue(
-            agent,
-            [
-                "commune",
-                "communeName"
-            ]
-        );
-
-
-    const photo =
-        firstValue(
-            agent,
-            [
-                "photoURL",
-                "photoUrl",
-                "photo",
-                "avatar",
-                "profileImage"
-            ]
-        );
-
-
     const card =
-        document.createElement(
-            "article"
-        );
+        document.createElement("article");
 
 
     card.className =
         "immo-agent-card";
 
 
-    let whatsappNumber =
-        String(
-            whatsapp || ""
-        ).replace(
-            /[^\d]/g,
-            ""
+    const name =
+        getUserName(agent);
+
+
+    const photo =
+        firstValue(
+            agent.photoURL,
+            agent.photo,
+            agent.avatar,
+            agent.profileImage,
+            "assets/logo/camu-services-logo.png"
         );
 
 
-    if (
-        whatsappNumber.startsWith("0") &&
-        whatsappNumber.length > 1
-    ) {
+    const ville =
+        firstValue(
+            agent.ville,
+            agent.city,
+            agent.villeName,
+            agent.cityName
+        );
 
-        whatsappNumber =
-            "243" +
-            whatsappNumber.substring(1);
+
+    const commune =
+        firstValue(
+            agent.commune,
+            agent.communeName
+        );
+
+
+    const phone =
+        firstValue(
+            agent.whatsapp,
+            agent.telephone,
+            agent.phone,
+            agent.phoneNumber
+        );
+
+
+    const email =
+        firstValue(
+            agent.email
+        );
+
+
+    const location =
+        [commune, ville]
+            .filter(Boolean)
+            .join(", ");
+
+
+    let contactHTML = "";
+
+
+    if (phone) {
+
+        const cleanPhone =
+            String(phone)
+                .replace(/[^\d+]/g, "");
+
+
+        contactHTML += `
+
+            <a
+                href="https://wa.me/${encodeURIComponent(
+                    cleanPhone.replace("+", "")
+                )}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="immo-agent-whatsapp"
+            >
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                WhatsApp
+
+            </a>
+
+        `;
+
+    }
+
+
+    if (email) {
+
+        contactHTML += `
+
+            <a
+                href="mailto:${encodeURIComponent(email)}"
+                class="immo-agent-email"
+            >
+
+                <i class="fa-solid fa-envelope"></i>
+
+                E-mail
+
+            </a>
+
+        `;
 
     }
 
 
     card.innerHTML = `
 
-        <div class="immo-agent-photo">
+        <div class="immo-agent-photo-wrapper">
 
-            ${
-                photo
-
-                    ? `
-
-                        <img
-                            src="${escapeHtml(photo)}"
-                            alt="${escapeHtml(name)}"
-                            loading="lazy"
-                        >
-
-                    `
-
-                    : `
-
-                        <i class="fa-solid fa-user"></i>
-
-                    `
-            }
+            <img
+                src="${escapeHtml(photo)}"
+                alt="${escapeHtml(name)}"
+                class="immo-agent-photo"
+                loading="lazy"
+                onerror="this.src='assets/logo/camu-services-logo.png'"
+            >
 
         </div>
 
 
         <div class="immo-agent-content">
 
-            <h3>
-                ${escapeHtml(name)}
-            </h3>
-
-
-            <div class="immo-agent-role">
+            <div class="immo-agent-badge">
 
                 <i class="fa-solid fa-building"></i>
 
@@ -1976,78 +1617,46 @@ function createAgentCard(agent) {
             </div>
 
 
+            <h3>
+                ${escapeHtml(name)}
+            </h3>
+
+
             ${
-                ville || commune
-
+                location
                     ? `
-
                         <div class="immo-agent-location">
 
                             <i class="fa-solid fa-location-dot"></i>
 
-                            ${escapeHtml(ville)}
-
-                            ${
-                                commune
-                                    ? ` — ${escapeHtml(
-                                        commune
-                                    )}`
-                                    : ""
-                            }
+                            ${escapeHtml(location)}
 
                         </div>
-
                     `
-
                     : ""
             }
 
 
             ${
-                telephone
-
+                agent.description
                     ? `
-
-                        <div class="immo-agent-phone">
-
-                            <i class="fa-solid fa-phone"></i>
+                        <p class="immo-agent-description">
 
                             ${escapeHtml(
-                                telephone
+                                agent.description
                             )}
 
-                        </div>
-
+                        </p>
                     `
-
                     : ""
             }
 
 
-            ${
-                whatsappNumber
+            <div class="immo-agent-actions">
 
-                    ? `
+                ${contactHTML}
 
-                        <a
-                            href="https://wa.me/${encodeURIComponent(
-                                whatsappNumber
-                            )}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="immo-agent-whatsapp"
-                        >
-
-                            <i class="fa-brands fa-whatsapp"></i>
-
-                            WhatsApp
-
-                        </a>
-
-                    `
-
-                    : ""
-            }
+            </div>
 
         </div>
 
@@ -2060,35 +1669,38 @@ function createAgentCard(agent) {
 
 
 // ============================================================
-// RENDU AGENTS
+// 23. AFFICHER LES AGENTS
 // ============================================================
 
-function renderAgents(list) {
+function renderAgents(items) {
 
-    if (!elements.agentsGrid) {
+    const container =
+        document.getElementById(
+            "agentsGrid"
+        );
+
+
+    if (!container) {
         return;
     }
 
 
-    elements.agentsGrid.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    if (!list.length) {
+    if (items.length === 0) {
 
-        elements.agentsGrid.innerHTML = `
+        container.innerHTML = `
 
-            <div class="immo-empty-state">
+            <div class="immo-empty">
 
-                <i class="fa-solid fa-users-slash"></i>
+                <i class="fa-solid fa-user-group"></i>
 
-                <h3>
-                    Aucun agent immobilier trouvé
-                </h3>
+                <h3>Aucun agent trouvé</h3>
 
                 <p>
-                    Aucun agent ne correspond
-                    aux critères sélectionnés.
+                    Aucun agent immobilier
+                    ne correspond à cette localisation.
                 </p>
 
             </div>
@@ -2099,134 +1711,260 @@ function renderAgents(list) {
     }
 
 
-    list.forEach(
-        (agent) => {
+    items.forEach(agent => {
 
-            elements.agentsGrid.appendChild(
-                createAgentCard(agent)
-            );
+        container.appendChild(
+            createAgentCard(agent)
+        );
 
-        }
+    });
+
+}
+
+
+// ============================================================
+// 24. AFFICHER UNE ERREUR
+// ============================================================
+
+function showError(message) {
+
+    console.error(
+        "CAMU IMMO —",
+        message
     );
 
-}
+
+    const containers = [
+        document.getElementById("venteListings"),
+        document.getElementById("locationListings")
+    ];
 
 
-// ============================================================
-// ERREUR
-// ============================================================
+    containers.forEach(container => {
 
-function showError(
-    container,
-    message
-) {
-
-    if (!container) {
-        return;
-    }
+        if (!container) {
+            return;
+        }
 
 
-    container.innerHTML = `
+        container.innerHTML = `
 
-        <div class="immo-empty-state">
+            <div class="immo-empty immo-error">
 
-            <i class="fa-solid fa-triangle-exclamation"></i>
+                <i class="fa-solid fa-triangle-exclamation"></i>
 
-            <h3>
-                Une erreur est survenue
-            </h3>
+                <h3>Une erreur est survenue</h3>
 
-            <p>
-                ${escapeHtml(message)}
-            </p>
+                <p>
+                    ${escapeHtml(message)}
+                </p>
 
-        </div>
+            </div>
 
-    `;
+        `;
+
+    });
 
 }
 
 
 // ============================================================
-// EVENEMENTS
+// 25. ÉVÉNEMENTS
 // ============================================================
 
 function setupEvents() {
 
-    elements.ville?.addEventListener(
-        "change",
-        async () => {
-
-            await loadCommunesForVille(
-                elements.ville.value
-            );
-
-            performSearch();
-
-        }
-    );
+    const villeSelect =
+        document.getElementById(
+            "immoVille"
+        );
 
 
-    elements.commune?.addEventListener(
-        "change",
-        performSearch
-    );
+    const communeSelect =
+        document.getElementById(
+            "immoCommune"
+        );
 
 
-    elements.transaction?.addEventListener(
-        "change",
-        performSearch
-    );
+    const transactionSelect =
+        document.getElementById(
+            "immoTransaction"
+        );
 
 
-    elements.keyword?.addEventListener(
-        "input",
-        performSearch
-    );
+    const keywordInput =
+        document.getElementById(
+            "immoKeyword"
+        );
 
 
-    elements.searchButton?.addEventListener(
-        "click",
-        performSearch
-    );
+    const searchButton =
+        document.getElementById(
+            "immoSearchButton"
+        );
 
 
-    elements.agentVille?.addEventListener(
-        "change",
-        async () => {
+    // --------------------------------------------------------
+    // VILLE IMMOBILIER
+    // --------------------------------------------------------
 
-            await loadCommunesForVille(
-                elements.agentVille.value
-            );
+    if (villeSelect) {
 
-            filterAgents();
+        villeSelect.addEventListener(
+            "change",
+            async () => {
 
-        }
-    );
+                await loadCommunesForVille(
+                    villeSelect.value
+                );
 
 
-    elements.agentCommune?.addEventListener(
-        "change",
-        filterAgents
-    );
+                filterAnnonces();
+
+            }
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // COMMUNE IMMOBILIER
+    // --------------------------------------------------------
+
+    if (communeSelect) {
+
+        communeSelect.addEventListener(
+            "change",
+            filterAnnonces
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // TRANSACTION
+    // --------------------------------------------------------
+
+    if (transactionSelect) {
+
+        transactionSelect.addEventListener(
+            "change",
+            filterAnnonces
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // MOT-CLÉ
+    // --------------------------------------------------------
+
+    if (keywordInput) {
+
+        keywordInput.addEventListener(
+            "input",
+            () => {
+
+                filterAnnonces();
+
+            }
+        );
+
+
+        keywordInput.addEventListener(
+            "keydown",
+            event => {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    performSearch();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // BOUTON RECHERCHE
+    // --------------------------------------------------------
+
+    if (searchButton) {
+
+        searchButton.addEventListener(
+            "click",
+            performSearch
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // VILLE AGENT
+    // --------------------------------------------------------
+
+    const agentVille =
+        document.getElementById(
+            "agentVille"
+        );
+
+
+    const agentCommune =
+        document.getElementById(
+            "agentCommune"
+        );
+
+
+    if (agentVille) {
+
+        agentVille.addEventListener(
+            "change",
+            async () => {
+
+                await loadCommunesForVille(
+                    agentVille.value
+                );
+
+
+                filterAgents();
+
+            }
+        );
+
+    }
+
+
+    if (agentCommune) {
+
+        agentCommune.addEventListener(
+            "change",
+            filterAgents
+        );
+
+    }
 
 }
 
 
 // ============================================================
-// NAVIGATION
+// 26. NAVIGATION FLUIDE
 // ============================================================
 
 function setupSmoothNavigation() {
 
-    document.querySelectorAll(
-        'a[href^="#"]'
-    ).forEach(
-        (link) => {
+    document
+        .querySelectorAll(
+            'a[href^="#"]'
+        )
+        .forEach(link => {
 
             link.addEventListener(
                 "click",
-                (event) => {
+                event => {
 
                     const targetId =
                         link.getAttribute(
@@ -2261,38 +1999,64 @@ function setupSmoothNavigation() {
                         block: "start"
                     });
 
-
-                    if (
-                        window.innerWidth <= 768
-                    ) {
-
-                        closeSidebar();
-
-                    }
-
                 }
             );
 
-        }
-    );
+        });
 
 }
 
 
 // ============================================================
-// INITIALISATION
+// 27. ANNÉE AUTOMATIQUE
+// ============================================================
+
+function setCurrentYear() {
+
+    const yearElement =
+        document.getElementById(
+            "immoYear"
+        );
+
+
+    if (yearElement) {
+
+        yearElement.textContent =
+            new Date().getFullYear();
+
+    }
+
+}
+
+
+// ============================================================
+// 28. INITIALISATION
 // ============================================================
 
 async function initImmobilier() {
+
+    console.log(
+        "=========================================="
+    );
+
 
     console.log(
         "CAMU IMMO — initialisation..."
     );
 
 
-    try {
+    console.log(
+        "Firebase SDK : 10.12.2"
+    );
 
-        setCurrentYear();
+
+    console.log(
+        "Firestore :",
+        db
+    );
+
+
+    try {
 
         setupMobileMenu();
 
@@ -2300,12 +2064,15 @@ async function initImmobilier() {
 
         setupSmoothNavigation();
 
+        setCurrentYear();
+
 
         await loadVilles();
 
-        await loadAnnonces();
-
-        await loadAgents();
+        await Promise.all([
+            loadAnnonces(),
+            loadAgents()
+        ]);
 
 
         console.log(
@@ -2320,13 +2087,18 @@ async function initImmobilier() {
             error
         );
 
+
+        showError(
+            "Impossible d'initialiser l'espace immobilier."
+        );
+
     }
 
 }
 
 
 // ============================================================
-// LANCEMENT
+// 29. LANCEMENT
 // ============================================================
 
 if (
