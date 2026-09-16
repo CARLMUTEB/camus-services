@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
 
@@ -13,10 +14,19 @@
         content="CAMU IMMO - Vente, location, estimation et agents immobiliers."
     >
 
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
     <title>CAMU IMMO — Espace Immobilier</title>
 
-    <!-- CAMU SERVICES -->
-    <link rel="icon" href="assets/logo/camu-services-logo.png">
+    <!-- Favicon CAMU SERVICES -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/logo/camu-services-logo.png"
+    >
 
     <!-- Font Awesome -->
     <link
@@ -25,71 +35,121 @@
     >
 
     <!-- CSS général -->
-    <link rel="stylesheet" href="css/style.css">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
     <!-- CSS CAMU IMMO -->
-    <link rel="stylesheet" href="css/immobilier.css">
+    <link
+        rel="stylesheet"
+        href="css/immobilier.css"
+    >
 </head>
+
 
 <body>
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+    <!-- =====================================================
+         SIDEBAR CAMU IMMO
+    ====================================================== -->
 
-    <aside class="immo-sidebar" id="immoSidebar">
+    <aside
+        class="immo-sidebar"
+        id="immoSidebar"
+    >
 
         <div class="immo-sidebar-logo">
-            <img
-                src="assets/logo/camu-services-logo.png"
-                alt="CAMU SERVICES"
-            >
+
+            <a href="immobilier.html">
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
         </div>
+
 
         <nav class="immo-menu">
 
-            <a href="immobilier.html" class="immo-menu-link active">
+            <a
+                href="#accueil"
+                class="immo-menu-link active"
+            >
                 <i class="fa-solid fa-house"></i>
                 <span>Accueil</span>
             </a>
 
-            <a href="#vente" class="immo-menu-link">
+
+            <a
+                href="#vente"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-tag"></i>
                 <span>Vente</span>
             </a>
 
-            <a href="#location" class="immo-menu-link">
+
+            <a
+                href="#location"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-key"></i>
                 <span>Location</span>
             </a>
 
-            <a href="#estimation" class="immo-menu-link">
+
+            <a
+                href="#estimation"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-calculator"></i>
                 <span>Estimation</span>
             </a>
 
-            <a href="#agents" class="immo-menu-link">
+
+            <a
+                href="#agents"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-user-tie"></i>
                 <span>Agents immobiliers</span>
             </a>
 
-            <a href="#actualites" class="immo-menu-link">
+
+            <a
+                href="#actualites"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-newspaper"></i>
                 <span>Actualités</span>
             </a>
 
-            <a href="#direction" class="immo-menu-link">
+
+            <a
+                href="#direction"
+                class="immo-menu-link"
+            >
                 <i class="fa-solid fa-paper-plane"></i>
                 <span>Demande à la Direction</span>
             </a>
 
         </nav>
 
+
         <div class="immo-sidebar-bottom">
 
             <a href="index.html">
+
                 <i class="fa-solid fa-arrow-left"></i>
-                <span>CAMU SERVICES</span>
+
+                <span>
+                    CAMU SERVICES
+                </span>
+
             </a>
 
         </div>
@@ -97,9 +157,9 @@
     </aside>
 
 
-    <!-- =========================
+    <!-- =====================================================
          OVERLAY MOBILE
-    ========================== -->
+    ====================================================== -->
 
     <div
         class="immo-overlay"
@@ -107,15 +167,16 @@
     ></div>
 
 
-    <!-- =========================
+    <!-- =====================================================
          CONTENU PRINCIPAL
-    ========================== -->
+    ====================================================== -->
 
     <main class="immo-main">
 
-        <!-- =====================
+
+        <!-- =================================================
              TOPBAR
-        ====================== -->
+        ================================================== -->
 
         <header class="immo-topbar">
 
@@ -124,21 +185,26 @@
                 class="immo-menu-button"
                 id="immoMenuButton"
                 aria-label="Ouvrir le menu"
+                aria-controls="immoSidebar"
+                aria-expanded="false"
             >
                 <i class="fa-solid fa-bars"></i>
             </button>
 
 
-            <!-- LOGO UNIQUE CENTRÉ -->
+            <!-- Logo unique centré -->
 
             <a
                 href="immobilier.html"
                 class="immo-top-logo"
+                aria-label="CAMU IMMO"
             >
+
                 <img
                     src="assets/logo/camu-services-logo.png"
                     alt="CAMU SERVICES"
                 >
+
             </a>
 
 
@@ -148,8 +214,13 @@
                     href="index.html"
                     title="Retour à CAMU SERVICES"
                 >
+
                     <i class="fa-solid fa-store"></i>
-                    <span>CAMU SERVICES</span>
+
+                    <span>
+                        CAMU SERVICES
+                    </span>
+
                 </a>
 
             </div>
@@ -157,22 +228,30 @@
         </header>
 
 
-        <!-- =====================
+        <!-- =================================================
              HERO
-        ====================== -->
+        ================================================== -->
 
-        <section class="immo-hero">
+        <section
+            class="immo-hero"
+            id="accueil"
+        >
 
             <div class="immo-hero-content">
 
                 <span class="immo-badge">
+
                     <i class="fa-solid fa-building"></i>
+
                     CAMU IMMO
+
                 </span>
+
 
                 <h1>
                     ESPACE IMMOBILIER
                 </h1>
+
 
                 <p>
                     Trouvez, vendez, louez ou faites estimer
@@ -184,13 +263,16 @@
         </section>
 
 
-        <!-- =====================
-             RECHERCHE
-        ====================== -->
+        <!-- =================================================
+             RECHERCHE IMMOBILIÈRE
+        ================================================== -->
 
         <section class="immo-search-section">
 
             <div class="immo-search-box">
+
+
+                <!-- Transaction -->
 
                 <div class="immo-field">
 
@@ -217,6 +299,8 @@
                 </div>
 
 
+                <!-- Ville -->
+
                 <div class="immo-field">
 
                     <label for="immoVille">
@@ -234,25 +318,25 @@
                 </div>
 
 
+                <!-- Commune saisie manuellement -->
+
                 <div class="immo-field">
 
                     <label for="immoCommune">
                         Commune
                     </label>
 
-                    <select
+                    <input
+                        type="text"
                         id="immoCommune"
-                        disabled
+                        placeholder="Entrez votre commune"
+                        autocomplete="off"
                     >
-
-                        <option value="">
-                            Toutes les communes
-                        </option>
-
-                    </select>
 
                 </div>
 
+
+                <!-- Recherche -->
 
                 <div class="immo-field immo-keyword">
 
@@ -264,18 +348,24 @@
                         type="search"
                         id="immoKeyword"
                         placeholder="Maison, terrain, appartement..."
+                        autocomplete="off"
                     >
 
                 </div>
 
+
+                <!-- Bouton -->
 
                 <button
                     type="button"
                     class="immo-search-button"
                     id="immoSearchButton"
                 >
+
                     <i class="fa-solid fa-magnifying-glass"></i>
+
                     Rechercher
+
                 </button>
 
             </div>
@@ -283,15 +373,17 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              SERVICES
-        ====================== -->
+        ================================================== -->
 
         <section class="immo-section">
 
             <div class="immo-section-title">
 
-                <span>CAMU IMMO</span>
+                <span>
+                    CAMU IMMO
+                </span>
 
                 <h2>
                     Nos services immobiliers
@@ -302,16 +394,23 @@
 
             <div class="immo-services-grid">
 
+
+                <!-- Vente -->
+
                 <a
                     href="#vente"
                     class="immo-service-card"
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-house-circle-check"></i>
+
                     </div>
 
-                    <h3>Vente</h3>
+                    <h3>
+                        Vente
+                    </h3>
 
                     <p>
                         Découvrez les biens immobiliers
@@ -321,16 +420,22 @@
                 </a>
 
 
+                <!-- Location -->
+
                 <a
                     href="#location"
                     class="immo-service-card"
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-key"></i>
+
                     </div>
 
-                    <h3>Location</h3>
+                    <h3>
+                        Location
+                    </h3>
 
                     <p>
                         Consultez les biens disponibles
@@ -340,16 +445,22 @@
                 </a>
 
 
+                <!-- Estimation -->
+
                 <a
                     href="#estimation"
                     class="immo-service-card"
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-calculator"></i>
+
                     </div>
 
-                    <h3>Estimation</h3>
+                    <h3>
+                        Estimation
+                    </h3>
 
                     <p>
                         Demandez une estimation
@@ -359,24 +470,32 @@
                 </a>
 
 
+                <!-- Agents -->
+
                 <a
                     href="#agents"
                     class="immo-service-card"
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-user-tie"></i>
+
                     </div>
 
-                    <h3>Agents immobiliers</h3>
+                    <h3>
+                        Agents immobiliers
+                    </h3>
 
                     <p>
                         Trouvez des agents immobiliers
-                        selon leur ville et commune.
+                        selon leur ville et leur commune.
                     </p>
 
                 </a>
 
+
+                <!-- Actualités -->
 
                 <a
                     href="#actualites"
@@ -384,10 +503,14 @@
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-newspaper"></i>
+
                     </div>
 
-                    <h3>Actualités</h3>
+                    <h3>
+                        Actualités
+                    </h3>
 
                     <p>
                         Retrouvez les informations
@@ -397,16 +520,22 @@
                 </a>
 
 
+                <!-- Direction -->
+
                 <a
                     href="#direction"
                     class="immo-service-card"
                 >
 
                     <div class="immo-service-icon">
+
                         <i class="fa-solid fa-headset"></i>
+
                     </div>
 
-                    <h3>Demande à la Direction</h3>
+                    <h3>
+                        Demande à la Direction
+                    </h3>
 
                     <p>
                         Contactez directement
@@ -420,9 +549,9 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              VENTE
-        ====================== -->
+        ================================================== -->
 
         <section
             class="immo-section"
@@ -433,13 +562,16 @@
 
                 <div>
 
-                    <span>IMMOBILIER</span>
+                    <span>
+                        IMMOBILIER
+                    </span>
 
                     <h2>
                         Biens à vendre
                     </h2>
 
                 </div>
+
 
                 <span
                     class="immo-count"
@@ -457,8 +589,11 @@
             >
 
                 <div class="immo-loading">
+
                     <i class="fa-solid fa-spinner fa-spin"></i>
+
                     Chargement des biens...
+
                 </div>
 
             </div>
@@ -466,9 +601,9 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              LOCATION
-        ====================== -->
+        ================================================== -->
 
         <section
             class="immo-section"
@@ -479,13 +614,16 @@
 
                 <div>
 
-                    <span>IMMOBILIER</span>
+                    <span>
+                        IMMOBILIER
+                    </span>
 
                     <h2>
                         Biens à louer
                     </h2>
 
                 </div>
+
 
                 <span
                     class="immo-count"
@@ -503,8 +641,11 @@
             >
 
                 <div class="immo-loading">
+
                     <i class="fa-solid fa-spinner fa-spin"></i>
+
                     Chargement des biens...
+
                 </div>
 
             </div>
@@ -512,9 +653,9 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              ESTIMATION
-        ====================== -->
+        ================================================== -->
 
         <section
             class="immo-estimation"
@@ -523,9 +664,13 @@
 
             <div class="immo-estimation-content">
 
+
                 <div class="immo-estimation-icon">
+
                     <i class="fa-solid fa-calculator"></i>
+
                 </div>
+
 
                 <div>
 
@@ -545,6 +690,7 @@
 
                 </div>
 
+
                 <a
                     href="#direction"
                     class="immo-primary-button"
@@ -557,9 +703,9 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              AGENTS IMMOBILIERS
-        ====================== -->
+        ================================================== -->
 
         <section
             class="immo-section"
@@ -570,7 +716,9 @@
 
                 <div>
 
-                    <span>RÉSEAU CAMU IMMO</span>
+                    <span>
+                        RÉSEAU CAMU IMMO
+                    </span>
 
                     <h2>
                         Agents immobiliers
@@ -581,7 +729,12 @@
             </div>
 
 
+            <!-- Filtres agents -->
+
             <div class="immo-agent-filters">
+
+
+                <!-- Ville -->
 
                 <div class="immo-field">
 
@@ -600,27 +753,27 @@
                 </div>
 
 
+                <!-- Commune saisie manuellement -->
+
                 <div class="immo-field">
 
                     <label for="agentCommune">
                         Commune
                     </label>
 
-                    <select
+                    <input
+                        type="text"
                         id="agentCommune"
-                        disabled
+                        placeholder="Entrez votre commune"
+                        autocomplete="off"
                     >
-
-                        <option value="">
-                            Toutes les communes
-                        </option>
-
-                    </select>
 
                 </div>
 
             </div>
 
+
+            <!-- Liste agents -->
 
             <div
                 class="immo-agents-grid"
@@ -628,8 +781,11 @@
             >
 
                 <div class="immo-loading">
+
                     <i class="fa-solid fa-spinner fa-spin"></i>
+
                     Chargement des agents...
+
                 </div>
 
             </div>
@@ -637,9 +793,9 @@
         </section>
 
 
-        <!-- =====================
+        <!-- =================================================
              ACTUALITÉS
-        ====================== -->
+        ================================================== -->
 
         <section
             class="immo-section"
@@ -650,7 +806,9 @@
 
                 <div>
 
-                    <span>CAMU IMMO</span>
+                    <span>
+                        CAMU IMMO
+                    </span>
 
                     <h2>
                         Actualités immobilières
@@ -683,9 +841,9 @@
         </section>
 
 
-        <!-- =====================
-             DEMANDE DIRECTION
-        ====================== -->
+        <!-- =================================================
+             DEMANDE À LA DIRECTION
+        ================================================== -->
 
         <section
             class="immo-direction"
@@ -698,10 +856,12 @@
                     CONTACT DIRECT
                 </span>
 
+
                 <h2>
                     Laisser une demande
                     à la Direction CAMU IMMO
                 </h2>
+
 
                 <p>
                     Vous recherchez un bien, vous souhaitez
@@ -713,23 +873,34 @@
 
                 <div class="immo-direction-buttons">
 
+
+                    <!-- WhatsApp -->
+
                     <a
                         href="https://wa.me/243976993469?text=Bonjour%20CAMU%20IMMO%2C%20je%20souhaite%20faire%20une%20demande%20concernant%20un%20bien%20immobilier."
                         target="_blank"
                         rel="noopener noreferrer"
                         class="immo-whatsapp-button"
                     >
+
                         <i class="fa-brands fa-whatsapp"></i>
+
                         Envoyer via WhatsApp
+
                     </a>
 
+
+                    <!-- E-mail -->
 
                     <a
                         href="mailto:meschackmuteb@gmail.com?subject=Demande%20%C3%A0%20la%20Direction%20CAMU%20IMMO&body=Bonjour%20CAMU%20IMMO%2C%0A%0AJe%20souhaite%20faire%20une%20demande%20concernant%20un%20bien%20immobilier."
                         class="immo-email-button"
                     >
+
                         <i class="fa-solid fa-envelope"></i>
+
                         Envoyer par e-mail
+
                     </a>
 
                 </div>
@@ -739,17 +910,26 @@
         </section>
 
 
-        <!-- PAS DE LOGO EN BAS -->
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
 
         <footer class="immo-footer">
 
             <p>
-                © <span id="immoYear"></span>
+
+                ©
+                <span id="immoYear"></span>
+
                 CAMU SERVICES — CAMU IMMO
+
             </p>
 
+
             <a href="index.html">
+
                 Retour à CAMU SERVICES
+
             </a>
 
         </footer>
@@ -757,9 +937,15 @@
     </main>
 
 
-    <!-- Firebase / application -->
+    <!-- =====================================================
+         JAVASCRIPT CAMU IMMO
+    ====================================================== -->
 
-    <script type="module" src="js/immobilier.js"></script>
+    <script
+        type="module"
+        src="js/immobilier.js"
+    ></script>
 
 </body>
+
 </html>
