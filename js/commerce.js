@@ -1,17 +1,10 @@
 // ============================================================
 // CAMU SERVICES — ESPACE COMMERCE
 // ============================================================
-// Gestion de :
-// - Catégories Commerce
-// - Produits / annonces
-// - Recherche
-// - Villes
-// - Commune saisie manuellement
-// - Établissements / vendeurs
-//
-// IMPORTANT :
-// Les catégories Commerce sont définies directement dans ce fichier.
-// Elles ne proviennent PAS de Firestore.
+// Catégories : définies directement dans ce fichier
+// Produits    : Firestore → annonces
+// Villes      : Firestore → villes
+// Vendeurs    : Firestore → etablissements_commerciaux
 // ============================================================
 
 import {
@@ -41,13 +34,10 @@ const firebaseConfig = {
     measurementId: "G-RQ16SX2SNV"
 };
 
-
 let commerceApp;
 
-const existingApps = getApps();
-
 if (
-    existingApps.some(
+    getApps().some(
         app => app.name === "camu-commerce"
     )
 ) {
@@ -59,7 +49,6 @@ if (
     );
 }
 
-
 const db = getFirestore(commerceApp);
 
 
@@ -67,11 +56,11 @@ const db = getFirestore(commerceApp);
 // 2. CATÉGORIES COMMERCE
 // ============================================================
 // IMPORTANT :
-// Ces catégories sont LOCALES.
-// Aucune collection Firestore n'est utilisée.
+// Les catégories ne viennent d'AUCUNE collection Firestore.
 // ============================================================
 
 const categories = [
+
     {
         id: "mode",
         name: "Mode & Vêtements",
@@ -162,6 +151,7 @@ const categories = [
         icon: "fa-solid fa-store",
         description: "Autres produits commerciaux."
     }
+
 ];
 
 
@@ -259,7 +249,9 @@ function getImages(item) {
     if (
         Array.isArray(item?.images)
     ) {
+
         return item.images.filter(Boolean);
+
     }
 
 
@@ -269,19 +261,20 @@ function getImages(item) {
 
         try {
 
-            const parsed = JSON.parse(
-                item.images
-            );
+            const parsed =
+                JSON.parse(item.images);
 
             if (
                 Array.isArray(parsed)
             ) {
+
                 return parsed.filter(Boolean);
+
             }
 
         } catch (error) {
 
-            // L'image n'est pas une chaîne JSON valide.
+            // La valeur n'est pas un tableau JSON valide.
 
         }
 
@@ -289,12 +282,20 @@ function getImages(item) {
 
 
     if (item?.imageURL) {
-        return [item.imageURL];
+
+        return [
+            item.imageURL
+        ];
+
     }
 
 
     if (item?.photo) {
-        return [item.photo];
+
+        return [
+            item.photo
+        ];
+
     }
 
 
@@ -308,10 +309,16 @@ function formatPrice(
     currency = "USD"
 ) {
 
-    const number = Number(price);
+    const number =
+        Number(price);
 
-    if (!Number.isFinite(number)) {
+
+    if (
+        !Number.isFinite(number)
+    ) {
+
         return "Prix à négocier";
+
     }
 
 
@@ -328,7 +335,9 @@ function formatPrice(
         normalizedCurrency === "franc congolais" ||
         normalizedCurrency === "francs congolais"
     ) {
+
         symbol = "FC";
+
     }
 
 
@@ -348,10 +357,12 @@ function setupMobileMenu() {
             "commerceMenuButton"
         );
 
+
     const sidebar =
         document.getElementById(
             "commerceSidebar"
         );
+
 
     const overlay =
         document.getElementById(
@@ -363,7 +374,9 @@ function setupMobileMenu() {
         !button ||
         !sidebar
     ) {
+
         return;
+
     }
 
 
@@ -373,13 +386,16 @@ function setupMobileMenu() {
             "active"
         );
 
+
         overlay?.classList.add(
             "active"
         );
 
+
         document.body.classList.add(
             "commerce-menu-open"
         );
+
 
         button.setAttribute(
             "aria-expanded",
@@ -395,13 +411,16 @@ function setupMobileMenu() {
             "active"
         );
 
+
         overlay?.classList.remove(
             "active"
         );
 
+
         document.body.classList.remove(
             "commerce-menu-open"
         );
+
 
         button.setAttribute(
             "aria-expanded",
@@ -441,20 +460,41 @@ function setupMobileMenu() {
 
     sidebar
         .querySelectorAll("a")
-        .forEach(link => {
+        .forEach(
+            link => {
 
-            link.addEventListener(
-                "click",
-                closeMenu
-            );
+                link.addEventListener(
+                    "click",
+                    closeMenu
+                );
 
-        });
+            }
+        );
 
 }
 
 
 // ============================================================
-// 6. AFFICHER LES CATÉGORIES
+// 6. INITIALISER LES CATÉGORIES
+// ============================================================
+
+function initCategories() {
+
+    console.log(
+        `CAMU COMMERCE — ${categories.length} catégorie(s) disponible(s).`
+    );
+
+
+    renderCategories();
+
+
+    populateCategorySelect();
+
+}
+
+
+// ============================================================
+// 7. AFFICHER LES CATÉGORIES
 // ============================================================
 
 function renderCategories() {
@@ -466,7 +506,9 @@ function renderCategories() {
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -478,6 +520,7 @@ function renderCategories() {
     ) {
 
         container.innerHTML = `
+
             <div class="commerce-empty">
 
                 <i class="fa-solid fa-tags"></i>
@@ -492,9 +535,11 @@ function renderCategories() {
                 </p>
 
             </div>
+
         `;
 
         return;
+
     }
 
 
@@ -529,11 +574,13 @@ function renderCategories() {
 
                 </div>
 
+
                 <h3>
                     ${escapeHtml(
                         category.name
                     )}
                 </h3>
+
 
                 <p>
                     ${escapeHtml(
@@ -591,7 +638,7 @@ function renderCategories() {
 
 
 // ============================================================
-// 7. SELECT CATÉGORIES
+// 8. SELECT CATÉGORIES
 // ============================================================
 
 function populateCategorySelect() {
@@ -603,14 +650,18 @@ function populateCategorySelect() {
 
 
     if (!select) {
+
         return;
+
     }
 
 
     select.innerHTML = `
+
         <option value="">
             Toutes les catégories
         </option>
+
     `;
 
 
@@ -637,24 +688,6 @@ function populateCategorySelect() {
 
         }
     );
-
-}
-
-
-// ============================================================
-// 8. INITIALISER LES CATÉGORIES
-// ============================================================
-
-function initCategories() {
-
-    console.log(
-        `CAMU COMMERCE — ${categories.length} catégorie(s) disponible(s).`
-    );
-
-
-    renderCategories();
-
-    populateCategorySelect();
 
 }
 
@@ -694,7 +727,9 @@ async function loadVilles() {
                 if (
                     data.active === false
                 ) {
+
                     return;
+
                 }
 
 
@@ -706,7 +741,9 @@ async function loadVilles() {
 
 
                 if (!name) {
+
                     return;
+
                 }
 
 
@@ -716,7 +753,9 @@ async function loadVilles() {
                         docSnap.id,
 
                     name:
-                        String(name).trim(),
+                        String(
+                            name
+                        ).trim(),
 
                     order:
                         Number(
@@ -775,6 +814,7 @@ async function loadVilles() {
             `CAMU COMMERCE — ${villes.length} ville(s) chargée(s).`
         );
 
+
     } catch (error) {
 
         console.error(
@@ -796,14 +836,18 @@ function populateVilleSelect(
 ) {
 
     if (!select) {
+
         return;
+
     }
 
 
     select.innerHTML = `
+
         <option value="">
             Toutes les villes
         </option>
+
     `;
 
 
@@ -847,7 +891,9 @@ function findCommerceCategory(
 
 
     if (!normalized) {
+
         return null;
+
     }
 
 
@@ -856,6 +902,7 @@ function findCommerceCategory(
             normalize(
                 category.id
             ) === normalized ||
+
             normalize(
                 category.name
             ) === normalized
@@ -865,7 +912,7 @@ function findCommerceCategory(
 
 
 // ============================================================
-// 12. IDENTIFIER UNE ANNONCE COMMERCE
+// 12. IDENTIFIER UN PRODUIT COMMERCE
 // ============================================================
 
 function isCommerceProduit(
@@ -881,7 +928,7 @@ function isCommerceProduit(
 
 
     // --------------------------------------------------------
-    // 1. Correspondance avec les catégories Commerce locales
+    // Catégorie locale Commerce
     // --------------------------------------------------------
 
     if (
@@ -889,12 +936,14 @@ function isCommerceProduit(
             category
         )
     ) {
+
         return true;
+
     }
 
 
     // --------------------------------------------------------
-    // 2. Anciennes catégories commerciales
+    // Compatibilité avec les anciennes catégories
     // --------------------------------------------------------
 
     const commerceKeywords = [
@@ -907,7 +956,6 @@ function isCommerceProduit(
         "mode",
         "chaussure",
         "telephone",
-        "electronique",
         "electronique",
         "electromenager",
         "cosmetique",
@@ -941,7 +989,7 @@ function isCommerceProduit(
 
 
     // --------------------------------------------------------
-    // 3. Compatibilité avec certaines anciennes annonces
+    // Compatibilité avec certaines anciennes annonces
     // --------------------------------------------------------
 
     const title =
@@ -994,8 +1042,8 @@ function isCommerceProduit(
         "montre",
         "jouet",
         "livre",
-        "produit",
-        "ordinateur"
+        "produit"
+
     ];
 
 
@@ -1066,12 +1114,14 @@ async function loadProduits() {
                     status !== "active" &&
                     status !== "approved"
                 ) {
+
                     return;
+
                 }
 
 
                 // ------------------------------------------------
-                // Vérifier que c'est un produit Commerce
+                // Produit Commerce
                 // ------------------------------------------------
 
                 if (
@@ -1079,7 +1129,9 @@ async function loadProduits() {
                         data
                     )
                 ) {
+
                     return;
+
                 }
 
 
@@ -1102,6 +1154,7 @@ async function loadProduits() {
 
 
         filterProduits();
+
 
     } catch (error) {
 
@@ -1203,9 +1256,9 @@ function filterProduits() {
         produits.filter(
             produit => {
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // CATÉGORIE
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (category) {
 
@@ -1220,6 +1273,7 @@ function filterProduits() {
                     if (
                         productCategory !==
                             category &&
+
                         productCategory !==
                             categoryName
                     ) {
@@ -1231,9 +1285,9 @@ function filterProduits() {
                 }
 
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // VILLE
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (villeId) {
 
@@ -1257,9 +1311,9 @@ function filterProduits() {
                 }
 
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // COMMUNE
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (commune) {
 
@@ -1284,26 +1338,38 @@ function filterProduits() {
                 }
 
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // MOT-CLÉ
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (keyword) {
 
                     const searchable =
                         normalize(
                             [
+
                                 produit.title,
+
                                 produit.titre,
+
                                 produit.description,
+
                                 produit.city,
+
                                 produit.ville,
+
                                 produit.commune,
+
                                 produit.quartier,
+
                                 produit.category,
+
                                 produit.categorie,
+
                                 produit.categoryName,
+
                                 produit.ownerName
+
                             ]
                                 .filter(Boolean)
                                 .join(" ")
@@ -1362,25 +1428,37 @@ function createProductCard(
 
     const imageURL =
         firstValue(
+
             images[0],
+
             produit.imageURL,
+
             produit.photo,
+
             "assets/logo/camu-services-logo.png"
+
         );
 
 
     const title =
         firstValue(
+
             produit.title,
+
             produit.titre,
+
             "Produit"
+
         );
 
 
     const price =
         formatPrice(
+
             produit.price,
+
             produit.currency
+
         );
 
 
@@ -1403,7 +1481,10 @@ function createProductCard(
 
 
     const location =
-        [commune, city]
+        [
+            commune,
+            city
+        ]
             .filter(Boolean)
             .join(", ");
 
@@ -1435,22 +1516,27 @@ function createProductCard(
         <div class="commerce-product-content">
 
             <div class="commerce-product-price">
+
                 ${escapeHtml(
                     price
                 )}
+
             </div>
 
 
             <h3 class="commerce-product-title">
+
                 ${escapeHtml(
                     title
                 )}
+
             </h3>
 
 
             ${
                 category
                     ? `
+
                         <div class="commerce-product-category">
 
                             <i class="fa-solid fa-tag"></i>
@@ -1460,6 +1546,7 @@ function createProductCard(
                             )}
 
                         </div>
+
                     `
                     : ""
             }
@@ -1468,6 +1555,7 @@ function createProductCard(
             ${
                 location
                     ? `
+
                         <div class="commerce-product-location">
 
                             <i class="fa-solid fa-location-dot"></i>
@@ -1477,6 +1565,7 @@ function createProductCard(
                             )}
 
                         </div>
+
                     `
                     : ""
             }
@@ -1526,7 +1615,9 @@ function renderProducts(
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -1569,6 +1660,7 @@ function renderProducts(
         `;
 
         return;
+
     }
 
 
@@ -1600,7 +1692,9 @@ function renderProductError() {
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -1657,10 +1751,16 @@ async function loadEtablissements() {
                     docSnap.data();
 
 
+                // ------------------------------------------------
+                // Ne pas afficher les établissements désactivés
+                // ------------------------------------------------
+
                 if (
                     data.active === false
                 ) {
+
                     return;
+
                 }
 
 
@@ -1668,6 +1768,7 @@ async function loadEtablissements() {
 
                     id:
                         docSnap.id,
+
 
                     name:
                         String(
@@ -1679,6 +1780,7 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
                     category:
                         String(
                             firstValue(
@@ -1686,6 +1788,7 @@ async function loadEtablissements() {
                                 data.categorie
                             )
                         ).trim(),
+
 
                     phone:
                         String(
@@ -1695,6 +1798,7 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
                     WhatsApp:
                         String(
                             firstValue(
@@ -1703,6 +1807,7 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
                     email:
                         String(
                             firstValue(
@@ -1710,13 +1815,16 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
+                    // Ton champ Firestore est photoURL
                     logoURL:
                         String(
                             firstValue(
-                                data.logoURL,
-                                data.photoURL
+                                data.photoURL,
+                                data.logoURL
                             )
                         ).trim(),
+
 
                     ville:
                         String(
@@ -1726,12 +1834,14 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
                     commune:
                         String(
                             firstValue(
                                 data.commune
                             )
                         ).trim(),
+
 
                     adresse:
                         String(
@@ -1741,12 +1851,14 @@ async function loadEtablissements() {
                             )
                         ).trim(),
 
+
                     description:
                         String(
                             firstValue(
                                 data.description
                             )
                         ).trim(),
+
 
                     active:
                         data.active !== false
@@ -1763,6 +1875,7 @@ async function loadEtablissements() {
 
 
         filterEtablissements();
+
 
     } catch (error) {
 
@@ -1784,7 +1897,7 @@ async function loadEtablissements() {
 
                 <div class="commerce-empty">
 
-                    <i class="fa-solid fa-store-slash"></i>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
 
                     <h3>
                         Établissements indisponibles
@@ -1852,9 +1965,9 @@ function filterEtablissements() {
         etablissements.filter(
             etablissement => {
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // VILLE
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (villeId) {
 
@@ -1876,9 +1989,9 @@ function filterEtablissements() {
                 }
 
 
-                // ------------------------------------------
+                // --------------------------------------------
                 // COMMUNE
-                // ------------------------------------------
+                // --------------------------------------------
 
                 if (commune) {
 
@@ -1946,8 +2059,12 @@ function createBusinessCard(
             .join(", ");
 
 
-    const phone =
+    const whatsapp =
         business.WhatsApp ||
+        "";
+
+
+    const phone =
         business.phone ||
         "";
 
@@ -1961,21 +2078,22 @@ function createBusinessCard(
     let actions = "";
 
 
-    // --------------------------------------------------------
+    // ========================================================
     // WHATSAPP
-    // --------------------------------------------------------
+    // ========================================================
 
-    if (phone) {
+    if (whatsapp) {
 
-        const cleanPhone =
-            String(phone)
-                .replace(
-                    /[^\d]/g,
-                    ""
-                );
+        const cleanWhatsApp =
+            String(
+                whatsapp
+            ).replace(
+                /[^\d]/g,
+                ""
+            );
 
 
-        if (cleanPhone) {
+        if (cleanWhatsApp) {
 
             const message =
                 encodeURIComponent(
@@ -1986,7 +2104,7 @@ function createBusinessCard(
             actions += `
 
                 <a
-                    href="https://wa.me/${cleanPhone}?text=${message}"
+                    href="https://wa.me/${cleanWhatsApp}?text=${message}"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="commerce-business-whatsapp"
@@ -2005,18 +2123,15 @@ function createBusinessCard(
     }
 
 
-    // --------------------------------------------------------
+    // ========================================================
     // TÉLÉPHONE
-    // --------------------------------------------------------
+    // ========================================================
 
-    if (
-        business.phone &&
-        business.phone !== business.WhatsApp
-    ) {
+    if (phone) {
 
         const cleanPhone =
             String(
-                business.phone
+                phone
             ).replace(
                 /[^\d+]/g,
                 ""
@@ -2047,9 +2162,9 @@ function createBusinessCard(
     }
 
 
-    // --------------------------------------------------------
+    // ========================================================
     // EMAIL
-    // --------------------------------------------------------
+    // ========================================================
 
     if (email) {
 
@@ -2072,6 +2187,10 @@ function createBusinessCard(
 
     }
 
+
+    // ========================================================
+    // HTML DE LA CARTE
+    // ========================================================
 
     card.innerHTML = `
 
@@ -2208,7 +2327,9 @@ function renderEtablissements(
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -2239,6 +2360,7 @@ function renderEtablissements(
         `;
 
         return;
+
     }
 
 
@@ -2293,6 +2415,7 @@ function setupEvents() {
         );
 
 
+    // Recherche instantanée
     keyword?.addEventListener(
         "input",
         filterProduits
@@ -2317,7 +2440,7 @@ function setupEvents() {
     );
 
 
-    // Recherche avec le bouton
+    // Bouton rechercher
     searchButton?.addEventListener(
         "click",
         () => {
@@ -2337,7 +2460,7 @@ function setupEvents() {
     );
 
 
-    // Recherche avec la touche Entrée
+    // Touche Entrée
     keyword?.addEventListener(
         "keydown",
         event => {
@@ -2348,7 +2471,9 @@ function setupEvents() {
 
                 event.preventDefault();
 
+
                 filterProduits();
+
 
                 document
                     .getElementById(
@@ -2363,6 +2488,10 @@ function setupEvents() {
         }
     );
 
+
+    // --------------------------------------------------------
+    // ÉTABLISSEMENTS
+    // --------------------------------------------------------
 
     const businessVille =
         document.getElementById(
@@ -2430,7 +2559,9 @@ function setupSmoothNavigation() {
 
 
                         if (!target) {
+
                             return;
+
                         }
 
 
@@ -2486,9 +2617,11 @@ async function initCommerce() {
         "=========================================="
     );
 
+
     console.log(
         "CAMU COMMERCE — initialisation..."
     );
+
 
     console.log(
         "Firebase SDK : 10.12.2"
