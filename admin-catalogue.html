@@ -2,7 +2,6 @@
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -12,41 +11,40 @@
 
     <meta
         name="description"
-        content="Gestion des catégories et des villes - CAMU SERVICES"
+        content="Gestion des catégories et des villes — CAMU SERVICES"
     >
 
-    <title>
-        Catégories & Villes — CAMU SERVICES
-    </title>
+    <title>Catégories & Villes — CAMU SERVICES ADMIN</title>
 
-    <!-- Font Awesome -->
     <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        rel="icon"
+        href="logo.png"
     >
 
-    <!-- CSS principal -->
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-    <!-- CSS administration -->
     <link
         rel="stylesheet"
         href="css/admin.css"
     >
 
-    <!-- CSS catalogue -->
     <link
         rel="stylesheet"
         href="css/admin-catalogue.css"
     >
 
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
 
 
-<body>
+<body class="admin-page admin-catalogue-page">
+
 
 <!-- =====================================================
      HEADER MOBILE
@@ -55,38 +53,35 @@
 <header class="admin-mobile-header">
 
     <button
-        type="button"
         id="adminMenuButton"
         class="admin-menu-button"
+        type="button"
         aria-label="Ouvrir le menu"
+        aria-controls="adminSidebar"
+        aria-expanded="false"
     >
         <i class="fa-solid fa-bars"></i>
     </button>
 
-    <div class="admin-mobile-title">
 
-        <strong>
-            CAMU SERVICES
-        </strong>
+    <a
+        href="admin.html"
+        class="admin-mobile-logo"
+    >
+        <img
+            src="logo.png"
+            alt="CAMU SERVICES"
+        >
 
-        <span>
-            Administration
-        </span>
+        <span>CAMU SERVICES</span>
+    </a>
 
+
+    <div class="admin-mobile-user">
+        <i class="fa-solid fa-user-shield"></i>
     </div>
 
 </header>
-
-
-<!-- =====================================================
-     OVERLAY
-===================================================== -->
-
-<div
-    id="adminOverlay"
-    class="admin-overlay"
->
-</div>
 
 
 <!-- =====================================================
@@ -100,56 +95,53 @@
 
     <div class="admin-sidebar-header">
 
-        <div class="admin-brand">
+        <a
+            href="admin.html"
+            class="admin-brand"
+        >
 
-            <div class="admin-brand-logo">
-                C
+            <img
+                src="logo.png"
+                alt="CAMU SERVICES"
+                class="admin-brand-logo"
+            >
+
+            <div class="admin-brand-text">
+                <strong>CAMU SERVICES</strong>
+                <span>ADMINISTRATION</span>
             </div>
 
-            <div>
-
-                <strong>
-                    CAMU SERVICES
-                </strong>
-
-                <span>
-                    Administration
-                </span>
-
-            </div>
-
-        </div>
+        </a>
 
 
         <button
-            type="button"
             id="adminCloseSidebar"
             class="admin-close-sidebar"
+            type="button"
             aria-label="Fermer le menu"
         >
-
             <i class="fa-solid fa-xmark"></i>
-
         </button>
 
     </div>
 
 
-    <!-- NAVIGATION -->
-
     <nav class="admin-navigation">
+
+        <div class="admin-nav-title">
+            PRINCIPAL
+        </div>
+
 
         <a
             href="admin.html"
             class="admin-nav-link"
         >
-
-            <i class="fa-solid fa-chart-line"></i>
-
-            <span>
-                Tableau de bord
+            <span class="admin-nav-icon dashboard">
+                <i class="fa-solid fa-chart-pie"></i>
             </span>
 
+            <span>Tableau de bord</span>
         </a>
 
 
@@ -157,88 +149,175 @@
             href="admin-annonces.html"
             class="admin-nav-link"
         >
-
-            <i class="fa-solid fa-bullhorn"></i>
-
-            <span>
-                Annonces
+            <span class="admin-nav-icon ads">
+                <i class="fa-solid fa-bullhorn"></i>
             </span>
 
+            <span>Annonces</span>
         </a>
 
 
         <a
-            href="admin-utilisateurs.html"
+            href="admin.html#utilisateurs"
             class="admin-nav-link"
         >
-
-            <i class="fa-solid fa-users"></i>
-
-            <span>
-                Utilisateurs
+            <span class="admin-nav-icon users">
+                <i class="fa-solid fa-users"></i>
             </span>
 
+            <span>Utilisateurs</span>
+        </a>
+
+
+        <div class="admin-nav-title">
+            SERVICES
+        </div>
+
+
+        <a
+            href="admin.html#paiements-premium"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon premium">
+                <i class="fa-solid fa-crown"></i>
+            </span>
+
+            <span>Paiements Premium</span>
         </a>
 
 
         <a
-            href="admin-signalements.html"
+            href="admin.html#signalements"
             class="admin-nav-link"
         >
-
-            <i class="fa-solid fa-flag"></i>
-
-            <span>
-                Signalements
+            <span class="admin-nav-icon reports">
+                <i class="fa-solid fa-flag"></i>
             </span>
 
+            <span>Signalements</span>
         </a>
+
+
+        <div class="admin-nav-title">
+            CATALOGUE
+        </div>
 
 
         <a
             href="admin-catalogue.html"
             class="admin-nav-link active"
         >
-
-            <i class="fa-solid fa-layer-group"></i>
-
-            <span>
-                Catégories & Villes
+            <span class="admin-nav-icon categories">
+                <i class="fa-solid fa-layer-group"></i>
             </span>
 
+            <span>Catégories & Villes</span>
         </a>
 
 
         <a
-            href="admin-parametres.html"
+            href="admin.html#etablissements"
             class="admin-nav-link"
         >
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>
-                Paramètres
+            <span class="admin-nav-icon businesses">
+                <i class="fa-solid fa-store"></i>
             </span>
 
+            <span>Établissements</span>
+        </a>
+
+
+        <div class="admin-nav-title">
+            PROFESSIONNELS
+        </div>
+
+
+        <a
+            href="admin.html#immobilier"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon immobilier">
+                <i class="fa-solid fa-house"></i>
+            </span>
+
+            <span>CAMU IMMO</span>
+        </a>
+
+
+        <a
+            href="admin.html#commerce"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon commerce">
+                <i class="fa-solid fa-shop"></i>
+            </span>
+
+            <span>CAMU COMMERCE</span>
+        </a>
+
+
+        <a
+            href="admin.html#transport"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon transport">
+                <i class="fa-solid fa-car"></i>
+            </span>
+
+            <span>Véhicules & Transport</span>
+        </a>
+
+
+        <a
+            href="admin.html#hotels"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon hotels">
+                <i class="fa-solid fa-hotel"></i>
+            </span>
+
+            <span>Hôtels & Hébergement</span>
+        </a>
+
+
+        <div class="admin-nav-title">
+            SYSTÈME
+        </div>
+
+
+        <a
+            href="admin.html#parametres"
+            class="admin-nav-link"
+        >
+            <span class="admin-nav-icon settings">
+                <i class="fa-solid fa-gear"></i>
+            </span>
+
+            <span>Paramètres</span>
         </a>
 
     </nav>
 
 
-    <!-- RETOUR -->
-
-    <div class="admin-sidebar-footer">
+    <div class="admin-sidebar-bottom">
 
         <a
             href="index.html"
             class="admin-back-site"
         >
-
             <i class="fa-solid fa-arrow-left"></i>
-
-            Retour au site
-
+            <span>Retour au site</span>
         </a>
+
+
+        <button
+            id="adminLogoutButton"
+            class="admin-logout-button"
+            type="button"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </button>
 
     </div>
 
@@ -246,7 +325,17 @@
 
 
 <!-- =====================================================
-     CONTENU PRINCIPAL
+     OVERLAY
+===================================================== -->
+
+<div
+    id="adminOverlay"
+    class="admin-overlay"
+></div>
+
+
+<!-- =====================================================
+     CONTENU
 ===================================================== -->
 
 <main class="admin-main">
@@ -254,150 +343,258 @@
 
     <!-- TOPBAR -->
 
-    <div class="admin-topbar">
+    <header class="admin-topbar">
 
-        <div>
+        <div class="admin-topbar-left">
+
+            <p class="admin-breadcrumb">
+                CAMU SERVICES / Catalogue
+            </p>
 
             <h1>
                 Catégories & Villes
             </h1>
 
-            <p>
-                Gérez les catégories et les villes disponibles sur CAMU SERVICES.
-            </p>
-
         </div>
 
 
-        <button
-            type="button"
-            id="catalogueRefreshButton"
-            class="admin-refresh-button"
-        >
+        <div class="admin-topbar-right">
 
-            <i class="fa-solid fa-rotate"></i>
-
-            Actualiser
-
-        </button>
-
-    </div>
+            <button
+                type="button"
+                id="catalogueRefreshButton"
+                class="admin-topbar-action"
+                title="Actualiser"
+            >
+                <i class="fa-solid fa-rotate"></i>
+            </button>
 
 
-    <!-- MESSAGE -->
+            <div class="admin-user">
 
-    <div
-        id="catalogueMessage"
-        class="catalogue-message"
-        hidden
-    >
-    </div>
+                <div class="admin-user-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <div class="admin-user-info">
+
+                    <strong>
+                        CAMU SERVICES ADMIN
+                    </strong>
+
+                    <span>
+                        Administrateur
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
 
 
-    <!-- =================================================
-         STATISTIQUES
-    ================================================== -->
+    <div class="admin-content">
 
-    <section class="catalogue-stats">
 
-        <div class="catalogue-stat-card">
+        <!-- MESSAGE -->
 
-            <div class="catalogue-stat-icon category-icon">
+        <div
+            id="adminMessage"
+            class="admin-message"
+            hidden
+        ></div>
 
+
+        <!-- =================================================
+             EN-TÊTE
+        ================================================== -->
+
+        <section class="catalogue-header">
+
+            <div>
+
+                <span class="admin-section-label">
+                    CATALOGUE
+                </span>
+
+                <h2>
+                    Gestion du catalogue
+                </h2>
+
+                <p>
+                    Gérez les catégories et les villes disponibles
+                    sur CAMU SERVICES.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             STATISTIQUES
+        ================================================== -->
+
+        <section class="catalogue-stats">
+
+
+            <article class="catalogue-stat-card">
+
+                <div class="catalogue-stat-icon categories">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Catégories
+                    </span>
+
+                    <strong id="catalogueCategoriesCount">
+                        0
+                    </strong>
+
+                    <small>
+                        au total
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="catalogue-stat-card">
+
+                <div class="catalogue-stat-icon active">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Catégories actives
+                    </span>
+
+                    <strong id="catalogueActiveCategoriesCount">
+                        0
+                    </strong>
+
+                    <small>
+                        visibles sur le site
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="catalogue-stat-card">
+
+                <div class="catalogue-stat-icon cities">
+                    <i class="fa-solid fa-city"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Villes
+                    </span>
+
+                    <strong id="catalogueCitiesCount">
+                        0
+                    </strong>
+
+                    <small>
+                        au total
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="catalogue-stat-card">
+
+                <div class="catalogue-stat-icon active">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Villes actives
+                    </span>
+
+                    <strong id="catalogueActiveCitiesCount">
+                        0
+                    </strong>
+
+                    <small>
+                        disponibles
+                    </small>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =================================================
+             ONGLETS
+        ================================================== -->
+
+        <div class="catalogue-tabs">
+
+            <button
+                type="button"
+                class="catalogue-tab active"
+                data-tab="categories"
+            >
                 <i class="fa-solid fa-layer-group"></i>
+                Catégories
+            </button>
 
-            </div>
 
-            <div>
-
-                <span>
-                    Catégories
-                </span>
-
-                <strong id="categoriesCount">
-                    0
-                </strong>
-
-            </div>
+            <button
+                type="button"
+                class="catalogue-tab"
+                data-tab="villes"
+            >
+                <i class="fa-solid fa-city"></i>
+                Villes
+            </button>
 
         </div>
-
-
-        <div class="catalogue-stat-card">
-
-            <div class="catalogue-stat-icon city-icon">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-            </div>
-
-            <div>
-
-                <span>
-                    Villes
-                </span>
-
-                <strong id="citiesCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="catalogue-stat-card">
-
-            <div class="catalogue-stat-icon active-icon">
-
-                <i class="fa-solid fa-circle-check"></i>
-
-            </div>
-
-            <div>
-
-                <span>
-                    Éléments actifs
-                </span>
-
-                <strong id="activeCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================================
-         GRILLE PRINCIPALE
-    ================================================== -->
-
-    <section class="catalogue-grid">
 
 
         <!-- =================================================
              CATÉGORIES
         ================================================== -->
 
-        <div class="catalogue-panel">
+        <section
+            id="categoriesPanel"
+            class="catalogue-panel active"
+        >
+
 
             <div class="catalogue-panel-header">
 
                 <div>
 
+                    <span class="admin-section-label">
+                        CATÉGORIES
+                    </span>
+
                     <h2>
-
-                        <i class="fa-solid fa-layer-group"></i>
-
-                        Catégories
-
+                        Catégories du site
                     </h2>
 
                     <p>
-                        Les catégories utilisées pour les annonces.
+                        Les catégories actives sont utilisées
+                        dans les différentes parties de CAMU SERVICES.
                     </p>
 
                 </div>
@@ -406,52 +603,61 @@
                 <button
                     type="button"
                     id="addCategoryButton"
-                    class="catalogue-add-button"
+                    class="catalogue-primary-button"
                 >
-
                     <i class="fa-solid fa-plus"></i>
-
-                    Ajouter
-
+                    Ajouter une catégorie
                 </button>
 
             </div>
 
 
-            <!-- Recherche -->
+            <!-- RECHERCHE -->
 
-            <div class="catalogue-search">
+            <div class="catalogue-search-row">
 
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="catalogue-search-box">
 
-                <input
-                    type="search"
-                    id="categorySearch"
-                    placeholder="Rechercher une catégorie..."
-                    autocomplete="off"
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        id="categorySearch"
+                        placeholder="Rechercher une catégorie..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select
+                    id="categoryStatusFilter"
+                    class="catalogue-select"
                 >
+                    <option value="all">
+                        Tous les statuts
+                    </option>
+
+                    <option value="active">
+                        Actives
+                    </option>
+
+                    <option value="inactive">
+                        Inactives
+                    </option>
+                </select>
 
             </div>
 
 
-            <!-- Liste -->
+            <!-- LISTE -->
 
             <div
                 id="categoriesLoading"
                 class="catalogue-loading"
             >
-
                 <i class="fa-solid fa-spinner fa-spin"></i>
-
-                Chargement...
-
-            </div>
-
-
-            <div
-                id="categoriesList"
-                class="catalogue-list"
-            >
+                Chargement des catégories...
             </div>
 
 
@@ -461,41 +667,55 @@
                 hidden
             >
 
-                <i class="fa-solid fa-folder-open"></i>
+                <div class="catalogue-empty-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
 
-                <strong>
+                <h3>
                     Aucune catégorie
-                </strong>
+                </h3>
 
-                <span>
-                    Ajoutez votre première catégorie.
-                </span>
+                <p>
+                    Aucune catégorie ne correspond à votre recherche.
+                </p>
 
             </div>
 
-        </div>
+
+            <div
+                id="categoriesList"
+                class="categories-list"
+            ></div>
+
+        </section>
 
 
         <!-- =================================================
              VILLES
         ================================================== -->
 
-        <div class="catalogue-panel">
+        <section
+            id="villesPanel"
+            class="catalogue-panel"
+            hidden
+        >
+
 
             <div class="catalogue-panel-header">
 
                 <div>
 
+                    <span class="admin-section-label">
+                        LOCALISATION
+                    </span>
+
                     <h2>
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        Villes
-
+                        Villes disponibles
                     </h2>
 
                     <p>
-                        Les villes disponibles pour les annonces.
+                        Gérez les villes proposées aux utilisateurs
+                        lors des recherches et publications.
                     </p>
 
                 </div>
@@ -504,52 +724,75 @@
                 <button
                     type="button"
                     id="addCityButton"
-                    class="catalogue-add-button"
+                    class="catalogue-primary-button"
                 >
-
                     <i class="fa-solid fa-plus"></i>
-
-                    Ajouter
-
+                    Ajouter une ville
                 </button>
 
             </div>
 
 
-            <!-- Recherche -->
+            <!-- RECHERCHE -->
 
-            <div class="catalogue-search">
+            <div class="catalogue-search-row">
 
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="catalogue-search-box">
 
-                <input
-                    type="search"
-                    id="citySearch"
-                    placeholder="Rechercher une ville..."
-                    autocomplete="off"
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        id="citySearch"
+                        placeholder="Rechercher une ville..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select
+                    id="cityProvinceFilter"
+                    class="catalogue-select"
                 >
+
+                    <option value="all">
+                        Toutes les provinces
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="cityStatusFilter"
+                    class="catalogue-select"
+                >
+
+                    <option value="all">
+                        Tous les statuts
+                    </option>
+
+                    <option value="active">
+                        Actives
+                    </option>
+
+                    <option value="inactive">
+                        Inactives
+                    </option>
+
+                </select>
 
             </div>
 
 
-            <!-- Liste -->
+            <!-- LISTE -->
 
             <div
                 id="citiesLoading"
                 class="catalogue-loading"
             >
-
                 <i class="fa-solid fa-spinner fa-spin"></i>
-
-                Chargement...
-
-            </div>
-
-
-            <div
-                id="citiesList"
-                class="catalogue-list"
-            >
+                Chargement des villes...
             </div>
 
 
@@ -559,375 +802,393 @@
                 hidden
             >
 
-                <i class="fa-solid fa-city"></i>
+                <div class="catalogue-empty-icon">
+                    <i class="fa-solid fa-city"></i>
+                </div>
 
-                <strong>
+                <h3>
                     Aucune ville
-                </strong>
+                </h3>
 
-                <span>
-                    Ajoutez votre première ville.
-                </span>
+                <p>
+                    Aucune ville ne correspond à votre recherche.
+                </p>
+
+            </div>
+
+
+            <div
+                id="citiesList"
+                class="cities-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             MODAL CATÉGORIE
+        ================================================== -->
+
+        <div
+            id="categoryModal"
+            class="catalogue-modal"
+            hidden
+        >
+
+            <div
+                class="catalogue-modal-overlay"
+                data-close-category-modal
+            ></div>
+
+
+            <div class="catalogue-modal-box">
+
+                <div class="catalogue-modal-header">
+
+                    <div>
+
+                        <span>
+                            CATALOGUE
+                        </span>
+
+                        <h3 id="categoryModalTitle">
+                            Ajouter une catégorie
+                        </h3>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="catalogue-modal-close"
+                        data-close-category-modal
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+
+                <form id="categoryForm">
+
+                    <input
+                        type="hidden"
+                        id="categoryId"
+                    >
+
+
+                    <div class="catalogue-form-group">
+
+                        <label for="categoryName">
+                            Nom de la catégorie
+                        </label>
+
+                        <input
+                            type="text"
+                            id="categoryName"
+                            placeholder="Ex. Immobilier"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="catalogue-form-group">
+
+                        <label for="categoryIcon">
+                            Icône
+                        </label>
+
+                        <input
+                            type="text"
+                            id="categoryIcon"
+                            placeholder="Ex. fa-solid fa-house"
+                        >
+
+                        <small>
+                            Vous pouvez utiliser une classe Font Awesome
+                            ou un emoji.
+                        </small>
+
+                    </div>
+
+
+                    <div class="catalogue-form-group">
+
+                        <label for="categoryDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="categoryDescription"
+                            rows="4"
+                            placeholder="Description de la catégorie..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="catalogue-form-row">
+
+                        <div class="catalogue-form-group">
+
+                            <label for="categoryOrder">
+                                Ordre
+                            </label>
+
+                            <input
+                                type="number"
+                                id="categoryOrder"
+                                min="0"
+                                value="0"
+                            >
+
+                        </div>
+
+
+                        <div class="catalogue-form-group">
+
+                            <label for="categoryActive">
+                                Statut
+                            </label>
+
+                            <select id="categoryActive">
+
+                                <option value="true">
+                                    Active
+                                </option>
+
+                                <option value="false">
+                                    Inactive
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="catalogue-modal-actions">
+
+                        <button
+                            type="button"
+                            class="catalogue-secondary-button"
+                            data-close-category-modal
+                        >
+                            Annuler
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="catalogue-primary-button"
+                        >
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Enregistrer
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
         </div>
 
-    </section>
+
+        <!-- =================================================
+             MODAL VILLE
+        ================================================== -->
+
+        <div
+            id="cityModal"
+            class="catalogue-modal"
+            hidden
+        >
+
+            <div
+                class="catalogue-modal-overlay"
+                data-close-city-modal
+            ></div>
+
+
+            <div class="catalogue-modal-box">
+
+                <div class="catalogue-modal-header">
+
+                    <div>
+
+                        <span>
+                            LOCALISATION
+                        </span>
+
+                        <h3 id="cityModalTitle">
+                            Ajouter une ville
+                        </h3>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="catalogue-modal-close"
+                        data-close-city-modal
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+
+                <form id="cityForm">
+
+                    <input
+                        type="hidden"
+                        id="cityId"
+                    >
+
+
+                    <div class="catalogue-form-group">
+
+                        <label for="cityName">
+                            Nom de la ville
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cityName"
+                            placeholder="Ex. Lubumbashi"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="catalogue-form-group">
+
+                        <label for="cityProvince">
+                            Province
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cityProvince"
+                            placeholder="Ex. Haut-Katanga"
+                        >
+
+                    </div>
+
+
+                    <div class="catalogue-form-row">
+
+                        <div class="catalogue-form-group">
+
+                            <label for="cityOrder">
+                                Ordre
+                            </label>
+
+                            <input
+                                type="number"
+                                id="cityOrder"
+                                min="0"
+                                value="0"
+                            >
+
+                        </div>
+
+
+                        <div class="catalogue-form-group">
+
+                            <label for="cityActive">
+                                Statut
+                            </label>
+
+                            <select id="cityActive">
+
+                                <option value="true">
+                                    Active
+                                </option>
+
+                                <option value="false">
+                                    Inactive
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="catalogue-modal-actions">
+
+                        <button
+                            type="button"
+                            class="catalogue-secondary-button"
+                            data-close-city-modal
+                        >
+                            Annuler
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="catalogue-primary-button"
+                        >
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Enregistrer
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer class="admin-footer">
+
+            <div>
+                © 2026
+                <strong>CAMU SERVICES</strong>.
+                Tous droits réservés.
+            </div>
+
+            <div>
+                Administration
+            </div>
+
+        </footer>
+
+    </div>
 
 </main>
 
 
 <!-- =====================================================
-     MODAL CATÉGORIE
+     JAVASCRIPT
 ===================================================== -->
 
-<div
-    id="categoryModal"
-    class="catalogue-modal"
-    hidden
->
-
-    <div
-        class="catalogue-modal-overlay"
-        data-close-category-modal
-    >
-    </div>
-
-
-    <div
-        class="catalogue-modal-card"
-        role="dialog"
-        aria-modal="true"
-    >
-
-        <div class="catalogue-modal-header">
-
-            <div>
-
-                <h2 id="categoryModalTitle">
-                    Ajouter une catégorie
-                </h2>
-
-                <p>
-                    Configurez la catégorie.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="catalogue-modal-close"
-                data-close-category-modal
-                aria-label="Fermer"
-            >
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-
-        <form
-            id="categoryForm"
-            class="catalogue-form"
-        >
-
-            <input
-                type="hidden"
-                id="categoryId"
-            >
-
-
-            <label>
-
-                <span>
-                    Nom de la catégorie *
-                </span>
-
-                <input
-                    type="text"
-                    id="categoryName"
-                    placeholder="Ex. Immobilier"
-                    required
-                    maxlength="80"
-                >
-
-            </label>
-
-
-            <label>
-
-                <span>
-                    Icône Font Awesome
-                </span>
-
-                <input
-                    type="text"
-                    id="categoryIcon"
-                    placeholder="Ex. fa-solid fa-house"
-                    maxlength="100"
-                >
-
-                <small>
-                    Exemple : fa-solid fa-house
-                </small>
-
-            </label>
-
-
-            <label>
-
-                <span>
-                    Description
-                </span>
-
-                <textarea
-                    id="categoryDescription"
-                    rows="4"
-                    maxlength="300"
-                    placeholder="Description courte de la catégorie..."
-                ></textarea>
-
-            </label>
-
-
-            <label>
-
-                <span>
-                    Ordre d'affichage
-                </span>
-
-                <input
-                    type="number"
-                    id="categoryOrder"
-                    value="0"
-                    min="0"
-                    step="1"
-                >
-
-            </label>
-
-
-            <label class="catalogue-checkbox">
-
-                <input
-                    type="checkbox"
-                    id="categoryActive"
-                    checked
-                >
-
-                <span>
-                    Catégorie active
-                </span>
-
-            </label>
-
-
-            <div class="catalogue-modal-actions">
-
-                <button
-                    type="button"
-                    class="catalogue-cancel-button"
-                    data-close-category-modal
-                >
-                    Annuler
-                </button>
-
-
-                <button
-                    type="submit"
-                    id="saveCategoryButton"
-                    class="catalogue-save-button"
-                >
-
-                    <i class="fa-solid fa-check"></i>
-
-                    Enregistrer
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     MODAL VILLE
-===================================================== -->
-
-<div
-    id="cityModal"
-    class="catalogue-modal"
-    hidden
->
-
-    <div
-        class="catalogue-modal-overlay"
-        data-close-city-modal
-    >
-    </div>
-
-
-    <div
-        class="catalogue-modal-card"
-        role="dialog"
-        aria-modal="true"
-    >
-
-        <div class="catalogue-modal-header">
-
-            <div>
-
-                <h2 id="cityModalTitle">
-                    Ajouter une ville
-                </h2>
-
-                <p>
-                    Configurez la ville.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="catalogue-modal-close"
-                data-close-city-modal
-                aria-label="Fermer"
-            >
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-
-        <form
-            id="cityForm"
-            class="catalogue-form"
-        >
-
-            <input
-                type="hidden"
-                id="cityId"
-            >
-
-
-            <label>
-
-                <span>
-                    Nom de la ville *
-                </span>
-
-                <input
-                    type="text"
-                    id="cityName"
-                    placeholder="Ex. Lubumbashi"
-                    required
-                    maxlength="80"
-                >
-
-            </label>
-
-
-            <label>
-
-                <span>
-                    Province *
-                </span>
-
-                <input
-                    type="text"
-                    id="cityProvince"
-                    placeholder="Ex. Haut-Katanga"
-                    required
-                    maxlength="100"
-                >
-
-            </label>
-
-
-            <label>
-
-                <span>
-                    Ordre d'affichage
-                </span>
-
-                <input
-                    type="number"
-                    id="cityOrder"
-                    value="0"
-                    min="0"
-                    step="1"
-                >
-
-            </label>
-
-
-            <label class="catalogue-checkbox">
-
-                <input
-                    type="checkbox"
-                    id="cityActive"
-                    checked
-                >
-
-                <span>
-                    Ville active
-                </span>
-
-            </label>
-
-
-            <div class="catalogue-modal-actions">
-
-                <button
-                    type="button"
-                    class="catalogue-cancel-button"
-                    data-close-city-modal
-                >
-                    Annuler
-                </button>
-
-
-                <button
-                    type="submit"
-                    id="saveCityButton"
-                    class="catalogue-save-button"
-                >
-
-                    <i class="fa-solid fa-check"></i>
-
-                    Enregistrer
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     SCRIPTS
-===================================================== -->
+<script
+    type="module"
+    src="js/auth.js"
+></script>
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
 
 <script
     type="module"
     src="js/admin-catalogue.js"
 ></script>
 
-</body>
 
+</body>
 </html>
