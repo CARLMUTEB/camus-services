@@ -1,101 +1,122 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Mes annonces favorites — CAMU SERVICES">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Mes favoris — CAMU SERVICES</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta
+        name="description"
+        content="Retrouvez vos annonces favorites sur CAMU SERVICES."
+    >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/favoris.css">
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/favoris.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 
 <body>
 
-<!-- ==============================
-     HEADER MOBILE
-================================ -->
+<!-- SIDEBAR -->
 
-<header class="mobile-header">
+<aside
+    class="favorites-sidebar"
+    id="favoritesSidebar"
+>
 
-    <button id="menuToggle"
-            class="mobile-menu-button"
-            type="button"
-            aria-label="Ouvrir le menu">
+    <div class="favorites-sidebar-logo">
 
-        <i class="fa-solid fa-bars"></i>
+        <a href="index.html">
 
-    </button>
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
 
-    <a href="index.html" class="mobile-logo">
-        CAMU <span>SERVICES</span>
-    </a>
+        </a>
 
-    <a href="compte.html"
-       class="mobile-account"
-       aria-label="Mon compte">
-
-        <i class="fa-solid fa-user"></i>
-
-    </a>
-
-</header>
-
-
-<!-- ==============================
-     SIDEBAR
-================================ -->
-
-<aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-logo">
-        CAMU <span>SERVICES</span>
     </div>
 
-    <nav class="sidebar-nav">
 
-        <a href="index.html" class="nav-item">
+    <nav class="favorites-sidebar-nav">
+
+        <a href="index.html">
+
             <i class="fa-solid fa-house"></i>
+
             <span>Accueil</span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Rechercher</span>
-        </a>
 
-        <a href="recherche.html" class="nav-item">
-            <i class="fa-solid fa-folder"></i>
+        <a href="categories.html">
+
+            <i class="fa-solid fa-layer-group"></i>
+
             <span>Catégories</span>
+
         </a>
 
-        <a href="publier.html" class="nav-item">
+
+        <a href="recherche.html">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <span>Recherche</span>
+
+        </a>
+
+
+        <a href="publier.html">
+
             <i class="fa-solid fa-plus"></i>
+
             <span>Publier</span>
+
         </a>
 
-        <a href="favoris.html"
-           class="nav-item active">
+
+        <a
+            href="favoris.html"
+            class="active"
+        >
 
             <i class="fa-solid fa-heart"></i>
+
             <span>Favoris</span>
 
         </a>
 
-        <a href="compte.html" class="nav-item">
-            <i class="fa-solid fa-user"></i>
-            <span>Mon compte</span>
-        </a>
 
-        <a href="parametres.html" class="nav-item">
-            <i class="fa-solid fa-gear"></i>
-            <span>Paramètres</span>
+        <a href="compte.html">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>Mon compte</span>
+
         </a>
 
     </nav>
@@ -103,125 +124,281 @@
 </aside>
 
 
-<!-- ==============================
-     CONTENU
-================================ -->
+<!-- OVERLAY -->
 
-<main class="main-content">
+<div
+    class="favorites-overlay"
+    id="favoritesOverlay"
+></div>
 
-    <div class="favorites-page">
 
-        <!-- EN-TÊTE -->
+<!-- MAIN -->
 
-        <section class="favorites-header">
+<main class="favorites-main">
 
-            <div>
 
-                <span class="favorites-label">
-                    <i class="fa-solid fa-heart"></i>
-                    Mes favoris
-                </span>
+    <!-- TOPBAR -->
 
-                <h1>
-                    Mes annonces favorites
-                </h1>
+    <header class="favorites-topbar">
+
+
+        <button
+            type="button"
+            id="favoritesMenuButton"
+            class="favorites-menu-button"
+            aria-label="Ouvrir le menu"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+
+        <a
+            href="index.html"
+            class="favorites-top-logo"
+        >
+
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+
+        </a>
+
+
+        <div class="favorites-top-actions">
+
+            <a
+                href="favoris.html"
+                class="favorites-top-icon active"
+                title="Favoris"
+            >
+
+                <i class="fa-solid fa-heart"></i>
+
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="favorites-top-icon"
+                title="Mon compte"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="favorites-hero">
+
+        <div class="favorites-hero-content">
+
+
+            <div class="favorites-hero-icon">
+
+                <i class="fa-solid fa-heart"></i>
+
+            </div>
+
+
+            <h1>
+                Mes favoris
+            </h1>
+
+
+            <p>
+                Retrouvez ici les annonces que vous avez
+                enregistrées pour les consulter plus tard.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTENU -->
+
+    <section class="favorites-section">
+
+        <div class="favorites-container">
+
+
+            <!-- CHARGEMENT -->
+
+            <div
+                id="favoritesLoading"
+                class="favorites-state"
+            >
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
 
                 <p>
-                    Retrouvez ici les annonces que vous avez sauvegardées.
+                    Chargement de vos favoris...
                 </p>
 
             </div>
 
-            <a href="recherche.html"
-               class="favorites-search-button">
 
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Rechercher une annonce
+            <!-- NON CONNECTÉ -->
 
-            </a>
+            <div
+                id="favoritesLogin"
+                class="favorites-state hidden"
+            >
 
-        </section>
+                <div class="favorites-state-icon">
 
+                    <i class="fa-solid fa-lock"></i>
 
-        <!-- COMPTEUR -->
-
-        <div class="favorites-count">
-
-            <i class="fa-solid fa-heart"></i>
-
-            <span id="favoritesCount">
-                0
-            </span>
-
-            annonce(s) enregistrée(s)
-
-        </div>
+                </div>
 
 
-        <!-- CHARGEMENT -->
-
-        <div id="favoritesLoading"
-             class="favorites-loading">
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <p>
-                Chargement de vos favoris...
-            </p>
-
-        </div>
+                <h2>
+                    Connectez-vous
+                </h2>
 
 
-        <!-- LISTE -->
+                <p>
+                    Vous devez être connecté pour consulter
+                    vos annonces favorites.
+                </p>
 
-        <section id="favoritesContainer"
-                 class="favorites-grid">
-        </section>
 
+                <a
+                    href="connexion.html"
+                    class="favorites-primary-button"
+                >
 
-        <!-- AUCUN FAVORI -->
+                    <i class="fa-solid fa-right-to-bracket"></i>
 
-        <section id="favoritesEmpty"
-                 class="favorites-empty"
-                 hidden>
+                    Se connecter
 
-            <div class="favorites-empty-icon">
-
-                <i class="fa-regular fa-heart"></i>
+                </a>
 
             </div>
 
-            <h2>
-                Aucun favori pour le moment
-            </h2>
 
-            <p>
-                Lorsque vous trouverez une annonce intéressante,
-                ajoutez-la à vos favoris pour la retrouver facilement.
-            </p>
+            <!-- VIDE -->
 
-            <a href="recherche.html"
-               class="favorites-empty-button">
+            <div
+                id="favoritesEmpty"
+                class="favorites-state hidden"
+            >
 
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Découvrir les annonces
+                <div class="favorites-state-icon">
 
-            </a>
+                    <i class="fa-regular fa-heart"></i>
 
-        </section>
+                </div>
 
-    </div>
+
+                <h2>
+                    Aucun favori
+                </h2>
+
+
+                <p>
+                    Vous n'avez encore enregistré aucune annonce
+                    dans vos favoris.
+                </p>
+
+
+                <a
+                    href="recherche.html"
+                    class="favorites-primary-button"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Rechercher des annonces
+
+                </a>
+
+            </div>
+
+
+            <!-- RÉSULTATS -->
+
+            <div
+                id="favoritesContent"
+                class="hidden"
+            >
+
+
+                <div class="favorites-heading">
+
+                    <div>
+
+                        <h2>
+                            Vos annonces favorites
+                        </h2>
+
+                        <p id="favoritesCount">
+                            0 annonce
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="recherche.html"
+                        class="favorites-search-button"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Ajouter des favoris
+
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="favoritesGrid"
+                    class="favorites-grid"
+                ></div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="favorites-footer">
+
+        <p>
+
+            © <span id="favoritesYear"></span>
+            CAMU SERVICES.
+            Tous droits réservés.
+
+        </p>
+
+    </footer>
+
 
 </main>
 
 
-<!-- ==============================
-     JAVASCRIPT
-================================ -->
-
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/favoris.js"></script>
+<script
+    type="module"
+    src="js/favoris.js"
+></script>
 
 </body>
+
 </html>
