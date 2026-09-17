@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Utilisateurs — CAMU SERVICES</title>
+    <title>Utilisateurs — Administration | CAMU SERVICES</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="icon" href="assets/logo/camu-services-logo.png">
     <link rel="stylesheet" href="css/admin-utilisateurs.css">
 
     <link
@@ -19,524 +17,469 @@
 
 <body>
 
-<div class="admin-main-wrapper">
+<div class="admin-layout">
 
-    <!-- =========================
-         TOPBAR
-    ========================= -->
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
 
-    <header class="admin-topbar">
+        <div class="sidebar-header">
+            <a href="admin.html" class="sidebar-logo">
+                <img src="assets/logo/camu-services-logo.png" alt="CAMU SERVICES">
+            </a>
 
-        <div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-            <span class="admin-topbar-label">
-                Administration
-            </span>
+        <nav class="sidebar-nav">
 
-            <h1>
-                Utilisateurs
-            </h1>
+            <a href="admin.html" class="sidebar-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Tableau de bord</span>
+            </a>
+
+            <a href="admin-utilisateurs.html" class="sidebar-link active">
+                <i class="fa-solid fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+
+            <a href="admin-annonces.html" class="sidebar-link">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Annonces</span>
+            </a>
+
+            <a href="admin-catalogue.html" class="sidebar-link">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catalogue</span>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="index.html" class="sidebar-link">
+                <i class="fa-solid fa-house"></i>
+                <span>Voir le site</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="admin-profile">
+                <div class="admin-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <div>
+                    <strong>Administrateur</strong>
+                    <small>CAMU SERVICES</small>
+                </div>
+            </div>
+
+            <button class="logout-button" id="logoutButton">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </button>
 
         </div>
 
-        <a
-            href="admin.html"
-            class="admin-back-button"
-        >
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Retour</span>
-        </a>
+    </aside>
 
-    </header>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
 
+    <!-- MAIN -->
+    <main class="admin-main">
 
-    <main class="admin-content">
+        <!-- TOPBAR -->
+        <header class="admin-topbar">
 
-        <section class="admin-page-intro">
-
-            <div>
-
-                <span class="admin-section-label">
-                    Gestion des comptes
-                </span>
-
-                <h2>
-                    Utilisateurs inscrits
-                </h2>
-
-                <p>
-                    Consulte et gère les utilisateurs
-                    enregistrés sur CAMU SERVICES.
-                </p>
-
-            </div>
-
-            <div class="admin-total-badge">
-
-                <i class="fa-solid fa-users"></i>
-
-                <div>
-
-                    <strong id="usersTotalCount">
-                        0
-                    </strong>
-
-                    <span>
-                        utilisateur(s)
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- FILTRES -->
-
-        <section class="admin-users-filters">
-
-            <div class="admin-user-filter-group">
-
-                <label for="adminUsersSearch">
-                    Rechercher
-                </label>
-
-                <div class="admin-user-filter-input">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input
-                        type="search"
-                        id="adminUsersSearch"
-                        placeholder="Nom, email, téléphone..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="admin-user-filter-group">
-
-                <label for="adminUsersCity">
-                    Ville
-                </label>
-
-                <select id="adminUsersCity">
-
-                    <option value="">
-                        Toutes les villes
-                    </option>
-
-                    <option value="Lubumbashi">
-                        Lubumbashi
-                    </option>
-
-                    <option value="Kolwezi">
-                        Kolwezi
-                    </option>
-
-                    <option value="Likasi">
-                        Likasi
-                    </option>
-
-                    <option value="Fungurume">
-                        Fungurume
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="clearAdminUsersFilters"
-                class="admin-users-reset"
-            >
-                <i class="fa-solid fa-rotate-left"></i>
-                Réinitialiser
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fa-solid fa-bars"></i>
             </button>
 
-        </section>
+            <div class="topbar-title">
+                <span class="topbar-kicker">ADMINISTRATION</span>
+                <h1>Utilisateurs</h1>
+            </div>
 
+            <a href="admin.html" class="topbar-home">
+                <i class="fa-solid fa-house"></i>
+            </a>
 
-        <!-- LISTE -->
+        </header>
 
-        <section class="admin-users-section">
+        <!-- CONTENT -->
+        <section class="admin-content">
 
-            <div class="admin-users-header">
+            <div class="page-heading">
 
                 <div>
+                    <span class="section-kicker">GESTION</span>
 
                     <h2>
-                        Liste des utilisateurs
+                        Utilisateurs
                     </h2>
 
-                    <span id="usersResultCount">
+                    <p>
+                        Gérez les comptes inscrits sur CAMU SERVICES.
+                    </p>
+                </div>
+
+                <button class="refresh-button" id="refreshButton">
+                    <i class="fa-solid fa-rotate"></i>
+                    Actualiser
+                </button>
+
+            </div>
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div class="stat-content">
+                        <span>Total utilisateurs</span>
+                        <strong id="totalUsers">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+
+                    <div class="stat-content">
+                        <span>Comptes actifs</span>
+                        <strong id="activeUsers">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div class="stat-content">
+                        <span>En attente</span>
+                        <strong id="pendingUsers">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+
+                    <div class="stat-content">
+                        <span>Professionnels</span>
+                        <strong id="professionalUsers">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filter-card">
+
+                <div class="filter-header">
+                    <div>
+                        <h3>
+                            <i class="fa-solid fa-filter"></i>
+                            Recherche et filtres
+                        </h3>
+
+                        <p>
+                            Recherchez un utilisateur ou filtrez les comptes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="filter-grid">
+
+                    <div class="form-group search-group">
+                        <label for="userSearch">
+                            Recherche
+                        </label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <input
+                                type="search"
+                                id="userSearch"
+                                placeholder="Nom, e-mail, téléphone..."
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accountTypeFilter">
+                            Type de compte
+                        </label>
+
+                        <select id="accountTypeFilter">
+                            <option value="">Tous les comptes</option>
+                            <option value="client">Client</option>
+                            <option value="immobilier">CAMU IMMO</option>
+                            <option value="commerce">CAMU COMMERCE</option>
+                            <option value="vehicules">Véhicules & Transport</option>
+                            <option value="hotels">Hôtels & Hébergement</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statusFilter">
+                            Statut
+                        </label>
+
+                        <select id="statusFilter">
+                            <option value="">Tous les statuts</option>
+                            <option value="active">Actif</option>
+                            <option value="pending">En attente</option>
+                            <option value="disabled">Désactivé</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cityFilter">
+                            Ville
+                        </label>
+
+                        <select id="cityFilter">
+                            <option value="">Toutes les villes</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="filter-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="resetFilters"
+                    >
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Réinitialiser
+                    </button>
+
+                    <span class="results-count" id="resultsCount">
                         0 utilisateur
                     </span>
 
                 </div>
 
-
-                <button
-                    type="button"
-                    id="refreshUsersButton"
-                    class="admin-refresh-button"
-                >
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                    <span>Actualiser</span>
-                </button>
-
             </div>
 
+            <!-- TABLE -->
+            <div class="users-card">
 
-            <div
-                id="usersLoading"
-                class="admin-users-loading"
-                hidden
-            >
+                <div class="users-card-header">
 
-                <i class="fa-solid fa-spinner fa-spin"></i>
+                    <div>
+                        <h3>
+                            Liste des utilisateurs
+                        </h3>
 
-                <p>
-                    Chargement des utilisateurs...
-                </p>
+                        <p>
+                            Les comptes enregistrés dans Firestore.
+                        </p>
+                    </div>
 
-            </div>
-
-
-            <div
-                id="adminUsersContainer"
-                class="admin-users-container"
-            ></div>
-
-
-            <div
-                id="usersEmpty"
-                class="admin-users-empty"
-                hidden
-            >
-
-                <div class="admin-users-empty-icon">
-                    <i class="fa-solid fa-user-slash"></i>
                 </div>
 
-                <h3>
-                    Aucun utilisateur trouvé
-                </h3>
+                <div class="table-wrapper">
 
-                <p>
-                    Aucun utilisateur ne correspond
-                    aux critères de recherche.
-                </p>
+                    <table class="users-table">
+
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Contact</th>
+                                <th>Compte</th>
+                                <th>Ville</th>
+                                <th>Statut</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="usersTableBody">
+
+                            <tr>
+                                <td colspan="7" class="loading-cell">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                    Chargement des utilisateurs...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div
+                    class="empty-state hidden"
+                    id="emptyState"
+                >
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-users-slash"></i>
+                    </div>
+
+                    <h3>Aucun utilisateur trouvé</h3>
+
+                    <p>
+                        Aucun compte ne correspond aux critères sélectionnés.
+                    </p>
+                </div>
 
             </div>
 
         </section>
 
+        <!-- FOOTER -->
+        <footer class="admin-footer">
+            <p>
+                © 2026 CAMU SERVICES — Administration
+            </p>
+        </footer>
+
     </main>
 
-
-    <footer class="admin-footer">
-
-        <p>
-            © 2026 CAMU SERVICES — Administration
-        </p>
-
-    </footer>
-
 </div>
 
 
-<!-- =====================================================
-     MODAL MODIFICATION UTILISATEUR
-===================================================== -->
+<!-- USER MODAL -->
+<div class="modal-overlay hidden" id="userModal">
 
-<div
-    id="userEditModal"
-    class="admin-user-modal"
-    hidden
->
+    <div class="user-modal">
 
-    <div
-        class="admin-user-modal-overlay"
-        id="userEditModalOverlay"
-    ></div>
-
-    <div
-        class="admin-user-modal-card"
-        role="dialog"
-        aria-modal="true"
-    >
-
-        <div class="admin-user-modal-header">
+        <div class="modal-header">
 
             <div>
-
-                <span class="admin-section-label">
-                    Gestion du compte
+                <span class="modal-kicker">
+                    PROFIL UTILISATEUR
                 </span>
 
-                <h2>
-                    Modifier l'utilisateur
-                </h2>
-
-            </div>
-
-            <button
-                type="button"
-                id="userEditModalClose"
-                class="admin-user-modal-close"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-        </div>
-
-
-        <form id="userEditForm">
-
-            <input
-                type="hidden"
-                id="editUserId"
-            >
-
-
-            <div class="admin-user-form-group">
-
-                <label for="editUserName">
-                    Nom
-                </label>
-
-                <input
-                    type="text"
-                    id="editUserName"
-                    required
-                >
-
-            </div>
-
-
-            <div class="admin-user-form-group">
-
-                <label for="editUserPhone">
-                    Téléphone
-                </label>
-
-                <input
-                    type="tel"
-                    id="editUserPhone"
-                >
-
-            </div>
-
-
-            <div class="admin-user-form-group">
-
-                <label for="editUserCity">
-                    Ville
-                </label>
-
-                <select id="editUserCity">
-
-                    <option value="Lubumbashi">
-                        Lubumbashi
-                    </option>
-
-                    <option value="Kolwezi">
-                        Kolwezi
-                    </option>
-
-                    <option value="Likasi">
-                        Likasi
-                    </option>
-
-                    <option value="Fungurume">
-                        Fungurume
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="admin-user-modal-actions">
-
-                <button
-                    type="button"
-                    id="userEditCancel"
-                    class="admin-user-cancel"
-                >
-                    Annuler
-                </button>
-
-                <button
-                    type="submit"
-                    id="userEditSave"
-                    class="admin-user-save"
-                >
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Enregistrer
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     MODAL AVERTISSEMENT
-===================================================== -->
-
-<div
-    id="userWarningModal"
-    class="admin-user-modal"
-    hidden
->
-
-    <div
-        class="admin-user-modal-overlay"
-        id="userWarningModalOverlay"
-    ></div>
-
-    <div
-        class="admin-user-modal-card"
-        role="dialog"
-        aria-modal="true"
-    >
-
-        <div class="admin-user-modal-header">
-
-            <div>
-
-                <span class="admin-section-label warning-label">
-                    Sécurité
-                </span>
-
-                <h2>
-                    Avertir l'utilisateur
-                </h2>
-
-                <p id="warningUserName">
+                <h3 id="modalUserName">
                     Utilisateur
-                </p>
-
+                </h3>
             </div>
 
             <button
                 type="button"
-                id="userWarningModalClose"
-                class="admin-user-modal-close"
+                class="modal-close"
+                id="modalClose"
             >
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
         </div>
 
+        <div class="modal-body">
 
-        <form id="userWarningForm">
+            <div class="modal-user-head">
 
-            <input
-                type="hidden"
-                id="warningUserId"
+                <div
+                    class="modal-avatar"
+                    id="modalAvatar"
+                >
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <strong id="modalUserEmail">
+                        —
+                    </strong>
+
+                    <span id="modalUserType">
+                        —
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="modal-info-grid">
+
+                <div class="modal-info">
+                    <span>Nom complet</span>
+                    <strong id="modalName">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>E-mail</span>
+                    <strong id="modalEmail">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Téléphone</span>
+                    <strong id="modalPhone">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>WhatsApp</span>
+                    <strong id="modalWhatsapp">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Ville</span>
+                    <strong id="modalCity">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Commune</span>
+                    <strong id="modalCommune">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Type de compte</span>
+                    <strong id="modalAccountType">—</strong>
+                </div>
+
+                <div class="modal-info">
+                    <span>Statut</span>
+                    <strong id="modalStatus">—</strong>
+                </div>
+
+                <div class="modal-info modal-info-full">
+                    <span>Date d'inscription</span>
+                    <strong id="modalCreatedAt">—</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="secondary-button"
+                id="modalCancel"
             >
+                Fermer
+            </button>
 
+            <button
+                type="button"
+                class="danger-button"
+                id="modalDelete"
+            >
+                <i class="fa-solid fa-trash"></i>
+                Supprimer
+            </button>
 
-            <div class="admin-user-form-group">
-
-                <label for="warningLevel">
-                    Niveau
-                </label>
-
-                <select id="warningLevel">
-
-                    <option value="information">
-                        Information
-                    </option>
-
-                    <option value="avertissement">
-                        Avertissement
-                    </option>
-
-                    <option value="urgent">
-                        Urgent
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="admin-user-form-group">
-
-                <label for="warningReason">
-                    Motif
-                </label>
-
-                <input
-                    type="text"
-                    id="warningReason"
-                    placeholder="Ex. Annonce non conforme"
-                    required
-                >
-
-            </div>
-
-
-            <div class="admin-user-form-group">
-
-                <label for="warningMessage">
-                    Message
-                </label>
-
-                <textarea
-                    id="warningMessage"
-                    rows="5"
-                    placeholder="Écrivez le message destiné à l'utilisateur..."
-                    required
-                ></textarea>
-
-            </div>
-
-
-            <div class="admin-user-modal-actions">
-
-                <button
-                    type="button"
-                    id="userWarningCancel"
-                    class="admin-user-cancel"
-                >
-                    Annuler
-                </button>
-
-                <button
-                    type="submit"
-                    id="userWarningSend"
-                    class="admin-user-warning"
-                >
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    Envoyer l'avertissement
-                </button>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
 </div>
 
 
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
 <script type="module" src="js/admin-utilisateurs.js"></script>
 
 </body>
