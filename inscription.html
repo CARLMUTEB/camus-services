@@ -1,783 +1,726 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Inscription — CAMU SERVICES</title>
 
     <meta
         name="description"
-        content="Créer un compte CAMU SERVICES — Trouver • Acheter • Réserver"
+        content="Créez votre compte CAMU SERVICES et choisissez votre domaine d'activité."
     >
 
-    <meta
-        name="theme-color"
-        content="#176b4d"
-    >
+    <link rel="icon" href="assets/logo/camu-services-logo.png">
 
-    <title>Créer un compte — CAMU SERVICES</title>
-
-
-    <!-- =====================================================
-         CSS PRINCIPAL
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-
-    <!-- =====================================================
-         CSS INSCRIPTION
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/inscription.css"
-    >
-
-
-    <!-- =====================================================
-         FONT AWESOME
-    ====================================================== -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/inscription.css">
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-
 </head>
-
 
 <body>
 
+<!-- =========================================================
+     SIDEBAR DESKTOP
+========================================================= -->
+
+<aside class="signup-sidebar" id="signupSidebar">
+
+    <div class="sidebar-logo">
+        <img
+            src="assets/logo/camu-services-logo.png"
+            alt="CAMU SERVICES"
+        >
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a href="categories.html">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Catégories</span>
+        </a>
+
+        <a href="recherche.html">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Recherche</span>
+        </a>
+
+        <a href="a-propos.html">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>À propos</span>
+        </a>
+
+        <a href="contact.html">
+            <i class="fa-solid fa-phone"></i>
+            <span>Contact</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- =========================================================
+     OVERLAY MOBILE
+========================================================= -->
+
+<div
+    class="signup-overlay"
+    id="signupOverlay"
+></div>
+
+
+<!-- =========================================================
+     CONTENU PRINCIPAL
+========================================================= -->
+
+<main class="signup-main">
+
+    <!-- TOPBAR -->
+
+    <header class="signup-topbar">
+
+        <button
+            type="button"
+            class="signup-menu-button"
+            id="signupMenuButton"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a
+            href="index.html"
+            class="signup-top-logo"
+        >
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
+
+        <div class="signup-top-actions">
+
+            <a
+                href="connexion.html"
+                class="top-login-button"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+        </div>
+
+    </header>
+
 
     <!-- =====================================================
-         PAGE INSCRIPTION
+         HERO
     ====================================================== -->
 
-    <main class="auth-page">
+    <section class="signup-hero">
+
+        <div class="signup-hero-content">
+
+            <span class="signup-hero-icon">
+                <i class="fa-solid fa-user-plus"></i>
+            </span>
+
+            <h1>Créer votre compte</h1>
+
+            <p>
+                Rejoignez CAMU SERVICES et développez votre activité
+                ou trouvez facilement les services dont vous avez besoin.
+            </p>
+
+        </div>
+
+    </section>
 
 
-        <div class="auth-container">
+    <!-- =====================================================
+         FORMULAIRE
+    ====================================================== -->
 
+    <section class="signup-section">
 
-            <!-- =================================================
-                 CARTE INSCRIPTION
-            ================================================== -->
+        <div class="signup-container">
 
-            <section class="auth-card">
+            <div class="signup-card">
 
+                <div class="signup-card-header">
 
-                <!-- =================================================
-                     LOGO
-                ================================================== -->
+                    <h2>
+                        <i class="fa-solid fa-user"></i>
+                        Inscription
+                    </h2>
 
-                <div class="auth-logo">
-
-                    <a
-                        href="index.html"
-                        class="auth-logo-link"
-                        aria-label="CAMU SERVICES - Accueil"
-                    >
-
-                        <span class="auth-logo-name">
-                            CAMU SERVICES
-                        </span>
-
-                    </a>
-
-
-                    <span class="auth-logo-tagline">
-                        TROUVER • ACHETER • RÉSERVER
-                    </span>
+                    <p>
+                        Commencez par choisir le type de compte
+                        que vous souhaitez créer.
+                    </p>
 
                 </div>
 
 
                 <!-- =================================================
-                     EN-TÊTE
-                ================================================== -->
-
-                <header class="auth-header">
-
-                    <span class="auth-eyebrow">
-                        BIENVENUE SUR CAMU SERVICES
-                    </span>
-
-
-                    <h1>
-                        Créer votre compte
-                    </h1>
-
-
-                    <p>
-                        Inscrivez-vous gratuitement pour accéder
-                        à toutes les fonctionnalités de CAMU SERVICES.
-                    </p>
-
-                </header>
-
-
-                <!-- =================================================
-                     MESSAGE
+                     ÉTAPE 1 : TYPE DE COMPTE
                 ================================================== -->
 
                 <div
-                    id="registerMessage"
-                    class="auth-message"
-                    role="alert"
-                    aria-live="polite"
-                ></div>
-
-
-                <!-- =================================================
-                     FORMULAIRE
-                ================================================== -->
-
-                <form
-                    id="registerForm"
-                    class="auth-form"
-                    novalidate
+                    class="signup-step"
+                    id="accountTypeStep"
                 >
 
+                    <div class="step-title">
+                        <span>1</span>
 
-                    <!-- =================================================
-                         INFORMATIONS PERSONNELLES
-                    ================================================== -->
+                        <div>
+                            <h3>Choisissez votre espace</h3>
+                            <p>
+                                Sélectionnez le domaine qui correspond
+                                à votre activité.
+                            </p>
+                        </div>
+                    </div>
 
-                    <div class="auth-form-section">
 
-                        <div class="auth-form-section-title">
+                    <div class="account-type-grid">
 
-                            <span class="auth-form-section-icon">
+                        <!-- CLIENT -->
+
+                        <button
+                            type="button"
+                            class="account-type-card"
+                            data-account-type="client"
+                        >
+
+                            <span class="account-type-icon">
                                 <i class="fa-solid fa-user"></i>
                             </span>
 
-                            <div>
+                            <strong>Client</strong>
 
-                                <h2>
-                                    Informations personnelles
-                                </h2>
-
-                                <p>
-                                    Renseignez vos informations principales.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- =================================================
-                             NOM COMPLET
-                        ================================================== -->
-
-                        <div class="form-group">
-
-                            <label for="registerName">
-
-                                Nom complet
-
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
-                                >
-                                    *
-                                </span>
-
-                            </label>
-
-
-                            <div class="input-wrapper">
-
-                                <i
-                                    class="fa-regular fa-user input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <input
-                                    type="text"
-                                    id="registerName"
-                                    name="name"
-                                    placeholder="Ex. Carl Muteb"
-                                    autocomplete="name"
-                                    minlength="2"
-                                    maxlength="100"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- =================================================
-                             TÉLÉPHONE
-                        ================================================== -->
-
-                        <div class="form-group">
-
-                            <label for="registerPhone">
-
-                                Numéro de téléphone
-
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
-                                >
-                                    *
-                                </span>
-
-                            </label>
-
-
-                            <div class="input-wrapper">
-
-                                <i
-                                    class="fa-solid fa-phone input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <input
-                                    type="tel"
-                                    id="registerPhone"
-                                    name="phone"
-                                    placeholder="+243 8XX XXX XXX"
-                                    autocomplete="tel"
-                                    inputmode="tel"
-                                    maxlength="25"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <small class="form-help">
-                                Utilisez un numéro auquel vous êtes joignable.
+                            <small>
+                                Je recherche des produits,
+                                services ou professionnels.
                             </small>
 
+                        </button>
+
+
+                        <!-- IMMOBILIER -->
+
+                        <button
+                            type="button"
+                            class="account-type-card"
+                            data-account-type="immobilier"
+                        >
+
+                            <span class="account-type-icon">
+                                <i class="fa-solid fa-house"></i>
+                            </span>
+
+                            <strong>CAMU IMMO</strong>
+
+                            <small>
+                                Agent, agence, propriétaire
+                                ou promoteur immobilier.
+                            </small>
+
+                        </button>
+
+
+                        <!-- COMMERCE -->
+
+                        <button
+                            type="button"
+                            class="account-type-card"
+                            data-account-type="commerce"
+                        >
+
+                            <span class="account-type-icon">
+                                <i class="fa-solid fa-store"></i>
+                            </span>
+
+                            <strong>CAMU COMMERCE</strong>
+
+                            <small>
+                                Établissement, boutique
+                                ou vendeur.
+                            </small>
+
+                        </button>
+
+
+                        <!-- VEHICULES -->
+
+                        <button
+                            type="button"
+                            class="account-type-card"
+                            data-account-type="vehicules"
+                        >
+
+                            <span class="account-type-icon">
+                                <i class="fa-solid fa-car"></i>
+                            </span>
+
+                            <strong>VÉHICULES & TRANSPORT</strong>
+
+                            <small>
+                                Chauffeur, propriétaire,
+                                agence ou transporteur.
+                            </small>
+
+                        </button>
+
+
+                        <!-- HOTELS -->
+
+                        <button
+                            type="button"
+                            class="account-type-card"
+                            data-account-type="hotels"
+                        >
+
+                            <span class="account-type-icon">
+                                <i class="fa-solid fa-hotel"></i>
+                            </span>
+
+                            <strong>HÔTELS & HÉBERGEMENT</strong>
+
+                            <small>
+                                Hôtel, résidence, lodge,
+                                auberge ou hébergement.
+                            </small>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ÉTAPE 2 : INFORMATIONS
+                ================================================== -->
+
+                <div
+                    class="signup-form-wrapper hidden"
+                    id="signupFormWrapper"
+                >
+
+                    <div class="selected-space" id="selectedSpace">
+
+                        <div class="selected-space-icon">
+                            <i
+                                id="selectedSpaceIcon"
+                                class="fa-solid fa-user"
+                            ></i>
                         </div>
 
-
-                        <!-- =================================================
-                             E-MAIL
-                        ================================================== -->
-
-                        <div class="form-group">
-
-                            <label for="registerEmail">
-
-                                Adresse e-mail
-
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
-                                >
-                                    *
-                                </span>
-
-                            </label>
-
-
-                            <div class="input-wrapper">
-
-                                <i
-                                    class="fa-regular fa-envelope input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <input
-                                    type="email"
-                                    id="registerEmail"
-                                    name="email"
-                                    placeholder="exemple@email.com"
-                                    autocomplete="email"
-                                    maxlength="150"
-                                    required
-                                >
-
-                            </div>
-
+                        <div>
+                            <span>Votre espace</span>
+                            <strong id="selectedSpaceName">
+                                Client
+                            </strong>
                         </div>
 
-
-                        <!-- =================================================
-                             VILLE
-                        ================================================== -->
-
-                        <div class="form-group">
-
-                            <label for="registerCity">
-
-                                Ville
-
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
-                                >
-                                    *
-                                </span>
-
-                            </label>
-
-
-                            <div class="input-wrapper select-wrapper">
-
-                                <i
-                                    class="fa-solid fa-location-dot input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <select
-                                    id="registerCity"
-                                    name="city"
-                                    autocomplete="address-level2"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
-                                        Sélectionnez votre ville
-                                    </option>
-
-                                    <option value="Lubumbashi">
-                                        Lubumbashi
-                                    </option>
-
-                                    <option value="Kolwezi">
-                                        Kolwezi
-                                    </option>
-
-                                    <option value="Likasi">
-                                        Likasi
-                                    </option>
-
-                                    <option value="Fungurume">
-                                        Fungurume
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-                        </div>
+                        <button
+                            type="button"
+                            id="changeAccountType"
+                        >
+                            Modifier
+                        </button>
 
                     </div>
 
 
-                    <!-- =================================================
-                         SÉCURITÉ
-                    ================================================== -->
+                    <form
+                        id="signupForm"
+                        novalidate
+                    >
 
-                    <div class="auth-form-section">
+                        <!-- =========================================
+                             INFORMATIONS COMMUNES
+                        ========================================== -->
 
-                        <div class="auth-form-section-title">
+                        <div class="form-section">
 
-                            <span class="auth-form-section-icon">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </span>
+                            <div class="form-section-title">
 
-                            <div>
+                                <i class="fa-solid fa-user"></i>
 
-                                <h2>
-                                    Sécurité du compte
-                                </h2>
-
-                                <p>
-                                    Choisissez un mot de passe sécurisé.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- =================================================
-                             MOT DE PASSE
-                        ================================================== -->
-
-                        <div class="form-group">
-
-                            <label for="registerPassword">
-
-                                Mot de passe
-
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
-                                >
-                                    *
-                                </span>
-
-                            </label>
-
-
-                            <div class="input-wrapper">
-
-                                <i
-                                    class="fa-solid fa-lock input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <input
-                                    type="password"
-                                    id="registerPassword"
-                                    name="password"
-                                    placeholder="Minimum 6 caractères"
-                                    autocomplete="new-password"
-                                    minlength="6"
-                                    maxlength="128"
-                                    required
-                                >
-
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    data-target="registerPassword"
-                                    aria-label="Afficher le mot de passe"
-                                    aria-pressed="false"
-                                >
-
-                                    <i
-                                        class="fa-regular fa-eye"
-                                        aria-hidden="true"
-                                    ></i>
-
-                                </button>
+                                <div>
+                                    <h3>Informations personnelles</h3>
+                                    <p>
+                                        Ces informations servent à créer
+                                        votre compte.
+                                    </p>
+                                </div>
 
                             </div>
 
 
-                            <!-- INDICATEUR FORCE -->
+                            <div class="form-grid">
 
-                            <div
-                                class="password-strength"
-                                id="passwordStrength"
-                                aria-live="polite"
-                            >
+                                <div class="form-group full">
 
-                                <div class="password-strength-bars">
+                                    <label for="fullName">
+                                        Nom complet
+                                        <span>*</span>
+                                    </label>
 
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    <input
+                                        type="text"
+                                        id="fullName"
+                                        name="fullName"
+                                        placeholder="Votre nom complet"
+                                        autocomplete="name"
+                                        required
+                                    >
 
                                 </div>
 
 
-                                <span
-                                    class="password-strength-text"
-                                    id="passwordStrengthText"
-                                >
-                                    Sécurité du mot de passe
-                                </span>
+                                <div class="form-group">
+
+                                    <label for="phone">
+                                        Téléphone
+                                        <span>*</span>
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="+243..."
+                                        autocomplete="tel"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="whatsapp">
+                                        WhatsApp
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        id="whatsapp"
+                                        name="whatsapp"
+                                        placeholder="+243..."
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label for="email">
+                                        Adresse e-mail
+                                        <span>*</span>
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="exemple@email.com"
+                                        autocomplete="email"
+                                        required
+                                    >
+
+                                </div>
 
                             </div>
-
-
-                            <small class="form-help">
-                                Utilisez au moins 6 caractères.
-                            </small>
 
                         </div>
 
 
-                        <!-- =================================================
-                             CONFIRMATION
-                        ================================================== -->
+                        <!-- =========================================
+                             LOCALISATION
+                        ========================================== -->
 
-                        <div class="form-group">
+                        <div class="form-section">
 
-                            <label for="registerPasswordConfirm">
+                            <div class="form-section-title">
 
-                                Confirmer le mot de passe
+                                <i class="fa-solid fa-location-dot"></i>
 
-                                <span
-                                    class="required-mark"
-                                    aria-hidden="true"
+                                <div>
+                                    <h3>Localisation</h3>
+                                    <p>
+                                        Indiquez votre zone d'activité.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label for="ville">
+                                        Ville
+                                        <span>*</span>
+                                    </label>
+
+                                    <select
+                                        id="ville"
+                                        name="ville"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            Chargement des villes...
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="commune">
+                                        Commune
+                                        <span>*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="commune"
+                                        name="commune"
+                                        placeholder="Ex. Katuba"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             INFORMATIONS SPÉCIFIQUES
+                        ========================================== -->
+
+                        <div
+                            class="form-section"
+                            id="specificFields"
+                        >
+
+                            <!-- LES CHAMPS SONT CRÉÉS PAR JS -->
+
+                        </div>
+
+
+                        <!-- =========================================
+                             MOT DE PASSE
+                        ========================================== -->
+
+                        <div class="form-section">
+
+                            <div class="form-section-title">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                <div>
+                                    <h3>Sécurité du compte</h3>
+                                    <p>
+                                        Choisissez un mot de passe sécurisé.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label for="password">
+                                        Mot de passe
+                                        <span>*</span>
+                                    </label>
+
+                                    <div class="password-field">
+
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+                                            placeholder="Minimum 6 caractères"
+                                            autocomplete="new-password"
+                                            minlength="6"
+                                            required
+                                        >
+
+                                        <button
+                                            type="button"
+                                            class="password-toggle"
+                                            data-target="password"
+                                        >
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="confirmPassword">
+                                        Confirmer le mot de passe
+                                        <span>*</span>
+                                    </label>
+
+                                    <div class="password-field">
+
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            placeholder="Répétez le mot de passe"
+                                            autocomplete="new-password"
+                                            required
+                                        >
+
+                                        <button
+                                            type="button"
+                                            class="password-toggle"
+                                            data-target="confirmPassword"
+                                        >
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             CONDITIONS
+                        ========================================== -->
+
+                        <div class="terms-box">
+
+                            <label class="checkbox-label">
+
+                                <input
+                                    type="checkbox"
+                                    id="acceptTerms"
+                                    required
                                 >
-                                    *
+
+                                <span>
+                                    J'accepte les
+                                    <a
+                                        href="conditions.html"
+                                        target="_blank"
+                                    >
+                                        conditions d'utilisation
+                                    </a>
+                                    et la
+                                    <a
+                                        href="politique.html"
+                                        target="_blank"
+                                    >
+                                        politique de confidentialité
+                                    </a>.
                                 </span>
 
                             </label>
 
-
-                            <div class="input-wrapper">
-
-                                <i
-                                    class="fa-solid fa-lock input-icon"
-                                    aria-hidden="true"
-                                ></i>
-
-
-                                <input
-                                    type="password"
-                                    id="registerPasswordConfirm"
-                                    name="passwordConfirm"
-                                    placeholder="Répétez votre mot de passe"
-                                    autocomplete="new-password"
-                                    minlength="6"
-                                    maxlength="128"
-                                    required
-                                >
-
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    data-target="registerPasswordConfirm"
-                                    aria-label="Afficher le mot de passe"
-                                    aria-pressed="false"
-                                >
-
-                                    <i
-                                        class="fa-regular fa-eye"
-                                        aria-hidden="true"
-                                    ></i>
-
-                                </button>
-
-                            </div>
-
-
-                            <small
-                                id="passwordMatchMessage"
-                                class="form-validation-message"
-                                aria-live="polite"
-                            ></small>
-
                         </div>
 
-                    </div>
+
+                        <!-- =========================================
+                             MESSAGE
+                        ========================================== -->
+
+                        <div
+                            id="signupMessage"
+                            class="signup-message"
+                            role="alert"
+                        ></div>
 
 
-                    <!-- =================================================
-                         CONDITIONS
-                    ================================================== -->
+                        <!-- =========================================
+                             BOUTON
+                        ========================================== -->
 
-                    <div class="terms-container">
-
-                        <label
-                            for="registerTerms"
-                            class="terms-checkbox"
+                        <button
+                            type="submit"
+                            class="signup-submit"
+                            id="signupSubmit"
                         >
 
-                            <input
-                                type="checkbox"
-                                id="registerTerms"
-                                name="terms"
-                                required
-                            >
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            <span>Créer mon compte</span>
+
+                        </button>
 
 
-                            <span class="custom-checkbox"></span>
+                        <p class="login-link">
 
+                            Vous avez déjà un compte ?
 
-                            <span class="terms-text">
+                            <a href="connexion.html">
+                                Se connecter
+                            </a>
 
-                                J'accepte les
+                        </p>
 
-                                <a
-                                    href="conditions.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    conditions d'utilisation
-                                </a>
-
-                                et la
-
-                                <a
-                                    href="politique.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    politique de confidentialité
-                                </a>
-
-                                de CAMU SERVICES.
-
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-                    <!-- =================================================
-                         BOUTON INSCRIPTION
-                    ================================================== -->
-
-                    <button
-                        type="submit"
-                        id="registerButton"
-                        class="auth-submit"
-                    >
-
-                        <span class="submit-icon">
-
-                            <i
-                                class="fa-solid fa-user-plus"
-                                aria-hidden="true"
-                            ></i>
-
-                        </span>
-
-
-                        <span class="submit-text">
-                            Créer mon compte
-                        </span>
-
-
-                        <span
-                            class="submit-loader"
-                            aria-hidden="true"
-                        >
-
-                            <i
-                                class="fa-solid fa-spinner fa-spin"
-                            ></i>
-
-                        </span>
-
-                    </button>
-
-
-                </form>
-
-
-                <!-- =================================================
-                     CONNEXION
-                ================================================== -->
-
-                <div class="auth-switch">
-
-                    <span>
-                        Vous avez déjà un compte ?
-                    </span>
-
-
-                    <a href="connexion.html">
-
-                        Se connecter
-
-                        <i
-                            class="fa-solid fa-arrow-right"
-                            aria-hidden="true"
-                        ></i>
-
-                    </a>
+                    </form>
 
                 </div>
 
-
-                <!-- =================================================
-                     RETOUR ACCUEIL
-                ================================================== -->
-
-                <a
-                    href="index.html"
-                    class="auth-home-link"
-                >
-
-                    <i
-                        class="fa-solid fa-arrow-left"
-                        aria-hidden="true"
-                    ></i>
-
-                    Retour à l'accueil
-
-                </a>
-
-
-            </section>
-
-
-            <!-- =================================================
-                 FOOTER
-            ================================================== -->
-
-            <footer class="auth-footer">
-
-                <p>
-                    Vos informations sont protégées et utilisées
-                    conformément à notre politique de confidentialité.
-                </p>
-
-
-                <nav
-                    class="auth-footer-links"
-                    aria-label="Liens légaux"
-                >
-
-                    <a href="conditions.html">
-                        Conditions
-                    </a>
-
-                    <span aria-hidden="true">
-                        •
-                    </span>
-
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
-
-                    <span aria-hidden="true">
-                        •
-                    </span>
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-                </nav>
-
-
-                <p class="auth-copyright">
-                    © 2026 CAMU SERVICES. Tous droits réservés.
-                </p>
-
-            </footer>
-
+            </div>
 
         </div>
 
-    </main>
+    </section>
 
 
     <!-- =====================================================
-         JAVASCRIPT
+         FOOTER
     ====================================================== -->
 
-    <script
-        type="module"
-        src="js/auth.js"
-    ></script>
+    <footer class="signup-footer">
+
+        <p>
+            © <span id="signupYear"></span> CAMU SERVICES.
+            Tous droits réservés.
+        </p>
+
+    </footer>
+
+</main>
 
 
-    <script
-        type="module"
-        src="js/app.js"
-    ></script>
-
+<script type="module" src="js/inscription.js"></script>
 
 </body>
-
 </html>
