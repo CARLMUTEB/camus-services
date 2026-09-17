@@ -1,0 +1,1849 @@
+/* ============================================================
+   CAMU VÉHICULES & TRANSPORT
+   ============================================================ */
+
+:root {
+
+    --vehicles-blue: #0b2f6b;
+    --vehicles-blue-dark: #071f49;
+    --vehicles-green: #16a34a;
+    --vehicles-light: #f5f7fb;
+    --vehicles-white: #ffffff;
+    --vehicles-text: #172033;
+    --vehicles-muted: #687386;
+    --vehicles-border: #e4e8ef;
+
+    --vehicles-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.07);
+
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        var(--vehicles-light);
+
+    color:
+        var(--vehicles-text);
+
+}
+
+
+a {
+    color: inherit;
+}
+
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.vehicles-sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 260px;
+
+    background:
+        var(--vehicles-white);
+
+    border-right:
+        1px solid var(--vehicles-border);
+
+    z-index: 1000;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.vehicles-sidebar-header {
+
+    height: 100px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-bottom:
+        1px solid var(--vehicles-border);
+
+}
+
+
+.vehicles-brand img {
+
+    width: 185px;
+
+    max-width: 85%;
+
+    height: auto;
+
+    display: block;
+
+}
+
+
+.vehicles-navigation {
+
+    padding: 22px 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+
+.vehicles-nav-link {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color:
+        var(--vehicles-muted);
+
+    font-size: 14px;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.vehicles-nav-link i {
+
+    width: 22px;
+
+    text-align: center;
+
+}
+
+
+.vehicles-nav-link:hover {
+
+    color:
+        var(--vehicles-blue);
+
+    background:
+        #eef3fb;
+
+}
+
+
+.vehicles-sidebar-footer {
+
+    margin-top: auto;
+
+    padding: 18px;
+
+    border-top:
+        1px solid var(--vehicles-border);
+
+}
+
+
+.vehicles-sidebar-footer a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color:
+        var(--vehicles-muted);
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+
+.vehicles-main {
+
+    margin-left: 260px;
+
+    min-height: 100vh;
+
+}
+
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+
+.vehicles-topbar {
+
+    height: 82px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 900;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    backdrop-filter:
+        blur(10px);
+
+    border-bottom:
+        1px solid var(--vehicles-border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.vehicles-top-logo {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+}
+
+
+.vehicles-top-logo img {
+
+    width: 205px;
+
+    display: block;
+
+}
+
+
+.vehicles-top-actions {
+
+    position: absolute;
+
+    right: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.vehicles-top-actions a {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    text-decoration: none;
+
+    background:
+        #f2f5fa;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+.vehicles-menu-button {
+
+    display: none;
+
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.vehicles-hero {
+
+    min-height: 430px;
+
+    padding:
+        70px 7%;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b2f6b,
+            #174e9c
+        );
+
+    color:
+        white;
+
+}
+
+
+.vehicles-hero-content {
+
+    max-width: 760px;
+
+}
+
+
+.vehicles-hero-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        8px 14px;
+
+    border:
+        1px solid rgba(255,255,255,0.25);
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.vehicles-hero h1 {
+
+    margin: 0;
+
+    font-size:
+        clamp(34px, 5vw, 62px);
+
+    line-height: 1.05;
+
+}
+
+
+.vehicles-hero p {
+
+    max-width: 650px;
+
+    margin:
+        22px 0 30px;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    opacity: 0.92;
+
+}
+
+
+.vehicles-hero-buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+}
+
+
+.vehicles-primary-button,
+.vehicles-secondary-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        13px 19px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+}
+
+
+.vehicles-primary-button {
+
+    background:
+        var(--vehicles-green);
+
+    color: white;
+
+}
+
+
+.vehicles-secondary-button {
+
+    background:
+        white;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+/* ============================================================
+   SECTION
+   ============================================================ */
+
+.vehicles-section {
+
+    padding:
+        70px 6%;
+
+}
+
+
+.vehicles-section-heading {
+
+    max-width: 760px;
+
+    margin:
+        0 auto 35px;
+
+    text-align: center;
+
+}
+
+
+.vehicles-section-heading span {
+
+    color:
+        var(--vehicles-green);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.vehicles-section-heading h2 {
+
+    margin:
+        8px 0 10px;
+
+    color:
+        var(--vehicles-blue);
+
+    font-size:
+        clamp(28px, 4vw, 40px);
+
+}
+
+
+.vehicles-section-heading p {
+
+    margin: 0;
+
+    color:
+        var(--vehicles-muted);
+
+    line-height: 1.6;
+
+}
+
+
+/* ============================================================
+   CATÉGORIES
+   3 PAR LIGNE
+   ============================================================ */
+
+.vehicles-category-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    max-width: 1100px;
+
+    margin: auto;
+
+}
+
+
+.vehicles-category-card {
+
+    min-height: 155px;
+
+    padding: 22px;
+
+    background:
+        white;
+
+    border:
+        1px solid var(--vehicles-border);
+
+    border-radius: 16px;
+
+    box-shadow:
+        var(--vehicles-shadow);
+
+    text-align: center;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.vehicles-category-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 14px 32px rgba(0,0,0,0.1);
+
+}
+
+
+.vehicles-category-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin:
+        0 auto 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        #edf3fc;
+
+    color:
+        var(--vehicles-blue);
+
+    font-size: 24px;
+
+}
+
+
+.vehicles-category-card h3 {
+
+    margin:
+        0 0 7px;
+
+    font-size: 16px;
+
+    color:
+        var(--vehicles-text);
+
+}
+
+
+.vehicles-category-card p {
+
+    margin: 0;
+
+    font-size: 12px;
+
+    color:
+        var(--vehicles-muted);
+
+    line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+.vehicles-search-section {
+
+    padding:
+        65px 6%;
+
+    background:
+        white;
+
+}
+
+
+.vehicles-search-box {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.5fr 1fr 1fr 1fr auto;
+
+    gap: 12px;
+
+    align-items: end;
+
+    padding: 22px;
+
+    background:
+        var(--vehicles-light);
+
+    border:
+        1px solid var(--vehicles-border);
+
+    border-radius: 16px;
+
+}
+
+
+.vehicles-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.vehicles-field label {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color:
+        var(--vehicles-text);
+
+}
+
+
+.vehicles-field input,
+.vehicles-field select {
+
+    width: 100%;
+
+    height: 46px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid var(--vehicles-border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background:
+        white;
+
+    color:
+        var(--vehicles-text);
+
+}
+
+
+.vehicles-field input:focus,
+.vehicles-field select:focus {
+
+    border-color:
+        var(--vehicles-blue);
+
+}
+
+
+.vehicles-input-wrapper {
+
+    position: relative;
+
+}
+
+
+.vehicles-input-wrapper i {
+
+    position: absolute;
+
+    left: 13px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        var(--vehicles-muted);
+
+}
+
+
+.vehicles-input-wrapper input {
+
+    padding-left: 38px;
+
+}
+
+
+.vehicles-search-button {
+
+    height: 46px;
+
+    padding:
+        0 18px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background:
+        var(--vehicles-blue);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   PRODUCT / VEHICLES
+   ============================================================ */
+
+.vehicles-product-grid {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.vehicles-product-card {
+
+    overflow: hidden;
+
+    background:
+        white;
+
+    border:
+        1px solid var(--vehicles-border);
+
+    border-radius: 15px;
+
+    box-shadow:
+        var(--vehicles-shadow);
+
+}
+
+
+.vehicles-product-image-link {
+
+    display: block;
+
+    height: 210px;
+
+    background:
+        #eef1f5;
+
+}
+
+
+.vehicles-product-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.vehicles-product-content {
+
+    padding: 16px;
+
+}
+
+
+.vehicles-product-price {
+
+    color:
+        var(--vehicles-green);
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+}
+
+
+.vehicles-product-title {
+
+    margin:
+        7px 0;
+
+    font-size: 16px;
+
+}
+
+
+.vehicles-product-info {
+
+    color:
+        var(--vehicles-muted);
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+}
+
+
+.vehicles-product-button {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 14px;
+
+    padding: 10px;
+
+    background:
+        var(--vehicles-blue);
+
+    color: white;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   CHAUFFEURS / AGENCES
+   ============================================================ */
+
+.vehicles-driver-section {
+
+    background:
+        #eef3fa;
+
+}
+
+
+.vehicles-location-filter {
+
+    max-width: 800px;
+
+    margin:
+        0 auto 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 15px;
+
+}
+
+
+.vehicles-business-grid {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.vehicles-business-card {
+
+    background:
+        white;
+
+    padding: 20px;
+
+    border:
+        1px solid var(--vehicles-border);
+
+    border-radius: 15px;
+
+    box-shadow:
+        var(--vehicles-shadow);
+
+}
+
+
+.vehicles-business-top {
+
+    display: flex;
+
+    gap: 14px;
+
+    align-items: center;
+
+}
+
+
+.vehicles-business-photo {
+
+    width: 70px;
+
+    height: 70px;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+
+    background:
+        #edf1f6;
+
+}
+
+
+.vehicles-business-name {
+
+    margin: 0 0 6px;
+
+    font-size: 17px;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+.vehicles-business-category,
+.vehicles-business-location {
+
+    font-size: 12px;
+
+    color:
+        var(--vehicles-muted);
+
+    margin-top: 5px;
+
+}
+
+
+.vehicles-business-description {
+
+    margin:
+        15px 0;
+
+    color:
+        var(--vehicles-muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+}
+
+
+.vehicles-business-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+}
+
+
+.vehicles-business-actions a {
+
+    flex: 1;
+
+    min-width: 100px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.vehicles-whatsapp {
+
+    background:
+        #eaf8ef;
+
+    color:
+        #16803d;
+
+}
+
+
+.vehicles-phone {
+
+    background:
+        #edf3fc;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+/* ============================================================
+   LOADING / EMPTY
+   ============================================================ */
+
+.vehicles-loading,
+.vehicles-empty {
+
+    grid-column:
+        1 / -1;
+
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color:
+        var(--vehicles-muted);
+
+}
+
+
+.vehicles-loading i,
+.vehicles-empty i {
+
+    font-size: 30px;
+
+    margin-bottom: 12px;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+.vehicles-empty h3 {
+
+    margin:
+        0 0 6px;
+
+    color:
+        var(--vehicles-text);
+
+}
+
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+
+.vehicles-contact-section {
+
+    padding:
+        75px 6%;
+
+    background:
+        var(--vehicles-blue);
+
+    color: white;
+
+}
+
+
+.vehicles-contact-content {
+
+    max-width: 700px;
+
+    margin: auto;
+
+    text-align: center;
+
+}
+
+
+.vehicles-contact-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    margin:
+        0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    font-size: 27px;
+
+}
+
+
+.vehicles-contact-content h2 {
+
+    margin:
+        0 0 12px;
+
+    font-size: 32px;
+
+}
+
+
+.vehicles-contact-content p {
+
+    line-height: 1.7;
+
+    opacity: 0.9;
+
+}
+
+
+.vehicles-contact-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+}
+
+
+.vehicles-contact-buttons a {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        12px 20px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+}
+
+
+.vehicles-whatsapp-button {
+
+    background:
+        var(--vehicles-green);
+
+    color: white;
+
+}
+
+
+.vehicles-email-button {
+
+    background:
+        white;
+
+    color:
+        var(--vehicles-blue);
+
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.vehicles-footer {
+
+    background:
+        #071b3e;
+
+    color:
+        rgba(255,255,255,0.8);
+
+    padding:
+        40px 6% 20px;
+
+}
+
+
+.vehicles-footer-content {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 30px;
+
+}
+
+
+.vehicles-footer strong {
+
+    color: white;
+
+}
+
+
+.vehicles-footer p {
+
+    max-width: 500px;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+.vehicles-footer-links {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+}
+
+
+.vehicles-footer-links a {
+
+    color:
+        rgba(255,255,255,0.7);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+}
+
+
+.vehicles-footer-links a:hover {
+
+    color: white;
+
+}
+
+
+.vehicles-footer-bottom {
+
+    max-width: 1100px;
+
+    margin:
+        30px auto 0;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.12);
+
+    text-align: center;
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+
+.vehicles-overlay {
+
+    display: none;
+
+}
+
+
+/* ============================================================
+   TABLETTE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .vehicles-product-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+    }
+
+
+    .vehicles-search-box {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .vehicles-search-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* ============================================================
+   TABLETTE / MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .vehicles-sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            transform 0.25s ease;
+
+    }
+
+
+    .vehicles-sidebar.active {
+
+        transform:
+            translateX(0);
+
+    }
+
+
+    .vehicles-main {
+
+        margin-left: 0;
+
+    }
+
+
+    .vehicles-menu-button {
+
+        position: absolute;
+
+        left: 18px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 42px;
+
+        height: 42px;
+
+        border: 0;
+
+        border-radius: 9px;
+
+        background:
+            #f1f4f8;
+
+        color:
+            var(--vehicles-blue);
+
+        cursor: pointer;
+
+    }
+
+
+    .vehicles-overlay.active {
+
+        display: block;
+
+        position: fixed;
+
+        inset: 0;
+
+        background:
+            rgba(0,0,0,0.45);
+
+        z-index: 950;
+
+    }
+
+
+    .vehicles-category-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+    }
+
+
+    .vehicles-business-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .vehicles-topbar {
+
+        height: 70px;
+
+    }
+
+
+    .vehicles-top-logo img {
+
+        width: 170px;
+
+    }
+
+
+    .vehicles-top-actions {
+
+        right: 12px;
+
+        gap: 5px;
+
+    }
+
+
+    .vehicles-top-actions a {
+
+        width: 36px;
+
+        height: 36px;
+
+    }
+
+
+    .vehicles-hero {
+
+        min-height: 390px;
+
+        padding:
+            50px 20px;
+
+        text-align: center;
+
+        justify-content: center;
+
+    }
+
+
+    .vehicles-hero p {
+
+        font-size: 15px;
+
+    }
+
+
+    .vehicles-hero-buttons {
+
+        justify-content: center;
+
+    }
+
+
+    .vehicles-section {
+
+        padding:
+            50px 15px;
+
+    }
+
+
+    .vehicles-search-section {
+
+        padding:
+            50px 15px;
+
+    }
+
+
+    .vehicles-search-box {
+
+        grid-template-columns:
+            1fr;
+
+        padding: 15px;
+
+    }
+
+
+    /* 3 catégories par ligne */
+    .vehicles-category-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 9px;
+
+    }
+
+
+    .vehicles-category-card {
+
+        min-height: 115px;
+
+        padding:
+            12px 5px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .vehicles-category-icon {
+
+        width: 43px;
+
+        height: 43px;
+
+        font-size: 18px;
+
+        margin-bottom: 8px;
+
+    }
+
+
+    .vehicles-category-card h3 {
+
+        font-size: 11px;
+
+        line-height: 1.25;
+
+    }
+
+
+    .vehicles-category-card p {
+
+        display: none;
+
+    }
+
+
+    .vehicles-product-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+    }
+
+
+    .vehicles-product-image-link {
+
+        height: 150px;
+
+    }
+
+
+    .vehicles-product-content {
+
+        padding: 11px;
+
+    }
+
+
+    .vehicles-product-price {
+
+        font-size: 15px;
+
+    }
+
+
+    .vehicles-product-title {
+
+        font-size: 13px;
+
+    }
+
+
+    .vehicles-business-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .vehicles-location-filter {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .vehicles-footer-content {
+
+        grid-template-columns:
+            1fr;
+
+        text-align: center;
+
+    }
+
+
+    .vehicles-footer-links {
+
+        align-items: center;
+
+    }
+
+}
+
+
+/* ============================================================
+   TRÈS PETIT MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+    .vehicles-top-logo img {
+
+        width: 150px;
+
+    }
+
+
+    .vehicles-top-actions a {
+
+        width: 34px;
+
+        height: 34px;
+
+    }
+
+
+    .vehicles-menu-button {
+
+        left: 10px;
+
+        width: 38px;
+
+        height: 38px;
+
+    }
+
+
+    /* Toujours 3 catégories */
+    .vehicles-category-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 6px;
+
+    }
+
+
+    .vehicles-category-card {
+
+        min-height: 105px;
+
+        padding:
+            9px 3px;
+
+    }
+
+
+    .vehicles-category-icon {
+
+        width: 37px;
+
+        height: 37px;
+
+        font-size: 16px;
+
+    }
+
+
+    .vehicles-category-card h3 {
+
+        font-size: 10px;
+
+    }
+
+
+    .vehicles-product-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .vehicles-product-image-link {
+
+        height: 125px;
+
+    }
+
+}
