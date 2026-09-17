@@ -1,14 +1,4 @@
-// =========================================================
-// CAMU SERVICES — ADMIN CATALOGUE
-// Gestion des catégories et des villes
-// =========================================================
-
 import { auth, db } from "./firebase-config.js";
-
-import {
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
     collection,
@@ -20,346 +10,164 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-// =========================================================
-// CONFIGURATION
-// =========================================================
-
-const ADMIN_EMAIL =
-    "meschackmuteb@gmail.com";
-
-const CATEGORIES_COLLECTION =
-    "categories";
-
-const CITIES_COLLECTION =
-    "villes";
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
-// =========================================================
-// DONNÉES
-// =========================================================
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 let categories = [];
+let villes = [];
 
-let cities = [];
-
-
-// =========================================================
-// ÉLÉMENTS — GÉNÉRAUX
-// =========================================================
-
-const catalogueMessage =
-    document.getElementById(
-        "catalogueMessage"
-    );
-
-const catalogueRefreshButton =
-    document.getElementById(
-        "catalogueRefreshButton"
-    );
+let filteredCategories = [];
+let filteredVilles = [];
 
 
-// =========================================================
-// ÉLÉMENTS — CATÉGORIES
-// =========================================================
+/* =========================================================
+   ÉLÉMENTS
+========================================================= */
+
+const adminMessage =
+    document.getElementById("adminMessage");
 
 const categoriesList =
-    document.getElementById(
-        "categoriesList"
-    );
-
-const categoriesLoading =
-    document.getElementById(
-        "categoriesLoading"
-    );
-
-const categoriesEmpty =
-    document.getElementById(
-        "categoriesEmpty"
-    );
-
-const categoriesCount =
-    document.getElementById(
-        "categoriesCount"
-    );
-
-const categorySearch =
-    document.getElementById(
-        "categorySearch"
-    );
-
-const addCategoryButton =
-    document.getElementById(
-        "addCategoryButton"
-    );
-
-
-// =========================================================
-// ÉLÉMENTS — VILLES
-// =========================================================
+    document.getElementById("categoriesList");
 
 const citiesList =
-    document.getElementById(
-        "citiesList"
-    );
+    document.getElementById("citiesList");
+
+const categoriesLoading =
+    document.getElementById("categoriesLoading");
 
 const citiesLoading =
-    document.getElementById(
-        "citiesLoading"
-    );
+    document.getElementById("citiesLoading");
+
+const categoriesEmpty =
+    document.getElementById("categoriesEmpty");
 
 const citiesEmpty =
-    document.getElementById(
-        "citiesEmpty"
-    );
+    document.getElementById("citiesEmpty");
 
-const citiesCount =
-    document.getElementById(
-        "citiesCount"
-    );
+const categorySearch =
+    document.getElementById("categorySearch");
 
 const citySearch =
-    document.getElementById(
-        "citySearch"
-    );
+    document.getElementById("citySearch");
 
-const addCityButton =
-    document.getElementById(
-        "addCityButton"
-    );
+const categoryStatusFilter =
+    document.getElementById("categoryStatusFilter");
 
+const cityStatusFilter =
+    document.getElementById("cityStatusFilter");
 
-// =========================================================
-// STATISTIQUE ACTIVE
-// =========================================================
-
-const activeCount =
-    document.getElementById(
-        "activeCount"
-    );
-
-
-// =========================================================
-// MODAL CATÉGORIE
-// =========================================================
+const cityProvinceFilter =
+    document.getElementById("cityProvinceFilter");
 
 const categoryModal =
-    document.getElementById(
-        "categoryModal"
-    );
-
-const categoryModalTitle =
-    document.getElementById(
-        "categoryModalTitle"
-    );
-
-const categoryForm =
-    document.getElementById(
-        "categoryForm"
-    );
-
-const categoryId =
-    document.getElementById(
-        "categoryId"
-    );
-
-const categoryName =
-    document.getElementById(
-        "categoryName"
-    );
-
-const categoryIcon =
-    document.getElementById(
-        "categoryIcon"
-    );
-
-const categoryDescription =
-    document.getElementById(
-        "categoryDescription"
-    );
-
-const categoryOrder =
-    document.getElementById(
-        "categoryOrder"
-    );
-
-const categoryActive =
-    document.getElementById(
-        "categoryActive"
-    );
-
-const saveCategoryButton =
-    document.getElementById(
-        "saveCategoryButton"
-    );
-
-
-// =========================================================
-// MODAL VILLE
-// =========================================================
+    document.getElementById("categoryModal");
 
 const cityModal =
-    document.getElementById(
-        "cityModal"
-    );
+    document.getElementById("cityModal");
 
-const cityModalTitle =
-    document.getElementById(
-        "cityModalTitle"
-    );
+const categoryForm =
+    document.getElementById("categoryForm");
 
 const cityForm =
-    document.getElementById(
-        "cityForm"
-    );
+    document.getElementById("cityForm");
 
-const cityId =
-    document.getElementById(
-        "cityId"
-    );
+const categoryModalTitle =
+    document.getElementById("categoryModalTitle");
 
-const cityName =
-    document.getElementById(
-        "cityName"
-    );
-
-const cityProvince =
-    document.getElementById(
-        "cityProvince"
-    );
-
-const cityOrder =
-    document.getElementById(
-        "cityOrder"
-    );
-
-const cityActive =
-    document.getElementById(
-        "cityActive"
-    );
-
-const saveCityButton =
-    document.getElementById(
-        "saveCityButton"
-    );
+const cityModalTitle =
+    document.getElementById("cityModalTitle");
 
 
-// =========================================================
-// OUTILS
-// =========================================================
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function clean(value) {
+    return String(value ?? "").trim();
+}
+
 
 function normalize(value) {
 
-    return String(value || "")
+    return clean(value)
         .toLowerCase()
         .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
-        .trim();
+        .replace(/[\u0300-\u036f]/g, "");
 }
 
 
-function slugify(value) {
+function escapeHTML(value) {
 
-    return normalize(value)
-        .replace(
-            /[^a-z0-9]+/g,
-            "-"
-        )
-        .replace(
-            /^-+|-+$/g,
-            "");
+    return clean(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-function escapeHtml(value) {
+function setText(id, value) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
-        return "";
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
     }
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
 }
 
+
+/* =========================================================
+   MESSAGE
+========================================================= */
 
 function showMessage(
     message,
-    type = "success"
+    type = "info"
 ) {
 
-    if (!catalogueMessage) {
+    if (!adminMessage) {
         return;
     }
 
-    catalogueMessage.textContent =
+    adminMessage.hidden = false;
+
+    adminMessage.textContent =
         message;
 
-    catalogueMessage.className =
-        `catalogue-message ${type}`;
+    adminMessage.dataset.type =
+        type;
 
-    catalogueMessage.hidden =
-        false;
+    clearTimeout(
+        showMessage.timer
+    );
 
-    setTimeout(
-        () => {
+    showMessage.timer =
+        setTimeout(() => {
 
-            catalogueMessage.hidden =
+            adminMessage.hidden =
                 true;
 
-        },
-        4000
-    );
+        }, 4000);
 }
 
 
-// =========================================================
-// ADMIN
-// =========================================================
-
-function isAdmin(user) {
-
-    return (
-        user &&
-        user.email &&
-        user.email.toLowerCase() ===
-        ADMIN_EMAIL.toLowerCase()
-    );
-
-}
-
-
-// =========================================================
-// PROTECTION ADMIN
-// =========================================================
+/* =========================================================
+   AUTH ADMIN
+========================================================= */
 
 onAuthStateChanged(
     auth,
-    async (user) => {
+    async user => {
 
         if (!user) {
 
@@ -367,26 +175,30 @@ onAuthStateChanged(
                 "connexion.html";
 
             return;
-
         }
 
 
-        if (!isAdmin(user)) {
+        const email =
+            clean(user.email)
+                .toLowerCase();
 
-            alert(
-                "Accès réservé à l'administrateur."
-            );
+
+        if (
+            email !==
+            "meschackmuteb@gmail.com"
+        ) {
+
+            await signOut(auth);
 
             window.location.href =
-                "index.html";
+                "connexion.html";
 
             return;
-
         }
 
 
         console.log(
-            "CAMU SERVICES — administrateur connecté."
+            "CAMU CATALOGUE — administrateur connecté."
         );
 
 
@@ -396,34 +208,38 @@ onAuthStateChanged(
 );
 
 
-// =========================================================
-// CHARGER TOUT LE CATALOGUE
-// =========================================================
+/* =========================================================
+   CHARGEMENT GLOBAL
+========================================================= */
 
 async function loadCatalogue() {
 
     await Promise.all([
         loadCategories(),
-        loadCities()
+        loadVilles()
     ]);
 
     updateStatistics();
 
+    populateProvinceFilter();
+
+    applyCategoryFilters();
+
+    applyCityFilters();
+
 }
 
 
-// =========================================================
-// CHARGER CATÉGORIES
-// =========================================================
+/* =========================================================
+   CATÉGORIES
+========================================================= */
 
 async function loadCategories() {
 
-    if (categoriesLoading) {
-
-        categoriesLoading.style.display =
-            "flex";
-
-    }
+    setLoading(
+        categoriesLoading,
+        true
+    );
 
 
     try {
@@ -432,58 +248,66 @@ async function loadCategories() {
             await getDocs(
                 collection(
                     db,
-                    CATEGORIES_COLLECTION
+                    "categories"
                 )
             );
 
 
         categories =
             snapshot.docs.map(
-                (item) => ({
+                item => {
 
-                    id: item.id,
+                    const data =
+                        item.data();
 
-                    ...item.data()
 
-                })
+                    return {
+
+                        id:
+                            item.id,
+
+                        name:
+                            clean(data.name),
+
+                        icon:
+                            clean(data.icon),
+
+                        description:
+                            clean(
+                                data.description
+                            ),
+
+                        active:
+                            data.active !== false,
+
+                        order:
+                            Number(
+                                data.order
+                            ) || 999
+
+                    };
+
+                }
             );
 
 
         categories.sort(
-            (a, b) => {
-
-                const orderA =
-                    Number(a.order || 0);
-
-                const orderB =
-                    Number(b.order || 0);
-
-                if (
-                    orderA !==
-                    orderB
-                ) {
-
-                    return (
-                        orderA -
-                        orderB
-                    );
-
-                }
-
-                return normalize(
-                    a.name
-                ).localeCompare(
-                    normalize(b.name)
-                );
-
-            }
+            (a, b) =>
+                a.order - b.order ||
+                a.name.localeCompare(
+                    b.name,
+                    "fr"
+                )
         );
 
 
-        renderCategories();
+        console.log(
+            `CAMU CATALOGUE — ${categories.length} catégorie(s).`
+        );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Erreur chargement catégories :",
@@ -495,32 +319,31 @@ async function loadCategories() {
             "error"
         );
 
-    } finally {
-
-        if (categoriesLoading) {
-
-            categoriesLoading.style.display =
-                "none";
-
-        }
+        categories = [];
 
     }
 
+    finally {
+
+        setLoading(
+            categoriesLoading,
+            false
+        );
+
+    }
 }
 
 
-// =========================================================
-// CHARGER VILLES
-// =========================================================
+/* =========================================================
+   VILLES
+========================================================= */
 
-async function loadCities() {
+async function loadVilles() {
 
-    if (citiesLoading) {
-
-        citiesLoading.style.display =
-            "flex";
-
-    }
+    setLoading(
+        citiesLoading,
+        true
+    );
 
 
     try {
@@ -529,58 +352,63 @@ async function loadCities() {
             await getDocs(
                 collection(
                     db,
-                    CITIES_COLLECTION
+                    "villes"
                 )
             );
 
 
-        cities =
+        villes =
             snapshot.docs.map(
-                (item) => ({
+                item => {
 
-                    id: item.id,
+                    const data =
+                        item.data();
 
-                    ...item.data()
 
-                })
+                    return {
+
+                        id:
+                            item.id,
+
+                        name:
+                            clean(data.name),
+
+                        province:
+                            clean(
+                                data.province
+                            ),
+
+                        active:
+                            data.active !== false,
+
+                        order:
+                            Number(
+                                data.order
+                            ) || 999
+
+                    };
+
+                }
             );
 
 
-        cities.sort(
-            (a, b) => {
-
-                const orderA =
-                    Number(a.order || 0);
-
-                const orderB =
-                    Number(b.order || 0);
-
-                if (
-                    orderA !==
-                    orderB
-                ) {
-
-                    return (
-                        orderA -
-                        orderB
-                    );
-
-                }
-
-                return normalize(
-                    a.name
-                ).localeCompare(
-                    normalize(b.name)
-                );
-
-            }
+        villes.sort(
+            (a, b) =>
+                a.order - b.order ||
+                a.name.localeCompare(
+                    b.name,
+                    "fr"
+                )
         );
 
 
-        renderCities();
+        console.log(
+            `CAMU CATALOGUE — ${villes.length} ville(s).`
+        );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Erreur chargement villes :",
@@ -592,23 +420,280 @@ async function loadCities() {
             "error"
         );
 
-    } finally {
+        villes = [];
 
-        if (citiesLoading) {
+    }
 
-            citiesLoading.style.display =
-                "none";
+    finally {
 
-        }
+        setLoading(
+            citiesLoading,
+            false
+        );
 
+    }
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(
+    element,
+    state
+) {
+
+    if (element) {
+        element.hidden = !state;
     }
 
 }
 
 
-// =========================================================
-// AFFICHER CATÉGORIES
-// =========================================================
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+function updateStatistics() {
+
+    setText(
+        "catalogueCategoriesCount",
+        categories.length
+    );
+
+
+    setText(
+        "catalogueActiveCategoriesCount",
+        categories.filter(
+            item => item.active
+        ).length
+    );
+
+
+    setText(
+        "catalogueCitiesCount",
+        villes.length
+    );
+
+
+    setText(
+        "catalogueActiveCitiesCount",
+        villes.filter(
+            item => item.active
+        ).length
+    );
+}
+
+
+/* =========================================================
+   PROVINCES
+========================================================= */
+
+function populateProvinceFilter() {
+
+    if (!cityProvinceFilter) {
+        return;
+    }
+
+
+    const current =
+        cityProvinceFilter.value;
+
+
+    const provinces = [
+        ...new Set(
+            villes
+                .map(
+                    ville =>
+                        ville.province
+                )
+                .filter(Boolean)
+        )
+    ].sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                "fr"
+            )
+    );
+
+
+    cityProvinceFilter.innerHTML = `
+        <option value="all">
+            Toutes les provinces
+        </option>
+    `;
+
+
+    provinces.forEach(
+        province => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                province;
+
+            option.textContent =
+                province;
+
+            cityProvinceFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    if (
+        provinces.includes(current)
+    ) {
+        cityProvinceFilter.value =
+            current;
+    }
+}
+
+
+/* =========================================================
+   FILTRES CATÉGORIES
+========================================================= */
+
+function applyCategoryFilters() {
+
+    const search =
+        normalize(
+            categorySearch?.value
+        );
+
+    const status =
+        categoryStatusFilter?.value ||
+        "all";
+
+
+    filteredCategories =
+        categories.filter(
+            category => {
+
+                if (
+                    search &&
+                    !normalize(
+                        [
+                            category.name,
+                            category.description
+                        ].join(" ")
+                    ).includes(search)
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    status === "active" &&
+                    !category.active
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    status === "inactive" &&
+                    category.active
+                ) {
+                    return false;
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    renderCategories();
+}
+
+
+/* =========================================================
+   FILTRES VILLES
+========================================================= */
+
+function applyCityFilters() {
+
+    const search =
+        normalize(
+            citySearch?.value
+        );
+
+    const province =
+        cityProvinceFilter?.value ||
+        "all";
+
+    const status =
+        cityStatusFilter?.value ||
+        "all";
+
+
+    filteredVilles =
+        villes.filter(
+            ville => {
+
+                if (
+                    search &&
+                    !normalize(
+                        [
+                            ville.name,
+                            ville.province
+                        ].join(" ")
+                    ).includes(search)
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    province !== "all" &&
+                    normalize(
+                        ville.province
+                    ) !== normalize(
+                        province
+                    )
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    status === "active" &&
+                    !ville.active
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    status === "inactive" &&
+                    ville.active
+                ) {
+                    return false;
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    renderVilles();
+}
+
+
+/* =========================================================
+   RENDU CATÉGORIES
+========================================================= */
 
 function renderCategories() {
 
@@ -617,54 +702,28 @@ function renderCategories() {
     }
 
 
-    const search =
-        normalize(
-            categorySearch?.value
-        );
-
-
-    const filtered =
-        categories.filter(
-            (category) => {
-
-                return (
-                    !search ||
-                    normalize(
-                        category.name
-                    ).includes(search) ||
-                    normalize(
-                        category.description
-                    ).includes(search)
-                );
-
-            }
-        );
-
-
-    categoriesList.innerHTML =
-        "";
+    categoriesList.innerHTML = "";
 
 
     if (
         categoriesEmpty
     ) {
-
         categoriesEmpty.hidden =
-            filtered.length !== 0;
-
+            filteredCategories.length > 0;
     }
 
 
-    filtered.forEach(
-        (category) => {
+    filteredCategories.forEach(
+        category => {
 
-            const item =
+            const card =
                 document.createElement(
-                    "div"
+                    "article"
                 );
 
-            item.className =
-                "catalogue-item";
+
+            card.className =
+                "catalogue-category-card";
 
 
             const icon =
@@ -672,109 +731,118 @@ function renderCategories() {
                 "fa-solid fa-layer-group";
 
 
-            item.innerHTML = `
-
-                <div class="catalogue-item-icon">
-
-                    <i class="${escapeHtml(icon)}"></i>
-
-                </div>
-
-
-                <div class="catalogue-item-info">
-
-                    <strong>
-                        ${escapeHtml(
-                            category.name ||
-                            "Sans nom"
-                        )}
-                    </strong>
-
-                    <span>
-                        ${escapeHtml(
-                            category.description ||
-                            "Aucune description"
-                        )}
-                    </span>
-
-                    <small>
-                        Ordre :
-                        ${Number(
-                            category.order || 0
-                        )}
-                    </small>
-
-                </div>
+            const iconHTML =
+                icon.includes("fa-")
+                    ? `
+                        <i class="${escapeHTML(icon)}"></i>
+                    `
+                    : `
+                        <span>
+                            ${escapeHTML(icon)}
+                        </span>
+                    `;
 
 
-                <div class="catalogue-item-status">
+            card.innerHTML = `
 
-                    <span class="${
-                        category.active !== false
-                            ? "status-active"
-                            : "status-inactive"
-                    }">
+                <div class="catalogue-card-top">
 
+                    <div class="catalogue-card-icon">
+                        ${iconHTML}
+                    </div>
+
+                    <span
+                        class="catalogue-card-status ${
+                            category.active
+                                ? "active"
+                                : "inactive"
+                        }"
+                    >
                         ${
-                            category.active !== false
+                            category.active
                                 ? "Active"
                                 : "Inactive"
                         }
-
                     </span>
 
                 </div>
 
 
-                <div class="catalogue-item-actions">
+                <h3 class="catalogue-card-title">
+                    ${escapeHTML(
+                        category.name ||
+                        "Sans nom"
+                    )}
+                </h3>
+
+
+                <p class="catalogue-card-description">
+                    ${escapeHTML(
+                        category.description ||
+                        "Aucune description."
+                    )}
+                </p>
+
+
+                <div class="catalogue-card-meta">
+
+                    <span>
+                        <i class="fa-solid fa-sort"></i>
+                        Ordre :
+                        ${category.order}
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-fingerprint"></i>
+                        ${escapeHTML(
+                            category.id
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="catalogue-card-actions">
 
                     <button
                         type="button"
-                        class="catalogue-action edit-category"
-                        data-id="${escapeHtml(
-                            category.id
-                        )}"
-                        title="Modifier"
+                        class="catalogue-card-action edit"
+                        data-action="edit-category"
+                        data-id="${escapeHTML(category.id)}"
                     >
-
                         <i class="fa-solid fa-pen"></i>
-
+                        Modifier
                     </button>
 
 
                     <button
                         type="button"
-                        class="catalogue-action toggle-category"
-                        data-id="${escapeHtml(
-                            category.id
-                        )}"
-                        title="${
-                            category.active !== false
-                                ? "Désactiver"
-                                : "Activer"
-                        }"
+                        class="catalogue-card-action toggle"
+                        data-action="toggle-category"
+                        data-id="${escapeHTML(category.id)}"
                     >
-
                         <i class="fa-solid ${
-                            category.active !== false
-                                ? "fa-toggle-on"
-                                : "fa-toggle-off"
+                            category.active
+                                ? "fa-eye-slash"
+                                : "fa-eye"
                         }"></i>
 
+                        ${
+                            category.active
+                                ? "Désactiver"
+                                : "Activer"
+                        }
                     </button>
 
 
                     <button
                         type="button"
-                        class="catalogue-action danger delete-category"
-                        data-id="${escapeHtml(
-                            category.id
-                        )}"
-                        title="Supprimer"
+                        class="catalogue-card-action delete"
+                        data-action="delete-category"
+                        data-id="${escapeHTML(category.id)}"
                     >
-
                         <i class="fa-solid fa-trash"></i>
-
+                        Supprimer
                     </button>
 
                 </div>
@@ -783,179 +851,153 @@ function renderCategories() {
 
 
             categoriesList.appendChild(
-                item
+                card
             );
 
         }
     );
-
 }
 
 
-// =========================================================
-// AFFICHER VILLES
-// =========================================================
+/* =========================================================
+   RENDU VILLES
+========================================================= */
 
-function renderCities() {
+function renderVilles() {
 
     if (!citiesList) {
         return;
     }
 
 
-    const search =
-        normalize(
-            citySearch?.value
-        );
-
-
-    const filtered =
-        cities.filter(
-            (city) => {
-
-                return (
-                    !search ||
-                    normalize(
-                        city.name
-                    ).includes(search) ||
-                    normalize(
-                        city.province
-                    ).includes(search)
-                );
-
-            }
-        );
-
-
-    citiesList.innerHTML =
-        "";
+    citiesList.innerHTML = "";
 
 
     if (citiesEmpty) {
 
         citiesEmpty.hidden =
-            filtered.length !== 0;
+            filteredVilles.length > 0;
 
     }
 
 
-    filtered.forEach(
-        (city) => {
+    filteredVilles.forEach(
+        ville => {
 
-            const item =
+            const card =
                 document.createElement(
-                    "div"
+                    "article"
                 );
 
-            item.className =
-                "catalogue-item";
+
+            card.className =
+                "catalogue-city-card";
 
 
-            item.innerHTML = `
+            card.innerHTML = `
 
-                <div class="catalogue-item-icon city">
+                <div class="catalogue-card-top">
 
-                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="catalogue-card-icon">
 
-                </div>
+                        <i class="fa-solid fa-city"></i>
 
-
-                <div class="catalogue-item-info">
-
-                    <strong>
-                        ${escapeHtml(
-                            city.name ||
-                            "Sans nom"
-                        )}
-                    </strong>
-
-                    <span>
-
-                        ${escapeHtml(
-                            city.province ||
-                            "Province non précisée"
-                        )}
-
-                    </span>
-
-                    <small>
-                        Ordre :
-                        ${Number(
-                            city.order || 0
-                        )}
-                    </small>
-
-                </div>
+                    </div>
 
 
-                <div class="catalogue-item-status">
-
-                    <span class="${
-                        city.active !== false
-                            ? "status-active"
-                            : "status-inactive"
-                    }">
-
+                    <span
+                        class="catalogue-card-status ${
+                            ville.active
+                                ? "active"
+                                : "inactive"
+                        }"
+                    >
                         ${
-                            city.active !== false
+                            ville.active
                                 ? "Active"
                                 : "Inactive"
                         }
-
                     </span>
 
                 </div>
 
 
-                <div class="catalogue-item-actions">
+                <h3 class="catalogue-card-title">
+
+                    ${escapeHTML(
+                        ville.name ||
+                        "Ville sans nom"
+                    )}
+
+                </h3>
+
+
+                <span class="catalogue-city-province">
+
+                    <i class="fa-solid fa-map"></i>
+
+                    ${
+                        escapeHTML(
+                            ville.province ||
+                            "Province non indiquée"
+                        )
+                    }
+
+                </span>
+
+
+                <div class="catalogue-card-meta">
+
+                    <span>
+                        <i class="fa-solid fa-sort"></i>
+                        Ordre :
+                        ${ville.order}
+                    </span>
+
+                </div>
+
+
+                <div class="catalogue-card-actions">
 
                     <button
                         type="button"
-                        class="catalogue-action edit-city"
-                        data-id="${escapeHtml(
-                            city.id
-                        )}"
-                        title="Modifier"
+                        class="catalogue-card-action edit"
+                        data-action="edit-city"
+                        data-id="${escapeHTML(ville.id)}"
                     >
-
                         <i class="fa-solid fa-pen"></i>
-
+                        Modifier
                     </button>
 
 
                     <button
                         type="button"
-                        class="catalogue-action toggle-city"
-                        data-id="${escapeHtml(
-                            city.id
-                        )}"
-                        title="${
-                            city.active !== false
-                                ? "Désactiver"
-                                : "Activer"
-                        }"
+                        class="catalogue-card-action toggle"
+                        data-action="toggle-city"
+                        data-id="${escapeHTML(ville.id)}"
                     >
-
                         <i class="fa-solid ${
-                            city.active !== false
-                                ? "fa-toggle-on"
-                                : "fa-toggle-off"
+                            ville.active
+                                ? "fa-eye-slash"
+                                : "fa-eye"
                         }"></i>
 
+                        ${
+                            ville.active
+                                ? "Désactiver"
+                                : "Activer"
+                        }
                     </button>
 
 
                     <button
                         type="button"
-                        class="catalogue-action danger delete-city"
-                        data-id="${escapeHtml(
-                            city.id
-                        )}"
-                        title="Supprimer"
+                        class="catalogue-card-action delete"
+                        data-action="delete-city"
+                        data-id="${escapeHTML(ville.id)}"
                     >
-
                         <i class="fa-solid fa-trash"></i>
-
+                        Supprimer
                     </button>
 
                 </div>
@@ -964,71 +1006,23 @@ function renderCities() {
 
 
             citiesList.appendChild(
-                item
+                card
             );
 
         }
     );
-
 }
 
 
-// =========================================================
-// STATISTIQUES
-// =========================================================
-
-function updateStatistics() {
-
-    if (categoriesCount) {
-
-        categoriesCount.textContent =
-            categories.length;
-
-    }
-
-
-    if (citiesCount) {
-
-        citiesCount.textContent =
-            cities.length;
-
-    }
-
-
-    const activeCategories =
-        categories.filter(
-            item =>
-                item.active !== false
-        ).length;
-
-
-    const activeCities =
-        cities.filter(
-            item =>
-                item.active !== false
-        ).length;
-
-
-    if (activeCount) {
-
-        activeCount.textContent =
-            activeCategories +
-            activeCities;
-
-    }
-
-}
-
-
-// =========================================================
-// OUVRIR MODAL CATÉGORIE
-// =========================================================
+/* =========================================================
+   MODAL CATÉGORIE
+========================================================= */
 
 function openCategoryModal(
     category = null
 ) {
 
-    if (!categoryModal) {
+    if (!categoryForm) {
         return;
     }
 
@@ -1036,101 +1030,84 @@ function openCategoryModal(
     categoryForm.reset();
 
 
-    categoryId.value =
+    document.getElementById(
+        "categoryId"
+    ).value =
         category?.id || "";
 
 
-    categoryName.value =
+    document.getElementById(
+        "categoryName"
+    ).value =
         category?.name || "";
 
 
-    categoryIcon.value =
-        category?.icon ||
-        "fa-solid fa-layer-group";
+    document.getElementById(
+        "categoryIcon"
+    ).value =
+        category?.icon || "";
 
 
-    categoryDescription.value =
+    document.getElementById(
+        "categoryDescription"
+    ).value =
         category?.description || "";
 
 
-    categoryOrder.value =
-        category?.order ??
-        0;
+    document.getElementById(
+        "categoryOrder"
+    ).value =
+        category?.order ?? 0;
 
 
-    categoryActive.checked =
-        category
-            ? category.active !== false
-            : true;
+    document.getElementById(
+        "categoryActive"
+    ).value =
+        category?.active === false
+            ? "false"
+            : "true";
 
 
-    categoryModalTitle.textContent =
-        category
-            ? "Modifier la catégorie"
-            : "Ajouter une catégorie";
+    if (categoryModalTitle) {
 
+        categoryModalTitle.textContent =
+            category
+                ? "Modifier la catégorie"
+                : "Ajouter une catégorie";
 
-    saveCategoryButton.innerHTML =
-        category
-            ? `
-                <i class="fa-solid fa-check"></i>
-                Enregistrer
-              `
-            : `
-                <i class="fa-solid fa-plus"></i>
-                Ajouter
-              `;
+    }
 
 
     categoryModal.hidden =
         false;
 
-    document.body.classList.add(
-        "modal-open"
-    );
 
-
-    setTimeout(
-        () => {
-
-            categoryName.focus();
-
-        },
-        50
-    );
-
+    document.body.style.overflow =
+        "hidden";
 }
 
-
-// =========================================================
-// FERMER MODAL CATÉGORIE
-// =========================================================
 
 function closeCategoryModal() {
 
-    if (!categoryModal) {
-        return;
+    if (categoryModal) {
+        categoryModal.hidden =
+            true;
     }
 
-    categoryModal.hidden =
-        true;
-
-    document.body.classList.remove(
-        "modal-open"
-    );
-
+    document.body.style.overflow =
+        "";
 }
 
 
-// =========================================================
-// OUVRIR MODAL VILLE
-// =========================================================
+/* =========================================================
+   MODAL VILLE
+========================================================= */
 
 function openCityModal(
-    city = null
+    ville = null
 ) {
 
-    if (!cityModal) {
+    if (!cityForm) {
         return;
     }
 
@@ -1138,118 +1115,124 @@ function openCityModal(
     cityForm.reset();
 
 
-    cityId.value =
-        city?.id || "";
+    document.getElementById(
+        "cityId"
+    ).value =
+        ville?.id || "";
 
 
-    cityName.value =
-        city?.name || "";
+    document.getElementById(
+        "cityName"
+    ).value =
+        ville?.name || "";
 
 
-    cityProvince.value =
-        city?.province || "";
+    document.getElementById(
+        "cityProvince"
+    ).value =
+        ville?.province || "";
 
 
-    cityOrder.value =
-        city?.order ??
-        0;
+    document.getElementById(
+        "cityOrder"
+    ).value =
+        ville?.order ?? 0;
 
 
-    cityActive.checked =
-        city
-            ? city.active !== false
-            : true;
+    document.getElementById(
+        "cityActive"
+    ).value =
+        ville?.active === false
+            ? "false"
+            : "true";
 
 
-    cityModalTitle.textContent =
-        city
-            ? "Modifier la ville"
-            : "Ajouter une ville";
+    if (cityModalTitle) {
 
+        cityModalTitle.textContent =
+            ville
+                ? "Modifier la ville"
+                : "Ajouter une ville";
 
-    saveCityButton.innerHTML =
-        city
-            ? `
-                <i class="fa-solid fa-check"></i>
-                Enregistrer
-              `
-            : `
-                <i class="fa-solid fa-plus"></i>
-                Ajouter
-              `;
+    }
 
 
     cityModal.hidden =
         false;
 
-    document.body.classList.add(
-        "modal-open"
-    );
 
-
-    setTimeout(
-        () => {
-
-            cityName.focus();
-
-        },
-        50
-    );
-
+    document.body.style.overflow =
+        "hidden";
 }
 
-
-// =========================================================
-// FERMER MODAL VILLE
-// =========================================================
 
 function closeCityModal() {
 
-    if (!cityModal) {
-        return;
+    if (cityModal) {
+        cityModal.hidden =
+            true;
     }
 
-    cityModal.hidden =
-        true;
-
-    document.body.classList.remove(
-        "modal-open"
-    );
-
+    document.body.style.overflow =
+        "";
 }
 
 
-// =========================================================
-// AJOUT / MODIFICATION CATÉGORIE
-// =========================================================
+/* =========================================================
+   ENREGISTRER CATÉGORIE
+========================================================= */
 
 categoryForm?.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
         event.preventDefault();
 
 
         const id =
-            categoryId.value.trim();
+            clean(
+                document.getElementById(
+                    "categoryId"
+                ).value
+            );
+
 
         const name =
-            categoryName.value.trim();
+            clean(
+                document.getElementById(
+                    "categoryName"
+                ).value
+            );
+
 
         const icon =
-            categoryIcon.value.trim() ||
-            "fa-solid fa-layer-group";
+            clean(
+                document.getElementById(
+                    "categoryIcon"
+                ).value
+            );
+
 
         const description =
-            categoryDescription.value.trim();
+            clean(
+                document.getElementById(
+                    "categoryDescription"
+                ).value
+            );
+
 
         const order =
             Number(
-                categoryOrder.value || 0
-            );
+                document.getElementById(
+                    "categoryOrder"
+                ).value
+            ) || 0;
+
 
         const active =
-            categoryActive.checked;
+            document.getElementById(
+                "categoryActive"
+            ).value === "true";
 
 
         if (!name) {
@@ -1260,35 +1243,7 @@ categoryForm?.addEventListener(
             );
 
             return;
-
         }
-
-
-        // Vérification doublon
-        const duplicate =
-            categories.find(
-                (category) =>
-                    normalize(
-                        category.name
-                    ) === normalize(name) &&
-                    category.id !== id
-            );
-
-
-        if (duplicate) {
-
-            showMessage(
-                "Cette catégorie existe déjà.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        saveCategoryButton.disabled =
-            true;
 
 
         try {
@@ -1297,10 +1252,9 @@ categoryForm?.addEventListener(
 
                 name,
 
-                slug:
-                    slugify(name),
-
-                icon,
+                icon:
+                    icon ||
+                    "fa-solid fa-layer-group",
 
                 description,
 
@@ -1319,7 +1273,7 @@ categoryForm?.addEventListener(
                 await updateDoc(
                     doc(
                         db,
-                        CATEGORIES_COLLECTION,
+                        "categories",
                         id
                     ),
                     data
@@ -1327,29 +1281,30 @@ categoryForm?.addEventListener(
 
 
                 showMessage(
-                    "Catégorie modifiée avec succès."
+                    "Catégorie modifiée avec succès.",
+                    "success"
                 );
 
-            } else {
+            }
+
+            else {
 
                 await addDoc(
                     collection(
                         db,
-                        CATEGORIES_COLLECTION
+                        "categories"
                     ),
                     {
-
                         ...data,
-
                         createdAt:
                             serverTimestamp()
-
                     }
                 );
 
 
                 showMessage(
-                    "Catégorie ajoutée avec succès."
+                    "Catégorie ajoutée avec succès.",
+                    "success"
                 );
 
             }
@@ -1361,8 +1316,11 @@ categoryForm?.addEventListener(
 
             updateStatistics();
 
+            applyCategoryFilters();
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "Erreur catégorie :",
@@ -1374,44 +1332,59 @@ categoryForm?.addEventListener(
                 "error"
             );
 
-        } finally {
-
-            saveCategoryButton.disabled =
-                false;
-
         }
 
     }
 );
 
 
-// =========================================================
-// AJOUT / MODIFICATION VILLE
-// =========================================================
+/* =========================================================
+   ENREGISTRER VILLE
+========================================================= */
 
 cityForm?.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
         event.preventDefault();
 
 
         const id =
-            cityId.value.trim();
+            clean(
+                document.getElementById(
+                    "cityId"
+                ).value
+            );
+
 
         const name =
-            cityName.value.trim();
+            clean(
+                document.getElementById(
+                    "cityName"
+                ).value
+            );
+
 
         const province =
-            cityProvince.value.trim();
+            clean(
+                document.getElementById(
+                    "cityProvince"
+                ).value
+            );
+
 
         const order =
             Number(
-                cityOrder.value || 0
-            );
+                document.getElementById(
+                    "cityOrder"
+                ).value
+            ) || 0;
+
 
         const active =
-            cityActive.checked;
+            document.getElementById(
+                "cityActive"
+            ).value === "true";
 
 
         if (!name) {
@@ -1422,47 +1395,7 @@ cityForm?.addEventListener(
             );
 
             return;
-
         }
-
-
-        if (!province) {
-
-            showMessage(
-                "La province est obligatoire.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        // Vérification doublon
-        const duplicate =
-            cities.find(
-                (city) =>
-                    normalize(
-                        city.name
-                    ) === normalize(name) &&
-                    city.id !== id
-            );
-
-
-        if (duplicate) {
-
-            showMessage(
-                "Cette ville existe déjà.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        saveCityButton.disabled =
-            true;
 
 
         try {
@@ -1470,9 +1403,6 @@ cityForm?.addEventListener(
             const data = {
 
                 name,
-
-                slug:
-                    slugify(name),
 
                 province,
 
@@ -1491,7 +1421,7 @@ cityForm?.addEventListener(
                 await updateDoc(
                     doc(
                         db,
-                        CITIES_COLLECTION,
+                        "villes",
                         id
                     ),
                     data
@@ -1499,29 +1429,31 @@ cityForm?.addEventListener(
 
 
                 showMessage(
-                    "Ville modifiée avec succès."
+                    "Ville modifiée avec succès.",
+                    "success"
                 );
 
-            } else {
+            }
+
+            else {
 
                 await addDoc(
                     collection(
                         db,
-                        CITIES_COLLECTION
+                        "villes"
                     ),
                     {
-
                         ...data,
 
                         createdAt:
                             serverTimestamp()
-
                     }
                 );
 
 
                 showMessage(
-                    "Ville ajoutée avec succès."
+                    "Ville ajoutée avec succès.",
+                    "success"
                 );
 
             }
@@ -1529,12 +1461,17 @@ cityForm?.addEventListener(
 
             closeCityModal();
 
-            await loadCities();
+            await loadVilles();
 
             updateStatistics();
 
+            populateProvinceFilter();
 
-        } catch (error) {
+            applyCityFilters();
+
+        }
+
+        catch (error) {
 
             console.error(
                 "Erreur ville :",
@@ -1546,82 +1483,82 @@ cityForm?.addEventListener(
                 "error"
             );
 
-        } finally {
-
-            saveCityButton.disabled =
-                false;
-
         }
 
     }
 );
 
 
-// =========================================================
-// ACTIONS CATÉGORIES
-// =========================================================
+/* =========================================================
+   ACTIONS CATÉGORIES
+========================================================= */
 
 categoriesList?.addEventListener(
     "click",
-    async (event) => {
+    async event => {
 
-        const editButton =
+        const button =
             event.target.closest(
-                ".edit-category"
-            );
-
-        const toggleButton =
-            event.target.closest(
-                ".toggle-category"
-            );
-
-        const deleteButton =
-            event.target.closest(
-                ".delete-category"
+                "[data-action]"
             );
 
 
-        // MODIFIER
-        if (editButton) {
-
-            const category =
-                categories.find(
-                    item =>
-                        item.id ===
-                        editButton.dataset.id
-                );
-
-
-            if (category) {
-
-                openCategoryModal(
-                    category
-                );
-
-            }
-
+        if (!button) {
             return;
-
         }
 
 
-        // ACTIVER / DÉSACTIVER
-        if (toggleButton) {
+        const id =
+            button.dataset.id;
+
+        const action =
+            button.dataset.action;
+
+
+        const category =
+            categories.find(
+                item => item.id === id
+            );
+
+
+        if (!category) {
+            return;
+        }
+
+
+        if (
+            action ===
+            "edit-category"
+        ) {
+
+            openCategoryModal(
+                category
+            );
+
+            return;
+        }
+
+
+        if (
+            action ===
+            "toggle-category"
+        ) {
 
             await toggleCategory(
-                toggleButton.dataset.id
+                category
             );
 
             return;
-
         }
 
 
-        // SUPPRIMER
-        if (deleteButton) {
+        if (
+            action ===
+            "delete-category"
+        ) {
 
             await deleteCategory(
-                deleteButton.dataset.id
+                category
             );
 
         }
@@ -1630,71 +1567,76 @@ categoriesList?.addEventListener(
 );
 
 
-// =========================================================
-// ACTIONS VILLES
-// =========================================================
+/* =========================================================
+   ACTIONS VILLES
+========================================================= */
 
 citiesList?.addEventListener(
     "click",
-    async (event) => {
+    async event => {
 
-        const editButton =
+        const button =
             event.target.closest(
-                ".edit-city"
-            );
-
-        const toggleButton =
-            event.target.closest(
-                ".toggle-city"
-            );
-
-        const deleteButton =
-            event.target.closest(
-                ".delete-city"
+                "[data-action]"
             );
 
 
-        // MODIFIER
-        if (editButton) {
-
-            const city =
-                cities.find(
-                    item =>
-                        item.id ===
-                        editButton.dataset.id
-                );
-
-
-            if (city) {
-
-                openCityModal(
-                    city
-                );
-
-            }
-
+        if (!button) {
             return;
-
         }
 
 
-        // ACTIVER / DÉSACTIVER
-        if (toggleButton) {
+        const id =
+            button.dataset.id;
 
-            await toggleCity(
-                toggleButton.dataset.id
+        const action =
+            button.dataset.action;
+
+
+        const ville =
+            villes.find(
+                item => item.id === id
             );
 
-            return;
 
+        if (!ville) {
+            return;
         }
 
 
-        // SUPPRIMER
-        if (deleteButton) {
+        if (
+            action ===
+            "edit-city"
+        ) {
 
-            await deleteCity(
-                deleteButton.dataset.id
+            openCityModal(
+                ville
+            );
+
+            return;
+        }
+
+
+        if (
+            action ===
+            "toggle-city"
+        ) {
+
+            await toggleVille(
+                ville
+            );
+
+            return;
+        }
+
+
+        if (
+            action ===
+            "delete-city"
+        ) {
+
+            await deleteVille(
+                ville
             );
 
         }
@@ -1703,28 +1645,16 @@ citiesList?.addEventListener(
 );
 
 
-// =========================================================
-// TOGGLE CATÉGORIE
-// =========================================================
+/* =========================================================
+   ACTIVER / DÉSACTIVER CATÉGORIE
+========================================================= */
 
 async function toggleCategory(
-    id
+    category
 ) {
 
-    const category =
-        categories.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!category) {
-        return;
-    }
-
-
     const newStatus =
-        category.active === false;
+        !category.active;
 
 
     try {
@@ -1732,71 +1662,62 @@ async function toggleCategory(
         await updateDoc(
             doc(
                 db,
-                CATEGORIES_COLLECTION,
-                id
+                "categories",
+                category.id
             ),
             {
-
                 active:
                     newStatus,
 
                 updatedAt:
                     serverTimestamp()
-
             }
         );
+
+
+        category.active =
+            newStatus;
+
+
+        updateStatistics();
+
+        applyCategoryFilters();
 
 
         showMessage(
             newStatus
                 ? "Catégorie activée."
-                : "Catégorie désactivée."
+                : "Catégorie désactivée.",
+            "success"
         );
 
+    }
 
-        await loadCategories();
-
-        updateStatistics();
-
-
-    } catch (error) {
+    catch (error) {
 
         console.error(
             error
         );
 
         showMessage(
-            "Impossible de modifier le statut.",
+            "Impossible de modifier la catégorie.",
             "error"
         );
 
     }
-
 }
 
 
-// =========================================================
-// TOGGLE VILLE
-// =========================================================
+/* =========================================================
+   ACTIVER / DÉSACTIVER VILLE
+========================================================= */
 
-async function toggleCity(
-    id
+async function toggleVille(
+    ville
 ) {
 
-    const city =
-        cities.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!city) {
-        return;
-    }
-
-
     const newStatus =
-        city.active === false;
+        !ville.active;
 
 
     try {
@@ -1804,72 +1725,63 @@ async function toggleCity(
         await updateDoc(
             doc(
                 db,
-                CITIES_COLLECTION,
-                id
+                "villes",
+                ville.id
             ),
             {
-
                 active:
                     newStatus,
 
                 updatedAt:
                     serverTimestamp()
-
             }
         );
+
+
+        ville.active =
+            newStatus;
+
+
+        updateStatistics();
+
+        applyCityFilters();
 
 
         showMessage(
             newStatus
                 ? "Ville activée."
-                : "Ville désactivée."
+                : "Ville désactivée.",
+            "success"
         );
 
+    }
 
-        await loadCities();
-
-        updateStatistics();
-
-
-    } catch (error) {
+    catch (error) {
 
         console.error(
             error
         );
 
         showMessage(
-            "Impossible de modifier le statut.",
+            "Impossible de modifier la ville.",
             "error"
         );
 
     }
-
 }
 
 
-// =========================================================
-// SUPPRIMER CATÉGORIE
-// =========================================================
+/* =========================================================
+   SUPPRIMER CATÉGORIE
+========================================================= */
 
 async function deleteCategory(
-    id
+    category
 ) {
 
-    const category =
-        categories.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!category) {
-        return;
-    }
-
-
     const confirmed =
-        confirm(
-            `Voulez-vous vraiment supprimer la catégorie "${category.name}" ?\n\nCette action est irréversible.`
+        window.confirm(
+            `Supprimer définitivement la catégorie "${category.name}" ?`
         );
 
 
@@ -1883,23 +1795,33 @@ async function deleteCategory(
         await deleteDoc(
             doc(
                 db,
-                CATEGORIES_COLLECTION,
-                id
+                "categories",
+                category.id
             )
         );
 
 
-        showMessage(
-            "Catégorie supprimée."
-        );
+        categories =
+            categories.filter(
+                item =>
+                    item.id !==
+                    category.id
+            );
 
-
-        await loadCategories();
 
         updateStatistics();
 
+        applyCategoryFilters();
 
-    } catch (error) {
+
+        showMessage(
+            "Catégorie supprimée.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
 
         console.error(
             error
@@ -1911,33 +1833,20 @@ async function deleteCategory(
         );
 
     }
-
 }
 
 
-// =========================================================
-// SUPPRIMER VILLE
-// =========================================================
+/* =========================================================
+   SUPPRIMER VILLE
+========================================================= */
 
-async function deleteCity(
-    id
+async function deleteVille(
+    ville
 ) {
 
-    const city =
-        cities.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!city) {
-        return;
-    }
-
-
     const confirmed =
-        confirm(
-            `Voulez-vous vraiment supprimer la ville "${city.name}" ?\n\nCette action est irréversible.`
+        window.confirm(
+            `Supprimer définitivement la ville "${ville.name}" ?`
         );
 
 
@@ -1951,23 +1860,35 @@ async function deleteCity(
         await deleteDoc(
             doc(
                 db,
-                CITIES_COLLECTION,
-                id
+                "villes",
+                ville.id
             )
         );
 
 
-        showMessage(
-            "Ville supprimée."
-        );
+        villes =
+            villes.filter(
+                item =>
+                    item.id !==
+                    ville.id
+            );
 
-
-        await loadCities();
 
         updateStatistics();
 
+        populateProvinceFilter();
 
-    } catch (error) {
+        applyCityFilters();
+
+
+        showMessage(
+            "Ville supprimée.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
 
         console.error(
             error
@@ -1979,70 +1900,146 @@ async function deleteCity(
         );
 
     }
-
 }
 
 
-// =========================================================
-// RECHERCHE CATÉGORIE
-// =========================================================
+/* =========================================================
+   BOUTONS AJOUT
+========================================================= */
+
+document.getElementById(
+    "addCategoryButton"
+)?.addEventListener(
+    "click",
+    () => openCategoryModal()
+);
+
+
+document.getElementById(
+    "addCityButton"
+)?.addEventListener(
+    "click",
+    () => openCityModal()
+);
+
+
+/* =========================================================
+   RECHERCHE
+========================================================= */
 
 categorySearch?.addEventListener(
     "input",
-    () => {
-
-        renderCategories();
-
-    }
+    applyCategoryFilters
 );
 
 
-// =========================================================
-// RECHERCHE VILLE
-// =========================================================
+categoryStatusFilter?.addEventListener(
+    "change",
+    applyCategoryFilters
+);
+
 
 citySearch?.addEventListener(
     "input",
-    () => {
+    applyCityFilters
+);
 
-        renderCities();
+
+cityProvinceFilter?.addEventListener(
+    "change",
+    applyCityFilters
+);
+
+
+cityStatusFilter?.addEventListener(
+    "change",
+    applyCityFilters
+);
+
+
+/* =========================================================
+   ONGLETS
+========================================================= */
+
+document.querySelectorAll(
+    ".catalogue-tab"
+).forEach(
+    tab => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                const target =
+                    tab.dataset.tab;
+
+
+                document
+                    .querySelectorAll(
+                        ".catalogue-tab"
+                    )
+                    .forEach(
+                        item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                tab.classList.add(
+                    "active"
+                );
+
+
+                const categoriesPanel =
+                    document.getElementById(
+                        "categoriesPanel"
+                    );
+
+                const villesPanel =
+                    document.getElementById(
+                        "villesPanel"
+                    );
+
+
+                if (
+                    target ===
+                    "categories"
+                ) {
+
+                    categoriesPanel.hidden =
+                        false;
+
+                    villesPanel.hidden =
+                        true;
+
+                }
+
+                else {
+
+                    categoriesPanel.hidden =
+                        true;
+
+                    villesPanel.hidden =
+                        false;
+
+                }
+
+            }
+        );
 
     }
 );
 
 
-// =========================================================
-// BOUTONS AJOUT
-// =========================================================
-
-addCategoryButton?.addEventListener(
-    "click",
-    () => {
-
-        openCategoryModal();
-
-    }
-);
-
-
-addCityButton?.addEventListener(
-    "click",
-    () => {
-
-        openCityModal();
-
-    }
-);
-
-
-// =========================================================
-// FERMETURE MODAL CATÉGORIE
-// =========================================================
+/* =========================================================
+   FERMETURE MODALS
+========================================================= */
 
 document.querySelectorAll(
     "[data-close-category-modal]"
 ).forEach(
-    (element) => {
+    element => {
 
         element.addEventListener(
             "click",
@@ -2053,14 +2050,10 @@ document.querySelectorAll(
 );
 
 
-// =========================================================
-// FERMETURE MODAL VILLE
-// =========================================================
-
 document.querySelectorAll(
     "[data-close-city-modal]"
 ).forEach(
-    (element) => {
+    element => {
 
         element.addEventListener(
             "click",
@@ -2071,13 +2064,9 @@ document.querySelectorAll(
 );
 
 
-// =========================================================
-// TOUCHE ESCAPE
-// =========================================================
-
 document.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
         if (
             event.key ===
@@ -2094,53 +2083,44 @@ document.addEventListener(
 );
 
 
-// =========================================================
-// ACTUALISER
-// =========================================================
+/* =========================================================
+   ACTUALISER
+========================================================= */
 
-catalogueRefreshButton?.addEventListener(
+document.getElementById(
+    "catalogueRefreshButton"
+)?.addEventListener(
     "click",
     async () => {
 
-        catalogueRefreshButton.disabled =
-            true;
+        await loadCatalogue();
 
-        try {
-
-            await loadCatalogue();
-
-            showMessage(
-                "Catalogue actualisé."
-            );
-
-        } finally {
-
-            catalogueRefreshButton.disabled =
-                false;
-
-        }
+        showMessage(
+            "Catalogue actualisé.",
+            "success"
+        );
 
     }
 );
 
 
-// =========================================================
-// MENU ADMIN MOBILE
-// =========================================================
+/* =========================================================
+   MENU MOBILE
+========================================================= */
 
 const adminMenuButton =
     document.getElementById(
         "adminMenuButton"
     );
 
-const adminSidebar =
-    document.getElementById(
-        "adminSidebar"
-    );
-
 const adminCloseSidebar =
     document.getElementById(
         "adminCloseSidebar"
+    );
+
+const adminSidebar =
+    document.getElementById(
+        "adminSidebar"
     );
 
 const adminOverlay =
@@ -2149,54 +2129,100 @@ const adminOverlay =
     );
 
 
-function openAdminSidebar() {
+function openSidebar() {
 
     adminSidebar?.classList.add(
-        "active"
+        "open"
     );
 
     adminOverlay?.classList.add(
         "active"
     );
 
+    adminMenuButton?.setAttribute(
+        "aria-expanded",
+        "true"
+    );
 }
 
 
-function closeAdminSidebarMenu() {
+function closeSidebar() {
 
     adminSidebar?.classList.remove(
-        "active"
+        "open"
     );
 
     adminOverlay?.classList.remove(
         "active"
     );
 
+    adminMenuButton?.setAttribute(
+        "aria-expanded",
+        "false"
+    );
 }
 
 
 adminMenuButton?.addEventListener(
     "click",
-    openAdminSidebar
+    openSidebar
 );
 
 
 adminCloseSidebar?.addEventListener(
     "click",
-    closeAdminSidebarMenu
+    closeSidebar
 );
 
 
 adminOverlay?.addEventListener(
     "click",
-    closeAdminSidebarMenu
+    closeSidebar
 );
 
 
-// =========================================================
-// CONSOLE
-// =========================================================
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
 
-console.log(
-    "CAMU SERVICES — admin-catalogue.js chargé."
+document.getElementById(
+    "adminLogoutButton"
+)?.addEventListener(
+    "click",
+    async () => {
+
+        const confirmed =
+            window.confirm(
+                "Voulez-vous vous déconnecter ?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        try {
+
+            await signOut(auth);
+
+            window.location.href =
+                "connexion.html";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            showMessage(
+                "Impossible de vous déconnecter.",
+                "error"
+            );
+
+        }
+
+    }
 );
