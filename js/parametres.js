@@ -10,6 +10,7 @@ import {
     doc,
     getDoc,
     updateDoc,
+    deleteDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -20,7 +21,8 @@ import {
     reauthenticateWithCredential,
     updatePassword,
     sendPasswordResetEmail,
-    signOut
+    signOut,
+    deleteUser
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
@@ -64,6 +66,15 @@ const saveProfileButton =
 const profileMessage =
     document.getElementById("profileMessage");
 
+const darkModeToggle =
+    document.getElementById("darkModeToggle");
+
+const notificationsToggle =
+    document.getElementById("notificationsToggle");
+
+const notificationMessage =
+    document.getElementById("notificationMessage");
+
 const changePasswordButton =
     document.getElementById("changePasswordButton");
 
@@ -71,9 +82,7 @@ const resetPasswordButton =
     document.getElementById("resetPasswordButton");
 
 const passwordFormContainer =
-    document.getElementById(
-        "passwordFormContainer"
-    );
+    document.getElementById("passwordFormContainer");
 
 const passwordForm =
     document.getElementById("passwordForm");
@@ -88,44 +97,54 @@ const confirmPassword =
     document.getElementById("confirmPassword");
 
 const savePasswordButton =
-    document.getElementById(
-        "savePasswordButton"
-    );
+    document.getElementById("savePasswordButton");
 
 const cancelPasswordButton =
-    document.getElementById(
-        "cancelPasswordButton"
-    );
+    document.getElementById("cancelPasswordButton");
 
 const passwordMessage =
-    document.getElementById(
-        "passwordMessage"
-    );
+    document.getElementById("passwordMessage");
 
 const accountType =
-    document.getElementById(
-        "accountType"
-    );
+    document.getElementById("accountType");
 
 const accountStatus =
-    document.getElementById(
-        "accountStatus"
-    );
+    document.getElementById("accountStatus");
 
 const accountCreated =
-    document.getElementById(
-        "accountCreated"
-    );
+    document.getElementById("accountCreated");
 
 const logoutButton =
+    document.getElementById("logoutButton");
+
+const deleteAccountButton =
+    document.getElementById("deleteAccountButton");
+
+const deleteAccountModal =
+    document.getElementById("deleteAccountModal");
+
+const deleteAccountPassword =
     document.getElementById(
-        "logoutButton"
+        "deleteAccountPassword"
+    );
+
+const deleteAccountMessage =
+    document.getElementById(
+        "deleteAccountMessage"
+    );
+
+const cancelDeleteButton =
+    document.getElementById(
+        "cancelDeleteButton"
+    );
+
+const confirmDeleteButton =
+    document.getElementById(
+        "confirmDeleteButton"
     );
 
 const settingsYear =
-    document.getElementById(
-        "settingsYear"
-    );
+    document.getElementById("settingsYear");
 
 
 /* =========================================================
@@ -134,6 +153,257 @@ const settingsYear =
 
 settingsYear.textContent =
     new Date().getFullYear();
+
+
+/* =========================================================
+   MODE SOMBRE
+========================================================= */
+
+function loadDarkMode() {
+
+    const saved =
+        localStorage.getItem(
+            "camu_dark_mode"
+        );
+
+
+    const enabled =
+        saved === "true";
+
+
+    document.body.classList.toggle(
+        "dark-mode",
+        enabled
+    );
+
+
+    darkModeToggle.checked =
+        enabled;
+
+}
+
+
+loadDarkMode();
+
+
+darkModeToggle.addEventListener(
+    "change",
+    () => {
+
+        const enabled =
+            darkModeToggle.checked;
+
+
+        document.body.classList.toggle(
+            "dark-mode",
+            enabled
+        );
+
+
+        localStorage.setItem(
+            "camu_dark_mode",
+            String(enabled)
+        );
+
+    }
+);
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function loadNotificationPreference() {
+
+    const saved =
+        localStorage.getItem(
+            "camu_notifications"
+        );
+
+
+    /*
+     * Par défaut : activées.
+     */
+
+    const enabled =
+        saved === null
+            ? true
+            : saved === "true";
+
+
+    notificationsToggle.checked =
+        enabled;
+
+}
+
+
+loadNotificationPreference();
+
+
+notificationsToggle.addEventListener(
+    "change",
+    async () => {
+
+        const enabled =
+            notificationsToggle.checked;
+
+
+        if (
+            !enabled
+        ) {
+
+            localStorage.setItem(
+                "camu_notifications",
+                "false"
+            );
+
+
+            showNotificationMessage(
+                "Les notifications sont désactivées sur cet appareil.",
+                "success"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Vérifier si le navigateur
+         * supporte les notifications.
+         */
+
+        if (
+            !("Notification" in window)
+        ) {
+
+            notificationsToggle.checked =
+                false;
+
+
+            localStorage.setItem(
+                "camu_notifications",
+                "false"
+            );
+
+
+            showNotificationMessage(
+                "Votre navigateur ne prend pas en charge les notifications.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            let permission =
+                Notification.permission;
+
+
+            if (
+                permission === "default"
+            ) {
+
+                permission =
+                    await Notification.requestPermission();
+
+            }
+
+
+            if (
+                permission === "granted"
+            ) {
+
+                localStorage.setItem(
+                    "camu_notifications",
+                    "true"
+                );
+
+
+                showNotificationMessage(
+                    "Les notifications sont activées.",
+                    "success"
+                );
+
+            }
+
+            else {
+
+                notificationsToggle.checked =
+                    false;
+
+
+                localStorage.setItem(
+                    "camu_notifications",
+                    "false"
+                );
+
+
+                showNotificationMessage(
+                    "L'autorisation des notifications a été refusée.",
+                    "error"
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "CAMU NOTIFICATIONS :",
+                error
+            );
+
+
+            notificationsToggle.checked =
+                false;
+
+
+            showNotificationMessage(
+                "Impossible d'activer les notifications.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MESSAGE NOTIFICATIONS
+========================================================= */
+
+function showNotificationMessage(
+    message,
+    type
+) {
+
+    notificationMessage.textContent =
+        message;
+
+
+    notificationMessage.className =
+        `settings-form-message ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            notificationMessage.textContent =
+                "";
+
+            notificationMessage.className =
+                "settings-form-message";
+
+        },
+        5000
+    );
+
+}
 
 
 /* =========================================================
@@ -186,6 +456,75 @@ function closeMenu() {
 
     settingsOverlay.classList.remove(
         "open"
+    );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            showLogin();
+
+            return;
+
+        }
+
+
+        showContent();
+
+        await loadAccount(
+            user
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function showLogin() {
+
+    settingsLoading.classList.add(
+        "hidden"
+    );
+
+    settingsContent.classList.add(
+        "hidden"
+    );
+
+    settingsLogin.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+function showContent() {
+
+    settingsLoading.classList.add(
+        "hidden"
+    );
+
+    settingsLogin.classList.add(
+        "hidden"
+    );
+
+    settingsContent.classList.remove(
+        "hidden"
     );
 
 }
@@ -269,6 +608,7 @@ async function loadCities() {
 
                 }
 
+
                 return a.name.localeCompare(
                     b.name,
                     "fr"
@@ -323,75 +663,6 @@ async function loadCities() {
 
 
 /* =========================================================
-   AUTH
-========================================================= */
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        if (!user) {
-
-            showLogin();
-
-            return;
-
-        }
-
-
-        showContent();
-
-        await loadAccount(
-            user
-        );
-
-    }
-);
-
-
-/* =========================================================
-   AFFICHER LOGIN
-========================================================= */
-
-function showLogin() {
-
-    settingsLoading.classList.add(
-        "hidden"
-    );
-
-    settingsContent.classList.add(
-        "hidden"
-    );
-
-    settingsLogin.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   AFFICHER CONTENU
-========================================================= */
-
-function showContent() {
-
-    settingsLoading.classList.add(
-        "hidden"
-    );
-
-    settingsLogin.classList.add(
-        "hidden"
-    );
-
-    settingsContent.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================================
    CHARGER COMPTE
 ========================================================= */
 
@@ -404,10 +675,6 @@ async function loadAccount(
         await loadCities();
 
 
-        /*
-         * Informations Firebase Auth
-         */
-
         settingsEmail.value =
             user.email || "";
 
@@ -415,10 +682,6 @@ async function loadAccount(
         settingsName.value =
             user.displayName || "";
 
-
-        /*
-         * Informations Firestore
-         */
 
         const userRef =
             doc(
@@ -495,10 +758,8 @@ async function loadAccount(
             accountType.textContent =
                 "Client";
 
-
             accountStatus.textContent =
                 "Actif";
-
 
             accountCreated.textContent =
                 "—";
@@ -509,13 +770,13 @@ async function loadAccount(
     } catch (error) {
 
         console.error(
-            "CAMU PARAMÈTRES — chargement compte :",
+            "CAMU PARAMÈTRES — compte :",
             error
         );
 
 
         showProfileMessage(
-            "Impossible de charger toutes les informations du compte.",
+            "Impossible de charger toutes les informations.",
             "error"
         );
 
@@ -525,7 +786,7 @@ async function loadAccount(
 
 
 /* =========================================================
-   SÉLECTIONNER VILLE
+   VILLE
 ========================================================= */
 
 function selectCity(
@@ -570,7 +831,7 @@ function selectCity(
 
 
 /* =========================================================
-   MODIFIER PROFIL
+   PROFIL
 ========================================================= */
 
 profileForm.addEventListener(
@@ -594,18 +855,14 @@ profileForm.addEventListener(
         const name =
             settingsName.value.trim();
 
-
         const phone =
             settingsPhone.value.trim();
-
 
         const whatsapp =
             settingsWhatsapp.value.trim();
 
-
         const ville =
             settingsVille.value.trim();
-
 
         const commune =
             settingsCommune.value.trim();
@@ -635,10 +892,6 @@ profileForm.addEventListener(
 
         try {
 
-            /*
-             * Mise à jour du profil Firebase Auth
-             */
-
             await updateProfile(
                 user,
                 {
@@ -646,10 +899,6 @@ profileForm.addEventListener(
                 }
             );
 
-
-            /*
-             * Mise à jour Firestore
-             */
 
             await updateDoc(
                 doc(
@@ -677,7 +926,7 @@ profileForm.addEventListener(
 
 
             showProfileMessage(
-                "Vos informations ont été enregistrées avec succès.",
+                "Vos informations ont été enregistrées.",
                 "success"
             );
 
@@ -685,7 +934,7 @@ profileForm.addEventListener(
         } catch (error) {
 
             console.error(
-                "CAMU PARAMÈTRES — sauvegarde :",
+                "CAMU PARAMÈTRES — profil :",
                 error
             );
 
@@ -705,7 +954,7 @@ profileForm.addEventListener(
 
             saveProfileButton.innerHTML = `
                 <i class="fa-solid fa-floppy-disk"></i>
-                Enregistrer les modifications
+                Enregistrer
             `;
 
         }
@@ -715,40 +964,7 @@ profileForm.addEventListener(
 
 
 /* =========================================================
-   MESSAGE PROFIL
-========================================================= */
-
-function showProfileMessage(
-    message,
-    type
-) {
-
-    profileMessage.textContent =
-        message;
-
-
-    profileMessage.className =
-        `settings-form-message ${type}`;
-
-
-    setTimeout(
-        () => {
-
-            profileMessage.textContent =
-                "";
-
-            profileMessage.className =
-                "settings-form-message";
-
-        },
-        5000
-    );
-
-}
-
-
-/* =========================================================
-   AFFICHER FORMULAIRE PASSWORD
+   PASSWORD — AFFICHER
 ========================================================= */
 
 changePasswordButton.addEventListener(
@@ -775,7 +991,7 @@ changePasswordButton.addEventListener(
 
 
 /* =========================================================
-   ANNULER PASSWORD
+   PASSWORD — ANNULER
 ========================================================= */
 
 cancelPasswordButton.addEventListener(
@@ -791,15 +1007,12 @@ cancelPasswordButton.addEventListener(
         passwordMessage.textContent =
             "";
 
-        passwordMessage.className =
-            "settings-form-message";
-
     }
 );
 
 
 /* =========================================================
-   CHANGER MOT DE PASSE
+   PASSWORD — MODIFIER
 ========================================================= */
 
 passwordForm.addEventListener(
@@ -813,7 +1026,11 @@ passwordForm.addEventListener(
             auth.currentUser;
 
 
-        if (!user || !user.email) {
+        if (
+            !user
+            ||
+            !user.email
+        ) {
 
             return;
 
@@ -823,10 +1040,8 @@ passwordForm.addEventListener(
         const current =
             currentPassword.value;
 
-
         const newPass =
             newPassword.value;
-
 
         const confirmation =
             confirmPassword.value;
@@ -851,7 +1066,7 @@ passwordForm.addEventListener(
         ) {
 
             showPasswordMessage(
-                "Les deux nouveaux mots de passe ne correspondent pas.",
+                "Les deux mots de passe ne correspondent pas.",
                 "error"
             );
 
@@ -871,12 +1086,6 @@ passwordForm.addEventListener(
 
 
         try {
-
-            /*
-             * Firebase demande généralement
-             * une réauthentification avant
-             * une opération sensible.
-             */
 
             const credential =
                 EmailAuthProvider.credential(
@@ -898,7 +1107,7 @@ passwordForm.addEventListener(
 
 
             showPasswordMessage(
-                "Votre mot de passe a été modifié avec succès.",
+                "Votre mot de passe a été modifié.",
                 "success"
             );
 
@@ -914,14 +1123,14 @@ passwordForm.addEventListener(
                     );
 
                 },
-                2000
+                1800
             );
 
 
         } catch (error) {
 
             console.error(
-                "CAMU PARAMÈTRES — mot de passe :",
+                "CAMU PARAMÈTRES — password :",
                 error
             );
 
@@ -941,7 +1150,7 @@ passwordForm.addEventListener(
 
             savePasswordButton.innerHTML = `
                 <i class="fa-solid fa-lock"></i>
-                Modifier le mot de passe
+                Modifier
             `;
 
         }
@@ -951,7 +1160,7 @@ passwordForm.addEventListener(
 
 
 /* =========================================================
-   MESSAGE PASSWORD
+   PASSWORD MESSAGE
 ========================================================= */
 
 function showPasswordMessage(
@@ -1011,7 +1220,7 @@ resetPasswordButton.addEventListener(
 
 
             showPasswordMessage(
-                `Un lien de réinitialisation a été envoyé à ${user.email}.`,
+                `Le lien a été envoyé à ${user.email}.`,
                 "success"
             );
 
@@ -1019,7 +1228,7 @@ resetPasswordButton.addEventListener(
         } catch (error) {
 
             console.error(
-                "CAMU PARAMÈTRES — reset password :",
+                "CAMU PARAMÈTRES — reset :",
                 error
             );
 
@@ -1056,27 +1265,15 @@ logoutButton.addEventListener(
     "click",
     async () => {
 
-        const confirmed =
-            confirm(
+        if (
+            !confirm(
                 "Voulez-vous vraiment vous déconnecter ?"
-            );
-
-
-        if (!confirmed) {
+            )
+        ) {
 
             return;
 
         }
-
-
-        logoutButton.disabled =
-            true;
-
-
-        logoutButton.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            Déconnexion...
-        `;
 
 
         try {
@@ -1093,23 +1290,250 @@ logoutButton.addEventListener(
         } catch (error) {
 
             console.error(
-                "CAMU PARAMÈTRES — déconnexion :",
+                "CAMU PARAMÈTRES — logout :",
                 error
             );
 
 
             alert(
-                "Impossible de vous déconnecter. Veuillez réessayer."
+                "Impossible de vous déconnecter."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SUPPRESSION — OUVRIR MODAL
+========================================================= */
+
+deleteAccountButton.addEventListener(
+    "click",
+    () => {
+
+        deleteAccountPassword.value =
+            "";
+
+        deleteAccountMessage.textContent =
+            "";
+
+        deleteAccountModal.classList.remove(
+            "hidden"
+        );
+
+        setTimeout(
+            () => {
+
+                deleteAccountPassword.focus();
+
+            },
+            100
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SUPPRESSION — ANNULER
+========================================================= */
+
+cancelDeleteButton.addEventListener(
+    "click",
+    closeDeleteModal
+);
+
+
+deleteAccountModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            deleteAccountModal
+        ) {
+
+            closeDeleteModal();
+
+        }
+
+    }
+);
+
+
+function closeDeleteModal() {
+
+    deleteAccountModal.classList.add(
+        "hidden"
+    );
+
+    deleteAccountPassword.value =
+        "";
+
+    deleteAccountMessage.textContent =
+        "";
+
+}
+
+
+/* =========================================================
+   SUPPRESSION DU COMPTE
+========================================================= */
+
+confirmDeleteButton.addEventListener(
+    "click",
+    async () => {
+
+        const user =
+            auth.currentUser;
+
+
+        if (
+            !user
+        ) {
+
+            return;
+
+        }
+
+
+        const password =
+            deleteAccountPassword.value;
+
+
+        if (
+            !password
+        ) {
+
+            deleteAccountMessage.textContent =
+                "Veuillez saisir votre mot de passe.";
+
+            return;
+
+        }
+
+
+        if (
+            !user.email
+        ) {
+
+            deleteAccountMessage.textContent =
+                "Impossible de vérifier ce compte.";
+
+            return;
+
+        }
+
+
+        confirmDeleteButton.disabled =
+            true;
+
+
+        cancelDeleteButton.disabled =
+            true;
+
+
+        confirmDeleteButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Suppression...
+        `;
+
+
+        try {
+
+            /*
+             * 1. Réauthentification
+             */
+
+            const credential =
+                EmailAuthProvider.credential(
+                    user.email,
+                    password
+                );
+
+
+            await reauthenticateWithCredential(
+                user,
+                credential
             );
 
 
-            logoutButton.disabled =
+            /*
+             * 2. Supprimer le profil Firestore
+             */
+
+            await deleteDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
+
+
+            /*
+             * 3. Supprimer le compte Firebase Auth
+             */
+
+            await deleteUser(
+                user
+            );
+
+
+            /*
+             * 4. Nettoyage local
+             */
+
+            localStorage.removeItem(
+                "camu_dark_mode"
+            );
+
+            localStorage.removeItem(
+                "camu_notifications"
+            );
+
+
+            /*
+             * 5. Retour connexion
+             */
+
+            window.location.href =
+                "connexion.html";
+
+
+        } catch (error) {
+
+            console.error(
+                "CAMU PARAMÈTRES — suppression compte :",
+                error
+            );
+
+
+            /*
+             * Si la suppression Firestore
+             * a réussi mais que deleteUser()
+             * échoue, le compte Auth peut
+             * encore exister.
+             */
+
+            deleteAccountMessage.textContent =
+                getFirebaseErrorMessage(
+                    error
+                );
+
+
+            confirmDeleteButton.disabled =
+                false;
+
+            cancelDeleteButton.disabled =
                 false;
 
 
-            logoutButton.innerHTML = `
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Se déconnecter
+            confirmDeleteButton.innerHTML = `
+                <i class="fa-solid fa-trash"></i>
+                Supprimer définitivement
             `;
 
         }
@@ -1310,22 +1734,22 @@ function getFirebaseErrorMessage(
 
         case "auth/wrong-password":
 
-            return "Le mot de passe actuel est incorrect.";
+            return "Le mot de passe est incorrect.";
 
 
         case "auth/invalid-credential":
 
-            return "Les identifiants fournis sont incorrects.";
+            return "Le mot de passe ou les identifiants sont incorrects.";
 
 
         case "auth/weak-password":
 
-            return "Le nouveau mot de passe est trop faible.";
+            return "Le mot de passe est trop faible.";
 
 
         case "auth/requires-recent-login":
 
-            return "Pour cette opération, veuillez vous reconnecter puis réessayer.";
+            return "Veuillez vous reconnecter puis réessayer.";
 
 
         case "auth/too-many-requests":
@@ -1340,7 +1764,7 @@ function getFirebaseErrorMessage(
 
         case "permission-denied":
 
-            return "Vous n'avez pas l'autorisation de modifier ces informations.";
+            return "Vous n'avez pas l'autorisation d'effectuer cette action.";
 
 
         default:
