@@ -1,4 +1,4 @@
-import { db } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     doc,
@@ -9,39 +9,94 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
-    getAuth
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const auth = getAuth();
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const FALLBACK_IMAGE =
+    "assets/logo/camu-services-logo.png";
+
+let annonceId = "";
+let currentAd = null;
+let currentUser = null;
+
+let images = [];
+let currentImageIndex = 0;
 
 
-// =========================================================
-// ÉLÉMENTS
-// =========================================================
+/* =========================================================
+   DOM
+========================================================= */
 
-const loadingState = document.getElementById("loadingState");
-const errorState = document.getElementById("errorState");
-const adDetail = document.getElementById("adDetail");
+const explorerLoading =
+    document.getElementById("explorerLoading");
 
-const mainPhoto = document.getElementById("mainPhoto");
-const photoThumbnails = document.getElementById("photoThumbnails");
+const explorerError =
+    document.getElementById("explorerError");
 
-const prevPhoto = document.getElementById("prevPhoto");
-const nextPhoto = document.getElementById("nextPhoto");
+const explorerErrorMessage =
+    document.getElementById("explorerErrorMessage");
 
-const adCategory = document.getElementById("adCategory");
-const adTitle = document.getElementById("adTitle");
-const adPrice = document.getElementById("adPrice");
-const adLocation = document.getElementById("adLocation");
-const adDate = document.getElementById("adDate");
-const adDescription = document.getElementById("adDescription");
+const explorerPage =
+    document.getElementById("explorerPage");
 
-const sellerName = document.getElementById("sellerName");
+const adMainImage =
+    document.getElementById("adMainImage");
+
+const adMainImageContainer =
+    document.getElementById("adMainImageContainer");
+
+const adThumbnails =
+    document.getElementById("adThumbnails");
+
+const galleryPrev =
+    document.getElementById("galleryPrev");
+
+const galleryNext =
+    document.getElementById("galleryNext");
+
+const imageCounter =
+    document.getElementById("imageCounter");
+
+const adCategory =
+    document.getElementById("adCategory");
+
+const adTitle =
+    document.getElementById("adTitle");
+
+const adPrice =
+    document.getElementById("adPrice");
+
+const adLocation =
+    document.getElementById("adLocation");
+
+const adDescription =
+    document.getElementById("adDescription");
+
+const adDetails =
+    document.getElementById("adDetails");
+
+const sellerAvatar =
+    document.getElementById("sellerAvatar");
+
+const sellerName =
+    document.getElementById("sellerName");
+
+const sellerLocation =
+    document.getElementById("sellerLocation");
+
 const sellerProfileButton =
     document.getElementById("sellerProfileButton");
 
 const whatsappButton =
     document.getElementById("whatsappButton");
+
+const phoneButton =
+    document.getElementById("phoneButton");
 
 const favoriteButton =
     document.getElementById("favoriteButton");
@@ -49,347 +104,1243 @@ const favoriteButton =
 const reportButton =
     document.getElementById("reportButton");
 
+const adReference =
+    document.getElementById("adReference");
 
-// =========================================================
-// ID DE L'ANNONCE
-// =========================================================
+const reportModal =
+    document.getElementById("reportModal");
+
+const reportModalClose =
+    document.getElementById("reportModalClose");
+
+const reportCancel =
+    document.getElementById("reportCancel");
+
+const reportSubmit =
+    document.getElementById("reportSubmit");
+
+const reportMessage =
+    document.getElementById("reportMessage");
+
+
+/* =========================================================
+   RÉCUPÉRER L'ID DE L'ANNONCE
+========================================================= */
 
 const params =
     new URLSearchParams(window.location.search);
 
-const annonceId =
-    params.get("id");
-
-let currentAd = null;
-let photos = [];
-let currentPhotoIndex = 0;
+annonceId =
+    cleanValue(params.get("id"));
 
 
-// =========================================================
-// FORMAT PRIX
-// =========================================================
+/* =========================================================
+   INITIALISATION
+========================================================= */
 
-function formatPrice(price, currency = "USD") {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    if (
-        price === undefined ||
-        price === null ||
-        price === ""
-    ) {
-        return "Prix sur demande";
+        console.log(
+            "CAMU EXPLORER — initialisation..."
+        );
+
+        if (!annonceId) {
+
+            showError(
+                "Aucune annonce n'a été sélectionnée."
+            );
+
+            return;
+        }
+
+        setupEvents();
+
+        loadAd();
+
     }
+);
 
-    const number = Number(price);
 
-    if (Number.isNaN(number)) {
-        return `${price} ${currency}`;
+/* =========================================================
+   AUTHENTIFICATION
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    (user) => {
+
+        currentUser = user || null;
+
     }
-
-    return (
-        new Intl.NumberFormat("fr-FR").format(number)
-        + " "
-        + currency
-    );
-}
+);
 
 
-// =========================================================
-// DATE
-// =========================================================
+/* =========================================================
+   CHARGER L'ANNONCE
+========================================================= */
 
-function formatDate(timestamp) {
+async function loadAd() {
 
-    if (!timestamp) {
-        return "Date inconnue";
-    }
+    showLoading();
 
     try {
 
-        const date = timestamp.toDate
-            ? timestamp.toDate()
-            : new Date(timestamp);
+        const annonceRef =
+            doc(
+                db,
+                "annonces",
+                annonceId
+            );
 
-        return new Intl.DateTimeFormat("fr-FR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        }).format(date);
+        const annonceSnapshot =
+            await getDoc(annonceRef);
+
+
+        if (!annonceSnapshot.exists()) {
+
+            showError(
+                "Cette annonce n'existe pas ou n'est plus disponible."
+            );
+
+            return;
+        }
+
+
+        currentAd = {
+            id: annonceSnapshot.id,
+            ...annonceSnapshot.data()
+        };
+
+
+        console.log(
+            "CAMU EXPLORER — annonce chargée :",
+            currentAd
+        );
+
+
+        /*
+         * On peut afficher une annonce active
+         * ou approuvée.
+         */
+        const status =
+            cleanValue(currentAd.status)
+                .toLowerCase();
+
+
+        if (
+            status &&
+            ![
+                "active",
+                "approved",
+                "pending"
+            ].includes(status)
+        ) {
+
+            showError(
+                "Cette annonce n'est plus disponible."
+            );
+
+            return;
+        }
+
+
+        renderAd();
+
+        await loadFavoriteState();
+
+        showPage();
+
 
     } catch (error) {
 
         console.error(
-            "Erreur formatage date :",
+            "CAMU EXPLORER — erreur :",
             error
         );
 
-        return "Date inconnue";
+        showError(
+            "Impossible de charger cette annonce."
+        );
+
     }
+
 }
 
 
-// =========================================================
-// PHOTOS
-// =========================================================
+/* =========================================================
+   AFFICHER L'ANNONCE
+========================================================= */
 
-function preparePhotos(ad) {
+function renderAd() {
+
+    if (!currentAd) {
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       TITRE
+    ----------------------------------------------------- */
+
+    const title =
+        cleanValue(
+            currentAd.title ||
+            currentAd.name ||
+            "Annonce"
+        );
+
+    adTitle.textContent =
+        title;
+
+
+    document.title =
+        `${title} — CAMU SERVICES`;
+
+
+    /* -----------------------------------------------------
+       CATÉGORIE
+    ----------------------------------------------------- */
+
+    const category =
+        cleanValue(
+            currentAd.category ||
+            currentAd.commerceCategory ||
+            currentAd.typeVehicule ||
+            currentAd.hotelType ||
+            currentAd.propertyType
+        );
+
+    adCategory.textContent =
+        category || "Annonce";
+
+
+    /* -----------------------------------------------------
+       PRIX
+    ----------------------------------------------------- */
+
+    adPrice.textContent =
+        formatPrice(
+            currentAd.price,
+            currentAd.currency
+        );
+
+
+    /* -----------------------------------------------------
+       LOCALISATION
+    ----------------------------------------------------- */
+
+    const city =
+        cleanValue(
+            currentAd.city ||
+            currentAd.ville
+        );
+
+    const commune =
+        cleanValue(
+            currentAd.commune
+        );
+
+    const neighborhood =
+        cleanValue(
+            currentAd.neighborhood ||
+            currentAd.quartier
+        );
+
+
+    const locationParts =
+        [
+            city,
+            commune,
+            neighborhood
+        ].filter(Boolean);
+
+
+    adLocation.textContent =
+        locationParts.length
+            ? locationParts.join(" • ")
+            : "Localisation non précisée";
+
+
+    /* -----------------------------------------------------
+       DESCRIPTION
+    ----------------------------------------------------- */
+
+    adDescription.textContent =
+        cleanValue(
+            currentAd.description
+        ) || "Aucune description disponible.";
+
+
+    /* -----------------------------------------------------
+       RÉFÉRENCE
+    ----------------------------------------------------- */
+
+    adReference.textContent =
+        currentAd.id;
+
+
+    /* -----------------------------------------------------
+       PHOTOS
+    ----------------------------------------------------- */
+
+    images =
+        extractImages(currentAd);
+
+
+    if (!images.length) {
+
+        images = [
+            FALLBACK_IMAGE
+        ];
+
+    }
+
+
+    currentImageIndex = 0;
+
+    renderGallery();
+
+
+    /* -----------------------------------------------------
+       DÉTAILS
+    ----------------------------------------------------- */
+
+    renderDetails();
+
+
+    /* -----------------------------------------------------
+       VENDEUR
+    ----------------------------------------------------- */
+
+    renderSeller();
+
+
+    /* -----------------------------------------------------
+       CONTACT
+    ----------------------------------------------------- */
+
+    renderContact();
+
+}
+
+
+/* =========================================================
+   GALERIE
+========================================================= */
+
+function renderGallery() {
+
+    if (!images.length) {
+
+        images = [
+            FALLBACK_IMAGE
+        ];
+
+    }
+
+
+    renderMainImage();
+
+    renderThumbnails();
+
+    updateGalleryControls();
+
+}
+
+
+function renderMainImage() {
+
+    const image =
+        images[currentImageIndex] ||
+        FALLBACK_IMAGE;
+
+
+    adMainImage.src =
+        image;
+
+    adMainImage.alt =
+        currentAd?.title ||
+        "Photo de l'annonce";
+
+
+    adMainImage.onerror =
+        () => {
+
+            if (
+                adMainImage.src.includes(
+                    FALLBACK_IMAGE
+                )
+            ) {
+                return;
+            }
+
+            adMainImage.src =
+                FALLBACK_IMAGE;
+        };
+
+
+    imageCounter.textContent =
+        `${currentImageIndex + 1} / ${images.length}`;
+}
+
+
+function renderThumbnails() {
+
+    adThumbnails.innerHTML = "";
+
+
+    images.forEach(
+        (image, index) => {
+
+            const button =
+                document.createElement("button");
+
+            button.type =
+                "button";
+
+            button.className =
+                "ad-thumbnail";
+
+            if (
+                index === currentImageIndex
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                image;
+
+            img.alt =
+                `Photo ${index + 1}`;
+
+            img.loading =
+                "lazy";
+
+
+            img.onerror =
+                () => {
+
+                    img.src =
+                        FALLBACK_IMAGE;
+
+                };
+
+
+            button.appendChild(img);
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    currentImageIndex =
+                        index;
+
+                    renderGallery();
+
+                }
+            );
+
+
+            adThumbnails.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+function updateGalleryControls() {
+
+    const hasMultiple =
+        images.length > 1;
+
+
+    galleryPrev.style.display =
+        hasMultiple
+            ? "flex"
+            : "none";
+
+
+    galleryNext.style.display =
+        hasMultiple
+            ? "flex"
+            : "none";
+
+
+    imageCounter.style.display =
+        images.length
+            ? "flex"
+            : "none";
+
+}
+
+
+function showPreviousImage() {
+
+    if (
+        images.length <= 1
+    ) {
+        return;
+    }
+
+
+    currentImageIndex--;
+
+    if (
+        currentImageIndex < 0
+    ) {
+
+        currentImageIndex =
+            images.length - 1;
+
+    }
+
+
+    renderGallery();
+
+}
+
+
+function showNextImage() {
+
+    if (
+        images.length <= 1
+    ) {
+        return;
+    }
+
+
+    currentImageIndex++;
+
+    if (
+        currentImageIndex >=
+        images.length
+    ) {
+
+        currentImageIndex = 0;
+
+    }
+
+
+    renderGallery();
+
+}
+
+
+/* =========================================================
+   EXTRAIRE LES PHOTOS
+========================================================= */
+
+function extractImages(ad) {
 
     let result = [];
 
-    // Nouveau système : plusieurs photos
-    if (Array.isArray(ad.images)) {
+
+    /*
+     * images peut être un tableau :
+     *
+     * ["url1", "url2"]
+     */
+
+    if (
+        Array.isArray(ad.images)
+    ) {
 
         result =
-            ad.images.filter(Boolean);
+            ad.images;
 
     }
 
-    // Ancien champ imageURL
-    if (
-        result.length === 0 &&
-        ad.imageURL
+
+    /*
+     * images peut aussi être une chaîne JSON :
+     *
+     * "[\"url1\",\"url2\"]"
+     */
+
+    else if (
+        typeof ad.images === "string"
     ) {
 
-        result.push(ad.imageURL);
+        const value =
+            ad.images.trim();
+
+
+        if (value) {
+
+            try {
+
+                const parsed =
+                    JSON.parse(value);
+
+
+                if (
+                    Array.isArray(parsed)
+                ) {
+
+                    result =
+                        parsed;
+
+                } else {
+
+                    result = [
+                        value
+                    ];
+
+                }
+
+            } catch {
+
+                /*
+                 * Si ce n'est pas du JSON,
+                 * on considère la chaîne comme
+                 * une seule URL.
+                 */
+
+                result = [
+                    value
+                ];
+
+            }
+
+        }
 
     }
 
-    // Ancien champ imageUrl
-    if (
-        result.length === 0 &&
-        ad.imageUrl
-    ) {
 
-        result.push(ad.imageUrl);
+    /*
+     * Autres champs de secours.
+     */
 
-    }
+    const fallbackFields = [
+        "imageURL",
+        "imageUrl",
+        "image",
+        "photoURL",
+        "photoUrl"
+    ];
 
-    // Ancien champ image
-    if (
-        result.length === 0 &&
-        ad.image
-    ) {
 
-        result.push(ad.image);
+    fallbackFields.forEach(
+        field => {
 
-    }
+            const value =
+                cleanValue(ad[field]);
 
-    return result;
+
+            if (
+                value &&
+                !result.includes(value)
+            ) {
+
+                result.push(value);
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Nettoyage des mauvaises valeurs
+     * comme "url1".
+     */
+
+    result =
+        result
+            .map(item => cleanValue(item))
+            .filter(isValidImageUrl);
+
+
+    return [
+        ...new Set(result)
+    ];
+
 }
 
 
-// =========================================================
-// AFFICHER UNE PHOTO
-// =========================================================
+function isValidImageUrl(url) {
 
-function displayPhoto(index) {
-
-    if (!photos.length) {
-
-        if (mainPhoto) {
-            mainPhoto.style.display = "none";
-        }
-
-        return;
+    if (!url) {
+        return false;
     }
 
-    if (index < 0) {
-        index = photos.length - 1;
+
+    const value =
+        url.toLowerCase();
+
+
+    if (
+        value === "url1" ||
+        value === "url2" ||
+        value === "image" ||
+        value === "photo"
+    ) {
+
+        return false;
+
     }
 
-    if (index >= photos.length) {
-        index = 0;
-    }
 
-    currentPhotoIndex = index;
+    return (
+        value.startsWith("https://") ||
+        value.startsWith("http://") ||
+        value.startsWith("/") ||
+        value.startsWith("./") ||
+        value.startsWith("assets/")
+    );
 
-    if (mainPhoto) {
-
-        mainPhoto.style.display = "block";
-
-        mainPhoto.src =
-            photos[index];
-
-        mainPhoto.alt =
-            currentAd?.title ||
-            "Photo de l'annonce";
-    }
-
-    document
-        .querySelectorAll(".photo-thumbnail")
-        .forEach((thumb, i) => {
-
-            thumb.classList.toggle(
-                "active",
-                i === currentPhotoIndex
-            );
-
-        });
 }
 
 
-// =========================================================
-// CRÉER LES MINIATURES
-// =========================================================
+/* =========================================================
+   DÉTAILS
+========================================================= */
 
-function createThumbnails() {
+function renderDetails() {
 
-    if (!photoThumbnails) {
+    const details = [];
+
+
+    addDetail(
+        details,
+        "Type de publication",
+        currentAd.publicationType
+    );
+
+
+    addDetail(
+        details,
+        "Type de transaction",
+        currentAd.transactionType
+    );
+
+
+    addDetail(
+        details,
+        "Type de bien",
+        currentAd.propertyType
+    );
+
+
+    addDetail(
+        details,
+        "Catégorie commerce",
+        currentAd.commerceCategory
+    );
+
+
+    addDetail(
+        details,
+        "Type de véhicule",
+        currentAd.vehicleType
+    );
+
+
+    addDetail(
+        details,
+        "Marque",
+        currentAd.marque ||
+        currentAd.marqueVehicule
+    );
+
+
+    addDetail(
+        details,
+        "Modèle",
+        currentAd.modele
+    );
+
+
+    addDetail(
+        details,
+        "Année",
+        currentAd.annee
+    );
+
+
+    addDetail(
+        details,
+        "Type d'hébergement",
+        currentAd.hotelType
+    );
+
+
+    addDetail(
+        details,
+        "Devise",
+        currentAd.currency
+    );
+
+
+    addDetail(
+        details,
+        "Nombre de photos",
+        currentAd.imageCount
+    );
+
+
+    addDetail(
+        details,
+        "Vues",
+        currentAd.views
+    );
+
+
+    if (!details.length) {
+
+        adDetails.innerHTML = `
+            <div class="ad-detail">
+                <span class="ad-detail-label">
+                    Informations
+                </span>
+
+                <strong class="ad-detail-value">
+                    Voir la description de l'annonce
+                </strong>
+            </div>
+        `;
+
         return;
     }
 
-    photoThumbnails.innerHTML = "";
+
+    adDetails.innerHTML =
+        details.join("");
+
+}
 
 
-    // Aucune photo
-    if (!photos.length) {
+function addDetail(
+    array,
+    label,
+    value
+) {
 
-        if (prevPhoto) {
-            prevPhoto.style.display = "none";
-        }
+    const cleaned =
+        cleanValue(value);
 
-        if (nextPhoto) {
-            nextPhoto.style.display = "none";
-        }
 
+    if (!cleaned) {
         return;
     }
 
 
-    // Une seule photo
-    if (photos.length <= 1) {
+    array.push(`
+        <div class="ad-detail">
 
-        if (prevPhoto) {
-            prevPhoto.style.display = "none";
-        }
+            <span class="ad-detail-label">
+                ${escapeHtml(label)}
+            </span>
 
-        if (nextPhoto) {
-            nextPhoto.style.display = "none";
-        }
+            <strong class="ad-detail-value">
+                ${escapeHtml(cleaned)}
+            </strong>
 
-    } else {
+        </div>
+    `);
 
-        if (prevPhoto) {
-            prevPhoto.style.display = "flex";
-        }
-
-        if (nextPhoto) {
-            nextPhoto.style.display = "flex";
-        }
-    }
+}
 
 
-    // Créer chaque miniature
-    photos.forEach((photo, index) => {
+/* =========================================================
+   VENDEUR
+========================================================= */
 
-        const button =
-            document.createElement("button");
+function renderSeller() {
 
-        button.type = "button";
+    const name =
+        cleanValue(
+            currentAd.ownerName ||
+            currentAd.sellerName ||
+            currentAd.name ||
+            "Vendeur"
+        );
 
-        button.className =
-            "photo-thumbnail" +
-            (index === 0 ? " active" : "");
+
+    const city =
+        cleanValue(
+            currentAd.city ||
+            currentAd.ville
+        );
+
+
+    const commune =
+        cleanValue(
+            currentAd.commune
+        );
+
+
+    sellerName.textContent =
+        name;
+
+
+    sellerLocation.textContent =
+        [
+            city,
+            commune
+        ]
+        .filter(Boolean)
+        .join(" • ") ||
+        "Localisation non précisée";
+
+
+    /*
+     * Photo du vendeur.
+     */
+
+    const sellerPhoto =
+        cleanValue(
+            currentAd.ownerPhotoURL ||
+            currentAd.ownerPhoto ||
+            currentAd.photoURL
+        );
+
+
+    if (
+        isValidImageUrl(sellerPhoto)
+    ) {
+
+        sellerAvatar.innerHTML = `
+            <img
+                src="${escapeHtml(sellerPhoto)}"
+                alt="${escapeHtml(name)}"
+            >
+        `;
 
 
         const image =
-            document.createElement("img");
-
-        image.src = photo;
-
-        image.alt =
-            `Photo ${index + 1}`;
-
-        image.loading = "lazy";
+            sellerAvatar.querySelector("img");
 
 
-        button.appendChild(image);
-
-
-        button.addEventListener(
-            "click",
+        image.onerror =
             () => {
 
-                displayPhoto(index);
+                sellerAvatar.innerHTML =
+                    `<i class="fa-solid fa-user"></i>`;
 
-            }
+            };
+
+    } else {
+
+        sellerAvatar.innerHTML =
+            `<i class="fa-solid fa-user"></i>`;
+
+    }
+
+
+    /*
+     * =====================================================
+     * VOIR LE PROFIL
+     * =====================================================
+     */
+
+    const sellerId =
+        cleanValue(
+            currentAd.ownerId ||
+            currentAd.userId
         );
 
 
-        photoThumbnails.appendChild(
-            button
+    if (
+        sellerId
+    ) {
+
+        sellerProfileButton.href =
+            `profil.html?id=${encodeURIComponent(sellerId)}`;
+
+        sellerProfileButton.style.display =
+            "inline-flex";
+
+    } else {
+
+        sellerProfileButton.removeAttribute(
+            "href"
         );
 
-    });
+        sellerProfileButton.style.display =
+            "none";
+
+    }
+
 }
 
 
-// =========================================================
-// WHATSAPP
-// =========================================================
+/* =========================================================
+   CONTACT
+========================================================= */
 
-function openWhatsApp() {
+function renderContact() {
 
-    if (!currentAd?.whatsapp) {
-
-        alert(
-            "Le numéro WhatsApp de cet annonceur n'est pas disponible."
+    const whatsapp =
+        cleanPhone(
+            currentAd.whatsapp ||
+            currentAd.WhatsApp ||
+            currentAd.ownerWhatsapp ||
+            currentAd.ownerWhatsApp
         );
 
+
+    const phone =
+        cleanPhone(
+            currentAd.phone ||
+            currentAd.telephone ||
+            currentAd.ownerPhone
+        );
+
+
+    /*
+     * WHATSAPP
+     */
+
+    if (whatsapp) {
+
+        const message =
+            `Bonjour, je suis intéressé(e) par votre annonce "${cleanValue(currentAd.title)}" sur CAMU SERVICES.`;
+
+        whatsappButton.href =
+            `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+
+        whatsappButton.style.display =
+            "flex";
+
+    } else {
+
+        whatsappButton.style.display =
+            "none";
+
+    }
+
+
+    /*
+     * APPEL
+     */
+
+    if (phone) {
+
+        phoneButton.href =
+            `tel:${phone}`;
+
+        phoneButton.style.display =
+            "flex";
+
+    } else {
+
+        phoneButton.style.display =
+            "none";
+
+    }
+
+
+    /*
+     * Si aucun moyen de contact n'est disponible.
+     */
+
+    if (
+        !whatsapp &&
+        !phone
+    ) {
+
+        whatsappButton.style.display =
+            "none";
+
+        phoneButton.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   FAVORIS
+========================================================= */
+
+async function loadFavoriteState() {
+
+    if (
+        !currentUser ||
+        !favoriteButton ||
+        !currentAd
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const favoriteId =
+            `${currentUser.uid}_${currentAd.id}`;
+
+
+        const favoriteRef =
+            doc(
+                db,
+                "favorites",
+                favoriteId
+            );
+
+
+        const favoriteSnapshot =
+            await getDoc(
+                favoriteRef
+            );
+
+
+        if (
+            favoriteSnapshot.exists()
+        ) {
+
+            setFavoriteActive(true);
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "CAMU EXPLORER — impossible de vérifier le favori :",
+            error
+        );
+
+    }
+
+}
+
+
+async function toggleFavorite() {
+
+    if (!currentUser) {
+
+        alert(
+            "Connectez-vous pour ajouter une annonce à vos favoris."
+        );
+
+        window.location.href =
+            `connexion.html?redirect=${encodeURIComponent(window.location.href)}`;
+
+        return;
+
+    }
+
+
+    if (!currentAd) {
         return;
     }
 
 
-    const number =
-        String(currentAd.whatsapp)
-            .replace(/[^\d]/g, "");
+    try {
+
+        const favoriteId =
+            `${currentUser.uid}_${currentAd.id}`;
 
 
-    if (!number) {
+        const favoriteRef =
+            doc(
+                db,
+                "favorites",
+                favoriteId
+            );
 
-        alert(
-            "Numéro WhatsApp invalide."
+
+        const existing =
+            await getDoc(
+                favoriteRef
+            );
+
+
+        /*
+         * Si le document existe,
+         * on le supprime.
+         *
+         * Sinon on le crée.
+         *
+         * NOTE :
+         * deleteDoc n'est pas importé au début.
+         * On utilise ici une importation dynamique.
+         */
+
+        if (
+            existing.exists()
+        ) {
+
+            const {
+                deleteDoc
+            } = await import(
+                "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+            );
+
+
+            await deleteDoc(
+                favoriteRef
+            );
+
+
+            setFavoriteActive(false);
+
+
+        } else {
+
+            const {
+                setDoc
+            } = await import(
+                "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+            );
+
+
+            await setDoc(
+                favoriteRef,
+                {
+                    userId: currentUser.uid,
+                    annonceId: currentAd.id,
+                    title:
+                        cleanValue(currentAd.title),
+                    imageURL:
+                        images[0] || "",
+                    createdAt:
+                        serverTimestamp()
+                }
+            );
+
+
+            setFavoriteActive(true);
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "CAMU EXPLORER — erreur favori :",
+            error
         );
 
-        return;
+        alert(
+            "Impossible de modifier les favoris."
+        );
+
     }
 
-
-    const message =
-        `Bonjour, je viens de voir votre annonce "${currentAd.title || ""}" sur CAMU SERVICES. Je suis intéressé(e). Est-elle toujours disponible ?`;
-
-
-    const url =
-        `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-
-
-    window.open(
-        url,
-        "_blank"
-    );
 }
 
 
-// =========================================================
-// FAVORIS
-// =========================================================
-
-function favoriteStorageKey() {
-
-    return `camu_favorite_${annonceId}`;
-}
-
-
-function updateFavoriteButton() {
+function setFavoriteActive(active) {
 
     if (!favoriteButton) {
         return;
     }
-
-
-    const active =
-        localStorage.getItem(
-            favoriteStorageKey()
-        ) === "true";
 
 
     favoriteButton.classList.toggle(
@@ -398,604 +1349,523 @@ function updateFavoriteButton() {
     );
 
 
-    favoriteButton.innerHTML =
-        active
-
-            ? `<i class="fa-solid fa-heart"></i> Retirer des favoris`
-
-            : `<i class="fa-regular fa-heart"></i> Ajouter aux favoris`;
-}
-
-
-function toggleFavorite() {
-
-    const active =
-        localStorage.getItem(
-            favoriteStorageKey()
-        ) === "true";
-
-
     if (active) {
 
-        localStorage.removeItem(
-            favoriteStorageKey()
+        favoriteButton.innerHTML =
+            `<i class="fa-solid fa-heart"></i>`;
+
+        favoriteButton.setAttribute(
+            "aria-label",
+            "Retirer des favoris"
         );
 
     } else {
 
-        localStorage.setItem(
-            favoriteStorageKey(),
-            "true"
+        favoriteButton.innerHTML =
+            `<i class="fa-regular fa-heart"></i>`;
+
+        favoriteButton.setAttribute(
+            "aria-label",
+            "Ajouter aux favoris"
         );
 
     }
 
-
-    updateFavoriteButton();
 }
 
 
-// =========================================================
-// SIGNALEMENT
-// =========================================================
+/* =========================================================
+   SIGNALER UNE ANNONCE
+========================================================= */
 
-async function reportAd() {
+function openReportModal() {
 
-    if (!currentAd || !annonceId) {
+    if (!currentAd) {
         return;
+    }
+
+
+    reportModal.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+function closeReportModal() {
+
+    reportModal.classList.add(
+        "hidden"
+    );
+
+}
+
+
+async function submitReport() {
+
+    if (!currentAd) {
+        return;
+    }
+
+
+    if (!currentUser) {
+
+        alert(
+            "Connectez-vous pour signaler une annonce."
+        );
+
+        closeReportModal();
+
+        window.location.href =
+            `connexion.html?redirect=${encodeURIComponent(window.location.href)}`;
+
+        return;
+
+    }
+
+
+    const selected =
+        document.querySelector(
+            'input[name="reportReason"]:checked'
+        );
+
+
+    if (!selected) {
+
+        alert(
+            "Veuillez sélectionner un motif."
+        );
+
+        return;
+
     }
 
 
     const reason =
-        prompt(
-            "Pourquoi souhaitez-vous signaler cette annonce ?"
+        cleanValue(selected.value);
+
+
+    const message =
+        cleanValue(
+            reportMessage.value
         );
 
 
-    if (
-        !reason ||
-        !reason.trim()
-    ) {
-        return;
-    }
-
-
     try {
+
+        reportSubmit.disabled =
+            true;
+
+
+        reportSubmit.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Envoi...
+        `;
+
 
         await addDoc(
             collection(db, "reports"),
             {
-
                 annonceId:
-                    annonceId,
+                    currentAd.id,
 
-                annonceTitle:
-                    currentAd.title || "",
+                userId:
+                    currentUser.uid,
 
                 ownerId:
-                    currentAd.ownerId ||
-                    currentAd.userId ||
-                    "",
+                    cleanValue(
+                        currentAd.ownerId ||
+                        currentAd.userId
+                    ),
 
-                reason:
-                    reason.trim(),
+                reason,
 
-                reporterId:
-                    auth.currentUser?.uid ||
-                    null,
-
-                status:
-                    "pending",
+                message,
 
                 createdAt:
-                    serverTimestamp()
+                    serverTimestamp(),
+
+                status:
+                    "pending"
             }
         );
 
 
         alert(
-            "Merci. Votre signalement a été envoyé."
+            "Votre signalement a bien été envoyé."
         );
+
+
+        reportMessage.value =
+            "";
+
+
+        document
+            .querySelectorAll(
+                'input[name="reportReason"]'
+            )
+            .forEach(
+                input => {
+                    input.checked = false;
+                }
+            );
+
+
+        closeReportModal();
 
 
     } catch (error) {
 
         console.error(
-            "Erreur signalement :",
+            "CAMU EXPLORER — erreur signalement :",
             error
         );
 
 
         alert(
-            "Impossible d'envoyer le signalement pour le moment."
+            "Impossible d'envoyer le signalement."
         );
+
+
+    } finally {
+
+        reportSubmit.disabled =
+            false;
+
+
+        reportSubmit.innerHTML = `
+            <i class="fa-solid fa-flag"></i>
+            Envoyer le signalement
+        `;
+
     }
+
 }
 
 
-// =========================================================
-// CHARGEMENT DE L'ANNONCE
-// =========================================================
+/* =========================================================
+   AFFICHAGE
+========================================================= */
 
-async function loadAd() {
+function showLoading() {
 
-    // Aucun ID dans l'URL
-    if (!annonceId) {
+    explorerLoading.classList.remove(
+        "hidden"
+    );
 
-        if (loadingState) {
-            loadingState.classList.add("hidden");
-        }
+    explorerError.classList.add(
+        "hidden"
+    );
 
-        if (errorState) {
-            errorState.classList.remove("hidden");
-        }
+    explorerPage.classList.add(
+        "hidden"
+    );
 
-        return;
-    }
-
-
-    try {
-
-        // =================================================
-        // IMPORTANT :
-        // LES ANNONCES SONT DANS LA COLLECTION "annonces"
-        // =================================================
-
-        const adRef =
-            doc(
-                db,
-                "annonces",
-                annonceId
-            );
+}
 
 
-        const snapshot =
-            await getDoc(adRef);
+function showPage() {
+
+    explorerLoading.classList.add(
+        "hidden"
+    );
+
+    explorerError.classList.add(
+        "hidden"
+    );
+
+    explorerPage.classList.remove(
+        "hidden"
+    );
+
+}
 
 
-        // =================================================
-        // ANNONCE INTROUVABLE
-        // =================================================
+function showError(message) {
 
-        if (!snapshot.exists()) {
+    explorerLoading.classList.add(
+        "hidden"
+    );
 
-            console.error(
-                "Annonce introuvable dans annonces :",
-                annonceId
-            );
+    explorerPage.classList.add(
+        "hidden"
+    );
 
-
-            if (loadingState) {
-                loadingState.classList.add("hidden");
-            }
-
-            if (errorState) {
-                errorState.classList.remove("hidden");
-            }
-
-            return;
-        }
+    explorerError.classList.remove(
+        "hidden"
+    );
 
 
-        // =================================================
-        // RÉCUPÉRER LES DONNÉES
-        // =================================================
+    explorerErrorMessage.textContent =
+        message;
 
-        currentAd = {
-
-            id:
-                snapshot.id,
-
-            ...snapshot.data()
-
-        };
+}
 
 
-        console.log(
-            "Annonce chargée :",
-            currentAd
-        );
+/* =========================================================
+   EVENTS
+========================================================= */
+
+function setupEvents() {
+
+    galleryPrev?.addEventListener(
+        "click",
+        showPreviousImage
+    );
 
 
-        // =================================================
-        // TITRE
-        // =================================================
-
-        if (adTitle) {
-
-            adTitle.textContent =
-                currentAd.title ||
-                currentAd.titre ||
-                "Annonce sans titre";
-
-        }
+    galleryNext?.addEventListener(
+        "click",
+        showNextImage
+    );
 
 
-        // =================================================
-        // CATÉGORIE
-        // =================================================
-
-        if (adCategory) {
-
-            adCategory.textContent =
-                currentAd.category ||
-                currentAd.categorie ||
-                "Autres";
-
-        }
+    favoriteButton?.addEventListener(
+        "click",
+        toggleFavorite
+    );
 
 
-        // =================================================
-        // PRIX
-        // =================================================
-
-        if (adPrice) {
-
-            adPrice.textContent =
-                formatPrice(
-                    currentAd.price,
-                    currentAd.currency ||
-                    "USD"
-                );
-
-        }
+    reportButton?.addEventListener(
+        "click",
+        openReportModal
+    );
 
 
-        // =================================================
-        // LOCALISATION
-        // =================================================
-
-        const city =
-            currentAd.city ||
-            currentAd.ville ||
-            "";
+    reportModalClose?.addEventListener(
+        "click",
+        closeReportModal
+    );
 
 
-        const neighborhood =
-            currentAd.neighborhood ||
-            currentAd.quartier ||
-            "";
+    reportCancel?.addEventListener(
+        "click",
+        closeReportModal
+    );
 
 
-        if (adLocation) {
+    reportSubmit?.addEventListener(
+        "click",
+        submitReport
+    );
+
+
+    reportModal?.addEventListener(
+        "click",
+        event => {
 
             if (
-                city &&
-                neighborhood
+                event.target === reportModal
             ) {
 
-                adLocation.textContent =
-                    `${neighborhood}, ${city}`;
-
-            } else {
-
-                adLocation.textContent =
-                    city ||
-                    neighborhood ||
-                    "Localisation non précisée";
+                closeReportModal();
 
             }
-        }
-
-
-        // =================================================
-        // DATE
-        // =================================================
-
-        if (adDate) {
-
-            adDate.textContent =
-                formatDate(
-                    currentAd.createdAt
-                );
 
         }
+    );
 
 
-        // =================================================
-        // DESCRIPTION
-        // =================================================
+    /*
+     * Navigation clavier galerie.
+     */
 
-        if (adDescription) {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-            adDescription.textContent =
-                currentAd.description ||
-                "Aucune description disponible.";
+            if (
+                event.key === "ArrowLeft"
+            ) {
 
-        }
+                showPreviousImage();
 
+            }
 
-        // =================================================
-        // ANNONCEUR
-        // =================================================
+            if (
+                event.key === "ArrowRight"
+            ) {
 
-        if (sellerName) {
+                showNextImage();
 
-            sellerName.textContent =
-                currentAd.ownerName ||
-                "Annonceur CAMU SERVICES";
+            }
 
-        }
+            if (
+                event.key === "Escape"
+            ) {
 
+                closeReportModal();
 
-        if (
-            sellerProfileButton &&
-            currentAd.ownerId
-        ) {
-
-            sellerProfileButton.href =
-                `profil.html?id=${encodeURIComponent(currentAd.ownerId)}`;
-
-            sellerProfileButton.style.display =
-                "inline-flex";
-
-        } else if (sellerProfileButton) {
-
-            sellerProfileButton.style.display =
-                "none";
+            }
 
         }
+    );
+
+}
 
 
-        // =================================================
-        // PHOTOS
-        // =================================================
+/* =========================================================
+   FORMATAGE
+========================================================= */
 
-        photos =
-            preparePhotos(currentAd);
+function formatPrice(
+    price,
+    currency
+) {
 
+    if (
+        price === null ||
+        price === undefined ||
+        price === ""
+    ) {
 
-        createThumbnails();
+        return "Prix sur demande";
 
-        displayPhoto(0);
-
-
-        // =================================================
-        // AFFICHAGE
-        // =================================================
-
-        if (loadingState) {
-
-            loadingState.classList.add(
-                "hidden"
-            );
-
-        }
+    }
 
 
-        if (errorState) {
-
-            errorState.classList.add(
-                "hidden"
-            );
-
-        }
-
-
-        if (adDetail) {
-
-            adDetail.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-        // =================================================
-        // FAVORIS
-        // =================================================
-
-        updateFavoriteButton();
-
-
-        // =================================================
-        // WHATSAPP
-        // =================================================
-
-        if (whatsappButton) {
-
-            whatsappButton.onclick =
-                openWhatsApp;
-
-        }
-
-
-        // =================================================
-        // FAVORIS
-        // =================================================
-
-        if (favoriteButton) {
-
-            favoriteButton.onclick =
-                toggleFavorite;
-
-        }
-
-
-        // =================================================
-        // SIGNALEMENT
-        // =================================================
-
-        if (reportButton) {
-
-            reportButton.onclick =
-                reportAd;
-
-        }
-
-
-        // =================================================
-        // TITRE DU NAVIGATEUR
-        // =================================================
-
-        document.title =
-            `${currentAd.title || "Annonce"} — CAMU SERVICES`;
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur chargement annonce :",
-            error
+    const numericPrice =
+        Number(
+            String(price)
+                .replace(/\s/g, "")
+                .replace(",", ".")
         );
 
 
-        if (loadingState) {
+    if (
+        Number.isNaN(numericPrice)
+    ) {
 
-            loadingState.classList.add(
-                "hidden"
-            );
+        const raw =
+            cleanValue(price);
 
-        }
+        return raw ||
+            "Prix sur demande";
 
-
-        if (errorState) {
-
-            errorState.classList.remove(
-                "hidden"
-            );
-
-        }
     }
-}
 
 
-// =========================================================
-// NAVIGATION PHOTOS
-// =========================================================
-
-if (prevPhoto) {
-
-    prevPhoto.addEventListener(
-        "click",
-        () => {
-
-            displayPhoto(
-                currentPhotoIndex - 1
-            );
-
-        }
-    );
-
-}
-
-
-if (nextPhoto) {
-
-    nextPhoto.addEventListener(
-        "click",
-        () => {
-
-            displayPhoto(
-                currentPhotoIndex + 1
-            );
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// MENU MOBILE
-// =========================================================
-
-const menuToggle =
-    document.getElementById("menuToggle");
-
-const sidebar =
-    document.getElementById("sidebar");
-
-const sidebarOverlay =
-    document.getElementById("sidebarOverlay");
-
-const closeSidebar =
-    document.getElementById("closeSidebar");
-
-
-if (
-    menuToggle &&
-    sidebar
-) {
-
-    menuToggle.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "open"
-            );
-
-
-            if (sidebarOverlay) {
-
-                sidebarOverlay.classList.toggle(
-                    "active"
-                );
-
+    const formatted =
+        new Intl.NumberFormat(
+            "fr-FR",
+            {
+                maximumFractionDigits: 2
             }
-
-        }
-    );
-
-}
+        ).format(
+            numericPrice
+        );
 
 
-if (
-    closeSidebar &&
-    sidebar
-) {
-
-    closeSidebar.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.remove(
-                "open"
-            );
+    const currencyValue =
+        cleanValue(currency);
 
 
-            if (sidebarOverlay) {
-
-                sidebarOverlay.classList.remove(
-                    "active"
-                );
-
-            }
-
-        }
-    );
+    return currencyValue
+        ? `${formatted} ${currencyValue}`
+        : formatted;
 
 }
 
 
-if (sidebarOverlay) {
+function cleanPhone(value) {
 
-    sidebarOverlay.addEventListener(
-        "click",
-        () => {
+    let phone =
+        cleanValue(value);
 
-            sidebar.classList.remove(
-                "open"
-            );
 
-            sidebarOverlay.classList.remove(
-                "active"
-            );
+    if (!phone) {
+        return "";
+    }
 
-        }
-    );
+
+    /*
+     * Retire les espaces, parenthèses,
+     * tirets et autres caractères.
+     */
+
+    phone =
+        phone.replace(
+            /[\s().-]/g,
+            ""
+        );
+
+
+    /*
+     * +243 devient 243 pour wa.me
+     */
+
+    if (
+        phone.startsWith("+")
+    ) {
+
+        phone =
+            phone.substring(1);
+
+    }
+
+
+    /*
+     * RDC : 097..., 081..., 099...
+     *
+     * On transforme 0XXXXXXXXX
+     * en 243XXXXXXXXX.
+     */
+
+    if (
+        phone.startsWith("0")
+    ) {
+
+        phone =
+            "243" +
+            phone.substring(1);
+
+    }
+
+
+    return phone;
 
 }
 
 
-// =========================================================
-// DÉMARRAGE
-// =========================================================
+function cleanValue(value) {
 
-loadAd();
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
 
 
-console.log(
-    "CAMU SERVICES — explorer.js chargé avec la collection annonces."
-);
+    return String(value).trim();
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
