@@ -1,925 +1,2039 @@
-<!DOCTYPE html>
-<html lang="fr">
+/* =========================================================
+   CAMU SERVICES — ADMIN ANNONCES
+   js/admin-annonces.js
+   ========================================================= */
 
-<head>
-    <meta charset="UTF-8">
+import { auth, db } from "./firebase-config.js";
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+import {
+    collection,
+    getDocs,
+    doc,
+    updateDoc,
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-    <meta
-        name="description"
-        content="Gestion des annonces — CAMU SERVICES"
-    >
-
-    <title>Annonces — CAMU SERVICES ADMIN</title>
-
-    <link
-        rel="icon"
-        href="logo.png"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/admin.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/admin-annonces.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-</head>
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
-<body class="admin-page admin-annonces-page">
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let allAds = [];
+let filteredAds = [];
+let selectedAd = null;
 
 
-<!-- =====================================================
-     HEADER MOBILE
-===================================================== -->
+/* =========================================================
+   ÉLÉMENTS
+========================================================= */
 
-<header class="admin-mobile-header">
+const adsList =
+    document.getElementById("adsList");
 
-    <button
-        id="adminMenuButton"
-        class="admin-menu-button"
-        type="button"
-        aria-label="Ouvrir le menu"
-    >
-        <i class="fa-solid fa-bars"></i>
-    </button>
+const adsLoading =
+    document.getElementById("adsLoading");
+
+const adsEmpty =
+    document.getElementById("adsEmpty");
+
+const adsSearchInput =
+    document.getElementById("adsSearchInput");
+
+const adsStatusFilter =
+    document.getElementById("adsStatusFilter");
+
+const adsDomainFilter =
+    document.getElementById("adsDomainFilter");
+
+const adsCategoryFilter =
+    document.getElementById("adsCategoryFilter");
+
+const adsCityFilter =
+    document.getElementById("adsCityFilter");
+
+const adsSortFilter =
+    document.getElementById("adsSortFilter");
+
+const adsResultsCount =
+    document.getElementById("adsResultsCount");
+
+const resetAdsFilters =
+    document.getElementById("resetAdsFilters");
+
+const refreshAdsButton =
+    document.getElementById("refreshAdsButton");
+
+const adminRefreshButton =
+    document.getElementById("adminRefreshButton");
+
+const adminMessage =
+    document.getElementById("adminMessage");
+
+const adminLogoutButton =
+    document.getElementById("adminLogoutButton");
+
+const adminMenuButton =
+    document.getElementById("adminMenuButton");
+
+const adminCloseSidebar =
+    document.getElementById("adminCloseSidebar");
+
+const adminSidebar =
+    document.getElementById("adminSidebar");
+
+const adminOverlay =
+    document.getElementById("adminOverlay");
+
+const adDetailsModal =
+    document.getElementById("adDetailsModal");
+
+const modalAdTitle =
+    document.getElementById("modalAdTitle");
+
+const modalAdContent =
+    document.getElementById("modalAdContent");
+
+const modalApproveButton =
+    document.getElementById("modalApproveButton");
+
+const modalDisableButton =
+    document.getElementById("modalDisableButton");
+
+const modalDeleteButton =
+    document.getElementById("modalDeleteButton");
 
 
-    <a
-        href="admin.html"
-        class="admin-mobile-logo"
-    >
-        <img
-            src="logo.png"
-            alt="CAMU SERVICES"
-        >
+/* =========================================================
+   UTILITAIRES
+========================================================= */
 
-        <span>CAMU SERVICES</span>
-    </a>
+function clean(value) {
+    return String(value ?? "").trim();
+}
 
 
-    <div class="admin-mobile-user">
-        <i class="fa-solid fa-user-shield"></i>
-    </div>
+function normalize(value) {
+    return clean(value)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
 
-</header>
+
+function escapeHTML(value) {
+
+    return clean(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+function numberValue(value) {
 
-<aside
-    id="adminSidebar"
-    class="admin-sidebar"
->
+    const number = Number(
+        String(value ?? "")
+            .replace(/[^\d.,-]/g, "")
+            .replace(",", ".")
+    );
 
-    <div class="admin-sidebar-header">
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
 
-        <a
-            href="admin.html"
-            class="admin-brand"
-        >
 
+function formatPrice(value, currency = "") {
+
+    const number = numberValue(value);
+
+    if (!number) {
+        return "Prix non indiqué";
+    }
+
+    return (
+        new Intl.NumberFormat("fr-FR")
+            .format(number)
+        + (currency ? ` ${escapeHTML(currency)}` : "")
+    );
+}
+
+
+function getTimestampValue(value) {
+
+    if (!value) {
+        return 0;
+    }
+
+    if (typeof value.toMillis === "function") {
+        return value.toMillis();
+    }
+
+    if (value.seconds) {
+        return value.seconds * 1000;
+    }
+
+    const date = new Date(value);
+
+    return Number.isNaN(date.getTime())
+        ? 0
+        : date.getTime();
+}
+
+
+function formatDate(value) {
+
+    const timestamp = getTimestampValue(value);
+
+    if (!timestamp) {
+        return "Date inconnue";
+    }
+
+    return new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    ).format(new Date(timestamp));
+}
+
+
+/* =========================================================
+   DOM MESSAGE
+========================================================= */
+
+function showMessage(message, type = "info") {
+
+    if (!adminMessage) {
+        return;
+    }
+
+    adminMessage.hidden = false;
+
+    adminMessage.textContent = message;
+
+    adminMessage.dataset.type = type;
+
+    clearTimeout(showMessage.timer);
+
+    showMessage.timer = setTimeout(() => {
+
+        adminMessage.hidden = true;
+
+    }, 4000);
+}
+
+
+/* =========================================================
+   STATUT
+========================================================= */
+
+function normalizeStatus(status) {
+
+    const value = normalize(status);
+
+    if (
+        value === "approved" ||
+        value === "approuvee" ||
+        value === "approuve"
+    ) {
+        return "approved";
+    }
+
+    if (
+        value === "pending" ||
+        value === "en attente"
+    ) {
+        return "pending";
+    }
+
+    if (
+        value === "disabled" ||
+        value === "inactive" ||
+        value === "desactivee" ||
+        value === "desactive"
+    ) {
+        return "disabled";
+    }
+
+    if (
+        value === "rejected" ||
+        value === "refused"
+    ) {
+        return "rejected";
+    }
+
+    if (value === "active") {
+        return "active";
+    }
+
+    return value || "active";
+}
+
+
+function statusLabel(status) {
+
+    switch (normalizeStatus(status)) {
+
+        case "active":
+            return "Active";
+
+        case "approved":
+            return "Approuvée";
+
+        case "pending":
+            return "En attente";
+
+        case "disabled":
+            return "Désactivée";
+
+        case "rejected":
+            return "Refusée";
+
+        default:
+            return clean(status) || "Inconnu";
+    }
+}
+
+
+/* =========================================================
+   DÉTECTION DOMAINE
+========================================================= */
+
+function detectDomain(ad) {
+
+    const text = normalize([
+        ad.category,
+        ad.title,
+        ad.description,
+        ad.publicationType,
+        ad.accountType,
+        ad.propertyType,
+        ad.vehicleType,
+        ad.hotelType,
+        ad.commerceCategory,
+        ad.service,
+        ad.typeVehicule
+    ].join(" "));
+
+
+    if (
+        text.includes("immobilier") ||
+        text.includes("maison") ||
+        text.includes("appartement") ||
+        text.includes("terrain") ||
+        text.includes("parcelle") ||
+        text.includes("villa") ||
+        text.includes("bureau") ||
+        text.includes("location immobiliere")
+    ) {
+        return "immobilier";
+    }
+
+
+    if (
+        text.includes("commerce") ||
+        text.includes("vetement") ||
+        text.includes("chaussure") ||
+        text.includes("telephone") ||
+        text.includes("informatique") ||
+        text.includes("alimentation") ||
+        text.includes("cosmetique") ||
+        text.includes("meuble") ||
+        text.includes("produit")
+    ) {
+        return "commerce";
+    }
+
+
+    if (
+        text.includes("vehicule") ||
+        text.includes("transport") ||
+        text.includes("voiture") ||
+        text.includes("moto") ||
+        text.includes("taxi") ||
+        text.includes("camion") ||
+        text.includes("chauffeur") ||
+        text.includes("automobile")
+    ) {
+        return "vehicules";
+    }
+
+
+    if (
+        text.includes("hotel") ||
+        text.includes("hebergement") ||
+        text.includes("residence") ||
+        text.includes("auberge") ||
+        text.includes("lodge") ||
+        text.includes("appartement meuble")
+    ) {
+        return "hotels";
+    }
+
+
+    return "autres";
+}
+
+
+function domainLabel(domain) {
+
+    switch (domain) {
+
+        case "immobilier":
+            return "Immobilier";
+
+        case "commerce":
+            return "Commerce";
+
+        case "vehicules":
+            return "Véhicules & Transport";
+
+        case "hotels":
+            return "Hôtels & Hébergement";
+
+        default:
+            return "Autres";
+    }
+}
+
+
+/* =========================================================
+   IMAGES
+========================================================= */
+
+function getImages(ad) {
+
+    let images = [];
+
+    if (Array.isArray(ad.images)) {
+        images = ad.images;
+    }
+
+    else if (typeof ad.images === "string") {
+
+        try {
+
+            const parsed =
+                JSON.parse(ad.images);
+
+            if (Array.isArray(parsed)) {
+                images = parsed;
+            }
+
+        } catch {
+
+            images = ad.images
+                .split(",")
+                .map(item => item.trim())
+                .filter(Boolean);
+        }
+    }
+
+
+    if (!images.length) {
+
+        const singleImage =
+            ad.imageURL ||
+            ad.imageUrl ||
+            ad.image ||
+            ad.photoURL ||
+            "";
+
+        if (singleImage) {
+            images = [singleImage];
+        }
+    }
+
+
+    return images.filter(Boolean);
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+async function loadAds() {
+
+    setLoading(true);
+
+
+    try {
+
+        console.log(
+            "CAMU ADMIN — chargement des annonces..."
+        );
+
+
+        const snapshot =
+            await getDocs(
+                collection(db, "annonces")
+            );
+
+
+        allAds = snapshot.docs.map(
+            document => {
+
+                const data =
+                    document.data();
+
+
+                return {
+                    id: document.id,
+
+                    ...data,
+
+                    title:
+                        clean(data.title),
+
+                    description:
+                        clean(data.description),
+
+                    category:
+                        clean(data.category),
+
+                    city:
+                        clean(data.city),
+
+                    commune:
+                        clean(data.commune),
+
+                    ownerName:
+                        clean(
+                            data.ownerName ||
+                            data.name ||
+                            "Utilisateur"
+                        ),
+
+                    ownerEmail:
+                        clean(data.ownerEmail),
+
+                    ownerPhone:
+                        clean(
+                            data.ownerPhone ||
+                            data.phone ||
+                            ""
+                        ),
+
+                    status:
+                        normalizeStatus(
+                            data.status
+                        ),
+
+                    domain:
+                        detectDomain(data),
+
+                    price:
+                        numberValue(data.price),
+
+                    views:
+                        numberValue(data.views),
+
+                    images:
+                        getImages(data)
+
+                };
+
+            }
+        );
+
+
+        console.log(
+            `CAMU ADMIN — ${allAds.length} annonce(s) chargée(s).`
+        );
+
+
+        updateStatistics();
+
+        populateFilters();
+
+        applyFilters();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CAMU ADMIN — erreur annonces :",
+            error
+        );
+
+        showMessage(
+            "Impossible de charger les annonces.",
+            "error"
+        );
+
+        allAds = [];
+
+        applyFilters();
+    }
+
+    finally {
+
+        setLoading(false);
+
+    }
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function setLoading(isLoading) {
+
+    if (adsLoading) {
+        adsLoading.hidden = !isLoading;
+    }
+
+    if (isLoading && adsList) {
+        adsList.innerHTML = "";
+    }
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+function updateStatistics() {
+
+    const total =
+        allAds.length;
+
+    const active =
+        allAds.filter(
+            ad => ad.status === "active"
+        ).length;
+
+    const pending =
+        allAds.filter(
+            ad => ad.status === "pending"
+        ).length;
+
+    const approved =
+        allAds.filter(
+            ad => ad.status === "approved"
+        ).length;
+
+    const disabled =
+        allAds.filter(
+            ad =>
+                ad.status === "disabled" ||
+                ad.status === "rejected"
+        ).length;
+
+
+    setText(
+        "adsTotalCount",
+        total
+    );
+
+    setText(
+        "adsActiveCount",
+        active
+    );
+
+    setText(
+        "adsPendingCount",
+        pending
+    );
+
+    setText(
+        "adsApprovedCount",
+        approved
+    );
+
+    setText(
+        "adsDisabledCount",
+        disabled
+    );
+}
+
+
+function setText(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+
+/* =========================================================
+   FILTRES
+========================================================= */
+
+function populateFilters() {
+
+    populateSelect(
+        adsCategoryFilter,
+        uniqueSorted(
+            allAds.map(
+                ad => clean(ad.category)
+            )
+        ),
+        "Toutes les catégories"
+    );
+
+
+    populateSelect(
+        adsCityFilter,
+        uniqueSorted(
+            allAds.map(
+                ad => clean(ad.city)
+            )
+        ),
+        "Toutes les villes"
+    );
+}
+
+
+function populateSelect(
+    select,
+    values,
+    firstLabel
+) {
+
+    if (!select) {
+        return;
+    }
+
+
+    select.innerHTML = "";
+
+
+    const firstOption =
+        document.createElement("option");
+
+    firstOption.value = "all";
+
+    firstOption.textContent =
+        firstLabel;
+
+    select.appendChild(
+        firstOption
+    );
+
+
+    values.forEach(value => {
+
+        if (!value) {
+            return;
+        }
+
+        const option =
+            document.createElement("option");
+
+        option.value = value;
+
+        option.textContent = value;
+
+        select.appendChild(option);
+
+    });
+}
+
+
+function uniqueSorted(values) {
+
+    return [
+        ...new Set(
+            values.filter(Boolean)
+        )
+    ].sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            )
+    );
+}
+
+
+/* =========================================================
+   APPLICATION DES FILTRES
+========================================================= */
+
+function applyFilters() {
+
+    const search =
+        normalize(
+            adsSearchInput?.value
+        );
+
+    const status =
+        adsStatusFilter?.value ||
+        "all";
+
+    const domain =
+        adsDomainFilter?.value ||
+        "all";
+
+    const category =
+        adsCategoryFilter?.value ||
+        "all";
+
+    const city =
+        adsCityFilter?.value ||
+        "all";
+
+
+    filteredAds =
+        allAds.filter(ad => {
+
+            const searchable =
+                normalize([
+                    ad.title,
+                    ad.description,
+                    ad.ownerName,
+                    ad.ownerEmail,
+                    ad.city,
+                    ad.commune,
+                    ad.category,
+                    ad.domain
+                ].join(" "));
+
+
+            if (
+                search &&
+                !searchable.includes(search)
+            ) {
+                return false;
+            }
+
+
+            if (
+                status !== "all" &&
+                ad.status !== status
+            ) {
+                return false;
+            }
+
+
+            if (
+                domain !== "all" &&
+                ad.domain !== domain
+            ) {
+                return false;
+            }
+
+
+            if (
+                category !== "all" &&
+                ad.category !== category
+            ) {
+                return false;
+            }
+
+
+            if (
+                city !== "all" &&
+                normalize(ad.city) !==
+                normalize(city)
+            ) {
+                return false;
+            }
+
+
+            return true;
+
+        });
+
+
+    sortAds();
+
+    renderAds();
+}
+
+
+/* =========================================================
+   TRI
+========================================================= */
+
+function sortAds() {
+
+    const sort =
+        adsSortFilter?.value ||
+        "recent";
+
+
+    filteredAds.sort(
+        (a, b) => {
+
+            if (sort === "oldest") {
+
+                return (
+                    getTimestampValue(
+                        a.createdAt
+                    ) -
+                    getTimestampValue(
+                        b.createdAt
+                    )
+                );
+            }
+
+
+            if (sort === "priceHigh") {
+
+                return b.price - a.price;
+            }
+
+
+            if (sort === "priceLow") {
+
+                return a.price - b.price;
+            }
+
+
+            if (sort === "viewsHigh") {
+
+                return b.views - a.views;
+            }
+
+
+            return (
+                getTimestampValue(
+                    b.createdAt
+                ) -
+                getTimestampValue(
+                    a.createdAt
+                )
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   AFFICHAGE
+========================================================= */
+
+function renderAds() {
+
+    if (!adsList) {
+        return;
+    }
+
+
+    adsList.innerHTML = "";
+
+
+    if (adsResultsCount) {
+
+        adsResultsCount.textContent =
+            filteredAds.length;
+
+    }
+
+
+    if (!filteredAds.length) {
+
+        if (adsEmpty) {
+            adsEmpty.hidden = false;
+        }
+
+        return;
+    }
+
+
+    if (adsEmpty) {
+        adsEmpty.hidden = true;
+    }
+
+
+    filteredAds.forEach(ad => {
+
+        adsList.appendChild(
+            createAdCard(ad)
+        );
+
+    });
+}
+
+
+/* =========================================================
+   CARTE
+========================================================= */
+
+function createAdCard(ad) {
+
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "admin-ad-card";
+
+
+    const image =
+        ad.images[0] || "";
+
+
+    const imageHTML = image
+        ? `
             <img
-                src="logo.png"
-                alt="CAMU SERVICES"
-                class="admin-brand-logo"
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(ad.title || "Annonce")}"
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             >
 
-            <div class="admin-brand-text">
-                <strong>CAMU SERVICES</strong>
-                <span>ADMINISTRATION</span>
+            <div
+                class="admin-ad-image-placeholder"
+                style="display:none"
+            >
+                <i class="fa-solid fa-image"></i>
+            </div>
+        `
+        : `
+            <div class="admin-ad-image-placeholder">
+                <i class="fa-solid fa-image"></i>
+            </div>
+        `;
+
+
+    const status =
+        normalizeStatus(ad.status);
+
+
+    card.innerHTML = `
+
+        <div class="admin-ad-image">
+
+            ${imageHTML}
+
+            <span class="admin-ad-status ${escapeHTML(status)}">
+                ${escapeHTML(statusLabel(status))}
+            </span>
+
+        </div>
+
+
+        <div class="admin-ad-content">
+
+            <span class="admin-ad-category">
+                ${escapeHTML(
+                    domainLabel(ad.domain)
+                )}
+            </span>
+
+
+            <h3
+                title="${escapeHTML(ad.title)}"
+            >
+                ${escapeHTML(
+                    ad.title ||
+                    "Annonce sans titre"
+                )}
+            </h3>
+
+
+            <div class="admin-ad-price">
+
+                ${
+                    ad.price
+                        ? formatPrice(
+                            ad.price,
+                            clean(ad.currency)
+                        )
+                        : "Prix non indiqué"
+                }
+
             </div>
 
-        </a>
 
+            <div class="admin-ad-meta">
 
-        <button
-            id="adminCloseSidebar"
-            class="admin-close-sidebar"
-            type="button"
-        >
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    ${escapeHTML(
+                        ad.city ||
+                        "Ville non indiquée"
+                    )}
+                </span>
 
-    </div>
 
+                ${
+                    ad.commune
+                    ? `
+                        <span>
+                            <i class="fa-solid fa-map-pin"></i>
+                            ${escapeHTML(ad.commune)}
+                        </span>
+                    `
+                    : ""
+                }
 
-    <nav class="admin-navigation">
 
-        <div class="admin-nav-title">
-            PRINCIPAL
-        </div>
+                <span>
+                    <i class="fa-solid fa-eye"></i>
+                    ${ad.views}
+                </span>
 
+            </div>
 
-        <a
-            href="admin.html"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon dashboard">
-                <i class="fa-solid fa-chart-pie"></i>
-            </span>
 
-            <span>Tableau de bord</span>
-        </a>
+            <div class="admin-ad-owner">
 
-
-        <a
-            href="admin-annonces.html"
-            class="admin-nav-link active"
-        >
-            <span class="admin-nav-icon ads">
-                <i class="fa-solid fa-bullhorn"></i>
-            </span>
-
-            <span>Annonces</span>
-        </a>
-
-
-        <a
-            href="admin.html#utilisateurs"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon users">
-                <i class="fa-solid fa-users"></i>
-            </span>
-
-            <span>Utilisateurs</span>
-        </a>
-
-
-        <div class="admin-nav-title">
-            SERVICES
-        </div>
-
-
-        <a
-            href="admin.html#paiements-premium"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon premium">
-                <i class="fa-solid fa-crown"></i>
-            </span>
-
-            <span>Paiements Premium</span>
-        </a>
-
-
-        <a
-            href="admin.html#signalements"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon reports">
-                <i class="fa-solid fa-flag"></i>
-            </span>
-
-            <span>Signalements</span>
-        </a>
-
-
-        <div class="admin-nav-title">
-            CATALOGUE
-        </div>
-
-
-        <a
-            href="admin-catalogue.html"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon categories">
-                <i class="fa-solid fa-layer-group"></i>
-            </span>
-
-            <span>Catégories & Villes</span>
-        </a>
-
-
-        <a
-            href="admin.html#etablissements"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon businesses">
-                <i class="fa-solid fa-store"></i>
-            </span>
-
-            <span>Établissements</span>
-        </a>
-
-
-        <div class="admin-nav-title">
-            PROFESSIONNELS
-        </div>
-
-
-        <a
-            href="admin.html#immobilier"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon immobilier">
-                <i class="fa-solid fa-house"></i>
-            </span>
-
-            <span>CAMU IMMO</span>
-        </a>
-
-
-        <a
-            href="admin.html#commerce"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon commerce">
-                <i class="fa-solid fa-shop"></i>
-            </span>
-
-            <span>CAMU COMMERCE</span>
-        </a>
-
-
-        <a
-            href="admin.html#transport"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon transport">
-                <i class="fa-solid fa-car"></i>
-            </span>
-
-            <span>Véhicules & Transport</span>
-        </a>
-
-
-        <a
-            href="admin.html#hotels"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon hotels">
-                <i class="fa-solid fa-hotel"></i>
-            </span>
-
-            <span>Hôtels & Hébergement</span>
-        </a>
-
-
-        <div class="admin-nav-title">
-            SYSTÈME
-        </div>
-
-
-        <a
-            href="admin.html#parametres"
-            class="admin-nav-link"
-        >
-            <span class="admin-nav-icon settings">
-                <i class="fa-solid fa-gear"></i>
-            </span>
-
-            <span>Paramètres</span>
-        </a>
-
-    </nav>
-
-
-    <div class="admin-sidebar-bottom">
-
-        <a
-            href="index.html"
-            class="admin-back-site"
-        >
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Retour au site</span>
-        </a>
-
-
-        <button
-            id="adminLogoutButton"
-            class="admin-logout-button"
-            type="button"
-        >
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Déconnexion</span>
-        </button>
-
-    </div>
-
-</aside>
-
-
-<div
-    id="adminOverlay"
-    class="admin-overlay"
-></div>
-
-
-<!-- =====================================================
-     CONTENU
-===================================================== -->
-
-<main class="admin-main">
-
-
-    <header class="admin-topbar">
-
-        <div class="admin-topbar-left">
-
-            <p class="admin-breadcrumb">
-                CAMU SERVICES / Gestion / Annonces
-            </p>
-
-            <h1>
-                Gestion des annonces
-            </h1>
-
-        </div>
-
-
-        <div class="admin-topbar-right">
-
-            <button
-                id="adminRefreshButton"
-                class="admin-topbar-action"
-                type="button"
-                title="Actualiser"
-            >
-                <i class="fa-solid fa-rotate"></i>
-            </button>
-
-
-            <div class="admin-user">
-
-                <div class="admin-user-avatar">
-                    <i class="fa-solid fa-user-shield"></i>
+                <div class="admin-ad-owner-icon">
+                    <i class="fa-solid fa-user"></i>
                 </div>
 
-                <div class="admin-user-info">
+
+                <div class="admin-ad-owner-info">
 
                     <strong>
-                        CAMU SERVICES ADMIN
+                        ${escapeHTML(
+                            ad.ownerName
+                        )}
                     </strong>
 
                     <span>
-                        Administrateur
+                        ${escapeHTML(
+                            ad.ownerEmail ||
+                            ad.ownerPhone ||
+                            "Propriétaire"
+                        )}
                     </span>
 
                 </div>
 
             </div>
 
-        </div>
 
-    </header>
+            <div class="admin-ad-actions">
 
-
-    <div class="admin-content">
-
-
-        <!-- MESSAGE -->
-
-        <div
-            id="adminMessage"
-            class="admin-message"
-            hidden
-        ></div>
-
-
-        <!-- =================================================
-             EN-TÊTE
-        ================================================== -->
-
-        <section class="ads-page-header">
-
-            <div>
-
-                <span class="admin-section-label">
-                    MODÉRATION
-                </span>
-
-                <h2>
-                    Annonces
-                </h2>
-
-                <p>
-                    Consultez, recherchez, modifiez et modérez
-                    les annonces publiées sur CAMU SERVICES.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="refreshAdsButton"
-                class="ads-refresh-button"
-            >
-                <i class="fa-solid fa-rotate"></i>
-                Actualiser
-            </button>
-
-        </section>
-
-
-        <!-- =================================================
-             STATISTIQUES
-        ================================================== -->
-
-        <section class="ads-stat-grid">
-
-
-            <article class="ads-stat-card">
-
-                <div class="ads-stat-icon total">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-
-                <div>
-                    <span>Total</span>
-
-                    <strong id="adsTotalCount">
-                        0
-                    </strong>
-
-                    <small>
-                        annonces
-                    </small>
-                </div>
-
-            </article>
-
-
-            <article class="ads-stat-card">
-
-                <div class="ads-stat-icon active">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-
-                <div>
-                    <span>Actives</span>
-
-                    <strong id="adsActiveCount">
-                        0
-                    </strong>
-
-                    <small>
-                        visibles
-                    </small>
-                </div>
-
-            </article>
-
-
-            <article class="ads-stat-card">
-
-                <div class="ads-stat-icon pending">
-                    <i class="fa-solid fa-clock"></i>
-                </div>
-
-                <div>
-                    <span>En attente</span>
-
-                    <strong id="adsPendingCount">
-                        0
-                    </strong>
-
-                    <small>
-                        à vérifier
-                    </small>
-                </div>
-
-            </article>
-
-
-            <article class="ads-stat-card">
-
-                <div class="ads-stat-icon approved">
-                    <i class="fa-solid fa-check-double"></i>
-                </div>
-
-                <div>
-                    <span>Approuvées</span>
-
-                    <strong id="adsApprovedCount">
-                        0
-                    </strong>
-
-                    <small>
-                        validées
-                    </small>
-                </div>
-
-            </article>
-
-
-            <article class="ads-stat-card">
-
-                <div class="ads-stat-icon disabled">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </div>
-
-                <div>
-                    <span>Désactivées</span>
-
-                    <strong id="adsDisabledCount">
-                        0
-                    </strong>
-
-                    <small>
-                        masquées
-                    </small>
-                </div>
-
-            </article>
-
-        </section>
-
-
-        <!-- =================================================
-             FILTRES
-        ================================================== -->
-
-        <section class="ads-filter-panel">
-
-
-            <div class="ads-filter-title">
-
-                <div class="ads-filter-title-icon">
-                    <i class="fa-solid fa-filter"></i>
-                </div>
-
-                <div>
-                    <strong>
-                        Rechercher et filtrer
-                    </strong>
-
-                    <small>
-                        Affinez la liste des annonces
-                    </small>
-                </div>
-
-            </div>
-
-
-            <div class="ads-filters">
-
-
-                <div class="ads-search-box">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input
-                        type="search"
-                        id="adsSearchInput"
-                        placeholder="Titre, vendeur, ville..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <select
-                    id="adsStatusFilter"
-                    class="ads-filter-select"
+                <button
+                    type="button"
+                    class="admin-ad-action view"
+                    data-action="view"
+                    data-id="${escapeHTML(ad.id)}"
                 >
-
-                    <option value="all">
-                        Tous les statuts
-                    </option>
-
-                    <option value="active">
-                        Actives
-                    </option>
-
-                    <option value="pending">
-                        En attente
-                    </option>
-
-                    <option value="approved">
-                        Approuvées
-                    </option>
-
-                    <option value="disabled">
-                        Désactivées
-                    </option>
-
-                </select>
+                    <i class="fa-solid fa-eye"></i>
+                    Voir
+                </button>
 
 
-                <select
-                    id="adsDomainFilter"
-                    class="ads-filter-select"
-                >
-
-                    <option value="all">
-                        Tous les domaines
-                    </option>
-
-                    <option value="immobilier">
-                        Immobilier
-                    </option>
-
-                    <option value="commerce">
-                        Commerce
-                    </option>
-
-                    <option value="vehicules">
-                        Véhicules & Transport
-                    </option>
-
-                    <option value="hotels">
-                        Hôtels & Hébergement
-                    </option>
-
-                    <option value="autres">
-                        Autres
-                    </option>
-
-                </select>
-
-
-                <select
-                    id="adsCategoryFilter"
-                    class="ads-filter-select"
-                >
-
-                    <option value="all">
-                        Toutes les catégories
-                    </option>
-
-                </select>
-
-
-                <select
-                    id="adsCityFilter"
-                    class="ads-filter-select"
-                >
-
-                    <option value="all">
-                        Toutes les villes
-                    </option>
-
-                </select>
+                ${
+                    status === "approved" ||
+                    status === "active"
+                    ? `
+                        <button
+                            type="button"
+                            class="admin-ad-action disable"
+                            data-action="disable"
+                            data-id="${escapeHTML(ad.id)}"
+                        >
+                            <i class="fa-solid fa-ban"></i>
+                            Désactiver
+                        </button>
+                    `
+                    : `
+                        <button
+                            type="button"
+                            class="admin-ad-action approve"
+                            data-action="approve"
+                            data-id="${escapeHTML(ad.id)}"
+                        >
+                            <i class="fa-solid fa-check"></i>
+                            Approuver
+                        </button>
+                    `
+                }
 
 
                 <button
                     type="button"
-                    id="resetAdsFilters"
-                    class="ads-reset-button"
+                    class="admin-ad-action delete full"
+                    data-action="delete"
+                    data-id="${escapeHTML(ad.id)}"
                 >
-                    <i class="fa-solid fa-rotate-left"></i>
-                    Réinitialiser
+                    <i class="fa-solid fa-trash"></i>
+                    Supprimer
                 </button>
 
             </div>
 
-        </section>
-
-
-        <!-- =================================================
-             BARRE DE RÉSULTATS
-        ================================================== -->
-
-        <div class="ads-results-bar">
-
-            <div>
-
-                <strong id="adsResultsCount">
-                    0
-                </strong>
-
-                <span>
-                    annonce(s) affichée(s)
-                </span>
-
-            </div>
-
-
-            <select
-                id="adsSortFilter"
-                class="ads-sort-select"
-            >
-
-                <option value="recent">
-                    Plus récentes
-                </option>
-
-                <option value="oldest">
-                    Plus anciennes
-                </option>
-
-                <option value="priceHigh">
-                    Prix décroissant
-                </option>
-
-                <option value="priceLow">
-                    Prix croissant
-                </option>
-
-                <option value="viewsHigh">
-                    Plus vues
-                </option>
-
-            </select>
-
         </div>
+    `;
 
 
-        <!-- =================================================
-             LISTE DES ANNONCES
-        ================================================== -->
-
-        <section class="ads-list-section">
+    return card;
+}
 
 
-            <div
-                id="adsLoading"
-                class="ads-loading"
-            >
+/* =========================================================
+   ACTIONS
+========================================================= */
 
-                <i class="fa-solid fa-spinner fa-spin"></i>
+async function updateAdStatus(
+    adId,
+    newStatus
+) {
 
-                <span>
-                    Chargement des annonces...
-                </span>
+    const ad =
+        allAds.find(
+            item => item.id === adId
+        );
 
-            </div>
+
+    if (!ad) {
+        return;
+    }
 
 
-            <div
-                id="adsEmpty"
-                class="ads-empty"
-                hidden
-            >
+    const label =
+        newStatus === "approved"
+            ? "approuver"
+            : "désactiver";
 
-                <div class="ads-empty-icon">
-                    <i class="fa-solid fa-bullhorn"></i>
+
+    const confirmed =
+        window.confirm(
+            `Voulez-vous vraiment ${label} cette annonce ?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await updateDoc(
+            doc(
+                db,
+                "annonces",
+                adId
+            ),
+            {
+                status: newStatus,
+                updatedAt: new Date()
+            }
+        );
+
+
+        ad.status = newStatus;
+
+
+        updateStatistics();
+
+        applyFilters();
+
+
+        if (
+            selectedAd &&
+            selectedAd.id === adId
+        ) {
+            selectedAd.status =
+                newStatus;
+
+            updateModalButtons();
+        }
+
+
+        showMessage(
+            `Annonce ${label} avec succès.`,
+            "success"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erreur modification annonce :",
+            error
+        );
+
+        showMessage(
+            "Impossible de modifier le statut.",
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   SUPPRESSION
+========================================================= */
+
+async function deleteAd(adId) {
+
+    const ad =
+        allAds.find(
+            item => item.id === adId
+        );
+
+
+    if (!ad) {
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            `Supprimer définitivement l'annonce "${ad.title || "sans titre"}" ?\n\nCette action est irréversible.`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await deleteDoc(
+            doc(
+                db,
+                "annonces",
+                adId
+            )
+        );
+
+
+        allAds =
+            allAds.filter(
+                item =>
+                    item.id !== adId
+            );
+
+
+        updateStatistics();
+
+        populateFilters();
+
+        applyFilters();
+
+
+        closeModal();
+
+
+        showMessage(
+            "Annonce supprimée avec succès.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Erreur suppression annonce :",
+            error
+        );
+
+        showMessage(
+            "Impossible de supprimer l'annonce.",
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openModal(adId) {
+
+    const ad =
+        allAds.find(
+            item => item.id === adId
+        );
+
+
+    if (!ad) {
+        return;
+    }
+
+
+    selectedAd = ad;
+
+
+    if (modalAdTitle) {
+        modalAdTitle.textContent =
+            ad.title ||
+            "Annonce";
+    }
+
+
+    const image =
+        ad.images[0] || "";
+
+
+    if (modalAdContent) {
+
+        modalAdContent.innerHTML = `
+
+            <div class="modal-ad-grid">
+
+                <div>
+
+                    ${
+                        image
+                        ? `
+                            <img
+                                src="${escapeHTML(image)}"
+                                class="modal-ad-main-image"
+                                alt="${escapeHTML(ad.title)}"
+                            >
+                        `
+                        : `
+                            <div
+                                class="modal-ad-main-image"
+                                style="
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    color:#9aa8b7;
+                                "
+                            >
+                                <i class="fa-solid fa-image fa-2x"></i>
+                            </div>
+                        `
+                    }
+
                 </div>
 
-                <h3>
-                    Aucune annonce trouvée
-                </h3>
 
-                <p>
-                    Aucune annonce ne correspond aux critères
-                    sélectionnés.
-                </p>
+                <div>
 
-            </div>
+                    <div class="modal-ad-info">
 
+                        <div class="modal-ad-info-item">
 
-            <div
-                id="adsList"
-                class="ads-list"
-            ></div>
+                            <span>
+                                Statut
+                            </span>
 
-        </section>
+                            <strong>
+                                ${escapeHTML(
+                                    statusLabel(
+                                        ad.status
+                                    )
+                                )}
+                            </strong>
 
-
-        <!-- =================================================
-             MODAL DÉTAIL
-        ================================================== -->
-
-        <div
-            id="adDetailsModal"
-            class="ad-modal"
-            hidden
-        >
-
-            <div
-                class="ad-modal-overlay"
-                data-close-modal
-            ></div>
+                        </div>
 
 
-            <div class="ad-modal-box">
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Domaine
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    domainLabel(
+                                        ad.domain
+                                    )
+                                )}
+                            </strong>
+
+                        </div>
 
 
-                <div class="ad-modal-header">
+                        <div class="modal-ad-info-item">
 
-                    <div>
+                            <span>
+                                Catégorie
+                            </span>
 
-                        <span>
-                            DÉTAIL DE L'ANNONCE
-                        </span>
+                            <strong>
+                                ${escapeHTML(
+                                    ad.category ||
+                                    "Non indiquée"
+                                )}
+                            </strong>
 
-                        <h3 id="modalAdTitle">
-                            Annonce
-                        </h3>
+                        </div>
+
+
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Prix
+                            </span>
+
+                            <strong>
+                                ${
+                                    ad.price
+                                    ? formatPrice(
+                                        ad.price,
+                                        clean(ad.currency)
+                                    )
+                                    : "Non indiqué"
+                                }
+                            </strong>
+
+                        </div>
+
+
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Ville
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    ad.city ||
+                                    "Non indiquée"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Commune
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    ad.commune ||
+                                    "Non indiquée"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Propriétaire
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    ad.ownerName
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="modal-ad-info-item">
+
+                            <span>
+                                Vues
+                            </span>
+
+                            <strong>
+                                ${ad.views}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="modal-ad-info-item full">
+
+                            <span>
+                                Date de publication
+                            </span>
+
+                            <strong>
+                                ${escapeHTML(
+                                    formatDate(
+                                        ad.createdAt
+                                    )
+                                )}
+                            </strong>
+
+                        </div>
 
                     </div>
 
-
-                    <button
-                        type="button"
-                        class="ad-modal-close"
-                        data-close-modal
-                    >
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="modalAdContent"
-                    class="ad-modal-content"
-                ></div>
-
-
-                <div class="ad-modal-actions">
-
-                    <button
-                        type="button"
-                        id="modalApproveButton"
-                        class="ad-action-button approve"
-                    >
-                        <i class="fa-solid fa-check"></i>
-                        Approuver
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="modalDisableButton"
-                        class="ad-action-button disable"
-                    >
-                        <i class="fa-solid fa-ban"></i>
-                        Désactiver
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="modalDeleteButton"
-                        class="ad-action-button delete"
-                    >
-                        <i class="fa-solid fa-trash"></i>
-                        Supprimer
-                    </button>
-
                 </div>
 
             </div>
 
-        </div>
 
+            <div class="modal-ad-description">
 
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
+                <strong>
+                    Description
+                </strong>
 
-        <footer class="admin-footer">
+                <br><br>
 
-            <div>
-                © 2026
-                <strong>CAMU SERVICES</strong>.
-                Tous droits réservés.
+                ${
+                    escapeHTML(
+                        ad.description ||
+                        "Aucune description."
+                    )
+                }
+
             </div>
 
-            <div>
-                Administration
-            </div>
+        `;
 
-        </footer>
-
-    </div>
-
-</main>
+    }
 
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script
-    type="module"
-    src="js/auth.js"
-></script>
-
-<script
-    type="module"
-    src="js/app.js"
-></script>
-
-<script
-    type="module"
-    src="js/admin-annonces.js"
-></script>
+    updateModalButtons();
 
 
-</body>
-</html>
+    if (adDetailsModal) {
+        adDetailsModal.hidden = false;
+
+        document.body.style.overflow =
+            "hidden";
+    }
+}
+
+
+function updateModalButtons() {
+
+    if (!selectedAd) {
+        return;
+    }
+
+
+    const status =
+        normalizeStatus(
+            selectedAd.status
+        );
+
+
+    if (modalApproveButton) {
+
+        modalApproveButton.style.display =
+            (
+                status === "approved" ||
+                status === "active"
+            )
+                ? "none"
+                : "inline-flex";
+    }
+
+
+    if (modalDisableButton) {
+
+        modalDisableButton.style.display =
+            (
+                status === "disabled" ||
+                status === "rejected"
+            )
+                ? "none"
+                : "inline-flex";
+    }
+}
+
+
+function closeModal() {
+
+    if (adDetailsModal) {
+        adDetailsModal.hidden = true;
+    }
+
+    selectedAd = null;
+
+    document.body.style.overflow = "";
+}
+
+
+/* =========================================================
+   SIDEBAR MOBILE
+========================================================= */
+
+function openSidebar() {
+
+    adminSidebar?.classList.add("open");
+
+    adminOverlay?.classList.add("active");
+
+    adminMenuButton?.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+}
+
+
+function closeSidebar() {
+
+    adminSidebar?.classList.remove("open");
+
+    adminOverlay?.classList.remove("active");
+
+    adminMenuButton?.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+}
+
+
+/* =========================================================
+   ÉVÉNEMENTS
+========================================================= */
+
+adsSearchInput?.addEventListener(
+    "input",
+    applyFilters
+);
+
+
+adsStatusFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+adsDomainFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+adsCategoryFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+adsCityFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+adsSortFilter?.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+resetAdsFilters?.addEventListener(
+    "click",
+    () => {
+
+        if (adsSearchInput) {
+            adsSearchInput.value = "";
+        }
+
+        if (adsStatusFilter) {
+            adsStatusFilter.value = "all";
+        }
+
+        if (adsDomainFilter) {
+            adsDomainFilter.value = "all";
+        }
+
+        if (adsCategoryFilter) {
+            adsCategoryFilter.value = "all";
+        }
+
+        if (adsCityFilter) {
+            adsCityFilter.value = "all";
+        }
+
+        if (adsSortFilter) {
+            adsSortFilter.value = "recent";
+        }
+
+        applyFilters();
+
+    }
+);
+
+
+refreshAdsButton?.addEventListener(
+    "click",
+    loadAds
+);
+
+
+adminRefreshButton?.addEventListener(
+    "click",
+    loadAds
+);
+
+
+adsList?.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-action]"
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        const action =
+            button.dataset.action;
+
+        const adId =
+            button.dataset.id;
+
+
+        if (action === "view") {
+
+            openModal(adId);
+
+            return;
+        }
+
+
+        if (action === "approve") {
+
+            updateAdStatus(
+                adId,
+                "approved"
+            );
+
+            return;
+        }
+
+
+        if (action === "disable") {
+
+            updateAdStatus(
+                adId,
+                "disabled"
+            );
+
+            return;
+        }
+
+
+        if (action === "delete") {
+
+            deleteAd(adId);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MODAL ÉVÉNEMENTS
+========================================================= */
+
+document.querySelectorAll(
+    "[data-close-modal]"
+).forEach(element => {
+
+    element.addEventListener(
+        "click",
+        closeModal
+    );
+
+});
+
+
+modalApproveButton?.addEventListener(
+    "click",
+    () => {
+
+        if (selectedAd) {
+
+            updateAdStatus(
+                selectedAd.id,
+                "approved"
+            );
+
+        }
+
+    }
+);
+
+
+modalDisableButton?.addEventListener(
+    "click",
+    () => {
+
+        if (selectedAd) {
+
+            updateAdStatus(
+                selectedAd.id,
+                "disabled"
+            );
+
+        }
+
+    }
+);
+
+
+modalDeleteButton?.addEventListener(
+    "click",
+    () => {
+
+        if (selectedAd) {
+
+            deleteAd(
+                selectedAd.id
+            );
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            adDetailsModal &&
+            !adDetailsModal.hidden
+        ) {
+            closeModal();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+adminMenuButton?.addEventListener(
+    "click",
+    openSidebar
+);
+
+
+adminCloseSidebar?.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+adminOverlay?.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+/* =========================================================
+   DÉCONNEXION
+========================================================= */
+
+adminLogoutButton?.addEventListener(
+    "click",
+    async () => {
+
+        const confirmed =
+            window.confirm(
+                "Voulez-vous vous déconnecter ?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        try {
+
+            await signOut(auth);
+
+            window.location.href =
+                "connexion.html";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Erreur déconnexion :",
+                error
+            );
+
+            showMessage(
+                "Impossible de vous déconnecter.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   AUTHENTIFICATION ADMIN
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+        }
+
+
+        const email =
+            clean(user.email)
+                .toLowerCase();
+
+
+        if (
+            email !==
+            "meschackmuteb@gmail.com"
+        ) {
+
+            console.warn(
+                "CAMU ADMIN — accès refusé."
+            );
+
+            await signOut(auth);
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+        }
+
+
+        console.log(
+            "CAMU ADMIN — administrateur authentifié."
+        );
+
+
+        loadAds();
+
+    }
+);
