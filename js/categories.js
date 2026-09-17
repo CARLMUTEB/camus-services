@@ -1,470 +1,694 @@
-// ============================================================
-// CAMU SERVICES — categories.js
-// Gestion dynamique de la page Catégories
-// ============================================================
+/* =========================================================
+   CAMU SERVICES — CATÉGORIES
+========================================================= */
+
+import { db } from "./firebase-config.js";
 
 import {
     collection,
     getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import { db } from "./firebase.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-// ============================================================
-// ÉLÉMENTS HTML
-// ============================================================
+/* =========================================================
+   DOM
+========================================================= */
 
-const categoriesGrid = document.getElementById("categoriesGrid");
-const categoriesCount = document.getElementById("categoriesCount");
-const categoriesEmpty = document.getElementById("categoriesEmpty");
-const categorySearch = document.getElementById("categorySearch");
+const categoriesGrid =
+    document.getElementById(
+        "categoriesGrid"
+    );
 
-const menuBtn = document.getElementById("menuBtn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-const closeSidebar = document.getElementById("closeSidebar");
+const categoriesLoading =
+    document.getElementById(
+        "categoriesLoading"
+    );
+
+const categoriesEmpty =
+    document.getElementById(
+        "categoriesEmpty"
+    );
+
+const categoriesError =
+    document.getElementById(
+        "categoriesError"
+    );
+
+const categoriesCount =
+    document.getElementById(
+        "categoriesCount"
+    );
+
+const categoriesRetry =
+    document.getElementById(
+        "categoriesRetry"
+    );
+
+const categoriesYear =
+    document.getElementById(
+        "categoriesYear"
+    );
 
 
-// ============================================================
-// VARIABLES
-// ============================================================
+/* =========================================================
+   ANNÉE
+========================================================= */
 
-let categories = [];
+if (categoriesYear) {
 
+    categoriesYear.textContent =
+        new Date().getFullYear();
 
-// ============================================================
-// INITIALISATION
-// ============================================================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    console.log("CAMU SERVICES : categories.js chargé correctement.");
-
-    setupMenu();
-    setupSearch();
-    loadCategories();
-
-});
+}
 
 
-// ============================================================
-// CHARGER LES CATÉGORIES DEPUIS FIRESTORE
-// ============================================================
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+const categoriesMenuButton =
+    document.getElementById(
+        "categoriesMenuButton"
+    );
+
+const categoriesSidebar =
+    document.getElementById(
+        "categoriesSidebar"
+    );
+
+const categoriesOverlay =
+    document.getElementById(
+        "categoriesOverlay"
+    );
+
+
+if (categoriesMenuButton) {
+
+    categoriesMenuButton.addEventListener(
+        "click",
+        () => {
+
+            categoriesSidebar.classList.add(
+                "open"
+            );
+
+            categoriesOverlay.classList.add(
+                "open"
+            );
+
+        }
+    );
+
+}
+
+
+if (categoriesOverlay) {
+
+    categoriesOverlay.addEventListener(
+        "click",
+        closeMenu
+    );
+
+}
+
+
+function closeMenu() {
+
+    categoriesSidebar.classList.remove(
+        "open"
+    );
+
+    categoriesOverlay.classList.remove(
+        "open"
+    );
+
+}
+
+
+/* =========================================================
+   NORMALISATION
+========================================================= */
+
+function normalizeText(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+        /[\u0300-\u036f]/g,
+        ""
+    );
+
+}
+
+
+/* =========================================================
+   ÉCHAPPEMENT HTML
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
 
 async function loadCategories() {
 
+    showState(
+        "loading"
+    );
+
+
     try {
 
-        showLoading();
-
-        console.log("Chargement des catégories depuis Firestore...");
-
-        const snapshot = await getDocs(
-            collection(db, "categories")
+        console.log(
+            "CAMU CATÉGORIES — chargement..."
         );
 
-        categories = [];
 
-        snapshot.forEach((doc) => {
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "categories"
+                )
+            );
 
-            const data = doc.data();
 
-            // On affiche uniquement les catégories actives
-            if (data.active === true && data.name) {
+        const categories = [];
+
+
+        snapshot.forEach(
+            documentSnapshot => {
+
+                const data =
+                    documentSnapshot.data();
+
+
+                /* -----------------------------------------
+                   CATÉGORIE INACTIVE
+                ------------------------------------------ */
+
+                if (
+                    data.active === false
+                ) {
+
+                    return;
+
+                }
+
+
+                const name =
+                    String(
+                        data.name || ""
+                    ).trim();
+
+
+                if (!name) {
+
+                    return;
+
+                }
+
 
                 categories.push({
-                    id: doc.id,
-                    name: data.name,
-                    icon: data.icon || "fa-solid fa-layer-group",
-                    description: data.description || "",
-                    order: Number(data.order) || 9999
+
+                    id:
+                        documentSnapshot.id,
+
+                    name,
+
+                    icon:
+                        data.icon
+                        ||
+                        "fa-solid fa-layer-group",
+
+                    description:
+                        String(
+                            data.description
+                            ||
+                            "Découvrez les annonces disponibles dans cette catégorie."
+                        ).trim(),
+
+                    order:
+                        Number(
+                            data.order
+                        )
+                        ||
+                        999
+
                 });
 
             }
-
-        });
-
-        // Trier par ordre
-        categories.sort((a, b) => a.order - b.order);
-
-        console.log(
-            `${categories.length} catégorie(s) chargée(s).`
         );
 
-        updateCategoriesCount();
 
-        renderCategories(categories);
+        /* -----------------------------------------
+           TRI
+        ------------------------------------------ */
 
-    } catch (error) {
+        categories.sort(
+            (a, b) => {
 
-        console.error(
-            "Erreur lors du chargement des catégories :",
-            error
-        );
+                if (
+                    a.order !==
+                    b.order
+                ) {
 
-        showError();
+                    return (
+                        a.order -
+                        b.order
+                    );
 
-    }
-
-}
-
-
-// ============================================================
-// AFFICHER LES CATÉGORIES
-// ============================================================
-
-function renderCategories(list) {
-
-    if (!categoriesGrid) return;
-
-    categoriesGrid.innerHTML = "";
-
-    // Aucune catégorie
-    if (!list || list.length === 0) {
-
-        if (categoriesEmpty) {
-            categoriesEmpty.style.display = "block";
-        }
-
-        return;
-
-    }
-
-    if (categoriesEmpty) {
-        categoriesEmpty.style.display = "none";
-    }
-
-
-    list.forEach((category) => {
-
-        const card = document.createElement("article");
-
-        card.className = "category-card";
-
-        card.dataset.categoryId = category.id;
-
-        card.innerHTML = `
-            <div class="category-icon">
-                <i class="${escapeAttribute(category.icon)}"></i>
-            </div>
-
-            <div class="category-content">
-
-                <h3>
-                    ${escapeHTML(category.name)}
-                </h3>
-
-                ${
-                    category.description
-                        ? `
-                            <p>
-                                ${escapeHTML(category.description)}
-                            </p>
-                          `
-                        : ""
                 }
 
-            </div>
 
-            <div class="category-arrow">
-                <i class="fa-solid fa-arrow-right"></i>
-            </div>
-        `;
+                return a.name.localeCompare(
+                    b.name,
+                    "fr"
+                );
+
+            }
+        );
 
 
-        // Cliquer sur une catégorie
-        card.addEventListener("click", () => {
+        console.log(
+            `CAMU CATÉGORIES — ${categories.length} catégorie(s) trouvée(s).`
+        );
 
-            const categoryName = encodeURIComponent(
-                category.name
+
+        if (
+            categories.length === 0
+        ) {
+
+            showState(
+                "empty"
             );
-
-            window.location.href =
-                `recherche.html?category=${categoryName}`;
-
-        });
-
-
-        categoriesGrid.appendChild(card);
-
-    });
-
-}
-
-
-// ============================================================
-// RECHERCHE / FILTRE
-// ============================================================
-
-function setupSearch() {
-
-    if (!categorySearch) return;
-
-    categorySearch.addEventListener("input", () => {
-
-        const search = categorySearch.value
-            .trim()
-            .toLowerCase();
-
-        if (!search) {
-
-            renderCategories(categories);
 
             return;
 
         }
 
 
-        const filtered = categories.filter((category) => {
+        renderCategories(
+            categories
+        );
 
-            const name =
-                category.name.toLowerCase();
 
-            const description =
-                category.description.toLowerCase();
+        categoriesCount.textContent =
+            `${categories.length} catégorie${categories.length > 1 ? "s" : ""} disponible${categories.length > 1 ? "s" : ""}.`;
 
-            return (
-                name.includes(search) ||
-                description.includes(search)
+
+        showState(
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "CAMU CATÉGORIES — erreur :",
+            error
+        );
+
+
+        categoriesCount.textContent =
+            "Erreur de chargement.";
+
+
+        showState(
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ROUTAGE
+========================================================= */
+
+function getCategoryLink(
+    category
+) {
+
+    const name =
+        normalizeText(
+            category.name
+        );
+
+
+    /* -----------------------------------------
+       IMMOBILIER
+    ------------------------------------------ */
+
+    if (
+        name === "immobilier"
+        ||
+        name.includes("immobilier")
+    ) {
+
+        return "immobilier.html";
+
+    }
+
+
+    /* -----------------------------------------
+       COMMERCE
+    ------------------------------------------ */
+
+    if (
+        name === "commerce"
+        ||
+        name.includes("commerce")
+    ) {
+
+        return "commerce.html";
+
+    }
+
+
+    /* -----------------------------------------
+       VÉHICULES
+    ------------------------------------------ */
+
+    if (
+        name.includes("vehicule")
+        ||
+        name.includes("transport")
+    ) {
+
+        return "vehicules.html";
+
+    }
+
+
+    /* -----------------------------------------
+       HÔTELS
+    ------------------------------------------ */
+
+    if (
+        name.includes("hotel")
+        ||
+        name.includes("hebergement")
+    ) {
+
+        return "hotels.html";
+
+    }
+
+
+    /* -----------------------------------------
+       AUTRES
+    ------------------------------------------ */
+
+    return (
+        "recherche.html?category="
+        +
+        encodeURIComponent(
+            category.id
+        )
+    );
+
+}
+
+
+/* =========================================================
+   AFFICHAGE
+========================================================= */
+
+function renderCategories(
+    categories
+) {
+
+    categoriesGrid.innerHTML = "";
+
+
+    categories.forEach(
+        category => {
+
+            const card =
+                document.createElement(
+                    "a"
+                );
+
+
+            card.className =
+                "category-card";
+
+
+            card.href =
+                getCategoryLink(
+                    category
+                );
+
+
+            const icon =
+                String(
+                    category.icon || ""
+                ).trim();
+
+
+            let iconHTML = `
+
+                <i class="fa-solid fa-layer-group"></i>
+
+            `;
+
+
+            /*
+             * Si icon est une classe Font Awesome :
+             * fa-solid fa-house
+             */
+
+            if (
+                icon.includes(
+                    "fa-"
+                )
+            ) {
+
+                iconHTML = `
+
+                    <i class="${escapeHtml(
+                        icon
+                    )}"></i>
+
+                `;
+
+            }
+
+            /*
+             * Sinon on considère que c'est
+             * éventuellement un emoji.
+             */
+
+            else if (
+                icon
+            ) {
+
+                iconHTML = `
+
+                    <span style="
+                        font-size:28px;
+                        line-height:1;
+                    ">
+                        ${escapeHtml(icon)}
+                    </span>
+
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <span class="category-card-badge">
+                    DISPONIBLE
+                </span>
+
+
+                <div>
+
+                    <div class="category-card-icon">
+
+                        ${iconHTML}
+
+                    </div>
+
+
+                    <div class="category-card-content">
+
+                        <h3 class="category-card-title">
+
+                            ${escapeHtml(
+                                category.name
+                            )}
+
+                        </h3>
+
+
+                        <p class="category-card-description">
+
+                            ${escapeHtml(
+                                category.description
+                            )}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="category-card-footer">
+
+                    <span class="category-card-link">
+
+                        Explorer
+
+                    </span>
+
+
+                    <span class="category-card-arrow">
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </span>
+
+                </div>
+
+            `;
+
+
+            categoriesGrid.appendChild(
+                card
             );
 
-        });
-
-
-        renderCategories(filtered);
-
-    });
+        }
+    );
 
 }
 
 
-// ============================================================
-// COMPTEUR DE CATÉGORIES
-// ============================================================
+/* =========================================================
+   ÉTATS
+========================================================= */
 
-function updateCategoriesCount() {
+function showState(
+    state
+) {
 
-    if (!categoriesCount) return;
+    categoriesLoading.classList.add(
+        "hidden"
+    );
 
-    const total = categories.length;
+    categoriesEmpty.classList.add(
+        "hidden"
+    );
 
-    if (total === 0) {
-
-        categoriesCount.textContent =
-            "Aucune catégorie";
-
-    } else if (total === 1) {
-
-        categoriesCount.textContent =
-            "1 catégorie";
-
-    } else {
-
-        categoriesCount.textContent =
-            `${total} catégories`;
-
-    }
-
-}
+    categoriesError.classList.add(
+        "hidden"
+    );
 
 
-// ============================================================
-// ÉTAT DE CHARGEMENT
-// ============================================================
+    if (
+        state === "loading"
+    ) {
 
-function showLoading() {
-
-    if (!categoriesGrid) return;
-
-    if (categoriesEmpty) {
-        categoriesEmpty.style.display = "none";
-    }
-
-    categoriesGrid.innerHTML = `
-        <div class="categories-loading">
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <span>
-                Chargement des catégories...
-            </span>
-
-        </div>
-    `;
-
-}
-
-
-// ============================================================
-// AFFICHER UNE ERREUR
-// ============================================================
-
-function showError() {
-
-    if (!categoriesGrid) return;
-
-    if (categoriesEmpty) {
-        categoriesEmpty.style.display = "none";
-    }
-
-    categoriesGrid.innerHTML = `
-        <div class="categories-error">
-
-            <i class="fa-solid fa-triangle-exclamation"></i>
-
-            <h3>
-                Impossible de charger les catégories
-            </h3>
-
-            <p>
-                Vérifiez votre connexion Internet
-                puis rechargez la page.
-            </p>
-
-            <button
-                type="button"
-                id="retryCategories"
-                class="btn-primary">
-                <i class="fa-solid fa-rotate-right"></i>
-                Réessayer
-            </button>
-
-        </div>
-    `;
-
-
-    const retryButton =
-        document.getElementById("retryCategories");
-
-
-    if (retryButton) {
-
-        retryButton.addEventListener(
-            "click",
-            loadCategories
+        categoriesLoading.classList.remove(
+            "hidden"
         );
 
-    }
+        categoriesGrid.innerHTML = "";
 
-}
-
-
-// ============================================================
-// MENU LATÉRAL
-// ============================================================
-
-function setupMenu() {
-
-    if (!menuBtn || !sidebar) return;
-
-
-    // Ouvrir
-    menuBtn.addEventListener("click", () => {
-
-        sidebar.classList.add("active");
-
-        if (overlay) {
-            overlay.classList.add("active");
-        }
-
-        document.body.classList.add("menu-open");
-
-    });
-
-
-    // Fermer avec le bouton
-    if (closeSidebar) {
-
-        closeSidebar.addEventListener("click", closeMenu);
+        return;
 
     }
 
 
-    // Fermer avec l'overlay
-    if (overlay) {
+    if (
+        state === "empty"
+    ) {
 
-        overlay.addEventListener(
-            "click",
-            closeMenu
+        categoriesEmpty.classList.remove(
+            "hidden"
         );
 
+        categoriesGrid.innerHTML = "";
+
+        return;
+
     }
 
 
-    // Fermer avec Échap
-    document.addEventListener("keydown", (event) => {
+    if (
+        state === "error"
+    ) {
 
-        if (event.key === "Escape") {
+        categoriesError.classList.remove(
+            "hidden"
+        );
 
-            closeMenu();
+        categoriesGrid.innerHTML = "";
 
-        }
+        return;
 
-    });
-
-
-    // Fermer après clic sur un lien
-    const sidebarLinks =
-        sidebar.querySelectorAll("a");
-
-
-    sidebarLinks.forEach((link) => {
-
-        link.addEventListener("click", () => {
-
-            closeMenu();
-
-        });
-
-    });
-
-}
-
-
-// ============================================================
-// FERMER LE MENU
-// ============================================================
-
-function closeMenu() {
-
-    if (sidebar) {
-        sidebar.classList.remove("active");
     }
 
-    if (overlay) {
-        overlay.classList.remove("active");
-    }
+}
 
-    document.body.classList.remove("menu-open");
+
+/* =========================================================
+   RETRY
+========================================================= */
+
+if (categoriesRetry) {
+
+    categoriesRetry.addEventListener(
+        "click",
+        loadCategories
+    );
 
 }
 
 
-// ============================================================
-// SÉCURITÉ HTML
-// ============================================================
+/* =========================================================
+   INITIALISATION
+========================================================= */
 
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-// ============================================================
-// SÉCURITÉ POUR LES ATTRIBUTS
-// ============================================================
-
-function escapeAttribute(value) {
-
-    return String(value)
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
+loadCategories();
