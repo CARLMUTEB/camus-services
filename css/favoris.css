@@ -2,10 +2,349 @@
    CAMU SERVICES — FAVORIS
 ========================================================= */
 
-.favorites-page {
+:root {
+
+    --fav-blue: #063b73;
+    --fav-blue-dark: #042b54;
+
+    --fav-green: #2ca36b;
+
+    --fav-light: #f5f8fc;
+
+    --fav-border: #dfe6ee;
+
+    --fav-text: #17212b;
+
+    --fav-muted: #6d7885;
+
+    --fav-red: #d73535;
+
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    background: var(--fav-light);
+
+    color: var(--fav-text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.favorites-sidebar {
+
+    position: fixed;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 250px;
+
+    padding: 25px 18px;
+
+    background: #ffffff;
+
+    border-right:
+        1px solid var(--fav-border);
+
+    z-index: 1000;
+
+}
+
+
+.favorites-sidebar-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    padding:
+        10px 5px 30px;
+
+}
+
+
+.favorites-sidebar-logo img {
+
+    width: 170px;
+
+    height: auto;
+
+}
+
+
+.favorites-sidebar-nav {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.favorites-sidebar-nav a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding:
+        13px 15px;
+
+    border-radius: 10px;
+
+    color: #4c5865;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+
+}
+
+
+.favorites-sidebar-nav a:hover,
+.favorites-sidebar-nav a.active {
+
+    background: #edf5ff;
+
+    color: var(--fav-blue);
+
+}
+
+
+.favorites-sidebar-nav i {
+
+    width: 20px;
+
+    text-align: center;
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.favorites-main {
+
+    min-height: 100vh;
+
+    margin-left: 250px;
+
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.favorites-topbar {
+
+    position: relative;
+
+    height: 82px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    border-bottom:
+        1px solid var(--fav-border);
+
+}
+
+
+.favorites-top-logo img {
+
+    width: 205px;
+
+    height: auto;
+
+}
+
+
+.favorites-top-actions {
+
+    position: absolute;
+
+    right: 30px;
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+
+.favorites-top-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #edf5ff;
+
+    color: var(--fav-blue);
+
+    text-decoration: none;
+
+}
+
+
+.favorites-top-icon:hover,
+.favorites-top-icon.active {
+
+    background: var(--fav-blue);
+
+    color: #ffffff;
+
+}
+
+
+.favorites-menu-button {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.favorites-hero {
+
+    padding:
+        55px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #063b73,
+            #07528d
+        );
+
+    color: #ffffff;
+
+    text-align: center;
+
+}
+
+
+.favorites-hero-content {
+
+    max-width: 800px;
+
+    margin: auto;
+
+}
+
+
+.favorites-hero-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin:
+        0 auto 18px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    font-size: 27px;
+
+}
+
+
+.favorites-hero h1 {
+
+    margin:
+        0 0 12px;
+
+    font-size: 34px;
+
+}
+
+
+.favorites-hero p {
+
+    max-width: 650px;
+
+    margin: auto;
+
+    line-height: 1.7;
+
+    opacity: 0.92;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.favorites-section {
+
+    padding:
+        45px 20px 60px;
+
+}
+
+
+.favorites-container {
+
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
+
+    margin: auto;
+
 }
 
 
@@ -14,173 +353,136 @@
 ========================================================= */
 
 .favorites-header {
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
-    gap: 25px;
+
+    gap: 20px;
 
     margin-bottom: 25px;
+
 }
 
-.favorites-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
 
-    font-size: 14px;
-    font-weight: 700;
+.favorites-header h2 {
 
-    color: #16a34a;
+    margin:
+        0 0 5px;
+
+    color: var(--fav-blue);
+
+    font-size: 23px;
+
 }
 
-.favorites-header h1 {
-    margin: 8px 0 6px;
-
-    font-size: 32px;
-    font-weight: 800;
-
-    color: #111827;
-}
 
 .favorites-header p {
+
     margin: 0;
 
-    color: #6b7280;
-    font-size: 15px;
+    color: var(--fav-muted);
+
+    font-size: 13px;
+
 }
 
 
-/* =========================================================
-   BOUTON RECHERCHE
-========================================================= */
+.favorites-refresh {
 
-.favorites-search-button {
     display: inline-flex;
+
     align-items: center;
-    justify-content: center;
-    gap: 9px;
 
-    padding: 12px 18px;
-
-    border-radius: 10px;
-
-    background: #16a34a;
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    transition: 0.2s ease;
-}
-
-.favorites-search-button:hover {
-    background: #15803d;
-    transform: translateY(-1px);
-}
-
-
-/* =========================================================
-   COMPTEUR
-========================================================= */
-
-.favorites-count {
-    display: flex;
-    align-items: center;
     gap: 8px;
 
-    margin-bottom: 20px;
+    min-height: 42px;
 
-    padding: 13px 16px;
+    padding:
+        0 15px;
 
-    background: white;
+    border:
+        1px solid var(--fav-border);
 
-    border: 1px solid #e5e7eb;
+    border-radius: 8px;
 
-    border-radius: 12px;
+    background: #ffffff;
 
-    color: #6b7280;
+    color: var(--fav-blue);
 
-    font-size: 14px;
-}
+    font-weight: 600;
 
-.favorites-count i {
-    color: #ef4444;
-}
+    cursor: pointer;
 
-.favorites-count span {
-    font-weight: 800;
-    color: #111827;
 }
 
 
 /* =========================================================
-   CHARGEMENT
-========================================================= */
-
-.favorites-loading {
-    min-height: 220px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 12px;
-
-    color: #6b7280;
-}
-
-.favorites-loading i {
-    font-size: 28px;
-    color: #16a34a;
-}
-
-.favorites-loading p {
-    margin: 0;
-}
-
-
-/* =========================================================
-   GRILLE
+   GRID
 ========================================================= */
 
 .favorites-grid {
+
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(4, 1fr);
 
-    gap: 18px;
+    gap: 20px;
+
 }
 
 
 /* =========================================================
-   CARTE ANNONCE
+   CARD
 ========================================================= */
 
 .favorite-card {
+
+    position: relative;
+
     overflow: hidden;
 
-    background: white;
+    background: #ffffff;
 
-    border: 1px solid #e5e7eb;
+    border:
+        1px solid var(--fav-border);
 
     border-radius: 14px;
 
     box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.05);
+        0 7px 25px
+        rgba(20,50,80,0.05);
 
-    transition: 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
 }
 
+
 .favorite-card:hover {
-    transform: translateY(-3px);
+
+    transform:
+        translateY(-4px);
 
     box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.08);
+        0 15px 35px
+        rgba(20,50,80,0.11);
+
+}
+
+
+.favorite-card-link {
+
+    display: block;
+
+    color: inherit;
+
+    text-decoration: none;
+
 }
 
 
@@ -188,247 +490,390 @@
    IMAGE
 ========================================================= */
 
-.favorite-image-wrapper {
+.favorite-card-image {
+
     position: relative;
 
     width: 100%;
-    height: 190px;
 
-    background: #f3f4f6;
+    aspect-ratio: 4 / 3;
 
     overflow: hidden;
+
+    background: #edf1f5;
+
 }
 
-.favorite-image {
+
+.favorite-card-image img {
+
     width: 100%;
+
     height: 100%;
 
     object-fit: cover;
 
-    display: block;
 }
 
 
-/* =========================================================
-   BOUTON RETIRER
-========================================================= */
-
-.favorite-remove {
-    position: absolute;
-
-    top: 10px;
-    right: 10px;
-
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background: white;
-
-    color: #ef4444;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.15);
-
-    transition: 0.2s ease;
-}
-
-.favorite-remove:hover {
-    background: #fee2e2;
-
-    transform: scale(1.05);
-}
-
-
-/* =========================================================
-   CONTENU CARTE
-========================================================= */
-
-.favorite-content {
-    padding: 15px;
-}
-
-.favorite-category {
-    display: inline-block;
-
-    margin-bottom: 7px;
-
-    padding: 5px 8px;
-
-    border-radius: 6px;
-
-    background: #ecfdf5;
-
-    color: #15803d;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.favorite-title {
-    margin: 0 0 8px;
-
-    font-size: 16px;
-    font-weight: 750;
-
-    color: #111827;
-
-    line-height: 1.35;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
-}
-
-.favorite-price {
-    margin-bottom: 8px;
-
-    font-size: 18px;
-    font-weight: 800;
-
-    color: #16a34a;
-}
-
-.favorite-location {
-    display: flex;
-    align-items: center;
-
-    gap: 6px;
-
-    margin-bottom: 13px;
-
-    font-size: 13px;
-
-    color: #6b7280;
-}
-
-.favorite-location i {
-    color: #ef4444;
-}
-
-
-/* =========================================================
-   VOIR L'ANNONCE
-========================================================= */
-
-.favorite-view {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.favorite-image-placeholder {
 
     width: 100%;
 
-    padding: 10px;
+    height: 100%;
 
-    border: 1px solid #d1d5db;
+    display: flex;
 
-    border-radius: 8px;
+    align-items: center;
 
-    background: white;
+    justify-content: center;
 
-    color: #111827;
+    color: #9aa7b3;
 
-    text-decoration: none;
+    font-size: 35px;
 
-    font-size: 13px;
-    font-weight: 700;
-
-    transition: 0.2s ease;
 }
 
-.favorite-view:hover {
-    border-color: #16a34a;
 
-    background: #f0fdf4;
+.favorite-badge {
 
-    color: #15803d;
+    position: absolute;
+
+    left: 10px;
+
+    top: 10px;
+
+    padding:
+        5px 9px;
+
+    border-radius: 6px;
+
+    background: var(--fav-blue);
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
 }
 
 
 /* =========================================================
-   AUCUN FAVORI
+   REMOVE BUTTON
 ========================================================= */
 
-.favorites-empty {
-    padding: 70px 25px;
+.favorite-remove {
 
-    text-align: center;
+    position: absolute;
 
-    background: white;
+    top: 10px;
 
-    border: 1px solid #e5e7eb;
+    right: 10px;
 
-    border-radius: 16px;
-}
+    width: 38px;
 
-.favorites-empty-icon {
-    width: 72px;
-    height: 72px;
-
-    margin: 0 auto 18px;
+    height: 38px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
+    border: 0;
 
     border-radius: 50%;
 
-    background: #fef2f2;
+    background: #ffffff;
 
-    color: #ef4444;
+    color: var(--fav-red);
 
-    font-size: 30px;
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.15);
+
+    cursor: pointer;
+
+    z-index: 5;
+
 }
 
-.favorites-empty h2 {
-    margin: 0 0 8px;
 
-    font-size: 21px;
+.favorite-remove:hover {
 
-    color: #111827;
+    background: var(--fav-red);
+
+    color: #ffffff;
+
 }
 
-.favorites-empty p {
-    max-width: 520px;
 
-    margin: 0 auto 22px;
+/* =========================================================
+   BODY
+========================================================= */
 
-    color: #6b7280;
+.favorite-card-body {
+
+    padding: 15px;
+
+}
+
+
+.favorite-card-title {
+
+    margin:
+        0 0 9px;
+
+    color: var(--fav-text);
+
+    font-size: 16px;
+
+    line-height: 1.35;
+
+}
+
+
+.favorite-card-price {
+
+    margin-bottom: 10px;
+
+    color: var(--fav-green);
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+}
+
+
+.favorite-card-meta {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    color: var(--fav-muted);
+
+    font-size: 12px;
+
+}
+
+
+.favorite-card-meta span {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.favorite-card-meta i {
+
+    width: 14px;
+
+    color: var(--fav-blue);
+
+}
+
+
+/* =========================================================
+   FOOTER CARD
+========================================================= */
+
+.favorite-card-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 13px;
+
+    padding-top: 11px;
+
+    border-top:
+        1px solid #edf0f3;
+
+}
+
+
+.favorite-owner {
+
+    max-width: 75%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: var(--fav-muted);
+
+    font-size: 11px;
+
+}
+
+
+.favorite-arrow {
+
+    color: var(--fav-blue);
+
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.favorites-message {
+
+    padding:
+        65px 25px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border:
+        1px solid var(--fav-border);
+
+    border-radius: 15px;
+
+}
+
+
+.favorites-message-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #edf5ff;
+
+    color: var(--fav-blue);
+
+    font-size: 27px;
+
+}
+
+
+.favorites-message-icon.error {
+
+    background: #fff0f0;
+
+    color: var(--fav-red);
+
+}
+
+
+.favorites-message h2 {
+
+    margin:
+        18px 0 9px;
+
+}
+
+
+.favorites-message p {
+
+    max-width: 550px;
+
+    margin:
+        0 auto 22px;
+
+    color: var(--fav-muted);
 
     line-height: 1.6;
+
 }
 
-.favorites-empty-button {
+
+.favorites-primary-button {
+
+    min-height: 44px;
+
     display: inline-flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 8px;
 
-    padding: 12px 18px;
+    padding:
+        0 18px;
 
-    border-radius: 9px;
+    border: 0;
 
-    background: #16a34a;
-    color: white;
+    border-radius: 8px;
+
+    background: var(--fav-blue);
+
+    color: #ffffff;
 
     text-decoration: none;
 
-    font-size: 14px;
     font-weight: 700;
+
+    cursor: pointer;
+
 }
 
-.favorites-empty-button:hover {
-    background: #15803d;
+
+.favorites-primary-button:hover {
+
+    background:
+        var(--fav-blue-dark);
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.favorites-loading {
+
+    padding:
+        70px 20px;
+
+    text-align: center;
+
+    color: var(--fav-muted);
+
+}
+
+
+.favorites-loading i {
+
+    color: var(--fav-blue);
+
+    font-size: 32px;
+
+}
+
+
+.favorites-loading p {
+
+    margin-top: 15px;
+
 }
 
 
@@ -436,20 +881,137 @@
    HIDDEN
 ========================================================= */
 
-[hidden] {
+.hidden {
+
     display: none !important;
+
 }
 
 
 /* =========================================================
-   TABLETTE
+   FOOTER
+========================================================= */
+
+.favorites-footer {
+
+    padding: 25px;
+
+    text-align: center;
+
+    color: var(--fav-muted);
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   TABLET
 ========================================================= */
 
 @media (max-width: 1100px) {
 
     .favorites-grid {
+
         grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+            repeat(3, 1fr);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.favorites-overlay {
+
+    display: none;
+
+}
+
+
+@media (max-width: 900px) {
+
+    .favorites-sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            transform 0.25s ease;
+
+    }
+
+
+    .favorites-sidebar.open {
+
+        transform:
+            translateX(0);
+
+    }
+
+
+    .favorites-main {
+
+        margin-left: 0;
+
+    }
+
+
+    .favorites-menu-button {
+
+        position: absolute;
+
+        left: 18px;
+
+        width: 42px;
+
+        height: 42px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border: 0;
+
+        border-radius: 9px;
+
+        background: #edf5ff;
+
+        color: var(--fav-blue);
+
+        cursor: pointer;
+
+        font-size: 18px;
+
+    }
+
+
+    .favorites-overlay.open {
+
+        display: block;
+
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 900;
+
+        background:
+            rgba(0,0,0,0.45);
+
+    }
+
+
+    .favorites-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
     }
 
 }
@@ -459,63 +1021,137 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
-    .favorites-page {
-        padding: 20px 15px;
+    .favorites-topbar {
+
+        height: 70px;
+
     }
+
+
+    .favorites-top-logo img {
+
+        width: 155px;
+
+    }
+
+
+    .favorites-top-actions {
+
+        right: 15px;
+
+        gap: 6px;
+
+    }
+
+
+    .favorites-top-icon {
+
+        width: 37px;
+
+        height: 37px;
+
+    }
+
+
+    .favorites-hero {
+
+        padding:
+            42px 18px;
+
+    }
+
+
+    .favorites-hero h1 {
+
+        font-size: 27px;
+
+    }
+
+
+    .favorites-hero p {
+
+        font-size: 14px;
+
+    }
+
+
+    .favorites-section {
+
+        padding:
+            28px 12px 45px;
+
+    }
+
 
     .favorites-header {
+
+        align-items: flex-start;
+
         flex-direction: column;
-        align-items: stretch;
+
     }
 
-    .favorites-header h1 {
-        font-size: 26px;
-    }
 
-    .favorites-search-button {
+    .favorites-refresh {
+
         width: 100%;
+
+        justify-content: center;
+
     }
+
 
     .favorites-grid {
+
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            repeat(2, 1fr);
 
         gap: 12px;
+
     }
 
-    .favorite-image-wrapper {
-        height: 160px;
+
+    .favorite-card-body {
+
+        padding: 11px;
+
+    }
+
+
+    .favorite-card-title {
+
+        font-size: 14px;
+
+    }
+
+
+    .favorite-card-price {
+
+        font-size: 15px;
+
+    }
+
+
+    .favorite-remove {
+
+        width: 34px;
+
+        height: 34px;
+
     }
 
 }
 
 
-/* =========================================================
-   PETIT MOBILE
-========================================================= */
-
-@media (max-width: 520px) {
-
-    .favorites-page {
-        padding: 16px 12px;
-    }
-
-    .favorites-header h1 {
-        font-size: 23px;
-    }
+@media (max-width: 380px) {
 
     .favorites-grid {
-        grid-template-columns: 1fr;
-    }
 
-    .favorite-image-wrapper {
-        height: 210px;
-    }
+        grid-template-columns:
+            1fr;
 
-    .favorites-empty {
-        padding: 50px 18px;
     }
 
 }
