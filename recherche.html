@@ -2,153 +2,203 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Rechercher — CAMU SERVICES</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Recherche — CAMU SERVICES</title>
 
     <meta
         name="description"
-        content="Recherchez des produits, véhicules, logements et services sur CAMU SERVICES."
+        content="Recherchez facilement des produits, services, biens immobiliers, véhicules et hébergements sur CAMU SERVICES."
     >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/recherche.css">
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/recherche.css"
+    >
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
+
 </head>
+
 
 <body>
 
-<!-- OVERLAY MOBILE -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+<aside
+    class="search-sidebar"
+    id="searchSidebar"
+>
 
-    <div class="sidebar-header">
+    <div class="search-sidebar-logo">
 
-        <div class="logo">
-            <span class="logo-main">CAMU</span>
-            <span class="logo-sub">SERVICES</span>
-        </div>
+        <a href="index.html">
 
-        <button
-            type="button"
-            class="sidebar-close"
-            id="sidebarClose"
-            aria-label="Fermer le menu"
-        >
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+
+        </a>
 
     </div>
 
 
-    <nav class="sidebar-nav">
+    <nav class="search-sidebar-nav">
 
-        <a href="index.html" class="nav-item">
+        <a href="index.html">
+
             <i class="fa-solid fa-house"></i>
+
             <span>Accueil</span>
+
         </a>
 
-        <a href="recherche.html" class="nav-item active">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Rechercher</span>
-        </a>
 
-        <a href="categories.html" class="nav-item">
+        <a href="categories.html">
+
             <i class="fa-solid fa-layer-group"></i>
+
             <span>Catégories</span>
+
         </a>
 
-        <a href="publier.html" class="nav-item">
-            <i class="fa-solid fa-circle-plus"></i>
+
+        <a
+            href="recherche.html"
+            class="active"
+        >
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <span>Recherche</span>
+
+        </a>
+
+
+        <a href="publier.html">
+
+            <i class="fa-solid fa-plus"></i>
+
             <span>Publier</span>
+
         </a>
 
-        <a href="favoris.html" class="nav-item">
-            <i class="fa-regular fa-heart"></i>
+
+        <a href="favoris.html">
+
+            <i class="fa-solid fa-heart"></i>
+
             <span>Favoris</span>
+
         </a>
 
-        <a href="compte.html" class="nav-item">
-            <i class="fa-regular fa-user"></i>
+
+        <a href="compte.html">
+
+            <i class="fa-solid fa-user"></i>
+
             <span>Mon compte</span>
-        </a>
 
-        <a href="parametres.html" class="nav-item">
-            <i class="fa-solid fa-gear"></i>
-            <span>Paramètres</span>
         </a>
 
     </nav>
 
-
-    <div class="sidebar-bottom">
-
-        <a href="connexion.html" class="nav-item">
-            <i class="fa-solid fa-right-to-bracket"></i>
-            <span>Connexion</span>
-        </a>
-
-        <a
-            href="#"
-            class="nav-item logout-item"
-            id="logoutBtn"
-        >
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Déconnexion</span>
-        </a>
-
-    </div>
-
 </aside>
 
 
-<!-- CONTENU -->
-<div class="main-wrapper">
+<!-- =========================================================
+     OVERLAY MOBILE
+========================================================= -->
+
+<div
+    class="search-overlay"
+    id="searchOverlay"
+></div>
 
 
-    <!-- TOPBAR -->
-    <header class="topbar">
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="search-main">
+
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
+
+    <header class="search-topbar">
+
 
         <button
             type="button"
-            class="menu-button"
-            id="menuButton"
+            id="searchMenuButton"
+            class="search-menu-button"
             aria-label="Ouvrir le menu"
         >
+
             <i class="fa-solid fa-bars"></i>
+
         </button>
 
 
-        <div class="mobile-logo">
-            <span>CAMU</span>
-            <small>SERVICES</small>
-        </div>
+        <a
+            href="index.html"
+            class="search-top-logo"
+        >
+
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+
+        </a>
 
 
-        <div class="topbar-right">
+        <div class="search-top-actions">
 
             <a
                 href="favoris.html"
-                class="topbar-icon"
-                aria-label="Favoris"
+                class="search-top-icon"
+                title="Favoris"
             >
-                <i class="fa-regular fa-heart"></i>
+
+                <i class="fa-solid fa-heart"></i>
+
             </a>
+
 
             <a
                 href="compte.html"
-                class="profile-button"
+                class="search-top-icon"
+                title="Mon compte"
             >
-                <i class="fa-regular fa-user"></i>
-                <span>Mon compte</span>
+
+                <i class="fa-solid fa-user"></i>
+
             </a>
 
         </div>
@@ -156,272 +206,420 @@
     </header>
 
 
-    <!-- MAIN -->
-    <main class="main-content recherche-page">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="search-hero">
+
+        <div class="search-hero-content">
 
 
-        <!-- HERO -->
-        <section class="recherche-hero">
+            <div class="search-hero-icon">
 
-            <div class="recherche-hero-content">
-
-                <span class="hero-badge">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Recherche
-                </span>
-
-                <h1>
-                    Trouvez ce que
-                    <span>vous cherchez.</span>
-                </h1>
-
-                <p>
-                    Recherchez parmi les annonces disponibles
-                    sur CAMU SERVICES.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- FILTRES -->
-        <section class="search-panel">
-
-            <form id="searchForm">
-
-                <div class="search-input-group">
-
-                    <label for="searchKeyword">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        Que recherchez-vous ?
-                    </label>
-
-                    <input
-                        type="text"
-                        id="searchKeyword"
-                        placeholder="Ex. maison, voiture, téléphone..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <div class="search-input-group">
-
-                    <label for="searchCategory">
-                        <i class="fa-solid fa-layer-group"></i>
-                        Catégorie
-                    </label>
-
-                    <select id="searchCategory">
-
-                        <option value="">
-                            Toutes les catégories
-                        </option>
-
-                        <option value="immobilier">
-                            Immobilier
-                        </option>
-
-                        <option value="vehicules">
-                            Véhicules
-                        </option>
-
-                        <option value="commerce">
-                            Commerce
-                        </option>
-
-                        <option value="services">
-                            Services
-                        </option>
-
-                        <option value="emploi">
-                            Emploi
-                        </option>
-
-                        <option value="autres">
-                            Autres
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="search-input-group">
-
-                    <label for="searchCity">
-                        <i class="fa-solid fa-location-dot"></i>
-                        Ville
-                    </label>
-
-                    <select id="searchCity">
-
-                        <option value="">
-                            Toutes les villes
-                        </option>
-
-                        <option value="lubumbashi">
-                            Lubumbashi
-                        </option>
-
-                        <option value="kolwezi">
-                            Kolwezi
-                        </option>
-
-                        <option value="likasi">
-                            Likasi
-                        </option>
-
-                        <option value="fungurume">
-                            Fungurume
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="search-submit"
-                >
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Rechercher
-                </button>
-
-            </form>
-
-        </section>
-
-
-        <!-- RÉSULTATS -->
-        <section class="section search-results-section">
-
-            <div class="section-header">
-
-                <div>
-
-                    <span class="section-label">
-                        Résultats
-                    </span>
-
-                    <h2 id="resultsTitle">
-                        Toutes les annonces
-                    </h2>
-
-                </div>
-
-                <span
-                    class="results-count"
-                    id="resultsCount"
-                >
-                    0 annonce
-                </span>
+                <i class="fa-solid fa-magnifying-glass"></i>
 
             </div>
 
 
-            <!-- LISTE -->
-            <div
-                class="ads-grid recherche-ads-grid"
-                id="searchResults"
-            >
+            <h1>
+                Rechercher sur CAMU SERVICES
+            </h1>
 
-                <div class="search-loading">
-
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-
-                    <p>
-                        Chargement des annonces...
-                    </p>
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-    </main>
-
-
-    <!-- FOOTER -->
-    <footer class="footer">
-
-        <div class="footer-content">
-
-            <div class="footer-brand">
-
-                <div class="logo">
-
-                    <span class="logo-main">
-                        CAMU
-                    </span>
-
-                    <span class="logo-sub">
-                        SERVICES
-                    </span>
-
-                </div>
-
-                <p>
-                    Trouver • Acheter • Réserver
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
-                <a href="a-propos.html">
-                    À propos
-                </a>
-
-                <a href="contact.html">
-                    Contact
-                </a>
-
-                <a href="conditions.html">
-                    Mentions légales
-                </a>
-
-                <a href="conditions.html">
-                    Conditions d'utilisation
-                </a>
-
-                <a href="politique.html">
-                    Confidentialité
-                </a>
-
-                <a href="conditions.html">
-                    Règles de publication
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
 
             <p>
-                © 2026 CAMU SERVICES.
-                Tous droits réservés.
+                Trouvez des produits, services, biens immobiliers,
+                véhicules et hébergements près de chez vous.
             </p>
 
         </div>
 
+    </section>
+
+
+    <!-- =====================================================
+         RECHERCHE
+    ====================================================== -->
+
+    <section class="search-section">
+
+
+        <div class="search-container">
+
+
+            <!-- =================================================
+                 BOX RECHERCHE
+            ================================================== -->
+
+            <div class="search-box">
+
+
+                <div class="search-box-header">
+
+                    <div class="search-box-title">
+
+                        <i class="fa-solid fa-sliders"></i>
+
+                        <div>
+
+                            <h2>
+                                Recherche
+                            </h2>
+
+                            <p>
+                                Utilisez les filtres pour trouver
+                                exactement ce que vous recherchez.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="searchForm"
+                    class="search-form"
+                >
+
+
+                    <!-- MOT-CLÉ -->
+
+                    <div class="search-field search-field-keyword">
+
+                        <label for="searchKeyword">
+                            Que recherchez-vous ?
+                        </label>
+
+                        <div class="search-input-wrapper">
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <input
+                                type="search"
+                                id="searchKeyword"
+                                placeholder="Ex. maison, téléphone, voiture..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DOMAINE -->
+
+                    <div class="search-field">
+
+                        <label for="searchDomain">
+                            Domaine
+                        </label>
+
+                        <select id="searchDomain">
+
+                            <option value="">
+                                Tous les domaines
+                            </option>
+
+                            <option value="immobilier">
+                                🏠 Immobilier
+                            </option>
+
+                            <option value="commerce">
+                                🛒 Commerce
+                            </option>
+
+                            <option value="vehicules">
+                                🚗 Véhicules & Transport
+                            </option>
+
+                            <option value="hotels">
+                                🏨 Hôtels & Hébergement
+                            </option>
+
+                            <option value="autres">
+                                📦 Autres
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CATÉGORIE -->
+
+                    <div class="search-field">
+
+                        <label for="searchCategory">
+                            Catégorie
+                        </label>
+
+                        <select id="searchCategory">
+
+                            <option value="">
+                                Toutes les catégories
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- VILLE -->
+
+                    <div class="search-field">
+
+                        <label for="searchVille">
+                            Ville
+                        </label>
+
+                        <select id="searchVille">
+
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- COMMUNE -->
+
+                    <div class="search-field">
+
+                        <label for="searchCommune">
+                            Commune
+                        </label>
+
+                        <input
+                            type="text"
+                            id="searchCommune"
+                            placeholder="Ex. Katuba"
+                        >
+
+                    </div>
+
+
+                    <!-- TYPE -->
+
+                    <div class="search-field">
+
+                        <label for="searchType">
+                            Type d'annonce
+                        </label>
+
+                        <select id="searchType">
+
+                            <option value="">
+                                Tous les types
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PRIX MIN -->
+
+                    <div class="search-field">
+
+                        <label for="searchMinPrice">
+                            Prix minimum
+                        </label>
+
+                        <input
+                            type="number"
+                            id="searchMinPrice"
+                            min="0"
+                            placeholder="Minimum"
+                        >
+
+                    </div>
+
+
+                    <!-- PRIX MAX -->
+
+                    <div class="search-field">
+
+                        <label for="searchMaxPrice">
+                            Prix maximum
+                        </label>
+
+                        <input
+                            type="number"
+                            id="searchMaxPrice"
+                            min="0"
+                            placeholder="Maximum"
+                        >
+
+                    </div>
+
+
+                    <!-- BOUTONS -->
+
+                    <div class="search-actions">
+
+                        <button
+                            type="submit"
+                            class="search-submit"
+                            id="searchSubmit"
+                        >
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <span>
+                                Rechercher
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="search-reset"
+                            id="searchReset"
+                        >
+
+                            <i class="fa-solid fa-rotate-left"></i>
+
+                            Réinitialiser
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 RÉSULTATS
+            ================================================== -->
+
+            <div class="search-results-section">
+
+
+                <div class="search-results-header">
+
+
+                    <div>
+
+                        <h2>
+                            Résultats
+                        </h2>
+
+                        <p id="searchResultInfo">
+                            Chargement des annonces...
+                        </p>
+
+                    </div>
+
+
+                    <select
+                        id="searchSort"
+                        class="search-sort"
+                    >
+
+                        <option value="recent">
+                            Plus récentes
+                        </option>
+
+                        <option value="priceAsc">
+                            Prix croissant
+                        </option>
+
+                        <option value="priceDesc">
+                            Prix décroissant
+                        </option>
+
+                        <option value="title">
+                            Nom / titre
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="searchLoading"
+                    class="search-loading"
+                >
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <p>
+                        Recherche des annonces...
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="searchEmpty"
+                    class="search-empty hidden"
+                >
+
+                    <div class="search-empty-icon">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+                    <h3>
+                        Aucun résultat
+                    </h3>
+
+                    <p>
+                        Aucune annonce ne correspond
+                        à vos critères de recherche.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="searchProducts"
+                    class="search-products-grid"
+                ></div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="search-footer">
+
+        <p>
+
+            © <span id="searchYear"></span>
+            CAMU SERVICES.
+            Tous droits réservés.
+
+        </p>
+
     </footer>
 
-</div>
+
+</main>
 
 
-<!-- JAVASCRIPT -->
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/recherche.js"></script>
+<script
+    type="module"
+    src="js/recherche.js"
+></script>
+
 
 </body>
 </html>
