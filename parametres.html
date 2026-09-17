@@ -7,64 +7,35 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <meta
-        name="color-scheme"
-        content="light dark">
-
-    <meta
-        name="description"
-        content="Paramètres de votre compte — CAMU SERVICES">
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Paramètres — CAMU SERVICES</title>
 
-    <!-- Font Awesome -->
+    <meta
+        name="description"
+        content="Gérez les paramètres de votre compte CAMU SERVICES."
+    >
+
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        href="css/style.css"
+    >
 
-    <!-- CSS principal -->
     <link
         rel="stylesheet"
-        href="css/style.css">
+        href="css/parametres.css"
+    >
 
-    <!-- CSS paramètres -->
     <link
         rel="stylesheet"
-        href="css/parametres.css">
-
-    <!--
-        Appliquer le thème AVANT l'affichage
-        afin de limiter le flash clair/sombre.
-    -->
-    <script>
-        (function () {
-
-            const savedTheme =
-                localStorage.getItem("camu_theme");
-
-            if (
-                savedTheme === "dark" ||
-                savedTheme === "light"
-            ) {
-
-                document.documentElement.setAttribute(
-                    "data-theme",
-                    savedTheme
-                );
-
-            } else {
-
-                document.documentElement.setAttribute(
-                    "data-theme",
-                    "light"
-                );
-
-            }
-
-        })();
-    </script>
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
 </head>
 
@@ -72,66 +43,32 @@
 <body>
 
 
-<!-- ==========================================
-     HEADER MOBILE
-========================================== -->
-
-<header class="mobile-header">
-
-    <button
-        id="menuToggle"
-        class="mobile-menu-button"
-        type="button"
-        aria-label="Ouvrir le menu">
-
-        <i class="fa-solid fa-bars"></i>
-
-    </button>
-
-
-    <a
-        href="index.html"
-        class="mobile-logo">
-
-        CAMU <span>SERVICES</span>
-
-    </a>
-
-
-    <a
-        href="compte.html"
-        class="mobile-account"
-        aria-label="Mon compte">
-
-        <i class="fa-solid fa-user"></i>
-
-    </a>
-
-</header>
-
-
-
-<!-- ==========================================
+<!-- =====================================================
      SIDEBAR
-========================================== -->
+===================================================== -->
 
 <aside
-    class="sidebar"
-    id="sidebar">
+    class="settings-sidebar"
+    id="settingsSidebar"
+>
 
-    <div class="sidebar-logo">
+    <div class="settings-sidebar-logo">
 
-        CAMU <span>SERVICES</span>
+        <a href="index.html">
+
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+
+        </a>
 
     </div>
 
 
-    <nav class="sidebar-nav">
+    <nav class="settings-sidebar-nav">
 
-
-        <a
-            href="index.html"
-            class="nav-item">
+        <a href="index.html">
 
             <i class="fa-solid fa-house"></i>
 
@@ -140,31 +77,25 @@
         </a>
 
 
-        <a
-            href="recherche.html"
-            class="nav-item">
+        <a href="categories.html">
 
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-            <span>Rechercher</span>
-
-        </a>
-
-
-        <a
-            href="recherche.html"
-            class="nav-item">
-
-            <i class="fa-solid fa-folder"></i>
+            <i class="fa-solid fa-layer-group"></i>
 
             <span>Catégories</span>
 
         </a>
 
 
-        <a
-            href="publier.html"
-            class="nav-item">
+        <a href="recherche.html">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <span>Recherche</span>
+
+        </a>
+
+
+        <a href="publier.html">
 
             <i class="fa-solid fa-plus"></i>
 
@@ -173,9 +104,7 @@
         </a>
 
 
-        <a
-            href="favoris.html"
-            class="nav-item">
+        <a href="favoris.html">
 
             <i class="fa-solid fa-heart"></i>
 
@@ -184,9 +113,7 @@
         </a>
 
 
-        <a
-            href="compte.html"
-            class="nav-item">
+        <a href="compte.html">
 
             <i class="fa-solid fa-user"></i>
 
@@ -197,7 +124,8 @@
 
         <a
             href="parametres.html"
-            class="nav-item active">
+            class="active"
+        >
 
             <i class="fa-solid fa-gear"></i>
 
@@ -205,625 +133,735 @@
 
         </a>
 
-
     </nav>
 
 </aside>
 
 
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
 
-<!-- ==========================================
-     CONTENU
-========================================== -->
+<div
+    class="settings-overlay"
+    id="settingsOverlay"
+></div>
 
-<main class="main-content">
 
-    <div class="settings-page">
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
+<main class="settings-main">
 
-        <!-- ======================================
-             EN-TÊTE
-        ======================================= -->
 
-        <section class="settings-header">
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
 
-            <div>
+    <header class="settings-topbar">
 
-                <span class="settings-label">
-
-                    <i class="fa-solid fa-gear"></i>
-
-                    Paramètres
-
-                </span>
-
-
-                <h1>
-                    Paramètres du compte
-                </h1>
-
-
-                <p>
-                    Gérez les préférences et la sécurité
-                    de votre compte.
-                </p>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ======================================
-             COMPTE
-        ======================================= -->
-
-        <section class="settings-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon account-icon">
-
-                    <i class="fa-solid fa-user"></i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Compte
-                    </h2>
-
-                    <p>
-                        Gérez les informations de votre compte.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <a
-                href="compte.html"
-                class="settings-row">
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-user-pen"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Modifier mon profil
-                    </strong>
-
-                    <span>
-                        Nom, téléphone et description
-                    </span>
-
-                </div>
-
-
-                <i
-                    class="fa-solid fa-chevron-right settings-arrow">
-                </i>
-
-            </a>
-
-
-
-            <a
-                href="compte.html#mes-annonces"
-                class="settings-row">
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-bullhorn"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Mes annonces
-                    </strong>
-
-                    <span>
-                        Consulter et gérer mes annonces
-                    </span>
-
-                </div>
-
-
-                <i
-                    class="fa-solid fa-chevron-right settings-arrow">
-                </i>
-
-            </a>
-
-
-
-            <a
-                href="favoris.html"
-                class="settings-row">
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-heart"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Mes favoris
-                    </strong>
-
-                    <span>
-                        Retrouvez vos annonces sauvegardées
-                    </span>
-
-                </div>
-
-
-                <i
-                    class="fa-solid fa-chevron-right settings-arrow">
-                </i>
-
-            </a>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             APPARENCE
-        ======================================= -->
-
-        <section class="settings-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon appearance-icon">
-
-                    <i
-                        id="themeSectionIcon"
-                        class="fa-solid fa-moon">
-                    </i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Apparence
-                    </h2>
-
-                    <p>
-                        Personnalisez l'apparence de CAMU SERVICES.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="settings-row">
-
-
-                <div class="settings-row-icon">
-
-                    <i
-                        id="themeRowIcon"
-                        class="fa-solid fa-moon">
-                    </i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong id="themeTitle">
-                        Mode clair
-                    </strong>
-
-                    <span id="themeDescription">
-                        Utiliser l'apparence claire de CAMU SERVICES
-                    </span>
-
-                </div>
-
-
-                <label
-                    class="switch"
-                    aria-label="Changer le mode">
-
-
-                    <input
-                        type="checkbox"
-                        id="themeToggle">
-
-
-                    <span class="slider"></span>
-
-
-                </label>
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             SÉCURITÉ
-        ======================================= -->
-
-        <section class="settings-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon security-icon">
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Sécurité
-                    </h2>
-
-                    <p>
-                        Protégez votre compte CAMU SERVICES.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <button
-                id="changePasswordButton"
-                class="settings-row settings-row-button"
-                type="button">
-
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-key"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Modifier le mot de passe
-                    </strong>
-
-                    <span>
-                        Recevoir un lien de réinitialisation
-                    </span>
-
-                </div>
-
-
-                <i
-                    class="fa-solid fa-chevron-right settings-arrow">
-                </i>
-
-
-            </button>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             NOTIFICATIONS
-        ======================================= -->
-
-        <section class="settings-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon notification-icon">
-
-                    <i class="fa-solid fa-bell"></i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Notifications
-                    </h2>
-
-                    <p>
-                        Gérez vos préférences de notification.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="settings-row">
-
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-bell"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Notifications
-                    </strong>
-
-                    <span>
-                        Recevoir les notifications CAMU SERVICES
-                    </span>
-
-                </div>
-
-
-                <label class="switch">
-
-
-                    <input
-                        type="checkbox"
-                        id="notificationsToggle"
-                        checked>
-
-
-                    <span class="slider"></span>
-
-
-                </label>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             LANGUE
-        ======================================= -->
-
-        <section class="settings-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon language-icon">
-
-                    <i class="fa-solid fa-language"></i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Langue
-                    </h2>
-
-                    <p>
-                        Choisissez la langue de CAMU SERVICES.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="language-select-row">
-
-
-                <div class="settings-row-icon">
-
-                    <i class="fa-solid fa-globe"></i>
-
-                </div>
-
-
-                <div class="settings-row-content">
-
-                    <strong>
-                        Langue
-                    </strong>
-
-                    <span>
-                        Langue actuelle
-                    </span>
-
-                </div>
-
-
-                <select
-                    id="languageSelect">
-
-
-                    <option value="fr">
-                        Français
-                    </option>
-
-
-                    <option value="en">
-                        English
-                    </option>
-
-
-                    <option value="sw">
-                        Kiswahili
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             ZONE DANGEREUSE
-        ======================================= -->
-
-        <section class="settings-section danger-section">
-
-
-            <div class="settings-section-title">
-
-                <div class="settings-title-icon danger-icon">
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                </div>
-
-
-                <div>
-
-                    <h2>
-                        Zone dangereuse
-                    </h2>
-
-                    <p>
-                        Ces actions peuvent être irréversibles.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <button
-                id="deleteAccountButton"
-                class="delete-account-button"
-                type="button">
-
-
-                <i class="fa-solid fa-trash"></i>
-
-                Supprimer mon compte
-
-
-            </button>
-
-
-        </section>
-
-
-
-        <!-- ======================================
-             MESSAGE
-        ======================================= -->
-
-        <div
-            id="settingsMessage"
-            class="settings-message"
-            hidden>
-        </div>
-
-
-
-        <!-- ======================================
-             DÉCONNEXION
-        ======================================= -->
 
         <button
-            id="logoutButton"
-            class="settings-logout-button"
-            type="button">
+            type="button"
+            id="settingsMenuButton"
+            class="settings-menu-button"
+            aria-label="Ouvrir le menu"
+        >
 
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            Se déconnecter
-
+            <i class="fa-solid fa-bars"></i>
 
         </button>
 
 
-
-        <!-- ======================================
-             RETOUR
-        ======================================= -->
-
         <a
-            href="compte.html"
-            class="back-account-button">
+            href="index.html"
+            class="settings-top-logo"
+        >
 
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Retour à mon compte
-
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
 
         </a>
 
 
-    </div>
+        <div class="settings-top-actions">
+
+            <a
+                href="favoris.html"
+                class="settings-top-icon"
+                title="Favoris"
+            >
+
+                <i class="fa-solid fa-heart"></i>
+
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="settings-top-icon"
+                title="Mon compte"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="settings-hero">
+
+        <div class="settings-hero-content">
+
+
+            <div class="settings-hero-icon">
+
+                <i class="fa-solid fa-gear"></i>
+
+            </div>
+
+
+            <h1>
+                Paramètres
+            </h1>
+
+
+            <p>
+                Gérez vos informations personnelles,
+                votre sécurité et votre compte CAMU SERVICES.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+
+    <section class="settings-section">
+
+        <div class="settings-container">
+
+
+            <!-- =================================================
+                 LOADING
+            ================================================== -->
+
+            <div
+                id="settingsLoading"
+                class="settings-message"
+            >
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <p>
+                    Chargement de votre compte...
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 NON CONNECTÉ
+            ================================================== -->
+
+            <div
+                id="settingsLogin"
+                class="settings-message hidden"
+            >
+
+                <div class="settings-message-icon">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                </div>
+
+
+                <h2>
+                    Connexion requise
+                </h2>
+
+
+                <p>
+                    Connectez-vous à votre compte pour accéder
+                    aux paramètres.
+                </p>
+
+
+                <a
+                    href="connexion.html"
+                    class="settings-primary-button"
+                >
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Se connecter
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 CONTENU
+            ================================================== -->
+
+            <div
+                id="settingsContent"
+                class="settings-content hidden"
+            >
+
+
+                <!-- =================================================
+                     PROFIL
+                ================================================== -->
+
+                <div class="settings-card">
+
+
+                    <div class="settings-card-header">
+
+                        <div class="settings-card-icon">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Informations personnelles
+                            </h2>
+
+                            <p>
+                                Modifiez les informations associées
+                                à votre compte.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        id="profileForm"
+                        class="settings-form"
+                    >
+
+
+                        <!-- NOM -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsName">
+                                Nom complet
+                            </label>
+
+                            <input
+                                type="text"
+                                id="settingsName"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsEmail">
+                                E-mail
+                            </label>
+
+                            <input
+                                type="email"
+                                id="settingsEmail"
+                                readonly
+                            >
+
+                            <small>
+                                L'adresse e-mail ne peut pas être
+                                modifiée ici.
+                            </small>
+
+                        </div>
+
+
+                        <!-- TELEPHONE -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsPhone">
+                                Téléphone
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="settingsPhone"
+                                placeholder="+243..."
+                            >
+
+                        </div>
+
+
+                        <!-- WHATSAPP -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsWhatsapp">
+                                WhatsApp
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="settingsWhatsapp"
+                                placeholder="+243..."
+                            >
+
+                        </div>
+
+
+                        <!-- VILLE -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsVille">
+                                Ville
+                            </label>
+
+                            <select
+                                id="settingsVille"
+                            >
+
+                                <option value="">
+                                    Sélectionner une ville
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- COMMUNE -->
+
+                        <div class="settings-field">
+
+                            <label for="settingsCommune">
+                                Commune
+                            </label>
+
+                            <input
+                                type="text"
+                                id="settingsCommune"
+                                placeholder="Ex. Katuba"
+                            >
+
+                        </div>
+
+
+                        <div class="settings-form-actions">
+
+                            <button
+                                type="submit"
+                                id="saveProfileButton"
+                                class="settings-primary-button"
+                            >
+
+                                <i class="fa-solid fa-floppy-disk"></i>
+
+                                Enregistrer les modifications
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="profileMessage"
+                            class="settings-form-message"
+                        ></div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     COMPTE
+                ================================================== -->
+
+                <div class="settings-card">
+
+
+                    <div class="settings-card-header">
+
+                        <div class="settings-card-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Sécurité du compte
+                            </h2>
+
+                            <p>
+                                Gérez votre mot de passe et
+                                la sécurité de votre compte.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-security-list">
+
+
+                        <div class="settings-security-item">
+
+                            <div>
+
+                                <strong>
+                                    Mot de passe
+                                </strong>
+
+                                <p>
+                                    Modifiez votre mot de passe
+                                    pour sécuriser votre compte.
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="changePasswordButton"
+                                class="settings-secondary-button"
+                            >
+
+                                <i class="fa-solid fa-key"></i>
+
+                                Changer
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="settings-security-item">
+
+                            <div>
+
+                                <strong>
+                                    Réinitialisation
+                                </strong>
+
+                                <p>
+                                    Recevez un lien de réinitialisation
+                                    par e-mail.
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                id="resetPasswordButton"
+                                class="settings-secondary-button"
+                            >
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                Envoyer le lien
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- CHANGEMENT MOT DE PASSE -->
+
+                    <div
+                        id="passwordFormContainer"
+                        class="password-form-container hidden"
+                    >
+
+                        <form
+                            id="passwordForm"
+                            class="settings-form"
+                        >
+
+                            <div class="settings-field">
+
+                                <label for="currentPassword">
+                                    Mot de passe actuel
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="settings-field">
+
+                                <label for="newPassword">
+                                    Nouveau mot de passe
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="settings-field">
+
+                                <label for="confirmPassword">
+                                    Confirmer le nouveau mot de passe
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="settings-form-actions">
+
+                                <button
+                                    type="submit"
+                                    id="savePasswordButton"
+                                    class="settings-primary-button"
+                                >
+
+                                    <i class="fa-solid fa-lock"></i>
+
+                                    Modifier le mot de passe
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    id="cancelPasswordButton"
+                                    class="settings-secondary-button"
+                                >
+
+                                    Annuler
+
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="passwordMessage"
+                                class="settings-form-message"
+                            ></div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COMPTE
+                ================================================== -->
+
+                <div class="settings-card">
+
+
+                    <div class="settings-card-header">
+
+                        <div class="settings-card-icon">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Mon compte
+                            </h2>
+
+                            <p>
+                                Informations générales sur votre compte.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-account-info">
+
+
+                        <div class="settings-info-row">
+
+                            <span>
+                                Type de compte
+                            </span>
+
+                            <strong id="accountType">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="settings-info-row">
+
+                            <span>
+                                Statut
+                            </span>
+
+                            <strong
+                                id="accountStatus"
+                                class="settings-status"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="settings-info-row">
+
+                            <span>
+                                Membre depuis
+                            </span>
+
+                            <strong id="accountCreated">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DÉCONNEXION
+                ================================================== -->
+
+                <div class="settings-card settings-danger-card">
+
+
+                    <div class="settings-card-header">
+
+                        <div class="settings-card-icon danger">
+
+                            <i class="fa-solid fa-right-from-bracket"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Déconnexion
+                            </h2>
+
+                            <p>
+                                Déconnectez-vous de votre compte
+                                sur cet appareil.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="logoutButton"
+                        class="settings-logout-button"
+                    >
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        Se déconnecter
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="settings-footer">
+
+        <p>
+
+            © <span id="settingsYear"></span>
+            CAMU SERVICES.
+            Tous droits réservés.
+
+        </p>
+
+    </footer>
+
 
 </main>
 
 
-
-<!-- ==========================================
-     JAVASCRIPT
-========================================== -->
-
 <script
     type="module"
-    src="js/auth.js">
-</script>
-
-
-<script
-    type="module"
-    src="js/app.js">
-</script>
-
-
-<script
-    type="module"
-    src="js/parametres.js">
-</script>
+    src="js/parametres.js"
+></script>
 
 
 </body>
+
 </html>
