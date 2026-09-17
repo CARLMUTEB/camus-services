@@ -2,593 +2,698 @@
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <meta
-        name="description"
-        content="Profil de l'annonceur — CAMU SERVICES"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Profil — CAMU SERVICES</title>
 
-
-    <!-- FONT AWESOME -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    <meta
+        name="description"
+        content="Profil d'un vendeur sur CAMU SERVICES."
     >
 
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
 
-    <!-- CSS PRINCIPAL -->
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-
-    <!-- CSS PROFIL -->
     <link
         rel="stylesheet"
         href="css/profil.css"
     >
 
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
 
 
 <body>
 
+<div class="app-layout">
 
-<!-- =====================================================
-     HEADER MOBILE
-===================================================== -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-<header class="mobile-header">
+    <aside class="sidebar" id="sidebar">
 
-    <button
-        id="menuToggle"
-        class="mobile-menu-button"
-        type="button"
-        aria-label="Ouvrir le menu"
-    >
+        <div class="sidebar-header">
 
-        <i class="fa-solid fa-bars"></i>
+            <a href="index.html" class="sidebar-logo">
 
-    </button>
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
 
+            </a>
 
-    <a
-        href="index.html"
-        class="mobile-logo"
-    >
-
-        CAMU <span>SERVICES</span>
-
-    </a>
-
-
-    <a
-        href="compte.html"
-        class="mobile-account"
-        aria-label="Mon compte"
-    >
-
-        <i class="fa-solid fa-user"></i>
-
-    </a>
-
-</header>
-
-
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
-<aside
-    class="sidebar"
-    id="sidebar"
->
-
-    <!-- LOGO -->
-
-    <div class="sidebar-logo">
-
-        CAMU <span>SERVICES</span>
-
-    </div>
-
-
-    <!-- NAVIGATION -->
-
-    <nav class="sidebar-nav">
-
-
-        <!-- ACCUEIL -->
-
-        <a
-            href="index.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-house"></i>
-
-            <span>
-                Accueil
-            </span>
-
-        </a>
-
-
-        <!-- RECHERCHER -->
-
-        <a
-            href="recherche.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-            <span>
-                Rechercher
-            </span>
-
-        </a>
-
-
-        <!-- CATÉGORIES -->
-
-        <a
-            href="recherche.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-folder"></i>
-
-            <span>
-                Catégories
-            </span>
-
-        </a>
-
-
-        <!-- PUBLIER -->
-
-        <a
-            href="publier.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-plus"></i>
-
-            <span>
-                Publier
-            </span>
-
-        </a>
-
-
-        <!-- FAVORIS -->
-
-        <a
-            href="favoris.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-heart"></i>
-
-            <span>
-                Favoris
-            </span>
-
-        </a>
-
-
-        <!-- MON COMPTE -->
-
-        <a
-            href="compte.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-user"></i>
-
-            <span>
-                Mon compte
-            </span>
-
-        </a>
-
-
-        <!-- PARAMÈTRES -->
-
-        <a
-            href="parametres.html"
-            class="nav-item"
-        >
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>
-                Paramètres
-            </span>
-
-        </a>
-
-    </nav>
-
-</aside>
-
-
-
-<!-- =====================================================
-     CONTENU PRINCIPAL
-===================================================== -->
-
-<main class="main-content">
-
-
-    <div class="public-profile-container">
-
-
-        <!-- =================================================
-             RETOUR
-        ================================================== -->
-
-        <a
-            href="javascript:history.back()"
-            class="profile-back"
-        >
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-            Retour
-
-        </a>
-
-
-
-        <!-- =================================================
-             CHARGEMENT
-        ================================================== -->
-
-        <div
-            id="profileLoading"
-            class="profile-loading"
-        >
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <p>
-                Chargement du profil...
-            </p>
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
         </div>
 
 
+        <nav class="sidebar-nav">
 
-        <!-- =================================================
-             ERREUR
-        ================================================== -->
+            <a href="index.html" class="sidebar-link">
 
-        <div
-            id="profileError"
-            class="profile-error hidden"
-        >
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-house"></i>
+                </span>
 
-            <i
-                class="fa-solid fa-circle-exclamation"
-            ></i>
+                <span>Accueil</span>
+
+            </a>
 
 
-            <h2>
-                Profil introuvable
-            </h2>
+            <a href="categories.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </span>
+
+                <span>Catégories</span>
+
+            </a>
 
 
-            <p>
-                Ce profil n'est pas disponible.
-            </p>
+            <a href="recherche.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <span>Rechercher</span>
+
+            </a>
 
 
-            <a
-                href="index.html"
-                class="primary-button"
-            >
+            <a href="publier.html" class="sidebar-link sidebar-publish-link">
 
-                Retour à l'accueil
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+
+                <span>Publier une annonce</span>
+
+            </a>
+
+
+            <a href="favoris.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-heart"></i>
+                </span>
+
+                <span>Mes favoris</span>
+
+            </a>
+
+
+            <div class="sidebar-divider"></div>
+
+
+            <a href="compte.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span>Mon compte</span>
+
+            </a>
+
+
+            <a href="parametres.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </span>
+
+                <span>Paramètres</span>
+
+            </a>
+
+
+            <a href="aide.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-circle-question"></i>
+                </span>
+
+                <span>Centre d'aide</span>
+
+            </a>
+
+
+            <a href="contact.html" class="sidebar-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </span>
+
+                <span>Contact</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-bottom-line"></div>
+
+            <a href="connexion.html" class="sidebar-link sidebar-login-link">
+
+                <span class="sidebar-link-icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </span>
+
+                <span>Connexion</span>
 
             </a>
 
         </div>
 
+    </aside>
+
+
+    <!-- OVERLAY MOBILE -->
+
+    <div
+        class="mobile-overlay"
+        id="mobileOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="profile-main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="profile-topbar">
+
+            <button
+                type="button"
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                aria-label="Ouvrir le menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+
+            <a
+                href="index.html"
+                class="topbar-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="topbar-actions">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    title="Mes favoris"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="topbar-icon"
+                    title="Mon compte"
+                >
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+            </div>
+
+        </header>
 
 
         <!-- =================================================
-             PROFIL PUBLIC
+             CONTENU
         ================================================== -->
 
-        <section
-            id="publicProfile"
-            class="public-profile hidden"
-        >
+        <div class="profile-container">
 
 
-            <!-- =================================================
-                 EN-TÊTE PROFIL
-            ================================================== -->
+            <!-- RETOUR -->
 
-            <div class="profile-header-card">
+            <div class="profile-back">
+
+                <a
+                    href="javascript:history.back()"
+                    class="back-button"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Retour
+
+                </a>
+
+            </div>
 
 
-                <!-- PHOTO -->
+            <!-- CHARGEMENT -->
 
-                <div class="public-avatar">
+            <div
+                class="profile-loading"
+                id="profileLoading"
+            >
+
+                <div class="loading-spinner">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                </div>
+
+                <p>
+                    Chargement du profil...
+                </p>
+
+            </div>
 
 
-                    <img
-                        id="profilePhoto"
-                        src=""
-                        alt="Photo du profil"
-                    >
+            <!-- ERREUR -->
 
+            <div
+                class="profile-error hidden"
+                id="profileError"
+            >
 
-                    <div
-                        id="defaultProfileIcon"
-                        class="default-profile-icon"
-                    >
+                <div class="profile-error-icon">
 
-                        <i class="fa-solid fa-user"></i>
-
-                    </div>
+                    <i class="fa-solid fa-user-slash"></i>
 
                 </div>
 
 
-
-                <!-- INFORMATIONS -->
-
-                <div class="profile-header-info">
-
-
-                    <h1 id="profileName">
-                        —
-                    </h1>
+                <h2>
+                    Profil introuvable
+                </h2>
 
 
-                    <p class="profile-member">
-
-                        <i
-                            class="fa-solid fa-circle-check"
-                        ></i>
-
-                        Membre de CAMU SERVICES
-
-                    </p>
+                <p id="profileErrorMessage">
+                    Ce profil n'existe pas ou n'est plus disponible.
+                </p>
 
 
-                    <p
-                        id="profileDescription"
-                        class="profile-description"
-                    >
-                        —
-                    </p>
+                <a
+                    href="recherche.html"
+                    class="primary-button"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Rechercher des annonces
+
+                </a>
+
+            </div>
 
 
+            <!-- =================================================
+                 PROFIL
+            ================================================== -->
 
-                    <!-- =================================================
-                         INFORMATIONS DE CONTACT
-                    ================================================== -->
-
-                    <div class="profile-contact-info">
-
-
-                        <!-- TÉLÉPHONE -->
-
-                        <div class="profile-contact-item">
-
-                            <i
-                                class="fa-solid fa-phone"
-                            ></i>
-
-                            <span id="profilePhone">
-                                Non renseigné
-                            </span>
-
-                        </div>
+            <section
+                class="profile-page hidden"
+                id="profilePage"
+            >
 
 
+                <!-- =================================================
+                     CARTE PROFIL
+                ================================================== -->
 
-                        <!-- WHATSAPP -->
-
-                        <div class="profile-contact-item">
-
-                            <i
-                                class="fa-brands fa-whatsapp"
-                            ></i>
-
-                            <span id="profileWhatsapp">
-                                Non renseigné
-                            </span>
-
-                        </div>
+                <div class="profile-card">
 
 
+                    <div class="profile-cover">
 
-                        <!-- LOCALISATION -->
+                        <div class="cover-pattern"></div>
 
-                        <div class="profile-contact-item">
-
-                            <i
-                                class="fa-solid fa-location-dot"
-                            ></i>
-
-                            <span id="profileLocation">
-                                Non renseignée
-                            </span>
-
-                        </div>
+                    </div>
 
 
+                    <div class="profile-header-content">
 
-                        <!-- BOUTON WHATSAPP -->
 
-                        <a
-                            id="profileWhatsappButton"
-                            class="profile-whatsapp-button"
-                            href="#"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style="display:none;"
+                        <div
+                            class="profile-avatar"
+                            id="profileAvatar"
                         >
 
-                            <i
-                                class="fa-brands fa-whatsapp"
-                            ></i>
+                            <i class="fa-solid fa-user"></i>
 
-                            Contacter sur WhatsApp
+                        </div>
+
+
+                        <div class="profile-identity">
+
+
+                            <div class="profile-name-line">
+
+                                <h1 id="profileName">
+                                    —
+                                </h1>
+
+
+                                <span
+                                    class="verified-badge"
+                                    id="verifiedBadge"
+                                >
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    Profil vérifié
+
+                                </span>
+
+                            </div>
+
+
+                            <p
+                                class="profile-account-type"
+                                id="profileAccountType"
+                            >
+                                —
+                            </p>
+
+
+                            <p
+                                class="profile-location"
+                                id="profileLocation"
+                            >
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                —
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS PROFIL -->
+
+                    <div class="profile-actions">
+
+                        <a
+                            href="#"
+                            id="profileWhatsapp"
+                            class="profile-whatsapp"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+
+                            <i class="fa-brands fa-whatsapp"></i>
+
+                            WhatsApp
 
                         </a>
 
 
+                        <a
+                            href="#"
+                            id="profilePhone"
+                            class="profile-phone"
+                        >
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            Appeler
+
+                        </a>
+
                     </div>
 
 
-                </div>
+                    <!-- INFORMATIONS -->
 
-            </div>
-
-
-
-            <!-- =================================================
-                 STATISTIQUES
-            ================================================== -->
-
-            <div class="profile-stats">
+                    <div class="profile-information">
 
 
-                <div class="profile-stat">
+                        <div class="information-item">
+
+                            <span class="information-icon">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                            </span>
 
 
-                    <strong id="profileAdsCount">
-                        0
-                    </strong>
+                            <div>
+
+                                <span class="information-label">
+                                    Localisation
+                                </span>
+
+                                <strong id="informationLocation">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
 
 
-                    <span>
-                        Annonces
-                    </span>
+                        <div class="information-item">
+
+                            <span class="information-icon">
+
+                                <i class="fa-solid fa-briefcase"></i>
+
+                            </span>
 
 
-                </div>
+                            <div>
+
+                                <span class="information-label">
+                                    Activité
+                                </span>
+
+                                <strong id="informationActivity">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
 
 
-            </div>
+                        <div class="information-item">
+
+                            <span class="information-icon">
+
+                                <i class="fa-solid fa-bullhorn"></i>
+
+                            </span>
 
 
+                            <div>
 
-            <!-- =================================================
-                 ANNONCES PUBLIÉES
-            ================================================== -->
+                                <span class="information-label">
+                                    Annonces
+                                </span>
 
-            <section class="profile-ads-section">
+                                <strong id="informationAds">
+                                    0
+                                </strong>
 
+                            </div>
 
-                <div class="profile-section-title">
+                        </div>
 
-
-                    <div>
-
-
-                        <h2>
-                            Annonces publiées
-                        </h2>
+                    </div>
 
 
-                        <p>
-                            Découvrez les annonces de cet annonceur.
+                    <!-- DESCRIPTION -->
+
+                    <div
+                        class="profile-description-box"
+                        id="profileDescriptionBox"
+                    >
+
+                        <div class="section-title">
+
+                            <i class="fa-solid fa-align-left"></i>
+
+                            <h2>
+                                À propos
+                            </h2>
+
+                        </div>
+
+
+                        <p id="profileDescription">
+                            —
                         </p>
 
-
                     </div>
 
-
                 </div>
-
-
-
-                <!-- GRILLE ANNONCES -->
-
-                <div
-                    id="profileAds"
-                    class="profile-ads-grid"
-                >
-                </div>
-
 
 
                 <!-- =================================================
-                     AUCUNE ANNONCE
+                     ANNONCES
                 ================================================== -->
 
-                <div
-                    id="profileAdsEmpty"
-                    class="profile-empty hidden"
-                >
+                <section class="profile-ads-section">
 
 
-                    <div class="profile-empty-icon">
+                    <div class="ads-section-header">
 
-                        <i
-                            class="fa-solid fa-box-open"
-                        ></i>
+                        <div>
+
+                            <span class="section-label">
+                                CAMU SERVICES
+                            </span>
+
+                            <h2>
+                                Annonces publiées
+                            </h2>
+
+                        </div>
+
+
+                        <span
+                            class="ads-count"
+                            id="adsCount"
+                        >
+                            0 annonce
+                        </span>
 
                     </div>
 
 
-                    <h3>
-                        Aucune annonce
-                    </h3>
+                    <!-- CHARGEMENT ANNONCES -->
+
+                    <div
+                        class="ads-loading"
+                        id="adsLoading"
+                    >
+
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+
+                        Chargement des annonces...
+
+                    </div>
 
 
-                    <p>
-                        Cet annonceur n'a pas encore publié d'annonce.
-                    </p>
+                    <!-- LISTE -->
+
+                    <div
+                        class="profile-ads-grid"
+                        id="profileAdsGrid"
+                    ></div>
 
 
-                </div>
+                    <!-- AUCUNE ANNONCE -->
+
+                    <div
+                        class="no-ads hidden"
+                        id="noAds"
+                    >
+
+                        <div class="no-ads-icon">
+
+                            <i class="fa-solid fa-box-open"></i>
+
+                        </div>
+
+
+                        <h3>
+                            Aucune annonce
+                        </h3>
+
+
+                        <p>
+                            Ce vendeur n'a pas encore publié d'annonce.
+                        </p>
+
+                    </div>
+
+                </section>
 
 
             </section>
 
-
-        </section>
-
-
-    </div>
+        </div>
 
 
-</main>
+        <!-- FOOTER -->
+
+        <footer class="profile-footer">
+
+            <div class="footer-inner">
+
+                <div class="footer-copy">
+
+                    © 2026 CAMU SERVICES.
+                    Tous droits réservés.
+
+                </div>
 
 
+                <div class="footer-links">
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
 
-<script
-    type="module"
-    src="js/auth.js"
-></script>
+                    <a href="conditions.html">
+                        Conditions
+                    </a>
 
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
 
-<script
-    type="module"
-    src="js/app.js"
-></script>
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
 
 
 <script
@@ -596,6 +701,78 @@
     src="js/profil.js"
 ></script>
 
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("mobileOverlay");
+
+    const menuButton =
+        document.getElementById("mobileMenuButton");
+
+    const closeButton =
+        document.getElementById("sidebarClose");
+
+
+    function openMenu() {
+
+        sidebar?.classList.add("open");
+
+        overlay?.classList.add("show");
+
+        document.body.classList.add("menu-open");
+
+    }
+
+
+    function closeMenu() {
+
+        sidebar?.classList.remove("open");
+
+        overlay?.classList.remove("show");
+
+        document.body.classList.remove("menu-open");
+
+    }
+
+
+    menuButton?.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    closeButton?.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    overlay?.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    document
+        .querySelectorAll(".sidebar-link")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        });
+
+});
+
+</script>
 
 </body>
 
