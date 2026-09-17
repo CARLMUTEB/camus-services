@@ -1,1775 +1,800 @@
-// =========================================================
-// CAMU SERVICES — ADMIN UTILISATEURS
-// =========================================================
-
 import { auth, db } from "./firebase-config.js";
+
+import {
+    collection,
+    getDocs,
+    doc,
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-import {
-    collection,
-    getDocs,
-    doc,
-    updateDoc,
-    deleteDoc,
-    addDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-// =========================================================
-// CONFIGURATION
-// =========================================================
+/* =========================================================
+   CONFIGURATION
+========================================================= */
 
 const ADMIN_EMAIL = "meschackmuteb@gmail.com";
 
 let allUsers = [];
+let filteredUsers = [];
+let selectedUser = null;
 
 
-// =========================================================
-// ÉLÉMENTS
-// =========================================================
+/* =========================================================
+   DOM
+========================================================= */
 
-const container =
-    document.getElementById("adminUsersContainer");
+const sidebar = document.getElementById("adminSidebar");
+const mobileMenuButton = document.getElementById("mobileMenuButton");
+const sidebarClose = document.getElementById("sidebarClose");
+const mobileOverlay = document.getElementById("mobileOverlay");
 
-const loading =
-    document.getElementById("usersLoading");
+const logoutButton = document.getElementById("logoutButton");
+const refreshButton = document.getElementById("refreshButton");
 
-const empty =
-    document.getElementById("usersEmpty");
+const userSearch = document.getElementById("userSearch");
+const accountTypeFilter = document.getElementById("accountTypeFilter");
+const statusFilter = document.getElementById("statusFilter");
+const cityFilter = document.getElementById("cityFilter");
+const resetFilters = document.getElementById("resetFilters");
 
-const totalCount =
-    document.getElementById("usersTotalCount");
+const usersTableBody = document.getElementById("usersTableBody");
+const emptyState = document.getElementById("emptyState");
+const resultsCount = document.getElementById("resultsCount");
 
-const resultCount =
-    document.getElementById("usersResultCount");
+const totalUsers = document.getElementById("totalUsers");
+const activeUsers = document.getElementById("activeUsers");
+const pendingUsers = document.getElementById("pendingUsers");
+const professionalUsers = document.getElementById("professionalUsers");
 
-const searchInput =
-    document.getElementById("adminUsersSearch");
-
-const citySelect =
-    document.getElementById("adminUsersCity");
-
-const resetButton =
-    document.getElementById("clearAdminUsersFilters");
-
-const refreshButton =
-    document.getElementById("refreshUsersButton");
+const userModal = document.getElementById("userModal");
+const modalClose = document.getElementById("modalClose");
+const modalCancel = document.getElementById("modalCancel");
+const modalDelete = document.getElementById("modalDelete");
 
 
-// =========================================================
-// AUTH ADMIN
-// =========================================================
+/* =========================================================
+   AUTHENTIFICATION ADMIN
+========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
-
-        window.location.href =
-            "connexion.html";
-
+        window.location.href = "connexion.html";
         return;
     }
 
-    if (
-        !user.email ||
-        user.email.toLowerCase() !==
-        ADMIN_EMAIL.toLowerCase()
-    ) {
+    if ((user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
 
-        alert(
-            "Accès réservé à l'administrateur CAMU SERVICES."
-        );
+        alert("Accès réservé à l'administrateur.");
 
-        window.location.href =
-            "index.html";
+        await signOut(auth);
 
+        window.location.href = "connexion.html";
         return;
     }
+
+    console.log("CAMU ADMIN UTILISATEURS — administrateur connecté.");
 
     await loadUsers();
-
 });
 
 
-// =========================================================
-// CHARGER UTILISATEURS
-// =========================================================
+/* =========================================================
+   CHARGER LES UTILISATEURS
+========================================================= */
 
 async function loadUsers() {
 
+    showLoading();
+
     try {
 
-        showLoading(true);
-
-        const snapshot =
-            await getDocs(
-                collection(db, "users")
-            );
+        const snapshot = await getDocs(
+            collection(db, "users")
+        );
 
         allUsers = [];
 
-        snapshot.forEach(
-            (documentSnapshot) => {
+        snapshot.forEach((documentSnapshot) => {
 
-                allUsers.push({
+            const data = documentSnapshot.data();
 
-                    id: documentSnapshot.id,
+            allUsers.push({
+                id: documentSnapshot.id,
+                ...data
+            });
 
-                    ...documentSnapshot.data()
+        });
 
-                });
+        allUsers.sort((a, b) => {
 
-            }
+            const dateA = getTimestampMillis(a.createdAt);
+            const dateB = getTimestampMillis(b.createdAt);
+
+            return dateB - dateA;
+
+        });
+
+        console.log(
+            `CAMU ADMIN UTILISATEURS — ${allUsers.length} utilisateur(s) chargé(s).`
         );
 
-
-        allUsers.sort(
-            (a, b) => {
-
-                const dateA =
-                    getDateValue(
-                        a.createdAt
-                    );
-
-                const dateB =
-                    getDateValue(
-                        b.createdAt
-                    );
-
-                return dateB - dateA;
-
-            }
-        );
-
-
-        updateTotalCount();
-
+        updateStatistics();
+        populateCities();
         applyFilters();
-
 
     } catch (error) {
 
         console.error(
-            "Erreur chargement utilisateurs :",
+            "CAMU ADMIN UTILISATEURS — erreur chargement :",
             error
         );
 
-        showError(
-            "Impossible de charger les utilisateurs."
-        );
-
-
-    } finally {
-
-        showLoading(false);
-
+        usersTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="loading-cell">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Impossible de charger les utilisateurs.
+                </td>
+            </tr>
+        `;
     }
-
 }
 
 
-// =========================================================
-// AFFICHER UTILISATEURS
-// =========================================================
+/* =========================================================
+   STATISTIQUES
+========================================================= */
 
-function renderUsers(users) {
+function updateStatistics() {
 
-    if (!container) return;
+    totalUsers.textContent = allUsers.length;
 
-    container.innerHTML = "";
+    activeUsers.textContent =
+        allUsers.filter(user => getUserStatus(user) === "active").length;
 
+    pendingUsers.textContent =
+        allUsers.filter(user => getUserStatus(user) === "pending").length;
 
-    if (resultCount) {
-
-        resultCount.textContent =
-            `${users.length} utilisateur${users.length > 1 ? "s" : ""}`;
-
-    }
-
-
-    if (users.length === 0) {
-
-        if (empty) {
-
-            empty.hidden = false;
-
-        }
-
-        return;
-
-    }
-
-
-    if (empty) {
-
-        empty.hidden = true;
-
-    }
-
-
-    users.forEach(
-        user => {
-
-            container.appendChild(
-                createUserCard(user)
-            );
-
-        }
-    );
-
+    professionalUsers.textContent =
+        allUsers.filter(user => isProfessional(user)).length;
 }
 
 
-// =========================================================
-// CARTE UTILISATEUR
-// =========================================================
+/* =========================================================
+   VILLES
+========================================================= */
 
-function createUserCard(user) {
+function populateCities() {
 
-    const card =
-        document.createElement("article");
+    const cities = new Set();
 
-    card.className =
-        "admin-user-card";
+    allUsers.forEach(user => {
 
-
-    const name =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "Utilisateur";
-
-
-    const email =
-        user.email ||
-        "";
-
-
-    const phone =
-        user.phone ||
-        user.telephone ||
-        user.phoneNumber ||
-        "";
-
-
-    const city =
-        user.city ||
-        user.location ||
-        "Ville non précisée";
-
-
-    const status =
-        user.status ||
-        "active";
-
-
-    const createdAt =
-        formatDate(
-            user.createdAt
+        const city = cleanValue(
+            user.ville || user.city
         );
 
+        if (city) {
+            cities.add(city);
+        }
 
-    card.innerHTML = `
+    });
 
-        <div class="admin-user-avatar">
-
-            <i class="fa-solid fa-user"></i>
-
-        </div>
-
-
-        <div class="admin-user-content">
-
-            <div class="admin-user-top">
-
-                <h3>
-                    ${escapeHtml(name)}
-                </h3>
-
-                <span
-                    class="admin-user-status ${escapeHtml(status)}"
-                >
-                    ${formatUserStatus(status)}
-                </span>
-
-            </div>
-
-
-            <div class="admin-user-meta">
-
-                ${
-                    email
-                    ? `
-                        <span>
-                            <i class="fa-solid fa-envelope"></i>
-                            ${escapeHtml(email)}
-                        </span>
-                    `
-                    : ""
-                }
-
-
-                ${
-                    phone
-                    ? `
-                        <span>
-                            <i class="fa-solid fa-phone"></i>
-                            ${escapeHtml(phone)}
-                        </span>
-                    `
-                    : ""
-                }
-
-
-                <span>
-                    <i class="fa-solid fa-location-dot"></i>
-                    ${escapeHtml(city)}
-                </span>
-
-
-                <span>
-                    <i class="fa-regular fa-calendar"></i>
-                    ${escapeHtml(createdAt)}
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="admin-user-actions">
-
-            <button
-                type="button"
-                class="admin-user-view"
-                data-id="${escapeHtml(user.id)}"
-                title="Voir"
-            >
-                <i class="fa-solid fa-eye"></i>
-                <span>Voir</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-user-edit"
-                data-id="${escapeHtml(user.id)}"
-                title="Modifier"
-            >
-                <i class="fa-solid fa-pen"></i>
-                <span>Modifier</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-user-warning"
-                data-id="${escapeHtml(user.id)}"
-                title="Avertir"
-            >
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>Avertir</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-user-disable"
-                data-id="${escapeHtml(user.id)}"
-                title="Désactiver"
-            >
-                <i class="fa-solid fa-ban"></i>
-                <span>Désactiver</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-user-delete"
-                data-id="${escapeHtml(user.id)}"
-                title="Supprimer"
-            >
-                <i class="fa-solid fa-trash"></i>
-                <span>Supprimer</span>
-            </button>
-
-        </div>
-
+    cityFilter.innerHTML = `
+        <option value="">Toutes les villes</option>
     `;
 
+    [...cities]
+        .sort((a, b) => a.localeCompare(b, "fr"))
+        .forEach(city => {
 
-    return card;
+            const option = document.createElement("option");
 
+            option.value = city;
+            option.textContent = city;
+
+            cityFilter.appendChild(option);
+
+        });
 }
 
 
-// =========================================================
-// RECHERCHE / FILTRES
-// =========================================================
+/* =========================================================
+   FILTRES
+========================================================= */
 
 function applyFilters() {
 
     const search =
-        searchInput
-            ? searchInput.value
-                .trim()
-                .toLowerCase()
-            : "";
+        cleanValue(userSearch.value).toLowerCase();
 
+    const accountType =
+        cleanValue(accountTypeFilter.value).toLowerCase();
+
+    const status =
+        cleanValue(statusFilter.value).toLowerCase();
 
     const city =
-        citySelect
-            ? citySelect.value
-                .trim()
-                .toLowerCase()
-            : "";
+        cleanValue(cityFilter.value).toLowerCase();
 
+    filteredUsers = allUsers.filter(user => {
 
-    const filteredUsers =
-        allUsers.filter(
-            user => {
+        const name =
+            cleanValue(
+                user.name ||
+                user.displayName ||
+                user.nom
+            ).toLowerCase();
 
-                const name =
-                    String(
-                        user.name ||
-                        user.displayName ||
-                        user.username ||
-                        ""
-                    ).toLowerCase();
+        const email =
+            cleanValue(user.email).toLowerCase();
 
+        const phone =
+            cleanValue(
+                user.phone ||
+                user.telephone
+            ).toLowerCase();
 
-                const email =
-                    String(
-                        user.email ||
-                        ""
-                    ).toLowerCase();
+        const whatsapp =
+            cleanValue(user.whatsapp).toLowerCase();
 
+        const userType =
+            getAccountType(user).toLowerCase();
 
-                const phone =
-                    String(
-                        user.phone ||
-                        user.telephone ||
-                        user.phoneNumber ||
-                        ""
-                    ).toLowerCase();
+        const userStatus =
+            getUserStatus(user).toLowerCase();
 
+        const userCity =
+            cleanValue(
+                user.ville ||
+                user.city
+            ).toLowerCase();
 
-                const userCity =
-                    String(
-                        user.city ||
-                        user.location ||
-                        ""
-                    ).toLowerCase();
+        const searchMatch =
+            !search ||
+            name.includes(search) ||
+            email.includes(search) ||
+            phone.includes(search) ||
+            whatsapp.includes(search);
 
+        const typeMatch =
+            !accountType ||
+            userType === accountType;
 
-                const matchesSearch =
-                    !search ||
-                    name.includes(search) ||
-                    email.includes(search) ||
-                    phone.includes(search);
+        const statusMatch =
+            !status ||
+            userStatus === status;
 
+        const cityMatch =
+            !city ||
+            userCity === city;
 
-                const matchesCity =
-                    !city ||
-                    userCity === city;
-
-
-                return (
-                    matchesSearch &&
-                    matchesCity
-                );
-
-            }
+        return (
+            searchMatch &&
+            typeMatch &&
+            statusMatch &&
+            cityMatch
         );
 
+    });
 
-    renderUsers(
-        filteredUsers
-    );
-
+    renderUsers();
 }
 
 
-// =========================================================
-// VOIR
-// =========================================================
+/* =========================================================
+   AFFICHER LES UTILISATEURS
+========================================================= */
 
-function viewUser(userId) {
+function renderUsers() {
 
-    const user =
-        allUsers.find(
-            item => item.id === userId
-        );
+    resultsCount.textContent =
+        `${filteredUsers.length} utilisateur${filteredUsers.length > 1 ? "s" : ""}`;
 
+    if (filteredUsers.length === 0) {
 
-    if (!user) {
+        usersTableBody.innerHTML = "";
 
-        alert(
-            "Utilisateur introuvable."
-        );
+        emptyState.classList.remove("hidden");
 
         return;
     }
 
+    emptyState.classList.add("hidden");
+
+    usersTableBody.innerHTML =
+        filteredUsers.map(user => createUserRow(user)).join("");
+
+    bindUserActions();
+}
+
+
+/* =========================================================
+   LIGNE UTILISATEUR
+========================================================= */
+
+function createUserRow(user) {
 
     const name =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "Utilisateur";
-
+        cleanValue(
+            user.name ||
+            user.displayName ||
+            user.nom
+        ) || "Utilisateur";
 
     const email =
-        user.email ||
-        "Non renseigné";
-
+        cleanValue(user.email) || "—";
 
     const phone =
-        user.phone ||
-        user.telephone ||
-        user.phoneNumber ||
-        "Non renseigné";
+        cleanValue(
+            user.phone ||
+            user.telephone
+        );
 
+    const whatsapp =
+        cleanValue(user.whatsapp);
 
     const city =
-        user.city ||
-        user.location ||
-        "Non renseignée";
+        cleanValue(
+            user.ville ||
+            user.city
+        ) || "—";
 
+    const type =
+        getAccountType(user);
 
-    alert(
-        `UTILISATEUR\n\n` +
-        `Nom : ${name}\n` +
-        `Email : ${email}\n` +
-        `Téléphone : ${phone}\n` +
-        `Ville : ${city}\n` +
-        `Statut : ${formatUserStatus(user.status || "active")}`
-    );
+    const status =
+        getUserStatus(user);
 
+    const createdAt =
+        formatDate(user.createdAt);
+
+    const initials =
+        getInitials(name);
+
+    return `
+        <tr>
+
+            <td>
+
+                <div class="user-cell">
+
+                    <div class="user-avatar">
+                        ${escapeHtml(initials)}
+                    </div>
+
+                    <div>
+                        <div class="user-name">
+                            ${escapeHtml(name)}
+                        </div>
+
+                        <div class="user-email">
+                            ${escapeHtml(email)}
+                        </div>
+                    </div>
+
+                </div>
+
+            </td>
+
+            <td>
+
+                ${
+                    phone
+                        ? `
+                            <div class="contact-line">
+                                ${escapeHtml(phone)}
+                            </div>
+                        `
+                        : ""
+                }
+
+                ${
+                    whatsapp
+                        ? `
+                            <div class="contact-line">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                ${escapeHtml(whatsapp)}
+                            </div>
+                        `
+                        : ""
+                }
+
+                ${
+                    !phone && !whatsapp
+                        ? "—"
+                        : ""
+                }
+
+            </td>
+
+            <td>
+
+                <span class="account-badge">
+                    ${escapeHtml(getAccountTypeLabel(type))}
+                </span>
+
+            </td>
+
+            <td>
+                ${escapeHtml(city)}
+            </td>
+
+            <td>
+                ${getStatusBadge(status)}
+            </td>
+
+            <td>
+                ${escapeHtml(createdAt)}
+            </td>
+
+            <td>
+
+                <div class="table-actions">
+
+                    <button
+                        type="button"
+                        class="table-action view-user"
+                        data-id="${escapeHtml(user.id)}"
+                        title="Voir"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="table-action delete delete-user"
+                        data-id="${escapeHtml(user.id)}"
+                        title="Supprimer"
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+    `;
 }
 
 
-// =========================================================
-// MODIFIER
-// =========================================================
+/* =========================================================
+   ACTIONS
+========================================================= */
 
-const editModal =
-    document.getElementById(
-        "userEditModal"
-    );
+function bindUserActions() {
 
-const editForm =
-    document.getElementById(
-        "userEditForm"
-    );
+    document
+        .querySelectorAll(".view-user")
+        .forEach(button => {
 
-const editId =
-    document.getElementById(
-        "editUserId"
-    );
+            button.addEventListener("click", () => {
 
-const editName =
-    document.getElementById(
-        "editUserName"
-    );
+                const user = allUsers.find(
+                    item => item.id === button.dataset.id
+                );
 
-const editPhone =
-    document.getElementById(
-        "editUserPhone"
-    );
+                if (user) {
+                    openUserModal(user);
+                }
 
-const editCity =
-    document.getElementById(
-        "editUserCity"
-    );
+            });
 
-const editSave =
-    document.getElementById(
-        "userEditSave"
-    );
+        });
 
 
-function openEditUser(userId) {
+    document
+        .querySelectorAll(".delete-user")
+        .forEach(button => {
 
-    const user =
-        allUsers.find(
-            item => item.id === userId
-        );
+            button.addEventListener("click", async () => {
 
+                const user = allUsers.find(
+                    item => item.id === button.dataset.id
+                );
 
-    if (!user) {
+                if (!user) {
+                    return;
+                }
 
-        alert(
-            "Utilisateur introuvable."
-        );
+                await deleteUser(user);
 
-        return;
-    }
+            });
 
-
-    editId.value =
-        user.id;
-
-
-    editName.value =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "";
-
-
-    editPhone.value =
-        user.phone ||
-        user.telephone ||
-        user.phoneNumber ||
-        "";
-
-
-    editCity.value =
-        user.city ||
-        user.location ||
-        "Lubumbashi";
-
-
-    editModal.hidden = false;
-
-    document.body.classList.add(
-        "admin-user-modal-open"
-    );
-
-
-    editName.focus();
-
+        });
 }
 
 
-function closeEditUser() {
+/* =========================================================
+   MODAL
+========================================================= */
 
-    if (!editModal) return;
+function openUserModal(user) {
 
-    editModal.hidden = true;
-
-    document.body.classList.remove(
-        "admin-user-modal-open"
-    );
-
-}
-
-
-if (editForm) {
-
-    editForm.addEventListener(
-        "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            const userId =
-                editId.value.trim();
-
-
-            const name =
-                editName.value.trim();
-
-
-            const phone =
-                editPhone.value.trim();
-
-
-            const city =
-                editCity.value.trim();
-
-
-            if (!userId || !name) {
-
-                alert(
-                    "Le nom est obligatoire."
-                );
-
-                return;
-            }
-
-
-            try {
-
-                editSave.disabled = true;
-
-                editSave.innerHTML =
-                    '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
-
-
-                await updateDoc(
-                    doc(
-                        db,
-                        "users",
-                        userId
-                    ),
-                    {
-
-                        name,
-                        phone,
-                        city,
-
-                        updatedAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                allUsers =
-                    allUsers.map(
-                        user =>
-                            user.id === userId
-                                ? {
-                                    ...user,
-                                    name,
-                                    phone,
-                                    city
-                                }
-                                : user
-                    );
-
-
-                closeEditUser();
-
-                applyFilters();
-
-
-                alert(
-                    "Utilisateur modifié avec succès."
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur modification utilisateur :",
-                    error
-                );
-
-
-                alert(
-                    "Impossible de modifier l'utilisateur."
-                );
-
-
-            } finally {
-
-                editSave.disabled = false;
-
-                editSave.innerHTML =
-                    '<i class="fa-solid fa-floppy-disk"></i> Enregistrer';
-
-            }
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// AVERTIR
-// =========================================================
-
-const warningModal =
-    document.getElementById(
-        "userWarningModal"
-    );
-
-const warningForm =
-    document.getElementById(
-        "userWarningForm"
-    );
-
-const warningUserId =
-    document.getElementById(
-        "warningUserId"
-    );
-
-const warningUserName =
-    document.getElementById(
-        "warningUserName"
-    );
-
-const warningLevel =
-    document.getElementById(
-        "warningLevel"
-    );
-
-const warningReason =
-    document.getElementById(
-        "warningReason"
-    );
-
-const warningMessage =
-    document.getElementById(
-        "warningMessage"
-    );
-
-const warningSend =
-    document.getElementById(
-        "userWarningSend"
-    );
-
-
-function openWarningModal(userId) {
-
-    const user =
-        allUsers.find(
-            item => item.id === userId
-        );
-
-
-    if (!user) {
-
-        alert(
-            "Utilisateur introuvable."
-        );
-
-        return;
-    }
-
+    selectedUser = user;
 
     const name =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "Utilisateur";
+        cleanValue(
+            user.name ||
+            user.displayName ||
+            user.nom
+        ) || "Utilisateur";
 
+    document.getElementById("modalUserName").textContent =
+        name;
 
-    warningUserId.value =
-        user.id;
+    document.getElementById("modalUserEmail").textContent =
+        cleanValue(user.email) || "—";
 
+    document.getElementById("modalUserType").textContent =
+        getAccountTypeLabel(getAccountType(user));
 
-    warningUserName.textContent =
-        `Utilisateur : ${name}`;
+    document.getElementById("modalName").textContent =
+        name;
 
+    document.getElementById("modalEmail").textContent =
+        cleanValue(user.email) || "—";
 
-    warningLevel.value =
-        "avertissement";
+    document.getElementById("modalPhone").textContent =
+        cleanValue(
+            user.phone ||
+            user.telephone
+        ) || "—";
 
+    document.getElementById("modalWhatsapp").textContent =
+        cleanValue(user.whatsapp) || "—";
 
-    warningReason.value =
-        "";
+    document.getElementById("modalCity").textContent =
+        cleanValue(
+            user.ville ||
+            user.city
+        ) || "—";
 
+    document.getElementById("modalCommune").textContent =
+        cleanValue(user.commune) || "—";
 
-    warningMessage.value =
-        "";
+    document.getElementById("modalAccountType").textContent =
+        getAccountTypeLabel(getAccountType(user));
 
+    document.getElementById("modalStatus").textContent =
+        getStatusLabel(getUserStatus(user));
 
-    warningModal.hidden =
-        false;
+    document.getElementById("modalCreatedAt").textContent =
+        formatDate(user.createdAt);
 
-
-    document.body.classList.add(
-        "admin-user-modal-open"
-    );
-
-
-    warningReason.focus();
-
+    userModal.classList.remove("hidden");
 }
 
 
-function closeWarningModal() {
+function closeUserModal() {
 
-    if (!warningModal) return;
+    selectedUser = null;
 
-    warningModal.hidden =
-        true;
-
-    document.body.classList.remove(
-        "admin-user-modal-open"
-    );
-
+    userModal.classList.add("hidden");
 }
 
 
-if (warningForm) {
+/* =========================================================
+   SUPPRESSION
+========================================================= */
 
-    warningForm.addEventListener(
-        "submit",
-        async (event) => {
+async function deleteUser(user) {
 
-            event.preventDefault();
+    const name =
+        cleanValue(
+            user.name ||
+            user.displayName ||
+            user.email
+        ) || "cet utilisateur";
 
-
-            const userId =
-                warningUserId.value.trim();
-
-
-            const level =
-                warningLevel.value.trim();
-
-
-            const reason =
-                warningReason.value.trim();
-
-
-            const message =
-                warningMessage.value.trim();
-
-
-            if (
-                !userId ||
-                !reason ||
-                !message
-            ) {
-
-                alert(
-                    "Veuillez remplir tous les champs."
-                );
-
-                return;
-            }
-
-
-            try {
-
-                warningSend.disabled =
-                    true;
-
-
-                warningSend.innerHTML =
-                    '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-
-
-                await addDoc(
-                    collection(
-                        db,
-                        "warnings"
-                    ),
-                    {
-
-                        userId,
-
-                        level,
-
-                        reason,
-
-                        message,
-
-                        createdBy:
-                            auth.currentUser.uid,
-
-                        createdByEmail:
-                            auth.currentUser.email,
-
-                        createdAt:
-                            serverTimestamp(),
-
-                        read:
-                            false
-
-                    }
-                );
-
-
-                // Enregistrer aussi le dernier avertissement
-                await updateDoc(
-                    doc(
-                        db,
-                        "users",
-                        userId
-                    ),
-                    {
-
-                        lastWarning:
-                            message,
-
-                        lastWarningLevel:
-                            level,
-
-                        lastWarningReason:
-                            reason,
-
-                        lastWarningAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                closeWarningModal();
-
-
-                alert(
-                    "Avertissement envoyé avec succès."
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur avertissement :",
-                    error
-                );
-
-
-                alert(
-                    "Impossible d'envoyer l'avertissement."
-                );
-
-
-            } finally {
-
-                warningSend.disabled =
-                    false;
-
-
-                warningSend.innerHTML =
-                    '<i class="fa-solid fa-triangle-exclamation"></i> Envoyer l\'avertissement';
-
-            }
-
-        }
+    const confirmation = confirm(
+        `Voulez-vous vraiment supprimer le profil Firestore de ${name} ?\n\n` +
+        `Attention : cette action supprime le document users/${user.id}.`
     );
 
-}
-
-
-// =========================================================
-// DÉSACTIVER
-// =========================================================
-
-async function disableUser(userId) {
-
-    const user =
-        allUsers.find(
-            item => item.id === userId
-        );
-
-
-    if (!user) {
-
-        alert(
-            "Utilisateur introuvable."
-        );
-
+    if (!confirmation) {
         return;
     }
-
-
-    const name =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "cet utilisateur";
-
-
-    const isDisabled =
-        user.status === "disabled";
-
-
-    const action =
-        isDisabled
-            ? "réactiver"
-            : "désactiver";
-
-
-    const confirmed =
-        confirm(
-            `Voulez-vous vraiment ${action} "${name}" ?`
-        );
-
-
-    if (!confirmed) return;
-
-
-    try {
-
-        const newStatus =
-            isDisabled
-                ? "active"
-                : "disabled";
-
-
-        await updateDoc(
-            doc(
-                db,
-                "users",
-                userId
-            ),
-            {
-
-                status:
-                    newStatus,
-
-                updatedAt:
-                    serverTimestamp()
-
-            }
-        );
-
-
-        allUsers =
-            allUsers.map(
-                item =>
-                    item.id === userId
-                        ? {
-                            ...item,
-                            status: newStatus
-                        }
-                        : item
-            );
-
-
-        applyFilters();
-
-
-        alert(
-            isDisabled
-                ? "Utilisateur réactivé."
-                : "Utilisateur désactivé."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur statut utilisateur :",
-            error
-        );
-
-
-        alert(
-            "Impossible de modifier le statut."
-        );
-
-    }
-
-}
-
-
-// =========================================================
-// SUPPRIMER
-// =========================================================
-
-async function deleteUser(userId) {
-
-    const user =
-        allUsers.find(
-            item => item.id === userId
-        );
-
-
-    if (!user) return;
-
-
-    const name =
-        user.name ||
-        user.displayName ||
-        user.username ||
-        "cet utilisateur";
-
-
-    const confirmed =
-        confirm(
-            `Voulez-vous vraiment supprimer "${name}" ?\n\nCette action supprimera son document Firestore.`
-        );
-
-
-    if (!confirmed) return;
-
 
     try {
 
         await deleteDoc(
-            doc(
-                db,
-                "users",
-                userId
-            )
+            doc(db, "users", user.id)
         );
 
+        alert("Utilisateur supprimé de Firestore.");
 
-        allUsers =
-            allUsers.filter(
-                item =>
-                    item.id !== userId
-            );
+        closeUserModal();
 
-
-        updateTotalCount();
-
-        applyFilters();
-
-
-        alert(
-            "Utilisateur supprimé avec succès."
-        );
-
+        await loadUsers();
 
     } catch (error) {
 
         console.error(
-            "Erreur suppression utilisateur :",
+            "CAMU ADMIN UTILISATEURS — erreur suppression :",
             error
         );
 
-
         alert(
-            "Impossible de supprimer l'utilisateur."
+            "Impossible de supprimer cet utilisateur.\n\n" +
+            error.message
         );
-
     }
-
 }
 
 
-// =========================================================
-// CLICS ACTIONS
-// =========================================================
-
-document.addEventListener(
-    "click",
-    (event) => {
-
-        const viewButton =
-            event.target.closest(
-                ".admin-user-view"
-            );
-
-
-        if (viewButton) {
-
-            viewUser(
-                viewButton.dataset.id
-            );
-
-            return;
-        }
-
-
-        const editButton =
-            event.target.closest(
-                ".admin-user-edit"
-            );
-
-
-        if (editButton) {
-
-            openEditUser(
-                editButton.dataset.id
-            );
-
-            return;
-        }
-
-
-        const warningButton =
-            event.target.closest(
-                ".admin-user-warning"
-            );
-
-
-        if (warningButton) {
-
-            openWarningModal(
-                warningButton.dataset.id
-            );
-
-            return;
-        }
-
-
-        const disableButton =
-            event.target.closest(
-                ".admin-user-disable"
-            );
-
-
-        if (disableButton) {
-
-            disableUser(
-                disableButton.dataset.id
-            );
-
-            return;
-        }
-
-
-        const deleteButton =
-            event.target.closest(
-                ".admin-user-delete"
-            );
-
-
-        if (deleteButton) {
-
-            deleteUser(
-                deleteButton.dataset.id
-            );
-
-        }
-
-    }
-);
-
-
-// =========================================================
-// FERMETURE MODAL MODIFICATION
-// =========================================================
-
-const editClose =
-    document.getElementById(
-        "userEditModalClose"
-    );
-
-const editCancel =
-    document.getElementById(
-        "userEditCancel"
-    );
-
-const editOverlay =
-    document.getElementById(
-        "userEditModalOverlay"
-    );
-
-
-if (editClose) {
-
-    editClose.addEventListener(
-        "click",
-        closeEditUser
-    );
-
-}
-
-
-if (editCancel) {
-
-    editCancel.addEventListener(
-        "click",
-        closeEditUser
-    );
-
-}
-
-
-if (editOverlay) {
-
-    editOverlay.addEventListener(
-        "click",
-        closeEditUser
-    );
-
-}
-
-
-// =========================================================
-// FERMETURE MODAL AVERTISSEMENT
-// =========================================================
-
-const warningClose =
-    document.getElementById(
-        "userWarningModalClose"
-    );
-
-const warningCancel =
-    document.getElementById(
-        "userWarningCancel"
-    );
-
-const warningOverlay =
-    document.getElementById(
-        "userWarningModalOverlay"
-    );
-
-
-if (warningClose) {
-
-    warningClose.addEventListener(
-        "click",
-        closeWarningModal
-    );
-
-}
-
-
-if (warningCancel) {
-
-    warningCancel.addEventListener(
-        "click",
-        closeWarningModal
-    );
-
-}
-
-
-if (warningOverlay) {
-
-    warningOverlay.addEventListener(
-        "click",
-        closeWarningModal
-    );
-
-}
-
-
-// =========================================================
-// ÉCHAP
-// =========================================================
-
-document.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (event.key !== "Escape") {
-            return;
-        }
-
-
-        if (
-            editModal &&
-            !editModal.hidden
-        ) {
-
-            closeEditUser();
-
-        }
-
-
-        if (
-            warningModal &&
-            !warningModal.hidden
-        ) {
-
-            closeWarningModal();
-
-        }
-
-    }
-);
-
-
-// =========================================================
-// FILTRES
-// =========================================================
-
-if (searchInput) {
-
-    searchInput.addEventListener(
-        "input",
-        applyFilters
-    );
-
-}
-
-
-if (citySelect) {
-
-    citySelect.addEventListener(
-        "change",
-        applyFilters
-    );
-
-}
-
-
-if (resetButton) {
-
-    resetButton.addEventListener(
-        "click",
-        () => {
-
-            searchInput.value = "";
-
-            citySelect.value = "";
-
-            applyFilters();
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// ACTUALISER
-// =========================================================
-
-if (refreshButton) {
-
-    refreshButton.addEventListener(
-        "click",
-        async () => {
-
-            refreshButton.disabled =
-                true;
-
-
-            const icon =
-                refreshButton.querySelector(
-                    "i"
-                );
-
-
-            if (icon) {
-
-                icon.classList.add(
-                    "fa-spin"
-                );
-
-            }
-
-
-            await loadUsers();
-
-
-            if (icon) {
-
-                icon.classList.remove(
-                    "fa-spin"
-                );
-
-            }
-
-
-            refreshButton.disabled =
-                false;
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// DÉCONNEXION
-// =========================================================
-
-const logoutButton =
-    document.querySelector(
-        ".admin-logout"
-    );
-
-
-if (logoutButton) {
-
-    logoutButton.addEventListener(
-        "click",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            const confirmed =
-                confirm(
-                    "Voulez-vous vous déconnecter ?"
-                );
-
-
-            if (!confirmed) return;
-
-
-            try {
-
-                await signOut(auth);
-
-                window.location.href =
-                    "connexion.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur déconnexion :",
-                    error
-                );
-
-                alert(
-                    "Impossible de vous déconnecter."
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// TOTAL
-// =========================================================
-
-function updateTotalCount() {
-
-    if (totalCount) {
-
-        totalCount.textContent =
-            allUsers.length;
-
-    }
-
-}
-
-
-// =========================================================
-// LOADING
-// =========================================================
-
-function showLoading(show) {
-
-    if (loading) {
-
-        loading.hidden =
-            !show;
-
-    }
-
-
-    if (show && empty) {
-
-        empty.hidden =
-            true;
-
-    }
-
-
-    if (show && container) {
-
-        container.innerHTML =
-            "";
-
-    }
-
-}
-
-
-// =========================================================
-// ERREUR
-// =========================================================
-
-function showError(message) {
-
-    if (!container) return;
-
-
-    container.innerHTML = `
-
-        <div class="admin-users-empty">
-
-            <div class="admin-users-empty-icon">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-            </div>
-
-            <h3>
-                Une erreur est survenue
-            </h3>
-
-            <p>
-                ${escapeHtml(message)}
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-// =========================================================
-// STATUT
-// =========================================================
-
-function formatUserStatus(status) {
-
-    const value =
-        String(
-            status || "active"
-        ).toLowerCase();
-
-
-    if (value === "disabled") {
-
-        return "Désactivé";
-
-    }
-
-
-    if (value === "suspended") {
-
-        return "Suspendu";
-
-    }
-
-
-    return "Actif";
-
-}
-
-
-// =========================================================
-// DATE
-// =========================================================
-
-function getDateValue(value) {
-
-    if (!value) return 0;
-
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function cleanValue(value) {
 
     if (
-        typeof value === "object" &&
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value).trim();
+}
+
+
+function getAccountType(user) {
+
+    return cleanValue(
+        user.accountType ||
+        user.type ||
+        "client"
+    ).toLowerCase();
+}
+
+
+function getAccountTypeLabel(type) {
+
+    const labels = {
+
+        client: "Client",
+
+        immobilier: "CAMU IMMO",
+
+        commerce: "CAMU COMMERCE",
+
+        vehicules: "Véhicules & Transport",
+
+        hotels: "Hôtels & Hébergement"
+
+    };
+
+    return labels[type] || type || "Client";
+}
+
+
+function getUserStatus(user) {
+
+    const accountStatus =
+        cleanValue(user.accountStatus).toLowerCase();
+
+    if (
+        accountStatus === "disabled" ||
+        accountStatus === "suspended"
+    ) {
+        return "disabled";
+    }
+
+    if (
+        accountStatus === "pending" ||
+        accountStatus === "en_attente"
+    ) {
+        return "pending";
+    }
+
+    return "active";
+}
+
+
+function getStatusLabel(status) {
+
+    const labels = {
+
+        active: "Actif",
+
+        pending: "En attente",
+
+        disabled: "Désactivé"
+
+    };
+
+    return labels[status] || "Actif";
+}
+
+
+function getStatusBadge(status) {
+
+    return `
+        <span class="status-badge status-${status}">
+            ${escapeHtml(getStatusLabel(status))}
+        </span>
+    `;
+}
+
+
+function isProfessional(user) {
+
+    const type = getAccountType(user);
+
+    return [
+        "immobilier",
+        "commerce",
+        "vehicules",
+        "hotels"
+    ].includes(type);
+}
+
+
+function getInitials(name) {
+
+    const words =
+        cleanValue(name)
+            .split(/\s+/)
+            .filter(Boolean);
+
+    if (!words.length) {
+        return "U";
+    }
+
+    if (words.length === 1) {
+        return words[0].substring(0, 2).toUpperCase();
+    }
+
+    return (
+        words[0].charAt(0) +
+        words[words.length - 1].charAt(0)
+    ).toUpperCase();
+}
+
+
+function getTimestampMillis(value) {
+
+    if (!value) {
+        return 0;
+    }
+
+    if (
         typeof value.toMillis === "function"
     ) {
-
         return value.toMillis();
-
     }
-
 
     if (
-        typeof value === "object" &&
-        typeof value.seconds === "number"
+        value.seconds !== undefined
     ) {
-
         return value.seconds * 1000;
-
     }
 
+    const date = new Date(value);
 
-    if (value instanceof Date) {
-
-        return value.getTime();
-
-    }
-
-
-    const date =
-        new Date(value).getTime();
-
-
-    return Number.isNaN(date)
+    return Number.isNaN(date.getTime())
         ? 0
-        : date;
-
+        : date.getTime();
 }
 
 
 function formatDate(value) {
 
-    const timestamp =
-        getDateValue(value);
+    const millis =
+        getTimestampMillis(value);
 
-
-    if (!timestamp) {
-
-        return "Date inconnue";
-
+    if (!millis) {
+        return "—";
     }
-
 
     return new Intl.DateTimeFormat(
         "fr-FR",
@@ -1778,41 +803,202 @@ function formatDate(value) {
             month: "2-digit",
             year: "numeric"
         }
-    ).format(
-        new Date(timestamp)
-    );
-
+    ).format(new Date(millis));
 }
 
-
-// =========================================================
-// PROTECTION HTML
-// =========================================================
 
 function escapeHtml(value) {
 
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+function showLoading() {
+
+    emptyState.classList.add("hidden");
+
+    usersTableBody.innerHTML = `
+        <tr>
+            <td colspan="7" class="loading-cell">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Chargement des utilisateurs...
+            </td>
+        </tr>
+    `;
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+userSearch.addEventListener(
+    "input",
+    applyFilters
+);
+
+accountTypeFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+statusFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+cityFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+resetFilters.addEventListener(
+    "click",
+    () => {
+
+        userSearch.value = "";
+        accountTypeFilter.value = "";
+        statusFilter.value = "";
+        cityFilter.value = "";
+
+        applyFilters();
+    }
+);
+
+
+refreshButton.addEventListener(
+    "click",
+    async () => {
+
+        refreshButton.disabled = true;
+
+        const original =
+            refreshButton.innerHTML;
+
+        refreshButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Actualisation...
+        `;
+
+        await loadUsers();
+
+        refreshButton.disabled = false;
+        refreshButton.innerHTML = original;
+    }
+);
+
+
+/* =========================================================
+   MODAL EVENTS
+========================================================= */
+
+modalClose.addEventListener(
+    "click",
+    closeUserModal
+);
+
+modalCancel.addEventListener(
+    "click",
+    closeUserModal
+);
+
+modalDelete.addEventListener(
+    "click",
+    async () => {
+
+        if (selectedUser) {
+            await deleteUser(selectedUser);
+        }
+
+    }
+);
+
+userModal.addEventListener(
+    "click",
+    (event) => {
+
+        if (event.target === userModal) {
+            closeUserModal();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+mobileMenuButton.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.add("open");
+        mobileOverlay.classList.add("show");
+
+    }
+);
+
+
+sidebarClose.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+mobileOverlay.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+function closeSidebar() {
+
+    sidebar.classList.remove("open");
+    mobileOverlay.classList.remove("show");
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+logoutButton.addEventListener(
+    "click",
+    async () => {
+
+        const confirmation = confirm(
+            "Voulez-vous vraiment vous déconnecter ?"
         );
 
-}
+        if (!confirmation) {
+            return;
+        }
+
+        try {
+
+            await signOut(auth);
+
+            window.location.href =
+                "connexion.html";
+
+        } catch (error) {
+
+            console.error(
+                "CAMU ADMIN — erreur déconnexion :",
+                error
+            );
+
+            alert(
+                "Impossible de se déconnecter."
+            );
+        }
+
+    }
+);
