@@ -7,6 +7,7 @@
 // - Villes dynamiques
 // - Recherche
 // - ESPACE IMMOBILIER
+// - ESPACE COMMERCE
 // =========================================================
 
 
@@ -100,6 +101,21 @@ function escapeHtml(value) {
 
 
 // =========================================================
+// NORMALISER UN TEXTE
+// =========================================================
+
+function normalizeText(value) {
+
+    return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+}
+
+
+// =========================================================
 // FORMAT PRIX
 // =========================================================
 
@@ -154,12 +170,41 @@ function formatPrice(
 
 function getImage(ad) {
 
+    // Tableau Firestore
     if (
         Array.isArray(ad.images) &&
         ad.images.length > 0 &&
         ad.images[0]
     ) {
         return ad.images[0];
+    }
+
+    // images stockées sous forme de JSON
+    if (
+        typeof ad.images === "string" &&
+        ad.images.trim() !== ""
+    ) {
+
+        try {
+
+            const parsed =
+                JSON.parse(ad.images);
+
+            if (
+                Array.isArray(parsed) &&
+                parsed.length > 0 &&
+                parsed[0]
+            ) {
+                return parsed[0];
+            }
+
+        } catch (error) {
+
+            // Si ce n'est pas du JSON,
+            // on continue avec les autres champs.
+
+        }
+
     }
 
     if (ad.imageURL) {
@@ -194,7 +239,7 @@ async function getCategoryName(categoryId) {
             doc(
                 db,
                 "categories",
-                categoryId
+                String(categoryId).trim()
             );
 
         const snapshot =
@@ -202,8 +247,11 @@ async function getCategoryName(categoryId) {
 
         if (snapshot.exists()) {
 
+            const data =
+                snapshot.data();
+
             return (
-                snapshot.data().name ||
+                data.name ||
                 categoryId
             );
 
@@ -219,7 +267,8 @@ async function getCategoryName(categoryId) {
 
     }
 
-    return categoryId;
+    return String(categoryId).trim();
+
 }
 
 
@@ -466,24 +515,22 @@ async function loadCategories() {
 
 
             // =================================================
-            // ESPACE IMMOBILIER
-            // =================================================
-            // Si la catégorie est Immobilier,
-            // on ouvre directement immobilier.html.
+            // NOM DE LA CATEGORIE
             // =================================================
 
             const categoryName =
-                String(
-                    category.name || ""
-                )
-                .trim()
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(
-                    /[\u0300-\u036f]/g,
-                    ""
+                normalizeText(
+                    category.name
                 );
 
+
+            // =================================================
+            // ROUTING DES ESPACES
+            // =================================================
+
+            // -------------------------------------------------
+            // ESPACE IMMOBILIER
+            // -------------------------------------------------
 
             if (
                 categoryName === "immobilier" ||
@@ -493,7 +540,27 @@ async function loadCategories() {
                 card.href =
                     "immobilier.html";
 
-            } else {
+            }
+
+            // -------------------------------------------------
+            // ESPACE COMMERCE
+            // -------------------------------------------------
+
+            else if (
+                categoryName === "commerce" ||
+                categoryName.includes("commerce")
+            ) {
+
+                card.href =
+                    "commerce.html";
+
+            }
+
+            // -------------------------------------------------
+            // AUTRES CATEGORIES
+            // -------------------------------------------------
+
+            else {
 
                 card.href =
                     `recherche.html?category=${encodeURIComponent(
@@ -735,6 +802,10 @@ async function toggleFavorite(button) {
             );
 
 
+        // -----------------------------------------------------
+        // RETIRER
+        // -----------------------------------------------------
+
         if (snapshot.exists()) {
 
             await deleteDoc(
@@ -746,8 +817,13 @@ async function toggleFavorite(button) {
                 false
             );
 
+        }
 
-        } else {
+        // -----------------------------------------------------
+        // AJOUTER
+        // -----------------------------------------------------
+
+        else {
 
             await setDoc(
                 favoriteRef,
@@ -885,7 +961,7 @@ async function loadRecentAds() {
 
 
         // -----------------------------------------------------
-        // FILTRER LES ANNONCES ACTIVES
+        // FILTRER LES ANNONCES
         // -----------------------------------------------------
 
         const activeAds =
@@ -899,7 +975,15 @@ async function loadRecentAds() {
                     return true;
                 }
 
-                return ad.status === "active";
+                const status =
+                    normalizeText(
+                        ad.status
+                    );
+
+                return (
+                    status === "active" ||
+                    status === "approved"
+                );
 
             });
 
@@ -913,17 +997,13 @@ async function loadRecentAds() {
 
                 const dateA =
                     a.createdAt &&
-                    typeof
-                        a.createdAt.toMillis ===
-                        "function"
+                    typeof a.createdAt.toMillis === "function"
                         ? a.createdAt.toMillis()
                         : 0;
 
                 const dateB =
                     b.createdAt &&
-                    typeof
-                        b.createdAt.toMillis ===
-                        "function"
+                    typeof b.createdAt.toMillis === "function"
                         ? b.createdAt.toMillis()
                         : 0;
 
@@ -1013,10 +1093,13 @@ async function loadRecentAds() {
             const price =
                 formatPrice(
                     ad.price,
-                    ad.currency ||
-                    "USD"
+                    ad.currency || "USD"
                 );
 
+
+            // -------------------------------------------------
+            // CARTE
+            // -------------------------------------------------
 
             const card =
                 document.createElement(
