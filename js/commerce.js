@@ -8,6 +8,10 @@
 // - Villes
 // - Commune saisie manuellement
 // - Établissements / vendeurs
+//
+// IMPORTANT :
+// Les catégories Commerce sont définies directement dans ce fichier.
+// Elles ne proviennent PAS de Firestore.
 // ============================================================
 
 import {
@@ -47,39 +51,131 @@ if (
         app => app.name === "camu-commerce"
     )
 ) {
-
-    commerceApp =
-        getApp("camu-commerce");
-
+    commerceApp = getApp("camu-commerce");
 } else {
-
-    commerceApp =
-        initializeApp(
-            firebaseConfig,
-            "camu-commerce"
-        );
-
+    commerceApp = initializeApp(
+        firebaseConfig,
+        "camu-commerce"
+    );
 }
 
 
-const db =
-    getFirestore(
-        commerceApp
-    );
+const db = getFirestore(commerceApp);
 
 
 // ============================================================
-// 2. VARIABLES
+// 2. CATÉGORIES COMMERCE
+// ============================================================
+// IMPORTANT :
+// Ces catégories sont LOCALES.
+// Aucune collection Firestore n'est utilisée.
 // ============================================================
 
-let categories = [];
+const categories = [
+    {
+        id: "mode",
+        name: "Mode & Vêtements",
+        icon: "fa-solid fa-shirt",
+        description: "Vêtements et articles de mode."
+    },
+
+    {
+        id: "chaussures",
+        name: "Chaussures",
+        icon: "fa-solid fa-shoe-prints",
+        description: "Chaussures pour hommes, femmes et enfants."
+    },
+
+    {
+        id: "telephones",
+        name: "Téléphones & Accessoires",
+        icon: "fa-solid fa-mobile-screen",
+        description: "Téléphones, smartphones et accessoires."
+    },
+
+    {
+        id: "informatique",
+        name: "Informatique",
+        icon: "fa-solid fa-laptop",
+        description: "Ordinateurs et matériel informatique."
+    },
+
+    {
+        id: "maison",
+        name: "Maison & Mobilier",
+        icon: "fa-solid fa-couch",
+        description: "Meubles et articles pour la maison."
+    },
+
+    {
+        id: "beaute",
+        name: "Beauté & Cosmétiques",
+        icon: "fa-solid fa-wand-magic-sparkles",
+        description: "Produits de beauté et cosmétiques."
+    },
+
+    {
+        id: "alimentation",
+        name: "Alimentation",
+        icon: "fa-solid fa-basket-shopping",
+        description: "Produits alimentaires."
+    },
+
+    {
+        id: "boissons",
+        name: "Boissons",
+        icon: "fa-solid fa-bottle-water",
+        description: "Boissons et produits associés."
+    },
+
+    {
+        id: "materiaux",
+        name: "Matériaux & Bricolage",
+        icon: "fa-solid fa-screwdriver-wrench",
+        description: "Matériaux et outils de bricolage."
+    },
+
+    {
+        id: "livres",
+        name: "Livres & Fournitures",
+        icon: "fa-solid fa-book",
+        description: "Livres et fournitures scolaires ou de bureau."
+    },
+
+    {
+        id: "enfants",
+        name: "Enfants & Jouets",
+        icon: "fa-solid fa-puzzle-piece",
+        description: "Jouets et articles pour enfants."
+    },
+
+    {
+        id: "bijoux",
+        name: "Bijoux & Accessoires",
+        icon: "fa-solid fa-gem",
+        description: "Bijoux, montres et accessoires."
+    },
+
+    {
+        id: "autres",
+        name: "Autres commerces",
+        icon: "fa-solid fa-store",
+        description: "Autres produits commerciaux."
+    }
+];
+
+
+// ============================================================
+// 3. VARIABLES
+// ============================================================
+
 let villes = [];
 let produits = [];
 let etablissements = [];
 
 
 // ============================================================
-// 3. OUTILS
+// 4. OUTILS
 // ============================================================
 
 function normalize(value) {
@@ -127,10 +223,10 @@ function firstValue(...values) {
 function getCity(item) {
 
     return firstValue(
-        item.city,
-        item.ville,
-        item.cityName,
-        item.villeName
+        item?.city,
+        item?.ville,
+        item?.cityName,
+        item?.villeName
     );
 
 }
@@ -139,9 +235,9 @@ function getCity(item) {
 function getCommune(item) {
 
     return firstValue(
-        item.commune,
-        item.communeName,
-        item.quartier
+        item?.commune,
+        item?.communeName,
+        item?.quartier
     );
 
 }
@@ -150,9 +246,9 @@ function getCommune(item) {
 function getCategory(item) {
 
     return firstValue(
-        item.category,
-        item.categorie,
-        item.categoryName
+        item?.category,
+        item?.categorie,
+        item?.categoryName
     );
 
 }
@@ -161,40 +257,44 @@ function getCategory(item) {
 function getImages(item) {
 
     if (
-        Array.isArray(
-            item.images
-        )
+        Array.isArray(item?.images)
     ) {
-        return item.images;
+        return item.images.filter(Boolean);
     }
 
 
     if (
-        typeof item.images === "string"
+        typeof item?.images === "string"
     ) {
 
         try {
 
-            const parsed =
-                JSON.parse(
-                    item.images
-                );
+            const parsed = JSON.parse(
+                item.images
+            );
 
             if (
                 Array.isArray(parsed)
             ) {
-                return parsed;
+                return parsed.filter(Boolean);
             }
 
         } catch (error) {
-            // Image non JSON.
+
+            // L'image n'est pas une chaîne JSON valide.
+
         }
 
     }
 
 
-    if (item.imageURL) {
+    if (item?.imageURL) {
         return [item.imageURL];
+    }
+
+
+    if (item?.photo) {
+        return [item.photo];
     }
 
 
@@ -208,13 +308,9 @@ function formatPrice(
     currency = "USD"
 ) {
 
-    const number =
-        Number(price);
+    const number = Number(price);
 
-
-    if (
-        !Number.isFinite(number)
-    ) {
+    if (!Number.isFinite(number)) {
         return "Prix à négocier";
     }
 
@@ -229,7 +325,8 @@ function formatPrice(
     if (
         normalizedCurrency === "cdf" ||
         normalizedCurrency === "fc" ||
-        normalizedCurrency === "franc congolais"
+        normalizedCurrency === "franc congolais" ||
+        normalizedCurrency === "francs congolais"
     ) {
         symbol = "FC";
     }
@@ -241,7 +338,7 @@ function formatPrice(
 
 
 // ============================================================
-// 4. MENU MOBILE
+// 5. MENU MOBILE
 // ============================================================
 
 function setupMobileMenu() {
@@ -251,12 +348,10 @@ function setupMobileMenu() {
             "commerceMenuButton"
         );
 
-
     const sidebar =
         document.getElementById(
             "commerceSidebar"
         );
-
 
     const overlay =
         document.getElementById(
@@ -278,16 +373,13 @@ function setupMobileMenu() {
             "active"
         );
 
-
         overlay?.classList.add(
             "active"
         );
 
-
         document.body.classList.add(
             "commerce-menu-open"
         );
-
 
         button.setAttribute(
             "aria-expanded",
@@ -303,16 +395,13 @@ function setupMobileMenu() {
             "active"
         );
 
-
         overlay?.classList.remove(
             "active"
         );
 
-
         document.body.classList.remove(
             "commerce-menu-open"
         );
-
 
         button.setAttribute(
             "aria-expanded",
@@ -331,9 +420,13 @@ function setupMobileMenu() {
                     "active"
                 )
             ) {
+
                 closeMenu();
+
             } else {
+
                 openMenu();
+
             }
 
         }
@@ -356,187 +449,6 @@ function setupMobileMenu() {
             );
 
         });
-
-}
-
-
-// ============================================================
-// 5. CHARGER LES CATÉGORIES
-// ============================================================
-
-async function loadCategories() {
-
-    try {
-
-        console.log(
-            "CAMU COMMERCE — chargement des catégories..."
-        );
-
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "categories"
-                )
-            );
-
-
-        categories = [];
-
-
-        snapshot.forEach(
-            docSnap => {
-
-                const data =
-                    docSnap.data();
-
-
-                if (
-                    data.active === false
-                ) {
-                    return;
-                }
-
-
-                const section =
-                    normalize(
-                        firstValue(
-                            data.section,
-                            data.espace,
-                            data.type
-                        )
-                    );
-
-
-                // ------------------------------------------------
-                // Les catégories explicitement Commerce
-                // ------------------------------------------------
-
-                const isCommerce =
-                    section === "commerce" ||
-                    section === "commercial" ||
-                    section === "commerces";
-
-
-                // Si aucune section n'existe,
-                // on accepte la catégorie.
-                const shouldInclude =
-                    !section ||
-                    isCommerce;
-
-
-                if (!shouldInclude) {
-                    return;
-                }
-
-
-                categories.push({
-
-                    id: docSnap.id,
-
-                    name:
-                        firstValue(
-                            data.name,
-                            data.nom,
-                            "Catégorie"
-                        ),
-
-                    icon:
-                        firstValue(
-                            data.icon,
-                            "fa-solid fa-tag"
-                        ),
-
-                    description:
-                        firstValue(
-                            data.description,
-                            "Découvrez nos produits."
-                        ),
-
-                    order:
-                        Number(
-                            data.order
-                        ) || 999
-
-                });
-
-            }
-        );
-
-
-        categories.sort(
-            (a, b) => {
-
-                if (
-                    a.order !==
-                    b.order
-                ) {
-                    return (
-                        a.order -
-                        b.order
-                    );
-                }
-
-
-                return normalize(
-                    a.name
-                ).localeCompare(
-                    normalize(
-                        b.name
-                    )
-                );
-
-            }
-        );
-
-
-        console.log(
-            `CAMU COMMERCE — ${categories.length} catégorie(s) chargée(s).`
-        );
-
-
-        renderCategories();
-
-        populateCategorySelect();
-
-    } catch (error) {
-
-        console.error(
-            "CAMU COMMERCE — erreur catégories :",
-            error
-        );
-
-
-        const container =
-            document.getElementById(
-                "commerceCategories"
-            );
-
-
-        if (container) {
-
-            container.innerHTML = `
-
-                <div class="commerce-empty">
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    <h3>
-                        Catégories indisponibles
-                    </h3>
-
-                    <p>
-                        Impossible de charger les catégories.
-                    </p>
-
-                </div>
-
-            `;
-
-        }
-
-    }
 
 }
 
@@ -566,7 +478,6 @@ function renderCategories() {
     ) {
 
         container.innerHTML = `
-
             <div class="commerce-empty">
 
                 <i class="fa-solid fa-tags"></i>
@@ -581,7 +492,6 @@ function renderCategories() {
                 </p>
 
             </div>
-
         `;
 
         return;
@@ -598,7 +508,7 @@ function renderCategories() {
 
 
             card.href =
-                `#produits`;
+                "#produits";
 
 
             card.className =
@@ -611,9 +521,7 @@ function renderCategories() {
 
             card.innerHTML = `
 
-                <div
-                    class="commerce-category-icon"
-                >
+                <div class="commerce-category-icon">
 
                     <i class="${escapeHtml(
                         category.icon
@@ -621,13 +529,11 @@ function renderCategories() {
 
                 </div>
 
-
                 <h3>
                     ${escapeHtml(
                         category.name
                     )}
                 </h3>
-
 
                 <p>
                     ${escapeHtml(
@@ -702,11 +608,9 @@ function populateCategorySelect() {
 
 
     select.innerHTML = `
-
         <option value="">
             Toutes les catégories
         </option>
-
     `;
 
 
@@ -738,7 +642,25 @@ function populateCategorySelect() {
 
 
 // ============================================================
-// 8. CHARGER LES VILLES
+// 8. INITIALISER LES CATÉGORIES
+// ============================================================
+
+function initCategories() {
+
+    console.log(
+        `CAMU COMMERCE — ${categories.length} catégorie(s) disponible(s).`
+    );
+
+
+    renderCategories();
+
+    populateCategorySelect();
+
+}
+
+
+// ============================================================
+// 9. CHARGER LES VILLES
 // ============================================================
 
 async function loadVilles() {
@@ -776,16 +698,25 @@ async function loadVilles() {
                 }
 
 
+                const name =
+                    firstValue(
+                        data.name,
+                        data.nom
+                    );
+
+
+                if (!name) {
+                    return;
+                }
+
+
                 villes.push({
 
                     id:
                         docSnap.id,
 
                     name:
-                        firstValue(
-                            data.name,
-                            data.nom
-                        ),
+                        String(name).trim(),
 
                     order:
                         Number(
@@ -805,10 +736,12 @@ async function loadVilles() {
                     a.order !==
                     b.order
                 ) {
+
                     return (
                         a.order -
                         b.order
                     );
+
                 }
 
 
@@ -855,7 +788,7 @@ async function loadVilles() {
 
 
 // ============================================================
-// 9. SELECT VILLES
+// 10. SELECT VILLES
 // ============================================================
 
 function populateVilleSelect(
@@ -868,11 +801,9 @@ function populateVilleSelect(
 
 
     select.innerHTML = `
-
         <option value="">
             Toutes les villes
         </option>
-
     `;
 
 
@@ -904,7 +835,37 @@ function populateVilleSelect(
 
 
 // ============================================================
-// 10. IDENTIFIER UNE ANNONCE COMMERCE
+// 11. TROUVER UNE CATÉGORIE COMMERCE
+// ============================================================
+
+function findCommerceCategory(
+    value
+) {
+
+    const normalized =
+        normalize(value);
+
+
+    if (!normalized) {
+        return null;
+    }
+
+
+    return categories.find(
+        category =>
+            normalize(
+                category.id
+            ) === normalized ||
+            normalize(
+                category.name
+            ) === normalized
+    ) || null;
+
+}
+
+
+// ============================================================
+// 12. IDENTIFIER UNE ANNONCE COMMERCE
 // ============================================================
 
 function isCommerceProduit(
@@ -920,30 +881,20 @@ function isCommerceProduit(
 
 
     // --------------------------------------------------------
-    // Catégorie Commerce
+    // 1. Correspondance avec les catégories Commerce locales
     // --------------------------------------------------------
 
-    const categoryData =
-        categories.find(
-            categoryItem =>
-                normalize(
-                    categoryItem.id
-                ) === category ||
-                normalize(
-                    categoryItem.name
-                ) === category
-        );
-
-
     if (
-        categoryData
+        findCommerceCategory(
+            category
+        )
     ) {
         return true;
     }
 
 
     // --------------------------------------------------------
-    // Catégories commerciales connues
+    // 2. Anciennes catégories commerciales
     // --------------------------------------------------------
 
     const commerceKeywords = [
@@ -951,20 +902,26 @@ function isCommerceProduit(
         "commerce",
         "commercial",
         "alimentation",
+        "alimentaire",
         "vetement",
         "mode",
         "chaussure",
         "telephone",
         "electronique",
+        "electronique",
         "electromenager",
         "cosmetique",
         "beaute",
         "meuble",
+        "mobilier",
         "decoration",
-        "agriculture",
         "informatique",
         "accessoire",
-        "produit"
+        "produit",
+        "boisson",
+        "bijou",
+        "jouet",
+        "livre"
 
     ];
 
@@ -977,82 +934,93 @@ function isCommerceProduit(
                 )
         )
     ) {
+
         return true;
+
     }
 
 
     // --------------------------------------------------------
-    // Compatibilité avec certaines anciennes annonces
+    // 3. Compatibilité avec certaines anciennes annonces
     // --------------------------------------------------------
 
     const title =
         normalize(
             firstValue(
-                annonce.title,
-                annonce.titre
+                annonce?.title,
+                annonce?.titre
             )
         );
 
 
     const description =
         normalize(
-            annonce.description
+            annonce?.description
         );
 
 
+    const text =
+        `${title} ${description}`;
+
+
+    const productKeywords = [
+
+        "telephone",
+        "iphone",
+        "samsung",
+        "xiaomi",
+        "tecno",
+        "infinix",
+        "ordinateur",
+        "ordinateur portable",
+        "laptop",
+        "chaussure",
+        "vetement",
+        "robe",
+        "pantalon",
+        "chemise",
+        "tshirt",
+        "meuble",
+        "canape",
+        "fauteuil",
+        "refrigerateur",
+        "frigo",
+        "television",
+        "tv",
+        "cosmetique",
+        "parfum",
+        "maquillage",
+        "bijou",
+        "montre",
+        "jouet",
+        "livre",
+        "produit",
+        "ordinateur"
+    ];
+
+
     if (
-        title ||
-        description
+        text &&
+        productKeywords.some(
+            keyword =>
+                text.includes(
+                    keyword
+                )
+        )
     ) {
 
-        const text =
-            `${title} ${description}`;
-
-
-        const productKeywords = [
-
-            "telephone",
-            "iphone",
-            "samsung",
-            "ordinateur",
-            "ordinateur portable",
-            "chaussure",
-            "vetement",
-            "robe",
-            "pantalon",
-            "chemise",
-            "meuble",
-            "canape",
-            "refrigerateur",
-            "television",
-            "tv",
-            "cosmetique",
-            "parfum",
-            "produit"
-
-        ];
-
-
-        if (
-            productKeywords.some(
-                keyword =>
-                    text.includes(
-                        keyword
-                    )
-            )
-        ) {
-            return true;
-        }
+        return true;
 
     }
 
 
     return false;
+
 }
 
 
 // ============================================================
-// 11. CHARGER LES PRODUITS
+// 13. CHARGER LES PRODUITS
 // ============================================================
 
 async function loadProduits() {
@@ -1089,9 +1057,9 @@ async function loadProduits() {
                     );
 
 
-                // --------------------------------------------
+                // ------------------------------------------------
                 // Statuts autorisés
-                // --------------------------------------------
+                // ------------------------------------------------
 
                 if (
                     status &&
@@ -1101,6 +1069,10 @@ async function loadProduits() {
                     return;
                 }
 
+
+                // ------------------------------------------------
+                // Vérifier que c'est un produit Commerce
+                // ------------------------------------------------
 
                 if (
                     !isCommerceProduit(
@@ -1147,7 +1119,7 @@ async function loadProduits() {
 
 
 // ============================================================
-// 12. FILTRER LES PRODUITS
+// 14. FILTRER LES PRODUITS
 // ============================================================
 
 function filterProduits() {
@@ -1212,6 +1184,21 @@ function filterProduits() {
         );
 
 
+    const selectedCategory =
+        categories.find(
+            item =>
+                normalize(
+                    item.id
+                ) === category
+        );
+
+
+    const categoryName =
+        normalize(
+            selectedCategory?.name
+        );
+
+
     const filtered =
         produits.filter(
             produit => {
@@ -1227,21 +1214,6 @@ function filterProduits() {
                             getCategory(
                                 produit
                             )
-                        );
-
-
-                    const selectedCategory =
-                        categories.find(
-                            item =>
-                                normalize(
-                                    item.id
-                                ) === category
-                        );
-
-
-                    const categoryName =
-                        normalize(
-                            selectedCategory?.name
                         );
 
 
@@ -1277,7 +1249,9 @@ function filterProduits() {
                         productVille !==
                         villeName
                     ) {
+
                         return false;
+
                     }
 
                 }
@@ -1302,7 +1276,9 @@ function filterProduits() {
                             commune
                         )
                     ) {
+
                         return false;
+
                     }
 
                 }
@@ -1325,7 +1301,9 @@ function filterProduits() {
                                 produit.commune,
                                 produit.quartier,
                                 produit.category,
-                                produit.categorie
+                                produit.categorie,
+                                produit.categoryName,
+                                produit.ownerName
                             ]
                                 .filter(Boolean)
                                 .join(" ")
@@ -1337,7 +1315,9 @@ function filterProduits() {
                             keyword
                         )
                     ) {
+
                         return false;
+
                     }
 
                 }
@@ -1357,7 +1337,7 @@ function filterProduits() {
 
 
 // ============================================================
-// 13. CARTE PRODUIT
+// 15. CARTE PRODUIT
 // ============================================================
 
 function createProductCard(
@@ -1521,11 +1501,12 @@ function createProductCard(
 
 
     return card;
+
 }
 
 
 // ============================================================
-// 14. AFFICHER LES PRODUITS
+// 16. AFFICHER LES PRODUITS
 // ============================================================
 
 function renderProducts(
@@ -1607,7 +1588,7 @@ function renderProducts(
 
 
 // ============================================================
-// 15. ERREUR PRODUITS
+// 17. ERREUR PRODUITS
 // ============================================================
 
 function renderProductError() {
@@ -1645,7 +1626,7 @@ function renderProductError() {
 
 
 // ============================================================
-// 16. CHARGER LES ÉTABLISSEMENTS
+// 18. CHARGER LES ÉTABLISSEMENTS / VENDEURS
 // ============================================================
 
 async function loadEtablissements() {
@@ -1689,63 +1670,83 @@ async function loadEtablissements() {
                         docSnap.id,
 
                     name:
-                        firstValue(
-                            data.name,
-                            data.nom,
-                            data.nomEtablissement,
-                            "Établissement"
-                        ),
+                        String(
+                            firstValue(
+                                data.name,
+                                data.nom,
+                                data.nomEtablissement,
+                                "Établissement"
+                            )
+                        ).trim(),
 
                     category:
-                        firstValue(
-                            data.category,
-                            data.categorie
-                        ),
+                        String(
+                            firstValue(
+                                data.category,
+                                data.categorie
+                            )
+                        ).trim(),
 
                     phone:
-                        firstValue(
-                            data.phone,
-                            data.telephone
-                        ),
+                        String(
+                            firstValue(
+                                data.phone,
+                                data.telephone
+                            )
+                        ).trim(),
 
                     WhatsApp:
-                        firstValue(
-                            data.WhatsApp,
-                            data.whatsapp
-                        ),
+                        String(
+                            firstValue(
+                                data.WhatsApp,
+                                data.whatsapp
+                            )
+                        ).trim(),
 
                     email:
-                        firstValue(
-                            data.email
-                        ),
+                        String(
+                            firstValue(
+                                data.email
+                            )
+                        ).trim(),
 
                     logoURL:
-                        firstValue(
-                            data.logoURL,
-                            data.photoURL
-                        ),
+                        String(
+                            firstValue(
+                                data.logoURL,
+                                data.photoURL
+                            )
+                        ).trim(),
 
                     ville:
-                        firstValue(
-                            data.ville,
-                            data.city
-                        ),
+                        String(
+                            firstValue(
+                                data.ville,
+                                data.city
+                            )
+                        ).trim(),
 
                     commune:
-                        firstValue(
-                            data.commune
-                        ),
+                        String(
+                            firstValue(
+                                data.commune
+                            )
+                        ).trim(),
 
                     adresse:
-                        firstValue(
-                            data.adresse,
-                            data.address
-                        ),
+                        String(
+                            firstValue(
+                                data.adresse,
+                                data.address
+                            )
+                        ).trim(),
 
                     description:
-                        firstValue(
-                            data.description
-                        ),
+                        String(
+                            firstValue(
+                                data.description
+                            )
+                        ).trim(),
 
                     active:
                         data.active !== false
@@ -1806,7 +1807,7 @@ async function loadEtablissements() {
 
 
 // ============================================================
-// 17. FILTRER LES ÉTABLISSEMENTS
+// 19. FILTRER LES ÉTABLISSEMENTS
 // ============================================================
 
 function filterEtablissements() {
@@ -1851,6 +1852,10 @@ function filterEtablissements() {
         etablissements.filter(
             etablissement => {
 
+                // ------------------------------------------
+                // VILLE
+                // ------------------------------------------
+
                 if (villeId) {
 
                     const businessVille =
@@ -1863,11 +1868,17 @@ function filterEtablissements() {
                         businessVille !==
                         villeName
                     ) {
+
                         return false;
+
                     }
 
                 }
 
+
+                // ------------------------------------------
+                // COMMUNE
+                // ------------------------------------------
 
                 if (commune) {
 
@@ -1882,7 +1893,9 @@ function filterEtablissements() {
                             commune
                         )
                     ) {
+
                         return false;
+
                     }
 
                 }
@@ -1902,7 +1915,7 @@ function filterEtablissements() {
 
 
 // ============================================================
-// 18. CARTE ÉTABLISSEMENT
+// 20. CARTE ÉTABLISSEMENT
 // ============================================================
 
 function createBusinessCard(
@@ -1948,6 +1961,10 @@ function createBusinessCard(
     let actions = "";
 
 
+    // --------------------------------------------------------
+    // WHATSAPP
+    // --------------------------------------------------------
+
     if (phone) {
 
         const cleanPhone =
@@ -1988,12 +2005,58 @@ function createBusinessCard(
     }
 
 
+    // --------------------------------------------------------
+    // TÉLÉPHONE
+    // --------------------------------------------------------
+
+    if (
+        business.phone &&
+        business.phone !== business.WhatsApp
+    ) {
+
+        const cleanPhone =
+            String(
+                business.phone
+            ).replace(
+                /[^\d+]/g,
+                ""
+            );
+
+
+        if (cleanPhone) {
+
+            actions += `
+
+                <a
+                    href="tel:${escapeHtml(
+                        cleanPhone
+                    )}"
+                    class="commerce-business-phone"
+                >
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    Appeler
+
+                </a>
+
+            `;
+
+        }
+
+    }
+
+
+    // --------------------------------------------------------
+    // EMAIL
+    // --------------------------------------------------------
+
     if (email) {
 
         actions += `
 
             <a
-                href="mailto:${encodeURIComponent(
+                href="mailto:${escapeHtml(
                     email
                 )}"
                 class="commerce-business-email"
@@ -2030,15 +2093,18 @@ function createBusinessCard(
             <div>
 
                 <h3 class="commerce-business-name">
+
                     ${escapeHtml(
                         business.name
                     )}
+
                 </h3>
 
 
                 ${
                     business.category
                         ? `
+
                             <div class="commerce-business-category">
 
                                 <i class="fa-solid fa-tag"></i>
@@ -2048,6 +2114,7 @@ function createBusinessCard(
                                 )}
 
                             </div>
+
                         `
                         : ""
                 }
@@ -2056,6 +2123,7 @@ function createBusinessCard(
                 ${
                     location
                         ? `
+
                             <div class="commerce-business-location">
 
                                 <i class="fa-solid fa-location-dot"></i>
@@ -2065,6 +2133,7 @@ function createBusinessCard(
                                 )}
 
                             </div>
+
                         `
                         : ""
                 }
@@ -2077,6 +2146,7 @@ function createBusinessCard(
         ${
             business.description
                 ? `
+
                     <p class="commerce-business-description">
 
                         ${escapeHtml(
@@ -2084,6 +2154,7 @@ function createBusinessCard(
                         )}
 
                     </p>
+
                 `
                 : ""
         }
@@ -2092,6 +2163,7 @@ function createBusinessCard(
         ${
             business.adresse
                 ? `
+
                     <div class="commerce-business-location">
 
                         <i class="fa-solid fa-map-location-dot"></i>
@@ -2101,6 +2173,7 @@ function createBusinessCard(
                         )}
 
                     </div>
+
                 `
                 : ""
         }
@@ -2116,11 +2189,12 @@ function createBusinessCard(
 
 
     return card;
+
 }
 
 
 // ============================================================
-// 19. AFFICHER LES ÉTABLISSEMENTS
+// 21. AFFICHER LES ÉTABLISSEMENTS
 // ============================================================
 
 function renderEtablissements(
@@ -2184,7 +2258,7 @@ function renderEtablissements(
 
 
 // ============================================================
-// 20. ÉVÉNEMENTS
+// 22. ÉVÉNEMENTS
 // ============================================================
 
 function setupEvents() {
@@ -2243,6 +2317,7 @@ function setupEvents() {
     );
 
 
+    // Recherche avec le bouton
     searchButton?.addEventListener(
         "click",
         () => {
@@ -2257,6 +2332,33 @@ function setupEvents() {
                 ?.scrollIntoView({
                     behavior: "smooth"
                 });
+
+        }
+    );
+
+
+    // Recherche avec la touche Entrée
+    keyword?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                filterProduits();
+
+                document
+                    .getElementById(
+                        "produits"
+                    )
+                    ?.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
 
         }
     );
@@ -2289,7 +2391,7 @@ function setupEvents() {
 
 
 // ============================================================
-// 21. NAVIGATION
+// 23. NAVIGATION FLUIDE
 // ============================================================
 
 function setupSmoothNavigation() {
@@ -2315,7 +2417,9 @@ function setupSmoothNavigation() {
                             !targetId ||
                             targetId === "#"
                         ) {
+
                             return;
+
                         }
 
 
@@ -2334,8 +2438,11 @@ function setupSmoothNavigation() {
 
 
                         target.scrollIntoView({
+
                             behavior: "smooth",
+
                             block: "start"
+
                         });
 
                     }
@@ -2348,7 +2455,7 @@ function setupSmoothNavigation() {
 
 
 // ============================================================
-// 22. ANNÉE
+// 24. ANNÉE
 // ============================================================
 
 function setCurrentYear() {
@@ -2370,7 +2477,7 @@ function setCurrentYear() {
 
 
 // ============================================================
-// 23. INITIALISATION
+// 25. INITIALISATION
 // ============================================================
 
 async function initCommerce() {
@@ -2379,11 +2486,9 @@ async function initCommerce() {
         "=========================================="
     );
 
-
     console.log(
         "CAMU COMMERCE — initialisation..."
     );
-
 
     console.log(
         "Firebase SDK : 10.12.2"
@@ -2391,6 +2496,10 @@ async function initCommerce() {
 
 
     try {
+
+        // ----------------------------------------------------
+        // Interface
+        // ----------------------------------------------------
 
         setupMobileMenu();
 
@@ -2401,16 +2510,23 @@ async function initCommerce() {
         setCurrentYear();
 
 
-        // --------------------------------------------
-        // Les catégories doivent être chargées avant
-        // les annonces.
-        // --------------------------------------------
+        // ----------------------------------------------------
+        // Catégories locales
+        // ----------------------------------------------------
 
-        await loadCategories();
+        initCategories();
 
+
+        // ----------------------------------------------------
+        // Villes Firestore
+        // ----------------------------------------------------
 
         await loadVilles();
 
+
+        // ----------------------------------------------------
+        // Produits + établissements
+        // ----------------------------------------------------
 
         await Promise.all([
 
@@ -2425,6 +2541,7 @@ async function initCommerce() {
             "CAMU COMMERCE — initialisation terminée."
         );
 
+
     } catch (error) {
 
         console.error(
@@ -2438,7 +2555,7 @@ async function initCommerce() {
 
 
 // ============================================================
-// 24. LANCEMENT
+// 26. LANCEMENT
 // ============================================================
 
 if (
