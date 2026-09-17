@@ -6,7 +6,6 @@
 
     --set-blue: #063b73;
     --set-blue-dark: #042b54;
-
     --set-green: #2ca36b;
 
     --set-light: #f5f8fc;
@@ -14,8 +13,9 @@
     --set-border: #dfe6ee;
 
     --set-text: #17212b;
-
     --set-muted: #6d7885;
+
+    --set-card: #ffffff;
 
     --set-red: #c62828;
 
@@ -31,9 +31,19 @@
 }
 
 
+html,
 body {
 
     margin: 0;
+
+    padding: 0;
+
+    min-height: 100%;
+
+}
+
+
+body {
 
     background: var(--set-light);
 
@@ -43,6 +53,19 @@ body {
         Arial,
         Helvetica,
         sans-serif;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease;
+
+}
+
+
+button,
+input,
+select {
+
+    font-family: inherit;
 
 }
 
@@ -65,12 +88,16 @@ body {
 
     padding: 25px 18px;
 
-    background: #ffffff;
+    background: var(--set-card);
 
     border-right:
         1px solid var(--set-border);
 
     z-index: 1000;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease;
 
 }
 
@@ -120,7 +147,7 @@ body {
 
     border-radius: 10px;
 
-    color: #4c5865;
+    color: var(--set-muted);
 
     text-decoration: none;
 
@@ -177,7 +204,7 @@ body {
 
     justify-content: center;
 
-    background: #ffffff;
+    background: var(--set-card);
 
     border-bottom:
         1px solid var(--set-border);
@@ -357,7 +384,7 @@ body {
 
     padding: 28px;
 
-    background: #ffffff;
+    background: var(--set-card);
 
     border:
         1px solid var(--set-border);
@@ -367,6 +394,10 @@ body {
     box-shadow:
         0 7px 25px
         rgba(20,50,80,0.05);
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease;
 
 }
 
@@ -474,7 +505,7 @@ body {
 
     font-weight: 700;
 
-    color: #394653;
+    color: var(--set-text);
 
 }
 
@@ -490,11 +521,11 @@ body {
         11px 13px;
 
     border:
-        1px solid #ccd6e0;
+        1px solid var(--set-border);
 
     border-radius: 9px;
 
-    background: #ffffff;
+    background: var(--set-card);
 
     color: var(--set-text);
 
@@ -520,11 +551,10 @@ body {
 
 .settings-field input:read-only {
 
-    background: #f1f4f7;
+    background:
+        rgba(120,130,140,0.08);
 
-    color: #687582;
-
-    cursor: not-allowed;
+    color: var(--set-muted);
 
 }
 
@@ -558,9 +588,12 @@ body {
    BUTTONS
 ========================================================= */
 
-.settings-primary-button {
+.settings-primary-button,
+.settings-secondary-button,
+.settings-logout-button,
+.settings-delete-button {
 
-    min-height: 45px;
+    min-height: 44px;
 
     display: inline-flex;
 
@@ -571,21 +604,26 @@ body {
     gap: 8px;
 
     padding:
-        0 18px;
-
-    border: 0;
+        0 17px;
 
     border-radius: 8px;
-
-    background: var(--set-blue);
-
-    color: #ffffff;
-
-    text-decoration: none;
 
     font-weight: 700;
 
     cursor: pointer;
+
+    text-decoration: none;
+
+}
+
+
+.settings-primary-button {
+
+    border: 0;
+
+    background: var(--set-blue);
+
+    color: #ffffff;
 
 }
 
@@ -600,31 +638,12 @@ body {
 
 .settings-secondary-button {
 
-    min-height: 42px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 8px;
-
-    padding:
-        0 15px;
-
     border:
         1px solid var(--set-border);
 
-    border-radius: 8px;
-
-    background: #ffffff;
+    background: var(--set-card);
 
     color: var(--set-blue);
-
-    font-weight: 700;
-
-    cursor: pointer;
 
 }
 
@@ -638,30 +657,11 @@ body {
 
 .settings-logout-button {
 
-    min-height: 45px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    padding:
-        0 20px;
-
     border: 0;
-
-    border-radius: 8px;
 
     background: #fff0f0;
 
     color: var(--set-red);
-
-    font-weight: 700;
-
-    cursor: pointer;
 
 }
 
@@ -671,6 +671,193 @@ body {
     background: var(--set-red);
 
     color: #ffffff;
+
+}
+
+
+.settings-delete-button {
+
+    border: 0;
+
+    background: var(--set-red);
+
+    color: #ffffff;
+
+}
+
+
+.settings-delete-button:hover {
+
+    background: #a91f1f;
+
+}
+
+
+button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.settings-option {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        16px 0;
+
+}
+
+
+.settings-option-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.settings-option-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #edf5ff;
+
+    color: var(--set-blue);
+
+}
+
+
+.settings-option strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 14px;
+
+}
+
+
+.settings-option p {
+
+    margin: 0;
+
+    color: var(--set-muted);
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.settings-switch {
+
+    position: relative;
+
+    width: 52px;
+
+    height: 29px;
+
+    flex: 0 0 auto;
+
+}
+
+
+.settings-switch input {
+
+    width: 0;
+
+    height: 0;
+
+    opacity: 0;
+
+}
+
+
+.settings-slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 30px;
+
+    background: #c7d0d9;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+}
+
+
+.settings-slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 21px;
+
+    height: 21px;
+
+    left: 4px;
+
+    top: 4px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    transition: 0.25s ease;
+
+}
+
+
+.settings-switch input:checked
++ .settings-slider {
+
+    background:
+        var(--set-green);
+
+}
+
+
+.settings-switch input:checked
++ .settings-slider::before {
+
+    transform:
+        translateX(23px);
 
 }
 
@@ -702,7 +889,7 @@ body {
         18px 0;
 
     border-bottom:
-        1px solid #edf0f3;
+        1px solid var(--set-border);
 
 }
 
@@ -733,13 +920,11 @@ body {
 
     font-size: 12px;
 
-    line-height: 1.5;
-
 }
 
 
 /* =========================================================
-   PASSWORD FORM
+   PASSWORD
 ========================================================= */
 
 .password-form-container {
@@ -754,26 +939,25 @@ body {
 }
 
 
-.password-form-container .settings-form {
+.password-form {
 
-    grid-template-columns:
-        1fr;
+    grid-template-columns: 1fr;
 
 }
 
 
 /* =========================================================
-   ACCOUNT INFO
+   ACCOUNT
 ========================================================= */
 
 .settings-account-info {
+
+    overflow: hidden;
 
     border:
         1px solid var(--set-border);
 
     border-radius: 10px;
-
-    overflow: hidden;
 
 }
 
@@ -792,7 +976,7 @@ body {
         14px 16px;
 
     border-bottom:
-        1px solid #edf0f3;
+        1px solid var(--set-border);
 
 }
 
@@ -815,8 +999,6 @@ body {
 
 .settings-info-row strong {
 
-    color: var(--set-text);
-
     font-size: 13px;
 
 }
@@ -825,6 +1007,50 @@ body {
 .settings-status {
 
     color: var(--set-green) !important;
+
+}
+
+
+/* =========================================================
+   DANGER
+========================================================= */
+
+.settings-danger-card {
+
+    border-color:
+        rgba(198,40,40,0.25);
+
+}
+
+
+.settings-danger-content {
+
+    padding-top: 5px;
+
+}
+
+
+.settings-danger-content strong {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--set-red);
+
+}
+
+
+.settings-danger-content p {
+
+    margin:
+        0 0 18px;
+
+    color: var(--set-muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
 
 }
 
@@ -840,7 +1066,7 @@ body {
 
     text-align: center;
 
-    background: #ffffff;
+    background: var(--set-card);
 
     border:
         1px solid var(--set-border);
@@ -937,12 +1163,174 @@ body {
 
 
 /* =========================================================
-   HIDDEN
+   DELETE MODAL
 ========================================================= */
 
-.hidden {
+.delete-modal {
 
-    display: none !important;
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,0.65);
+
+}
+
+
+.delete-modal.hidden {
+
+    display: none;
+
+}
+
+
+.delete-modal-box {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 30px;
+
+    background: var(--set-card);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.25);
+
+}
+
+
+.delete-modal-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #fff0f0;
+
+    color: var(--set-red);
+
+    font-size: 24px;
+
+}
+
+
+.delete-modal-box h2 {
+
+    margin:
+        0 0 10px;
+
+    text-align: center;
+
+}
+
+
+.delete-modal-box > p {
+
+    margin:
+        0 0 20px;
+
+    color: var(--set-muted);
+
+    text-align: center;
+
+    line-height: 1.6;
+
+    font-size: 13px;
+
+}
+
+
+.delete-modal-box label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.delete-modal-box input {
+
+    width: 100%;
+
+    min-height: 45px;
+
+    padding:
+        11px 13px;
+
+    border:
+        1px solid var(--set-border);
+
+    border-radius: 8px;
+
+    background: var(--set-card);
+
+    color: var(--set-text);
+
+    outline: none;
+
+}
+
+
+.delete-modal-box input:focus {
+
+    border-color:
+        var(--set-red);
+
+}
+
+
+.delete-account-message {
+
+    min-height: 22px;
+
+    margin-top: 8px;
+
+    color: var(--set-red);
+
+    font-size: 12px;
+
+}
+
+
+.delete-modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 15px;
 
 }
 
@@ -965,7 +1353,121 @@ body {
 
 
 /* =========================================================
-   OVERLAY
+   HIDDEN
+========================================================= */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   MODE SOMBRE
+========================================================= */
+
+body.dark-mode {
+
+    --set-light: #101820;
+
+    --set-card: #18232d;
+
+    --set-border: #2c3945;
+
+    --set-text: #edf2f5;
+
+    --set-muted: #aab5be;
+
+}
+
+
+body.dark-mode
+.settings-sidebar-nav a:hover,
+body.dark-mode
+.settings-sidebar-nav a.active {
+
+    background: #22384c;
+
+    color: #ffffff;
+
+}
+
+
+body.dark-mode
+.settings-top-icon {
+
+    background: #22384c;
+
+    color: #ffffff;
+
+}
+
+
+body.dark-mode
+.settings-top-icon:hover {
+
+    background: #315b80;
+
+}
+
+
+body.dark-mode
+.settings-secondary-button {
+
+    background: var(--set-card);
+
+    color: #dcecff;
+
+}
+
+
+body.dark-mode
+.settings-secondary-button:hover {
+
+    background: #22384c;
+
+}
+
+
+body.dark-mode
+.settings-field input:read-only {
+
+    background: #202d38;
+
+}
+
+
+body.dark-mode
+.settings-logout-button {
+
+    background: #3a2528;
+
+}
+
+
+body.dark-mode
+.settings-option-icon,
+body.dark-mode
+.settings-card-icon {
+
+    background: #22384c;
+
+}
+
+
+body.dark-mode
+.settings-message {
+
+    box-shadow:
+        0 7px 25px
+        rgba(0,0,0,0.18);
+
+}
+
+
+/* =========================================================
+   MOBILE
 ========================================================= */
 
 .settings-overlay {
@@ -974,10 +1476,6 @@ body {
 
 }
 
-
-/* =========================================================
-   TABLET
-========================================================= */
 
 @media (max-width: 900px) {
 
@@ -1056,10 +1554,6 @@ body {
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 600px) {
 
     .settings-topbar {
@@ -1126,15 +1620,15 @@ body {
 
     .settings-card {
 
-        padding: 20px 16px;
+        padding:
+            20px 16px;
 
     }
 
 
     .settings-form {
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
 
     }
 
@@ -1173,6 +1667,13 @@ body {
     }
 
 
+    .settings-option {
+
+        align-items: flex-start;
+
+    }
+
+
     .settings-info-row {
 
         align-items: flex-start;
@@ -1180,6 +1681,29 @@ body {
         flex-direction: column;
 
         gap: 5px;
+
+    }
+
+
+    .delete-modal-box {
+
+        padding:
+            22px 18px;
+
+    }
+
+
+    .delete-modal-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .delete-modal-actions
+    button {
+
+        width: 100%;
 
     }
 
