@@ -52,8 +52,13 @@
         <div class="commerce-sidebar-header">
 
             <div class="commerce-sidebar-title">
+
                 <i class="fa-solid fa-store"></i>
-                <span>CAMU COMMERCE</span>
+
+                <span>
+                    CAMU COMMERCE
+                </span>
+
             </div>
 
         </div>
@@ -61,57 +66,99 @@
 
         <nav class="commerce-sidebar-nav">
 
+            <!-- ACCUEIL -->
+
             <a
                 href="#accueil"
-                class="commerce-nav-link"
+                class="commerce-nav-link active"
             >
+
                 <i class="fa-solid fa-house"></i>
-                <span>Accueil</span>
+
+                <span>
+                    Accueil
+                </span>
+
             </a>
 
+
+            <!-- CATÉGORIES -->
 
             <a
                 href="#categories"
                 class="commerce-nav-link"
             >
+
                 <i class="fa-solid fa-tags"></i>
-                <span>Catégories</span>
+
+                <span>
+                    Catégories
+                </span>
+
             </a>
 
+
+            <!-- PRODUITS -->
 
             <a
                 href="#produits"
                 class="commerce-nav-link"
             >
+
                 <i class="fa-solid fa-box"></i>
-                <span>Produits</span>
+
+                <span>
+                    Produits
+                </span>
+
             </a>
 
+
+            <!-- ÉTABLISSEMENTS -->
 
             <a
                 href="#etablissements"
                 class="commerce-nav-link"
             >
+
                 <i class="fa-solid fa-store"></i>
-                <span>Établissements / Vendeurs</span>
+
+                <span>
+                    Établissements / Vendeurs
+                </span>
+
             </a>
 
+
+            <!-- RECHERCHE -->
 
             <a
                 href="#recherche"
                 class="commerce-nav-link"
             >
+
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <span>Recherche</span>
+
+                <span>
+                    Recherche
+                </span>
+
             </a>
 
+
+            <!-- RETOUR CAMU SERVICES -->
 
             <a
                 href="index.html"
                 class="commerce-nav-link"
             >
+
                 <i class="fa-solid fa-arrow-left"></i>
-                <span>CAMU SERVICES</span>
+
+                <span>
+                    CAMU SERVICES
+                </span>
+
             </a>
 
         </nav>
@@ -132,6 +179,8 @@
 
         <header class="commerce-topbar">
 
+            <!-- MENU MOBILE -->
+
             <button
                 type="button"
                 id="commerceMenuButton"
@@ -139,9 +188,13 @@
                 aria-label="Ouvrir le menu"
                 aria-expanded="false"
             >
+
                 <i class="fa-solid fa-bars"></i>
+
             </button>
 
+
+            <!-- LOGO -->
 
             <a
                 href="index.html"
@@ -156,23 +209,36 @@
             </a>
 
 
+            <!-- ACTIONS -->
+
             <div class="commerce-topbar-right">
+
+                <!-- FAVORIS -->
 
                 <a
                     href="favoris.html"
                     class="commerce-topbar-link"
                     aria-label="Favoris"
                 >
+
                     <i class="fa-solid fa-heart"></i>
+
                 </a>
 
+
+                <!-- COMPTE -->
 
                 <a
                     href="compte.html"
                     class="commerce-account-link"
                 >
+
                     <i class="fa-solid fa-user"></i>
-                    <span>Mon compte</span>
+
+                    <span>
+                        Mon compte
+                    </span>
+
                 </a>
 
             </div>
@@ -212,8 +278,11 @@
                     href="#recherche"
                     class="commerce-hero-button"
                 >
+
                     <i class="fa-solid fa-magnifying-glass"></i>
+
                     Rechercher un produit
+
                 </a>
 
             </div>
@@ -222,7 +291,7 @@
 
 
         <!-- =================================================
-             CATÉGORIES
+             CATÉGORIES COMMERCE
         ================================================== -->
 
         <section
@@ -236,13 +305,15 @@
                     EXPLOREZ
                 </span>
 
+
                 <h2>
-                    Catégories
+                    Catégories Commerce
                 </h2>
 
+
                 <p>
-                    Trouvez rapidement les produits
-                    qui vous intéressent.
+                    Découvrez les différentes catégories
+                    de produits disponibles sur CAMU COMMERCE.
                 </p>
 
             </div>
@@ -257,7 +328,9 @@
 
                     <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    Chargement des catégories...
+                    <span>
+                        Chargement des catégories...
+                    </span>
 
                 </div>
 
@@ -281,12 +354,14 @@
                     RECHERCHE
                 </span>
 
+
                 <h2>
                     Trouver un produit
                 </h2>
 
+
                 <p>
-                    Recherchez par produit,
+                    Recherchez un produit par nom,
                     catégorie, ville ou commune.
                 </p>
 
@@ -296,11 +371,16 @@
             <div class="commerce-search-box">
 
 
+                <!-- PRODUIT -->
+
                 <div class="commerce-field">
 
                     <label for="commerceKeyword">
+
                         Produit
+
                     </label>
+
 
                     <div class="commerce-input-wrapper">
 
@@ -318,11 +398,16 @@
                 </div>
 
 
+                <!-- CATÉGORIE -->
+
                 <div class="commerce-field">
 
                     <label for="commerceCategory">
+
                         Catégorie
+
                     </label>
+
 
                     <select
                         id="commerceCategory"
@@ -337,11 +422,16 @@
                 </div>
 
 
+                <!-- VILLE -->
+
                 <div class="commerce-field">
 
                     <label for="commerceVille">
+
                         Ville
+
                     </label>
+
 
                     <select
                         id="commerceVille"
@@ -356,11 +446,16 @@
                 </div>
 
 
+                <!-- COMMUNE -->
+
                 <div class="commerce-field">
 
                     <label for="commerceCommune">
+
                         Commune
+
                     </label>
+
 
                     <input
                         type="text"
@@ -371,6 +466,8 @@
 
                 </div>
 
+
+                <!-- BOUTON -->
 
                 <button
                     type="button"
@@ -398,13 +495,16 @@
             class="commerce-section"
         >
 
-            <div class="commerce-section-heading commerce-heading-row">
+            <div
+                class="commerce-section-heading commerce-heading-row"
+            >
 
                 <div>
 
                     <span class="commerce-section-label">
                         PRODUITS
                     </span>
+
 
                     <h2>
                         Produits disponibles
@@ -432,7 +532,9 @@
 
                     <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    Chargement des produits...
+                    <span>
+                        Chargement des produits...
+                    </span>
 
                 </div>
 
@@ -456,9 +558,11 @@
                     COMMERÇANTS
                 </span>
 
+
                 <h2>
                     Établissements / Vendeurs
                 </h2>
+
 
                 <p>
                     Découvrez les établissements
@@ -468,16 +572,25 @@
             </div>
 
 
+            <!-- FILTRES -->
+
             <div class="commerce-business-filters">
 
+
+                <!-- VILLE -->
 
                 <div class="commerce-field">
 
                     <label for="businessVille">
+
                         Ville
+
                     </label>
 
-                    <select id="businessVille">
+
+                    <select
+                        id="businessVille"
+                    >
 
                         <option value="">
                             Toutes les villes
@@ -488,11 +601,16 @@
                 </div>
 
 
+                <!-- COMMUNE -->
+
                 <div class="commerce-field">
 
                     <label for="businessCommune">
+
                         Commune
+
                     </label>
+
 
                     <input
                         type="text"
@@ -506,6 +624,8 @@
             </div>
 
 
+            <!-- LISTE ÉTABLISSEMENTS -->
+
             <div
                 id="commerceBusinesses"
                 class="commerce-business-grid"
@@ -515,7 +635,9 @@
 
                     <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    Chargement des établissements...
+                    <span>
+                        Chargement des établissements...
+                    </span>
 
                 </div>
 
@@ -528,11 +650,15 @@
              APPEL AUX VENDEURS
         ================================================== -->
 
-        <section class="commerce-vendor-section">
+        <section
+            class="commerce-vendor-section"
+        >
 
             <div class="commerce-vendor-content">
 
-                <i class="fa-solid fa-store commerce-vendor-icon"></i>
+                <i
+                    class="fa-solid fa-store commerce-vendor-icon"
+                ></i>
 
 
                 <h2>
@@ -550,8 +676,11 @@
                     href="publier.html"
                     class="commerce-vendor-button"
                 >
+
                     <i class="fa-solid fa-plus"></i>
+
                     Publier une annonce
+
                 </a>
 
             </div>
@@ -563,15 +692,20 @@
              FOOTER
         ================================================== -->
 
-        <footer class="commerce-footer">
+        <footer
+            class="commerce-footer"
+        >
 
-            <div class="commerce-footer-content">
+            <div
+                class="commerce-footer-content"
+            >
 
                 <div>
 
                     <strong>
                         CAMU SERVICES
                     </strong>
+
 
                     <p>
                         Votre plateforme locale
@@ -581,15 +715,19 @@
                 </div>
 
 
-                <div class="commerce-footer-links">
+                <div
+                    class="commerce-footer-links"
+                >
 
                     <a href="conditions.html">
                         Conditions
                     </a>
 
+
                     <a href="politique.html">
                         Confidentialité
                     </a>
+
 
                     <a href="contact.html">
                         Contact
@@ -600,7 +738,9 @@
             </div>
 
 
-            <div class="commerce-footer-bottom">
+            <div
+                class="commerce-footer-bottom"
+            >
 
                 ©
                 <span id="commerceYear"></span>
