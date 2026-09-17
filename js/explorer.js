@@ -4,6 +4,8 @@ import {
     doc,
     getDoc,
     addDoc,
+    setDoc,
+    deleteDoc,
     collection,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -20,7 +22,16 @@ import {
 const FALLBACK_IMAGE =
     "assets/logo/camu-services-logo.png";
 
-let annonceId = "";
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const annonceId =
+    cleanValue(
+        params.get("id")
+    );
+
 let currentAd = null;
 let currentUser = null;
 
@@ -29,109 +40,233 @@ let currentImageIndex = 0;
 
 
 /* =========================================================
+   ZOOM PHOTO
+========================================================= */
+
+let viewerZoom = 1;
+
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
+const ZOOM_STEP = 0.5;
+
+
+/* =========================================================
    DOM
 ========================================================= */
 
 const explorerLoading =
-    document.getElementById("explorerLoading");
+    document.getElementById(
+        "explorerLoading"
+    );
 
 const explorerError =
-    document.getElementById("explorerError");
+    document.getElementById(
+        "explorerError"
+    );
 
 const explorerErrorMessage =
-    document.getElementById("explorerErrorMessage");
+    document.getElementById(
+        "explorerErrorMessage"
+    );
 
 const explorerPage =
-    document.getElementById("explorerPage");
+    document.getElementById(
+        "explorerPage"
+    );
 
-const adMainImage =
-    document.getElementById("adMainImage");
 
 const adMainImageContainer =
-    document.getElementById("adMainImageContainer");
+    document.getElementById(
+        "adMainImageContainer"
+    );
+
+const adMainImage =
+    document.getElementById(
+        "adMainImage"
+    );
 
 const adThumbnails =
-    document.getElementById("adThumbnails");
+    document.getElementById(
+        "adThumbnails"
+    );
 
 const galleryPrev =
-    document.getElementById("galleryPrev");
+    document.getElementById(
+        "galleryPrev"
+    );
 
 const galleryNext =
-    document.getElementById("galleryNext");
+    document.getElementById(
+        "galleryNext"
+    );
 
 const imageCounter =
-    document.getElementById("imageCounter");
+    document.getElementById(
+        "imageCounter"
+    );
+
 
 const adCategory =
-    document.getElementById("adCategory");
+    document.getElementById(
+        "adCategory"
+    );
 
 const adTitle =
-    document.getElementById("adTitle");
+    document.getElementById(
+        "adTitle"
+    );
 
 const adPrice =
-    document.getElementById("adPrice");
+    document.getElementById(
+        "adPrice"
+    );
 
 const adLocation =
-    document.getElementById("adLocation");
+    document.getElementById(
+        "adLocation"
+    );
 
 const adDescription =
-    document.getElementById("adDescription");
+    document.getElementById(
+        "adDescription"
+    );
 
 const adDetails =
-    document.getElementById("adDetails");
+    document.getElementById(
+        "adDetails"
+    );
+
 
 const sellerAvatar =
-    document.getElementById("sellerAvatar");
+    document.getElementById(
+        "sellerAvatar"
+    );
 
 const sellerName =
-    document.getElementById("sellerName");
+    document.getElementById(
+        "sellerName"
+    );
 
 const sellerLocation =
-    document.getElementById("sellerLocation");
+    document.getElementById(
+        "sellerLocation"
+    );
 
 const sellerProfileButton =
-    document.getElementById("sellerProfileButton");
+    document.getElementById(
+        "sellerProfileButton"
+    );
+
 
 const whatsappButton =
-    document.getElementById("whatsappButton");
+    document.getElementById(
+        "whatsappButton"
+    );
 
 const phoneButton =
-    document.getElementById("phoneButton");
+    document.getElementById(
+        "phoneButton"
+    );
 
 const favoriteButton =
-    document.getElementById("favoriteButton");
+    document.getElementById(
+        "favoriteButton"
+    );
 
 const reportButton =
-    document.getElementById("reportButton");
+    document.getElementById(
+        "reportButton"
+    );
 
 const adReference =
-    document.getElementById("adReference");
-
-const reportModal =
-    document.getElementById("reportModal");
-
-const reportModalClose =
-    document.getElementById("reportModalClose");
-
-const reportCancel =
-    document.getElementById("reportCancel");
-
-const reportSubmit =
-    document.getElementById("reportSubmit");
-
-const reportMessage =
-    document.getElementById("reportMessage");
+    document.getElementById(
+        "adReference"
+    );
 
 
 /* =========================================================
-   RÉCUPÉRER L'ID DE L'ANNONCE
+   PHOTO VIEWER DOM
 ========================================================= */
 
-const params =
-    new URLSearchParams(window.location.search);
+const photoViewer =
+    document.getElementById(
+        "photoViewer"
+    );
 
-annonceId =
-    cleanValue(params.get("id"));
+const photoViewerStage =
+    document.getElementById(
+        "photoViewerStage"
+    );
+
+const viewerImage =
+    document.getElementById(
+        "viewerImage"
+    );
+
+const viewerCounter =
+    document.getElementById(
+        "viewerCounter"
+    );
+
+const viewerPrev =
+    document.getElementById(
+        "viewerPrev"
+    );
+
+const viewerNext =
+    document.getElementById(
+        "viewerNext"
+    );
+
+const viewerClose =
+    document.getElementById(
+        "viewerClose"
+    );
+
+const viewerZoomIn =
+    document.getElementById(
+        "viewerZoomIn"
+    );
+
+const viewerZoomOut =
+    document.getElementById(
+        "viewerZoomOut"
+    );
+
+const viewerZoomReset =
+    document.getElementById(
+        "viewerZoomReset"
+    );
+
+
+/* =========================================================
+   REPORT DOM
+========================================================= */
+
+const reportModal =
+    document.getElementById(
+        "reportModal"
+    );
+
+const reportModalClose =
+    document.getElementById(
+        "reportModalClose"
+    );
+
+const reportCancel =
+    document.getElementById(
+        "reportCancel"
+    );
+
+const reportSubmit =
+    document.getElementById(
+        "reportSubmit"
+    );
+
+const reportMessage =
+    document.getElementById(
+        "reportMessage"
+    );
 
 
 /* =========================================================
@@ -146,6 +281,7 @@ document.addEventListener(
             "CAMU EXPLORER — initialisation..."
         );
 
+
         if (!annonceId) {
 
             showError(
@@ -154,6 +290,7 @@ document.addEventListener(
 
             return;
         }
+
 
         setupEvents();
 
@@ -164,26 +301,38 @@ document.addEventListener(
 
 
 /* =========================================================
-   AUTHENTIFICATION
+   AUTH
 ========================================================= */
 
 onAuthStateChanged(
     auth,
-    (user) => {
+    user => {
 
-        currentUser = user || null;
+        currentUser =
+            user || null;
+
+
+        if (
+            currentUser &&
+            currentAd
+        ) {
+
+            loadFavoriteState();
+
+        }
 
     }
 );
 
 
 /* =========================================================
-   CHARGER L'ANNONCE
+   CHARGER ANNONCE
 ========================================================= */
 
 async function loadAd() {
 
     showLoading();
+
 
     try {
 
@@ -194,11 +343,16 @@ async function loadAd() {
                 annonceId
             );
 
-        const annonceSnapshot =
-            await getDoc(annonceRef);
+
+        const snapshot =
+            await getDoc(
+                annonceRef
+            );
 
 
-        if (!annonceSnapshot.exists()) {
+        if (
+            !snapshot.exists()
+        ) {
 
             showError(
                 "Cette annonce n'existe pas ou n'est plus disponible."
@@ -209,8 +363,12 @@ async function loadAd() {
 
 
         currentAd = {
-            id: annonceSnapshot.id,
-            ...annonceSnapshot.data()
+
+            id:
+                snapshot.id,
+
+            ...snapshot.data()
+
         };
 
 
@@ -220,13 +378,10 @@ async function loadAd() {
         );
 
 
-        /*
-         * On peut afficher une annonce active
-         * ou approuvée.
-         */
         const status =
-            cleanValue(currentAd.status)
-                .toLowerCase();
+            cleanValue(
+                currentAd.status
+            ).toLowerCase();
 
 
         if (
@@ -248,17 +403,23 @@ async function loadAd() {
 
         renderAd();
 
-        await loadFavoriteState();
-
         showPage();
+
+
+        if (currentUser) {
+
+            await loadFavoriteState();
+
+        }
 
 
     } catch (error) {
 
         console.error(
-            "CAMU EXPLORER — erreur :",
+            "CAMU EXPLORER — erreur chargement :",
             error
         );
+
 
         showError(
             "Impossible de charger cette annonce."
@@ -270,7 +431,7 @@ async function loadAd() {
 
 
 /* =========================================================
-   AFFICHER L'ANNONCE
+   RENDRE ANNONCE
 ========================================================= */
 
 function renderAd() {
@@ -280,9 +441,7 @@ function renderAd() {
     }
 
 
-    /* -----------------------------------------------------
-       TITRE
-    ----------------------------------------------------- */
+    /* TITRE */
 
     const title =
         cleanValue(
@@ -290,6 +449,7 @@ function renderAd() {
             currentAd.name ||
             "Annonce"
         );
+
 
     adTitle.textContent =
         title;
@@ -299,9 +459,7 @@ function renderAd() {
         `${title} — CAMU SERVICES`;
 
 
-    /* -----------------------------------------------------
-       CATÉGORIE
-    ----------------------------------------------------- */
+    /* CATÉGORIE */
 
     const category =
         cleanValue(
@@ -312,13 +470,12 @@ function renderAd() {
             currentAd.propertyType
         );
 
+
     adCategory.textContent =
         category || "Annonce";
 
 
-    /* -----------------------------------------------------
-       PRIX
-    ----------------------------------------------------- */
+    /* PRIX */
 
     adPrice.textContent =
         formatPrice(
@@ -327,9 +484,7 @@ function renderAd() {
         );
 
 
-    /* -----------------------------------------------------
-       LOCALISATION
-    ----------------------------------------------------- */
+    /* LOCALISATION */
 
     const city =
         cleanValue(
@@ -337,10 +492,12 @@ function renderAd() {
             currentAd.ville
         );
 
+
     const commune =
         cleanValue(
             currentAd.commune
         );
+
 
     const neighborhood =
         cleanValue(
@@ -349,7 +506,7 @@ function renderAd() {
         );
 
 
-    const locationParts =
+    const locations =
         [
             city,
             commune,
@@ -358,35 +515,32 @@ function renderAd() {
 
 
     adLocation.textContent =
-        locationParts.length
-            ? locationParts.join(" • ")
+        locations.length
+            ? locations.join(" • ")
             : "Localisation non précisée";
 
 
-    /* -----------------------------------------------------
-       DESCRIPTION
-    ----------------------------------------------------- */
+    /* DESCRIPTION */
 
     adDescription.textContent =
         cleanValue(
             currentAd.description
-        ) || "Aucune description disponible.";
+        ) ||
+        "Aucune description disponible.";
 
 
-    /* -----------------------------------------------------
-       RÉFÉRENCE
-    ----------------------------------------------------- */
+    /* RÉFÉRENCE */
 
     adReference.textContent =
         currentAd.id;
 
 
-    /* -----------------------------------------------------
-       PHOTOS
-    ----------------------------------------------------- */
+    /* IMAGES */
 
     images =
-        extractImages(currentAd);
+        extractImages(
+            currentAd
+        );
 
 
     if (!images.length) {
@@ -400,26 +554,21 @@ function renderAd() {
 
     currentImageIndex = 0;
 
+
     renderGallery();
 
 
-    /* -----------------------------------------------------
-       DÉTAILS
-    ----------------------------------------------------- */
+    /* DÉTAILS */
 
     renderDetails();
 
 
-    /* -----------------------------------------------------
-       VENDEUR
-    ----------------------------------------------------- */
+    /* VENDEUR */
 
     renderSeller();
 
 
-    /* -----------------------------------------------------
-       CONTACT
-    ----------------------------------------------------- */
+    /* CONTACT */
 
     renderContact();
 
@@ -460,8 +609,11 @@ function renderMainImage() {
     adMainImage.src =
         image;
 
+
     adMainImage.alt =
-        currentAd?.title ||
+        cleanValue(
+            currentAd?.title
+        ) ||
         "Photo de l'annonce";
 
 
@@ -473,35 +625,46 @@ function renderMainImage() {
                     FALLBACK_IMAGE
                 )
             ) {
+
                 return;
+
             }
+
 
             adMainImage.src =
                 FALLBACK_IMAGE;
+
         };
 
 
     imageCounter.textContent =
         `${currentImageIndex + 1} / ${images.length}`;
+
 }
 
 
 function renderThumbnails() {
 
-    adThumbnails.innerHTML = "";
+    adThumbnails.innerHTML =
+        "";
 
 
     images.forEach(
         (image, index) => {
 
             const button =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
+
 
             button.type =
                 "button";
 
+
             button.className =
                 "ad-thumbnail";
+
 
             if (
                 index === currentImageIndex
@@ -514,14 +677,25 @@ function renderThumbnails() {
             }
 
 
+            button.setAttribute(
+                "aria-label",
+                `Afficher la photo ${index + 1}`
+            );
+
+
             const img =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
+
 
             img.src =
                 image;
 
+
             img.alt =
                 `Photo ${index + 1}`;
+
 
             img.loading =
                 "lazy";
@@ -536,11 +710,16 @@ function renderThumbnails() {
                 };
 
 
-            button.appendChild(img);
+            button.appendChild(
+                img
+            );
+
 
             button.addEventListener(
                 "click",
-                () => {
+                event => {
+
+                    event.stopPropagation();
 
                     currentImageIndex =
                         index;
@@ -563,18 +742,18 @@ function renderThumbnails() {
 
 function updateGalleryControls() {
 
-    const hasMultiple =
+    const multiple =
         images.length > 1;
 
 
     galleryPrev.style.display =
-        hasMultiple
+        multiple
             ? "flex"
             : "none";
 
 
     galleryNext.style.display =
-        hasMultiple
+        multiple
             ? "flex"
             : "none";
 
@@ -587,16 +766,19 @@ function updateGalleryControls() {
 }
 
 
-function showPreviousImage() {
+function previousImage() {
 
     if (
         images.length <= 1
     ) {
+
         return;
+
     }
 
 
     currentImageIndex--;
+
 
     if (
         currentImageIndex < 0
@@ -610,19 +792,31 @@ function showPreviousImage() {
 
     renderGallery();
 
+
+    if (
+        isViewerOpen()
+    ) {
+
+        updateViewer();
+
+    }
+
 }
 
 
-function showNextImage() {
+function nextImage() {
 
     if (
         images.length <= 1
     ) {
+
         return;
+
     }
 
 
     currentImageIndex++;
+
 
     if (
         currentImageIndex >=
@@ -636,11 +830,20 @@ function showNextImage() {
 
     renderGallery();
 
+
+    if (
+        isViewerOpen()
+    ) {
+
+        updateViewer();
+
+    }
+
 }
 
 
 /* =========================================================
-   EXTRAIRE LES PHOTOS
+   EXTRAIRE IMAGES
 ========================================================= */
 
 function extractImages(ad) {
@@ -648,27 +851,15 @@ function extractImages(ad) {
     let result = [];
 
 
-    /*
-     * images peut être un tableau :
-     *
-     * ["url1", "url2"]
-     */
-
     if (
         Array.isArray(ad.images)
     ) {
 
         result =
-            ad.images;
+            [...ad.images];
 
     }
 
-
-    /*
-     * images peut aussi être une chaîne JSON :
-     *
-     * "[\"url1\",\"url2\"]"
-     */
 
     else if (
         typeof ad.images === "string"
@@ -691,7 +882,7 @@ function extractImages(ad) {
                 ) {
 
                     result =
-                        parsed;
+                        [...parsed];
 
                 } else {
 
@@ -702,12 +893,6 @@ function extractImages(ad) {
                 }
 
             } catch {
-
-                /*
-                 * Si ce n'est pas du JSON,
-                 * on considère la chaîne comme
-                 * une seule URL.
-                 */
 
                 result = [
                     value
@@ -720,24 +905,24 @@ function extractImages(ad) {
     }
 
 
-    /*
-     * Autres champs de secours.
-     */
+    const alternatives = [
 
-    const fallbackFields = [
         "imageURL",
         "imageUrl",
         "image",
         "photoURL",
         "photoUrl"
+
     ];
 
 
-    fallbackFields.forEach(
+    alternatives.forEach(
         field => {
 
             const value =
-                cleanValue(ad[field]);
+                cleanValue(
+                    ad[field]
+                );
 
 
             if (
@@ -753,15 +938,15 @@ function extractImages(ad) {
     );
 
 
-    /*
-     * Nettoyage des mauvaises valeurs
-     * comme "url1".
-     */
-
     result =
         result
-            .map(item => cleanValue(item))
-            .filter(isValidImageUrl);
+            .map(
+                value =>
+                    cleanValue(value)
+            )
+            .filter(
+                isValidImageUrl
+            );
 
 
     return [
@@ -779,14 +964,18 @@ function isValidImageUrl(url) {
 
 
     const value =
-        url.toLowerCase();
+        cleanValue(url)
+            .toLowerCase();
 
 
     if (
-        value === "url1" ||
-        value === "url2" ||
-        value === "image" ||
-        value === "photo"
+        [
+            "url1",
+            "url2",
+            "url3",
+            "image",
+            "photo"
+        ].includes(value)
     ) {
 
         return false;
@@ -795,11 +984,35 @@ function isValidImageUrl(url) {
 
 
     return (
-        value.startsWith("https://") ||
-        value.startsWith("http://") ||
-        value.startsWith("/") ||
-        value.startsWith("./") ||
-        value.startsWith("assets/")
+
+        value.startsWith(
+            "https://"
+        )
+
+        ||
+
+        value.startsWith(
+            "http://"
+        )
+
+        ||
+
+        value.startsWith(
+            "/"
+        )
+
+        ||
+
+        value.startsWith(
+            "./"
+        )
+
+        ||
+
+        value.startsWith(
+            "assets/"
+        )
+
     );
 
 }
@@ -902,7 +1115,9 @@ function renderDetails() {
     if (!details.length) {
 
         adDetails.innerHTML = `
+
             <div class="ad-detail">
+
                 <span class="ad-detail-label">
                     Informations
                 </span>
@@ -910,7 +1125,9 @@ function renderDetails() {
                 <strong class="ad-detail-value">
                     Voir la description de l'annonce
                 </strong>
+
             </div>
+
         `;
 
         return;
@@ -939,6 +1156,7 @@ function addDetail(
 
 
     array.push(`
+
         <div class="ad-detail">
 
             <span class="ad-detail-label">
@@ -950,6 +1168,7 @@ function addDetail(
             </strong>
 
         </div>
+
     `);
 
 }
@@ -997,9 +1216,7 @@ function renderSeller() {
         "Localisation non précisée";
 
 
-    /*
-     * Photo du vendeur.
-     */
+    /* PHOTO VENDEUR */
 
     const sellerPhoto =
         cleanValue(
@@ -1010,19 +1227,25 @@ function renderSeller() {
 
 
     if (
-        isValidImageUrl(sellerPhoto)
+        isValidImageUrl(
+            sellerPhoto
+        )
     ) {
 
         sellerAvatar.innerHTML = `
+
             <img
                 src="${escapeHtml(sellerPhoto)}"
                 alt="${escapeHtml(name)}"
             >
+
         `;
 
 
         const image =
-            sellerAvatar.querySelector("img");
+            sellerAvatar.querySelector(
+                "img"
+            );
 
 
         image.onerror =
@@ -1041,11 +1264,9 @@ function renderSeller() {
     }
 
 
-    /*
-     * =====================================================
-     * VOIR LE PROFIL
-     * =====================================================
-     */
+    /* =====================================================
+       VOIR LE PROFIL
+    ===================================================== */
 
     const sellerId =
         cleanValue(
@@ -1054,12 +1275,11 @@ function renderSeller() {
         );
 
 
-    if (
-        sellerId
-    ) {
+    if (sellerId) {
 
         sellerProfileButton.href =
             `profil.html?id=${encodeURIComponent(sellerId)}`;
+
 
         sellerProfileButton.style.display =
             "inline-flex";
@@ -1069,6 +1289,7 @@ function renderSeller() {
         sellerProfileButton.removeAttribute(
             "href"
         );
+
 
         sellerProfileButton.style.display =
             "none";
@@ -1101,17 +1322,15 @@ function renderContact() {
         );
 
 
-    /*
-     * WHATSAPP
-     */
-
     if (whatsapp) {
 
         const message =
             `Bonjour, je suis intéressé(e) par votre annonce "${cleanValue(currentAd.title)}" sur CAMU SERVICES.`;
 
+
         whatsappButton.href =
             `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+
 
         whatsappButton.style.display =
             "flex";
@@ -1123,38 +1342,17 @@ function renderContact() {
 
     }
 
-
-    /*
-     * APPEL
-     */
 
     if (phone) {
 
         phoneButton.href =
             `tel:${phone}`;
 
+
         phoneButton.style.display =
             "flex";
 
     } else {
-
-        phoneButton.style.display =
-            "none";
-
-    }
-
-
-    /*
-     * Si aucun moyen de contact n'est disponible.
-     */
-
-    if (
-        !whatsapp &&
-        !phone
-    ) {
-
-        whatsappButton.style.display =
-            "none";
 
         phoneButton.style.display =
             "none";
@@ -1172,12 +1370,10 @@ async function loadFavoriteState() {
 
     if (
         !currentUser ||
-        !favoriteButton ||
         !currentAd
     ) {
 
         return;
-
     }
 
 
@@ -1195,24 +1391,21 @@ async function loadFavoriteState() {
             );
 
 
-        const favoriteSnapshot =
+        const snapshot =
             await getDoc(
                 favoriteRef
             );
 
 
-        if (
-            favoriteSnapshot.exists()
-        ) {
+        setFavoriteActive(
+            snapshot.exists()
+        );
 
-            setFavoriteActive(true);
-
-        }
 
     } catch (error) {
 
         console.warn(
-            "CAMU EXPLORER — impossible de vérifier le favori :",
+            "CAMU EXPLORER — erreur vérification favori :",
             error
         );
 
@@ -1226,14 +1419,15 @@ async function toggleFavorite() {
     if (!currentUser) {
 
         alert(
-            "Connectez-vous pour ajouter une annonce à vos favoris."
+            "Connectez-vous pour ajouter cette annonce à vos favoris."
         );
+
 
         window.location.href =
             `connexion.html?redirect=${encodeURIComponent(window.location.href)}`;
 
-        return;
 
+        return;
     }
 
 
@@ -1256,69 +1450,58 @@ async function toggleFavorite() {
             );
 
 
-        const existing =
+        const snapshot =
             await getDoc(
                 favoriteRef
             );
 
 
-        /*
-         * Si le document existe,
-         * on le supprime.
-         *
-         * Sinon on le crée.
-         *
-         * NOTE :
-         * deleteDoc n'est pas importé au début.
-         * On utilise ici une importation dynamique.
-         */
-
         if (
-            existing.exists()
+            snapshot.exists()
         ) {
-
-            const {
-                deleteDoc
-            } = await import(
-                "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
-            );
-
 
             await deleteDoc(
                 favoriteRef
             );
 
 
-            setFavoriteActive(false);
-
-
-        } else {
-
-            const {
-                setDoc
-            } = await import(
-                "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+            setFavoriteActive(
+                false
             );
 
+        } else {
 
             await setDoc(
                 favoriteRef,
                 {
-                    userId: currentUser.uid,
-                    annonceId: currentAd.id,
+
+                    userId:
+                        currentUser.uid,
+
+                    annonceId:
+                        currentAd.id,
+
                     title:
-                        cleanValue(currentAd.title),
+                        cleanValue(
+                            currentAd.title
+                        ),
+
                     imageURL:
                         images[0] || "",
+
                     createdAt:
                         serverTimestamp()
+
                 }
             );
 
 
-            setFavoriteActive(true);
+            setFavoriteActive(
+                true
+            );
 
         }
+
 
     } catch (error) {
 
@@ -1327,8 +1510,9 @@ async function toggleFavorite() {
             error
         );
 
+
         alert(
-            "Impossible de modifier les favoris."
+            "Impossible de modifier vos favoris."
         );
 
     }
@@ -1336,12 +1520,9 @@ async function toggleFavorite() {
 }
 
 
-function setFavoriteActive(active) {
-
-    if (!favoriteButton) {
-        return;
-    }
-
+function setFavoriteActive(
+    active
+) {
 
     favoriteButton.classList.toggle(
         "active",
@@ -1375,7 +1556,173 @@ function setFavoriteActive(active) {
 
 
 /* =========================================================
-   SIGNALER UNE ANNONCE
+   PHOTO VIEWER
+========================================================= */
+
+function openPhotoViewer() {
+
+    if (
+        !images.length
+    ) {
+
+        return;
+    }
+
+
+    viewerZoom = 1;
+
+    updateViewer();
+
+
+    photoViewer.classList.remove(
+        "hidden"
+    );
+
+
+    photoViewer.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.classList.add(
+        "viewer-open"
+    );
+
+}
+
+
+function closePhotoViewer() {
+
+    photoViewer.classList.add(
+        "hidden"
+    );
+
+
+    photoViewer.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.classList.remove(
+        "viewer-open"
+    );
+
+
+    viewerZoom = 1;
+
+    updateViewerZoom();
+
+}
+
+
+function updateViewer() {
+
+    const image =
+        images[currentImageIndex] ||
+        FALLBACK_IMAGE;
+
+
+    viewerImage.src =
+        image;
+
+
+    viewerImage.alt =
+        cleanValue(
+            currentAd?.title
+        ) ||
+        "Photo de l'annonce";
+
+
+    viewerCounter.textContent =
+        `${currentImageIndex + 1} / ${images.length}`;
+
+
+    viewerPrev.style.display =
+        images.length > 1
+            ? "flex"
+            : "none";
+
+
+    viewerNext.style.display =
+        images.length > 1
+            ? "flex"
+            : "none";
+
+
+    updateViewerZoom();
+
+
+    viewerImage.onerror =
+        () => {
+
+            viewerImage.src =
+                FALLBACK_IMAGE;
+
+        };
+
+}
+
+
+function updateViewerZoom() {
+
+    viewerImage.style.transform =
+        `scale(${viewerZoom})`;
+
+}
+
+
+function zoomIn() {
+
+    viewerZoom =
+        Math.min(
+            MAX_ZOOM,
+            viewerZoom + ZOOM_STEP
+        );
+
+
+    updateViewerZoom();
+
+}
+
+
+function zoomOut() {
+
+    viewerZoom =
+        Math.max(
+            MIN_ZOOM,
+            viewerZoom - ZOOM_STEP
+        );
+
+
+    updateViewerZoom();
+
+}
+
+
+function resetZoom() {
+
+    viewerZoom =
+        MIN_ZOOM;
+
+
+    updateViewerZoom();
+
+}
+
+
+function isViewerOpen() {
+
+    return !photoViewer.classList.contains(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   SIGNALER
 ========================================================= */
 
 function openReportModal() {
@@ -1414,13 +1761,15 @@ async function submitReport() {
             "Connectez-vous pour signaler une annonce."
         );
 
+
         closeReportModal();
+
 
         window.location.href =
             `connexion.html?redirect=${encodeURIComponent(window.location.href)}`;
 
-        return;
 
+        return;
     }
 
 
@@ -1437,12 +1786,13 @@ async function submitReport() {
         );
 
         return;
-
     }
 
 
     const reason =
-        cleanValue(selected.value);
+        cleanValue(
+            selected.value
+        );
 
 
     const message =
@@ -1458,14 +1808,21 @@ async function submitReport() {
 
 
         reportSubmit.innerHTML = `
+
             <i class="fa-solid fa-spinner fa-spin"></i>
+
             Envoi...
+
         `;
 
 
         await addDoc(
-            collection(db, "reports"),
+            collection(
+                db,
+                "reports"
+            ),
             {
+
                 annonceId:
                     currentAd.id,
 
@@ -1482,11 +1839,12 @@ async function submitReport() {
 
                 message,
 
-                createdAt:
-                    serverTimestamp(),
-
                 status:
-                    "pending"
+                    "pending",
+
+                createdAt:
+                    serverTimestamp()
+
             }
         );
 
@@ -1506,7 +1864,10 @@ async function submitReport() {
             )
             .forEach(
                 input => {
-                    input.checked = false;
+
+                    input.checked =
+                        false;
+
                 }
             );
 
@@ -1534,8 +1895,11 @@ async function submitReport() {
 
 
         reportSubmit.innerHTML = `
+
             <i class="fa-solid fa-flag"></i>
+
             Envoyer le signalement
+
         `;
 
     }
@@ -1553,9 +1917,11 @@ function showLoading() {
         "hidden"
     );
 
+
     explorerError.classList.add(
         "hidden"
     );
+
 
     explorerPage.classList.add(
         "hidden"
@@ -1570,9 +1936,11 @@ function showPage() {
         "hidden"
     );
 
+
     explorerError.classList.add(
         "hidden"
     );
+
 
     explorerPage.classList.remove(
         "hidden"
@@ -1587,9 +1955,11 @@ function showError(message) {
         "hidden"
     );
 
+
     explorerPage.classList.add(
         "hidden"
     );
+
 
     explorerError.classList.remove(
         "hidden"
@@ -1608,23 +1978,95 @@ function showError(message) {
 
 function setupEvents() {
 
+
+    /* GALERIE */
+
     galleryPrev?.addEventListener(
         "click",
-        showPreviousImage
+        event => {
+
+            event.stopPropagation();
+
+            previousImage();
+
+        }
     );
 
 
     galleryNext?.addEventListener(
         "click",
-        showNextImage
+        event => {
+
+            event.stopPropagation();
+
+            nextImage();
+
+        }
     );
 
+
+    /*
+     * Cliquer sur la photo principale
+     * ouvre la visionneuse.
+     */
+
+    adMainImageContainer?.addEventListener(
+        "click",
+        event => {
+
+            /*
+             * Les flèches sont déjà gérées
+             * séparément.
+             */
+
+            if (
+                event.target.closest(
+                    ".gallery-prev"
+                ) ||
+                event.target.closest(
+                    ".gallery-next"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            openPhotoViewer();
+
+        }
+    );
+
+
+    adMainImageContainer?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                openPhotoViewer();
+
+            }
+
+        }
+    );
+
+
+    /* FAVORIS */
 
     favoriteButton?.addEventListener(
         "click",
         toggleFavorite
     );
 
+
+    /* SIGNALEMENT */
 
     reportButton?.addEventListener(
         "click",
@@ -1666,8 +2108,130 @@ function setupEvents() {
     );
 
 
+    /* =====================================================
+       PHOTO VIEWER
+    ====================================================== */
+
+    viewerClose?.addEventListener(
+        "click",
+        closePhotoViewer
+    );
+
+
+    viewerPrev?.addEventListener(
+        "click",
+        previousImage
+    );
+
+
+    viewerNext?.addEventListener(
+        "click",
+        nextImage
+    );
+
+
+    viewerZoomIn?.addEventListener(
+        "click",
+        zoomIn
+    );
+
+
+    viewerZoomOut?.addEventListener(
+        "click",
+        zoomOut
+    );
+
+
+    viewerZoomReset?.addEventListener(
+        "click",
+        resetZoom
+    );
+
+
+    photoViewer?.addEventListener(
+        "click",
+        event => {
+
+            /*
+             * Cliquer sur le fond ferme
+             * la visionneuse.
+             */
+
+            if (
+                event.target === photoViewer ||
+                event.target === photoViewerStage
+            ) {
+
+                closePhotoViewer();
+
+            }
+
+        }
+    );
+
+
     /*
-     * Navigation clavier galerie.
+     * Molette = zoom.
+     */
+
+    photoViewerStage?.addEventListener(
+        "wheel",
+        event => {
+
+            event.preventDefault();
+
+
+            if (
+                event.deltaY < 0
+            ) {
+
+                zoomIn();
+
+            } else {
+
+                zoomOut();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /*
+     * Double clic = zoom.
+     */
+
+    viewerImage?.addEventListener(
+        "dblclick",
+        event => {
+
+            event.preventDefault();
+
+
+            if (
+                viewerZoom === 1
+            ) {
+
+                viewerZoom = 2;
+
+            } else {
+
+                viewerZoom = 1;
+
+            }
+
+
+            updateViewerZoom();
+
+        }
+    );
+
+
+    /*
+     * Clavier.
      */
 
     document.addEventListener(
@@ -1675,23 +2239,71 @@ function setupEvents() {
         event => {
 
             if (
-                event.key === "ArrowLeft"
+                isViewerOpen()
             ) {
 
-                showPreviousImage();
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closePhotoViewer();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key === "ArrowLeft"
+                ) {
+
+                    previousImage();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key === "ArrowRight"
+                ) {
+
+                    nextImage();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key === "+"
+                    ||
+                    event.key === "="
+                ) {
+
+                    zoomIn();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key === "-"
+                ) {
+
+                    zoomOut();
+
+                    return;
+
+                }
 
             }
 
-            if (
-                event.key === "ArrowRight"
-            ) {
-
-                showNextImage();
-
-            }
 
             if (
-                event.key === "Escape"
+                event.key === "Escape" &&
+                !isViewerOpen()
             ) {
 
                 closeReportModal();
@@ -1705,7 +2317,7 @@ function setupEvents() {
 
 
 /* =========================================================
-   FORMATAGE
+   FORMAT PRIX
 ========================================================= */
 
 function formatPrice(
@@ -1733,14 +2345,15 @@ function formatPrice(
 
 
     if (
-        Number.isNaN(numericPrice)
+        Number.isNaN(
+            numericPrice
+        )
     ) {
 
-        const raw =
-            cleanValue(price);
-
-        return raw ||
-            "Prix sur demande";
+        return (
+            cleanValue(price) ||
+            "Prix sur demande"
+        );
 
     }
 
@@ -1767,6 +2380,10 @@ function formatPrice(
 }
 
 
+/* =========================================================
+   TÉLÉPHONE
+========================================================= */
+
 function cleanPhone(value) {
 
     let phone =
@@ -1778,21 +2395,12 @@ function cleanPhone(value) {
     }
 
 
-    /*
-     * Retire les espaces, parenthèses,
-     * tirets et autres caractères.
-     */
-
     phone =
         phone.replace(
             /[\s().-]/g,
             ""
         );
 
-
-    /*
-     * +243 devient 243 pour wa.me
-     */
 
     if (
         phone.startsWith("+")
@@ -1803,13 +2411,6 @@ function cleanPhone(value) {
 
     }
 
-
-    /*
-     * RDC : 097..., 081..., 099...
-     *
-     * On transforme 0XXXXXXXXX
-     * en 243XXXXXXXXX.
-     */
 
     if (
         phone.startsWith("0")
@@ -1826,6 +2427,10 @@ function cleanPhone(value) {
 
 }
 
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function cleanValue(value) {
 
@@ -1847,22 +2452,27 @@ function cleanValue(value) {
 function escapeHtml(value) {
 
     return String(value)
+
         .replaceAll(
             "&",
             "&amp;"
         )
+
         .replaceAll(
             "<",
             "&lt;"
         )
+
         .replaceAll(
             ">",
             "&gt;"
         )
+
         .replaceAll(
             '"',
             "&quot;"
         )
+
         .replaceAll(
             "'",
             "&#039;"
