@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        CAMU VÉHICULES & TRANSPORT
+    </title>
+
+    <meta
+        name="description"
+        content="CAMU VÉHICULES & TRANSPORT : véhicules, chauffeurs, agences automobiles et services de transport."
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/vehicules.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside
+        class="vehicles-sidebar"
+        id="vehiclesSidebar"
+    >
+
+        <div class="vehicles-sidebar-header">
+
+            <div class="vehicles-brand">
+
+                <div class="vehicles-brand-icon">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+
+                <div>
+                    <strong>
+                        CAMU
+                    </strong>
+
+                    <span>
+                        VÉHICULES
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="vehicles-nav">
+
+            <a
+                href="index.html"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+
+            <a
+                href="#categories"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+
+            <a
+                href="#vehicules"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-car"></i>
+                <span>Véhicules</span>
+            </a>
+
+
+            <a
+                href="#chauffeurs"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Chauffeurs</span>
+            </a>
+
+
+            <a
+                href="#agences"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-building"></i>
+                <span>Agences automobiles</span>
+            </a>
+
+
+            <a
+                href="#contact"
+                class="vehicles-nav-link"
+            >
+                <i class="fa-solid fa-phone"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+
+        <div class="vehicles-sidebar-footer">
+
+            <a href="index.html">
+                <i class="fa-solid fa-arrow-left"></i>
+                CAMU SERVICES
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+         ===================================================== -->
+
+    <div
+        class="vehicles-overlay"
+        id="vehiclesOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         CONTENU PRINCIPAL
+         ===================================================== -->
+
+    <main class="vehicles-main">
+
+
+        <!-- =================================================
+             TOPBAR
+             ================================================= -->
+
+        <header class="vehicles-topbar">
+
+            <button
+                type="button"
+                class="vehicles-menu-button"
+                id="vehiclesMenuButton"
+                aria-label="Ouvrir le menu"
+                aria-expanded="false"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+
+            <a
+                href="index.html"
+                class="vehicles-logo-link"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                    class="vehicles-logo"
+                >
+
+            </a>
+
+
+            <div class="vehicles-top-actions">
+
+                <a
+                    href="favoris.html"
+                    class="vehicles-top-action"
+                    aria-label="Favoris"
+                >
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="vehicles-top-action"
+                    aria-label="Mon compte"
+                >
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        Mon compte
+                    </span>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HERO
+             ================================================= -->
+
+        <section class="vehicles-hero">
+
+            <div class="vehicles-hero-content">
+
+                <span class="vehicles-hero-badge">
+                    <i class="fa-solid fa-road"></i>
+                    CAMU SERVICES
+                </span>
+
+
+                <h1>
+                    VÉHICULES & TRANSPORT
+                </h1>
+
+
+                <p>
+                    Trouvez des véhicules, chauffeurs,
+                    agences automobiles et services
+                    de transport dans votre ville.
+                </p>
+
+
+                <div class="vehicles-hero-actions">
+
+                    <a
+                        href="#vehicules"
+                        class="vehicles-primary-button"
+                    >
+                        <i class="fa-solid fa-car"></i>
+                        Voir les véhicules
+                    </a>
+
+
+                    <a
+                        href="#chauffeurs"
+                        class="vehicles-secondary-button"
+                    >
+                        <i class="fa-solid fa-user-tie"></i>
+                        Trouver un chauffeur
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CATÉGORIES
+             ================================================= -->
+
+        <section
+            class="vehicles-section"
+            id="categories"
+        >
+
+            <div class="vehicles-section-heading">
+
+                <div>
+
+                    <span class="vehicles-section-label">
+                        EXPLOREZ
+                    </span>
+
+                    <h2>
+                        Catégories
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Choisissez le type de véhicule
+                    ou de service que vous recherchez.
+                </p>
+
+            </div>
+
+
+            <div
+                class="vehicles-category-grid"
+                id="vehiclesCategories"
+            >
+
+                <!-- Généré par vehicules.js -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECHERCHE VÉHICULES
+             ================================================= -->
+
+        <section
+            class="vehicles-search-section"
+            id="vehicules"
+        >
+
+            <div class="vehicles-section-heading">
+
+                <div>
+
+                    <span class="vehicles-section-label">
+                        RECHERCHE
+                    </span>
+
+                    <h2>
+                        Véhicules
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Recherchez un véhicule selon vos besoins.
+                </p>
+
+            </div>
+
+
+            <div class="vehicles-search-box">
+
+                <div class="vehicles-field">
+
+                    <label for="vehiclesKeyword">
+                        Recherche
+                    </label>
+
+                    <div class="vehicles-input-wrapper">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="vehiclesKeyword"
+                            placeholder="Ex. Toyota, camion, taxi..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="vehicles-field">
+
+                    <label for="vehiclesCategory">
+                        Catégorie
+                    </label>
+
+                    <select id="vehiclesCategory">
+
+                        <option value="">
+                            Toutes les catégories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="vehicles-field">
+
+                    <label for="vehiclesVille">
+                        Ville
+                    </label>
+
+                    <select id="vehiclesVille">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="vehicles-field">
+
+                    <label for="vehiclesCommune">
+                        Commune
+                    </label>
+
+                    <input
+                        type="text"
+                        id="vehiclesCommune"
+                        placeholder="Ex. Katuba"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="vehicles-search-button"
+                    id="vehiclesSearchButton"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Rechercher
+
+                </button>
+
+            </div>
+
+
+            <div class="vehicles-results-header">
+
+                <h3>
+                    Véhicules disponibles
+                </h3>
+
+                <span id="vehiclesCount">
+                    0 véhicule
+                </span>
+
+            </div>
+
+
+            <div
+                class="vehicles-product-grid"
+                id="vehiclesProducts"
+            >
+
+                <!-- Généré par JS -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHAUFFEURS
+             ================================================= -->
+
+        <section
+            class="vehicles-section vehicles-vendor-section"
+            id="chauffeurs"
+        >
+
+            <div class="vehicles-section-heading">
+
+                <div>
+
+                    <span class="vehicles-section-label">
+                        PROFESSIONNELS
+                    </span>
+
+                    <h2>
+                        Chauffeurs
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Retrouvez les chauffeurs disponibles
+                    dans votre ville et votre commune.
+                </p>
+
+            </div>
+
+
+            <div class="vehicles-business-filters">
+
+                <div class="vehicles-field">
+
+                    <label for="driverVille">
+                        Ville
+                    </label>
+
+                    <select id="driverVille">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="vehicles-field">
+
+                    <label for="driverCommune">
+                        Commune
+                    </label>
+
+                    <input
+                        type="text"
+                        id="driverCommune"
+                        placeholder="Ex. Katuba"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="vehicles-business-grid"
+                id="vehiclesDrivers"
+            >
+
+                <!-- Généré par JS -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             AGENCES AUTOMOBILES
+             ================================================= -->
+
+        <section
+            class="vehicles-section vehicles-vendor-section"
+            id="agences"
+        >
+
+            <div class="vehicles-section-heading">
+
+                <div>
+
+                    <span class="vehicles-section-label">
+                        PROFESSIONNELS
+                    </span>
+
+                    <h2>
+                        Agences automobiles
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Découvrez les agences automobiles
+                    disponibles dans votre région.
+                </p>
+
+            </div>
+
+
+            <div class="vehicles-business-filters">
+
+                <div class="vehicles-field">
+
+                    <label for="agencyVille">
+                        Ville
+                    </label>
+
+                    <select id="agencyVille">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="vehicles-field">
+
+                    <label for="agencyCommune">
+                        Commune
+                    </label>
+
+                    <input
+                        type="text"
+                        id="agencyCommune"
+                        placeholder="Ex. Lubumbashi"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="vehicles-business-grid"
+                id="vehiclesAgencies"
+            >
+
+                <!-- Généré par JS -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTACT
+             ================================================= -->
+
+        <section
+            class="vehicles-contact-section"
+            id="contact"
+        >
+
+            <div class="vehicles-contact-content">
+
+                <span class="vehicles-section-label">
+                    CAMU SERVICES
+                </span>
+
+
+                <h2>
+                    Besoin d'un véhicule ou d'un service ?
+                </h2>
+
+
+                <p>
+                    Contactez-nous pour toute demande
+                    concernant les véhicules et le transport.
+                </p>
+
+
+                <div class="vehicles-contact-actions">
+
+                    <a
+                        href="https://wa.me/243976993469?text=Bonjour%20CAMU%20SERVICES%2C%20je%20souhaite%20faire%20une%20demande%20concernant%20les%20v%C3%A9hicules%20et%20le%20transport."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="vehicles-whatsapp-button"
+                    >
+
+                        <i class="fa-brands fa-whatsapp"></i>
+
+                        WhatsApp
+
+                    </a>
+
+
+                    <a
+                        href="mailto:meschackmuteb@gmail.com?subject=Demande%20V%C3%A9hicules%20%26%20Transport"
+                        class="vehicles-email-button"
+                    >
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        E-mail
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="vehicles-footer">
+
+            <div class="vehicles-footer-content">
+
+                <div>
+
+                    <strong>
+                        CAMU SERVICES
+                    </strong>
+
+                    <p>
+                        VÉHICULES & TRANSPORT
+                    </p>
+
+                </div>
+
+
+                <div class="vehicles-footer-links">
+
+                    <a href="index.html">
+                        Accueil
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="vehicles-footer-bottom">
+
+                ©
+                <span id="vehiclesYear"></span>
+                CAMU SERVICES — Tous droits réservés.
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script
+        type="module"
+        src="js/vehicules.js"
+    ></script>
+
+</body>
+
+</html>
