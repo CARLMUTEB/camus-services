@@ -1,95 +1,162 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <meta name="description"
-          content="Connexion à CAMU SERVICES — Trouver • Acheter • Réserver">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Connexion — CAMU SERVICES</title>
 
-    <!-- CSS -->
+    <meta
+        name="description"
+        content="Connectez-vous à votre compte CAMU SERVICES."
+    >
+
+    <link rel="icon" href="assets/logo/camu-services-logo.png">
+
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/connexion.css">
 
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
-
 
 <body>
 
-    <main class="auth-page">
+<aside class="login-sidebar" id="loginSidebar">
 
-        <div class="auth-container">
+    <div class="login-sidebar-logo">
+        <a href="index.html">
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
+    </div>
 
-            <!-- ==============================
-                 CARTE
-            =============================== -->
+    <nav class="login-sidebar-nav">
 
-            <div class="auth-card">
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
 
-                <!-- LOGO -->
+        <a href="categories.html">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Catégories</span>
+        </a>
 
-                <div class="auth-logo">
+        <a href="recherche.html">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Recherche</span>
+        </a>
 
-                    <span>CAMU SERVICES</span>
+        <a href="a-propos.html">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>À propos</span>
+        </a>
 
-                    <small>
-                        TROUVER • ACHETER • RÉSERVER
-                    </small>
+        <a href="contact.html">
+            <i class="fa-solid fa-phone"></i>
+            <span>Contact</span>
+        </a>
 
+    </nav>
+
+</aside>
+
+
+<div class="login-overlay" id="loginOverlay"></div>
+
+
+<main class="login-main">
+
+    <header class="login-topbar">
+
+        <button
+            type="button"
+            class="login-menu-button"
+            id="loginMenuButton"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a
+            href="index.html"
+            class="login-top-logo"
+        >
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
+
+        <a
+            href="inscription.html"
+            class="login-register-button"
+        >
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Inscription</span>
+        </a>
+
+    </header>
+
+
+    <section class="login-hero">
+
+        <div class="login-hero-content">
+
+            <div class="login-hero-icon">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </div>
+
+            <h1>Bienvenue sur CAMU SERVICES</h1>
+
+            <p>
+                Connectez-vous à votre compte pour accéder
+                à votre espace personnel.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="login-section">
+
+        <div class="login-card">
+
+            <div class="login-card-header">
+
+                <div class="login-card-icon">
+                    <i class="fa-solid fa-user"></i>
                 </div>
 
+                <h2>Connexion</h2>
 
-                <!-- EN-TÊTE -->
+                <p>
+                    Entrez vos identifiants pour continuer.
+                </p>
 
-                <div class="auth-header">
-
-                    <h1>
-                        Bienvenue 👋
-                    </h1>
-
-                    <p>
-                        Connectez-vous à votre compte
-                        CAMU SERVICES.
-                    </p>
-
-                </div>
+            </div>
 
 
-                <!-- MESSAGE -->
+            <form
+                id="loginForm"
+                novalidate
+            >
 
-                <div
-                    id="loginMessage"
-                    class="auth-message"
-                    role="alert"
-                    aria-live="polite"
-                ></div>
+                <div class="login-form-group">
 
+                    <label for="loginEmail">
+                        Adresse e-mail
+                    </label>
 
-                <!-- ==============================
-                     FORMULAIRE
-                =============================== -->
+                    <div class="login-input-wrapper">
 
-                <form
-                    id="loginForm"
-                    class="auth-form"
-                    novalidate
-                >
-
-                    <!-- EMAIL -->
-
-                    <div class="form-group">
-
-                        <label for="loginEmail">
-                            Adresse e-mail
-                        </label>
+                        <i class="fa-solid fa-envelope"></i>
 
                         <input
                             type="email"
@@ -102,45 +169,16 @@
 
                     </div>
 
+                </div>
 
-                    <!-- MOT DE PASSE -->
 
-                    <div class="form-group">
+                <div class="login-form-group">
+
+                    <div class="login-label-row">
 
                         <label for="loginPassword">
                             Mot de passe
                         </label>
-
-                        <div class="input-wrapper">
-
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                name="password"
-                                placeholder="Votre mot de passe"
-                                autocomplete="current-password"
-                                required
-                            >
-
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="loginPassword"
-                                aria-label="Afficher ou masquer le mot de passe"
-                            >
-
-                                <i class="fa-regular fa-eye"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- MOT DE PASSE OUBLIÉ -->
-
-                    <div class="forgot-password">
 
                         <a
                             href="#"
@@ -151,27 +189,59 @@
 
                     </div>
 
+                    <div class="login-input-wrapper">
 
-                    <!-- BOUTON -->
+                        <i class="fa-solid fa-lock"></i>
 
-                    <button
-                        type="submit"
-                        id="loginButton"
-                        class="auth-submit"
-                    >
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Votre mot de passe"
+                            autocomplete="current-password"
+                            required
+                        >
 
-                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="login-password-toggle"
+                            aria-label="Afficher le mot de passe"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
 
-                        <span>Se connecter</span>
+                    </div>
 
-                    </button>
-
-                </form>
+                </div>
 
 
-                <!-- INSCRIPTION -->
+                <div
+                    id="loginMessage"
+                    class="login-message"
+                    role="alert"
+                ></div>
 
-                <div class="auth-switch">
+
+                <button
+                    type="submit"
+                    class="login-submit"
+                    id="loginSubmit"
+                >
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    <span>Se connecter</span>
+
+                </button>
+
+
+                <div class="login-divider">
+                    <span>OU</span>
+                </div>
+
+
+                <p class="login-create-account">
 
                     Vous n'avez pas encore de compte ?
 
@@ -179,78 +249,28 @@
                         Créer un compte
                     </a>
 
-                </div>
-
-
-                <!-- RETOUR -->
-
-                <div class="auth-back">
-
-                    <a href="index.html">
-
-                        <i class="fa-solid fa-arrow-left"></i>
-
-                        Retour à l'accueil
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==============================
-                 FOOTER
-            =============================== -->
-
-            <div class="auth-footer">
-
-                <p>
-                    En vous connectant, vous acceptez les
-                    conditions d'utilisation de CAMU SERVICES.
                 </p>
 
-                <div class="auth-footer-links">
-
-                    <a href="conditions.html">
-                        Conditions
-                    </a>
-
-                    <span>•</span>
-
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
-
-                    <span>•</span>
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-                </div>
-
-                <p>
-                    © 2026 CAMU SERVICES. Tous droits réservés.
-                </p>
-
-            </div>
+            </form>
 
         </div>
 
-    </main>
+    </section>
 
 
-    <!-- =================================================
-         IMPORTANT :
-         auth.js DOIT être chargé comme MODULE
-    ================================================== -->
+    <footer class="login-footer">
 
-    <script
-        type="module"
-        src="js/auth.js"
-    ></script>
+        <p>
+            © <span id="loginYear"></span> CAMU SERVICES.
+            Tous droits réservés.
+        </p>
+
+    </footer>
+
+</main>
+
+
+<script type="module" src="js/connexion.js"></script>
 
 </body>
-
 </html>
