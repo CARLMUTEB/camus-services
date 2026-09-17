@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESPACE COMMERCE — CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Découvrez les produits, établissements et vendeurs de CAMU SERVICES."
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/commerce.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        id="commerceOverlay"
+        class="commerce-overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="commerceSidebar"
+        class="commerce-sidebar"
+    >
+
+        <div class="commerce-sidebar-header">
+
+            <div class="commerce-sidebar-title">
+                <i class="fa-solid fa-store"></i>
+                <span>CAMU COMMERCE</span>
+            </div>
+
+        </div>
+
+
+        <nav class="commerce-sidebar-nav">
+
+            <a
+                href="#accueil"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+
+            <a
+                href="#categories"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-tags"></i>
+                <span>Catégories</span>
+            </a>
+
+
+            <a
+                href="#produits"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-box"></i>
+                <span>Produits</span>
+            </a>
+
+
+            <a
+                href="#etablissements"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-store"></i>
+                <span>Établissements / Vendeurs</span>
+            </a>
+
+
+            <a
+                href="#recherche"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Recherche</span>
+            </a>
+
+
+            <a
+                href="index.html"
+                class="commerce-nav-link"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>CAMU SERVICES</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENU PRINCIPAL
+    ====================================================== -->
+
+    <main class="commerce-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="commerce-topbar">
+
+            <button
+                type="button"
+                id="commerceMenuButton"
+                class="commerce-menu-button"
+                aria-label="Ouvrir le menu"
+                aria-expanded="false"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+
+            <a
+                href="index.html"
+                class="commerce-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="commerce-topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="commerce-topbar-link"
+                    aria-label="Favoris"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="commerce-account-link"
+                >
+                    <i class="fa-solid fa-user"></i>
+                    <span>Mon compte</span>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section
+            id="accueil"
+            class="commerce-hero"
+        >
+
+            <div class="commerce-hero-content">
+
+                <span class="commerce-eyebrow">
+                    CAMU SERVICES
+                </span>
+
+
+                <h1>
+                    ESPACE COMMERCE
+                </h1>
+
+
+                <p>
+                    Découvrez des produits,
+                    établissements et vendeurs
+                    près de chez vous.
+                </p>
+
+
+                <a
+                    href="#recherche"
+                    class="commerce-hero-button"
+                >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Rechercher un produit
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CATÉGORIES
+        ================================================== -->
+
+        <section
+            id="categories"
+            class="commerce-section"
+        >
+
+            <div class="commerce-section-heading">
+
+                <span class="commerce-section-label">
+                    EXPLOREZ
+                </span>
+
+                <h2>
+                    Catégories
+                </h2>
+
+                <p>
+                    Trouvez rapidement les produits
+                    qui vous intéressent.
+                </p>
+
+            </div>
+
+
+            <div
+                id="commerceCategories"
+                class="commerce-category-grid"
+            >
+
+                <div class="commerce-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des catégories...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECHERCHE
+        ================================================== -->
+
+        <section
+            id="recherche"
+            class="commerce-section commerce-search-section"
+        >
+
+            <div class="commerce-section-heading">
+
+                <span class="commerce-section-label">
+                    RECHERCHE
+                </span>
+
+                <h2>
+                    Trouver un produit
+                </h2>
+
+                <p>
+                    Recherchez par produit,
+                    catégorie, ville ou commune.
+                </p>
+
+            </div>
+
+
+            <div class="commerce-search-box">
+
+
+                <div class="commerce-field">
+
+                    <label for="commerceKeyword">
+                        Produit
+                    </label>
+
+                    <div class="commerce-input-wrapper">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="commerceKeyword"
+                            placeholder="Que recherchez-vous ?"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="commerce-field">
+
+                    <label for="commerceCategory">
+                        Catégorie
+                    </label>
+
+                    <select
+                        id="commerceCategory"
+                    >
+
+                        <option value="">
+                            Toutes les catégories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="commerce-field">
+
+                    <label for="commerceVille">
+                        Ville
+                    </label>
+
+                    <select
+                        id="commerceVille"
+                    >
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="commerce-field">
+
+                    <label for="commerceCommune">
+                        Commune
+                    </label>
+
+                    <input
+                        type="text"
+                        id="commerceCommune"
+                        placeholder="Entrez votre commune"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="commerceSearchButton"
+                    class="commerce-search-button"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Rechercher
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PRODUITS
+        ================================================== -->
+
+        <section
+            id="produits"
+            class="commerce-section"
+        >
+
+            <div class="commerce-section-heading commerce-heading-row">
+
+                <div>
+
+                    <span class="commerce-section-label">
+                        PRODUITS
+                    </span>
+
+                    <h2>
+                        Produits disponibles
+                    </h2>
+
+                </div>
+
+
+                <span
+                    id="commerceProductCount"
+                    class="commerce-result-count"
+                >
+                    0 produit
+                </span>
+
+            </div>
+
+
+            <div
+                id="commerceProducts"
+                class="commerce-product-grid"
+            >
+
+                <div class="commerce-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des produits...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ÉTABLISSEMENTS / VENDEURS
+        ================================================== -->
+
+        <section
+            id="etablissements"
+            class="commerce-section commerce-business-section"
+        >
+
+            <div class="commerce-section-heading">
+
+                <span class="commerce-section-label">
+                    COMMERÇANTS
+                </span>
+
+                <h2>
+                    Établissements / Vendeurs
+                </h2>
+
+                <p>
+                    Découvrez les établissements
+                    et vendeurs présents sur CAMU SERVICES.
+                </p>
+
+            </div>
+
+
+            <div class="commerce-business-filters">
+
+
+                <div class="commerce-field">
+
+                    <label for="businessVille">
+                        Ville
+                    </label>
+
+                    <select id="businessVille">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="commerce-field">
+
+                    <label for="businessCommune">
+                        Commune
+                    </label>
+
+                    <input
+                        type="text"
+                        id="businessCommune"
+                        placeholder="Entrez votre commune"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="commerceBusinesses"
+                class="commerce-business-grid"
+            >
+
+                <div class="commerce-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des établissements...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             APPEL AUX VENDEURS
+        ================================================== -->
+
+        <section class="commerce-vendor-section">
+
+            <div class="commerce-vendor-content">
+
+                <i class="fa-solid fa-store commerce-vendor-icon"></i>
+
+
+                <h2>
+                    Vous êtes commerçant ?
+                </h2>
+
+
+                <p>
+                    Présentez votre établissement
+                    et vos produits sur CAMU SERVICES.
+                </p>
+
+
+                <a
+                    href="publier.html"
+                    class="commerce-vendor-button"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Publier une annonce
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="commerce-footer">
+
+            <div class="commerce-footer-content">
+
+                <div>
+
+                    <strong>
+                        CAMU SERVICES
+                    </strong>
+
+                    <p>
+                        Votre plateforme locale
+                        de services et de commerce.
+                    </p>
+
+                </div>
+
+
+                <div class="commerce-footer-links">
+
+                    <a href="conditions.html">
+                        Conditions
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="commerce-footer-bottom">
+
+                ©
+                <span id="commerceYear"></span>
+                CAMU SERVICES.
+                Tous droits réservés.
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="js/commerce.js"
+    ></script>
+
+</body>
+
+</html>
