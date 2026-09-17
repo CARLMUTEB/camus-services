@@ -1,345 +1,929 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Détails de l'annonce — CAMU SERVICES">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Annonce — CAMU SERVICES</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta
+        name="description"
+        content="Découvrez cette annonce sur CAMU SERVICES."
+    >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/explorer.css">
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
+    <!-- STYLE PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- STYLE EXPLORER -->
+    <link
+        rel="stylesheet"
+        href="css/explorer.css"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 
 <body>
 
-<!-- ==============================
-     HEADER MOBILE
-================================ -->
-<header class="mobile-header">
-
-    <button id="menuToggle"
-            class="mobile-menu-button"
-            type="button"
-            aria-label="Ouvrir le menu">
-
-        <i class="fa-solid fa-bars"></i>
-
-    </button>
-
-    <a href="index.html" class="mobile-logo">
-        CAMU <span>SERVICES</span>
-    </a>
-
-    <a href="compte.html"
-       class="mobile-account"
-       aria-label="Mon compte">
-
-        <i class="fa-solid fa-user"></i>
-
-    </a>
-
-</header>
+<div class="app-layout">
 
 
-<!-- ==============================
-     SIDEBAR
-================================ -->
-<aside class="sidebar" id="sidebar">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <div class="sidebar-logo">
-        CAMU <span>SERVICES</span>
-    </div>
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
-    <nav class="sidebar-nav">
+        <div class="sidebar-header">
 
-        <a href="index.html" class="nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
-        </a>
+            <a
+                href="index.html"
+                class="sidebar-logo"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
 
-        <a href="recherche.html" class="nav-item">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Rechercher</span>
-        </a>
-
-        <a href="recherche.html" class="nav-item">
-            <i class="fa-solid fa-folder"></i>
-            <span>Catégories</span>
-        </a>
-
-        <a href="publier.html" class="nav-item">
-            <i class="fa-solid fa-plus"></i>
-            <span>Publier</span>
-        </a>
-
-        <a href="favoris.html" class="nav-item">
-            <i class="fa-solid fa-heart"></i>
-            <span>Favoris</span>
-        </a>
-
-        <a href="compte.html" class="nav-item">
-            <i class="fa-solid fa-user"></i>
-            <span>Mon compte</span>
-        </a>
-
-        <a href="parametres.html" class="nav-item">
-            <i class="fa-solid fa-gear"></i>
-            <span>Paramètres</span>
-        </a>
-
-    </nav>
-
-</aside>
-
-
-<!-- ==============================
-     CONTENU
-================================ -->
-<main class="main-content">
-
-    <div class="explorer-container">
-
-        <!-- Retour -->
-        <a href="javascript:history.back()" class="back-button">
-            <i class="fa-solid fa-arrow-left"></i>
-            Retour
-        </a>
-
-
-        <!-- Chargement -->
-        <div id="loadingState" class="detail-loading">
-
-            <i class="fa-solid fa-spinner fa-spin"></i>
-
-            <p>Chargement de l'annonce...</p>
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
         </div>
 
 
-        <!-- Erreur -->
-        <div id="errorState" class="detail-error hidden">
+        <nav class="sidebar-nav">
 
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <a
+                href="index.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
 
-            <h2>Annonce introuvable</h2>
 
-            <p>
-                Cette annonce n'existe plus ou n'est pas disponible.
-            </p>
+            <a
+                href="categories.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
 
-            <a href="index.html" class="primary-button">
-                Retour à l'accueil
+
+            <a
+                href="recherche.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+
+            <a
+                href="publier.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier une annonce</span>
+            </a>
+
+
+            <a
+                href="favoris.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-heart"></i>
+                <span>Mes favoris</span>
+            </a>
+
+
+            <div class="sidebar-divider"></div>
+
+
+            <a
+                href="compte.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+
+            <a
+                href="parametres.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+
+            <a
+                href="aide.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-circle-question"></i>
+                <span>Centre d'aide</span>
+            </a>
+
+
+            <a
+                href="contact.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
             </a>
 
         </div>
 
+    </aside>
 
-        <!-- ==============================
-             ANNONCE
-        ================================ -->
-        <article id="adDetail" class="ad-detail hidden">
 
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
 
-            <!-- GALERIE -->
-            <section class="ad-gallery">
+    <div
+        class="mobile-overlay"
+        id="mobileOverlay"
+    ></div>
 
-                <div class="main-photo-wrapper">
 
-                    <img id="mainPhoto"
-                         src=""
-                         alt="Photo de l'annonce">
+    <!-- =====================================================
+         CONTENU PRINCIPAL
+    ====================================================== -->
 
-                    <button id="prevPhoto"
-                            class="gallery-arrow gallery-prev"
-                            type="button">
+    <main class="explorer-main">
 
-                        <i class="fa-solid fa-chevron-left"></i>
 
-                    </button>
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-                    <button id="nextPhoto"
-                            class="gallery-arrow gallery-next"
-                            type="button">
+        <header class="explorer-topbar">
 
-                        <i class="fa-solid fa-chevron-right"></i>
+            <button
+                type="button"
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                aria-label="Ouvrir le menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
-                    </button>
 
-                </div>
+            <a
+                href="index.html"
+                class="topbar-logo"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
 
 
-                <div id="photoThumbnails"
-                     class="photo-thumbnails">
-                </div>
+            <div class="topbar-actions">
 
-            </section>
-
-
-            <!-- INFORMATIONS -->
-            <section class="ad-information">
-
-                <div class="ad-category"
-                     id="adCategory">
-                </div>
-
-
-                <h1 id="adTitle">
-                    —
-                </h1>
-
-
-                <div class="ad-price"
-                     id="adPrice">
-                    —
-                </div>
-
-
-                <div class="ad-location">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    <span id="adLocation">
-                        —
-                    </span>
-
-                </div>
-
-
-                <div class="ad-date">
-
-                    <i class="fa-regular fa-calendar"></i>
-
-                    <span id="adDate">
-                        —
-                    </span>
-
-                </div>
-
-
-                <!-- ACTIONS -->
-                <div class="ad-actions">
-
-                    <button id="whatsappButton"
-                            class="whatsapp-button"
-                            type="button">
-
-                        <i class="fa-brands fa-whatsapp"></i>
-
-                        Contacter sur WhatsApp
-
-                    </button>
-
-
-                    <button id="favoriteButton"
-                            class="favorite-button"
-                            type="button">
-
-                        <i class="fa-regular fa-heart"></i>
-
-                        Ajouter aux favoris
-
-                    </button>
-
-                </div>
-
-            </section>
-
-
-            <!-- DESCRIPTION -->
-            <section class="detail-card">
-
-                <h2>
-                    <i class="fa-solid fa-align-left"></i>
-                    Description
-                </h2>
-
-                <p id="adDescription">
-                    —
-                </p>
-
-            </section>
-
-
-            <!-- VENDEUR -->
-            <section class="detail-card seller-card">
-
-                <h2>
-                    <i class="fa-solid fa-user"></i>
-                    Annonceur
-                </h2>
-
-
-                <div class="seller-info">
-
-                    <div class="seller-avatar">
-
-                        <i class="fa-solid fa-user"></i>
-
-                    </div>
-
-
-                    <div>
-
-                        <h3 id="sellerName">
-                            —
-                        </h3>
-
-                        <p>
-                            Membre de CAMU SERVICES
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <a id="sellerProfileButton"
-                   href="#"
-                   class="profile-button">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    Voir le profil
-
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Mes favoris"
+                >
+                    <i class="fa-solid fa-heart"></i>
                 </a>
 
-            </section>
+
+                <a
+                    href="compte.html"
+                    class="topbar-icon"
+                    aria-label="Mon compte"
+                >
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+            </div>
+
+        </header>
 
 
-            <!-- SIGNALEMENT -->
-            <section class="report-section">
+        <!-- =================================================
+             CONTENU
+        ================================================== -->
 
-                <button id="reportButton"
-                        class="report-button"
-                        type="button">
+        <section class="explorer-container">
 
-                    <i class="fa-solid fa-flag"></i>
 
+            <!-- RETOUR -->
+
+            <div class="explorer-back">
+
+                <a
+                    href="recherche.html"
+                    class="back-button"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Retour aux annonces
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÉTAT DE CHARGEMENT
+            ================================================== -->
+
+            <div
+                class="explorer-loading"
+                id="explorerLoading"
+            >
+
+                <div class="loading-spinner">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                </div>
+
+                <p>
+                    Chargement de l'annonce...
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÉTAT D'ERREUR
+            ================================================== -->
+
+            <div
+                class="explorer-error hidden"
+                id="explorerError"
+            >
+
+                <div class="error-icon">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+
+                <h2>
+                    Annonce introuvable
+                </h2>
+
+                <p id="explorerErrorMessage">
+                    Cette annonce n'existe pas ou n'est plus disponible.
+                </p>
+
+                <a
+                    href="recherche.html"
+                    class="primary-button"
+                >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Voir les annonces
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 ANNONCE
+            ================================================== -->
+
+            <article
+                class="explorer-page hidden"
+                id="explorerPage"
+            >
+
+
+                <!-- =================================================
+                     GALERIE
+                ================================================== -->
+
+                <section class="ad-gallery-section">
+
+                    <div
+                        class="ad-main-image"
+                        id="adMainImageContainer"
+                    >
+
+                        <img
+                            id="adMainImage"
+                            src=""
+                            alt="Photo de l'annonce"
+                        >
+
+                        <button
+                            type="button"
+                            class="gallery-prev"
+                            id="galleryPrev"
+                            aria-label="Photo précédente"
+                        >
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="gallery-next"
+                            id="galleryNext"
+                            aria-label="Photo suivante"
+                        >
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+
+                        <div
+                            class="image-counter"
+                            id="imageCounter"
+                        >
+                            1 / 1
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="ad-thumbnails"
+                        id="adThumbnails"
+                    >
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     INFORMATIONS ANNONCE
+                ================================================== -->
+
+                <section class="ad-content-section">
+
+
+                    <!-- EN-TÊTE -->
+
+                    <div class="ad-heading">
+
+                        <div class="ad-heading-main">
+
+                            <span
+                                class="ad-category"
+                                id="adCategory"
+                            >
+                                —
+                            </span>
+
+                            <h1 id="adTitle">
+                                Chargement...
+                            </h1>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="favorite-button"
+                            id="favoriteButton"
+                            aria-label="Ajouter aux favoris"
+                        >
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+
+                    </div>
+
+
+                    <!-- PRIX -->
+
+                    <div class="ad-price-block">
+
+                        <span
+                            class="ad-price"
+                            id="adPrice"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOCALISATION -->
+
+                    <div class="ad-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span id="adLocation">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="ad-section">
+
+                        <div class="section-title">
+
+                            <i class="fa-solid fa-align-left"></i>
+
+                            <h2>
+                                Description
+                            </h2>
+
+                        </div>
+
+                        <div
+                            class="ad-description"
+                            id="adDescription"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <!-- DÉTAILS -->
+
+                    <div class="ad-section">
+
+                        <div class="section-title">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            <h2>
+                                Informations
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            class="ad-details-grid"
+                            id="adDetails"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         VENDEUR
+                    ================================================== -->
+
+                    <div class="seller-section">
+
+                        <div class="section-title">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <h2>
+                                Vendeur
+                            </h2>
+
+                        </div>
+
+
+                        <div class="seller-card">
+
+
+                            <div
+                                class="seller-avatar"
+                                id="sellerAvatar"
+                            >
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+
+                            <div class="seller-info">
+
+                                <h3 id="sellerName">
+                                    —
+                                </h3>
+
+                                <p id="sellerLocation">
+                                    —
+                                </p>
+
+                            </div>
+
+
+                            <!-- BOUTON VOIR PROFIL -->
+
+                            <a
+                                href="#"
+                                id="sellerProfileButton"
+                                class="seller-profile-button"
+                            >
+                                <i class="fa-solid fa-user"></i>
+                                <span>Voir le profil</span>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CONTACT
+                    ================================================== -->
+
+                    <div class="contact-seller-section">
+
+                        <div class="section-title">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <h2>
+                                Contacter le vendeur
+                            </h2>
+
+                        </div>
+
+
+                        <div class="seller-contact-actions">
+
+
+                            <a
+                                href="#"
+                                id="whatsappButton"
+                                class="whatsapp-button"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i class="fa-brands fa-whatsapp"></i>
+                                WhatsApp
+                            </a>
+
+
+                            <a
+                                href="#"
+                                id="phoneButton"
+                                class="phone-button"
+                            >
+                                <i class="fa-solid fa-phone"></i>
+                                Appeler
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                    ================================================== -->
+
+                    <div class="ad-actions">
+
+
+                        <button
+                            type="button"
+                            class="report-button"
+                            id="reportButton"
+                        >
+                            <i class="fa-solid fa-flag"></i>
+                            Signaler cette annonce
+                        </button>
+
+
+                        <span class="ad-reference">
+                            Référence :
+                            <strong id="adReference">
+                                —
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </section>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="explorer-footer">
+
+            <div class="footer-inner">
+
+                <div class="footer-copy">
+
+                    © 2026 CAMU SERVICES.
+                    Tous droits réservés.
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions
+                    </a>
+
+                    <a href="politique.html">
+                        Politique de confidentialité
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL SIGNALER
+====================================================== -->
+
+<div
+    class="report-modal-overlay hidden"
+    id="reportModal"
+>
+
+    <div class="report-modal">
+
+        <div class="report-modal-header">
+
+            <div>
+
+                <span>
+                    SIGNALEMENT
+                </span>
+
+                <h2>
                     Signaler cette annonce
+                </h2>
 
-                </button>
-
-            </section>
+            </div>
 
 
-        </article>
+            <button
+                type="button"
+                id="reportModalClose"
+                class="modal-close"
+                aria-label="Fermer"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <div class="report-modal-body">
+
+            <p>
+                Pourquoi souhaitez-vous signaler cette annonce ?
+            </p>
+
+
+            <div class="report-options">
+
+                <label class="report-option">
+
+                    <input
+                        type="radio"
+                        name="reportReason"
+                        value="Annonce frauduleuse"
+                    >
+
+                    <span>
+                        Annonce frauduleuse
+                    </span>
+
+                </label>
+
+
+                <label class="report-option">
+
+                    <input
+                        type="radio"
+                        name="reportReason"
+                        value="Informations incorrectes"
+                    >
+
+                    <span>
+                        Informations incorrectes
+                    </span>
+
+                </label>
+
+
+                <label class="report-option">
+
+                    <input
+                        type="radio"
+                        name="reportReason"
+                        value="Contenu interdit"
+                    >
+
+                    <span>
+                        Contenu interdit
+                    </span>
+
+                </label>
+
+
+                <label class="report-option">
+
+                    <input
+                        type="radio"
+                        name="reportReason"
+                        value="Autre"
+                    >
+
+                    <span>
+                        Autre
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <textarea
+                id="reportMessage"
+                class="report-message"
+                placeholder="Précisions supplémentaires (facultatif)..."
+                rows="4"
+            ></textarea>
+
+        </div>
+
+
+        <div class="report-modal-footer">
+
+            <button
+                type="button"
+                class="secondary-button"
+                id="reportCancel"
+            >
+                Annuler
+            </button>
+
+
+            <button
+                type="button"
+                class="danger-button"
+                id="reportSubmit"
+            >
+                <i class="fa-solid fa-flag"></i>
+                Envoyer le signalement
+            </button>
+
+        </div>
 
     </div>
 
-</main>
+</div>
 
 
-<!-- ==============================
-     JAVASCRIPT
-================================ -->
-<script type="module" src="js/auth.js"></script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/explorer.js"></script>
+<!-- =====================================================
+     SCRIPTS
+====================================================== -->
+
+<script src="js/auth.js"></script>
+
+<script src="js/app.js"></script>
+
+<script
+    type="module"
+    src="js/explorer.js"
+></script>
+
+
+<!-- =====================================================
+     MENU MOBILE
+====================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("mobileOverlay");
+
+    const menuButton =
+        document.getElementById("mobileMenuButton");
+
+    const closeButton =
+        document.getElementById("sidebarClose");
+
+
+    function openMenu() {
+
+        sidebar?.classList.add("open");
+
+        overlay?.classList.add("show");
+
+        document.body.classList.add("menu-open");
+
+    }
+
+
+    function closeMenu() {
+
+        sidebar?.classList.remove("open");
+
+        overlay?.classList.remove("show");
+
+        document.body.classList.remove("menu-open");
+
+    }
+
+
+    menuButton?.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    closeButton?.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    overlay?.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    document
+        .querySelectorAll(".sidebar-link")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        });
+
+});
+
+</script>
 
 </body>
+
 </html>
