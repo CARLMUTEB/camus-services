@@ -1,6 +1,8 @@
-/* =========================================================
-   CAMU SERVICES — CONNEXION
-========================================================= */
+// =========================================================
+// CAMU SERVICES — CONNEXION
+// Gestion des anciens et nouveaux utilisateurs
+// Firebase 12.1.0
+// =========================================================
 
 import { auth, db } from "./firebase-config.js";
 
@@ -11,13 +13,14 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    setDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =========================================================
-   DOM
-========================================================= */
+// =========================================================
+// DOM
+// =========================================================
 
 const loginForm =
     document.getElementById("loginForm");
@@ -53,9 +56,9 @@ const loginOverlay =
     document.getElementById("loginOverlay");
 
 
-/* =========================================================
-   ANNÉE
-========================================================= */
+// =========================================================
+// ANNÉE
+// =========================================================
 
 if (loginYear) {
 
@@ -65,9 +68,9 @@ if (loginYear) {
 }
 
 
-/* =========================================================
-   MENU MOBILE
-========================================================= */
+// =========================================================
+// MENU MOBILE
+// =========================================================
 
 if (loginMenuButton) {
 
@@ -75,9 +78,9 @@ if (loginMenuButton) {
         "click",
         () => {
 
-            loginSidebar.classList.add("open");
+            loginSidebar?.classList.add("open");
 
-            loginOverlay.classList.add("open");
+            loginOverlay?.classList.add("open");
 
         }
     );
@@ -97,16 +100,16 @@ if (loginOverlay) {
 
 function closeMobileMenu() {
 
-    loginSidebar.classList.remove("open");
+    loginSidebar?.classList.remove("open");
 
-    loginOverlay.classList.remove("open");
+    loginOverlay?.classList.remove("open");
 
 }
 
 
-/* =========================================================
-   AFFICHER / MASQUER MOT DE PASSE
-========================================================= */
+// =========================================================
+// AFFICHER / MASQUER MOT DE PASSE
+// =========================================================
 
 if (togglePassword) {
 
@@ -118,7 +121,8 @@ if (togglePassword) {
                 loginPassword.type === "password"
             ) {
 
-                loginPassword.type = "text";
+                loginPassword.type =
+                    "text";
 
                 togglePassword.innerHTML =
                     '<i class="fa-solid fa-eye-slash"></i>';
@@ -130,7 +134,8 @@ if (togglePassword) {
 
             } else {
 
-                loginPassword.type = "password";
+                loginPassword.type =
+                    "password";
 
                 togglePassword.innerHTML =
                     '<i class="fa-solid fa-eye"></i>';
@@ -148,251 +153,477 @@ if (togglePassword) {
 }
 
 
-/* =========================================================
-   CONNEXION
-========================================================= */
+// =========================================================
+// CONNEXION
+// =========================================================
 
-loginForm.addEventListener(
-    "submit",
-    async event => {
+if (loginForm) {
 
-        event.preventDefault();
+    loginForm.addEventListener(
+        "submit",
+        async event => {
 
-        clearMessage();
+            event.preventDefault();
 
-
-        const email =
-            String(
-                loginEmail.value || ""
-            )
-            .trim()
-            .toLowerCase();
+            clearMessage();
 
 
-        const password =
-            String(
-                loginPassword.value || ""
-            );
+            // =================================================
+            // RÉCUPÉRATION DES VALEURS
+            // =================================================
+
+            const email =
+                String(
+                    loginEmail?.value || ""
+                )
+                .trim()
+                .toLowerCase();
 
 
-        if (!email) {
-
-            showMessage(
-                "Veuillez saisir votre adresse e-mail.",
-                "error"
-            );
-
-            loginEmail.focus();
-
-            return;
-        }
-
-
-        if (!password) {
-
-            showMessage(
-                "Veuillez saisir votre mot de passe.",
-                "error"
-            );
-
-            loginPassword.focus();
-
-            return;
-        }
-
-
-        setLoading(true);
-
-
-        try {
-
-            /* =============================================
-               FIREBASE AUTH
-            ============================================== */
-
-            const credential =
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+            const password =
+                String(
+                    loginPassword?.value || ""
                 );
 
 
-            const user =
-                credential.user;
+            // =================================================
+            // VALIDATION EMAIL
+            // =================================================
+
+            if (!email) {
+
+                showMessage(
+                    "Veuillez saisir votre adresse e-mail.",
+                    "error"
+                );
+
+                loginEmail?.focus();
+
+                return;
+
+            }
 
 
-            /* =============================================
-               RÉCUPÉRER LE PROFIL
-            ============================================== */
+            // =================================================
+            // VALIDATION MOT DE PASSE
+            // =================================================
 
-            const userSnapshot =
-                await getDoc(
+            if (!password) {
+
+                showMessage(
+                    "Veuillez saisir votre mot de passe.",
+                    "error"
+                );
+
+                loginPassword?.focus();
+
+                return;
+
+            }
+
+
+            setLoading(true);
+
+
+            try {
+
+                // =================================================
+                // FIREBASE AUTHENTICATION
+                // =================================================
+
+                console.log(
+                    "CAMU CONNEXION — tentative de connexion :",
+                    email
+                );
+
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                console.log(
+                    "CAMU CONNEXION — utilisateur connecté :",
+                    user.uid
+                );
+
+
+                // =================================================
+                // RÉCUPÉRER LE PROFIL FIRESTORE
+                // =================================================
+
+                const userRef =
                     doc(
                         db,
                         "users",
                         user.uid
+                    );
+
+
+                const userSnapshot =
+                    await getDoc(
+                        userRef
+                    );
+
+
+                // =================================================
+                // VARIABLES PAR DÉFAUT
+                // =================================================
+
+                let accountType = "";
+
+                let accountStatus =
+                    "active";
+
+
+                // =================================================
+                // PROFIL EXISTANT
+                // =================================================
+
+                if (
+                    userSnapshot.exists()
+                ) {
+
+                    const userData =
+                        userSnapshot.data();
+
+
+                    console.log(
+                        "CAMU CONNEXION — profil trouvé :",
+                        userData
+                    );
+
+
+                    accountType =
+                        String(
+                            userData.accountType || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    accountStatus =
+                        String(
+                            userData.accountStatus ||
+                            "active"
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                } else {
+
+                    console.warn(
+                        "CAMU CONNEXION — aucun profil Firestore trouvé."
+                    );
+
+                }
+
+
+                // =================================================
+                // ANCIEN UTILISATEUR
+                //
+                // Avant la création des espaces,
+                // accountType n'existait pas.
+                //
+                // Ces anciens utilisateurs sont maintenant
+                // automatiquement basculés vers IMMOBILIER.
+                // =================================================
+
+                if (!accountType) {
+
+                    accountType =
+                        "immobilier";
+
+
+                    console.log(
+                        "CAMU CONNEXION — ancien utilisateur détecté."
+                    );
+
+
+                    console.log(
+                        "CAMU CONNEXION — migration vers immobilier..."
+                    );
+
+
+                    try {
+
+                        await setDoc(
+                            userRef,
+                            {
+                                accountType:
+                                    "immobilier",
+
+                                accountStatus:
+                                    accountStatus,
+
+                                updatedAt:
+                                    new Date()
+                            },
+                            {
+                                merge: true
+                            }
+                        );
+
+
+                        console.log(
+                            "CAMU CONNEXION — ancien utilisateur migré vers immobilier."
+                        );
+
+
+                    } catch (migrationError) {
+
+                        console.error(
+                            "CAMU CONNEXION — erreur migration :",
+                            migrationError
+                        );
+
+
+                        /*
+                         * Même si l'écriture échoue,
+                         * on garde accountType = immobilier
+                         * pour cette connexion.
+                         */
+
+                    }
+
+                }
+
+
+                // =================================================
+                // NORMALISATION
+                // =================================================
+
+                const allowedAccountTypes = [
+
+                    "immobilier",
+
+                    "commerce",
+
+                    "vehicules",
+
+                    "hotels",
+
+                    "client"
+
+                ];
+
+
+                if (
+                    !allowedAccountTypes.includes(
+                        accountType
                     )
-                );
+                ) {
+
+                    console.warn(
+                        "CAMU CONNEXION — type inconnu :",
+                        accountType
+                    );
 
 
-            let accountType =
-                "client";
+                    /*
+                     * Si une ancienne valeur inconnue existe,
+                     * on la bascule également vers immobilier.
+                     */
+
+                    accountType =
+                        "immobilier";
 
 
-            let accountStatus =
-                "active";
+                    try {
+
+                        await setDoc(
+                            userRef,
+                            {
+                                accountType:
+                                    "immobilier",
+
+                                updatedAt:
+                                    new Date()
+                            },
+                            {
+                                merge: true
+                            }
+                        );
 
 
-            if (userSnapshot.exists()) {
+                        console.log(
+                            "CAMU CONNEXION — type inconnu corrigé vers immobilier."
+                        );
 
-                const userData =
-                    userSnapshot.data();
+                    } catch (error) {
 
+                        console.error(
+                            "CAMU CONNEXION — erreur correction type :",
+                            error
+                        );
 
-                accountType =
-                    String(
-                        userData.accountType || "client"
-                    )
-                    .trim()
-                    .toLowerCase();
+                    }
 
-
-                accountStatus =
-                    String(
-                        userData.accountStatus || "active"
-                    )
-                    .trim()
-                    .toLowerCase();
-
-            }
+                }
 
 
-            /* =============================================
-               COMPTE PROFESSIONNEL EN ATTENTE
-            ============================================== */
+                // =================================================
+                // COMPTE PROFESSIONNEL EN ATTENTE
+                // =================================================
 
-            if (
-                accountType !== "client"
-                &&
-                accountStatus === "pending"
-            ) {
+                if (
+                    accountType !== "client" &&
+                    accountStatus === "pending"
+                ) {
+
+                    showMessage(
+                        "Connexion réussie. Votre profil professionnel est encore en attente de validation.",
+                        "success"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                "compte.html";
+
+                        },
+                        1800
+                    );
+
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // SUCCÈS
+                // =================================================
 
                 showMessage(
-                    "Connexion réussie. Votre profil professionnel est encore en attente de validation.",
+                    "Connexion réussie. Bienvenue sur CAMU SERVICES !",
                     "success"
                 );
 
 
-                setTimeout(() => {
-
-                    window.location.href =
-                        "compte.html";
-
-                }, 1800);
-
-
-                return;
-            }
-
-
-            /* =============================================
-               SUCCÈS
-            ============================================== */
-
-            showMessage(
-                "Connexion réussie. Bienvenue sur CAMU SERVICES !",
-                "success"
-            );
-
-
-            setTimeout(() => {
-
-                redirectUser(
+                console.log(
+                    "CAMU CONNEXION — espace :",
                     accountType
                 );
 
-            }, 900);
+
+                // =================================================
+                // REDIRECTION
+                // =================================================
+
+                setTimeout(
+                    () => {
+
+                        redirectUser(
+                            accountType
+                        );
+
+                    },
+                    900
+                );
 
 
-        } catch (error) {
+            } catch (error) {
 
-            console.error(
-                "CAMU CONNEXION — erreur :",
-                error
-            );
-
-
-            let message =
-                "Impossible de vous connecter.";
+                console.error(
+                    "CAMU CONNEXION — erreur :",
+                    error
+                );
 
 
-            switch (error.code) {
-
-                case "auth/invalid-credential":
-
-                case "auth/wrong-password":
-
-                case "auth/user-not-found":
-
-                    message =
-                        "Adresse e-mail ou mot de passe incorrect.";
-
-                    break;
+                let message =
+                    "Impossible de vous connecter.";
 
 
-                case "auth/invalid-email":
+                switch (
+                    error.code
+                ) {
 
-                    message =
-                        "L'adresse e-mail est invalide.";
+                    case "auth/invalid-credential":
 
-                    break;
+                    case "auth/wrong-password":
 
+                    case "auth/user-not-found":
 
-                case "auth/user-disabled":
+                        message =
+                            "Adresse e-mail ou mot de passe incorrect.";
 
-                    message =
-                        "Ce compte a été désactivé.";
-
-                    break;
-
-
-                case "auth/too-many-requests":
-
-                    message =
-                        "Trop de tentatives. Veuillez patienter avant de réessayer.";
-
-                    break;
+                        break;
 
 
-                case "auth/network-request-failed":
+                    case "auth/invalid-email":
 
-                    message =
-                        "Problème de connexion Internet.";
+                        message =
+                            "L'adresse e-mail est invalide.";
 
-                    break;
+                        break;
+
+
+                    case "auth/user-disabled":
+
+                        message =
+                            "Ce compte a été désactivé.";
+
+                        break;
+
+
+                    case "auth/too-many-requests":
+
+                        message =
+                            "Trop de tentatives. Veuillez patienter avant de réessayer.";
+
+                        break;
+
+
+                    case "auth/network-request-failed":
+
+                        message =
+                            "Problème de connexion Internet.";
+
+                        break;
+
+
+                    default:
+
+                        message =
+                            "Une erreur est survenue lors de la connexion.";
+
+                        break;
+
+                }
+
+
+                showMessage(
+                    message,
+                    "error"
+                );
+
+
+            } finally {
+
+                setLoading(false);
 
             }
 
-
-            showMessage(
-                message,
-                "error"
-            );
-
-        } finally {
-
-            setLoading(false);
-
         }
+    );
 
-    }
-);
+}
 
 
-/* =========================================================
-   MOT DE PASSE OUBLIÉ
-========================================================= */
+// =========================================================
+// MOT DE PASSE OUBLIÉ
+// =========================================================
 
 if (forgotPassword) {
 
@@ -407,7 +638,7 @@ if (forgotPassword) {
 
             const email =
                 String(
-                    loginEmail.value || ""
+                    loginEmail?.value || ""
                 )
                 .trim()
                 .toLowerCase();
@@ -420,9 +651,10 @@ if (forgotPassword) {
                     "error"
                 );
 
-                loginEmail.focus();
+                loginEmail?.focus();
 
                 return;
+
             }
 
 
@@ -486,13 +718,21 @@ if (forgotPassword) {
 }
 
 
-/* =========================================================
-   REDIRECTION
-========================================================= */
+// =========================================================
+// REDIRECTION SELON L'ESPACE
+// =========================================================
 
 function redirectUser(accountType) {
 
-    switch (accountType) {
+    console.log(
+        "CAMU CONNEXION — redirection vers :",
+        accountType
+    );
+
+
+    switch (
+        accountType
+    ) {
 
         case "immobilier":
 
@@ -540,17 +780,25 @@ function redirectUser(accountType) {
 }
 
 
-/* =========================================================
-   MESSAGE
-========================================================= */
+// =========================================================
+// MESSAGE
+// =========================================================
 
 function showMessage(
     message,
     type
 ) {
 
+    if (!loginMessage) {
+
+        return;
+
+    }
+
+
     loginMessage.textContent =
         message;
+
 
     loginMessage.className =
         `login-message show ${type}`;
@@ -558,9 +806,22 @@ function showMessage(
 }
 
 
+// =========================================================
+// EFFACER MESSAGE
+// =========================================================
+
 function clearMessage() {
 
-    loginMessage.textContent = "";
+    if (!loginMessage) {
+
+        return;
+
+    }
+
+
+    loginMessage.textContent =
+        "";
+
 
     loginMessage.className =
         "login-message";
@@ -568,11 +829,18 @@ function clearMessage() {
 }
 
 
-/* =========================================================
-   LOADING
-========================================================= */
+// =========================================================
+// LOADING
+// =========================================================
 
 function setLoading(loading) {
+
+    if (!loginSubmit) {
+
+        return;
+
+    }
+
 
     loginSubmit.disabled =
         loading;
@@ -580,6 +848,7 @@ function setLoading(loading) {
 
     const icon =
         loginSubmit.querySelector("i");
+
 
     const span =
         loginSubmit.querySelector("span");
@@ -593,6 +862,7 @@ function setLoading(loading) {
                 "fa-solid fa-spinner fa-spin";
 
         }
+
 
         if (span) {
 
@@ -610,6 +880,7 @@ function setLoading(loading) {
 
         }
 
+
         if (span) {
 
             span.textContent =
@@ -622,6 +893,10 @@ function setLoading(loading) {
 }
 
 
+// =========================================================
+// FIN
+// =========================================================
+
 console.log(
-    "CAMU CONNEXION — système initialisé."
+    "CAMU CONNEXION — système initialisé avec migration des anciens utilisateurs vers Immobilier."
 );
