@@ -1,755 +1,466 @@
-/* =====================================================
-   CAMU SERVICES — HÔTELS & HÉBERGEMENT
-   hotels.js
-===================================================== */
+/* =========================================================
+   CAMU HÔTELS — FICHE ÉTABLISSEMENT
+========================================================= */
 
-
-/* =====================================================
-   FIREBASE
-===================================================== */
+import { db } from "./firebase-config.js";
 
 import {
-    getApps,
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-
-import {
-    getFirestore,
-    collection,
-    getDocs
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/*
-   IMPORTANT :
+console.log("CAMU HÔTEL — fiche établissement initialisation...");
 
-   Utilise ici exactement la même configuration
-   Firebase que dans ton firebase-config.js.
-*/
 
-const firebaseConfig = {
+/* =========================================================
+   PARAMÈTRE URL
+========================================================= */
 
-    apiKey: "VOTRE_API_KEY",
+const params =
+    new URLSearchParams(window.location.search);
 
-    authDomain:
-        "camu-services.firebaseapp.com",
+const hotelId =
+    params.get("id")?.trim() || "";
 
-    projectId:
-        "camu-services",
 
-    storageBucket:
-        "camu-services.firebasestorage.app",
+/* =========================================================
+   ÉLÉMENTS DOM
+========================================================= */
 
-    messagingSenderId:
-        "VOTRE_MESSAGING_SENDER_ID",
+const hotelLoading =
+    document.getElementById("hotelLoading");
 
-    appId:
-        "VOTRE_APP_ID"
+const hotelError =
+    document.getElementById("hotelError");
 
-};
+const hotelErrorTitle =
+    document.getElementById("hotelErrorTitle");
 
+const hotelErrorMessage =
+    document.getElementById("hotelErrorMessage");
 
-const app =
-    getApps().length > 0
-        ? getApps()[0]
-        : initializeApp(firebaseConfig);
+const hotelContent =
+    document.getElementById("hotelContent");
 
+const hotelGallery =
+    document.getElementById("hotelGallery");
 
-const db =
-    getFirestore(app);
+const hotelPhotosGrid =
+    document.getElementById("hotelPhotosGrid");
 
+const hotelName =
+    document.getElementById("hotelName");
 
-/* =====================================================
-   ELEMENTS HTML
-===================================================== */
+const hotelCategory =
+    document.getElementById("hotelCategory");
 
-const hotelsCategories =
-    document.getElementById(
-        "hotelsCategories"
-    );
+const hotelCategoryDetail =
+    document.getElementById("hotelCategoryDetail");
 
+const hotelLocation =
+    document.getElementById("hotelLocation");
 
-const hotelsProducts =
-    document.getElementById(
-        "hotelsProducts"
-    );
+const hotelDescription =
+    document.getElementById("hotelDescription");
 
+const hotelAddress =
+    document.getElementById("hotelAddress");
 
-const hotelsBusinesses =
-    document.getElementById(
-        "hotelsBusinesses"
-    );
+const hotelCity =
+    document.getElementById("hotelCity");
 
+const hotelCommune =
+    document.getElementById("hotelCommune");
 
-const hotelsKeyword =
-    document.getElementById(
-        "hotelsKeyword"
-    );
+const hotelContactName =
+    document.getElementById("hotelContactName");
 
+const hotelContactLocation =
+    document.getElementById("hotelContactLocation");
 
-const hotelsCategory =
-    document.getElementById(
-        "hotelsCategory"
-    );
+const hotelPhone =
+    document.getElementById("hotelPhone");
 
+const hotelWhatsapp =
+    document.getElementById("hotelWhatsapp");
 
-const hotelsVille =
-    document.getElementById(
-        "hotelsVille"
-    );
+const hotelPhoneWrapper =
+    document.getElementById("hotelPhoneWrapper");
 
+const hotelWhatsappWrapper =
+    document.getElementById("hotelWhatsappWrapper");
 
-const hotelsCommune =
-    document.getElementById(
-        "hotelsCommune"
-    );
+const hotelPhoneButton =
+    document.getElementById("hotelPhoneButton");
 
+const hotelWhatsappButton =
+    document.getElementById("hotelWhatsappButton");
 
-const hotelsSearchButton =
-    document.getElementById(
-        "hotelsSearchButton"
-    );
 
+/* =========================================================
+   MODAL PHOTOS
+========================================================= */
 
-const hotelBusinessVille =
-    document.getElementById(
-        "hotelBusinessVille"
-    );
+const hotelPhotoModal =
+    document.getElementById("hotelPhotoModal");
 
+const hotelModalImage =
+    document.getElementById("hotelModalImage");
 
-const hotelBusinessCommune =
-    document.getElementById(
-        "hotelBusinessCommune"
-    );
+const hotelPhotoClose =
+    document.getElementById("hotelPhotoClose");
 
+const hotelPhotoPrev =
+    document.getElementById("hotelPhotoPrev");
 
-const hotelsCount =
-    document.getElementById(
-        "hotelsCount"
-    );
+const hotelPhotoNext =
+    document.getElementById("hotelPhotoNext");
 
+const hotelPhotoCounter =
+    document.getElementById("hotelPhotoCounter");
 
-const hotelsYear =
-    document.getElementById(
-        "hotelsYear"
-    );
 
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-/* =====================================================
-   MENU MOBILE
-===================================================== */
+let hotelPhotos = [];
 
-const hotelsMenuButton =
-    document.getElementById(
-        "hotelsMenuButton"
-    );
+let currentPhotoIndex = 0;
 
 
-const hotelsSidebar =
-    document.getElementById(
-        "hotelsSidebar"
-    );
+/* =========================================================
+   UTILITAIRES
+========================================================= */
 
-
-const hotelsOverlay =
-    document.getElementById(
-        "hotelsOverlay"
-    );
-
-
-if (hotelsYear) {
-
-    hotelsYear.textContent =
-        new Date().getFullYear();
-
-}
-
-
-/* =====================================================
-   CATÉGORIES
-   Elles sont locales.
-   Pas besoin de collection Firestore.
-===================================================== */
-
-const HOTEL_CATEGORIES = [
-
-    {
-        id: "hotel",
-
-        name: "Hôtels",
-
-        icon: "fa-solid fa-hotel",
-
-        description:
-            "Hôtels et établissements classiques."
-    },
-
-
-    {
-        id: "residence",
-
-        name: "Résidences",
-
-        icon: "fa-solid fa-building",
-
-        description:
-            "Résidences et logements meublés."
-    },
-
-
-    {
-        id: "appartement",
-
-        name: "Appartements",
-
-        icon: "fa-solid fa-house",
-
-        description:
-            "Appartements pour courts ou longs séjours."
-    },
-
-
-    {
-        id: "maison-hotes",
-
-        name: "Maisons d'hôtes",
-
-        icon: "fa-solid fa-house-chimney",
-
-        description:
-            "Maisons d'hôtes et hébergements familiaux."
-    },
-
-
-    {
-        id: "auberge",
-
-        name: "Auberges",
-
-        icon: "fa-solid fa-bed",
-
-        description:
-            "Hébergements simples et économiques."
-    },
-
-
-    {
-        id: "lodge",
-
-        name: "Lodges",
-
-        icon: "fa-solid fa-mountain-sun",
-
-        description:
-            "Lodges et hébergements touristiques."
-    },
-
-
-    {
-        id: "courte-duree",
-
-        name: "Courte durée",
-
-        icon: "fa-solid fa-calendar-days",
-
-        description:
-            "Hébergements pour courts séjours."
-    },
-
-
-    {
-        id: "autres",
-
-        name: "Autres",
-
-        icon: "fa-solid fa-layer-group",
-
-        description:
-            "Autres solutions d'hébergement."
-    }
-
-];
-
-
-/* =====================================================
-   DONNÉES
-===================================================== */
-
-let allHotels = [];
-
-let allBusinesses = [];
-
-
-/* =====================================================
-   NORMALISER
-===================================================== */
-
-function normalizeText(value) {
-
-    return String(value || "")
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        );
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =====================================================
-   IMAGE
-===================================================== */
-
-function getImage(item) {
-
-    /*
-       images = tableau
-    */
+function cleanValue(value) {
 
     if (
-        Array.isArray(item.images) &&
-        item.images.length > 0 &&
-        item.images[0]
+        value === undefined ||
+        value === null
     ) {
 
-        return item.images[0];
+        return "";
+
+    }
+
+    return String(value).trim();
+
+}
+
+
+function normalizePhone(phone) {
+
+    let value =
+        cleanValue(phone);
+
+    if (!value) {
+        return "";
+    }
+
+    value =
+        value.replace(/[^\d+]/g, "");
+
+    return value;
+
+}
+
+
+function whatsappUrl(phone) {
+
+    const clean =
+        normalizePhone(phone);
+
+    if (!clean) {
+        return "";
+    }
+
+    const number =
+        clean.replace(/\+/g, "");
+
+    return `https://wa.me/${number}`;
+
+}
+
+
+/* =========================================================
+   EXTRAIRE LES PHOTOS
+========================================================= */
+
+function extractPhotos(data) {
+
+    const photos = [];
+
+
+    /* ---------------------------------------------
+       photoURL
+    --------------------------------------------- */
+
+    const mainPhoto =
+        cleanValue(
+            data.photoURL
+        );
+
+    if (
+        mainPhoto &&
+        /^https?:\/\//i.test(mainPhoto)
+    ) {
+
+        photos.push(mainPhoto);
 
     }
 
 
-    /*
-       images = JSON string
-    */
+    /* ---------------------------------------------
+       images
+    --------------------------------------------- */
+
+    const images =
+        data.images;
+
+
+    if (Array.isArray(images)) {
+
+        images.forEach(image => {
+
+            if (
+                typeof image === "string" &&
+                /^https?:\/\//i.test(
+                    image.trim()
+                )
+            ) {
+
+                const url =
+                    image.trim();
+
+                if (
+                    !photos.includes(url)
+                ) {
+
+                    photos.push(url);
+
+                }
+
+            }
+
+
+            if (
+                image &&
+                typeof image === "object"
+            ) {
+
+                const url =
+                    cleanValue(
+                        image.url ||
+                        image.src ||
+                        image.secure_url
+                    );
+
+                if (
+                    url &&
+                    /^https?:\/\//i.test(url) &&
+                    !photos.includes(url)
+                ) {
+
+                    photos.push(url);
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* ---------------------------------------------
+       images JSON string
+    --------------------------------------------- */
 
     if (
-        typeof item.images === "string" &&
-        item.images.trim() !== ""
+        typeof images === "string" &&
+        images.trim()
     ) {
 
         try {
 
             const parsed =
-                JSON.parse(item.images);
+                JSON.parse(images);
+
+            if (Array.isArray(parsed)) {
+
+                parsed.forEach(image => {
+
+                    const url =
+                        typeof image === "string"
+                            ? image.trim()
+                            : cleanValue(
+                                image?.url ||
+                                image?.src ||
+                                image?.secure_url
+                            );
+
+                    if (
+                        url &&
+                        /^https?:\/\//i.test(url) &&
+                        !photos.includes(url)
+                    ) {
+
+                        photos.push(url);
+
+                    }
+
+                });
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "CAMU HÔTEL — images JSON invalide :",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------
+       image1, image2, image3...
+    --------------------------------------------- */
+
+    Object.keys(data)
+        .filter(key =>
+            /^image\d+$/i.test(key)
+        )
+        .sort()
+        .forEach(key => {
+
+            const url =
+                cleanValue(data[key]);
+
+            if (
+                url &&
+                /^https?:\/\//i.test(url) &&
+                !photos.includes(url)
+            ) {
+
+                photos.push(url);
+
+            }
+
+        });
+
+
+    return photos;
+
+}
+
+
+/* =========================================================
+   AFFICHER GALERIE PRINCIPALE
+========================================================= */
+
+function renderMainGallery() {
+
+    if (!hotelGallery) {
+        return;
+    }
+
+
+    hotelGallery.innerHTML = "";
+
+
+    if (!hotelPhotos.length) {
+
+        hotelGallery.innerHTML = `
+            <div class="hotel-gallery-item"
+                 style="grid-column:1 / -1; grid-row:1 / -1;">
+                <div style="
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#888;
+                    font-size:15px;
+                ">
+                    <i class="fa-solid fa-hotel"
+                       style="margin-right:8px;">
+                    </i>
+                    Aucune photo disponible
+                </div>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const displayPhotos =
+        hotelPhotos.slice(0, 4);
+
+
+    displayPhotos.forEach(
+        (photo, index) => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "hotel-gallery-item";
+
+
+            const image =
+                document.createElement("img");
+
+            image.src =
+                photo;
+
+            image.alt =
+                `Photo de l'établissement ${index + 1}`;
+
+            image.loading =
+                index === 0
+                    ? "eager"
+                    : "lazy";
+
+
+            item.appendChild(image);
 
 
             if (
-                Array.isArray(parsed) &&
-                parsed.length > 0 &&
-                parsed[0]
+                index === displayPhotos.length - 1 &&
+                hotelPhotos.length > 4
             ) {
 
-                return parsed[0];
+                const more =
+                    document.createElement("div");
+
+                more.className =
+                    "hotel-gallery-more";
+
+                more.innerHTML =
+                    `<i class="fa-solid fa-images"></i>
+                     ${hotelPhotos.length} photos`;
+
+                item.appendChild(more);
 
             }
 
-        } catch {
 
-            // Continuer
-
-        }
-
-    }
-
-
-    if (item.imageURL) {
-
-        return item.imageURL;
-
-    }
-
-
-    if (item.imageUrl) {
-
-        return item.imageUrl;
-
-    }
-
-
-    if (item.image) {
-
-        return item.image;
-
-    }
-
-
-    if (item.photoURL) {
-
-        return item.photoURL;
-
-    }
-
-
-    if (item.logoURL) {
-
-        return item.logoURL;
-
-    }
-
-
-    return "assets/logo/camu-services-logo.png";
-
-}
-
-
-/* =====================================================
-   PRIX
-===================================================== */
-
-function formatPrice(
-    price,
-    currency = "USD"
-) {
-
-    if (
-        price === undefined ||
-        price === null ||
-        price === ""
-    ) {
-
-        return "Prix à discuter";
-
-    }
-
-
-    const number =
-        Number(price);
-
-
-    if (Number.isNaN(number)) {
-
-        return escapeHtml(
-            price
-        );
-
-    }
-
-
-    const formatted =
-        new Intl.NumberFormat(
-            "fr-FR",
-            {
-                maximumFractionDigits: 0
-            }
-        ).format(number);
-
-
-    if (
-        currency === "USD" ||
-        currency === "$"
-    ) {
-
-        return `${formatted} $`;
-
-    }
-
-
-    if (
-        currency === "CDF" ||
-        currency === "FC"
-    ) {
-
-        return `${formatted} FC`;
-
-    }
-
-
-    return `${formatted} ${escapeHtml(
-        currency
-    )}`;
-
-}
-
-
-/* =====================================================
-   DÉTECTER ANNONCE HÔTEL
-===================================================== */
-
-function isHotelAd(ad) {
-
-    const text =
-        normalizeText(
-
-            [
-
-                ad.category,
-
-                ad.title,
-
-                ad.description,
-
-                ad.type,
-
-                ad.typeHebergement,
-
-                ad.service
-
-            ].join(" ")
-
-        );
-
-
-    const keywords = [
-
-        "hotel",
-
-        "hebergement",
-
-        "hebergement",
-
-        "residence",
-
-        "appartement",
-
-        "maison d'hote",
-
-        "maison dhote",
-
-        "auberge",
-
-        "lodge",
-
-        "chambre",
-
-        "guest house",
-
-        "guesthouse"
-
-    ];
-
-
-    return keywords.some(
-        keyword =>
-            text.includes(
-                normalizeText(
-                    keyword
-                )
-            )
-    );
-
-}
-
-
-/* =====================================================
-   NOM CATÉGORIE
-===================================================== */
-
-function getHotelCategoryName(
-    hotel
-) {
-
-    const text =
-        normalizeText(
-
-            [
-
-                hotel.category,
-
-                hotel.type,
-
-                hotel.typeHebergement,
-
-                hotel.title
-
-            ].join(" ")
-
-        );
-
-
-    if (
-        text.includes("hotel")
-    ) {
-
-        return "Hôtels";
-
-    }
-
-
-    if (
-        text.includes("residence")
-    ) {
-
-        return "Résidences";
-
-    }
-
-
-    if (
-        text.includes("appartement")
-    ) {
-
-        return "Appartements";
-
-    }
-
-
-    if (
-        text.includes("maison") &&
-        text.includes("hote")
-    ) {
-
-        return "Maisons d'hôtes";
-
-    }
-
-
-    if (
-        text.includes("auberge")
-    ) {
-
-        return "Auberges";
-
-    }
-
-
-    if (
-        text.includes("lodge")
-    ) {
-
-        return "Lodges";
-
-    }
-
-
-    return hotel.category ||
-        "Hébergement";
-
-}
-
-
-/* =====================================================
-   AFFICHER CATÉGORIES
-===================================================== */
-
-function renderCategories() {
-
-    if (!hotelsCategories) {
-        return;
-    }
-
-
-    hotelsCategories.innerHTML = "";
-
-
-    HOTEL_CATEGORIES.forEach(
-        category => {
-
-
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-
-            card.className =
-                "hotels-category-card";
-
-
-            card.innerHTML = `
-
-                <div
-                    class="hotels-category-icon"
-                >
-
-                    <i
-                        class="${escapeHtml(
-                            category.icon
-                        )}"
-                    ></i>
-
-                </div>
-
-
-                <h3>
-
-                    ${escapeHtml(
-                        category.name
-                    )}
-
-                </h3>
-
-
-                <p>
-
-                    ${escapeHtml(
-                        category.description
-                    )}
-
-                </p>
-
-            `;
-
-
-            card.addEventListener(
+            item.addEventListener(
                 "click",
-                () => {
-
-
-                    if (hotelsCategory) {
-
-                        hotelsCategory.value =
-                            category.id;
-
-                    }
-
-
-                    filterHotels();
-
-
-                    const section =
-                        document.getElementById(
-                            "hebergements"
-                        );
-
-
-                    if (section) {
-
-                        section.scrollIntoView({
-                            behavior: "smooth"
-                        });
-
-                    }
-
-                }
+                () => openPhoto(index)
             );
 
 
-            hotelsCategories.appendChild(
-                card
-            );
+            hotelGallery.appendChild(item);
 
         }
     );
@@ -757,1537 +468,756 @@ function renderCategories() {
 }
 
 
-/* =====================================================
-   SELECT CATÉGORIES
-===================================================== */
+/* =========================================================
+   AFFICHER PHOTOS
+========================================================= */
 
-function loadCategorySelect() {
+function renderPhotos() {
 
-    if (!hotelsCategory) {
+    if (!hotelPhotosGrid) {
         return;
     }
 
 
-    hotelsCategory.innerHTML = `
+    hotelPhotosGrid.innerHTML = "";
 
-        <option value="">
 
-            Toutes les catégories
+    if (!hotelPhotos.length) {
 
-        </option>
-
-    `;
-
-
-    HOTEL_CATEGORIES.forEach(
-        category => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                category.id;
-
-
-            option.textContent =
-                category.name;
-
-
-            hotelsCategory.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   CHARGER VILLES
-   COLLECTION : villes
-===================================================== */
-
-async function loadCities() {
-
-    try {
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "villes"
-                )
-            );
-
-
-        const cities = [];
-
-
-        snapshot.forEach(
-            document => {
-
-                const data =
-                    document.data();
-
-
-                if (
-                    data.active === true
-                ) {
-
-                    cities.push({
-
-                        name:
-                            String(
-                                data.name || ""
-                            ).trim(),
-
-                        order:
-                            Number(
-                                data.order
-                            ) || 999
-
-                    });
-
-                }
-
-            }
-        );
-
-
-        cities.sort(
-            (a, b) => {
-
-                if (
-                    a.order !== b.order
-                ) {
-
-                    return (
-                        a.order -
-                        b.order
-                    );
-
-                }
-
-
-                return a.name.localeCompare(
-                    b.name,
-                    "fr",
-                    {
-                        sensitivity: "base"
-                    }
-                );
-
-            }
-        );
-
-
-        const selects = [
-
-            hotelsVille,
-
-            hotelBusinessVille
-
-        ];
-
-
-        selects.forEach(
-            select => {
-
-                if (!select) {
-                    return;
-                }
-
-
-                select.innerHTML = `
-
-                    <option value="">
-
-                        Toutes les villes
-
-                    </option>
-
-                `;
-
-
-                cities.forEach(
-                    city => {
-
-                        const option =
-                            document.createElement(
-                                "option"
-                            );
-
-
-                        option.value =
-                            city.name;
-
-
-                        option.textContent =
-                            city.name;
-
-
-                        select.appendChild(
-                            option
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-        console.log(
-            "CAMU HÔTELS — villes chargées :",
-            cities.length
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "CAMU HÔTELS — erreur villes :",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   CHARGER ANNONCES
-   COLLECTION : annonces
-===================================================== */
-
-async function loadHotels() {
-
-    if (!hotelsProducts) {
-        return;
-    }
-
-
-    try {
-
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "annonces"
-                )
-            );
-
-
-        allHotels =
-            snapshot.docs
-                .map(
-                    document => ({
-
-                        id:
-                            document.id,
-
-                        ...document.data()
-
-                    })
-                )
-                .filter(
-                    ad => {
-
-                        const status =
-                            normalizeText(
-                                ad.status
-                            );
-
-
-                        const isActive =
-                            !status ||
-                            status === "active" ||
-                            status === "approved";
-
-
-                        return (
-                            isActive &&
-                            isHotelAd(ad)
-                        );
-
-                    }
-                );
-
-
-        console.log(
-            "CAMU HÔTELS — annonces trouvées :",
-            allHotels.length
-        );
-
-
-        filterHotels();
-
-
-    } catch (error) {
-
-        console.error(
-            "CAMU HÔTELS — erreur annonces :",
-            error
-        );
-
-
-        hotelsProducts.innerHTML = `
-
-            <div class="hotels-empty">
-
-                <i
-                    class="fa-solid fa-triangle-exclamation"
-                ></i>
-
-                <span>
-
-                    Impossible de charger
-                    les hébergements.
-
-                </span>
-
-            </div>
-
+        hotelPhotosGrid.innerHTML = `
+            <p style="color:#888;">
+                Aucune photo supplémentaire disponible.
+            </p>
         `;
 
+        return;
+
+    }
+
+
+    hotelPhotos.forEach(
+        (photo, index) => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "hotel-photo-item";
+
+
+            const image =
+                document.createElement("img");
+
+            image.src =
+                photo;
+
+            image.alt =
+                `Photo ${index + 1}`;
+
+            image.loading =
+                "lazy";
+
+
+            item.appendChild(image);
+
+
+            item.addEventListener(
+                "click",
+                () => openPhoto(index)
+            );
+
+
+            hotelPhotosGrid.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openPhoto(index) {
+
+    if (
+        !hotelPhotos.length ||
+        !hotelPhotoModal
+    ) {
+
+        return;
+
+    }
+
+
+    currentPhotoIndex =
+        Math.max(
+            0,
+            Math.min(
+                index,
+                hotelPhotos.length - 1
+            )
+        );
+
+
+    updateModal();
+
+
+    hotelPhotoModal.classList.remove(
+        "hidden"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function closePhoto() {
+
+    hotelPhotoModal?.classList.add(
+        "hidden"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+function updateModal() {
+
+    if (!hotelModalImage) {
+        return;
+    }
+
+
+    const photo =
+        hotelPhotos[currentPhotoIndex];
+
+
+    if (!photo) {
+        return;
+    }
+
+
+    hotelModalImage.src =
+        photo;
+
+
+    hotelModalImage.alt =
+        `Photo ${currentPhotoIndex + 1}`;
+
+
+    if (hotelPhotoCounter) {
+
+        hotelPhotoCounter.textContent =
+            `${currentPhotoIndex + 1} / ${hotelPhotos.length}`;
+
     }
 
 }
 
 
-/* =====================================================
-   FILTRER HÔTELS
-===================================================== */
+function previousPhoto() {
 
-function filterHotels() {
-
-    if (!hotelsProducts) {
+    if (!hotelPhotos.length) {
         return;
     }
 
+    currentPhotoIndex =
+        (
+            currentPhotoIndex -
+            1 +
+            hotelPhotos.length
+        ) %
+        hotelPhotos.length;
 
-    const keyword =
-        normalizeText(
-            hotelsKeyword?.value
+    updateModal();
+
+}
+
+
+function nextPhoto() {
+
+    if (!hotelPhotos.length) {
+        return;
+    }
+
+    currentPhotoIndex =
+        (
+            currentPhotoIndex +
+            1
+        ) %
+        hotelPhotos.length;
+
+    updateModal();
+
+}
+
+
+/* =========================================================
+   CONTACTS
+========================================================= */
+
+function renderContacts(data) {
+
+    const phoneValue =
+        cleanValue(
+            data.telephone ||
+            data.phone ||
+            data.tel
         );
+
+
+    const whatsappValue =
+        cleanValue(
+            data.WhatsApp ||
+            data.whatsapp ||
+            data.whatsappNumber
+        );
+
+
+    /* ---------------------------------------------
+       TÉLÉPHONE
+    --------------------------------------------- */
+
+    if (phoneValue) {
+
+        if (hotelPhone) {
+            hotelPhone.textContent =
+                phoneValue;
+        }
+
+        if (hotelPhoneWrapper) {
+            hotelPhoneWrapper.classList.remove(
+                "hidden"
+            );
+        }
+
+        if (hotelPhoneButton) {
+
+            hotelPhoneButton.href =
+                `tel:${normalizePhone(phoneValue)}`;
+
+            hotelPhoneButton.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    }
+
+    else {
+
+        hotelPhoneWrapper?.classList.add(
+            "hidden"
+        );
+
+        hotelPhoneButton?.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       WHATSAPP
+    --------------------------------------------- */
+
+    if (whatsappValue) {
+
+        if (hotelWhatsapp) {
+            hotelWhatsapp.textContent =
+                whatsappValue;
+        }
+
+        if (hotelWhatsappWrapper) {
+            hotelWhatsappWrapper.classList.remove(
+                "hidden"
+            );
+        }
+
+        if (hotelWhatsappButton) {
+
+            const url =
+                whatsappUrl(
+                    whatsappValue
+                );
+
+            if (url) {
+
+                hotelWhatsappButton.href =
+                    url;
+
+                hotelWhatsappButton.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+        }
+
+    }
+
+    else {
+
+        hotelWhatsappWrapper?.classList.add(
+            "hidden"
+        );
+
+        hotelWhatsappButton?.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHER LES INFORMATIONS
+========================================================= */
+
+function renderHotel(data) {
+
+    const name =
+        cleanValue(
+            data.name ||
+            data.nom ||
+            data.title
+        ) ||
+        "Établissement hôtelier";
 
 
     const category =
-        normalizeText(
-            hotelsCategory?.value
-        );
+        cleanValue(
+            data.category ||
+            data.categorie
+        ) ||
+        "Hôtel";
 
 
-    const ville =
-        normalizeText(
-            hotelsVille?.value
-        );
+    const city =
+        cleanValue(
+            data.ville ||
+            data.city
+        ) ||
+        "—";
 
 
     const commune =
-        normalizeText(
-            hotelsCommune?.value
-        );
+        cleanValue(
+            data.commune
+        ) ||
+        "—";
 
 
-    const results =
-        allHotels.filter(
-            hotel => {
+    const address =
+        cleanValue(
+            data.adresse ||
+            data.address
+        ) ||
+        "Adresse non renseignée";
 
 
-                const text =
-                    normalizeText(
+    const description =
+        cleanValue(
+            data.description
+        ) ||
+        "Aucune description disponible pour cet établissement.";
 
-                        [
 
-                            hotel.title,
+    const locationParts =
+        [
+            city,
+            commune !== "—"
+                ? commune
+                : ""
+        ]
+        .filter(Boolean);
 
-                            hotel.description,
 
-                            hotel.category,
+    const locationText =
+        locationParts.length
+            ? locationParts.join(" · ")
+            : "Localisation non renseignée";
 
-                            hotel.type,
 
-                            hotel.typeHebergement,
+    if (hotelName) {
+        hotelName.textContent =
+            name;
+    }
 
-                            hotel.service,
 
-                            hotel.city,
+    if (hotelContactName) {
+        hotelContactName.textContent =
+            name;
+    }
 
-                            hotel.commune
 
-                        ].join(" ")
+    if (hotelCategory) {
 
-                    );
-
-
-                const hotelVille =
-                    normalizeText(
-                        hotel.city
-                    );
-
-
-                const hotelCommune =
-                    normalizeText(
-                        hotel.commune
-                    );
-
-
-                /* RECHERCHE */
-
-                if (
-                    keyword &&
-                    !text.includes(
-                        keyword
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                /* VILLE */
-
-                if (
-                    ville &&
-                    hotelVille !== ville
-                ) {
-
-                    return false;
-
-                }
-
-
-                /* COMMUNE */
-
-                if (
-                    commune &&
-                    !hotelCommune.includes(
-                        commune
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                /* CATÉGORIE */
-
-                if (
-                    category &&
-                    category !== "autres"
-                ) {
-
-                    const categoryText =
-                        normalizeText(
-
-                            [
-
-                                hotel.category,
-
-                                hotel.type,
-
-                                hotel.typeHebergement,
-
-                                hotel.title
-
-                            ].join(" ")
-
-                        );
-
-
-                    const categoryMap = {
-
-                        hotel:
-                            "hotel",
-
-                        residence:
-                            "residence",
-
-                        appartement:
-                            "appartement",
-
-                        "maison-hotes":
-                            "maison",
-
-                        auberge:
-                            "auberge",
-
-                        lodge:
-                            "lodge",
-
-                        "courte-duree":
-                            "location"
-
-                    };
-
-
-                    const searchValue =
-                        categoryMap[
-                            category
-                        ];
-
-
-                    if (
-                        searchValue &&
-                        !categoryText.includes(
-                            searchValue
-                        )
-                    ) {
-
-                        return false;
-
-                    }
-
-                }
-
-
-                return true;
-
-            }
-        );
-
-
-    renderHotels(
-        results
-    );
-
-}
-
-
-/* =====================================================
-   AFFICHER HÔTELS
-===================================================== */
-
-function renderHotels(
-    hotels
-) {
-
-    hotelsProducts.innerHTML = "";
-
-
-    if (hotelsCount) {
-
-        hotelsCount.textContent =
-            `${hotels.length} hébergement${
-                hotels.length > 1
-                    ? "s"
-                    : ""
-            }`;
+        hotelCategory.innerHTML =
+            `<i class="fa-solid fa-hotel"></i>
+             <span>${category}</span>`;
 
     }
 
 
-    if (!hotels.length) {
+    if (hotelCategoryDetail) {
 
-        hotelsProducts.innerHTML = `
-
-            <div class="hotels-empty">
-
-                <i
-                    class="fa-solid fa-hotel"
-                ></i>
-
-                <strong>
-
-                    Aucun hébergement trouvé
-
-                </strong>
-
-                <span>
-
-                    Essayez une autre ville,
-                    commune ou recherche.
-
-                </span>
-
-            </div>
-
-        `;
-
-        return;
+        hotelCategoryDetail.textContent =
+            category;
 
     }
 
 
-    hotels.forEach(
-        hotel => {
+    if (hotelLocation) {
+
+        hotelLocation.textContent =
+            locationText;
+
+    }
 
 
-            const card =
-                document.createElement(
-                    "article"
-                );
+    if (hotelContactLocation) {
+
+        hotelContactLocation.textContent =
+            locationText;
+
+    }
 
 
-            card.className =
-                "hotels-product-card";
+    if (hotelDescription) {
+
+        hotelDescription.textContent =
+            description;
+
+    }
 
 
-            const image =
-                getImage(
-                    hotel
-                );
+    if (hotelAddress) {
+
+        hotelAddress.textContent =
+            address;
+
+    }
 
 
-            const title =
-                hotel.title ||
-                "Hébergement";
+    if (hotelCity) {
+
+        hotelCity.textContent =
+            city;
+
+    }
 
 
-            const city =
-                String(
-                    hotel.city ||
-                    "Ville non précisée"
-                ).trim();
+    if (hotelCommune) {
+
+        hotelCommune.textContent =
+            commune;
+
+    }
 
 
-            const commune =
-                String(
-                    hotel.commune ||
-                    ""
-                ).trim();
-
-
-            const category =
-                getHotelCategoryName(
-                    hotel
-                );
-
-
-            const price =
-                formatPrice(
-                    hotel.price,
-                    hotel.currency ||
-                        "USD"
-                );
-
-
-            card.innerHTML = `
-
-                <div
-                    class="hotels-product-image"
-                >
-
-                    <img
-                        src="${escapeHtml(
-                            image
-                        )}"
-                        alt="${escapeHtml(
-                            title
-                        )}"
-                        loading="lazy"
-                        onerror="
-                            this.src='assets/logo/camu-services-logo.png'
-                        "
-                    >
-
-                </div>
-
-
-                <div
-                    class="hotels-product-content"
-                >
-
-
-                    <div
-                        class="hotels-product-category"
-                    >
-
-                        ${escapeHtml(
-                            category
-                        )}
-
-                    </div>
-
-
-                    <h3
-                        class="hotels-product-title"
-                    >
-
-                        ${escapeHtml(
-                            title
-                        )}
-
-                    </h3>
-
-
-                    <div
-                        class="hotels-product-location"
-                    >
-
-                        <i
-                            class="fa-solid fa-location-dot"
-                        ></i>
-
-
-                        <span>
-
-                            ${escapeHtml(
-                                city
-                            )}
-
-                            ${
-                                commune
-                                    ? " — " +
-                                      escapeHtml(
-                                          commune
-                                      )
-                                    : ""
-                            }
-
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="hotels-product-price"
-                    >
-
-                        ${price}
-
-                    </div>
-
-
-                </div>
-
-            `;
-
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    window.location.href =
-                        `explorer.html?id=${encodeURIComponent(
-                            hotel.id
-                        )}`;
-
-                }
-            );
-
-
-            hotelsProducts.appendChild(
-                card
-            );
-
-        }
-    );
+    renderContacts(data);
 
 }
 
 
-/* =====================================================
-   CHARGER ÉTABLISSEMENTS
-   COLLECTION :
-   etablissements_hoteliers
-===================================================== */
+/* =========================================================
+   CHARGER L'ÉTABLISSEMENT
+========================================================= */
 
-async function loadBusinesses() {
+async function loadHotel() {
 
-    if (!hotelsBusinesses) {
+    if (!hotelId) {
+
+        showError(
+            "Établissement introuvable",
+            "Aucun identifiant d'établissement n'a été fourni."
+        );
+
         return;
+
     }
 
 
     try {
 
-        const snapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "etablissements_hoteliers"
-                )
-            );
-
-
-        allBusinesses =
-            snapshot.docs
-                .map(
-                    document => ({
-
-                        id:
-                            document.id,
-
-                        ...document.data()
-
-                    })
-                )
-                .filter(
-                    business =>
-                        business.active !== false
-                );
-
-
         console.log(
-            "CAMU HÔTELS — établissements :",
-            allBusinesses.length
+            "CAMU HÔTEL — recherche :",
+            hotelId
         );
 
 
-        filterBusinesses();
+        const hotelRef =
+            doc(
+                db,
+                "etablissements_hoteliers",
+                hotelId
+            );
 
 
-    } catch (error) {
+        const snapshot =
+            await getDoc(hotelRef);
+
+
+        if (!snapshot.exists()) {
+
+            console.warn(
+                "CAMU HÔTEL — établissement introuvable :",
+                hotelId
+            );
+
+
+            showError(
+                "Établissement introuvable",
+                "Cet établissement n'existe pas ou n'est plus disponible."
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            snapshot.data();
+
+
+        console.log(
+            "CAMU HÔTEL — établissement trouvé :",
+            hotelId,
+            data
+        );
+
+
+        if (
+            data.active === false
+        ) {
+
+            showError(
+                "Établissement indisponible",
+                "Cet établissement n'est actuellement pas disponible."
+            );
+
+            return;
+
+        }
+
+
+        renderHotel(data);
+
+
+        hotelPhotos =
+            extractPhotos(data);
+
+
+        renderMainGallery();
+
+        renderPhotos();
+
+
+        hideLoading();
+
+        showContent();
+
+
+        /* ---------------------------------------------
+           TITRE
+        --------------------------------------------- */
+
+        document.title =
+            `${cleanValue(data.name) || "Établissement"} — CAMU HÔTELS`;
+
+
+        console.log(
+            "CAMU HÔTEL — fiche chargée avec succès."
+        );
+
+    }
+
+    catch (error) {
 
         console.error(
-            "CAMU HÔTELS — erreur établissements :",
+            "CAMU HÔTEL — erreur chargement :",
             error
         );
 
 
-        hotelsBusinesses.innerHTML = `
-
-            <div class="hotels-empty">
-
-                <i
-                    class="fa-solid fa-building"
-                ></i>
-
-                <strong>
-
-                    Aucun établissement disponible
-
-                </strong>
-
-                <span>
-
-                    Les établissements apparaîtront
-                    ici lorsqu'ils seront enregistrés.
-
-                </span>
-
-            </div>
-
-        `;
+        showError(
+            "Erreur de chargement",
+            "Impossible de charger les informations de cet établissement."
+        );
 
     }
 
 }
 
 
-/* =====================================================
-   FILTRER ÉTABLISSEMENTS
-===================================================== */
+/* =========================================================
+   ÉTAT ERREUR
+========================================================= */
 
-function filterBusinesses() {
-
-    const ville =
-        normalizeText(
-            hotelBusinessVille?.value
-        );
-
-
-    const commune =
-        normalizeText(
-            hotelBusinessCommune?.value
-        );
-
-
-    const results =
-        allBusinesses.filter(
-            business => {
-
-
-                const businessVille =
-                    normalizeText(
-                        business.ville
-                    );
-
-
-                const businessCommune =
-                    normalizeText(
-                        business.commune
-                    );
-
-
-                if (
-                    ville &&
-                    businessVille !== ville
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    commune &&
-                    !businessCommune.includes(
-                        commune
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                return true;
-
-            }
-        );
-
-
-    renderBusinesses(
-        results
-    );
-
-}
-
-
-/* =====================================================
-   IMAGE ÉTABLISSEMENT
-===================================================== */
-
-function getBusinessImage(
-    business
+function showError(
+    title,
+    message
 ) {
 
-    const image =
-        business.photoURL ||
-        business.logoURL ||
-        business.imageURL;
+    if (hotelLoading) {
 
-
-    if (
-        image &&
-        String(image).trim() !== ""
-    ) {
-
-        return String(
-            image
-        ).trim();
+        hotelLoading.classList.add(
+            "hidden"
+        );
 
     }
 
 
-    return "assets/logo/camu-services-logo.png";
+    if (hotelContent) {
+
+        hotelContent.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (hotelError) {
+
+        hotelError.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    if (hotelErrorTitle) {
+
+        hotelErrorTitle.textContent =
+            title;
+
+    }
+
+
+    if (hotelErrorMessage) {
+
+        hotelErrorMessage.textContent =
+            message;
+
+    }
 
 }
 
 
-/* =====================================================
-   WHATSAPP
-===================================================== */
+/* =========================================================
+   AFFICHAGE
+========================================================= */
 
-function makeWhatsAppLink(
-    number,
-    name
-) {
+function hideLoading() {
 
-    if (!number) {
-        return "";
-    }
-
-
-    let phone =
-        String(number)
-            .replace(
-                /[^0-9]/g,
-                ""
-            );
-
-
-    if (
-        phone.startsWith("0")
-    ) {
-
-        phone =
-            "243" +
-            phone.substring(1);
-
-    }
-
-
-    const message =
-        `Bonjour ${name || ""}, je souhaite avoir des informations concernant votre établissement.`;
-
-
-    return (
-        "https://wa.me/" +
-        phone +
-        "?text=" +
-        encodeURIComponent(
-            message
-        )
+    hotelLoading?.classList.add(
+        "hidden"
     );
 
 }
 
 
-/* =====================================================
-   AFFICHER ÉTABLISSEMENTS
-===================================================== */
+function showContent() {
 
-function renderBusinesses(
-    businesses
-) {
+    hotelContent?.classList.remove(
+        "hidden"
+    );
 
-    hotelsBusinesses.innerHTML = "";
+}
 
 
-    if (!businesses.length) {
+/* =========================================================
+   ÉVÉNEMENTS MODAL
+========================================================= */
 
-        hotelsBusinesses.innerHTML = `
+hotelPhotoClose?.addEventListener(
+    "click",
+    closePhoto
+);
 
-            <div class="hotels-empty">
+hotelPhotoPrev?.addEventListener(
+    "click",
+    previousPhoto
+);
 
-                <i
-                    class="fa-solid fa-building"
-                ></i>
+hotelPhotoNext?.addEventListener(
+    "click",
+    nextPhoto
+);
 
-                <strong>
 
-                    Aucun établissement trouvé
+hotelPhotoModal?.addEventListener(
+    "click",
+    event => {
 
-                </strong>
+        if (
+            event.target ===
+            hotelPhotoModal
+        ) {
 
-                <span>
-
-                    Aucun hôtel ou établissement
-                    ne correspond aux filtres.
-
-                </span>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    businesses.forEach(
-        business => {
-
-
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-
-            card.className =
-                "hotels-business-card";
-
-
-            const name =
-                String(
-                    business.name ||
-                    business.nom ||
-                    "Établissement"
-                ).trim();
-
-
-            const category =
-                String(
-                    business.category ||
-                    "Hébergement"
-                ).trim();
-
-
-            const ville =
-                String(
-                    business.ville ||
-                    "Ville non précisée"
-                ).trim();
-
-
-            const commune =
-                String(
-                    business.commune ||
-                    ""
-                ).trim();
-
-
-            const description =
-                String(
-                    business.description ||
-                    "Établissement d'hébergement."
-                ).trim();
-
-
-            const image =
-                getBusinessImage(
-                    business
-                );
-
-
-            const whatsapp =
-                business.WhatsApp ||
-                business.whatsapp ||
-                "";
-
-
-            const phone =
-                business.phone ||
-                business.telephone ||
-                "";
-
-
-            const email =
-                business.email ||
-                "";
-
-
-            const whatsappLink =
-                makeWhatsAppLink(
-                    whatsapp,
-                    name
-                );
-
-
-            card.innerHTML = `
-
-                <div
-                    class="hotels-business-head"
-                >
-
-
-                    <img
-                        src="${escapeHtml(
-                            image
-                        )}"
-                        alt="${escapeHtml(
-                            name
-                        )}"
-                        class="hotels-business-photo"
-                        loading="lazy"
-                        onerror="
-                            this.src='assets/logo/camu-services-logo.png'
-                        "
-                    >
-
-
-                    <div>
-
-                        <div
-                            class="hotels-business-name"
-                        >
-
-                            ${escapeHtml(
-                                name
-                            )}
-
-                        </div>
-
-
-                        <div
-                            class="hotels-business-type"
-                        >
-
-                            ${escapeHtml(
-                                category
-                            )}
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-                <p
-                    class="hotels-business-description"
-                >
-
-                    ${escapeHtml(
-                        description
-                    )}
-
-                </p>
-
-
-                <div
-                    class="hotels-business-location"
-                >
-
-                    <i
-                        class="fa-solid fa-location-dot"
-                    ></i>
-
-
-                    <span>
-
-                        ${escapeHtml(
-                            ville
-                        )}
-
-                        ${
-                            commune
-                                ? " — " +
-                                  escapeHtml(
-                                      commune
-                                  )
-                                : ""
-                        }
-
-                    </span>
-
-                </div>
-
-
-                <div
-                    class="hotels-business-actions"
-                >
-
-
-                    ${
-                        whatsappLink
-                            ? `
-                                <a
-                                    href="${escapeHtml(
-                                        whatsappLink
-                                    )}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="hotels-whatsapp-small"
-                                >
-
-                                    <i
-                                        class="fa-brands fa-whatsapp"
-                                    ></i>
-
-                                    WhatsApp
-
-                                </a>
-                              `
-                            : ""
-                    }
-
-
-                    ${
-                        phone
-                            ? `
-                                <a
-                                    href="tel:${escapeHtml(
-                                        phone
-                                    )}"
-                                    class="hotels-phone-small"
-                                >
-
-                                    <i
-                                        class="fa-solid fa-phone"
-                                    ></i>
-
-                                    Appeler
-
-                                </a>
-                              `
-                            : ""
-                    }
-
-
-                    ${
-                        email
-                            ? `
-                                <a
-                                    href="mailto:${escapeHtml(
-                                        email
-                                    )}"
-                                    class="hotels-email-small"
-                                >
-
-                                    <i
-                                        class="fa-solid fa-envelope"
-                                    ></i>
-
-                                    E-mail
-
-                                </a>
-                              `
-                            : ""
-                    }
-
-
-                </div>
-
-            `;
-
-
-            hotelsBusinesses.appendChild(
-                card
-            );
+            closePhoto();
 
         }
-    );
-
-}
-
-
-/* =====================================================
-   ÉVÉNEMENTS RECHERCHE
-===================================================== */
-
-if (hotelsSearchButton) {
-
-    hotelsSearchButton.addEventListener(
-        "click",
-        () => {
-
-            filterHotels();
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   RECHERCHE AVEC ENTRÉE
-===================================================== */
-
-if (hotelsKeyword) {
-
-    hotelsKeyword.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                event.preventDefault();
-
-                filterHotels();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   FILTRE AUTOMATIQUE
-===================================================== */
-
-if (hotelsCategory) {
-
-    hotelsCategory.addEventListener(
-        "change",
-        filterHotels
-    );
-
-}
-
-
-if (hotelsVille) {
-
-    hotelsVille.addEventListener(
-        "change",
-        filterHotels
-    );
-
-}
-
-
-if (hotelsCommune) {
-
-    hotelsCommune.addEventListener(
-        "input",
-        filterHotels
-    );
-
-}
-
-
-if (hotelBusinessVille) {
-
-    hotelBusinessVille.addEventListener(
-        "change",
-        filterBusinesses
-    );
-
-}
-
-
-if (hotelBusinessCommune) {
-
-    hotelBusinessCommune.addEventListener(
-        "input",
-        filterBusinesses
-    );
-
-}
-
-
-/* =====================================================
-   MENU MOBILE
-===================================================== */
-
-function openHotelsMenu() {
-
-    if (hotelsSidebar) {
-
-        hotelsSidebar.classList.add(
-            "open"
-        );
-
-    }
-
-
-    if (hotelsOverlay) {
-
-        hotelsOverlay.classList.add(
-            "active"
-        );
-
-    }
-
-
-    if (hotelsMenuButton) {
-
-        hotelsMenuButton.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-    }
-
-}
-
-
-function closeHotelsMenu() {
-
-    if (hotelsSidebar) {
-
-        hotelsSidebar.classList.remove(
-            "open"
-        );
-
-    }
-
-
-    if (hotelsOverlay) {
-
-        hotelsOverlay.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    if (hotelsMenuButton) {
-
-        hotelsMenuButton.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    }
-
-}
-
-
-if (hotelsMenuButton) {
-
-    hotelsMenuButton.addEventListener(
-        "click",
-        () => {
-
-            if (
-                hotelsSidebar?.classList.contains(
-                    "open"
-                )
-            ) {
-
-                closeHotelsMenu();
-
-            } else {
-
-                openHotelsMenu();
-
-            }
-
-        }
-    );
-
-}
-
-
-if (hotelsOverlay) {
-
-    hotelsOverlay.addEventListener(
-        "click",
-        closeHotelsMenu
-    );
-
-}
-
-
-document.querySelectorAll(
-    ".hotels-nav-link"
-).forEach(
-    link => {
-
-        link.addEventListener(
-            "click",
-            closeHotelsMenu
-        );
 
     }
 );
 
 
-/* =====================================================
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            hotelPhotoModal?.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closePhoto();
+
+        }
+
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            previousPhoto();
+
+        }
+
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            nextPhoto();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    INITIALISATION
-===================================================== */
+========================================================= */
 
-async function initHotels() {
-
-    console.log(
-        "=========================================="
-    );
-
-
-    console.log(
-        "CAMU HÔTELS — initialisation..."
-    );
-
-
-    renderCategories();
-
-
-    loadCategorySelect();
-
-
-    await Promise.allSettled([
-
-        loadCities(),
-
-        loadHotels(),
-
-        loadBusinesses()
-
-    ]);
-
-
-    console.log(
-        "CAMU HÔTELS — initialisation terminée."
-    );
-
-
-    console.log(
-        "=========================================="
-    );
-
-}
-
-
-/* =====================================================
-   LANCER
-===================================================== */
-
-initHotels();
+loadHotel();
