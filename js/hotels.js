@@ -1,148 +1,1233 @@
-/* =========================================================
-   CAMU HÔTELS — FICHE ÉTABLISSEMENT
-========================================================= */
+// =========================================================
+// CAMU SERVICES — HÔTELS & HÉBERGEMENT
+// =========================================================
 
 import { db } from "./firebase-config.js";
 
 import {
-    doc,
-    getDoc
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-console.log("CAMU HÔTEL — fiche établissement initialisation...");
+// =========================================================
+// CONFIGURATION
+// =========================================================
+
+const COLLECTION_NAME = "etablissements_hoteliers";
 
 
-/* =========================================================
-   PARAMÈTRE URL
-========================================================= */
+// =========================================================
+// ÉLÉMENTS DOM
+// =========================================================
 
-const params =
-    new URLSearchParams(window.location.search);
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
 
-const hotelId =
-    params.get("id")?.trim() || "";
+const cityFilter = document.getElementById("cityFilter");
+const categoryFilter = document.getElementById("categoryFilter");
 
+const categoriesGrid = document.getElementById("categoriesGrid");
 
-/* =========================================================
-   ÉLÉMENTS DOM
-========================================================= */
+const establishmentsGrid =
+    document.getElementById("establishmentsGrid");
 
-const hotelLoading =
-    document.getElementById("hotelLoading");
+const resultsCount =
+    document.getElementById("resultsCount");
 
-const hotelError =
-    document.getElementById("hotelError");
+const loadingState =
+    document.getElementById("loadingState");
 
-const hotelErrorTitle =
-    document.getElementById("hotelErrorTitle");
+const errorState =
+    document.getElementById("errorState");
 
-const hotelErrorMessage =
-    document.getElementById("hotelErrorMessage");
+const errorMessage =
+    document.getElementById("errorMessage");
 
-const hotelContent =
-    document.getElementById("hotelContent");
+const emptyState =
+    document.getElementById("emptyState");
 
-const hotelGallery =
-    document.getElementById("hotelGallery");
+const retryButton =
+    document.getElementById("retryButton");
 
-const hotelPhotosGrid =
-    document.getElementById("hotelPhotosGrid");
+const resetButton =
+    document.getElementById("resetButton");
 
-const hotelName =
-    document.getElementById("hotelName");
-
-const hotelCategory =
-    document.getElementById("hotelCategory");
-
-const hotelCategoryDetail =
-    document.getElementById("hotelCategoryDetail");
-
-const hotelLocation =
-    document.getElementById("hotelLocation");
-
-const hotelDescription =
-    document.getElementById("hotelDescription");
-
-const hotelAddress =
-    document.getElementById("hotelAddress");
-
-const hotelCity =
-    document.getElementById("hotelCity");
-
-const hotelCommune =
-    document.getElementById("hotelCommune");
-
-const hotelContactName =
-    document.getElementById("hotelContactName");
-
-const hotelContactLocation =
-    document.getElementById("hotelContactLocation");
-
-const hotelPhone =
-    document.getElementById("hotelPhone");
-
-const hotelWhatsapp =
-    document.getElementById("hotelWhatsapp");
-
-const hotelPhoneWrapper =
-    document.getElementById("hotelPhoneWrapper");
-
-const hotelWhatsappWrapper =
-    document.getElementById("hotelWhatsappWrapper");
-
-const hotelPhoneButton =
-    document.getElementById("hotelPhoneButton");
-
-const hotelWhatsappButton =
-    document.getElementById("hotelWhatsappButton");
+const currentYear =
+    document.getElementById("currentYear");
 
 
-/* =========================================================
-   MODAL PHOTOS
-========================================================= */
+// =========================================================
+// ÉTAT
+// =========================================================
 
-const hotelPhotoModal =
-    document.getElementById("hotelPhotoModal");
+let establishments = [];
 
-const hotelModalImage =
-    document.getElementById("hotelModalImage");
-
-const hotelPhotoClose =
-    document.getElementById("hotelPhotoClose");
-
-const hotelPhotoPrev =
-    document.getElementById("hotelPhotoPrev");
-
-const hotelPhotoNext =
-    document.getElementById("hotelPhotoNext");
-
-const hotelPhotoCounter =
-    document.getElementById("hotelPhotoCounter");
+let selectedCategory = "";
 
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+// =========================================================
+// INITIALISATION
+// =========================================================
 
-let hotelPhotos = [];
+document.addEventListener("DOMContentLoaded", () => {
 
-let currentPhotoIndex = 0;
+    console.log(
+        "CAMU HÔTELS — initialisation..."
+    );
+
+    if (currentYear) {
+        currentYear.textContent =
+            new Date().getFullYear();
+    }
+
+    setupMenu();
+    setupSearch();
+    setupCategories();
+
+    loadEstablishments();
+
+});
 
 
-/* =========================================================
-   UTILITAIRES
-========================================================= */
+// =========================================================
+// CHARGEMENT FIRESTORE
+// =========================================================
+
+async function loadEstablishments() {
+
+    showLoading();
+
+    try {
+
+        console.log(
+            `CAMU HÔTELS — lecture de ${COLLECTION_NAME}...`
+        );
+
+        const snapshot = await getDocs(
+            collection(db, COLLECTION_NAME)
+        );
+
+        establishments = [];
+
+        snapshot.forEach((docSnap) => {
+
+            const data = docSnap.data();
+
+            /*
+             * Seuls les établissements actifs sont
+             * affichés publiquement.
+             *
+             * Si le champ active n'existe pas,
+             * on conserve l'établissement pour éviter
+             * de supprimer accidentellement les données
+             * déjà présentes.
+             */
+
+            if (
+                data.active === false
+            ) {
+                return;
+            }
+
+            establishments.push({
+                id: docSnap.id,
+                ...data
+            });
+
+        });
+
+
+        console.log(
+            "CAMU HÔTELS — établissements :",
+            establishments.length
+        );
+
+
+        populateCities();
+        populateCategories();
+
+        applyFilters();
+
+        console.log(
+            "CAMU HÔTELS — initialisation terminée."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "CAMU HÔTELS — erreur Firestore :",
+            error
+        );
+
+        showError(
+            "Impossible de charger les établissements. Vérifiez votre connexion et réessayez."
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// VILLES
+// =========================================================
+
+function populateCities() {
+
+    if (!cityFilter) {
+        return;
+    }
+
+    const cities = new Set();
+
+    establishments.forEach((hotel) => {
+
+        const city =
+            cleanValue(
+                hotel.ville
+            );
+
+        if (city) {
+            cities.add(city);
+        }
+
+    });
+
+
+    const sortedCities =
+        [...cities].sort(
+            (a, b) =>
+                a.localeCompare(
+                    b,
+                    "fr",
+                    {
+                        sensitivity: "base"
+                    }
+                )
+        );
+
+
+    cityFilter.innerHTML = `
+        <option value="">
+            Toutes les villes
+        </option>
+    `;
+
+
+    sortedCities.forEach((city) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = city;
+        option.textContent = city;
+
+        cityFilter.appendChild(option);
+
+    });
+
+
+    console.log(
+        "CAMU HÔTELS — villes :",
+        sortedCities.length
+    );
+
+}
+
+
+// =========================================================
+// CATÉGORIES DU SELECT
+// =========================================================
+
+function populateCategories() {
+
+    if (!categoryFilter) {
+        return;
+    }
+
+    const categories = new Set();
+
+    establishments.forEach((hotel) => {
+
+        const category =
+            cleanValue(
+                hotel.category
+            );
+
+        if (category) {
+            categories.add(category);
+        }
+
+    });
+
+
+    const sortedCategories =
+        [...categories].sort(
+            (a, b) =>
+                a.localeCompare(
+                    b,
+                    "fr",
+                    {
+                        sensitivity: "base"
+                    }
+                )
+        );
+
+
+    categoryFilter.innerHTML = `
+        <option value="">
+            Toutes les catégories
+        </option>
+    `;
+
+
+    sortedCategories.forEach((category) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = category;
+        option.textContent = category;
+
+        categoryFilter.appendChild(option);
+
+    });
+
+}
+
+
+// =========================================================
+// RECHERCHE
+// =========================================================
+
+function setupSearch() {
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            () => {
+                applyFilters();
+            }
+        );
+
+    }
+
+
+    if (searchButton) {
+
+        searchButton.addEventListener(
+            "click",
+            () => {
+                applyFilters();
+            }
+        );
+
+    }
+
+
+    if (cityFilter) {
+
+        cityFilter.addEventListener(
+            "change",
+            () => {
+                applyFilters();
+            }
+        );
+
+    }
+
+
+    if (categoryFilter) {
+
+        categoryFilter.addEventListener(
+            "change",
+            () => {
+
+                selectedCategory =
+                    categoryFilter.value;
+
+                updateCategoryButtons();
+
+                applyFilters();
+
+            }
+        );
+
+    }
+
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            "click",
+            resetFilters
+        );
+
+    }
+
+
+    if (retryButton) {
+
+        retryButton.addEventListener(
+            "click",
+            loadEstablishments
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// CATÉGORIES VISUELLES
+// =========================================================
+
+function setupCategories() {
+
+    if (!categoriesGrid) {
+        return;
+    }
+
+    const buttons =
+        categoriesGrid.querySelectorAll(
+            ".category-card"
+        );
+
+
+    buttons.forEach((button) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedCategory =
+                    cleanValue(
+                        button.dataset.category
+                    );
+
+                if (categoryFilter) {
+                    categoryFilter.value =
+                        selectedCategory;
+                }
+
+                updateCategoryButtons();
+
+                applyFilters();
+
+            }
+        );
+
+    });
+
+}
+
+
+function updateCategoryButtons() {
+
+    if (!categoriesGrid) {
+        return;
+    }
+
+    const buttons =
+        categoriesGrid.querySelectorAll(
+            ".category-card"
+        );
+
+
+    buttons.forEach((button) => {
+
+        const category =
+            cleanValue(
+                button.dataset.category
+            );
+
+        button.classList.toggle(
+            "active",
+            category === selectedCategory
+        );
+
+    });
+
+}
+
+
+// =========================================================
+// FILTRES
+// =========================================================
+
+function applyFilters() {
+
+    const search =
+        cleanValue(
+            searchInput?.value
+        ).toLowerCase();
+
+
+    const city =
+        cleanValue(
+            cityFilter?.value
+        );
+
+
+    const category =
+        cleanValue(
+            categoryFilter?.value ||
+            selectedCategory
+        );
+
+
+    const filtered =
+        establishments.filter((hotel) => {
+
+            const name =
+                cleanValue(
+                    hotel.name
+                ).toLowerCase();
+
+            const description =
+                cleanValue(
+                    hotel.description
+                ).toLowerCase();
+
+            const hotelCity =
+                cleanValue(
+                    hotel.ville
+                );
+
+            const commune =
+                cleanValue(
+                    hotel.commune
+                ).toLowerCase();
+
+            const hotelCategory =
+                cleanValue(
+                    hotel.category
+                );
+
+
+            const searchMatch =
+                !search ||
+                name.includes(search) ||
+                description.includes(search) ||
+                hotelCity.toLowerCase().includes(search) ||
+                commune.includes(search) ||
+                hotelCategory.toLowerCase().includes(search);
+
+
+            const cityMatch =
+                !city ||
+                hotelCity === city;
+
+
+            const categoryMatch =
+                !category ||
+                hotelCategory.toLowerCase() ===
+                category.toLowerCase();
+
+
+            return (
+                searchMatch &&
+                cityMatch &&
+                categoryMatch
+            );
+
+        });
+
+
+    renderEstablishments(filtered);
+
+}
+
+
+// =========================================================
+// AFFICHAGE
+// =========================================================
+
+function renderEstablishments(items) {
+
+    if (!establishmentsGrid) {
+        return;
+    }
+
+    establishmentsGrid.innerHTML = "";
+
+
+    if (resultsCount) {
+
+        const count = items.length;
+
+        resultsCount.textContent =
+            count === 1
+                ? "1 établissement"
+                : `${count} établissements`;
+
+    }
+
+
+    if (items.length === 0) {
+
+        establishmentsGrid.classList.add(
+            "hidden"
+        );
+
+        showEmpty();
+
+        return;
+
+    }
+
+
+    hideAllStates();
+
+    establishmentsGrid.classList.remove(
+        "hidden"
+    );
+
+
+    items.forEach((hotel) => {
+
+        const card =
+            createHotelCard(hotel);
+
+        establishmentsGrid.appendChild(card);
+
+    });
+
+
+    console.log(
+        "CAMU HÔTELS — cartes affichées :",
+        items.length
+    );
+
+}
+
+
+// =========================================================
+// CRÉATION D'UNE CARTE
+// =========================================================
+
+function createHotelCard(hotel) {
+
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "hotel-card";
+
+
+    const name =
+        cleanValue(
+            hotel.name
+        ) ||
+        "Établissement hôtelier";
+
+
+    const category =
+        cleanValue(
+            hotel.category
+        ) ||
+        "Hébergement";
+
+
+    const city =
+        cleanValue(
+            hotel.ville
+        );
+
+
+    const commune =
+        cleanValue(
+            hotel.commune
+        );
+
+
+    const address =
+        cleanValue(
+            hotel.adresse
+        );
+
+
+    const description =
+        cleanValue(
+            hotel.description
+        ) ||
+        "Découvrez les informations de cet établissement sur CAMU SERVICES.";
+
+
+    const images =
+        extractImages(hotel);
+
+
+    const mainImage =
+        images.length > 0
+            ? images[0]
+            : null;
+
+
+    const location =
+        [city, commune]
+            .filter(Boolean)
+            .join(" • ") ||
+        address ||
+        "Localisation non renseignée";
+
+
+    card.innerHTML = `
+
+        <div class="hotel-card-image">
+
+            ${
+                mainImage
+                    ? `
+                        <img
+                            src="${escapeAttribute(mainImage)}"
+                            alt="${escapeAttribute(name)}"
+                            loading="lazy"
+                        >
+                    `
+                    : `
+                        <div class="image-placeholder">
+                            🏨
+                        </div>
+                    `
+            }
+
+            <span class="hotel-card-category">
+                ${escapeHtml(category)}
+            </span>
+
+            <button
+                type="button"
+                class="hotel-card-favorite"
+                aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris"
+            >
+                ♡
+            </button>
+
+        </div>
+
+
+        <div class="hotel-card-content">
+
+            <h3 class="hotel-card-title">
+                ${escapeHtml(name)}
+            </h3>
+
+
+            <div class="hotel-card-location">
+                <span>📍</span>
+                <span>
+                    ${escapeHtml(location)}
+                </span>
+            </div>
+
+
+            <p class="hotel-card-description">
+                ${escapeHtml(description)}
+            </p>
+
+
+            <div class="hotel-card-footer">
+
+                <span class="hotel-card-photos">
+                    📷 ${
+                        images.length
+                    } ${
+                        images.length > 1
+                            ? "photos"
+                            : "photo"
+                    }
+                </span>
+
+                <span class="hotel-card-link">
+                    Voir l'établissement →
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /*
+     * Toute la carte ouvre la fiche détaillée.
+     */
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                `hotel.html?id=${encodeURIComponent(hotel.id)}`;
+
+        }
+    );
+
+
+    /*
+     * Empêche le bouton favoris de déclencher
+     * l'ouverture de la fiche.
+     *
+     * La vraie gestion Firestore des favoris pourra
+     * être ajoutée séparément sans modifier la carte.
+     */
+
+    const favoriteButton =
+        card.querySelector(
+            ".hotel-card-favorite"
+        );
+
+
+    if (favoriteButton) {
+
+        favoriteButton.addEventListener(
+            "click",
+            (event) => {
+
+                event.stopPropagation();
+
+                alert(
+                    "Connectez-vous pour gérer vos favoris."
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+     * Si une image est invalide, on remplace
+     * simplement l'image par le placeholder.
+     */
+
+    const image =
+        card.querySelector(
+            ".hotel-card-image img"
+        );
+
+
+    if (image) {
+
+        image.addEventListener(
+            "error",
+            () => {
+
+                const placeholder =
+                    document.createElement("div");
+
+                placeholder.className =
+                    "image-placeholder";
+
+                placeholder.textContent =
+                    "🏨";
+
+                image.replaceWith(
+                    placeholder
+                );
+
+            }
+        );
+
+    }
+
+
+    return card;
+
+}
+
+
+// =========================================================
+// EXTRACTION DES IMAGES
+// =========================================================
+
+function extractImages(hotel) {
+
+    const images = [];
+
+
+    /*
+     * Photo principale
+     */
+
+    const mainPhoto =
+        cleanValue(
+            hotel.photoURL
+        );
+
+
+    if (isValidImageUrl(mainPhoto)) {
+
+        images.push(
+            mainPhoto
+        );
+
+    }
+
+
+    /*
+     * Champ images
+     *
+     * Peut être :
+     * - un tableau Firestore
+     * - une chaîne JSON
+     * - une simple URL
+     */
+
+    let gallery =
+        hotel.images;
+
+
+    if (typeof gallery === "string") {
+
+        const value =
+            gallery.trim();
+
+        if (value) {
+
+            try {
+
+                gallery =
+                    JSON.parse(value);
+
+            } catch {
+
+                gallery =
+                    [value];
+
+            }
+
+        }
+
+    }
+
+
+    if (Array.isArray(gallery)) {
+
+        gallery.forEach((item) => {
+
+            const url =
+                typeof item === "string"
+                    ? item
+                    : item?.url ||
+                      item?.secure_url ||
+                      item?.src ||
+                      item?.imageURL ||
+                      "";
+
+            if (
+                isValidImageUrl(url) &&
+                !images.includes(url)
+            ) {
+
+                images.push(url);
+
+            }
+
+        });
+
+    }
+
+
+    /*
+     * Champs photoURL1, photoURL2, etc.
+     */
+
+    for (let i = 1; i <= 10; i++) {
+
+        const possibleFields = [
+            `photoURL${i}`,
+            `image${i}`,
+            `photo${i}`
+        ];
+
+
+        possibleFields.forEach((field) => {
+
+            const url =
+                cleanValue(
+                    hotel[field]
+                );
+
+
+            if (
+                isValidImageUrl(url) &&
+                !images.includes(url)
+            ) {
+
+                images.push(url);
+
+            }
+
+        });
+
+    }
+
+
+    return images;
+
+}
+
+
+// =========================================================
+// VALIDATION URL IMAGE
+// =========================================================
+
+function isValidImageUrl(value) {
+
+    if (!value) {
+        return false;
+    }
+
+    const url =
+        String(value).trim();
+
+
+    if (
+        url === "url1" ||
+        url === "url2" ||
+        url === "url3" ||
+        url === "image" ||
+        url === "photo"
+    ) {
+        return false;
+    }
+
+
+    return (
+        url.startsWith("http://") ||
+        url.startsWith("https://") ||
+        url.startsWith("/")
+    );
+
+}
+
+
+// =========================================================
+// RÉINITIALISER
+// =========================================================
+
+function resetFilters() {
+
+    if (searchInput) {
+        searchInput.value = "";
+    }
+
+    if (cityFilter) {
+        cityFilter.value = "";
+    }
+
+    if (categoryFilter) {
+        categoryFilter.value = "";
+    }
+
+    selectedCategory = "";
+
+    updateCategoryButtons();
+
+    applyFilters();
+
+}
+
+
+// =========================================================
+// ÉTATS
+// =========================================================
+
+function hideAllStates() {
+
+    loadingState?.classList.add(
+        "hidden"
+    );
+
+    errorState?.classList.add(
+        "hidden"
+    );
+
+    emptyState?.classList.add(
+        "hidden"
+    );
+
+}
+
+
+function showLoading() {
+
+    hideAllStates();
+
+    loadingState?.classList.remove(
+        "hidden"
+    );
+
+    establishmentsGrid?.classList.add(
+        "hidden"
+    );
+
+}
+
+
+function showEmpty() {
+
+    loadingState?.classList.add(
+        "hidden"
+    );
+
+    errorState?.classList.add(
+        "hidden"
+    );
+
+    emptyState?.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+function showError(message) {
+
+    loadingState?.classList.add(
+        "hidden"
+    );
+
+    emptyState?.classList.add(
+        "hidden"
+    );
+
+    errorState?.classList.remove(
+        "hidden"
+    );
+
+    establishmentsGrid?.classList.add(
+        "hidden"
+    );
+
+
+    if (errorMessage) {
+        errorMessage.textContent =
+            message;
+    }
+
+}
+
+
+function hideStates() {
+
+    hideAllStates();
+
+}
+
+
+// =========================================================
+// MENU
+// =========================================================
+
+function setupMenu() {
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+    const closeMenu =
+        document.getElementById(
+            "closeMenu"
+        );
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+    const menuOverlay =
+        document.getElementById(
+            "menuOverlay"
+        );
+
+
+    if (!menuButton || !mobileMenu) {
+        return;
+    }
+
+
+    function openMenu() {
+
+        mobileMenu.classList.add(
+            "open"
+        );
+
+        menuOverlay?.classList.add(
+            "open"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeMobileMenu() {
+
+        mobileMenu.classList.remove(
+            "open"
+        );
+
+        menuOverlay?.classList.remove(
+            "open"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    menuButton.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    closeMenu?.addEventListener(
+        "click",
+        closeMobileMenu
+    );
+
+
+    menuOverlay?.addEventListener(
+        "click",
+        closeMobileMenu
+    );
+
+
+    mobileMenu
+        .querySelectorAll("a")
+        .forEach((link) => {
+
+            link.addEventListener(
+                "click",
+                closeMobileMenu
+            );
+
+        });
+
+}
+
+
+// =========================================================
+// UTILITAIRES
+// =========================================================
 
 function cleanValue(value) {
 
     if (
-        value === undefined ||
-        value === null
+        value === null ||
+        value === undefined
     ) {
-
         return "";
-
     }
 
     return String(value).trim();
@@ -150,1074 +1235,20 @@ function cleanValue(value) {
 }
 
 
-function normalizePhone(phone) {
+function escapeHtml(value) {
 
-    let value =
-        cleanValue(phone);
-
-    if (!value) {
-        return "";
-    }
-
-    value =
-        value.replace(/[^\d+]/g, "");
-
-    return value;
+    return cleanValue(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
 
-function whatsappUrl(phone) {
+function escapeAttribute(value) {
 
-    const clean =
-        normalizePhone(phone);
-
-    if (!clean) {
-        return "";
-    }
-
-    const number =
-        clean.replace(/\+/g, "");
-
-    return `https://wa.me/${number}`;
+    return escapeHtml(value);
 
 }
-
-
-/* =========================================================
-   EXTRAIRE LES PHOTOS
-========================================================= */
-
-function extractPhotos(data) {
-
-    const photos = [];
-
-
-    /* ---------------------------------------------
-       photoURL
-    --------------------------------------------- */
-
-    const mainPhoto =
-        cleanValue(
-            data.photoURL
-        );
-
-    if (
-        mainPhoto &&
-        /^https?:\/\//i.test(mainPhoto)
-    ) {
-
-        photos.push(mainPhoto);
-
-    }
-
-
-    /* ---------------------------------------------
-       images
-    --------------------------------------------- */
-
-    const images =
-        data.images;
-
-
-    if (Array.isArray(images)) {
-
-        images.forEach(image => {
-
-            if (
-                typeof image === "string" &&
-                /^https?:\/\//i.test(
-                    image.trim()
-                )
-            ) {
-
-                const url =
-                    image.trim();
-
-                if (
-                    !photos.includes(url)
-                ) {
-
-                    photos.push(url);
-
-                }
-
-            }
-
-
-            if (
-                image &&
-                typeof image === "object"
-            ) {
-
-                const url =
-                    cleanValue(
-                        image.url ||
-                        image.src ||
-                        image.secure_url
-                    );
-
-                if (
-                    url &&
-                    /^https?:\/\//i.test(url) &&
-                    !photos.includes(url)
-                ) {
-
-                    photos.push(url);
-
-                }
-
-            }
-
-        });
-
-    }
-
-
-    /* ---------------------------------------------
-       images JSON string
-    --------------------------------------------- */
-
-    if (
-        typeof images === "string" &&
-        images.trim()
-    ) {
-
-        try {
-
-            const parsed =
-                JSON.parse(images);
-
-            if (Array.isArray(parsed)) {
-
-                parsed.forEach(image => {
-
-                    const url =
-                        typeof image === "string"
-                            ? image.trim()
-                            : cleanValue(
-                                image?.url ||
-                                image?.src ||
-                                image?.secure_url
-                            );
-
-                    if (
-                        url &&
-                        /^https?:\/\//i.test(url) &&
-                        !photos.includes(url)
-                    ) {
-
-                        photos.push(url);
-
-                    }
-
-                });
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "CAMU HÔTEL — images JSON invalide :",
-                error
-            );
-
-        }
-
-    }
-
-
-    /* ---------------------------------------------
-       image1, image2, image3...
-    --------------------------------------------- */
-
-    Object.keys(data)
-        .filter(key =>
-            /^image\d+$/i.test(key)
-        )
-        .sort()
-        .forEach(key => {
-
-            const url =
-                cleanValue(data[key]);
-
-            if (
-                url &&
-                /^https?:\/\//i.test(url) &&
-                !photos.includes(url)
-            ) {
-
-                photos.push(url);
-
-            }
-
-        });
-
-
-    return photos;
-
-}
-
-
-/* =========================================================
-   AFFICHER GALERIE PRINCIPALE
-========================================================= */
-
-function renderMainGallery() {
-
-    if (!hotelGallery) {
-        return;
-    }
-
-
-    hotelGallery.innerHTML = "";
-
-
-    if (!hotelPhotos.length) {
-
-        hotelGallery.innerHTML = `
-            <div class="hotel-gallery-item"
-                 style="grid-column:1 / -1; grid-row:1 / -1;">
-                <div style="
-                    width:100%;
-                    height:100%;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    color:#888;
-                    font-size:15px;
-                ">
-                    <i class="fa-solid fa-hotel"
-                       style="margin-right:8px;">
-                    </i>
-                    Aucune photo disponible
-                </div>
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    const displayPhotos =
-        hotelPhotos.slice(0, 4);
-
-
-    displayPhotos.forEach(
-        (photo, index) => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "hotel-gallery-item";
-
-
-            const image =
-                document.createElement("img");
-
-            image.src =
-                photo;
-
-            image.alt =
-                `Photo de l'établissement ${index + 1}`;
-
-            image.loading =
-                index === 0
-                    ? "eager"
-                    : "lazy";
-
-
-            item.appendChild(image);
-
-
-            if (
-                index === displayPhotos.length - 1 &&
-                hotelPhotos.length > 4
-            ) {
-
-                const more =
-                    document.createElement("div");
-
-                more.className =
-                    "hotel-gallery-more";
-
-                more.innerHTML =
-                    `<i class="fa-solid fa-images"></i>
-                     ${hotelPhotos.length} photos`;
-
-                item.appendChild(more);
-
-            }
-
-
-            item.addEventListener(
-                "click",
-                () => openPhoto(index)
-            );
-
-
-            hotelGallery.appendChild(item);
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   AFFICHER PHOTOS
-========================================================= */
-
-function renderPhotos() {
-
-    if (!hotelPhotosGrid) {
-        return;
-    }
-
-
-    hotelPhotosGrid.innerHTML = "";
-
-
-    if (!hotelPhotos.length) {
-
-        hotelPhotosGrid.innerHTML = `
-            <p style="color:#888;">
-                Aucune photo supplémentaire disponible.
-            </p>
-        `;
-
-        return;
-
-    }
-
-
-    hotelPhotos.forEach(
-        (photo, index) => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "hotel-photo-item";
-
-
-            const image =
-                document.createElement("img");
-
-            image.src =
-                photo;
-
-            image.alt =
-                `Photo ${index + 1}`;
-
-            image.loading =
-                "lazy";
-
-
-            item.appendChild(image);
-
-
-            item.addEventListener(
-                "click",
-                () => openPhoto(index)
-            );
-
-
-            hotelPhotosGrid.appendChild(item);
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function openPhoto(index) {
-
-    if (
-        !hotelPhotos.length ||
-        !hotelPhotoModal
-    ) {
-
-        return;
-
-    }
-
-
-    currentPhotoIndex =
-        Math.max(
-            0,
-            Math.min(
-                index,
-                hotelPhotos.length - 1
-            )
-        );
-
-
-    updateModal();
-
-
-    hotelPhotoModal.classList.remove(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-function closePhoto() {
-
-    hotelPhotoModal?.classList.add(
-        "hidden"
-    );
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-function updateModal() {
-
-    if (!hotelModalImage) {
-        return;
-    }
-
-
-    const photo =
-        hotelPhotos[currentPhotoIndex];
-
-
-    if (!photo) {
-        return;
-    }
-
-
-    hotelModalImage.src =
-        photo;
-
-
-    hotelModalImage.alt =
-        `Photo ${currentPhotoIndex + 1}`;
-
-
-    if (hotelPhotoCounter) {
-
-        hotelPhotoCounter.textContent =
-            `${currentPhotoIndex + 1} / ${hotelPhotos.length}`;
-
-    }
-
-}
-
-
-function previousPhoto() {
-
-    if (!hotelPhotos.length) {
-        return;
-    }
-
-    currentPhotoIndex =
-        (
-            currentPhotoIndex -
-            1 +
-            hotelPhotos.length
-        ) %
-        hotelPhotos.length;
-
-    updateModal();
-
-}
-
-
-function nextPhoto() {
-
-    if (!hotelPhotos.length) {
-        return;
-    }
-
-    currentPhotoIndex =
-        (
-            currentPhotoIndex +
-            1
-        ) %
-        hotelPhotos.length;
-
-    updateModal();
-
-}
-
-
-/* =========================================================
-   CONTACTS
-========================================================= */
-
-function renderContacts(data) {
-
-    const phoneValue =
-        cleanValue(
-            data.telephone ||
-            data.phone ||
-            data.tel
-        );
-
-
-    const whatsappValue =
-        cleanValue(
-            data.WhatsApp ||
-            data.whatsapp ||
-            data.whatsappNumber
-        );
-
-
-    /* ---------------------------------------------
-       TÉLÉPHONE
-    --------------------------------------------- */
-
-    if (phoneValue) {
-
-        if (hotelPhone) {
-            hotelPhone.textContent =
-                phoneValue;
-        }
-
-        if (hotelPhoneWrapper) {
-            hotelPhoneWrapper.classList.remove(
-                "hidden"
-            );
-        }
-
-        if (hotelPhoneButton) {
-
-            hotelPhoneButton.href =
-                `tel:${normalizePhone(phoneValue)}`;
-
-            hotelPhoneButton.classList.remove(
-                "hidden"
-            );
-
-        }
-
-    }
-
-    else {
-
-        hotelPhoneWrapper?.classList.add(
-            "hidden"
-        );
-
-        hotelPhoneButton?.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    /* ---------------------------------------------
-       WHATSAPP
-    --------------------------------------------- */
-
-    if (whatsappValue) {
-
-        if (hotelWhatsapp) {
-            hotelWhatsapp.textContent =
-                whatsappValue;
-        }
-
-        if (hotelWhatsappWrapper) {
-            hotelWhatsappWrapper.classList.remove(
-                "hidden"
-            );
-        }
-
-        if (hotelWhatsappButton) {
-
-            const url =
-                whatsappUrl(
-                    whatsappValue
-                );
-
-            if (url) {
-
-                hotelWhatsappButton.href =
-                    url;
-
-                hotelWhatsappButton.classList.remove(
-                    "hidden"
-                );
-
-            }
-
-        }
-
-    }
-
-    else {
-
-        hotelWhatsappWrapper?.classList.add(
-            "hidden"
-        );
-
-        hotelWhatsappButton?.classList.add(
-            "hidden"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   AFFICHER LES INFORMATIONS
-========================================================= */
-
-function renderHotel(data) {
-
-    const name =
-        cleanValue(
-            data.name ||
-            data.nom ||
-            data.title
-        ) ||
-        "Établissement hôtelier";
-
-
-    const category =
-        cleanValue(
-            data.category ||
-            data.categorie
-        ) ||
-        "Hôtel";
-
-
-    const city =
-        cleanValue(
-            data.ville ||
-            data.city
-        ) ||
-        "—";
-
-
-    const commune =
-        cleanValue(
-            data.commune
-        ) ||
-        "—";
-
-
-    const address =
-        cleanValue(
-            data.adresse ||
-            data.address
-        ) ||
-        "Adresse non renseignée";
-
-
-    const description =
-        cleanValue(
-            data.description
-        ) ||
-        "Aucune description disponible pour cet établissement.";
-
-
-    const locationParts =
-        [
-            city,
-            commune !== "—"
-                ? commune
-                : ""
-        ]
-        .filter(Boolean);
-
-
-    const locationText =
-        locationParts.length
-            ? locationParts.join(" · ")
-            : "Localisation non renseignée";
-
-
-    if (hotelName) {
-        hotelName.textContent =
-            name;
-    }
-
-
-    if (hotelContactName) {
-        hotelContactName.textContent =
-            name;
-    }
-
-
-    if (hotelCategory) {
-
-        hotelCategory.innerHTML =
-            `<i class="fa-solid fa-hotel"></i>
-             <span>${category}</span>`;
-
-    }
-
-
-    if (hotelCategoryDetail) {
-
-        hotelCategoryDetail.textContent =
-            category;
-
-    }
-
-
-    if (hotelLocation) {
-
-        hotelLocation.textContent =
-            locationText;
-
-    }
-
-
-    if (hotelContactLocation) {
-
-        hotelContactLocation.textContent =
-            locationText;
-
-    }
-
-
-    if (hotelDescription) {
-
-        hotelDescription.textContent =
-            description;
-
-    }
-
-
-    if (hotelAddress) {
-
-        hotelAddress.textContent =
-            address;
-
-    }
-
-
-    if (hotelCity) {
-
-        hotelCity.textContent =
-            city;
-
-    }
-
-
-    if (hotelCommune) {
-
-        hotelCommune.textContent =
-            commune;
-
-    }
-
-
-    renderContacts(data);
-
-}
-
-
-/* =========================================================
-   CHARGER L'ÉTABLISSEMENT
-========================================================= */
-
-async function loadHotel() {
-
-    if (!hotelId) {
-
-        showError(
-            "Établissement introuvable",
-            "Aucun identifiant d'établissement n'a été fourni."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        console.log(
-            "CAMU HÔTEL — recherche :",
-            hotelId
-        );
-
-
-        const hotelRef =
-            doc(
-                db,
-                "etablissements_hoteliers",
-                hotelId
-            );
-
-
-        const snapshot =
-            await getDoc(hotelRef);
-
-
-        if (!snapshot.exists()) {
-
-            console.warn(
-                "CAMU HÔTEL — établissement introuvable :",
-                hotelId
-            );
-
-
-            showError(
-                "Établissement introuvable",
-                "Cet établissement n'existe pas ou n'est plus disponible."
-            );
-
-            return;
-
-        }
-
-
-        const data =
-            snapshot.data();
-
-
-        console.log(
-            "CAMU HÔTEL — établissement trouvé :",
-            hotelId,
-            data
-        );
-
-
-        if (
-            data.active === false
-        ) {
-
-            showError(
-                "Établissement indisponible",
-                "Cet établissement n'est actuellement pas disponible."
-            );
-
-            return;
-
-        }
-
-
-        renderHotel(data);
-
-
-        hotelPhotos =
-            extractPhotos(data);
-
-
-        renderMainGallery();
-
-        renderPhotos();
-
-
-        hideLoading();
-
-        showContent();
-
-
-        /* ---------------------------------------------
-           TITRE
-        --------------------------------------------- */
-
-        document.title =
-            `${cleanValue(data.name) || "Établissement"} — CAMU HÔTELS`;
-
-
-        console.log(
-            "CAMU HÔTEL — fiche chargée avec succès."
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "CAMU HÔTEL — erreur chargement :",
-            error
-        );
-
-
-        showError(
-            "Erreur de chargement",
-            "Impossible de charger les informations de cet établissement."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   ÉTAT ERREUR
-========================================================= */
-
-function showError(
-    title,
-    message
-) {
-
-    if (hotelLoading) {
-
-        hotelLoading.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    if (hotelContent) {
-
-        hotelContent.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    if (hotelError) {
-
-        hotelError.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
-    if (hotelErrorTitle) {
-
-        hotelErrorTitle.textContent =
-            title;
-
-    }
-
-
-    if (hotelErrorMessage) {
-
-        hotelErrorMessage.textContent =
-            message;
-
-    }
-
-}
-
-
-/* =========================================================
-   AFFICHAGE
-========================================================= */
-
-function hideLoading() {
-
-    hotelLoading?.classList.add(
-        "hidden"
-    );
-
-}
-
-
-function showContent() {
-
-    hotelContent?.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   ÉVÉNEMENTS MODAL
-========================================================= */
-
-hotelPhotoClose?.addEventListener(
-    "click",
-    closePhoto
-);
-
-hotelPhotoPrev?.addEventListener(
-    "click",
-    previousPhoto
-);
-
-hotelPhotoNext?.addEventListener(
-    "click",
-    nextPhoto
-);
-
-
-hotelPhotoModal?.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            hotelPhotoModal
-        ) {
-
-            closePhoto();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            hotelPhotoModal?.classList.contains(
-                "hidden"
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closePhoto();
-
-        }
-
-
-        if (
-            event.key === "ArrowLeft"
-        ) {
-
-            previousPhoto();
-
-        }
-
-
-        if (
-            event.key === "ArrowRight"
-        ) {
-
-            nextPhoto();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIALISATION
-========================================================= */
-
-loadHotel();
