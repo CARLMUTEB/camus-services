@@ -1,694 +1,487 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Établissement hôtelier — CAMU HÔTELS</title>
+    <title>Hôtels & Hébergement — CAMU SERVICES</title>
 
     <meta
         name="description"
-        content="Découvrez les informations, services, coordonnées et photos de cet établissement sur CAMU HÔTELS."
+        content="Découvrez les hôtels, appartements, résidences, lodges et autres hébergements disponibles sur CAMU SERVICES."
     >
 
-    <link
-        rel="icon"
-        href="assets/logo/camu-services-logo.png"
-    >
+    <link rel="icon" href="assets/logo/camu-services-logo.png">
 
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/hotel.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-
+    <link rel="stylesheet" href="css/hotels.css">
 </head>
-
 
 <body>
 
+    <!-- ================= HEADER ================= -->
 
-<!-- =========================================================
-     HEADER
-========================================================= -->
+    <header class="hotel-header">
 
-<header class="hotel-header">
-
-    <div class="hotel-header-inner">
-
-        <a
-            href="hotels.html"
-            class="hotel-back"
+        <button
+            type="button"
+            class="header-button menu-button"
+            id="menuButton"
+            aria-label="Ouvrir le menu"
         >
+            ☰
+        </button>
 
-            <i class="fa-solid fa-arrow-left"></i>
-
-            <span>
-                CAMU HÔTELS
-            </span>
-
+        <a href="index.html" class="header-logo" aria-label="CAMU SERVICES">
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
         </a>
 
-
         <a
-            href="index.html"
-            class="hotel-logo"
+            href="compte.html"
+            class="header-button account-button"
+            aria-label="Mon compte"
         >
+            👤
+        </a>
+
+    </header>
+
+
+    <!-- ================= MENU MOBILE ================= -->
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <aside class="mobile-menu" id="mobileMenu">
+
+        <div class="mobile-menu-header">
 
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
 
-        </a>
+            <button
+                type="button"
+                id="closeMenu"
+                aria-label="Fermer le menu"
+            >
+                ×
+            </button>
 
-
-        <a
-            href="compte.html"
-            class="hotel-account"
-            aria-label="Mon compte"
-        >
-
-            <i class="fa-regular fa-user"></i>
-
-        </a>
-
-    </div>
-
-</header>
-
-
-<!-- =========================================================
-     ÉTAT CHARGEMENT
-========================================================= -->
-
-<section
-    id="hotelLoading"
-    class="hotel-state"
->
-
-    <div class="hotel-spinner"></div>
-
-    <h2>
-        Chargement de l'établissement...
-    </h2>
-
-    <p>
-        Veuillez patienter.
-    </p>
-
-</section>
-
-
-<!-- =========================================================
-     ÉTAT ERREUR
-========================================================= -->
-
-<section
-    id="hotelError"
-    class="hotel-state hidden"
->
-
-    <div class="hotel-state-icon">
-
-        <i class="fa-solid fa-hotel"></i>
-
-    </div>
-
-    <h2 id="hotelErrorTitle">
-        Établissement introuvable
-    </h2>
-
-    <p id="hotelErrorMessage">
-        Cet établissement n'existe pas ou n'est plus disponible.
-    </p>
-
-    <a
-        href="hotels.html"
-        class="hotel-primary-button"
-    >
-
-        <i class="fa-solid fa-arrow-left"></i>
-
-        Retour aux hôtels
-
-    </a>
-
-</section>
-
-
-<!-- =========================================================
-     CONTENU PRINCIPAL
-========================================================= -->
-
-<main
-    id="hotelContent"
-    class="hotel-main hidden"
->
-
-
-    <!-- =====================================================
-         GALERIE
-    ====================================================== -->
-
-    <section class="hotel-gallery-section">
-
-        <div
-            id="hotelGallery"
-            class="hotel-gallery"
-        >
-            <!-- Photos injectées par hotel.js -->
         </div>
 
-    </section>
+        <nav class="mobile-navigation">
+
+            <a href="index.html">
+                🏠 Accueil
+            </a>
+
+            <a href="immobilier.html">
+                🏠 Immobilier
+            </a>
+
+            <a href="commerce.html">
+                🛒 Commerce
+            </a>
+
+            <a href="vehicules.html">
+                🚗 Véhicules & Transport
+            </a>
+
+            <a href="hotels.html" class="active">
+                🏨 Hôtels & Hébergement
+            </a>
+
+            <a href="compte.html">
+                👤 Mon compte
+            </a>
+
+        </nav>
+
+    </aside>
 
 
-    <!-- =====================================================
-         INFORMATIONS PRINCIPALES
-    ====================================================== -->
+    <!-- ================= HERO ================= -->
 
-    <section class="hotel-container">
+    <main>
+
+        <section class="hotel-hero">
+
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    CAMU SERVICES
+                </span>
+
+                <h1>
+                    Hôtels & Hébergement
+                </h1>
+
+                <p>
+                    Trouvez facilement un hôtel, un appartement,
+                    une résidence ou un autre hébergement.
+                </p>
+
+                <div class="search-box">
+
+                    <div class="search-field">
+
+                        <span>🔎</span>
+
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Rechercher un établissement..."
+                            autocomplete="off"
+                        >
+
+                    </div>
 
 
-        <div class="hotel-main-grid">
+                    <div class="filter-field">
+
+                        <span>📍</span>
+
+                        <select id="cityFilter">
+
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                        </select>
+
+                    </div>
 
 
-            <!-- =================================================
-                 COLONNE PRINCIPALE
-            ================================================== -->
+                    <div class="filter-field">
 
-            <div class="hotel-information">
+                        <span>🏨</span>
+
+                        <select id="categoryFilter">
+
+                            <option value="">
+                                Toutes les catégories
+                            </option>
+
+                        </select>
+
+                    </div>
 
 
-                <div class="hotel-heading">
-
-
-                    <div
-                        id="hotelCategory"
-                        class="hotel-category"
+                    <button
+                        type="button"
+                        class="search-button"
+                        id="searchButton"
                     >
-
-                        <i class="fa-solid fa-hotel"></i>
-
-                        <span>
-                            Hôtel
-                        </span>
-
-                    </div>
-
-
-                    <h1 id="hotelName">
-                        —
-                    </h1>
-
-
-                    <div class="hotel-location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        <span id="hotelLocation">
-                            —
-                        </span>
-
-                    </div>
-
+                        Rechercher
+                    </button>
 
                 </div>
 
+            </div>
 
-                <!-- =============================================
-                     DESCRIPTION
-                ============================================== -->
+        </section>
 
-                <section class="hotel-card">
 
-                    <div class="hotel-card-title">
+        <!-- ================= CATEGORIES ================= -->
 
-                        <div class="hotel-card-icon">
+        <section class="categories-section">
 
-                            <i class="fa-solid fa-align-left"></i>
+            <div class="section-heading">
 
-                        </div>
+                <div>
+                    <span class="section-label">
+                        Explorer
+                    </span>
 
-
-                        <div>
-
-                            <span>
-                                À PROPOS
-                            </span>
-
-                            <h2>
-                                Présentation
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="hotelDescription"
-                        class="hotel-description"
-                    >
-                        —
-                    </div>
-
-                </section>
-
-
-                <!-- =============================================
-                     INFORMATIONS
-                ============================================== -->
-
-                <section class="hotel-card">
-
-                    <div class="hotel-card-title">
-
-                        <div class="hotel-card-icon">
-
-                            <i class="fa-solid fa-circle-info"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                INFORMATIONS
-                            </span>
-
-                            <h2>
-                                Détails de l'établissement
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="hotel-details-grid">
-
-
-                        <div class="hotel-detail">
-
-                            <div class="hotel-detail-icon">
-
-                                <i class="fa-solid fa-location-dot"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Adresse
-                                </span>
-
-                                <strong id="hotelAddress">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="hotel-detail">
-
-                            <div class="hotel-detail-icon">
-
-                                <i class="fa-solid fa-city"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Ville
-                                </span>
-
-                                <strong id="hotelCity">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="hotel-detail">
-
-                            <div class="hotel-detail-icon">
-
-                                <i class="fa-solid fa-map"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Commune
-                                </span>
-
-                                <strong id="hotelCommune">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="hotel-detail">
-
-                            <div class="hotel-detail-icon">
-
-                                <i class="fa-solid fa-star"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Catégorie
-                                </span>
-
-                                <strong id="hotelCategoryDetail">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </section>
-
-
-                <!-- =============================================
-                     PHOTOS
-                ============================================== -->
-
-                <section class="hotel-card">
-
-                    <div class="hotel-card-title">
-
-                        <div class="hotel-card-icon">
-
-                            <i class="fa-solid fa-images"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                GALERIE
-                            </span>
-
-                            <h2>
-                                Photos de l'établissement
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="hotelPhotosGrid"
-                        class="hotel-photos-grid"
-                    >
-                        <!-- Photos injectées -->
-                    </div>
-
-                </section>
-
+                    <h2>
+                        Types d'hébergement
+                    </h2>
+                </div>
 
             </div>
 
 
-            <!-- =================================================
-                 SIDEBAR CONTACT
-            ================================================== -->
+            <div class="categories-grid" id="categoriesGrid">
 
-            <aside class="hotel-sidebar">
+                <button
+                    type="button"
+                    class="category-card active"
+                    data-category=""
+                >
+                    <span class="category-icon">🏨</span>
+                    <strong>Tous</strong>
+                    <small>Tous les établissements</small>
+                </button>
 
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Hôtel"
+                >
+                    <span class="category-icon">🏨</span>
+                    <strong>Hôtels</strong>
+                    <small>Hôtels classiques</small>
+                </button>
 
-                <div class="hotel-contact-card">
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Appartement"
+                >
+                    <span class="category-icon">🏠</span>
+                    <strong>Appartements</strong>
+                    <small>Appartements meublés</small>
+                </button>
 
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Résidence"
+                >
+                    <span class="category-icon">🏢</span>
+                    <strong>Résidences</strong>
+                    <small>Résidences hôtelières</small>
+                </button>
 
-                    <div class="hotel-contact-header">
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Lodge"
+                >
+                    <span class="category-icon">🌿</span>
+                    <strong>Lodges</strong>
+                    <small>Hébergements touristiques</small>
+                </button>
 
-                        <div class="hotel-contact-icon">
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Guest House"
+                >
+                    <span class="category-icon">🛏️</span>
+                    <strong>Guest Houses</strong>
+                    <small>Maisons d'accueil</small>
+                </button>
 
-                            <i class="fa-solid fa-hotel"></i>
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Auberge"
+                >
+                    <span class="category-icon">🏚️</span>
+                    <strong>Auberges</strong>
+                    <small>Hébergements économiques</small>
+                </button>
 
-                        </div>
+                <button
+                    type="button"
+                    class="category-card"
+                    data-category="Villa"
+                >
+                    <span class="category-icon">🏡</span>
+                    <strong>Villas</strong>
+                    <small>Villas et maisons</small>
+                </button>
 
+            </div>
 
-                        <div>
-
-                            <span>
-                                ÉTABLISSEMENT
-                            </span>
-
-                            <h2 id="hotelContactName">
-                                —
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="hotel-contact-divider"></div>
-
-
-                    <div class="hotel-contact-items">
-
-
-                        <div class="hotel-contact-item">
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            <div>
-
-                                <span>
-                                    Localisation
-                                </span>
-
-                                <strong id="hotelContactLocation">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div
-                            id="hotelPhoneWrapper"
-                            class="hotel-contact-item"
-                        >
-
-                            <i class="fa-solid fa-phone"></i>
-
-                            <div>
-
-                                <span>
-                                    Téléphone
-                                </span>
-
-                                <strong id="hotelPhone">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div
-                            id="hotelWhatsappWrapper"
-                            class="hotel-contact-item"
-                        >
-
-                            <i class="fa-brands fa-whatsapp"></i>
-
-                            <div>
-
-                                <span>
-                                    WhatsApp
-                                </span>
-
-                                <strong id="hotelWhatsapp">
-                                    —
-                                </strong>
-
-                            </div>
-
-                        </div>
+        </section>
 
 
-                    </div>
+        <!-- ================= ESTABLISHMENTS ================= -->
 
+        <section class="establishments-section">
 
-                    <div class="hotel-contact-actions">
+            <div class="section-heading establishments-heading">
 
+                <div>
 
-                        <a
-                            id="hotelPhoneButton"
-                            href="#"
-                            class="hotel-contact-button phone hidden"
-                        >
+                    <span class="section-label">
+                        CAMU HÔTELS
+                    </span>
 
-                            <i class="fa-solid fa-phone"></i>
-
-                            Appeler
-
-                        </a>
-
-
-                        <a
-                            id="hotelWhatsappButton"
-                            href="#"
-                            class="hotel-contact-button whatsapp hidden"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-
-                            <i class="fa-brands fa-whatsapp"></i>
-
-                            WhatsApp
-
-                        </a>
-
-
-                    </div>
-
+                    <h2>
+                        Établissements disponibles
+                    </h2>
 
                 </div>
 
-
-                <!-- =============================================
-                     RETOUR
-                ============================================== -->
-
-                <a
-                    href="hotels.html"
-                    class="hotel-back-button"
+                <span
+                    class="results-count"
+                    id="resultsCount"
                 >
+                    0 établissement
+                </span>
 
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Voir tous les établissements
-
-                </a>
+            </div>
 
 
-            </aside>
+            <!-- Chargement -->
 
+            <div
+                class="state-box"
+                id="loadingState"
+            >
+
+                <div class="loader"></div>
+
+                <p>
+                    Chargement des établissements...
+                </p>
+
+            </div>
+
+
+            <!-- Erreur -->
+
+            <div
+                class="state-box error-state hidden"
+                id="errorState"
+            >
+
+                <div class="state-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Impossible de charger les établissements
+                </h3>
+
+                <p id="errorMessage">
+                    Une erreur est survenue.
+                </p>
+
+                <button
+                    type="button"
+                    class="retry-button"
+                    id="retryButton"
+                >
+                    Réessayer
+                </button>
+
+            </div>
+
+
+            <!-- Aucun résultat -->
+
+            <div
+                class="state-box empty-state hidden"
+                id="emptyState"
+            >
+
+                <div class="state-icon">
+                    🏨
+                </div>
+
+                <h3>
+                    Aucun établissement trouvé
+                </h3>
+
+                <p>
+                    Aucun hébergement ne correspond à votre recherche.
+                </p>
+
+                <button
+                    type="button"
+                    class="reset-button"
+                    id="resetButton"
+                >
+                    Réinitialiser la recherche
+                </button>
+
+            </div>
+
+
+            <!-- Cartes -->
+
+            <div
+                class="establishments-grid"
+                id="establishmentsGrid"
+            ></div>
+
+        </section>
+
+
+        <!-- ================= CTA ================= -->
+
+        <section class="hotel-cta">
+
+            <div>
+
+                <span class="section-label">
+                    Vous êtes professionnel ?
+                </span>
+
+                <h2>
+                    Ajoutez votre établissement
+                </h2>
+
+                <p>
+                    Présentez votre hôtel ou votre hébergement
+                    aux utilisateurs de CAMU SERVICES.
+                </p>
+
+            </div>
+
+            <a
+                href="compte.html"
+                class="cta-button"
+            >
+                Mon espace
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="hotel-footer">
+
+        <div class="footer-logo">
+
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
 
         </div>
 
-    </section>
+        <p>
+            © <span id="currentYear"></span>
+            CAMU SERVICES — Hôtels & Hébergement
+        </p>
 
-</main>
+        <div class="footer-links">
 
+            <a href="a-propos.html">
+                À propos
+            </a>
 
-<!-- =========================================================
-     MODAL PHOTO
-========================================================= -->
+            <a href="contact.html">
+                Contact
+            </a>
 
-<div
-    id="hotelPhotoModal"
-    class="hotel-photo-modal hidden"
->
+            <a href="conditions.html">
+                Conditions
+            </a>
 
-    <button
-        type="button"
-        id="hotelPhotoClose"
-        class="hotel-photo-close"
-        aria-label="Fermer"
-    >
+            <a href="politique.html">
+                Confidentialité
+            </a>
 
-        <i class="fa-solid fa-xmark"></i>
+        </div>
 
-    </button>
-
-
-    <button
-        type="button"
-        id="hotelPhotoPrev"
-        class="hotel-photo-navigation prev"
-        aria-label="Photo précédente"
-    >
-
-        <i class="fa-solid fa-chevron-left"></i>
-
-    </button>
+    </footer>
 
 
-    <img
-        id="hotelModalImage"
-        src=""
-        alt="Photo de l'établissement"
-    >
+    <!-- ================= JAVASCRIPT ================= -->
 
-
-    <button
-        type="button"
-        id="hotelPhotoNext"
-        class="hotel-photo-navigation next"
-        aria-label="Photo suivante"
-    >
-
-        <i class="fa-solid fa-chevron-right"></i>
-
-    </button>
-
-
-    <div
-        id="hotelPhotoCounter"
-        class="hotel-photo-counter"
-    >
-        1 / 1
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
-<script
-    type="module"
-    src="js/hotel.js"
-></script>
-
+    <script type="module" src="js/hotels.js"></script>
 
 </body>
-
 </html>
