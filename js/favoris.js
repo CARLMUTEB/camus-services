@@ -102,14 +102,10 @@ async function loadFavorites() {
 
     favorites = [];
 
+
     try {
 
-        /*
-         * On récupère tous les documents de favorites.
-         * Ensuite on garde uniquement ceux de l'utilisateur connecté.
-         */
-
-        const snapshot =
+        const favoritesSnapshot =
             await getDocs(
                 collection(db, "favorites")
             );
@@ -117,19 +113,22 @@ async function loadFavorites() {
 
         console.log(
             "CAMU FAVORIS —",
-            snapshot.size,
+            favoritesSnapshot.size,
             "favori(s) trouvé(s) dans Firestore."
         );
 
 
-        for (const favoriteDoc of snapshot.docs) {
+        for (
+            const favoriteDoc
+            of favoritesSnapshot.docs
+        ) {
 
             const favorite =
                 favoriteDoc.data();
 
 
             /* =================================================
-               VÉRIFIER L'UTILISATEUR
+               VÉRIFIER LE PROPRIÉTAIRE
                ================================================= */
 
             if (
@@ -138,27 +137,79 @@ async function loadFavorites() {
             ) {
 
                 continue;
+
             }
 
 
-            const annonceId =
+            /* =================================================
+               RÉCUPÉRER ANNONCE ID
+               ================================================= */
+
+            let annonceId =
                 cleanValue(
                     favorite.annonceId
                 );
 
 
+            /*
+             * Compatibilité avec les anciens favoris.
+             *
+             * Exemple de document :
+             *
+             * UID_IDANNONCE
+             *
+             * Exemple réel :
+             *
+             * VSXsgjCg1dSMKdLCbkaeXq8xHps2_rVgn90hLdHdKHMFqYwJF
+             *
+             * devient :
+             *
+             * UID    = VSXsgjCg1dSMKdLCbkaeXq8xHps2
+             * annonce = rVgn90hLdHdKHMFqYwJF
+             */
+
+            if (!annonceId) {
+
+                const documentId =
+                    favoriteDoc.id;
+
+                const prefix =
+                    `${currentUser.uid}_`;
+
+
+                if (
+                    documentId.startsWith(prefix)
+                ) {
+
+                    annonceId =
+                        documentId.substring(
+                            prefix.length
+                        );
+
+
+                    console.log(
+                        "CAMU FAVORIS — annonceId récupéré depuis l'ID du favori :",
+                        annonceId
+                    );
+
+                }
+
+            }
+
+
             /* =================================================
-               FAVORI SANS annonceId
+               TOUJOURS PAS D'ANNONCE ID
                ================================================= */
 
             if (!annonceId) {
 
                 console.warn(
-                    "CAMU FAVORIS — favori sans annonceId :",
+                    "CAMU FAVORIS — impossible de déterminer l'annonce :",
                     favoriteDoc.id
                 );
 
                 continue;
+
             }
 
 
@@ -185,6 +236,10 @@ async function loadFavorites() {
                     );
 
 
+                /* =================================================
+                   ANNONCE TROUVÉE
+                   ================================================= */
+
                 if (
                     annonceSnapshot.exists()
                 ) {
@@ -200,18 +255,18 @@ async function loadFavorites() {
 
 
                     console.log(
-                        "CAMU FAVORIS — annonce récupérée :",
+                        "CAMU FAVORIS — annonce trouvée :",
                         annonceId
                     );
 
-                } else {
+                }
 
-                    /*
-                     * L'annonce n'existe plus.
-                     *
-                     * IMPORTANT :
-                     * On ne supprime PAS le favori ici.
-                     */
+
+                /* =================================================
+                   ANNONCE INTROUVABLE
+                   ================================================= */
+
+                else {
 
                     console.warn(
                         "CAMU FAVORIS — annonce introuvable :",
@@ -220,8 +275,10 @@ async function loadFavorites() {
 
 
                     /*
-                     * On garde les informations présentes
-                     * dans le document favorites.
+                     * On conserve quand même le favori.
+                     *
+                     * Cela permet d'éviter de perdre
+                     * les informations du favori.
                      */
 
                     annonce = {
@@ -230,12 +287,15 @@ async function loadFavorites() {
                             annonceId,
 
                         title:
-                            favorite.title ||
-                            "Annonce indisponible",
+                            cleanValue(
+                                favorite.title,
+                                "Annonce indisponible"
+                            ),
 
                         imageURL:
-                            favorite.imageURL ||
-                            "",
+                            cleanValue(
+                                favorite.imageURL
+                            ),
 
                         status:
                             "unavailable",
@@ -247,18 +307,19 @@ async function loadFavorites() {
 
                 }
 
+
             } catch (error) {
 
                 console.error(
-                    "CAMU FAVORIS — erreur récupération annonce :",
+                    "CAMU FAVORIS — erreur lecture annonce :",
                     annonceId,
                     error
                 );
 
 
                 /*
-                 * Même en cas d'erreur de lecture,
-                 * on conserve le favori.
+                 * Conserver le favori même en cas
+                 * d'erreur de lecture.
                  */
 
                 annonce = {
@@ -267,12 +328,15 @@ async function loadFavorites() {
                         annonceId,
 
                     title:
-                        favorite.title ||
-                        "Annonce",
+                        cleanValue(
+                            favorite.title,
+                            "Annonce"
+                        ),
 
                     imageURL:
-                        favorite.imageURL ||
-                        "",
+                        cleanValue(
+                            favorite.imageURL
+                        ),
 
                     unavailable:
                         true
@@ -283,7 +347,7 @@ async function loadFavorites() {
 
 
             /* =================================================
-               AJOUTER LE FAVORI
+               AJOUTER À LA LISTE
                ================================================= */
 
             favorites.push({
@@ -291,17 +355,21 @@ async function loadFavorites() {
                 favoriteId:
                     favoriteDoc.id,
 
+                userId:
+                    currentUser.uid,
+
                 annonceId:
                     annonceId,
 
-                userId:
-                    favorite.userId,
-
                 favoriteTitle:
-                    favorite.title || "",
+                    cleanValue(
+                        favorite.title
+                    ),
 
                 favoriteImageURL:
-                    favorite.imageURL || "",
+                    cleanValue(
+                        favorite.imageURL
+                    ),
 
                 createdAt:
                     favorite.createdAt || null,
@@ -312,6 +380,10 @@ async function loadFavorites() {
 
         }
 
+
+        /* =====================================================
+           AFFICHAGE
+           ===================================================== */
 
         renderFavorites();
 
@@ -326,7 +398,7 @@ async function loadFavorites() {
     } catch (error) {
 
         console.error(
-            "CAMU FAVORIS — erreur de chargement :",
+            "CAMU FAVORIS — erreur générale :",
             error
         );
 
@@ -365,32 +437,44 @@ function renderFavorites() {
        AUCUN FAVORI
        ========================================================= */
 
-    if (favorites.length === 0) {
+    if (
+        favorites.length === 0
+    ) {
 
         favoritesEmpty?.classList.remove(
             "hidden"
         );
 
         return;
+
     }
 
 
     /* =========================================================
-       GRILLE
+       GRILLE ABSENTE
        ========================================================= */
 
     if (!favoritesGrid) {
 
         console.warn(
-            "CAMU FAVORIS — #favoritesGrid introuvable."
+            "CAMU FAVORIS — élément #favoritesGrid introuvable."
         );
 
         return;
+
     }
 
 
+    /* =========================================================
+       VIDER LA GRILLE
+       ========================================================= */
+
     favoritesGrid.innerHTML = "";
 
+
+    /* =========================================================
+       CRÉER LES CARTES
+       ========================================================= */
 
     favorites.forEach(
         favorite => {
@@ -417,10 +501,12 @@ function renderFavorites() {
 
 
 /* ============================================================
-   CRÉER UNE CARTE
+   CRÉER UNE CARTE FAVORI
    ============================================================ */
 
-function createFavoriteCard(favorite) {
+function createFavoriteCard(
+    favorite
+) {
 
     const article =
         document.createElement(
@@ -502,6 +588,7 @@ function createFavoriteCard(favorite) {
                 loading="lazy"
             >
 
+
             <button
                 type="button"
                 class="favorite-remove"
@@ -520,6 +607,7 @@ function createFavoriteCard(favorite) {
 
 
         <div class="favorite-card-content">
+
 
             <div class="favorite-card-category">
 
@@ -637,13 +725,14 @@ function createFavoriteCard(favorite) {
                     `
             }
 
+
         </div>
 
     `;
 
 
     /* =========================================================
-       IMAGE ERROR
+       IMAGE
        ========================================================= */
 
     const imageElement =
@@ -656,7 +745,8 @@ function createFavoriteCard(favorite) {
         "error",
         () => {
 
-            imageElement.onerror = null;
+            imageElement.onerror =
+                null;
 
             imageElement.src =
                 FALLBACK_IMAGE;
@@ -698,19 +788,24 @@ function createFavoriteCard(favorite) {
 
 
     return article;
+
 }
 
 
 /* ============================================================
-   IMAGE DU FAVORI
+   IMAGE
    ============================================================ */
 
-function getFavoriteImage(favorite) {
+function getFavoriteImage(
+    favorite
+) {
 
     const possibleImages = [];
 
 
-    /* Image de l'annonce */
+    /* =========================================================
+       TABLEAU images
+       ========================================================= */
 
     if (
         Array.isArray(
@@ -725,7 +820,9 @@ function getFavoriteImage(favorite) {
     }
 
 
-    /* JSON images */
+    /* =========================================================
+       JSON images
+       ========================================================= */
 
     else if (
         typeof favorite.images === "string" &&
@@ -748,6 +845,12 @@ function getFavoriteImage(favorite) {
                     ...parsed
                 );
 
+            } else {
+
+                possibleImages.push(
+                    favorite.images
+                );
+
             }
 
         } catch {
@@ -761,27 +864,36 @@ function getFavoriteImage(favorite) {
     }
 
 
-    /* Champs image annonce */
+    /* =========================================================
+       AUTRES CHAMPS
+       ========================================================= */
 
     possibleImages.push(
+
         favorite.imageURL,
+
         favorite.imageUrl,
+
         favorite.image,
+
         favorite.photoURL,
+
         favorite.photoUrl,
-        favorite.photo
-    );
 
+        favorite.photo,
 
-    /* Image enregistrée au moment du favori */
-
-    possibleImages.push(
         favorite.favoriteImageURL
+
     );
 
+
+    /* =========================================================
+       TROUVER UNE URL VALIDE
+       ========================================================= */
 
     for (
-        const image of possibleImages
+        const image
+        of possibleImages
     ) {
 
         if (
@@ -797,37 +909,48 @@ function getFavoriteImage(favorite) {
 
 
         if (!clean) {
+
             continue;
+
         }
 
 
         if (
-            isFakeImageValue(clean)
+            isFakeImageValue(
+                clean
+            )
         ) {
 
             continue;
+
         }
 
 
         if (
-            isValidImageUrl(clean)
+            isValidImageUrl(
+                clean
+            )
         ) {
 
             return clean;
+
         }
 
     }
 
 
     return FALLBACK_IMAGE;
+
 }
 
 
 /* ============================================================
-   VÉRIFIER FAUSSE IMAGE
+   FAUSSE IMAGE
    ============================================================ */
 
-function isFakeImageValue(value) {
+function isFakeImageValue(
+    value
+) {
 
     const clean =
         String(value)
@@ -836,6 +959,7 @@ function isFakeImageValue(value) {
 
 
     return [
+
         "url1",
         "url2",
         "url3",
@@ -843,33 +967,65 @@ function isFakeImageValue(value) {
         "photo",
         "logo/photo",
         "1"
-    ].includes(clean);
+
+    ].includes(
+        clean
+    );
 
 }
 
 
 /* ============================================================
-   URL IMAGE VALIDE
+   URL IMAGE
    ============================================================ */
 
-function isValidImageUrl(url) {
+function isValidImageUrl(
+    url
+) {
 
     const value =
-        cleanValue(url)
-            .toLowerCase();
+        cleanValue(
+            url
+        ).toLowerCase();
 
 
     if (!value) {
+
         return false;
+
     }
 
 
     return (
-        value.startsWith("https://") ||
-        value.startsWith("http://") ||
-        value.startsWith("/") ||
-        value.startsWith("./") ||
-        value.startsWith("assets/")
+
+        value.startsWith(
+            "https://"
+        )
+
+        ||
+
+        value.startsWith(
+            "http://"
+        )
+
+        ||
+
+        value.startsWith(
+            "/"
+        )
+
+        ||
+
+        value.startsWith(
+            "./"
+        )
+
+        ||
+
+        value.startsWith(
+            "assets/"
+        )
+
     );
 
 }
@@ -891,6 +1047,7 @@ async function removeFavorite(
         );
 
         return;
+
     }
 
 
@@ -901,6 +1058,7 @@ async function removeFavorite(
         );
 
         return;
+
     }
 
 
@@ -921,10 +1079,12 @@ async function removeFavorite(
 
 
         /* =====================================================
-           DOCUMENT DÉJÀ SUPPRIMÉ
+           DÉJÀ SUPPRIMÉ
            ===================================================== */
 
-        if (!snapshot.exists()) {
+        if (
+            !snapshot.exists()
+        ) {
 
             favorites =
                 favorites.filter(
@@ -950,6 +1110,7 @@ async function removeFavorite(
 
 
             return;
+
         }
 
 
@@ -958,7 +1119,7 @@ async function removeFavorite(
 
 
         /* =====================================================
-           VÉRIFICATION PROPRIÉTAIRE
+           VÉRIFIER PROPRIÉTAIRE
            ===================================================== */
 
         if (
@@ -971,11 +1132,12 @@ async function removeFavorite(
             );
 
             return;
+
         }
 
 
         /* =====================================================
-           SUPPRESSION FIRESTORE
+           SUPPRESSION
            ===================================================== */
 
         await deleteDoc(
@@ -984,7 +1146,7 @@ async function removeFavorite(
 
 
         /* =====================================================
-           SUPPRESSION LOCALE
+           LISTE LOCALE
            ===================================================== */
 
         favorites =
@@ -1019,7 +1181,6 @@ async function removeFavorite(
 
         }
 
-
     } catch (error) {
 
         console.error(
@@ -1046,7 +1207,9 @@ function updateFavoritesCount() {
     if (favoritesCount) {
 
         favoritesCount.textContent =
-            String(favorites.length);
+            String(
+                favorites.length
+            );
 
     }
 
@@ -1087,7 +1250,9 @@ function formatPrice(
         )
     ) {
 
-        return cleanValue(price);
+        return cleanValue(
+            price
+        );
 
     }
 
@@ -1114,7 +1279,7 @@ function formatPrice(
 
 
 /* ============================================================
-   NETTOYAGE
+   NETTOYAGE TEXTE
    ============================================================ */
 
 function cleanValue(
@@ -1145,19 +1310,36 @@ function cleanValue(
    ESCAPE HTML
    ============================================================ */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     return String(value)
 
-        .replace(/&/g, "&amp;")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-        .replace(/</g, "&lt;")
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-        .replace(/>/g, "&gt;")
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-        .replace(/"/g, "&quot;")
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-        .replace(/'/g, "&#039;");
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -1166,15 +1348,19 @@ function escapeHTML(value) {
    ESCAPE ATTRIBUT
    ============================================================ */
 
-function escapeAttribute(value) {
+function escapeAttribute(
+    value
+) {
 
-    return escapeHTML(value);
+    return escapeHTML(
+        value
+    );
 
 }
 
 
 /* ============================================================
-   ÉTATS
+   CACHER TOUS LES ÉTATS
    ============================================================ */
 
 function hideAllStates() {
@@ -1207,7 +1393,7 @@ function hideAllStates() {
 
 
 /* ============================================================
-   CHARGEMENT
+   ÉTAT CHARGEMENT
    ============================================================ */
 
 function showLoadingState() {
@@ -1223,7 +1409,7 @@ function showLoadingState() {
 
 
 /* ============================================================
-   VIDE
+   ÉTAT VIDE
    ============================================================ */
 
 function showEmptyState() {
@@ -1239,15 +1425,19 @@ function showEmptyState() {
 
 
 /* ============================================================
-   ERREUR
+   ÉTAT ERREUR
    ============================================================ */
 
-function showErrorState(message) {
+function showErrorState(
+    message
+) {
 
     hideAllStates();
 
 
-    if (favoritesErrorMessage) {
+    if (
+        favoritesErrorMessage
+    ) {
 
         favoritesErrorMessage.textContent =
             message;
@@ -1263,7 +1453,7 @@ function showErrorState(message) {
 
 
 /* ============================================================
-   CONNEXION
+   ÉTAT CONNEXION
    ============================================================ */
 
 function showLoginState() {
