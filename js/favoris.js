@@ -22,24 +22,40 @@ import {
    CONFIGURATION
    ============================================================ */
 
-const FALLBACK_IMAGE = "assets/logo/camu-services-logo.png";
+const FALLBACK_IMAGE =
+    "assets/logo/camu-services-logo.png";
 
 let currentUser = null;
 let favorites = [];
 
 
 /* ============================================================
-   ÉLÉMENTS HTML
+   DOM
    ============================================================ */
 
-const favoritesLoading = document.getElementById("favoritesLoading");
-const favoritesEmpty = document.getElementById("favoritesEmpty");
-const favoritesError = document.getElementById("favoritesError");
-const favoritesErrorMessage = document.getElementById("favoritesErrorMessage");
-const favoritesGrid = document.getElementById("favoritesGrid");
-const favoritesCount = document.getElementById("favoritesCount");
-const favoritesPage = document.getElementById("favoritesPage");
-const favoritesLogin = document.getElementById("favoritesLogin");
+const favoritesLoading =
+    document.getElementById("favoritesLoading");
+
+const favoritesEmpty =
+    document.getElementById("favoritesEmpty");
+
+const favoritesError =
+    document.getElementById("favoritesError");
+
+const favoritesErrorMessage =
+    document.getElementById("favoritesErrorMessage");
+
+const favoritesGrid =
+    document.getElementById("favoritesGrid");
+
+const favoritesCount =
+    document.getElementById("favoritesCount");
+
+const favoritesPage =
+    document.getElementById("favoritesPage");
+
+const favoritesLogin =
+    document.getElementById("favoritesLogin");
 
 
 /* ============================================================
@@ -51,25 +67,33 @@ console.log("CAMU FAVORIS — initialisation...");
 
 onAuthStateChanged(auth, async (user) => {
 
-    currentUser = user;
+    currentUser = user || null;
 
-    if (!user) {
-        console.log("CAMU FAVORIS — aucun utilisateur connecté.");
+    if (!currentUser) {
+
+        console.log(
+            "CAMU FAVORIS — aucun utilisateur connecté."
+        );
+
         showLoginState();
+
         return;
     }
 
+
     console.log(
         "CAMU FAVORIS — utilisateur connecté :",
-        user.uid
+        currentUser.uid
     );
 
+
     await loadFavorites();
+
 });
 
 
 /* ============================================================
-   CHARGEMENT DES FAVORIS
+   CHARGER LES FAVORIS
    ============================================================ */
 
 async function loadFavorites() {
@@ -80,36 +104,52 @@ async function loadFavorites() {
 
     try {
 
-        const favoritesSnapshot =
-            await getDocs(collection(db, "favorites"));
+        /*
+         * On récupère tous les documents de favorites.
+         * Ensuite on garde uniquement ceux de l'utilisateur connecté.
+         */
+
+        const snapshot =
+            await getDocs(
+                collection(db, "favorites")
+            );
+
 
         console.log(
             "CAMU FAVORIS —",
-            favoritesSnapshot.size,
+            snapshot.size,
             "favori(s) trouvé(s) dans Firestore."
         );
 
 
-        for (const favoriteDoc of favoritesSnapshot.docs) {
+        for (const favoriteDoc of snapshot.docs) {
 
-            const favorite = favoriteDoc.data();
+            const favorite =
+                favoriteDoc.data();
 
 
-            /* ------------------------------------------------
-               Vérifier que le favori appartient à l'utilisateur
-               ------------------------------------------------ */
+            /* =================================================
+               VÉRIFIER L'UTILISATEUR
+               ================================================= */
 
             if (
                 !favorite.userId ||
                 favorite.userId !== currentUser.uid
             ) {
+
                 continue;
             }
 
 
             const annonceId =
-                favorite.annonceId;
+                cleanValue(
+                    favorite.annonceId
+                );
 
+
+            /* =================================================
+               FAVORI SANS annonceId
+               ================================================= */
 
             if (!annonceId) {
 
@@ -118,112 +158,168 @@ async function loadFavorites() {
                     favoriteDoc.id
                 );
 
-                await removeOrphanFavorite(
-                    favoriteDoc.id
-                );
-
                 continue;
             }
 
 
-            /* ------------------------------------------------
-               Récupérer l'annonce dans annonces
-               ------------------------------------------------ */
+            /* =================================================
+               RÉCUPÉRER L'ANNONCE
+               ================================================= */
+
+            let annonce = null;
+
 
             try {
 
                 const annonceRef =
-                    doc(db, "annonces", annonceId);
+                    doc(
+                        db,
+                        "annonces",
+                        annonceId
+                    );
+
 
                 const annonceSnapshot =
-                    await getDoc(annonceRef);
+                    await getDoc(
+                        annonceRef
+                    );
 
 
-                /* --------------------------------------------
-                   ANNONCE SUPPRIMÉE / INTROUVABLE
-                   -------------------------------------------- */
+                if (
+                    annonceSnapshot.exists()
+                ) {
 
-                if (!annonceSnapshot.exists()) {
+                    annonce = {
+
+                        id:
+                            annonceSnapshot.id,
+
+                        ...annonceSnapshot.data()
+
+                    };
+
+
+                    console.log(
+                        "CAMU FAVORIS — annonce récupérée :",
+                        annonceId
+                    );
+
+                } else {
+
+                    /*
+                     * L'annonce n'existe plus.
+                     *
+                     * IMPORTANT :
+                     * On ne supprime PAS le favori ici.
+                     */
 
                     console.warn(
                         "CAMU FAVORIS — annonce introuvable :",
                         annonceId
                     );
 
-                    await removeOrphanFavorite(
-                        favoriteDoc.id
-                    );
 
-                    continue;
+                    /*
+                     * On garde les informations présentes
+                     * dans le document favorites.
+                     */
+
+                    annonce = {
+
+                        id:
+                            annonceId,
+
+                        title:
+                            favorite.title ||
+                            "Annonce indisponible",
+
+                        imageURL:
+                            favorite.imageURL ||
+                            "",
+
+                        status:
+                            "unavailable",
+
+                        unavailable:
+                            true
+
+                    };
+
                 }
-
-
-                const annonce =
-                    annonceSnapshot.data();
-
-
-                /* --------------------------------------------
-                   Vérification du statut
-                   -------------------------------------------- */
-
-                const status =
-                    String(annonce.status || "active")
-                        .trim()
-                        .toLowerCase();
-
-
-                if (
-                    status !== "active" &&
-                    status !== "approved"
-                ) {
-
-                    console.log(
-                        "CAMU FAVORIS — annonce non disponible :",
-                        annonceId,
-                        "status:",
-                        status
-                    );
-
-                    await removeOrphanFavorite(
-                        favoriteDoc.id
-                    );
-
-                    continue;
-                }
-
-
-                /* --------------------------------------------
-                   Ajouter le favori valide
-                   -------------------------------------------- */
-
-                favorites.push({
-
-                    id: favoriteDoc.id,
-
-                    favoriteId: favoriteDoc.id,
-
-                    annonceId: annonceId,
-
-                    ...annonce
-
-                });
 
             } catch (error) {
 
                 console.error(
-                    "CAMU FAVORIS — erreur annonce :",
+                    "CAMU FAVORIS — erreur récupération annonce :",
                     annonceId,
                     error
                 );
 
+
+                /*
+                 * Même en cas d'erreur de lecture,
+                 * on conserve le favori.
+                 */
+
+                annonce = {
+
+                    id:
+                        annonceId,
+
+                    title:
+                        favorite.title ||
+                        "Annonce",
+
+                    imageURL:
+                        favorite.imageURL ||
+                        "",
+
+                    unavailable:
+                        true
+
+                };
+
             }
+
+
+            /* =================================================
+               AJOUTER LE FAVORI
+               ================================================= */
+
+            favorites.push({
+
+                favoriteId:
+                    favoriteDoc.id,
+
+                annonceId:
+                    annonceId,
+
+                userId:
+                    favorite.userId,
+
+                favoriteTitle:
+                    favorite.title || "",
+
+                favoriteImageURL:
+                    favorite.imageURL || "",
+
+                createdAt:
+                    favorite.createdAt || null,
+
+                ...annonce
+
+            });
+
         }
 
 
         renderFavorites();
 
+
         console.log(
-            `CAMU FAVORIS — ${favorites.length} favori(s) chargé(s).`
+            "CAMU FAVORIS —",
+            favorites.length,
+            "favori(s) chargé(s)."
         );
 
 
@@ -234,47 +330,18 @@ async function loadFavorites() {
             error
         );
 
+
         showErrorState(
             "Impossible de charger vos favoris. Vérifiez votre connexion puis réessayez."
         );
+
     }
+
 }
 
 
 /* ============================================================
-   SUPPRIMER UN FAVORI ORPHELIN
-   ============================================================ */
-
-async function removeOrphanFavorite(favoriteId) {
-
-    if (!favoriteId) {
-        return;
-    }
-
-    try {
-
-        await deleteDoc(
-            doc(db, "favorites", favoriteId)
-        );
-
-        console.log(
-            "CAMU FAVORIS — favori orphelin supprimé :",
-            favoriteId
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "CAMU FAVORIS — impossible de supprimer le favori orphelin :",
-            favoriteId,
-            error
-        );
-    }
-}
-
-
-/* ============================================================
-   AFFICHAGE DES FAVORIS
+   AFFICHER LES FAVORIS
    ============================================================ */
 
 function renderFavorites() {
@@ -282,32 +349,35 @@ function renderFavorites() {
     hideAllStates();
 
 
-    /* --------------------------------------------------------
-       Nombre de favoris
-       -------------------------------------------------------- */
+    /* =========================================================
+       COMPTEUR
+       ========================================================= */
 
     if (favoritesCount) {
 
         favoritesCount.textContent =
             String(favorites.length);
+
     }
 
 
-    /* --------------------------------------------------------
-       Aucun favori
-       -------------------------------------------------------- */
+    /* =========================================================
+       AUCUN FAVORI
+       ========================================================= */
 
     if (favorites.length === 0) {
 
-        favoritesEmpty?.classList.remove("hidden");
+        favoritesEmpty?.classList.remove(
+            "hidden"
+        );
 
         return;
     }
 
 
-    /* --------------------------------------------------------
-       Grille
-       -------------------------------------------------------- */
+    /* =========================================================
+       GRILLE
+       ========================================================= */
 
     if (!favoritesGrid) {
 
@@ -322,79 +392,104 @@ function renderFavorites() {
     favoritesGrid.innerHTML = "";
 
 
-    favorites.forEach((annonce) => {
+    favorites.forEach(
+        favorite => {
 
-        const card =
-            createFavoriteCard(annonce);
+            const card =
+                createFavoriteCard(
+                    favorite
+                );
 
-        favoritesGrid.appendChild(card);
-    });
+
+            favoritesGrid.appendChild(
+                card
+            );
+
+        }
+    );
 
 
-    favoritesGrid.classList.remove("hidden");
+    favoritesGrid.classList.remove(
+        "hidden"
+    );
+
 }
 
 
 /* ============================================================
-   CRÉER UNE CARTE FAVORI
+   CRÉER UNE CARTE
    ============================================================ */
 
-function createFavoriteCard(annonce) {
+function createFavoriteCard(favorite) {
 
     const article =
-        document.createElement("article");
+        document.createElement(
+            "article"
+        );
+
 
     article.className =
         "favorite-card";
 
 
-    const image =
-        getAnnonceImage(annonce);
+    const annonceId =
+        cleanValue(
+            favorite.annonceId
+        );
 
 
     const title =
         cleanValue(
-            annonce.title,
-            "Annonce sans titre"
+            favorite.title ||
+            favorite.favoriteTitle,
+            "Annonce"
         );
 
 
     const category =
         cleanValue(
-            annonce.category,
-            "Autre"
+            favorite.category,
+            "Annonce"
         );
 
 
     const city =
         cleanValue(
-            annonce.city,
-            ""
+            favorite.city ||
+            favorite.ville
         );
 
 
     const commune =
         cleanValue(
-            annonce.commune,
-            ""
+            favorite.commune
         );
 
 
     const location =
-        [city, commune]
-            .filter(Boolean)
-            .join(" • ");
+        [
+            city,
+            commune
+        ]
+        .filter(Boolean)
+        .join(" • ");
 
 
     const price =
         formatPrice(
-            annonce.price,
-            annonce.currency
+            favorite.price,
+            favorite.currency
         );
 
 
-    const annonceId =
-        annonce.annonceId;
+    const image =
+        getFavoriteImage(
+            favorite
+        );
+
+
+    const unavailable =
+        favorite.unavailable === true;
 
 
     article.innerHTML = `
@@ -405,17 +500,20 @@ function createFavoriteCard(annonce) {
                 src="${escapeAttribute(image)}"
                 alt="${escapeAttribute(title)}"
                 loading="lazy"
-                onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
             >
 
             <button
                 type="button"
                 class="favorite-remove"
-                data-favorite-id="${escapeAttribute(annonce.favoriteId)}"
+                data-favorite-id="${escapeAttribute(
+                    favorite.favoriteId
+                )}"
                 aria-label="Retirer des favoris"
                 title="Retirer des favoris"
             >
+
                 <i class="fa-solid fa-heart"></i>
+
             </button>
 
         </div>
@@ -424,77 +522,157 @@ function createFavoriteCard(annonce) {
         <div class="favorite-card-content">
 
             <div class="favorite-card-category">
+
                 ${escapeHTML(category)}
+
             </div>
 
 
             <h3 class="favorite-card-title">
+
                 ${escapeHTML(title)}
+
             </h3>
 
 
             ${
-                price
+                unavailable
                     ? `
-                    <div class="favorite-card-price">
-                        ${escapeHTML(price)}
-                    </div>
+                        <div class="favorite-unavailable">
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                            <span>
+                                Cette annonce n'est plus disponible.
+                            </span>
+
+                        </div>
                     `
                     : ""
             }
 
 
             ${
-                location
+                price && !unavailable
                     ? `
-                    <div class="favorite-card-location">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>
-                            ${escapeHTML(location)}
-                        </span>
-                    </div>
+                        <div class="favorite-card-price">
+
+                            ${escapeHTML(price)}
+
+                        </div>
                     `
                     : ""
             }
 
 
             ${
-                annonce.ownerName
+                location && !unavailable
                     ? `
-                    <div class="favorite-card-owner">
-                        <i class="fa-solid fa-user"></i>
-                        <span>
-                            ${escapeHTML(
-                                cleanValue(
-                                    annonce.ownerName,
-                                    "Vendeur"
-                                )
-                            )}
-                        </span>
-                    </div>
+                        <div class="favorite-card-location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <span>
+                                ${escapeHTML(location)}
+                            </span>
+
+                        </div>
                     `
                     : ""
             }
 
 
-            <a
-                href="explorer.html?id=${encodeURIComponent(annonceId)}"
-                class="favorite-view-button"
-            >
-                <span>Voir l'annonce</span>
-                <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            ${
+                favorite.ownerName && !unavailable
+                    ? `
+                        <div class="favorite-card-owner">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <span>
+                                ${escapeHTML(
+                                    cleanValue(
+                                        favorite.ownerName,
+                                        "Vendeur"
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            ${
+                unavailable
+                    ? `
+                        <button
+                            type="button"
+                            class="favorite-view-button favorite-disabled-button"
+                            disabled
+                        >
+
+                            <span>
+                                Annonce indisponible
+                            </span>
+
+                        </button>
+                    `
+                    : `
+                        <a
+                            href="explorer.html?id=${encodeURIComponent(
+                                annonceId
+                            )}"
+                            class="favorite-view-button"
+                        >
+
+                            <span>
+                                Voir l'annonce
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+                    `
+            }
 
         </div>
+
     `;
 
 
-    /* --------------------------------------------------------
-       Bouton supprimer
-       -------------------------------------------------------- */
+    /* =========================================================
+       IMAGE ERROR
+       ========================================================= */
+
+    const imageElement =
+        article.querySelector(
+            ".favorite-card-image img"
+        );
+
+
+    imageElement?.addEventListener(
+        "error",
+        () => {
+
+            imageElement.onerror = null;
+
+            imageElement.src =
+                FALLBACK_IMAGE;
+
+        }
+    );
+
+
+    /* =========================================================
+       BOUTON SUPPRIMER
+       ========================================================= */
 
     const removeButton =
-        article.querySelector(".favorite-remove");
+        article.querySelector(
+            ".favorite-remove"
+        );
 
 
     removeButton?.addEventListener(
@@ -505,18 +683,195 @@ function createFavoriteCard(annonce) {
 
             event.stopPropagation();
 
+
             const favoriteId =
                 removeButton.dataset.favoriteId;
+
 
             await removeFavorite(
                 favoriteId,
                 article
             );
+
         }
     );
 
 
     return article;
+}
+
+
+/* ============================================================
+   IMAGE DU FAVORI
+   ============================================================ */
+
+function getFavoriteImage(favorite) {
+
+    const possibleImages = [];
+
+
+    /* Image de l'annonce */
+
+    if (
+        Array.isArray(
+            favorite.images
+        )
+    ) {
+
+        possibleImages.push(
+            ...favorite.images
+        );
+
+    }
+
+
+    /* JSON images */
+
+    else if (
+        typeof favorite.images === "string" &&
+        favorite.images.trim()
+    ) {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    favorite.images
+                );
+
+
+            if (
+                Array.isArray(parsed)
+            ) {
+
+                possibleImages.push(
+                    ...parsed
+                );
+
+            }
+
+        } catch {
+
+            possibleImages.push(
+                favorite.images
+            );
+
+        }
+
+    }
+
+
+    /* Champs image annonce */
+
+    possibleImages.push(
+        favorite.imageURL,
+        favorite.imageUrl,
+        favorite.image,
+        favorite.photoURL,
+        favorite.photoUrl,
+        favorite.photo
+    );
+
+
+    /* Image enregistrée au moment du favori */
+
+    possibleImages.push(
+        favorite.favoriteImageURL
+    );
+
+
+    for (
+        const image of possibleImages
+    ) {
+
+        if (
+            typeof image !== "string"
+        ) {
+
+            continue;
+        }
+
+
+        const clean =
+            image.trim();
+
+
+        if (!clean) {
+            continue;
+        }
+
+
+        if (
+            isFakeImageValue(clean)
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            isValidImageUrl(clean)
+        ) {
+
+            return clean;
+        }
+
+    }
+
+
+    return FALLBACK_IMAGE;
+}
+
+
+/* ============================================================
+   VÉRIFIER FAUSSE IMAGE
+   ============================================================ */
+
+function isFakeImageValue(value) {
+
+    const clean =
+        String(value)
+            .trim()
+            .toLowerCase();
+
+
+    return [
+        "url1",
+        "url2",
+        "url3",
+        "image",
+        "photo",
+        "logo/photo",
+        "1"
+    ].includes(clean);
+
+}
+
+
+/* ============================================================
+   URL IMAGE VALIDE
+   ============================================================ */
+
+function isValidImageUrl(url) {
+
+    const value =
+        cleanValue(url)
+            .toLowerCase();
+
+
+    if (!value) {
+        return false;
+    }
+
+
+    return (
+        value.startsWith("https://") ||
+        value.startsWith("http://") ||
+        value.startsWith("/") ||
+        value.startsWith("./") ||
+        value.startsWith("assets/")
+    );
+
 }
 
 
@@ -559,33 +914,52 @@ async function removeFavorite(
             );
 
 
-        const favoriteSnapshot =
-            await getDoc(favoriteRef);
+        const snapshot =
+            await getDoc(
+                favoriteRef
+            );
 
 
-        /* ----------------------------------------------------
-           Vérification de propriété
-           ---------------------------------------------------- */
+        /* =====================================================
+           DOCUMENT DÉJÀ SUPPRIMÉ
+           ===================================================== */
 
-        if (!favoriteSnapshot.exists()) {
-
-            cardElement?.remove();
+        if (!snapshot.exists()) {
 
             favorites =
                 favorites.filter(
-                    item =>
-                        item.favoriteId !== favoriteId
+                    favorite =>
+                        favorite.favoriteId !==
+                        favoriteId
                 );
 
+
+            cardElement?.remove();
+
+
             updateFavoritesCount();
+
+
+            if (
+                favorites.length === 0
+            ) {
+
+                showEmptyState();
+
+            }
+
 
             return;
         }
 
 
         const favorite =
-            favoriteSnapshot.data();
+            snapshot.data();
 
+
+        /* =====================================================
+           VÉRIFICATION PROPRIÉTAIRE
+           ===================================================== */
 
         if (
             favorite.userId !==
@@ -593,28 +967,31 @@ async function removeFavorite(
         ) {
 
             console.warn(
-                "CAMU FAVORIS — tentative de suppression non autorisée."
+                "CAMU FAVORIS — suppression refusée."
             );
 
             return;
         }
 
 
-        /* ----------------------------------------------------
-           Suppression Firestore
-           ---------------------------------------------------- */
+        /* =====================================================
+           SUPPRESSION FIRESTORE
+           ===================================================== */
 
-        await deleteDoc(favoriteRef);
+        await deleteDoc(
+            favoriteRef
+        );
 
 
-        /* ----------------------------------------------------
-           Suppression de l'affichage
-           ---------------------------------------------------- */
+        /* =====================================================
+           SUPPRESSION LOCALE
+           ===================================================== */
 
         favorites =
             favorites.filter(
                 item =>
-                    item.favoriteId !== favoriteId
+                    item.favoriteId !==
+                    favoriteId
             );
 
 
@@ -630,13 +1007,16 @@ async function removeFavorite(
         );
 
 
-        /* ----------------------------------------------------
-           Si plus aucun favori
-           ---------------------------------------------------- */
+        /* =====================================================
+           PLUS AUCUN FAVORI
+           ===================================================== */
 
-        if (favorites.length === 0) {
+        if (
+            favorites.length === 0
+        ) {
 
             showEmptyState();
+
         }
 
 
@@ -647,15 +1027,18 @@ async function removeFavorite(
             error
         );
 
+
         alert(
             "Impossible de supprimer ce favori. Veuillez réessayer."
         );
+
     }
+
 }
 
 
 /* ============================================================
-   METTRE À JOUR LE COMPTEUR
+   COMPTEUR
    ============================================================ */
 
 function updateFavoritesCount() {
@@ -664,141 +1047,29 @@ function updateFavoritesCount() {
 
         favoritesCount.textContent =
             String(favorites.length);
+
     }
+
 }
 
 
 /* ============================================================
-   IMAGE
+   FORMAT PRIX
    ============================================================ */
 
-function getAnnonceImage(annonce) {
-
-    let images = [];
-
-
-    /* --------------------------------------------------------
-       Tableau
-       -------------------------------------------------------- */
-
-    if (Array.isArray(annonce.images)) {
-
-        images =
-            annonce.images;
-    }
-
-
-    /* --------------------------------------------------------
-       JSON stocké sous forme de texte
-       -------------------------------------------------------- */
-
-    else if (
-        typeof annonce.images === "string" &&
-        annonce.images.trim()
-    ) {
-
-        try {
-
-            const parsed =
-                JSON.parse(
-                    annonce.images
-                );
-
-            if (Array.isArray(parsed)) {
-
-                images = parsed;
-            }
-
-        } catch (error) {
-
-            images =
-                annonce.images
-                    .split(",")
-                    .map(item => item.trim());
-        }
-    }
-
-
-    /* --------------------------------------------------------
-       Autres champs possibles
-       -------------------------------------------------------- */
-
-    const possibleImages = [
-
-        ...images,
-
-        annonce.imageURL,
-
-        annonce.imageUrl,
-
-        annonce.image,
-
-        annonce.photoURL,
-
-        annonce.photo,
-
-        annonce.logoURL
-
-    ];
-
-
-    for (const image of possibleImages) {
-
-        if (
-            typeof image !== "string"
-        ) {
-            continue;
-        }
-
-
-        const clean =
-            image.trim();
-
-
-        if (!clean) {
-            continue;
-        }
-
-
-        /* Ignorer les faux exemples */
-        if (
-            clean === "url1" ||
-            clean === "url2" ||
-            clean === "url3" ||
-            clean === "image" ||
-            clean === "photo"
-        ) {
-            continue;
-        }
-
-
-        /* Accepter URL Cloudinary */
-        if (
-            clean.startsWith("http://") ||
-            clean.startsWith("https://")
-        ) {
-
-            return clean;
-        }
-    }
-
-
-    return FALLBACK_IMAGE;
-}
-
-
-/* ============================================================
-   PRIX
-   ============================================================ */
-
-function formatPrice(price, currency) {
+function formatPrice(
+    price,
+    currency
+) {
 
     if (
         price === null ||
         price === undefined ||
         price === ""
     ) {
+
         return "";
+
     }
 
 
@@ -811,32 +1082,39 @@ function formatPrice(price, currency) {
 
 
     if (
-        Number.isNaN(numericPrice)
+        Number.isNaN(
+            numericPrice
+        )
     ) {
 
-        return String(price);
+        return cleanValue(price);
+
     }
 
 
     const formatted =
         new Intl.NumberFormat(
             "fr-FR"
-        ).format(numericPrice);
+        ).format(
+            numericPrice
+        );
 
 
     const currencyValue =
         cleanValue(
-            currency,
-            "USD"
+            currency
         );
 
 
-    return `${formatted} ${currencyValue}`;
+    return currencyValue
+        ? `${formatted} ${currencyValue}`
+        : formatted;
+
 }
 
 
 /* ============================================================
-   NETTOYAGE TEXTE
+   NETTOYAGE
    ============================================================ */
 
 function cleanValue(
@@ -850,14 +1128,16 @@ function cleanValue(
     ) {
 
         return fallback;
+
     }
 
 
-    const text =
+    const result =
         String(value).trim();
 
 
-    return text || fallback;
+    return result || fallback;
+
 }
 
 
@@ -868,11 +1148,17 @@ function cleanValue(
 function escapeHTML(value) {
 
     return String(value)
+
         .replace(/&/g, "&amp;")
+
         .replace(/</g, "&lt;")
+
         .replace(/>/g, "&gt;")
+
         .replace(/"/g, "&quot;")
+
         .replace(/'/g, "&#039;");
+
 }
 
 
@@ -883,61 +1169,77 @@ function escapeHTML(value) {
 function escapeAttribute(value) {
 
     return escapeHTML(value);
+
 }
 
 
 /* ============================================================
-   ÉTATS DE LA PAGE
+   ÉTATS
    ============================================================ */
 
 function hideAllStates() {
 
-    favoritesLoading?.classList.add("hidden");
+    favoritesLoading?.classList.add(
+        "hidden"
+    );
 
-    favoritesEmpty?.classList.add("hidden");
+    favoritesEmpty?.classList.add(
+        "hidden"
+    );
 
-    favoritesError?.classList.add("hidden");
+    favoritesError?.classList.add(
+        "hidden"
+    );
 
-    favoritesGrid?.classList.add("hidden");
+    favoritesGrid?.classList.add(
+        "hidden"
+    );
 
-    favoritesLogin?.classList.add("hidden");
+    favoritesLogin?.classList.add(
+        "hidden"
+    );
 
     favoritesPage?.classList.remove(
         "show-login"
     );
+
 }
 
 
 /* ============================================================
-   ÉTAT CHARGEMENT
+   CHARGEMENT
    ============================================================ */
 
 function showLoadingState() {
 
     hideAllStates();
 
+
     favoritesLoading?.classList.remove(
         "hidden"
     );
+
 }
 
 
 /* ============================================================
-   ÉTAT VIDE
+   VIDE
    ============================================================ */
 
 function showEmptyState() {
 
     hideAllStates();
 
+
     favoritesEmpty?.classList.remove(
         "hidden"
     );
+
 }
 
 
 /* ============================================================
-   ÉTAT ERREUR
+   ERREUR
    ============================================================ */
 
 function showErrorState(message) {
@@ -949,17 +1251,19 @@ function showErrorState(message) {
 
         favoritesErrorMessage.textContent =
             message;
+
     }
 
 
     favoritesError?.classList.remove(
         "hidden"
     );
+
 }
 
 
 /* ============================================================
-   ÉTAT CONNEXION
+   CONNEXION
    ============================================================ */
 
 function showLoginState() {
@@ -975,6 +1279,7 @@ function showLoginState() {
     favoritesLogin?.classList.remove(
         "hidden"
     );
+
 }
 
 
@@ -991,15 +1296,18 @@ document.addEventListener(
                 "mobileMenuButton"
             );
 
+
         const sidebar =
             document.getElementById(
                 "sidebar"
             );
 
+
         const mobileOverlay =
             document.getElementById(
                 "mobileOverlay"
             );
+
 
         const sidebarClose =
             document.querySelector(
@@ -1013,13 +1321,16 @@ document.addEventListener(
                 "open"
             );
 
+
             mobileOverlay?.classList.add(
                 "active"
             );
 
+
             document.body.classList.add(
                 "menu-open"
             );
+
         }
 
 
@@ -1029,13 +1340,16 @@ document.addEventListener(
                 "open"
             );
 
+
             mobileOverlay?.classList.remove(
                 "active"
             );
 
+
             document.body.classList.remove(
                 "menu-open"
             );
+
         }
 
 
@@ -1058,14 +1372,19 @@ document.addEventListener(
 
 
         document
-            .querySelectorAll(".sidebar-link")
-            .forEach(link => {
+            .querySelectorAll(
+                ".sidebar-link"
+            )
+            .forEach(
+                link => {
 
-                link.addEventListener(
-                    "click",
-                    closeMobileMenu
-                );
+                    link.addEventListener(
+                        "click",
+                        closeMobileMenu
+                    );
 
-            });
+                }
+            );
+
     }
 );
