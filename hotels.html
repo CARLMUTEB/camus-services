@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,111 +9,171 @@
 
     <meta
         name="description"
-        content="Découvrez les hôtels, appartements, résidences, lodges et autres hébergements disponibles sur CAMU SERVICES."
+        content="Découvrez les hôtels et hébergements disponibles sur CAMU SERVICES."
     >
 
-    <link rel="icon" href="assets/logo/camu-services-logo.png">
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
 
-    <link rel="stylesheet" href="css/hotels.css">
+    <link
+        rel="stylesheet"
+        href="css/hotels.css"
+    >
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <header class="hotel-header">
+    <aside
+        class="hotel-sidebar"
+        id="hotelSidebar"
+    >
 
-        <button
-            type="button"
-            class="header-button menu-button"
-            id="menuButton"
-            aria-label="Ouvrir le menu"
-        >
-            ☰
-        </button>
-
-        <a href="index.html" class="header-logo" aria-label="CAMU SERVICES">
-            <img
-                src="assets/logo/camu-services-logo.png"
-                alt="CAMU SERVICES"
-            >
-        </a>
-
-        <a
-            href="compte.html"
-            class="header-button account-button"
-            aria-label="Mon compte"
-        >
-            👤
-        </a>
-
-    </header>
-
-
-    <!-- ================= MENU MOBILE ================= -->
-
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-    <aside class="mobile-menu" id="mobileMenu">
-
-        <div class="mobile-menu-header">
+        <div class="hotel-sidebar-logo">
 
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
-
-            <button
-                type="button"
-                id="closeMenu"
-                aria-label="Fermer le menu"
-            >
-                ×
-            </button>
 
         </div>
 
-        <nav class="mobile-navigation">
 
-            <a href="index.html">
-                🏠 Accueil
+        <nav class="hotel-menu">
+
+            <a
+                href="index.html"
+                class="hotel-menu-link"
+            >
+                <i>⌂</i>
+                <span>Accueil</span>
             </a>
 
-            <a href="immobilier.html">
-                🏠 Immobilier
+
+            <a
+                href="immobilier.html"
+                class="hotel-menu-link"
+            >
+                <i>🏠</i>
+                <span>Immobilier</span>
             </a>
 
-            <a href="commerce.html">
-                🛒 Commerce
+
+            <a
+                href="commerce.html"
+                class="hotel-menu-link"
+            >
+                <i>🛒</i>
+                <span>Commerce</span>
             </a>
 
-            <a href="vehicules.html">
-                🚗 Véhicules & Transport
+
+            <a
+                href="vehicules.html"
+                class="hotel-menu-link"
+            >
+                <i>🚗</i>
+                <span>Véhicules & Transport</span>
             </a>
 
-            <a href="hotels.html" class="active">
-                🏨 Hôtels & Hébergement
-            </a>
 
-            <a href="compte.html">
-                👤 Mon compte
+            <a
+                href="hotels.html"
+                class="hotel-menu-link active"
+            >
+                <i>🏨</i>
+                <span>Hôtels & Hébergement</span>
             </a>
 
         </nav>
 
+
+        <div class="hotel-sidebar-bottom">
+
+            <a href="compte.html">
+                <i>👤</i>
+                <span>Mon compte</span>
+            </a>
+
+        </div>
+
     </aside>
 
 
-    <!-- ================= HERO ================= -->
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
 
-    <main>
+    <div
+        class="hotel-overlay"
+        id="hotelOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="hotel-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="hotel-topbar">
+
+            <button
+                type="button"
+                class="hotel-menu-button"
+                id="hotelMenuButton"
+                aria-label="Ouvrir le menu"
+            >
+                ☰
+            </button>
+
+
+            <!-- LOGO CENTRAL -->
+            <a
+                href="index.html"
+                class="hotel-top-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="hotel-top-actions">
+
+                <a href="compte.html">
+                    <span>Mon compte</span>
+                    👤
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
 
         <section class="hotel-hero">
 
-            <div class="hero-content">
+            <div class="hotel-hero-content">
 
-                <span class="hero-badge">
-                    CAMU SERVICES
+                <span class="hotel-badge">
+                    🏨 CAMU SERVICES
                 </span>
 
                 <h1>
@@ -121,169 +182,305 @@
 
                 <p>
                     Trouvez facilement un hôtel, un appartement,
-                    une résidence ou un autre hébergement.
+                    une résidence ou un autre hébergement
+                    dans votre ville.
                 </p>
 
-                <div class="search-box">
+            </div>
 
-                    <div class="search-field">
-
-                        <span>🔎</span>
-
-                        <input
-                            type="search"
-                            id="searchInput"
-                            placeholder="Rechercher un établissement..."
-                            autocomplete="off"
-                        >
-
-                    </div>
+        </section>
 
 
-                    <div class="filter-field">
+        <!-- =================================================
+             RECHERCHE
+        ================================================== -->
 
-                        <span>📍</span>
+        <section class="hotel-search-section">
 
-                        <select id="cityFilter">
-
-                            <option value="">
-                                Toutes les villes
-                            </option>
-
-                        </select>
-
-                    </div>
+            <div class="hotel-search-box">
 
 
-                    <div class="filter-field">
+                <!-- MOT-CLÉ -->
 
-                        <span>🏨</span>
+                <div class="hotel-field hotel-keyword">
 
-                        <select id="categoryFilter">
+                    <label for="searchInput">
+                        Recherche
+                    </label>
 
-                            <option value="">
-                                Toutes les catégories
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="search-button"
-                        id="searchButton"
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Nom, établissement..."
                     >
-                        Rechercher
-                    </button>
 
                 </div>
+
+
+                <!-- VILLE -->
+
+                <div class="hotel-field">
+
+                    <label for="cityFilter">
+                        Ville
+                    </label>
+
+                    <select id="cityFilter">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- COMMUNE -->
+
+                <div class="hotel-field">
+
+                    <label for="communeFilter">
+                        Commune
+                    </label>
+
+                    <select
+                        id="communeFilter"
+                        disabled
+                    >
+
+                        <option value="">
+                            Toutes les communes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATÉGORIE -->
+
+                <div class="hotel-field">
+
+                    <label for="categoryFilter">
+                        Type d'hébergement
+                    </label>
+
+                    <select id="categoryFilter">
+
+                        <option value="">
+                            Toutes les catégories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BOUTON -->
+
+                <button
+                    type="button"
+                    class="hotel-search-button"
+                    id="searchButton"
+                >
+                    Rechercher
+                </button>
 
             </div>
 
         </section>
 
 
-        <!-- ================= CATEGORIES ================= -->
+        <!-- =================================================
+             CATÉGORIES
+        ================================================== -->
 
-        <section class="categories-section">
+        <section class="hotel-section">
 
-            <div class="section-heading">
+            <div class="hotel-section-title">
 
-                <div>
-                    <span class="section-label">
-                        Explorer
-                    </span>
+                <span>
+                    Explorer
+                </span>
 
-                    <h2>
-                        Types d'hébergement
-                    </h2>
-                </div>
+                <h2>
+                    Types d'hébergement
+                </h2>
 
             </div>
 
 
-            <div class="categories-grid" id="categoriesGrid">
+            <div
+                class="hotel-services-grid"
+                id="hotelCategories"
+            >
 
                 <button
                     type="button"
-                    class="category-card active"
+                    class="hotel-service-card active"
                     data-category=""
                 >
-                    <span class="category-icon">🏨</span>
-                    <strong>Tous</strong>
-                    <small>Tous les établissements</small>
+
+                    <div class="hotel-service-icon">
+                        🏨
+                    </div>
+
+                    <h3>
+                        Tous
+                    </h3>
+
+                    <p>
+                        Tous les établissements
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Hôtel"
                 >
-                    <span class="category-icon">🏨</span>
-                    <strong>Hôtels</strong>
-                    <small>Hôtels classiques</small>
+
+                    <div class="hotel-service-icon">
+                        🏨
+                    </div>
+
+                    <h3>
+                        Hôtels
+                    </h3>
+
+                    <p>
+                        Hôtels et établissements hôteliers
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Appartement"
                 >
-                    <span class="category-icon">🏠</span>
-                    <strong>Appartements</strong>
-                    <small>Appartements meublés</small>
+
+                    <div class="hotel-service-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Appartements
+                    </h3>
+
+                    <p>
+                        Appartements meublés
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Résidence"
                 >
-                    <span class="category-icon">🏢</span>
-                    <strong>Résidences</strong>
-                    <small>Résidences hôtelières</small>
+
+                    <div class="hotel-service-icon">
+                        🏢
+                    </div>
+
+                    <h3>
+                        Résidences
+                    </h3>
+
+                    <p>
+                        Résidences et appart-hôtels
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Lodge"
                 >
-                    <span class="category-icon">🌿</span>
-                    <strong>Lodges</strong>
-                    <small>Hébergements touristiques</small>
+
+                    <div class="hotel-service-icon">
+                        🌿
+                    </div>
+
+                    <h3>
+                        Lodges
+                    </h3>
+
+                    <p>
+                        Hébergements touristiques
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Guest House"
                 >
-                    <span class="category-icon">🛏️</span>
-                    <strong>Guest Houses</strong>
-                    <small>Maisons d'accueil</small>
+
+                    <div class="hotel-service-icon">
+                        🛏️
+                    </div>
+
+                    <h3>
+                        Guest Houses
+                    </h3>
+
+                    <p>
+                        Maisons d'accueil
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Auberge"
                 >
-                    <span class="category-icon">🏚️</span>
-                    <strong>Auberges</strong>
-                    <small>Hébergements économiques</small>
+
+                    <div class="hotel-service-icon">
+                        🏚️
+                    </div>
+
+                    <h3>
+                        Auberges
+                    </h3>
+
+                    <p>
+                        Hébergements économiques
+                    </p>
+
                 </button>
+
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="hotel-service-card"
                     data-category="Villa"
                 >
-                    <span class="category-icon">🏡</span>
-                    <strong>Villas</strong>
-                    <small>Villas et maisons</small>
+
+                    <div class="hotel-service-icon">
+                        🏡
+                    </div>
+
+                    <h3>
+                        Villas
+                    </h3>
+
+                    <p>
+                        Villas et maisons de vacances
+                    </p>
+
                 </button>
 
             </div>
@@ -291,15 +488,17 @@
         </section>
 
 
-        <!-- ================= ESTABLISHMENTS ================= -->
+        <!-- =================================================
+             ÉTABLISSEMENTS
+        ================================================== -->
 
-        <section class="establishments-section">
+        <section class="hotel-section">
 
-            <div class="section-heading establishments-heading">
+            <div class="hotel-section-heading">
 
                 <div>
 
-                    <span class="section-label">
+                    <span>
                         CAMU HÔTELS
                     </span>
 
@@ -309,9 +508,10 @@
 
                 </div>
 
+
                 <span
-                    class="results-count"
-                    id="resultsCount"
+                    class="hotel-count"
+                    id="hotelCount"
                 >
                     0 établissement
                 </span>
@@ -319,14 +519,14 @@
             </div>
 
 
-            <!-- Chargement -->
+            <!-- CHARGEMENT -->
 
             <div
-                class="state-box"
-                id="loadingState"
+                class="hotel-state"
+                id="hotelLoading"
             >
 
-                <div class="loader"></div>
+                <div class="hotel-loader"></div>
 
                 <p>
                     Chargement des établissements...
@@ -335,29 +535,29 @@
             </div>
 
 
-            <!-- Erreur -->
+            <!-- ERREUR -->
 
             <div
-                class="state-box error-state hidden"
-                id="errorState"
+                class="hotel-state hotel-error hidden"
+                id="hotelError"
             >
 
-                <div class="state-icon">
+                <div class="hotel-state-icon">
                     ⚠️
                 </div>
 
                 <h3>
-                    Impossible de charger les établissements
+                    Une erreur est survenue
                 </h3>
 
-                <p id="errorMessage">
-                    Une erreur est survenue.
+                <p id="hotelErrorMessage">
+                    Impossible de charger les établissements.
                 </p>
 
                 <button
                     type="button"
-                    class="retry-button"
-                    id="retryButton"
+                    id="hotelRetryButton"
+                    class="hotel-primary-button"
                 >
                     Réessayer
                 </button>
@@ -365,14 +565,14 @@
             </div>
 
 
-            <!-- Aucun résultat -->
+            <!-- VIDE -->
 
             <div
-                class="state-box empty-state hidden"
-                id="emptyState"
+                class="hotel-state hidden"
+                id="hotelEmpty"
             >
 
-                <div class="state-icon">
+                <div class="hotel-state-icon">
                     🏨
                 </div>
 
@@ -381,107 +581,117 @@
                 </h3>
 
                 <p>
-                    Aucun hébergement ne correspond à votre recherche.
+                    Aucun hébergement ne correspond
+                    à votre recherche.
                 </p>
 
                 <button
                     type="button"
-                    class="reset-button"
-                    id="resetButton"
+                    id="hotelResetButton"
+                    class="hotel-primary-button"
                 >
-                    Réinitialiser la recherche
+                    Réinitialiser
                 </button>
 
             </div>
 
 
-            <!-- Cartes -->
+            <!-- LISTE -->
 
             <div
-                class="establishments-grid"
-                id="establishmentsGrid"
+                class="hotel-listings"
+                id="hotelListings"
             ></div>
 
         </section>
 
 
-        <!-- ================= CTA ================= -->
+        <!-- =================================================
+             SECTION PROFESSIONNELS
+        ================================================== -->
 
-        <section class="hotel-cta">
+        <section class="hotel-professional">
 
-            <div>
+            <div class="hotel-professional-content">
 
-                <span class="section-label">
-                    Vous êtes professionnel ?
-                </span>
+                <div class="hotel-professional-icon">
+                    🏨
+                </div>
 
-                <h2>
-                    Ajoutez votre établissement
-                </h2>
+                <div>
 
-                <p>
-                    Présentez votre hôtel ou votre hébergement
-                    aux utilisateurs de CAMU SERVICES.
-                </p>
+                    <span>
+                        VOUS ÊTES PROFESSIONNEL ?
+                    </span>
+
+                    <h2>
+                        Présentez votre établissement
+                    </h2>
+
+                    <p>
+                        Faites découvrir votre hôtel ou votre
+                        hébergement aux utilisateurs de
+                        CAMU SERVICES.
+                    </p>
+
+                </div>
+
+                <a
+                    href="compte.html"
+                    class="hotel-primary-button"
+                >
+                    Mon espace
+                </a>
 
             </div>
 
-            <a
-                href="compte.html"
-                class="cta-button"
-            >
-                Mon espace
-            </a>
-
         </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="hotel-footer">
+
+            <p>
+                © <span id="hotelYear"></span>
+                CAMU SERVICES — Hôtels & Hébergement
+            </p>
+
+            <div>
+
+                <a href="a-propos.html">
+                    À propos
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="conditions.html">
+                    Conditions
+                </a>
+
+                <a href="politique.html">
+                    Confidentialité
+                </a>
+
+            </div>
+
+        </footer>
 
     </main>
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-    <footer class="hotel-footer">
-
-        <div class="footer-logo">
-
-            <img
-                src="assets/logo/camu-services-logo.png"
-                alt="CAMU SERVICES"
-            >
-
-        </div>
-
-        <p>
-            © <span id="currentYear"></span>
-            CAMU SERVICES — Hôtels & Hébergement
-        </p>
-
-        <div class="footer-links">
-
-            <a href="a-propos.html">
-                À propos
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            <a href="conditions.html">
-                Conditions
-            </a>
-
-            <a href="politique.html">
-                Confidentialité
-            </a>
-
-        </div>
-
-    </footer>
-
-
-    <!-- ================= JAVASCRIPT ================= -->
-
-    <script type="module" src="js/hotels.js"></script>
+    <script
+        type="module"
+        src="js/hotels.js"
+    ></script>
 
 </body>
 </html>
