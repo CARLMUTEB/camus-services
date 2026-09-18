@@ -6,7 +6,9 @@ import { db } from "./firebase-config.js";
 
 import {
     collection,
-    getDocs
+    getDocs,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -14,54 +16,70 @@ import {
 // CONFIGURATION
 // =========================================================
 
-const COLLECTION_NAME = "etablissements_hoteliers";
+const HOTELS_COLLECTION =
+    "etablissements_hoteliers";
+
+const CITIES_COLLECTION =
+    "villes";
 
 
 // =========================================================
-// ÉLÉMENTS DOM
+// DOM
 // =========================================================
 
-const searchInput = document.getElementById("searchInput");
-const searchButton = document.getElementById("searchButton");
+const searchInput =
+    document.getElementById("searchInput");
 
-const cityFilter = document.getElementById("cityFilter");
-const categoryFilter = document.getElementById("categoryFilter");
+const cityFilter =
+    document.getElementById("cityFilter");
 
-const categoriesGrid = document.getElementById("categoriesGrid");
+const communeFilter =
+    document.getElementById("communeFilter");
 
-const establishmentsGrid =
-    document.getElementById("establishmentsGrid");
+const categoryFilter =
+    document.getElementById("categoryFilter");
 
-const resultsCount =
-    document.getElementById("resultsCount");
+const searchButton =
+    document.getElementById("searchButton");
 
-const loadingState =
-    document.getElementById("loadingState");
+const hotelCategories =
+    document.getElementById("hotelCategories");
 
-const errorState =
-    document.getElementById("errorState");
+const hotelListings =
+    document.getElementById("hotelListings");
 
-const errorMessage =
-    document.getElementById("errorMessage");
+const hotelCount =
+    document.getElementById("hotelCount");
 
-const emptyState =
-    document.getElementById("emptyState");
+const hotelLoading =
+    document.getElementById("hotelLoading");
 
-const retryButton =
-    document.getElementById("retryButton");
+const hotelError =
+    document.getElementById("hotelError");
 
-const resetButton =
-    document.getElementById("resetButton");
+const hotelErrorMessage =
+    document.getElementById("hotelErrorMessage");
 
-const currentYear =
-    document.getElementById("currentYear");
+const hotelEmpty =
+    document.getElementById("hotelEmpty");
+
+const hotelRetryButton =
+    document.getElementById("hotelRetryButton");
+
+const hotelResetButton =
+    document.getElementById("hotelResetButton");
+
+const hotelYear =
+    document.getElementById("hotelYear");
 
 
 // =========================================================
-// ÉTAT
+// VARIABLES
 // =========================================================
 
-let establishments = [];
+let hotels = [];
+
+let cities = [];
 
 let selectedCategory = "";
 
@@ -70,58 +88,106 @@ let selectedCategory = "";
 // INITIALISATION
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    console.log(
-        "CAMU HÔTELS — initialisation..."
-    );
+        console.log(
+            "CAMU HÔTELS — initialisation..."
+        );
 
-    if (currentYear) {
-        currentYear.textContent =
-            new Date().getFullYear();
+        if (hotelYear) {
+
+            hotelYear.textContent =
+                new Date().getFullYear();
+
+        }
+
+        setupMenu();
+
+        setupFilters();
+
+        setupCategoryButtons();
+
+        await loadCities();
+
+        await loadHotels();
+
     }
-
-    setupMenu();
-    setupSearch();
-    setupCategories();
-
-    loadEstablishments();
-
-});
+);
 
 
 // =========================================================
-// CHARGEMENT FIRESTORE
+// CHARGER LES VILLES
+// SOURCE : COLLECTION villes
 // =========================================================
 
-async function loadEstablishments() {
+async function loadCities() {
 
-    showLoading();
+    if (!cityFilter) {
+        return;
+    }
 
     try {
 
         console.log(
-            `CAMU HÔTELS — lecture de ${COLLECTION_NAME}...`
+            "CAMU HÔTELS — chargement des villes..."
         );
 
-        const snapshot = await getDocs(
-            collection(db, COLLECTION_NAME)
-        );
+        let snapshot;
 
-        establishments = [];
+
+        /*
+         * On essaie d'abord de respecter
+         * le champ order de la collection.
+         */
+
+        try {
+
+            const citiesQuery =
+                query(
+                    collection(
+                        db,
+                        CITIES_COLLECTION
+                    ),
+                    orderBy("order", "asc")
+                );
+
+            snapshot =
+                await getDocs(
+                    citiesQuery
+                );
+
+        } catch (orderError) {
+
+            console.warn(
+                "CAMU HÔTELS — order non disponible, lecture simple de villes.",
+                orderError
+            );
+
+            snapshot =
+                await getDocs(
+                    collection(
+                        db,
+                        CITIES_COLLECTION
+                    )
+                );
+
+        }
+
+
+        cities = [];
+
 
         snapshot.forEach((docSnap) => {
 
-            const data = docSnap.data();
+            const data =
+                docSnap.data();
+
 
             /*
-             * Seuls les établissements actifs sont
-             * affichés publiquement.
-             *
-             * Si le champ active n'existe pas,
-             * on conserve l'établissement pour éviter
-             * de supprimer accidentellement les données
-             * déjà présentes.
+             * Une ville inactive ne doit pas
+             * apparaître publiquement.
              */
 
             if (
@@ -130,9 +196,154 @@ async function loadEstablishments() {
                 return;
             }
 
-            establishments.push({
+
+            const name =
+                cleanValue(
+                    data.name
+                );
+
+
+            if (!name) {
+                return;
+            }
+
+
+            cities.push({
+
                 id: docSnap.id,
+
+                name: name,
+
+                order:
+                    Number(data.order) || 0
+
+            });
+
+        });
+
+
+        cities.sort(
+            (a, b) =>
+                a.order - b.order ||
+                a.name.localeCompare(
+                    b.name,
+                    "fr",
+                    {
+                        sensitivity: "base"
+                    }
+                )
+        );
+
+
+        cityFilter.innerHTML = `
+            <option value="">
+                Toutes les villes
+            </option>
+        `;
+
+
+        cities.forEach((city) => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                city.name;
+
+            option.textContent =
+                city.name;
+
+            cityFilter.appendChild(
+                option
+            );
+
+        });
+
+
+        console.log(
+            "CAMU HÔTELS — villes chargées depuis Firestore :",
+            cities.length
+        );
+
+    } catch (error) {
+
+        console.error(
+            "CAMU HÔTELS — erreur chargement villes :",
+            error
+        );
+
+        /*
+         * On ne bloque pas toute la page
+         * si les établissements peuvent
+         * quand même être chargés.
+         */
+
+        cityFilter.innerHTML = `
+            <option value="">
+                Toutes les villes
+            </option>
+        `;
+
+    }
+
+}
+
+
+// =========================================================
+// CHARGER LES ÉTABLISSEMENTS
+// SOURCE : etablissements_hoteliers
+// =========================================================
+
+async function loadHotels() {
+
+    showLoading();
+
+    try {
+
+        console.log(
+            "CAMU HÔTELS — chargement des établissements..."
+        );
+
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    HOTELS_COLLECTION
+                )
+            );
+
+
+        hotels = [];
+
+
+        snapshot.forEach((docSnap) => {
+
+            const data =
+                docSnap.data();
+
+
+            /*
+             * active = false
+             * signifie que l'établissement
+             * ne doit pas être public.
+             */
+
+            if (
+                data.active === false
+            ) {
+                return;
+            }
+
+
+            hotels.push({
+
+                id: docSnap.id,
+
                 ...data
+
             });
 
         });
@@ -140,14 +351,25 @@ async function loadEstablishments() {
 
         console.log(
             "CAMU HÔTELS — établissements :",
-            establishments.length
+            hotels.length
         );
 
 
-        populateCities();
-        populateCategories();
+        populateHotelCategories();
+
+        /*
+         * Après le chargement, on génère
+         * les communes correspondant
+         * à la ville actuellement sélectionnée.
+         */
+
+        loadCommunes(
+            cityFilter?.value || ""
+        );
+
 
         applyFilters();
+
 
         console.log(
             "CAMU HÔTELS — initialisation terminée."
@@ -161,7 +383,7 @@ async function loadEstablishments() {
         );
 
         showError(
-            "Impossible de charger les établissements. Vérifiez votre connexion et réessayez."
+            "Impossible de charger les établissements. Vérifiez votre connexion."
         );
 
     }
@@ -170,109 +392,168 @@ async function loadEstablishments() {
 
 
 // =========================================================
-// VILLES
+// COMMUNES
+//
+// Les villes viennent de "villes".
+// Les communes sont récupérées des établissements
+// correspondant à la ville sélectionnée.
 // =========================================================
 
-function populateCities() {
+function loadCommunes(
+    selectedCity = ""
+) {
 
-    if (!cityFilter) {
+    if (!communeFilter) {
         return;
     }
 
-    const cities = new Set();
 
-    establishments.forEach((hotel) => {
+    communeFilter.innerHTML = `
+        <option value="">
+            Toutes les communes
+        </option>
+    `;
 
-        const city =
+
+    communeFilter.disabled =
+        !selectedCity;
+
+
+    if (!selectedCity) {
+        return;
+    }
+
+
+    const communeMap =
+        new Map();
+
+
+    hotels.forEach((hotel) => {
+
+        const hotelCity =
             cleanValue(
                 hotel.ville
             );
 
-        if (city) {
-            cities.add(city);
+
+        const commune =
+            cleanValue(
+                hotel.commune
+            );
+
+
+        if (
+            hotelCity.toLowerCase() ===
+            selectedCity.toLowerCase() &&
+            commune
+        ) {
+
+            const key =
+                commune.toLowerCase();
+
+
+            if (!communeMap.has(key)) {
+
+                communeMap.set(
+                    key,
+                    commune
+                );
+
+            }
+
         }
 
     });
 
 
-    const sortedCities =
-        [...cities].sort(
-            (a, b) =>
-                a.localeCompare(
-                    b,
-                    "fr",
-                    {
-                        sensitivity: "base"
-                    }
-                )
-        );
+    const communes =
+        [...communeMap.values()]
+            .sort(
+                (a, b) =>
+                    a.localeCompare(
+                        b,
+                        "fr",
+                        {
+                            sensitivity: "base"
+                        }
+                    )
+            );
 
 
-    cityFilter.innerHTML = `
-        <option value="">
-            Toutes les villes
-        </option>
-    `;
-
-
-    sortedCities.forEach((city) => {
+    communes.forEach((commune) => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
-        option.value = city;
-        option.textContent = city;
+        option.value =
+            commune;
 
-        cityFilter.appendChild(option);
+        option.textContent =
+            commune;
+
+        communeFilter.appendChild(
+            option
+        );
 
     });
 
 
     console.log(
-        "CAMU HÔTELS — villes :",
-        sortedCities.length
+        `CAMU HÔTELS — communes pour ${selectedCity} :`,
+        communes.length
     );
 
 }
 
 
 // =========================================================
-// CATÉGORIES DU SELECT
+// CATÉGORIES DYNAMIQUES DU SELECT
 // =========================================================
 
-function populateCategories() {
+function populateHotelCategories() {
 
     if (!categoryFilter) {
         return;
     }
 
-    const categories = new Set();
 
-    establishments.forEach((hotel) => {
+    const categories =
+        new Set();
+
+
+    hotels.forEach((hotel) => {
 
         const category =
             cleanValue(
                 hotel.category
             );
 
+
         if (category) {
-            categories.add(category);
+
+            categories.add(
+                category
+            );
+
         }
 
     });
 
 
-    const sortedCategories =
-        [...categories].sort(
-            (a, b) =>
-                a.localeCompare(
-                    b,
-                    "fr",
-                    {
-                        sensitivity: "base"
-                    }
-                )
-        );
+    const sorted =
+        [...categories]
+            .sort(
+                (a, b) =>
+                    a.localeCompare(
+                        b,
+                        "fr",
+                        {
+                            sensitivity: "base"
+                        }
+                    )
+            );
 
 
     categoryFilter.innerHTML = `
@@ -282,15 +563,22 @@ function populateCategories() {
     `;
 
 
-    sortedCategories.forEach((category) => {
+    sorted.forEach((category) => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
-        option.value = category;
-        option.textContent = category;
+        option.value =
+            category;
 
-        categoryFilter.appendChild(option);
+        option.textContent =
+            category;
+
+        categoryFilter.appendChild(
+            option
+        );
 
     });
 
@@ -298,101 +586,107 @@ function populateCategories() {
 
 
 // =========================================================
-// RECHERCHE
+// FILTRES
 // =========================================================
 
-function setupSearch() {
+function setupFilters() {
 
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            "input",
-            () => {
-                applyFilters();
-            }
-        );
-
-    }
+    searchInput?.addEventListener(
+        "input",
+        applyFilters
+    );
 
 
-    if (searchButton) {
+    cityFilter?.addEventListener(
+        "change",
+        () => {
 
-        searchButton.addEventListener(
-            "click",
-            () => {
-                applyFilters();
-            }
-        );
+            /*
+             * Quand la ville change,
+             * on recharge les communes.
+             */
 
-    }
-
-
-    if (cityFilter) {
-
-        cityFilter.addEventListener(
-            "change",
-            () => {
-                applyFilters();
-            }
-        );
-
-    }
+            loadCommunes(
+                cityFilter.value
+            );
 
 
-    if (categoryFilter) {
+            /*
+             * Une ancienne commune sélectionnée
+             * ne doit pas rester active.
+             */
 
-        categoryFilter.addEventListener(
-            "change",
-            () => {
+            if (communeFilter) {
 
-                selectedCategory =
-                    categoryFilter.value;
-
-                updateCategoryButtons();
-
-                applyFilters();
+                communeFilter.value = "";
 
             }
-        );
-
-    }
 
 
-    if (resetButton) {
+            applyFilters();
 
-        resetButton.addEventListener(
-            "click",
-            resetFilters
-        );
-
-    }
+        }
+    );
 
 
-    if (retryButton) {
+    communeFilter?.addEventListener(
+        "change",
+        applyFilters
+    );
 
-        retryButton.addEventListener(
-            "click",
-            loadEstablishments
-        );
 
-    }
+    categoryFilter?.addEventListener(
+        "change",
+        () => {
+
+            selectedCategory =
+                cleanValue(
+                    categoryFilter.value
+                );
+
+
+            updateCategoryButtons();
+
+            applyFilters();
+
+        }
+    );
+
+
+    searchButton?.addEventListener(
+        "click",
+        applyFilters
+    );
+
+
+    hotelRetryButton?.addEventListener(
+        "click",
+        loadHotels
+    );
+
+
+    hotelResetButton?.addEventListener(
+        "click",
+        resetFilters
+    );
 
 }
 
 
 // =========================================================
-// CATÉGORIES VISUELLES
+// BOUTONS CATÉGORIES
 // =========================================================
 
-function setupCategories() {
+function setupCategoryButtons() {
 
-    if (!categoriesGrid) {
+    if (!hotelCategories) {
         return;
     }
 
+
     const buttons =
-        categoriesGrid.querySelectorAll(
-            ".category-card"
+        hotelCategories.querySelectorAll(
+            ".hotel-service-card"
         );
 
 
@@ -407,10 +701,14 @@ function setupCategories() {
                         button.dataset.category
                     );
 
+
                 if (categoryFilter) {
+
                     categoryFilter.value =
                         selectedCategory;
+
                 }
+
 
                 updateCategoryButtons();
 
@@ -424,15 +722,20 @@ function setupCategories() {
 }
 
 
+// =========================================================
+// ACTUALISER LES CATÉGORIES
+// =========================================================
+
 function updateCategoryButtons() {
 
-    if (!categoriesGrid) {
+    if (!hotelCategories) {
         return;
     }
 
+
     const buttons =
-        categoriesGrid.querySelectorAll(
-            ".category-card"
+        hotelCategories.querySelectorAll(
+            ".hotel-service-card"
         );
 
 
@@ -442,6 +745,7 @@ function updateCategoryButtons() {
             cleanValue(
                 button.dataset.category
             );
+
 
         button.classList.toggle(
             "active",
@@ -454,7 +758,7 @@ function updateCategoryButtons() {
 
 
 // =========================================================
-// FILTRES
+// APPLICATION DES FILTRES
 // =========================================================
 
 function applyFilters() {
@@ -471,6 +775,12 @@ function applyFilters() {
         );
 
 
+    const commune =
+        cleanValue(
+            communeFilter?.value
+        );
+
+
     const category =
         cleanValue(
             categoryFilter?.value ||
@@ -479,27 +789,37 @@ function applyFilters() {
 
 
     const filtered =
-        establishments.filter((hotel) => {
+        hotels.filter((hotel) => {
 
             const name =
                 cleanValue(
                     hotel.name
                 ).toLowerCase();
 
+
             const description =
                 cleanValue(
                     hotel.description
                 ).toLowerCase();
+
 
             const hotelCity =
                 cleanValue(
                     hotel.ville
                 );
 
-            const commune =
+
+            const hotelCommune =
                 cleanValue(
                     hotel.commune
+                );
+
+
+            const hotelAddress =
+                cleanValue(
+                    hotel.adresse
                 ).toLowerCase();
+
 
             const hotelCategory =
                 cleanValue(
@@ -507,19 +827,49 @@ function applyFilters() {
                 );
 
 
+            /*
+             * RECHERCHE TEXTE
+             */
+
             const searchMatch =
                 !search ||
                 name.includes(search) ||
                 description.includes(search) ||
-                hotelCity.toLowerCase().includes(search) ||
-                commune.includes(search) ||
-                hotelCategory.toLowerCase().includes(search);
+                hotelCity
+                    .toLowerCase()
+                    .includes(search) ||
+                hotelCommune
+                    .toLowerCase()
+                    .includes(search) ||
+                hotelAddress.includes(search) ||
+                hotelCategory
+                    .toLowerCase()
+                    .includes(search);
 
+
+            /*
+             * VILLE
+             */
 
             const cityMatch =
                 !city ||
-                hotelCity === city;
+                hotelCity.toLowerCase() ===
+                city.toLowerCase();
 
+
+            /*
+             * COMMUNE
+             */
+
+            const communeMatch =
+                !commune ||
+                hotelCommune.toLowerCase() ===
+                commune.toLowerCase();
+
+
+            /*
+             * CATÉGORIE
+             */
 
             const categoryMatch =
                 !category ||
@@ -530,13 +880,14 @@ function applyFilters() {
             return (
                 searchMatch &&
                 cityMatch &&
+                communeMatch &&
                 categoryMatch
             );
 
         });
 
 
-    renderEstablishments(filtered);
+    renderHotels(filtered);
 
 }
 
@@ -545,20 +896,23 @@ function applyFilters() {
 // AFFICHAGE
 // =========================================================
 
-function renderEstablishments(items) {
+function renderHotels(items) {
 
-    if (!establishmentsGrid) {
+    if (!hotelListings) {
         return;
     }
 
-    establishmentsGrid.innerHTML = "";
+
+    hotelListings.innerHTML = "";
 
 
-    if (resultsCount) {
+    if (hotelCount) {
 
-        const count = items.length;
+        const count =
+            items.length;
 
-        resultsCount.textContent =
+
+        hotelCount.textContent =
             count === 1
                 ? "1 établissement"
                 : `${count} établissements`;
@@ -568,30 +922,29 @@ function renderEstablishments(items) {
 
     if (items.length === 0) {
 
-        establishmentsGrid.classList.add(
+        hotelListings.classList.add(
             "hidden"
         );
 
         showEmpty();
 
         return;
-
     }
 
 
-    hideAllStates();
+    hideStates();
 
-    establishmentsGrid.classList.remove(
+
+    hotelListings.classList.remove(
         "hidden"
     );
 
 
     items.forEach((hotel) => {
 
-        const card =
-            createHotelCard(hotel);
-
-        establishmentsGrid.appendChild(card);
+        hotelListings.appendChild(
+            createHotelCard(hotel)
+        );
 
     });
 
@@ -605,13 +958,16 @@ function renderEstablishments(items) {
 
 
 // =========================================================
-// CRÉATION D'UNE CARTE
+// CARTE
 // =========================================================
 
 function createHotelCard(hotel) {
 
     const card =
-        document.createElement("article");
+        document.createElement(
+            "article"
+        );
+
 
     card.className =
         "hotel-card";
@@ -643,17 +999,11 @@ function createHotelCard(hotel) {
         );
 
 
-    const address =
-        cleanValue(
-            hotel.adresse
-        );
-
-
     const description =
         cleanValue(
             hotel.description
         ) ||
-        "Découvrez les informations de cet établissement sur CAMU SERVICES.";
+        "Découvrez cet établissement sur CAMU SERVICES.";
 
 
     const images =
@@ -661,16 +1011,15 @@ function createHotelCard(hotel) {
 
 
     const mainImage =
-        images.length > 0
+        images.length
             ? images[0]
-            : null;
+            : "";
 
 
     const location =
         [city, commune]
             .filter(Boolean)
             .join(" • ") ||
-        address ||
         "Localisation non renseignée";
 
 
@@ -688,7 +1037,7 @@ function createHotelCard(hotel) {
                         >
                     `
                     : `
-                        <div class="image-placeholder">
+                        <div class="hotel-card-placeholder">
                             🏨
                         </div>
                     `
@@ -698,30 +1047,18 @@ function createHotelCard(hotel) {
                 ${escapeHtml(category)}
             </span>
 
-            <button
-                type="button"
-                class="hotel-card-favorite"
-                aria-label="Ajouter aux favoris"
-                title="Ajouter aux favoris"
-            >
-                ♡
-            </button>
-
         </div>
 
 
         <div class="hotel-card-content">
 
-            <h3 class="hotel-card-title">
+            <h3>
                 ${escapeHtml(name)}
             </h3>
 
 
             <div class="hotel-card-location">
-                <span>📍</span>
-                <span>
-                    ${escapeHtml(location)}
-                </span>
+                📍 ${escapeHtml(location)}
             </div>
 
 
@@ -733,14 +1070,11 @@ function createHotelCard(hotel) {
             <div class="hotel-card-footer">
 
                 <span class="hotel-card-photos">
-                    📷 ${
-                        images.length
-                    } ${
-                        images.length > 1
-                            ? "photos"
-                            : "photo"
-                    }
+                    📷
+                    ${images.length}
+                    ${images.length === 1 ? "photo" : "photos"}
                 </span>
+
 
                 <span class="hotel-card-link">
                     Voir l'établissement →
@@ -754,7 +1088,7 @@ function createHotelCard(hotel) {
 
 
     /*
-     * Toute la carte ouvre la fiche détaillée.
+     * Toute la carte est cliquable.
      */
 
     card.addEventListener(
@@ -769,40 +1103,7 @@ function createHotelCard(hotel) {
 
 
     /*
-     * Empêche le bouton favoris de déclencher
-     * l'ouverture de la fiche.
-     *
-     * La vraie gestion Firestore des favoris pourra
-     * être ajoutée séparément sans modifier la carte.
-     */
-
-    const favoriteButton =
-        card.querySelector(
-            ".hotel-card-favorite"
-        );
-
-
-    if (favoriteButton) {
-
-        favoriteButton.addEventListener(
-            "click",
-            (event) => {
-
-                event.stopPropagation();
-
-                alert(
-                    "Connectez-vous pour gérer vos favoris."
-                );
-
-            }
-        );
-
-    }
-
-
-    /*
-     * Si une image est invalide, on remplace
-     * simplement l'image par le placeholder.
+     * Gestion d'une image cassée.
      */
 
     const image =
@@ -818,10 +1119,12 @@ function createHotelCard(hotel) {
             () => {
 
                 const placeholder =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 placeholder.className =
-                    "image-placeholder";
+                    "hotel-card-placeholder";
 
                 placeholder.textContent =
                     "🏨";
@@ -842,7 +1145,7 @@ function createHotelCard(hotel) {
 
 
 // =========================================================
-// EXTRACTION DES IMAGES
+// EXTRACTION DES PHOTOS
 // =========================================================
 
 function extractImages(hotel) {
@@ -851,41 +1154,42 @@ function extractImages(hotel) {
 
 
     /*
-     * Photo principale
+     * photoURL
      */
 
-    const mainPhoto =
+    const main =
         cleanValue(
             hotel.photoURL
         );
 
 
-    if (isValidImageUrl(mainPhoto)) {
+    if (
+        isValidImage(
+            main
+        )
+    ) {
 
-        images.push(
-            mainPhoto
-        );
+        images.push(main);
 
     }
 
 
     /*
-     * Champ images
-     *
-     * Peut être :
-     * - un tableau Firestore
-     * - une chaîne JSON
-     * - une simple URL
+     * images
      */
 
     let gallery =
         hotel.images;
 
 
-    if (typeof gallery === "string") {
+    if (
+        typeof gallery ===
+        "string"
+    ) {
 
         const value =
             gallery.trim();
+
 
         if (value) {
 
@@ -906,64 +1210,77 @@ function extractImages(hotel) {
     }
 
 
-    if (Array.isArray(gallery)) {
+    if (
+        Array.isArray(
+            gallery
+        )
+    ) {
 
-        gallery.forEach((item) => {
+        gallery.forEach(
+            (item) => {
 
-            const url =
-                typeof item === "string"
-                    ? item
-                    : item?.url ||
-                      item?.secure_url ||
-                      item?.src ||
-                      item?.imageURL ||
-                      "";
+                const url =
+                    typeof item === "string"
+                        ? item
+                        : item?.url ||
+                          item?.secure_url ||
+                          item?.src ||
+                          item?.imageURL ||
+                          "";
 
-            if (
-                isValidImageUrl(url) &&
-                !images.includes(url)
-            ) {
 
-                images.push(url);
+                if (
+                    isValidImage(url) &&
+                    !images.includes(url)
+                ) {
+
+                    images.push(url);
+
+                }
 
             }
-
-        });
+        );
 
     }
 
 
     /*
-     * Champs photoURL1, photoURL2, etc.
+     * image1, image2...
      */
 
-    for (let i = 1; i <= 10; i++) {
+    for (
+        let i = 1;
+        i <= 10;
+        i++
+    ) {
 
-        const possibleFields = [
-            `photoURL${i}`,
+        const fields = [
             `image${i}`,
-            `photo${i}`
+            `photo${i}`,
+            `photoURL${i}`
         ];
 
 
-        possibleFields.forEach((field) => {
+        fields.forEach(
+            (field) => {
 
-            const url =
-                cleanValue(
-                    hotel[field]
-                );
+                const url =
+                    cleanValue(
+                        hotel[field]
+                    );
 
 
-            if (
-                isValidImageUrl(url) &&
-                !images.includes(url)
-            ) {
+                if (
+                    isValidImage(url) &&
+                    !images.includes(url)
+                ) {
 
-                images.push(url);
+                    images.push(url);
+
+                }
 
             }
-
-        });
+        );
 
     }
 
@@ -974,27 +1291,37 @@ function extractImages(hotel) {
 
 
 // =========================================================
-// VALIDATION URL IMAGE
+// VALIDATION IMAGE
 // =========================================================
 
-function isValidImageUrl(value) {
+function isValidImage(value) {
 
-    if (!value) {
+    const url =
+        cleanValue(value);
+
+
+    if (!url) {
         return false;
     }
 
-    const url =
-        String(value).trim();
+
+    const invalidValues = [
+        "url1",
+        "url2",
+        "url3",
+        "image",
+        "photo"
+    ];
 
 
     if (
-        url === "url1" ||
-        url === "url2" ||
-        url === "url3" ||
-        url === "image" ||
-        url === "photo"
+        invalidValues.includes(
+            url.toLowerCase()
+        )
     ) {
+
         return false;
+
     }
 
 
@@ -1008,7 +1335,7 @@ function isValidImageUrl(value) {
 
 
 // =========================================================
-// RÉINITIALISER
+// RESET
 // =========================================================
 
 function resetFilters() {
@@ -1017,13 +1344,31 @@ function resetFilters() {
         searchInput.value = "";
     }
 
+
     if (cityFilter) {
         cityFilter.value = "";
     }
 
+
+    if (communeFilter) {
+
+        communeFilter.innerHTML = `
+            <option value="">
+                Toutes les communes
+            </option>
+        `;
+
+        communeFilter.value = "";
+
+        communeFilter.disabled = true;
+
+    }
+
+
     if (categoryFilter) {
         categoryFilter.value = "";
     }
+
 
     selectedCategory = "";
 
@@ -1038,17 +1383,17 @@ function resetFilters() {
 // ÉTATS
 // =========================================================
 
-function hideAllStates() {
+function hideStates() {
 
-    loadingState?.classList.add(
+    hotelLoading?.classList.add(
         "hidden"
     );
 
-    errorState?.classList.add(
+    hotelError?.classList.add(
         "hidden"
     );
 
-    emptyState?.classList.add(
+    hotelEmpty?.classList.add(
         "hidden"
     );
 
@@ -1057,13 +1402,13 @@ function hideAllStates() {
 
 function showLoading() {
 
-    hideAllStates();
+    hideStates();
 
-    loadingState?.classList.remove(
+    hotelListings?.classList.add(
         "hidden"
     );
 
-    establishmentsGrid?.classList.add(
+    hotelLoading?.classList.remove(
         "hidden"
     );
 
@@ -1072,15 +1417,15 @@ function showLoading() {
 
 function showEmpty() {
 
-    loadingState?.classList.add(
+    hotelLoading?.classList.add(
         "hidden"
     );
 
-    errorState?.classList.add(
+    hotelError?.classList.add(
         "hidden"
     );
 
-    emptyState?.classList.remove(
+    hotelEmpty?.classList.remove(
         "hidden"
     );
 
@@ -1089,78 +1434,73 @@ function showEmpty() {
 
 function showError(message) {
 
-    loadingState?.classList.add(
+    hotelLoading?.classList.add(
         "hidden"
     );
 
-    emptyState?.classList.add(
+    hotelEmpty?.classList.add(
         "hidden"
     );
 
-    errorState?.classList.remove(
+    hotelListings?.classList.add(
         "hidden"
     );
 
-    establishmentsGrid?.classList.add(
+    hotelError?.classList.remove(
         "hidden"
     );
 
 
-    if (errorMessage) {
-        errorMessage.textContent =
+    if (hotelErrorMessage) {
+
+        hotelErrorMessage.textContent =
             message;
+
     }
 
 }
 
 
-function hideStates() {
-
-    hideAllStates();
-
-}
-
-
 // =========================================================
-// MENU
+// MENU MOBILE
 // =========================================================
 
 function setupMenu() {
 
     const menuButton =
         document.getElementById(
-            "menuButton"
+            "hotelMenuButton"
         );
 
-    const closeMenu =
+
+    const sidebar =
         document.getElementById(
-            "closeMenu"
+            "hotelSidebar"
         );
 
-    const mobileMenu =
+
+    const overlay =
         document.getElementById(
-            "mobileMenu"
-        );
-
-    const menuOverlay =
-        document.getElementById(
-            "menuOverlay"
+            "hotelOverlay"
         );
 
 
-    if (!menuButton || !mobileMenu) {
+    if (
+        !menuButton ||
+        !sidebar
+    ) {
         return;
     }
 
 
     function openMenu() {
 
-        mobileMenu.classList.add(
+        sidebar.classList.add(
             "open"
         );
 
-        menuOverlay?.classList.add(
-            "open"
+        overlay?.classList.add(
+            "active"
         );
 
         document.body.style.overflow =
@@ -1169,14 +1509,14 @@ function setupMenu() {
     }
 
 
-    function closeMobileMenu() {
+    function closeMenu() {
 
-        mobileMenu.classList.remove(
+        sidebar.classList.remove(
             "open"
         );
 
-        menuOverlay?.classList.remove(
-            "open"
+        overlay?.classList.remove(
+            "active"
         );
 
         document.body.style.overflow =
@@ -1191,28 +1531,24 @@ function setupMenu() {
     );
 
 
-    closeMenu?.addEventListener(
+    overlay?.addEventListener(
         "click",
-        closeMobileMenu
+        closeMenu
     );
 
 
-    menuOverlay?.addEventListener(
-        "click",
-        closeMobileMenu
-    );
-
-
-    mobileMenu
+    sidebar
         .querySelectorAll("a")
-        .forEach((link) => {
+        .forEach(
+            (link) => {
 
-            link.addEventListener(
-                "click",
-                closeMobileMenu
-            );
+                link.addEventListener(
+                    "click",
+                    closeMenu
+                );
 
-        });
+            }
+        );
 
 }
 
@@ -1227,8 +1563,11 @@ function cleanValue(value) {
         value === null ||
         value === undefined
     ) {
+
         return "";
+
     }
+
 
     return String(value).trim();
 
@@ -1238,11 +1577,26 @@ function cleanValue(value) {
 function escapeHtml(value) {
 
     return cleanValue(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
