@@ -18,7 +18,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
@@ -55,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-
     /* =====================================================
        ADMINISTRATION
     ===================================================== */
@@ -67,146 +65,117 @@ document.addEventListener("DOMContentLoaded", () => {
         "meschackmuteb@gmail.com";
 
 
-
     /* =====================================================
        AUTHENTIFICATION FIREBASE
     ===================================================== */
 
     let currentUser = null;
 
+    onAuthStateChanged(auth, user => {
 
+        currentUser = user;
 
-    onAuthStateChanged(
-        auth,
-        user => {
+        /* -------------------------------------------------
+           UTILISATEUR CONNECTÉ
+        ------------------------------------------------- */
 
-            currentUser = user;
+        if (user) {
 
+            console.log(
+                "Utilisateur connecté :",
+                user.email
+            );
 
 
             /* ---------------------------------------------
-               UTILISATEUR CONNECTÉ
+               MON COMPTE
             --------------------------------------------- */
 
-            if (user) {
+            accountLinks.forEach(link => {
 
-                console.log(
-                    "Utilisateur connecté :",
-                    user.email
-                );
+                link.href = "compte.html";
 
+            });
 
 
-                /* -----------------------------------------
-                   MON COMPTE
-                ----------------------------------------- */
+            /* ---------------------------------------------
+               ADMINISTRATION
+            --------------------------------------------- */
 
-                accountLinks.forEach(
-                    link => {
+            if (
+                adminNavItem &&
+                user.email?.toLowerCase() ===
+                ADMIN_EMAIL.toLowerCase()
+            ) {
 
-                        link.href =
-                            "compte.html";
+                adminNavItem.style.display = "";
 
-                    }
-                );
+            }
 
+            else if (adminNavItem) {
 
-
-                /* -----------------------------------------
-                   ADMINISTRATION
-                ----------------------------------------- */
-
-                if (
-                    adminNavItem &&
-                    user.email?.toLowerCase() ===
-                    ADMIN_EMAIL.toLowerCase()
-                ) {
-
-                    adminNavItem.style.display =
-                        "";
-
-                }
-
-                else if (
-                    adminNavItem
-                ) {
-
-                    adminNavItem.style.display =
-                        "none";
-
-                }
-
-
-
-                /* -----------------------------------------
-                   DÉCONNEXION
-                ----------------------------------------- */
-
-                if (logoutBtn) {
-
-                    logoutBtn.style.display =
-                        "";
-
-                }
+                adminNavItem.style.display = "none";
 
             }
 
 
-
             /* ---------------------------------------------
-               UTILISATEUR NON CONNECTÉ
+               DÉCONNEXION
             --------------------------------------------- */
 
-            else {
+            if (logoutBtn) {
 
-                console.log(
-                    "Aucun utilisateur connecté."
-                );
-
-
-
-                /* Cacher Administration */
-
-                if (adminNavItem) {
-
-                    adminNavItem.style.display =
-                        "none";
-
-                }
-
-
-
-                /* -----------------------------------------
-                   MON COMPTE → CONNEXION
-                ----------------------------------------- */
-
-                accountLinks.forEach(
-                    link => {
-
-                        link.href =
-                            "connexion.html";
-
-                    }
-                );
-
-
-
-                /* -----------------------------------------
-                   CACHER DÉCONNEXION
-                ----------------------------------------- */
-
-                if (logoutBtn) {
-
-                    logoutBtn.style.display =
-                        "none";
-
-                }
+                logoutBtn.style.display = "";
 
             }
 
         }
-    );
 
+
+        /* -------------------------------------------------
+           UTILISATEUR NON CONNECTÉ
+        ------------------------------------------------- */
+
+        else {
+
+            console.log(
+                "Aucun utilisateur connecté."
+            );
+
+
+            /* Cacher Administration */
+
+            if (adminNavItem) {
+
+                adminNavItem.style.display = "none";
+
+            }
+
+
+            /* ---------------------------------------------
+               MON COMPTE → CONNEXION
+            --------------------------------------------- */
+
+            accountLinks.forEach(link => {
+
+                link.href = "connexion.html";
+
+            });
+
+
+            /* ---------------------------------------------
+               CACHER DÉCONNEXION
+            --------------------------------------------- */
+
+            if (logoutBtn) {
+
+                logoutBtn.style.display = "none";
+
+            }
+
+        }
+
+    });
 
 
     /* =====================================================
@@ -217,17 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /*
          * Une seule visite par session de navigateur.
-         *
-         * sessionStorage est conservé pendant la navigation
-         * entre les pages du site.
-         *
-         * Lorsque le navigateur ferme la session,
-         * une nouvelle visite pourra être comptabilisée.
          */
 
         const VISITE_SESSION_KEY =
             "camu_services_visit_counted";
-
 
 
         /* ---------------------------------------------
@@ -254,19 +216,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         catch (error) {
 
-            /*
-             * Si sessionStorage n'est pas disponible,
-             * on continue quand même afin de ne pas
-             * bloquer le fonctionnement du site.
-             */
-
             console.warn(
                 "sessionStorage indisponible :",
                 error
             );
 
         }
-
 
 
         /* ---------------------------------------------
@@ -279,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "visites",
                 "global"
             );
-
 
 
         /* ---------------------------------------------
@@ -297,7 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     month: increment(1)
                 }
             );
-
 
 
             /* -----------------------------------------
@@ -323,7 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-
             console.log(
                 "Visite CAMU SERVICES enregistrée."
             );
@@ -342,13 +294,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-
     /* =====================================================
        LANCER LE COMPTEUR
     ===================================================== */
 
     enregistrerVisite();
-
 
 
     /* =====================================================
@@ -359,58 +309,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!sidebar) return;
 
-
-
-        sidebar.classList.add(
-            "open"
-        );
-
-
+        sidebar.classList.add("open");
 
         if (sidebarOverlay) {
 
-            sidebarOverlay.classList.add(
-                "active"
-            );
+            sidebarOverlay.classList.add("active");
 
         }
 
-
-
-        document.body.style.overflow =
-            "hidden";
+        document.body.style.overflow = "hidden";
 
     }
-
 
 
     function closeSidebar() {
 
         if (!sidebar) return;
 
-
-
-        sidebar.classList.remove(
-            "open"
-        );
-
-
+        sidebar.classList.remove("open");
 
         if (sidebarOverlay) {
 
-            sidebarOverlay.classList.remove(
-                "active"
-            );
+            sidebarOverlay.classList.remove("active");
 
         }
 
-
-
-        document.body.style.overflow =
-            "";
+        document.body.style.overflow = "";
 
     }
-
 
 
     /* =====================================================
@@ -427,7 +353,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-
     /* =====================================================
        FERMER LE MENU
     ===================================================== */
@@ -440,7 +365,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     }
-
 
 
     /* =====================================================
@@ -457,7 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-
     /* =====================================================
        FERMER LE MENU APRÈS UN CLIC
     ===================================================== */
@@ -467,29 +390,22 @@ document.addEventListener("DOMContentLoaded", () => {
             ".sidebar .nav-item"
         );
 
+    navLinks.forEach(link => {
 
+        link.addEventListener(
+            "click",
+            () => {
 
-    navLinks.forEach(
-        link => {
+                if (window.innerWidth <= 700) {
 
-            link.addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        window.innerWidth <= 700
-                    ) {
-
-                        closeSidebar();
-
-                    }
+                    closeSidebar();
 
                 }
-            );
 
-        }
-    );
+            }
+        );
 
+    });
 
 
     /* =====================================================
@@ -500,9 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         event => {
 
-            if (
-                event.key === "Escape"
-            ) {
+            if (event.key === "Escape") {
 
                 closeSidebar();
 
@@ -510,7 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     );
-
 
 
     /* =====================================================
@@ -526,15 +439,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
-
                 /* -----------------------------------------
                    MOT-CLÉ
                 ----------------------------------------- */
 
                 const keyword =
-                    searchKeyword?.value.trim()
-                    || "";
-
+                    searchKeyword?.value.trim() || "";
 
 
                 /* -----------------------------------------
@@ -542,9 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ----------------------------------------- */
 
                 const city =
-                    citySelect?.value
-                    || "";
-
+                    citySelect?.value || "";
 
 
                 /* -----------------------------------------
@@ -553,7 +461,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const params =
                     new URLSearchParams();
-
 
 
                 if (keyword) {
@@ -566,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-
                 if (city) {
 
                     params.set(
@@ -577,14 +483,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-
                 /* -----------------------------------------
                    REDIRECTION
                 ----------------------------------------- */
 
                 const queryString =
                     params.toString();
-
 
 
                 if (queryString) {
@@ -607,7 +511,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-
     /* =====================================================
        DÉCONNEXION — FIREBASE
     ===================================================== */
@@ -619,7 +522,6 @@ document.addEventListener("DOMContentLoaded", () => {
             async event => {
 
                 event.preventDefault();
-
 
 
                 /* -----------------------------------------
@@ -636,7 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-
                 /* -----------------------------------------
                    CONFIRMATION
                 ----------------------------------------- */
@@ -647,13 +548,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-
                 if (!confirmLogout) {
 
                     return;
 
                 }
-
 
 
                 /* -----------------------------------------
@@ -662,10 +561,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    await signOut(
-                        auth
-                    );
-
+                    await signOut(auth);
 
 
                     if (
@@ -681,7 +577,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-
                     setTimeout(
                         () => {
 
@@ -694,15 +589,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
 
-
-
                 catch (error) {
 
                     console.error(
                         "Erreur de déconnexion :",
                         error
                     );
-
 
 
                     if (
@@ -725,7 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-
     /* =====================================================
        ANIMATION DES CARTES
     ===================================================== */
@@ -736,7 +627,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-
     cards.forEach(
         (card, index) => {
 
@@ -745,7 +635,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     );
-
 
 
     /* =====================================================
@@ -768,7 +657,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-
             if (existing) {
 
                 existing.remove();
@@ -776,32 +664,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-
             /* ---------------------------------------------
                CRÉER LA NOTIFICATION
             --------------------------------------------- */
 
             const notification =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
 
             notification.className =
                 `camu-message camu-message-${type}`;
 
 
-
             notification.textContent =
                 message;
-
 
 
             document.body.appendChild(
                 notification
             );
-
 
 
             /* ---------------------------------------------
@@ -811,10 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(
                 () => {
 
-                    notification.classList.add(
-                        "hide"
-                    );
-
+                    notification.classList.add("hide");
 
 
                     setTimeout(
@@ -831,7 +709,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         };
-
 
 
     /* =====================================================
