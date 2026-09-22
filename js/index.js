@@ -10,6 +10,8 @@
 // - ESPACE COMMERCE
 // - ESPACE VÉHICULES & TRANSPORT
 // - ESPACE HÔTELS & HÉBERGEMENT
+// - ESPACE SERVICES
+// - ESPACE JOBS / EMPLOI
 // =========================================================
 
 
@@ -597,6 +599,39 @@ async function loadCategories() {
 
                 card.href =
                     "hotels.html";
+
+            }
+
+
+            // -------------------------------------------------
+            // ESPACE SERVICES
+            // -------------------------------------------------
+
+            else if (
+                categoryName === "services" ||
+                categoryName === "service" ||
+                categoryName.includes("service")
+            ) {
+
+                card.href =
+                    "services.html";
+
+            }
+
+
+            // -------------------------------------------------
+            // ESPACE JOBS / EMPLOI
+            // -------------------------------------------------
+
+            else if (
+                categoryName === "jobs" ||
+                categoryName === "job" ||
+                categoryName === "emploi" ||
+                categoryName.includes("emploi")
+            ) {
+
+                card.href =
+                    "jobs.html";
 
             }
 
