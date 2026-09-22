@@ -1,622 +1,497 @@
-\<!DOCTYPE html>
-\<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
 
-\<head>
-    \<meta charset="UTF-8">
-    \<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    \<title>CAMU SERVICES – Annonces, services et commerces en RDC\</title>
+    <title>CAMU SERVICES — Trouver, Acheter, Réserver</title>
 
-    \<meta
+    <meta
         name="description"
-        content="CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo."
-    \>
+        content="CAMU SERVICES — Trouvez des services, commerces, logements, véhicules, emplois et opportunités en RDC."
+    >
 
-    \<link rel="canonical" href="[https://camu.services/](https://camu.services/)">
-    \<meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow">
 
-    \<!-- CSS -->
-    \<link rel="stylesheet" href="css/style.css">
+    <link rel="canonical" href="https://camu.services/">
 
-    \<!-- Font Awesome -->
-    \<link
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Font Awesome -->
+    <link
         rel="stylesheet"
-        href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css)"
-    \>
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
-    \<!-- SEO -->
-    \<script type="application/ld+json">
+    <!-- Données structurées -->
+    <script type="application/ld+json">
     {
-        "@context": "[https://schema.org](https://schema.org)",
+        "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "CAMU SERVICES",
-        "url": "[https://camu.services/](https://camu.services/)",
-        "description": "CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "[https://camu.services/recherche.html?q={search_term_string](https://camu.services/recherche.html?q={search_term_string)}",
-            "query-input": "required name=search_term_string"
-        }
+        "url": "https://camu.services/",
+        "description": "Plateforme de services, commerces, annonces et opportunités en République démocratique du Congo."
     }
-    \</script>
-\</head>
+    </script>
+</head>
 
-\<body>
+<body>
 
-    \<!-- =====================================================
-         OVERLAY MOBILE
-    \====================================================== -->
+    <!-- Overlay mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    \<div
-        class="sidebar-overlay"
-        id="sidebarOverlay"
-    \>\</div>
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
 
+        <div class="sidebar-header">
 
-
-    \<!-- =====================================================
-         SIDEBAR
-    \====================================================== -->
-
-    \<aside
-        class="sidebar"
-        id="sidebar"
-    \>
-
-        \<div class="sidebar-header">
-
-            \<a
-                href="index.html"
-                class="logo-image"
-            \>
-                \<img
-                    src="assets/logo/camu-services-logo.png"
+            <a href="index.html" class="sidebar-logo">
+                <img
+                    src="assets/images/logo.png"
                     alt="CAMU SERVICES"
-                \>
-            \</a>
+                >
+                <span>CAMU SERVICES</span>
+            </a>
 
-            \<button
+            <button
                 type="button"
-                class="sidebar-close"
-                id="sidebarClose"
+                id="closeSidebar"
+                class="close-sidebar"
                 aria-label="Fermer le menu"
-            \>
-                \<i class="fa-solid fa-xmark">\</i>
-            \</button>
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-        \</div>
+        </div>
 
+        <nav class="sidebar-nav">
 
+            <a href="index.html" class="nav-link active">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
 
-        \<nav class="sidebar-nav">
+            <a href="recherche.html" class="nav-link">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
 
-            \<a
-                href="index.html"
-                class="nav-item active"
-            \>
-                \<i class="fa-solid fa-house">\</i>
-                \<span>Accueil\</span>
-            \</a>
+            <a href="categories.html" class="nav-link">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
 
-            \<a
-                href="recherche.html"
-                class="nav-item"
-            \>
-                \<i class="fa-solid fa-magnifying-glass">\</i>
-                \<span>Rechercher\</span>
-            \</a>
+            <a href="publier.html" class="nav-link">
+                <i class="fa-solid fa-plus"></i>
+                <span>Publier</span>
+            </a>
 
-            \<a
-                href="categories.html"
-                class="nav-item"
-            \>
-                \<i class="fa-solid fa-layer-group">\</i>
-                \<span>Catégories\</span>
-            \</a>
+            <a href="favoris.html" class="nav-link">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favoris</span>
+            </a>
 
-            \<a
-                href="publier.html"
-                class="nav-item"
-            \>
-                \<i class="fa-solid fa-circle-plus">\</i>
-                \<span>Publier\</span>
-            \</a>
+            <a href="compte.html" class="nav-link">
+                <i class="fa-solid fa-user"></i>
+                <span>Mon compte</span>
+            </a>
 
-            \<a
-                href="favoris.html"
-                class="nav-item"
-            \>
-                \<i class="fa-regular fa-heart">\</i>
-                \<span>Favoris\</span>
-            \</a>
+            <a href="parametres.html" class="nav-link">
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
 
-            \<a
-                href="compte.html"
-                class="nav-item"
-            \>
-                \<i class="fa-regular fa-user">\</i>
-                \<span>Mon compte\</span>
-            \</a>
-
-            \<a
-                href="parametres.html"
-                class="nav-item"
-            \>
-                \<i class="fa-solid fa-gear">\</i>
-                \<span>Paramètres\</span>
-            \</a>
-
-            \<!-- Administration -->
-            \<a
+            <a
                 href="admin.html"
-                class="nav-item admin-nav-item"
-                id="adminNavItem"
-                style="display\:none;"
-            \>
-                \<i class="fa-solid fa-gauge-high">\</i>
-                \<span>Administration\</span>
-            \</a>
+                id="adminLink"
+                class="nav-link"
+                style="display: none;"
+            >
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Administration</span>
+            </a>
 
-        \</nav>
+        </nav>
 
+        <div class="sidebar-bottom">
 
+            <a href="connexion.html" id="loginLink" class="nav-link">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
 
-        \<div class="sidebar-bottom">
+            <button
+                type="button"
+                id="logoutLink"
+                class="nav-link logout-button"
+                style="display: none;"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </button>
 
-            \<a
-                href="connexion.html"
-                class="nav-item"
-            \>
-                \<i class="fa-solid fa-right-to-bracket">\</i>
-                \<span>Connexion\</span>
-            \</a>
+        </div>
 
-            \<a
-                href="#"
-                class="nav-item logout-item"
-                id="logoutBtn"
-            \>
-                \<i class="fa-solid fa-right-from-bracket">\</i>
-                \<span>Déconnexion\</span>
-            \</a>
-
-        \</div>
-
-    \</aside>
+    </aside>
 
 
+    <!-- CONTENU PRINCIPAL -->
+    <div class="main-wrapper">
 
-    \<!-- =====================================================
-         CONTENU PRINCIPAL
-    \====================================================== -->
+        <!-- TOPBAR -->
+        <header class="topbar">
 
-    \<div class="main-wrapper">
+            <div class="topbar-left">
 
+                <button
+                    type="button"
+                    id="openSidebar"
+                    class="mobile-menu-button"
+                    aria-label="Ouvrir le menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
 
+                <a href="index.html" class="desktop-logo">
+                    <img
+                        src="assets/images/logo.png"
+                        alt="CAMU SERVICES"
+                    >
+                    <span>CAMU SERVICES</span>
+                </a>
 
-        \<!-- =================================================
-             TOPBAR
-        \================================================== -->
+                <a href="index.html" class="mobile-logo">
+                    <span>CAMU</span>
+                </a>
 
-        \<header class="topbar">
+            </div>
 
-    \<!-- LOGO PC -->
-    \<a href="index.html" class="desktop-logo">
-        \<img
-            src="assets/logo/camu-services-logo.png"
-            alt="CAMU SERVICES"
-        \>
-    \</a>
+            <div class="topbar-right">
 
-    \<!-- BOUTON MENU MOBILE -->
-    \<button
-        type="button"
-        class="menu-button"
-        id="menuButton"
-        aria-label="Ouvrir le menu"
-    \>
-        \<i class="fa-solid fa-bars">\</i>
-    \</button>
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                </a>
 
-    \<!-- LOGO MOBILE -->
-    \<a href="index.html" class="mobile-logo">
-        \<img
-            src="assets/logo/camu-services-logo.png"
-            alt="CAMU SERVICES"
-        \>
-    \</a>
+                <a
+                    href="compte.html"
+                    class="topbar-account"
+                    aria-label="Mon compte"
+                >
+                    <i class="fa-solid fa-user"></i>
+                    <span>Mon compte</span>
+                </a>
 
-    \<div class="topbar-right">
+            </div>
 
-        \<a
-            href="favoris.html"
-            class="topbar-icon"
-            aria-label="Favoris"
-        \>
-            \<i class="fa-regular fa-heart">\</i>
-        \</a>
-
-        \<a
-            href="compte.html"
-            class="profile-button"
-            aria-label="Mon compte"
-        \>
-            \<i class="fa-regular fa-user">\</i>
-            \<span>Mon compte\</span>
-        \</a>
-
-    \</div>
-
-\</header>
+        </header>
 
 
+        <!-- MAIN -->
+        <main>
 
-        \<!-- =================================================
-             MAIN
-        \================================================== -->
+            <!-- HERO -->
+            <section class="hero">
 
-        \<main class="main-content">
+                <div class="hero-content">
 
+                    <div class="location-badge">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>RDC</span>
+                    </div>
 
-
-            \<!-- =================================================
-                 HERO
-            \================================================== -->
-
-            \<section class="hero">
-
-                \<div class="hero-content">
-
-                    \<span class="hero-badge">
-
-                        \<i class="fa-solid fa-location-dot">\</i>
-
-                        Votre marketplace locale
-
-                    \</span>
-
-
-
-                    \<h1>
+                    <h1>
                         Trouver.
-                        \<span>Acheter.\</span>
+                        <span>Acheter.</span>
                         Réserver.
-                    \</h1>
+                    </h1>
 
-
-
-                    \<p>
-                        Découvrez facilement des produits,
-                        logements, véhicules et services
+                    <p>
+                        Découvrez facilement des services, commerces,
+                        logements, véhicules, emplois et opportunités
                         près de chez vous.
-                    \</p>
+                    </p>
 
-
-
-                    \<!-- RECHERCHE -->
-
-                    \<form
-                        class="search-box"
+                    <!-- RECHERCHE -->
+                    <form
                         id="homeSearchForm"
-                    \>
+                        class="home-search-form"
+                    >
 
-                        \<!-- MOT-CLÉ -->
+                        <div class="search-field">
 
-                        \<div class="search-field">
+                            <i class="fa-solid fa-magnifying-glass"></i>
 
-                            \<i class="fa-solid fa-magnifying-glass">\</i>
-
-                            \<input
+                            <input
                                 type="text"
                                 id="searchKeyword"
+                                name="q"
                                 placeholder="Que recherchez-vous ?"
                                 autocomplete="off"
-                            \>
+                            >
 
-                        \</div>
+                        </div>
 
 
+                        <div class="search-field">
 
-                        \<!-- VILLE -->
+                            <i class="fa-solid fa-location-dot"></i>
 
-                        \<div class="search-field city-field">
-
-                            \<i class="fa-solid fa-location-dot">\</i>
-
-                            \<select id="citySelect">
-
-                                \<option value="">
+                            <select
+                                id="citySelect"
+                                name="city"
+                            >
+                                <option value="">
                                     Toutes les villes
-                                \</option>
+                                </option>
+                            </select>
 
-                            \</select>
-
-                        \</div>
-
+                        </div>
 
 
-                        \<!-- BOUTON -->
-
-                        \<button
+                        <button
                             type="submit"
                             class="search-button"
-                        \>
+                        >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Rechercher</span>
+                        </button>
 
-                            \<i class="fa-solid fa-magnifying-glass">\</i>
+                    </form>
 
-                            \<span>Rechercher\</span>
+                </div>
 
-                        \</button>
-
-                    \</form>
-
-                \</div>
-
-            \</section>
+            </section>
 
 
+            <!-- CATÉGORIES -->
+            <section class="categories-section">
 
-            \<!-- =================================================
-                 CATÉGORIES
-            \================================================== -->
+                <div class="section-header">
 
-            \<section class="section categories-section">
-
-                \<div class="section-header">
-
-                    \<div>
-
-                        \<span class="section-label">
+                    <div>
+                        <span class="section-label">
                             EXPLORER
-                        \</span>
+                        </span>
 
-                        \<h2>
-                            Catégories
-                        \</h2>
+                        <h2>Catégories</h2>
+                    </div>
 
-                    \</div>
-
-
-
-                    \<a
+                    <a
                         href="categories.html"
-                        class="see-all"
-                    \>
+                        class="view-all"
+                    >
                         Voir toutes
-                        \<i class="fa-solid fa-arrow-right">\</i>
-                    \</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
 
-                \</div>
+                </div>
 
 
-
-                \<!-- DYNAMIQUE FIRESTORE -->
-
-                \<div
-                    class="categories-grid"
+                <!--
+                    Les catégories sont chargées automatiquement
+                    depuis Firestore.
+                -->
+                <div
                     id="homeCategories"
-                \>
+                    class="categories-grid"
+                >
 
-                    \<div class="category-loading">
+                    <div class="loading-state">
 
-                        \<i class="fa-solid fa-spinner fa-spin">\</i>
+                        <i class="fa-solid fa-spinner fa-spin"></i>
 
-                        \<span>
+                        <span>
                             Chargement des catégories...
-                        \</span>
+                        </span>
 
-                    \</div>
+                    </div>
 
-                \</div>
+                </div>
 
-            \</section>
+            </section>
 
 
+            <!-- ANNONCES RÉCENTES -->
+            <section class="recent-section">
 
-            \<!-- =================================================
-                 ANNONCES RÉCENTES
-            \================================================== -->
+                <div class="section-header">
 
-            \<section class="section ads-section">
+                    <div>
+                        <span class="section-label">
+                            DERNIÈRES PUBLICATIONS
+                        </span>
 
-                \<div class="section-header">
-
-                    \<div>
-
-                        \<span class="section-label">
-                            DÉCOUVREZ
-                        \</span>
-
-                        \<h2>
+                        <h2>
                             Annonces récentes
-                        \</h2>
+                        </h2>
+                    </div>
 
-                    \</div>
-
-
-
-                    \<a
+                    <a
                         href="recherche.html"
-                        class="see-all"
-                    \>
+                        class="view-all"
+                    >
                         Voir toutes
-                        \<i class="fa-solid fa-arrow-right">\</i>
-                    \</a>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
 
-                \</div>
+                </div>
 
 
-
-                \<!-- DYNAMIQUE FIRESTORE -->
-
-                \<div
-                    class="ads-grid"
+                <div
                     id="recentAds"
-                \>
+                    class="ads-grid"
+                >
 
-                    \<div class="category-loading">
+                    <div class="loading-state">
 
-                        \<i class="fa-solid fa-spinner fa-spin">\</i>
+                        <i class="fa-solid fa-spinner fa-spin"></i>
 
-                        \<span>
+                        <span>
                             Chargement des annonces...
-                        \</span>
+                        </span>
 
-                    \</div>
+                    </div>
 
-                \</div>
+                </div>
 
-            \</section>
-
-
-
-            \<!-- =================================================
-                 CTA
-            \================================================== -->
-
-            \<section class="publish-cta">
-
-                \<div class="publish-cta-content">
-
-                    \<div class="publish-cta-icon">
-
-                        \<i class="fa-solid fa-bullhorn">\</i>
-
-                    \</div>
+            </section>
 
 
+            <!-- CTA PUBLICATION -->
+            <section class="publish-cta">
 
-                    \<div>
+                <div class="publish-cta-content">
 
-                        \<span class="cta-label">
-                            CAMU SERVICES
-                        \</span>
+                    <div class="publish-cta-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
 
-                        \<h2>
-                            Vous avez quelque chose à vendre ?
-                        \</h2>
+                    <div class="publish-cta-text">
 
-                        \<p>
-                            Publiez votre annonce gratuitement
-                            sur CAMU SERVICES.
-                        \</p>
+                        <h2>
+                            Vous avez quelque chose à proposer ?
+                        </h2>
 
-                    \</div>
+                        <p>
+                            Publiez votre annonce et faites découvrir
+                            votre activité à de nouveaux clients.
+                        </p>
 
-                \</div>
+                    </div>
 
+                    <a
+                        href="publier.html"
+                        class="publish-cta-button"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Publier une annonce
+                    </a>
 
+                </div>
 
-                \<a
-                    href="publier.html"
-                    class="primary-button"
-                \>
-                    \<i class="fa-solid fa-plus">\</i>
+            </section>
 
-                    Publier une annonce
-
-                \</a>
-
-            \</section>
-
-        \</main>
+        </main>
 
 
+        <!-- FOOTER -->
+        <footer class="footer">
 
-        \<!-- =================================================
-             FOOTER
-        \================================================== -->
+            <div class="footer-content">
 
-        \<footer class="footer">
+                <div class="footer-brand">
 
-            \<div class="footer-content">
-
-                \<div class="footer-brand">
-
-                    \<a
-                        href="index.html"
-                        class="logo-image footer-logo"
-                    \>
-
-                        \<img
-                            src="assets/logo/camu-services-logo.png"
+                    <a href="index.html" class="footer-logo">
+                        <img
+                            src="assets/images/logo.png"
                             alt="CAMU SERVICES"
-                        \>
+                        >
+                        <span>CAMU SERVICES</span>
+                    </a>
 
-                    \</a>
+                    <p>
+                        Votre plateforme locale pour trouver,
+                        acheter, vendre, réserver et découvrir
+                        des opportunités en RDC.
+                    </p>
 
-                    \<p>
-                        Trouver • Acheter • Réserver
-                    \</p>
-
-                \</div>
+                </div>
 
 
+                <div class="footer-links">
 
-                \<div class="footer-links">
+                    <h3>Navigation</h3>
 
-                    \<a href="a-propos.html">
-                        À propos
-                    \</a>
+                    <a href="index.html">
+                        Accueil
+                    </a>
 
-                    \<a href="contact.html">
+                    <a href="recherche.html">
+                        Rechercher
+                    </a>
+
+                    <a href="categories.html">
+                        Catégories
+                    </a>
+
+                    <a href="publier.html">
+                        Publier
+                    </a>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <h3>Informations</h3>
+
+                    <a href="contact.html">
                         Contact
-                    \</a>
+                    </a>
 
-                    \<a href="conditions.html">
-                        Mentions légales
-                    \</a>
-
-                    \<a href="conditions.html">
-                        Conditions d'utilisation
-                    \</a>
-
-                    \<a href="politique.html">
+                    <a href="confidentialite.html">
                         Confidentialité
-                    \</a>
+                    </a>
 
-                    \<a href="conditions.html">
-                        Règles de publication
-                    \</a>
+                    <a href="parametres.html">
+                        Paramètres
+                    </a>
 
-                \</div>
+                </div>
 
-            \</div>
+            </div>
 
 
+            <div class="footer-bottom">
 
-            \<div class="footer-bottom">
-
-                \<p>
+                <p>
                     © 2026 CAMU SERVICES.
                     Tous droits réservés.
-                \</p>
+                </p>
 
-            \</div>
+            </div>
 
-        \</footer>
+        </footer>
 
-    \</div>
+    </div>
 
 
+    <!-- SCRIPTS -->
 
-    \<!-- =====================================================
-         JAVASCRIPT
-    \====================================================== -->
+    <script type="module" src="js/app.js"></script>
 
-    \<script
-        type="module"
-        src="js/app.js"
-    \>\</script>
+    <script type="module" src="js/index.js"></script>
 
-    \<script
-        type="module"
-        src="js/index.js"
-    \>\</script>
+    <script type="module" src="js/theme.js"></script>
 
-    \<script src="js/theme.js">\</script>
-
-\</body>
-\</html>
-
-AJOUTE POUR MOI
+</body>
+</html>
