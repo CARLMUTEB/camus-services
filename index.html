@@ -1,595 +1,721 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CAMU SERVICES – Annonces, services et commerces en RDC</title>
+```
+<title>CAMU SERVICES – Annonces, services et commerces en RDC</title>
 
-    <meta
-        name="description"
-        content="CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo."
-    >
+<meta
+    name="description"
+    content="CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo."
+>
 
-    <link rel="canonical" href="https://camu.services/">
-    <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://camu.services/">
+<meta name="robots" content="index, follow">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
 
-    <!-- Font Awesome -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    <!-- SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "CAMU SERVICES",
-        "url": "https://camu.services/",
-        "description": "CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://camu.services/recherche.html?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
+<!-- SEO -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CAMU SERVICES",
+    "url": "https://camu.services/",
+    "description": "CAMU SERVICES facilite la recherche et la publication d’annonces, services et commerces en République démocratique du Congo.",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://camu.services/recherche.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
     }
-    </script>
+}
+</script>
+```
+
 </head>
 
 <body>
 
-    <!-- =====================================================
-         OVERLAY MOBILE
-    ====================================================== -->
+```
+<!-- =====================================================
+     OVERLAY MOBILE
+====================================================== -->
 
-    <div
-        class="sidebar-overlay"
-        id="sidebarOverlay"
-    ></div>
-
-
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
-
-        <div class="sidebar-header">
-
-            <a
-                href="index.html"
-                class="logo-image"
-            >
-                <img
-                    src="assets/logo/camu-services-logo.png"
-                    alt="CAMU SERVICES"
-                >
-            </a>
-
-            <button
-                type="button"
-                class="sidebar-close"
-                id="sidebarClose"
-                aria-label="Fermer le menu"
-            >
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-        </div>
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
 
 
-        <nav class="sidebar-nav">
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
-            <a
-                href="index.html"
-                class="nav-item active"
-            >
-                <i class="fa-solid fa-house"></i>
-                <span>Accueil</span>
-            </a>
+<aside
+    class="sidebar"
+    id="sidebar"
+>
 
-            <a
-                href="recherche.html"
-                class="nav-item"
-            >
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>Rechercher</span>
-            </a>
+    <div class="sidebar-header">
 
-            <a
-                href="categories.html"
-                class="nav-item"
-            >
-                <i class="fa-solid fa-layer-group"></i>
-                <span>Catégories</span>
-            </a>
-
-            <a
-                href="publier.html"
-                class="nav-item"
-            >
-                <i class="fa-solid fa-circle-plus"></i>
-                <span>Publier</span>
-            </a>
-
-            <a
-                href="favoris.html"
-                class="nav-item"
-            >
-                <i class="fa-regular fa-heart"></i>
-                <span>Favoris</span>
-            </a>
-
-            <a
-                href="compte.html"
-                class="nav-item"
-            >
-                <i class="fa-regular fa-user"></i>
-                <span>Mon compte</span>
-            </a>
-
-            <a
-                href="parametres.html"
-                class="nav-item"
-            >
-                <i class="fa-solid fa-gear"></i>
-                <span>Paramètres</span>
-            </a>
-
-            <!-- Administration -->
-            <a
-                href="admin.html"
-                class="nav-item admin-nav-item"
-                id="adminNavItem"
-                style="display:none;"
-            >
-                <i class="fa-solid fa-gauge-high"></i>
-                <span>Administration</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="connexion.html"
-                class="nav-item"
-            >
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span>Connexion</span>
-            </a>
-
-            <a
-                href="#"
-                class="nav-item logout-item"
-                id="logoutBtn"
-            >
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Déconnexion</span>
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =====================================================
-         CONTENU PRINCIPAL
-    ====================================================== -->
-
-    <div class="main-wrapper">
-
-
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
-
-        <header class="topbar">
-
-    <!-- LOGO PC -->
-    <a href="index.html" class="desktop-logo">
-        <img
-            src="assets/logo/camu-services-logo.png"
-            alt="CAMU SERVICES"
+        <a
+            href="index.html"
+            class="logo-image"
         >
-    </a>
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
 
-    <!-- BOUTON MENU MOBILE -->
-    <button
-        type="button"
-        class="menu-button"
-        id="menuButton"
-        aria-label="Ouvrir le menu"
-    >
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <!-- LOGO MOBILE -->
-    <a href="index.html" class="mobile-logo">
-        <img
-            src="assets/logo/camu-services-logo.png"
-            alt="CAMU SERVICES"
+        <button
+            type="button"
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Fermer le menu"
         >
-    </a>
+            <i class="fa-solid fa-xmark"></i>
+        </button>
 
-    <div class="topbar-right">
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a
+            href="index.html"
+            class="nav-item active"
+        >
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+
+        <a
+            href="recherche.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
+
+        <a
+            href="categories.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Catégories</span>
+        </a>
+
+        <!-- SERVICES -->
+        <a
+            href="services.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Services</span>
+        </a>
+
+        <!-- JOBS -->
+        <a
+            href="jobs.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-user-tie"></i>
+            <span>Jobs</span>
+        </a>
+
+        <a
+            href="publier.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Publier</span>
+        </a>
 
         <a
             href="favoris.html"
-            class="topbar-icon"
-            aria-label="Favoris"
+            class="nav-item"
         >
             <i class="fa-regular fa-heart"></i>
+            <span>Favoris</span>
         </a>
 
         <a
             href="compte.html"
-            class="profile-button"
-            aria-label="Mon compte"
+            class="nav-item"
         >
             <i class="fa-regular fa-user"></i>
             <span>Mon compte</span>
         </a>
 
+        <a
+            href="parametres.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
+        </a>
+
+        <!-- Administration -->
+        <a
+            href="admin.html"
+            class="nav-item admin-nav-item"
+            id="adminNavItem"
+            style="display:none;"
+        >
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Administration</span>
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <a
+            href="connexion.html"
+            class="nav-item"
+        >
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Connexion</span>
+        </a>
+
+        <a
+            href="#"
+            class="nav-item logout-item"
+            id="logoutBtn"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Déconnexion</span>
+        </a>
+
     </div>
 
-</header>
+</aside>
+
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+====================================================== -->
+
+<div class="main-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
+
+    <header class="topbar">
+
+        <!-- LOGO PC -->
+        <a
+            href="index.html"
+            class="desktop-logo"
+        >
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
+
+
+        <!-- BOUTON MENU MOBILE -->
+        <button
+            type="button"
+            class="menu-button"
+            id="menuButton"
+            aria-label="Ouvrir le menu"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+
+        <!-- LOGO MOBILE -->
+        <a
+            href="index.html"
+            class="mobile-logo"
+        >
+            <img
+                src="assets/logo/camu-services-logo.png"
+                alt="CAMU SERVICES"
+            >
+        </a>
+
+
+        <div class="topbar-right">
+
+            <a
+                href="favoris.html"
+                class="topbar-icon"
+                aria-label="Favoris"
+            >
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
+            <a
+                href="compte.html"
+                class="profile-button"
+                aria-label="Mon compte"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         MAIN
+    ================================================== -->
+
+    <main class="main-content">
 
 
         <!-- =================================================
-             MAIN
+             HERO
         ================================================== -->
 
-        <main class="main-content">
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="hero-badge">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Votre marketplace locale
+
+                </span>
 
 
-            <!-- =================================================
-                 HERO
-            ================================================== -->
+                <h1>
+                    Trouver.
+                    <span>Acheter.</span>
+                    Réserver.
+                </h1>
 
-            <section class="hero">
 
-                <div class="hero-content">
+                <p>
+                    Découvrez facilement des produits,
+                    logements, véhicules et services
+                    près de chez vous.
+                </p>
 
-                    <span class="hero-badge">
+
+                <!-- RECHERCHE -->
+
+                <form
+                    class="search-box"
+                    id="homeSearchForm"
+                >
+
+                    <!-- MOT-CLÉ -->
+
+                    <div class="search-field">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="searchKeyword"
+                            placeholder="Que recherchez-vous ?"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- VILLE -->
+
+                    <div class="search-field city-field">
 
                         <i class="fa-solid fa-location-dot"></i>
 
-                        Votre marketplace locale
+                        <select id="citySelect">
 
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BOUTON -->
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <span>Rechercher</span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CATÉGORIES
+        ================================================== -->
+
+        <section class="section categories-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        EXPLORER
                     </span>
 
-
-                    <h1>
-                        Trouver.
-                        <span>Acheter.</span>
-                        Réserver.
-                    </h1>
-
-
-                    <p>
-                        Découvrez facilement des produits,
-                        logements, véhicules et services
-                        près de chez vous.
-                    </p>
-
-
-                    <!-- RECHERCHE -->
-
-                    <form
-                        class="search-box"
-                        id="homeSearchForm"
-                    >
-
-                        <!-- MOT-CLÉ -->
-
-                        <div class="search-field">
-
-                            <i class="fa-solid fa-magnifying-glass"></i>
-
-                            <input
-                                type="text"
-                                id="searchKeyword"
-                                placeholder="Que recherchez-vous ?"
-                                autocomplete="off"
-                            >
-
-                        </div>
-
-
-                        <!-- VILLE -->
-
-                        <div class="search-field city-field">
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            <select id="citySelect">
-
-                                <option value="">
-                                    Toutes les villes
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- BOUTON -->
-
-                        <button
-                            type="submit"
-                            class="search-button"
-                        >
-
-                            <i class="fa-solid fa-magnifying-glass"></i>
-
-                            <span>Rechercher</span>
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 CATÉGORIES
-            ================================================== -->
-
-            <section class="section categories-section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <span class="section-label">
-                            EXPLORER
-                        </span>
-
-                        <h2>
-                            Catégories
-                        </h2>
-
-                    </div>
-
-
-                    <a
-                        href="categories.html"
-                        class="see-all"
-                    >
-                        Voir toutes
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-
-                </div>
-
-
-                <!-- DYNAMIQUE FIRESTORE -->
-
-                <div
-                    class="categories-grid"
-                    id="homeCategories"
-                >
-
-                    <div class="category-loading">
-
-                        <i class="fa-solid fa-spinner fa-spin"></i>
-
-                        <span>
-                            Chargement des catégories...
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 ANNONCES RÉCENTES
-            ================================================== -->
-
-            <section class="section ads-section">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <span class="section-label">
-                            DÉCOUVREZ
-                        </span>
-
-                        <h2>
-                            Annonces récentes
-                        </h2>
-
-                    </div>
-
-
-                    <a
-                        href="recherche.html"
-                        class="see-all"
-                    >
-                        Voir toutes
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-
-                </div>
-
-
-                <!-- DYNAMIQUE FIRESTORE -->
-
-                <div
-                    class="ads-grid"
-                    id="recentAds"
-                >
-
-                    <div class="category-loading">
-
-                        <i class="fa-solid fa-spinner fa-spin"></i>
-
-                        <span>
-                            Chargement des annonces...
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 CTA
-            ================================================== -->
-
-            <section class="publish-cta">
-
-                <div class="publish-cta-content">
-
-                    <div class="publish-cta-icon">
-
-                        <i class="fa-solid fa-bullhorn"></i>
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="cta-label">
-                            CAMU SERVICES
-                        </span>
-
-                        <h2>
-                            Vous avez quelque chose à vendre ?
-                        </h2>
-
-                        <p>
-                            Publiez votre annonce gratuitement
-                            sur CAMU SERVICES.
-                        </p>
-
-                    </div>
+                    <h2>
+                        Catégories
+                    </h2>
 
                 </div>
 
 
                 <a
-                    href="publier.html"
-                    class="primary-button"
+                    href="categories.html"
+                    class="see-all"
                 >
-                    <i class="fa-solid fa-plus"></i>
-
-                    Publier une annonce
-
+                    Voir toutes
+                    <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
-            </section>
+            </div>
 
-        </main>
+
+            <!-- DYNAMIQUE FIRESTORE -->
+
+            <div
+                class="categories-grid"
+                id="homeCategories"
+            >
+
+                <div class="category-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <span>
+                        Chargement des catégories...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- =================================================
-             FOOTER
+             ESPACES SERVICES & JOBS
         ================================================== -->
 
-        <footer class="footer">
+        <section class="section spaces-section">
 
-            <div class="footer-content">
+            <div class="section-header">
 
-                <div class="footer-brand">
+                <div>
 
-                    <a
-                        href="index.html"
-                        class="logo-image footer-logo"
-                    >
+                    <span class="section-label">
+                        NOS ESPACES
+                    </span>
 
-                        <img
-                            src="assets/logo/camu-services-logo.png"
-                            alt="CAMU SERVICES"
-                        >
+                    <h2>
+                        Découvrez nos espaces
+                    </h2>
 
-                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="spaces-grid">
+
+
+                <!-- =========================
+                     SERVICES
+                ========================== -->
+
+                <a
+                    href="services.html"
+                    class="space-card"
+                >
+
+                    <div class="space-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+
+                    <div class="space-content">
+
+                        <h3>
+                            Services
+                        </h3>
+
+                        <p>
+                            Trouvez facilement des professionnels
+                            et des services près de chez vous.
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right space-arrow"></i>
+
+                </a>
+
+
+                <!-- =========================
+                     JOBS
+                ========================== -->
+
+                <a
+                    href="jobs.html"
+                    class="space-card"
+                >
+
+                    <div class="space-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+
+                    <div class="space-content">
+
+                        <h3>
+                            Jobs
+                        </h3>
+
+                        <p>
+                            Trouvez un emploi ou découvrez
+                            les opportunités professionnelles.
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right space-arrow"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ANNONCES RÉCENTES
+        ================================================== -->
+
+        <section class="section ads-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        DÉCOUVREZ
+                    </span>
+
+                    <h2>
+                        Annonces récentes
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="recherche.html"
+                    class="see-all"
+                >
+                    Voir toutes
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <!-- DYNAMIQUE FIRESTORE -->
+
+            <div
+                class="ads-grid"
+                id="recentAds"
+            >
+
+                <div class="category-loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <span>
+                        Chargement des annonces...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CTA
+        ================================================== -->
+
+        <section class="publish-cta">
+
+            <div class="publish-cta-content">
+
+                <div class="publish-cta-icon">
+
+                    <i class="fa-solid fa-bullhorn"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="cta-label">
+                        CAMU SERVICES
+                    </span>
+
+                    <h2>
+                        Vous avez quelque chose à vendre ?
+                    </h2>
 
                     <p>
-                        Trouver • Acheter • Réserver
+                        Publiez votre annonce gratuitement
+                        sur CAMU SERVICES.
                     </p>
 
                 </div>
 
-
-                <div class="footer-links">
-
-                    <a href="a-propos.html">
-                        À propos
-                    </a>
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-                    <a href="conditions.html">
-                        Mentions légales
-                    </a>
-
-                    <a href="conditions.html">
-                        Conditions d'utilisation
-                    </a>
-
-                    <a href="politique.html">
-                        Confidentialité
-                    </a>
-
-                    <a href="conditions.html">
-                        Règles de publication
-                    </a>
-
-                </div>
-
             </div>
 
 
-            <div class="footer-bottom">
+            <a
+                href="publier.html"
+                class="primary-button"
+            >
+                <i class="fa-solid fa-plus"></i>
+
+                Publier une annonce
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo-image footer-logo"
+                >
+
+                    <img
+                        src="assets/logo/camu-services-logo.png"
+                        alt="CAMU SERVICES"
+                    >
+
+                </a>
+
 
                 <p>
-                    © 2026 CAMU SERVICES.
-                    Tous droits réservés.
+                    Trouver • Acheter • Réserver
                 </p>
 
             </div>
 
-        </footer>
 
-    </div>
+            <div class="footer-links">
+
+                <a href="a-propos.html">
+                    À propos
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="conditions.html">
+                    Mentions légales
+                </a>
+
+                <a href="conditions.html">
+                    Conditions d'utilisation
+                </a>
+
+                <a href="politique.html">
+                    Confidentialité
+                </a>
+
+                <a href="conditions.html">
+                    Règles de publication
+                </a>
+
+            </div>
+
+        </div>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+        <div class="footer-bottom">
 
-    <script
-        type="module"
-        src="js/app.js"
-    ></script>
+            <p>
+                © 2026 CAMU SERVICES.
+                Tous droits réservés.
+            </p>
 
-    <script
-        type="module"
-        src="js/index.js"
-    ></script>
+        </div>
 
-    <script src="js/theme.js"></script>
+    </footer>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script
+    type="module"
+    src="js/app.js"
+></script>
+
+<script
+    type="module"
+    src="js/index.js"
+></script>
+
+<script src="js/theme.js"></script>
+```
 
 </body>
 </html>
