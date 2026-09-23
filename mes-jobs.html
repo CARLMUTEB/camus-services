@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mes offres – CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Gérez vos offres d'emploi publiées sur CAMU SERVICES."
+    >
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS JOBS -->
+    <link
+        rel="stylesheet"
+        href="css/jobs.css"
+    >
+
+    <!-- CSS MES OFFRES -->
+    <link
+        rel="stylesheet"
+        href="css/mes-jobs.css"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="logo-image"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Accueil
+                </span>
+
+            </a>
+
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <span>
+                    Rechercher
+                </span>
+
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                <span>
+                    Catégories
+                </span>
+
+            </a>
+
+
+            <a
+                href="publier.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+                <span>
+                    Publier
+                </span>
+
+            </a>
+
+
+            <a
+                href="jobs.html"
+                class="nav-item active"
+            >
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                <span>
+                    Jobs
+                </span>
+
+            </a>
+
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+
+                <i class="fa-regular fa-heart"></i>
+
+                <span>
+                    Favoris
+                </span>
+
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+
+                <i class="fa-regular fa-user"></i>
+
+                <span>
+                    Mon compte
+                </span>
+
+            </a>
+
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-gear"></i>
+
+                <span>
+                    Paramètres
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                <span>
+                    Connexion
+                </span>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="nav-item logout-item"
+                id="logoutBtn"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Déconnexion
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN WRAPPER
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="index.html"
+                class="desktop-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Ouvrir le menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <a
+                href="index.html"
+                class="mobile-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="profile-button"
+                    aria-label="Mon compte"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        Mon compte
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content mes-jobs-page">
+
+
+            <!-- =================================================
+                 EN-TÊTE
+            ================================================== -->
+
+            <section class="mes-jobs-header">
+
+                <div>
+
+                    <span class="mes-jobs-label">
+                        ESPACE RECRUTEUR
+                    </span>
+
+                    <h1>
+                        Mes offres
+                    </h1>
+
+                    <p>
+                        Gérez les offres d'emploi que vous avez
+                        publiées sur CAMU SERVICES.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="publier-job.html"
+                    class="mes-jobs-publish-button"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Nouvelle offre
+
+                </a>
+
+            </section>
+
+
+            <!-- =================================================
+                 MESSAGE AUTH
+            ================================================== -->
+
+            <div
+                id="mesJobsAuthMessage"
+                class="mes-jobs-message"
+                style="display:none;"
+            >
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <div>
+
+                    <strong>
+                        Connexion requise
+                    </strong>
+
+                    <p>
+                        Connectez-vous pour consulter vos offres.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="connexion.html"
+                    class="mes-jobs-login-button"
+                >
+
+                    Se connecter
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATISTIQUES
+            ================================================== -->
+
+            <section
+                class="mes-jobs-stats"
+                id="mesJobsStats"
+            >
+
+
+                <div class="mes-job-stat">
+
+                    <div class="mes-job-stat-icon">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="totalJobs">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mes-job-stat">
+
+                    <div class="mes-job-stat-icon active">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Actives
+                        </span>
+
+                        <strong id="activeJobs">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mes-job-stat">
+
+                    <div class="mes-job-stat-icon pending">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            En attente
+                        </span>
+
+                        <strong id="pendingJobs">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mes-job-stat">
+
+                    <div class="mes-job-stat-icon closed">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Fermées
+                        </span>
+
+                        <strong id="closedJobs">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FILTRES
+            ================================================== -->
+
+            <section class="mes-jobs-toolbar">
+
+                <div class="mes-jobs-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="myJobSearch"
+                        placeholder="Rechercher une de vos offres..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select
+                    id="myJobStatus"
+                    class="
