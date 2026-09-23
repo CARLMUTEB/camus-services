@@ -121,6 +121,40 @@ function normalizeText(value) {
 
 
 // =========================================================
+// NORMALISER UNE ICÔNE
+// =========================================================
+
+function normalizeIcon(icon) {
+
+    if (!icon) {
+        return "fa-solid fa-layer-group";
+    }
+
+    let value = String(icon).trim();
+
+    // Si Firestore contient seulement :
+    // fa-house
+    // fa-store
+    // fa-car
+    // etc.
+    if (
+        value.startsWith("fa-") &&
+        !value.includes("fa-solid") &&
+        !value.includes("fa-regular") &&
+        !value.includes("fa-brands") &&
+        !value.includes("fa-light") &&
+        !value.includes("fa-thin") &&
+        !value.includes("fa-duotone")
+    ) {
+        value = "fa-solid " + value;
+    }
+
+    return value;
+
+}
+
+
+// =========================================================
 // FORMAT PRIX
 // =========================================================
 
@@ -207,8 +241,8 @@ function getImage(ad) {
 
         } catch (error) {
 
-            // Si ce n'est pas du JSON,
-            // on continue avec les autres champs.
+            // Ce n'est pas du JSON.
+            // On continue avec les autres champs.
 
         }
 
@@ -449,9 +483,11 @@ async function loadCategories() {
                         data.name ||
                         "Catégorie",
 
+                    // CORRECTION ICÔNE
                     icon:
-                        data.icon ||
-                        "fa-solid fa-layer-group",
+                        normalizeIcon(
+                            data.icon
+                        ),
 
                     description:
                         data.description ||
@@ -666,20 +702,16 @@ async function loadCategories() {
 
 
                 <h3>
-
                     ${escapeHtml(
                         category.name
                     )}
-
                 </h3>
 
 
                 <p>
-
                     ${escapeHtml(
                         category.description
                     )}
-
                 </p>
 
             `;
@@ -695,6 +727,16 @@ async function loadCategories() {
         console.log(
             "INDEX — catégories chargées :",
             categories.length
+        );
+
+
+        // Vérification des icônes dans la console
+        console.log(
+            "INDEX — icônes catégories :",
+            categories.map(category => ({
+                name: category.name,
+                icon: category.icon
+            }))
         );
 
 
