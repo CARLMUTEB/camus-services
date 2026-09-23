@@ -2460,4 +2460,21 @@ textarea {
         scroll-behavior:
             auto !important;
     }
+   /* Couleur des icônes de la sidebar */
+.sidebar i,
+.sidebar a i,
+.sidebar button i {
+    color: var(--blue) !important;
+}
+
+/* Icônes des boutons Favoris et Profil */
+.sidebar .nav-item i,
+.sidebar .sidebar-item i {
+    color: var(--blue) !important;
+}
+
+/* Icône active */
+.sidebar .active i {
+    color: var(--blue) !important;
+}
 }
