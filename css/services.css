@@ -1,0 +1,909 @@
+/* =========================================================
+   CAMU SERVICES
+   SPACE SERVICES
+   CSS HARMONISÉ AVEC CAMU IMMO
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.services-page {
+    --services-blue: #063b73;
+    --services-blue-dark: #04294f;
+    --services-green: #20a86b;
+    --services-green-dark: #168653;
+    --services-white: #ffffff;
+    --services-light: #f5f7fa;
+    --services-border: #e2e7ee;
+    --services-text: #1d2939;
+    --services-muted: #667085;
+    --services-danger: #d92d20;
+    --services-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --services-radius: 14px;
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+.services-page {
+    min-height: 100vh;
+    background: var(--services-light);
+    color: var(--services-text);
+}
+
+.services-page a {
+    text-decoration: none;
+}
+
+.services-page button,
+.services-page input,
+.services-page select {
+    font: inherit;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.services-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 65px 7%;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(4, 41, 79, .96),
+            rgba(6, 59, 115, .90)
+        );
+    color: #fff;
+}
+
+.services-hero::before {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    top: -200px;
+    right: -80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+}
+
+.services-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    left: 10%;
+    bottom: -145px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .04);
+}
+
+.services-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.services-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 1px solid rgba(255, 255, 255, .20);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, .12);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.services-badge i {
+    color: #80e0b4;
+}
+
+.services-hero h1 {
+    margin: 18px 0 12px;
+    color: #fff;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.05;
+}
+
+.services-hero h1 span {
+    color: #80e0b4;
+}
+
+.services-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, .88);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   RECHERCHE
+========================================================= */
+
+.services-search-section {
+    position: relative;
+    z-index: 5;
+    padding: 0 6%;
+    margin-top: -28px;
+}
+
+.services-search-box {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr 1fr auto;
+    gap: 12px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    border-radius: var(--services-radius);
+    background: #fff;
+    box-shadow: var(--services-shadow);
+}
+
+.services-field {
+    min-width: 0;
+}
+
+.services-field label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--services-muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.services-input {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    overflow: hidden;
+    border: 1px solid var(--services-border);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.services-input:focus-within {
+    border-color: var(--services-blue);
+}
+
+.services-input > i {
+    width: 42px;
+    flex: 0 0 42px;
+    text-align: center;
+    color: var(--services-muted);
+    font-size: 14px;
+}
+
+.services-input input,
+.services-input select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px 0 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--services-text);
+    font-size: 13px;
+}
+
+.services-input input::placeholder {
+    color: #98a2b3;
+}
+
+.services-select-with-icon {
+    cursor: pointer;
+}
+
+.services-field > select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--services-border);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--services-text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.services-field > select:focus {
+    border-color: var(--services-blue);
+}
+
+.services-search-button {
+    align-self: end;
+    height: 44px;
+    border: 0;
+    padding: 0 18px;
+    border-radius: 8px;
+    background: var(--services-green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.services-search-button:hover {
+    background: var(--services-green-dark);
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.services-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 55px 6% 10px;
+}
+
+.services-section-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.services-section-title span,
+.services-section-heading > div > span {
+    color: var(--services-green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.services-section-title h2,
+.services-section-heading h2 {
+    margin: 8px 0 0;
+    color: var(--services-blue);
+    font-size: 30px;
+}
+
+
+/* =========================================================
+   CATÉGORIES
+========================================================= */
+
+.services-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.services-category-card {
+    display: block;
+    padding: 22px 18px;
+    border: 1px solid var(--services-border);
+    border-radius: var(--services-radius);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    transition: .2s ease;
+}
+
+.services-category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--services-shadow);
+}
+
+.services-category-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 13px;
+    border-radius: 50%;
+    background: rgba(32, 168, 107, .10);
+    color: var(--services-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+.services-category-card h3 {
+    margin: 0 0 7px;
+    color: var(--services-blue);
+    font-size: 16px;
+}
+
+.services-category-card p {
+    margin: 0;
+    color: var(--services-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   TITRE LISTE
+========================================================= */
+
+.services-section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.services-count {
+    color: var(--services-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   GRILLE SERVICES
+========================================================= */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CARTE SERVICE
+========================================================= */
+
+.service-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--services-border);
+    border-radius: var(--services-radius);
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    transition: .2s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--services-shadow);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.service-card-image {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    background: #e9edf2;
+}
+
+.service-card-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.service-card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #edf3fa;
+    color: var(--services-blue);
+    font-size: 34px;
+}
+
+
+/* =========================================================
+   FAVORI
+========================================================= */
+
+.service-favorite {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .95);
+    color: var(--services-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+}
+
+.service-favorite:hover,
+.service-favorite.active {
+    color: var(--services-green);
+    background: #e7f8ef;
+}
+
+
+/* =========================================================
+   CONTENU CARTE
+========================================================= */
+
+.service-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 17px;
+}
+
+.service-card-category {
+    color: var(--services-green);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.service-card h3 {
+    margin: 7px 0;
+    color: var(--services-blue);
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.service-card-description {
+    margin: 0 0 12px;
+    color: var(--services-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+
+/* =========================================================
+   PRESTATAIRE
+========================================================= */
+
+.service-provider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.service-provider-avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: rgba(6, 59, 115, .10);
+    color: var(--services-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.service-provider-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.service-provider-info {
+    min-width: 0;
+}
+
+.service-provider-name {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 2px;
+    color: var(--services-blue);
+    font-size: 13px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.service-provider-location {
+    display: block;
+    color: var(--services-muted);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.service-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 13px;
+}
+
+.service-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border-radius: 7px;
+    background: #f5f7fa;
+    color: var(--services-muted);
+    font-size: 11px;
+}
+
+.service-meta-item i {
+    color: var(--services-blue);
+}
+
+
+/* =========================================================
+   PIED CARTE
+========================================================= */
+
+.service-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 13px;
+    border-top: 1px solid var(--services-border);
+}
+
+.service-price {
+    min-width: 0;
+}
+
+.service-price-label {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--services-muted);
+    font-size: 10px;
+}
+
+.service-price-value {
+    color: var(--services-blue);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.service-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 13px;
+    border-radius: 8px;
+    background: var(--services-green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.service-view-button:hover {
+    background: var(--services-green-dark);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.services-loading {
+    grid-column: 1 / -1;
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 35px;
+    border: 1px solid var(--services-border);
+    border-radius: var(--services-radius);
+    background: #fff;
+    color: var(--services-muted);
+    text-align: center;
+}
+
+.services-loading i {
+    color: var(--services-green);
+}
+
+
+/* =========================================================
+   ÉTAT VIDE
+========================================================= */
+
+.services-empty {
+    padding: 35px;
+    border: 1px solid var(--services-border);
+    border-radius: var(--services-radius);
+    background: #fff;
+    text-align: center;
+    color: var(--services-muted);
+}
+
+.services-empty-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: rgba(6, 59, 115, .08);
+    color: var(--services-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.services-empty h3 {
+    margin: 0 0 8px;
+    color: var(--services-blue);
+    font-size: 20px;
+}
+
+.services-empty p {
+    max-width: 500px;
+    margin: 0 auto;
+    color: var(--services-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CTA PRESTATAIRE
+========================================================= */
+
+.services-cta {
+    max-width: 1200px;
+    margin: 55px auto 30px;
+    padding: 35px 6%;
+    border-radius: var(--services-radius);
+    background: var(--services-blue);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.services-cta-icon {
+    width: 65px;
+    height: 65px;
+    flex: 0 0 65px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.services-cta-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.services-cta-content > span {
+    color: #80e0b4;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.services-cta-content h2 {
+    margin: 7px 0;
+    color: #fff;
+    font-size: 24px;
+}
+
+.services-cta-content p {
+    margin: 0;
+    color: rgba(255, 255, 255, .80);
+    line-height: 1.5;
+    font-size: 13px;
+}
+
+.services-primary-button {
+    margin-left: auto;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    background: var(--services-green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.services-primary-button:hover {
+    background: var(--services-green-dark);
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .services-search-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-search-button {
+        width: 100%;
+    }
+
+    .services-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-cta {
+        flex-wrap: wrap;
+    }
+
+    .services-primary-button {
+        margin-left: 0;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .services-hero {
+        padding: 50px 20px;
+    }
+
+    .services-hero h1 {
+        font-size: 34px;
+    }
+
+    .services-hero p {
+        font-size: 14px;
+    }
+
+    .services-search-section {
+        padding: 0 15px;
+        margin-top: -20px;
+    }
+
+    .services-search-box {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    .services-section {
+        padding: 45px 15px 10px;
+    }
+
+    .services-section-title h2,
+    .services-section-heading h2 {
+        font-size: 25px;
+    }
+
+    .services-categories {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .services-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card-image {
+        height: 210px;
+    }
+
+    .services-cta {
+        margin: 35px 15px 25px;
+        padding: 25px;
+    }
+
+    .services-cta-icon {
+        width: 55px;
+        height: 55px;
+        flex-basis: 55px;
+    }
+
+    .services-cta-content h2 {
+        font-size: 21px;
+    }
+
+    .services-primary-button {
+        width: 100%;
+        text-align: center;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .services-hero {
+        padding: 40px 15px;
+    }
+
+    .services-hero h1 {
+        font-size: 29px;
+    }
+
+    .services-search-section {
+        padding: 0 12px;
+    }
+
+    .services-search-box {
+        padding: 13px;
+    }
+
+    .services-section {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .services-section-title h2,
+    .services-section-heading h2 {
+        font-size: 22px;
+    }
+
+    .services-categories {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card-image {
+        height: 200px;
+    }
+
+    .service-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .service-view-button {
+        width: 100%;
+    }
+
+    .services-cta {
+        margin-left: 12px;
+        margin-right: 12px;
+        padding: 22px;
+    }
+
+}
