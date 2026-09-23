@@ -1,0 +1,819 @@
+/* =========================================================
+   CAMU SERVICES — PUBLICATION D'UNE OFFRE JOB
+   Fichier : css/publier-job.css
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.publish-job-page {
+    --publish-primary: #1677b8;
+    --publish-primary-dark: #105d91;
+    --publish-green: #18a64a;
+    --publish-green-dark: #14853b;
+    --publish-text: #172033;
+    --publish-muted: #728092;
+    --publish-border: #dfe6ed;
+    --publish-bg: #f7f9fb;
+    --publish-white: #ffffff;
+    --publish-danger: #d9534f;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.publish-job-page {
+    min-height: 100vh;
+    padding-bottom: 55px;
+}
+
+
+/* =========================================================
+   RETOUR
+========================================================= */
+
+.publish-job-back {
+    margin: 22px 0 18px;
+}
+
+.publish-job-page .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 13px;
+    border: 1px solid var(--publish-border);
+    border-radius: 10px;
+    background: #ffffff;
+    color: #536071;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.publish-job-page .back-button:hover {
+    color: var(--publish-primary);
+    border-color: #c8d7e5;
+    background: #f7fafc;
+}
+
+.publish-job-page .back-button i {
+    color: var(--publish-primary);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.publish-job-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    padding: 30px;
+    border-radius: 22px;
+    background: linear-gradient(
+        135deg,
+        #0878bd 0%,
+        #0b91af 100%
+    );
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(20, 35, 55, 0.08);
+}
+
+.publish-job-hero::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: -155px;
+    right: -50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.publish-job-hero-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 68px;
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: 28px;
+}
+
+.publish-job-hero > div:last-child {
+    position: relative;
+    z-index: 1;
+}
+
+.publish-job-hero .section-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #b2f3c1;
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1.2px;
+}
+
+.publish-job-hero h1 {
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-size: clamp(28px, 4vw, 43px);
+    line-height: 1.15;
+    font-weight: 850;
+}
+
+.publish-job-hero p {
+    max-width: 700px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   MESSAGE AUTH
+========================================================= */
+
+.publish-job-message {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border: 1px solid #cfe1ef;
+    border-radius: 13px;
+    background: #eef7fc;
+    color: #38627e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.publish-job-message i {
+    flex: 0 0 auto;
+    color: var(--publish-primary);
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   FORMULAIRE PRINCIPAL
+========================================================= */
+
+.publish-job-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.publish-job-section {
+    padding: 27px;
+    border: 1px solid var(--publish-border);
+    border-radius: 20px;
+    background: var(--publish-white);
+    box-shadow: 0 7px 24px rgba(20, 35, 55, 0.045);
+}
+
+.publish-job-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.publish-job-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: #edf6fc;
+    color: var(--publish-primary);
+    font-size: 20px;
+}
+
+.publish-job-section-header > div:last-child {
+    min-width: 0;
+}
+
+.publish-job-section-header span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--publish-green);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 1px;
+}
+
+.publish-job-section-header h2 {
+    margin: 0 0 5px;
+    color: var(--publish-text);
+    font-size: 20px;
+    line-height: 1.3;
+}
+
+.publish-job-section-header p {
+    margin: 0;
+    color: var(--publish-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   GRILLE FORMULAIRE
+========================================================= */
+
+.publish-job-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.publish-job-field {
+    min-width: 0;
+}
+
+.publish-job-field.full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.publish-job-field > label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4f5c6d;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.required {
+    color: var(--publish-danger);
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.publish-job-input {
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    overflow: hidden;
+    border: 1px solid var(--publish-border);
+    border-radius: 11px;
+    background: #f9fbfc;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.publish-job-input:focus-within {
+    border-color: var(--publish-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
+}
+
+.publish-job-input > i {
+    flex: 0 0 45px;
+    text-align: center;
+    color: #7a8796;
+    font-size: 15px;
+}
+
+.publish-job-input input {
+    width: 100%;
+    height: 50px;
+    padding: 0 13px 0 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--publish-text);
+    font: inherit;
+    font-size: 14px;
+}
+
+.publish-job-input input::placeholder {
+    color: #9aa5b2;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.publish-job-field > select {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 13px;
+    border: 1px solid var(--publish-border);
+    border-radius: 11px;
+    outline: none;
+    background: #f9fbfc;
+    color: var(--publish-text);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.publish-job-field > select:focus {
+    border-color: var(--publish-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.publish-job-field textarea {
+    display: block;
+    width: 100%;
+    min-height: 120px;
+    padding: 13px 14px;
+    border: 1px solid var(--publish-border);
+    border-radius: 11px;
+    outline: none;
+    resize: vertical;
+    background: #f9fbfc;
+    color: var(--publish-text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.65;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    box-sizing: border-box;
+}
+
+.publish-job-field textarea:focus {
+    border-color: var(--publish-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
+}
+
+.publish-job-field textarea::placeholder {
+    color: #9aa5b2;
+}
+
+
+/* =========================================================
+   SMALL TEXT
+========================================================= */
+
+.publish-job-field small {
+    display: block;
+    margin-top: 7px;
+    color: #8a95a3;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   COMPTEUR
+========================================================= */
+
+.publish-job-counter {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+    color: #8a95a3;
+    font-size: 11px;
+}
+
+.publish-job-counter span {
+    color: var(--publish-primary);
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.publish-job-field input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed #cfd9e3;
+    border-radius: 11px;
+    background: #f9fbfc;
+    color: #5f6c7c;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.publish-job-field input[type="file"]:hover {
+    border-color: var(--publish-primary);
+    background: #f5faff;
+}
+
+.publish-job-field input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #eaf3f9;
+    color: var(--publish-primary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   APERÇU IMAGE
+========================================================= */
+
+.publish-job-image-preview {
+    width: 150px;
+    height: 150px;
+    margin-top: 15px;
+    overflow: hidden;
+    border: 1px solid var(--publish-border);
+    border-radius: 15px;
+    background: #f5f7f9;
+}
+
+.publish-job-image-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CONDITIONS
+========================================================= */
+
+.publish-job-conditions {
+    background: #fbfcfd;
+}
+
+.publish-job-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    cursor: pointer;
+}
+
+.publish-job-checkbox input {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    accent-color: var(--publish-green);
+    cursor: pointer;
+}
+
+.publish-job-checkbox span {
+    color: #5f6c7b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.publish-job-conditions > a {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 29px;
+    color: var(--publish-primary);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.publish-job-conditions > a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   MESSAGE SUCCÈS
+========================================================= */
+
+.publish-job-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 17px;
+    border: 1px solid #cbe8d3;
+    border-radius: 13px;
+    background: #eef9f1;
+    color: #267841;
+}
+
+.publish-job-success > i {
+    margin-top: 2px;
+    color: var(--publish-green);
+    font-size: 21px;
+}
+
+.publish-job-success strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #196c35;
+    font-size: 14px;
+}
+
+.publish-job-success p {
+    margin: 0;
+    color: #4e775a;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MESSAGE ERREUR
+========================================================= */
+
+.publish-job-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 17px;
+    border: 1px solid #f0cfcf;
+    border-radius: 13px;
+    background: #fff6f6;
+    color: #914542;
+}
+
+.publish-job-error > i {
+    margin-top: 2px;
+    color: var(--publish-danger);
+    font-size: 21px;
+}
+
+.publish-job-error strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #8c3936;
+    font-size: 14px;
+}
+
+.publish-job-error p {
+    margin: 0;
+    color: #9a5d59;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACTIONS FINALES
+========================================================= */
+
+.publish-job-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 5px 0 0;
+}
+
+.publish-job-cancel,
+.publish-job-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 11px 19px;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.publish-job-cancel {
+    border: 1px solid var(--publish-border);
+    background: #ffffff;
+    color: #5b6878;
+}
+
+.publish-job-cancel:hover {
+    border-color: #cbd7e2;
+    background: #f7f9fb;
+}
+
+.publish-job-submit {
+    border: 0;
+    background: var(--publish-green);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(24, 166, 74, 0.16);
+}
+
+.publish-job-submit:hover {
+    background: var(--publish-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 11px 24px rgba(24, 166, 74, 0.20);
+}
+
+.publish-job-submit:disabled {
+    opacity: 0.65;
+    transform: none;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   ÉTAT VALIDATION
+========================================================= */
+
+.publish-job-field.invalid input,
+.publish-job-field.invalid select,
+.publish-job-field.invalid textarea,
+.publish-job-field.invalid .publish-job-input {
+    border-color: #dc5a55;
+}
+
+.publish-job-field.invalid input:focus,
+.publish-job-field.invalid select:focus,
+.publish-job-field.invalid textarea:focus,
+.publish-job-field.invalid .publish-job-input:focus-within {
+    box-shadow: 0 0 0 4px rgba(220, 90, 85, 0.09);
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .publish-job-section {
+        padding: 23px;
+    }
+
+    .publish-job-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 17px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .publish-job-page {
+        padding-bottom: 30px;
+    }
+
+    .publish-job-back {
+        margin: 15px 0;
+    }
+
+    .publish-job-hero {
+        align-items: flex-start;
+        gap: 13px;
+        margin-bottom: 18px;
+        padding: 22px;
+        border-radius: 17px;
+    }
+
+    .publish-job-hero-icon {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        font-size: 22px;
+    }
+
+    .publish-job-hero h1 {
+        font-size: 29px;
+    }
+
+    .publish-job-hero p {
+        font-size: 13px;
+    }
+
+    .publish-job-section {
+        padding: 19px;
+        border-radius: 16px;
+    }
+
+    .publish-job-section-header {
+        gap: 11px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+
+    .publish-job-section-icon {
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        font-size: 17px;
+    }
+
+    .publish-job-section-header h2 {
+        font-size: 18px;
+    }
+
+    .publish-job-section-header p {
+        font-size: 12px;
+    }
+
+    .publish-job-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .publish-job-field.full {
+        grid-column: auto;
+    }
+
+    .publish-job-actions {
+        flex-direction: column-reverse;
+    }
+
+    .publish-job-cancel,
+    .publish-job-submit {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .publish-job-conditions > a {
+        margin-left: 29px;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS TÉLÉPHONES
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .publish-job-hero {
+        padding: 19px;
+    }
+
+    .publish-job-hero h1 {
+        font-size: 25px;
+    }
+
+    .publish-job-hero .section-label {
+        font-size: 9px;
+    }
+
+    .publish-job-section {
+        padding: 16px;
+    }
+
+    .publish-job-section-header
