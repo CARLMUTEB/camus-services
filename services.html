@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Services – CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Trouvez des prestataires et services près de chez vous sur CAMU SERVICES."
+    >
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS SERVICES -->
+    <link
+        rel="stylesheet"
+        href="css/services.css"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="logo-image"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+
+            <a
+                href="publier.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Publier</span>
+            </a>
+
+
+            <a
+                href="jobs.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+
+
+            <a
+                href="services.html"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Services</span>
+            </a>
+
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+
+            <a
+                href="#"
+                class="nav-item logout-item"
+                id="logoutBtn"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN WRAPPER
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="index.html"
+                class="desktop-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Ouvrir le menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <a
+                href="index.html"
+                class="mobile-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="profile-button"
+                    aria-label="Mon compte"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        Mon compte
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content services-page">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="services-hero">
+
+                <div class="services-hero-content">
+
+                    <span class="services-badge">
+
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                        SERVICES & PRESTATIONS
+
+                    </span>
+
+
+                    <h1>
+
+                        Trouvez le bon
+                        <span>prestataire.</span>
+
+                    </h1>
+
+
+                    <p>
+
+                        Découvrez des professionnels et
+                        prestataires de services près de
+                        chez vous.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RECHERCHE
+            ================================================== -->
+
+            <section class="services-search-section">
+
+                <div class="services-search-box">
+
+
+                    <div class="services-field">
+
+                        <label for="serviceKeyword">
+                            Que recherchez-vous ?
+                        </label>
+
+                        <div class="services-input">
+
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <input
+                                type="text"
+                                id="serviceKeyword"
+                                placeholder="Plombier, électricien..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="services-field">
+
+                        <label for="serviceCategory">
+                            Catégorie
+                        </label>
+
+                        <select id="serviceCategory">
+
+                            <option value="">
+                                Tous les services
+                            </option>
+
+                            <option value="plomberie">
+                                Plomberie
+                            </option>
+
+                            <option value="electricite">
+                                Électricité
+                            </option>
+
+                            <option value="maconnerie">
+                                Maçonnerie
+                            </option>
+
+                            <option value="climatisation">
+                                Climatisation
+                            </option>
+
+                            <option value="informatique">
+                                Informatique
+                            </option>
+
+                            <option value="mecanique">
+                                Mécanique
+                            </option>
+
+                            <option value="transport">
+                                Transport
+                            </option>
+
+                            <option value="nettoyage">
+                                Nettoyage
+                            </option>
+
+                            <option value="beaute">
+                                Beauté & Coiffure
+                            </option>
+
+                            <option value="photographie">
+                                Photographie
+                            </option>
+
+                            <option value="design">
+                                Design graphique
+                            </option>
+
+                            <option value="formation">
+                                Formation
+                            </option>
+
+                            <option value="topographie">
+                                Topographie
+                            </option>
+
+                            <option value="autres">
+                                Autres
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="services-field">
+
+                        <label for="serviceCity">
+                            Ville
+                        </label>
+
+                        <div class="services-input">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <select
+                                id="serviceCity"
+                                class="services-select-with-icon"
+                            >
+
+                                <option value="">
+                                    Toutes les villes
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="services-search-button"
+                        id="serviceSearchButton"
+                    >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        Rechercher
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CATÉGORIES
+            ================================================== -->
+
+            <section class="services-section">
+
+                <div class="services-section-title">
+
+                    <span>
+                        EXPLORER
+                    </span>
+
+                    <h2>
+                        Services populaires
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="services-categories"
+                    id="serviceCategories"
+                >
+
+                    <div class="services-loading">
+
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+
+                        Chargement...
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LISTE SERVICES
+            ================================================== -->
+
+            <section class="services-section">
+
+
+                <div class="services-section-heading">
+
+                    <div>
+
+                        <span>
+                            PRESTATAIRES
+                        </span>
+
+                        <h2>
+                            Services disponibles
+                        </h2>
+
+                    </div>
+
+
+                    <span
+                        id="servicesCount"
+                        class="services-count"
+                    >
+                        0 service
+                    </span>
+
+                </div>
+
+
+                <!-- LOADING -->
+
+                <div
+                    id="servicesLoading"
+                    class="services-loading"
+                >
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des services...
+
+                </div>
+
+
+                <!-- LISTE -->
+
+                <div
+                    id="servicesList"
+                    class="services-grid"
+                ></div>
+
+
+                <!-- VIDE -->
+
+                <div
+                    id="servicesEmpty"
+                    class="services-empty"
+                    style="display:none;"
+                >
+
+                    <div class="services-empty-icon">
+
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Aucun service trouvé
+                    </h3>
+
+
+                    <p>
+                        Aucun prestataire ne correspond
+                        actuellement à votre recherche.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CTA PRESTATAIRE
+            ================================================== -->
+
+            <section class="services-cta">
+
+                <div class="services-cta-icon">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+
+                <div class="services-cta-content">
+
+                    <span>
+                        VOUS ÊTES PRESTATAIRE ?
+                    </span>
+
+                    <h2>
+                        Présentez vos services sur CAMU SERVICES.
+                    </h2>
+
+                    <p>
+                        Faites connaître votre activité,
+                        trouvez de nouveaux clients et
+                        développez votre visibilité.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="publier-service.html"
+                    class="services-primary-button"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Publier un service
+
+                </a>
+
+            </section>
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <a
+                        href="index.html"
+                        class="logo-image footer-logo"
+                    >
+
+                        <img
+                            src="assets/logo/camu-services-logo.png"
+                            alt="CAMU SERVICES"
+                        >
+
+                    </a>
+
+                    <p>
+                        Trouver • Acheter • Réserver
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="conditions.html">
+                        Mentions légales
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions d'utilisation
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="conditions.html">
+                        Règles de publication
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CAMU SERVICES.
+                    Tous droits réservés.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/services.js"
+    ></script>
+
+    <script src="js/theme.js"></script>
+
+</body>
+
+</html>
