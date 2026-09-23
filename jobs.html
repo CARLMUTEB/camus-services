@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Jobs & Emplois – CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Trouvez des offres d'emploi, stages, CDI, CDD et opportunités professionnelles sur CAMU SERVICES."
+    >
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="logo-image"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a
+                href="publier.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a
+                href="jobs.html"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+            <a
+                href="#"
+                class="nav-item logout-item"
+                id="logoutBtn"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENU
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="index.html"
+                class="desktop-logo"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Ouvrir le menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+
+            <a
+                href="index.html"
+                class="mobile-logo"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+
+                <a
+                    href="compte.html"
+                    class="profile-button"
+                    aria-label="Mon compte"
+                >
+                    <i class="fa-regular fa-user"></i>
+                    <span>Mon compte</span>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content jobs-page">
+
+
+            <!-- =================================================
+                 HERO JOBS
+            ================================================== -->
+
+            <section class="jobs-hero">
+
+                <div class="jobs-hero-content">
+
+                    <span class="section-label">
+                        OPPORTUNITÉS PROFESSIONNELLES
+                    </span>
+
+                    <h1>
+                        Trouvez votre
+                        <span>prochain emploi.</span>
+                    </h1>
+
+                    <p>
+                        Découvrez des offres d'emploi,
+                        stages et opportunités professionnelles
+                        près de chez vous.
+                    </p>
+
+                    <div class="jobs-actions">
+
+                        <a
+                            href="publier-job.html"
+                            class="primary-button"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                            Publier une offre
+                        </a>
+
+                        <a
+                            href="mes-jobs.html"
+                            class="secondary-button"
+                        >
+                            <i class="fa-solid fa-briefcase"></i>
+                            Mes offres
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RECHERCHE JOB
+            ================================================== -->
+
+            <section class="jobs-search-section">
+
+                <div class="jobs-search-box">
+
+                    <div class="jobs-search-field">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="jobSearch"
+                            placeholder="Métier, poste, compétence..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="jobs-search-field">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <select id="jobCity">
+
+                            <option value="">
+                                Toutes les villes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="search-button"
+                        id="jobSearchButton"
+                    >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <span>Rechercher</span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FILTRES
+            ================================================== -->
+
+            <section class="jobs-filters-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            FILTRER
+                        </span>
+
+                        <h2>
+                            Affiner votre recherche
+                        </h2>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="filter-reset"
+                        id="resetJobFilters"
+                    >
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Réinitialiser
+                    </button>
+
+                </div>
+
+
+                <div class="jobs-filters">
+
+                    <!-- Domaine -->
+                    <div class="job-filter">
+
+                        <label for="jobCategory">
+                            Domaine
+                        </label>
+
+                        <select id="jobCategory">
+
+                            <option value="">
+                                Tous les domaines
+                            </option>
+
+                            <option value="administration">
+                                Administration
+                            </option>
+
+                            <option value="commerce">
+                                Commerce
+                            </option>
+
+                            <option value="informatique">
+                                Informatique
+                            </option>
+
+                            <option value="electricite">
+                                Électricité
+                            </option>
+
+                            <option value="construction">
+                                Construction
+                            </option>
+
+                            <option value="mines">
+                                Mines
+                            </option>
+
+                            <option value="transport">
+                                Transport
+                            </option>
+
+                            <option value="hotellerie">
+                                Hôtellerie
+                            </option>
+
+                            <option value="finance">
+                                Finance
+                            </option>
+
+                            <option value="sante">
+                                Santé
+                            </option>
+
+                            <option value="autres">
+                                Autres
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Contrat -->
+                    <div class="job-filter">
+
+                        <label for="jobContract">
+                            Type de contrat
+                        </label>
+
+                        <select id="jobContract">
+
+                            <option value="">
+                                Tous les contrats
+                            </option>
+
+                            <option value="CDI">
+                                CDI
+                            </option>
+
+                            <option value="CDD">
+                                CDD
+                            </option>
+
+                            <option value="Stage">
+                                Stage
+                            </option>
+
+                            <option value="Interim">
+                                Intérim
+                            </option>
+
+                            <option value="Freelance">
+                                Freelance
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Expérience -->
+                    <div class="job-filter">
+
+                        <label for="jobExperience">
+                            Expérience
+                        </label>
+
+                        <select id="jobExperience">
+
+                            <option value="">
+                                Toutes les expériences
+                            </option>
+
+                            <option value="debutant">
+                                Débutant
+                            </option>
+
+                            <option value="1-2">
+                                1 à 2 ans
+                            </option>
+
+                            <option value="3-5">
+                                3 à 5 ans
+                            </option>
+
+                            <option value="5+">
+                                Plus de 5 ans
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Tri -->
+                    <div class="job-filter">
+
+                        <label for="jobSort">
+                            Trier par
+                        </label>
+
+                        <select id="jobSort">
+
+                            <option value="recent">
+                                Plus récentes
+                            </option>
+
+                            <option value="old">
+                                Plus anciennes
+                            </option>
+
+                            <option value="title">
+                                Nom du poste
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RÉSULTATS
+            ================================================== -->
+
+            <section class="section jobs-results-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            OPPORTUNITÉS
+                        </span>
+
+                        <h2>
+                            Offres d'emploi
+                        </h2>
+
+                    </div>
+
+                    <span
+                        class="jobs-count"
+                        id="jobsCount"
+                    >
+                        0 offre
+                    </span>
+
+                </div>
+
+
+                <!-- Chargement -->
+
+                <div
+                    class="category-loading"
+                    id="jobsLoading"
+                >
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    <span>
+                        Chargement des offres...
+                    </span>
+
+                </div>
+
+
+                <!-- Liste des offres -->
+
+                <div
+                    class="jobs-grid"
+                    id="jobsList"
+                ></div>
+
+
+                <!-- Aucun résultat -->
+
+                <div
+                    class="jobs-empty"
+                    id="jobsEmpty"
+                    style="display:none;"
+                >
+
+                    <div class="jobs-empty-icon">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <h3>
+                        Aucune offre trouvée
+                    </h3>
+
+                    <p>
+                        Aucune offre ne correspond
+                        actuellement à votre recherche.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="emptyResetButton"
+                    >
+                        Réinitialiser les filtres
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CANDIDAT / EMPLOYEUR
+            ================================================== -->
+
+            <section class="jobs-cta">
+
+                <div class="jobs-cta-item">
+
+                    <div class="jobs-cta-icon">
+
+                        <i class="fa-solid fa-user-tie"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            VOUS CHERCHEZ UN EMPLOI ?
+                        </span>
+
+                        <h3>
+                            Créez votre profil professionnel
+                        </h3>
+
+                        <p>
+                            Présentez vos compétences et
+                            facilitez votre mise en relation
+                            avec les recruteurs.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="compte.html"
+                        class="secondary-button"
+                    >
+                        Mon profil
+                    </a>
+
+                </div>
+
+
+                <div class="jobs-cta-item">
+
+                    <div class="jobs-cta-icon">
+
+                        <i class="fa-solid fa-building"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            VOUS RECRUTEZ ?
+                        </span>
+
+                        <h3>
+                            Publiez votre offre d'emploi
+                        </h3>
+
+                        <p>
+                            Trouvez des candidats et
+                            présentez votre opportunité
+                            sur CAMU SERVICES.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="publier-job.html"
+                        class="primary-button"
+                    >
+                        Publier une offre
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <a
+                        href="index.html"
+                        class="logo-image footer-logo"
+                    >
+
+                        <img
+                            src="assets/logo/camu-services-logo.png"
+                            alt="CAMU SERVICES"
+                        >
+
+                    </a>
+
+                    <p>
+                        Trouver • Acheter • Réserver
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="conditions.html">
+                        Mentions légales
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions d'utilisation
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="conditions.html">
+                        Règles de publication
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CAMU SERVICES.
+                    Tous droits réservés.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/jobs.js"
+    ></script>
+
+    <script src="js/theme.js"></script>
+
+</body>
+
+</html>
