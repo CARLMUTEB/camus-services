@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Offre d'emploi – CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Consultez les détails de cette offre d'emploi sur CAMU SERVICES."
+    >
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS JOBS -->
+    <link
+        rel="stylesheet"
+        href="css/jobs.css"
+    >
+
+    <!-- CSS DÉTAIL JOB -->
+    <link
+        rel="stylesheet"
+        href="css/job-details.css"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="logo-image"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+
+            <a
+                href="publier.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Publier</span>
+            </a>
+
+
+            <a
+                href="jobs.html"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Connexion</span>
+            </a>
+
+
+            <a
+                href="#"
+                class="nav-item logout-item"
+                id="logoutBtn"
+            >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Déconnexion</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENU PRINCIPAL
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="index.html"
+                class="desktop-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Ouvrir le menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <a
+                href="index.html"
+                class="mobile-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="profile-button"
+                    aria-label="Mon compte"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        Mon compte
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content job-details-page">
+
+
+            <!-- =================================================
+                 RETOUR
+            ================================================== -->
+
+            <div class="job-details-back">
+
+                <a
+                    href="jobs.html"
+                    class="back-button"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Retour aux offres
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 CHARGEMENT
+            ================================================== -->
+
+            <div
+                id="jobDetailsLoading"
+                class="job-details-loading"
+            >
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <span>
+                    Chargement de l'offre...
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 ERREUR
+            ================================================== -->
+
+            <div
+                id="jobDetailsError"
+                class="job-details-error"
+                style="display:none;"
+            >
+
+                <div class="job-error-icon">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                </div>
+
+
+                <h2>
+                    Offre introuvable
+                </h2>
+
+
+                <p>
+                    Cette offre d'emploi n'est plus disponible
+                    ou le lien est incorrect.
+                </p>
+
+
+                <a
+                    href="jobs.html"
+                    class="primary-button"
+                >
+
+                    <i class="fa-solid fa-briefcase"></i>
+
+                    Voir les offres
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 CONTENU JOB
+            ================================================== -->
+
+            <div
+                id="jobDetailsContent"
+                style="display:none;"
+            >
+
+
+                <!-- =================================================
+                     EN-TÊTE OFFRE
+                ================================================== -->
+
+                <section class="job-details-header">
+
+                    <div class="job-details-company">
+
+                        <div
+                            class="job-details-logo"
+                            id="jobDetailsLogo"
+                        >
+
+                            <i class="fa-solid fa-building"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                class="job-details-company-name"
+                                id="jobDetailsCompany"
+                            >
+                                Entreprise
+                            </span>
+
+
+                            <span
+                                class="job-details-location"
+                                id="jobDetailsLocation"
+                            >
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Ville
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-details-actions">
+
+                        <button
+                            type="button"
+                            class="job-detail-favorite"
+                            id="jobDetailsFavorite"
+                            aria-label="Ajouter aux favoris"
+                        >
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="job-share-button"
+                            id="jobShareButton"
+                        >
+
+                            <i class="fa-solid fa-share-nodes"></i>
+
+                            Partager
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     TITRE
+                ================================================== -->
+
+                <section class="job-title-section">
+
+                    <span
+                        class="job-detail-category"
+                        id="jobDetailsCategory"
+                    >
+                        Emploi
+                    </span>
+
+
+                    <h1 id="jobDetailsTitle">
+                        Intitulé du poste
+                    </h1>
+
+
+                    <div class="job-detail-date">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        Publié le
+
+                        <span id="jobDetailsDate">
+                            —
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     INFORMATIONS RAPIDES
+                ================================================== -->
+
+                <section class="job-detail-info-grid">
+
+                    <div class="job-detail-info">
+
+                        <div class="job-detail-info-icon">
+
+                            <i class="fa-solid fa-file-contract"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Type de contrat
+                            </span>
+
+                            <strong id="jobDetailsContract">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-detail-info">
+
+                        <div class="job-detail-info-icon">
+
+                            <i class="fa-solid fa-user-clock"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Expérience
+                            </span>
+
+                            <strong id="jobDetailsExperience">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-detail-info">
+
+                        <div class="job-detail-info-icon">
+
+                            <i class="fa-solid fa-money-bill-wave"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Salaire
+                            </span>
+
+                            <strong id="jobDetailsSalary">
+                                À négocier
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="job-detail-info">
+
+                        <div class="job-detail-info-icon">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Localisation
+                            </span>
+
+                            <strong id="jobDetailsCity">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     CORPS
+                ================================================== -->
+
+                <div class="job-details-layout">
+
+
+                    <!-- =================================================
+                         DESCRIPTION
+                    ================================================== -->
+
+                    <div class="job-details-main">
+
+
+                        <section class="job-detail-block">
+
+                            <h2>
+
+                                <i class="fa-solid fa-file-lines"></i>
+
+                                Description du poste
+
+                            </h2>
+
+
+                            <div
+                                id="jobDetailsDescription"
+                                class="job-detail-text"
+                            >
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             COMPÉTENCES
+                        ================================================== -->
+
+                        <section
+                            class="job-detail-block"
+                            id="jobSkillsSection"
+                        >
+
+                            <h2>
+
+                                <i class="fa-solid fa-list-check"></i>
+
+                                Compétences recherchées
+
+                            </h2>
+
+
+                            <div
+                                id="jobDetailsSkills"
+                                class="job-details-tags"
+                            >
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             EXIGENCES
+                        ================================================== -->
+
+                        <section
+                            class="job-detail-block"
+                            id="jobRequirementsSection"
+                        >
+
+                            <h2>
+
+                                <i class="fa-solid fa-clipboard-check"></i>
+
+                                Profil recherché
+
+                            </h2>
+
+
+                            <div
+                                id="jobDetailsRequirements"
+                                class="job-detail-text"
+                            >
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             AVANTAGES
+                        ================================================== -->
+
+                        <section
+                            class="job-detail-block"
+                            id="jobBenefitsSection"
+                        >
+
+                            <h2>
+
+                                <i class="fa-solid fa-gift"></i>
+
+                                Avantages
+
+                            </h2>
+
+
+                            <div
+                                id="jobDetailsBenefits"
+                                class="job-detail-text"
+                            >
+                            </div>
+
+                        </section>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SIDEBAR DROITE
+                    ================================================== -->
+
+                    <aside class="job-details-side">
+
+
+                        <!-- CANDIDATURE -->
+
+                        <div class="job-apply-card">
+
+                            <h2>
+                                Intéressé par cette offre ?
+                            </h2>
+
+
+                            <p>
+                                Consultez les informations
+                                de candidature et contactez
+                                l'employeur.
+                            </p>
+
+
+                            <a
+                                href="#"
+                                id="jobApplyButton"
+                                class="job-apply-button"
+                            >
+
+                                <i class="fa-solid fa-paper-plane"></i>
+
+                                Postuler
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- ENTREPRISE -->
+
+                        <div class="job-company-card">
+
+                            <div class="job-company-card-icon">
+
+                                <i class="fa-solid fa-building"></i>
+
+                            </div>
+
+
+                            <h3>
+                                À propos de l'entreprise
+                            </h3>
+
+
+                            <strong id="jobCompanySideName">
+                                —
+                            </strong>
+
+
+                            <p
+                                id="jobCompanyDescription"
+                            >
+                            </p>
+
+                        </div>
+
+
+                        <!-- CONTACT -->
+
+                        <div
+                            class="job-contact-card"
+                            id="jobContactCard"
+                        >
+
+                            <h3>
+                                Contact
+                            </h3>
+
+
+                            <a
+                                href="#"
+                                id="jobPhone"
+                                style="display:none;"
+                            >
+
+                                <i class="fa-solid fa-phone"></i>
+
+                                <span>
+                                    Téléphone
+                                </span>
+
+                            </a>
+
+
+                            <a
+                                href="#"
+                                id="jobEmail"
+                                style="display:none;"
+                            >
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                <span>
+                                    Email
+                                </span>
+
+                            </a>
+
+
+                            <a
+                                href="#"
+                                id="jobApplicationLink"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style="display:none;"
+                            >
+
+                                <i class="fa-solid fa-link"></i>
+
+                                <span>
+                                    Lien de candidature
+                                </span>
+
+                            </a>
+
+                        </div>
+
+
+                    </aside>
+
+                </div>
+
+
+                <!-- =================================================
+                     SIGNALEMENT
+                ================================================== -->
+
+                <section class="job-report-section">
+
+                    <button
+                        type="button"
+                        id="reportJobButton"
+                        class="job-report-button"
+                    >
+
+                        <i class="fa-regular fa-flag"></i>
+
+                        Signaler cette offre
+
+                    </button>
+
+                </section>
+
+            </div>
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <a
+                        href="index.html"
+                        class="logo-image footer-logo"
+                    >
+
+                        <img
+                            src="assets/logo/camu-services-logo.png"
+                            alt="CAMU SERVICES"
+                        >
+
+                    </a>
+
+
+                    <p>
+                        Trouver • Acheter • Réserver
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="a-propos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="conditions.html">
+                        Mentions légales
+                    </a>
+
+                    <a href="conditions.html">
+                        Conditions d'utilisation
+                    </a>
+
+                    <a href="politique.html">
+                        Confidentialité
+                    </a>
+
+                    <a href="conditions.html">
+                        Règles de publication
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CAMU SERVICES.
+                    Tous droits réservés.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/job-details.js"
+    ></script>
+
+    <script src="js/theme.js"></script>
+
+</body>
+
+</html>
