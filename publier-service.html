@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Publier un service – CAMU SERVICES</title>
+
+    <meta
+        name="description"
+        content="Publiez votre service sur CAMU SERVICES et trouvez de nouveaux clients."
+    >
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS SERVICES -->
+    <link
+        rel="stylesheet"
+        href="css/services.css"
+    >
+
+    <!-- CSS PUBLICATION SERVICE -->
+    <link
+        rel="stylesheet"
+        href="css/publier-service.css"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="logo-image"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="Fermer le menu"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+
+            <a
+                href="recherche.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Rechercher</span>
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+
+            <a
+                href="publier.html"
+                class="nav-item active"
+            >
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Publier</span>
+            </a>
+
+
+            <a
+                href="jobs.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Jobs</span>
+            </a>
+
+
+            <a
+                href="services.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Services</span>
+            </a>
+
+
+            <a
+                href="favoris.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+
+            <a
+                href="compte.html"
+                class="nav-item"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+
+            <a
+                href="parametres.html"
+                class="nav-item"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="connexion.html"
+                class="nav-item"
+            >
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                <span>
+                    Connexion
+                </span>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="nav-item logout-item"
+                id="logoutBtn"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Déconnexion
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN WRAPPER
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="index.html"
+                class="desktop-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Ouvrir le menu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <a
+                href="index.html"
+                class="mobile-logo"
+            >
+
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+
+            </a>
+
+
+            <div class="topbar-right">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-icon"
+                    aria-label="Favoris"
+                >
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </a>
+
+
+                <a
+                    href="compte.html"
+                    class="profile-button"
+                    aria-label="Mon compte"
+                >
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        Mon compte
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="main-content publish-service-page">
+
+
+            <!-- =================================================
+                 RETOUR
+            ================================================== -->
+
+            <div class="publish-service-back">
+
+                <a
+                    href="services.html"
+                    class="publish-service-back-button"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Retour aux services
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="publish-service-hero">
+
+                <div class="publish-service-hero-icon">
+
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ESPACE PRESTATAIRE
+                    </span>
+
+                    <h1>
+                        Publier un service
+                    </h1>
+
+                    <p>
+                        Présentez votre activité et permettez
+                        à de nouveaux clients de vous trouver
+                        facilement.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MESSAGE AUTH
+            ================================================== -->
+
+            <div
+                id="serviceAuthMessage"
+                class="publish-service-message"
+                style="display:none;"
+            >
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span id="serviceAuthMessageText">
+                    Vous devez être connecté pour publier un service.
+                </span>
+
+                <a href="connexion.html">
+                    Se connecter
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORMULAIRE
+            ================================================== -->
+
+            <form
+                id="publishServiceForm"
+                class="publish-service-form"
+                novalidate
+            >
+
+
+                <!-- =================================================
+                     INFORMATIONS SERVICE
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <div class="publish-service-section-header">
+
+                        <div class="publish-service-section-icon">
+
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                ÉTAPE 1
+                            </span>
+
+                            <h2>
+                                Votre service
+                            </h2>
+
+                            <p>
+                                Présentez clairement la prestation
+                                que vous proposez.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-service-grid">
+
+
+                        <!-- TITRE -->
+
+                        <div class="publish-service-field full">
+
+                            <label for="serviceTitle">
+
+                                Nom du service
+                                <span>*</span>
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-heading"></i>
+
+                                <input
+                                    type="text"
+                                    id="serviceTitle"
+                                    name="title"
+                                    maxlength="120"
+                                    placeholder="Ex. Installation électrique"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CATÉGORIE -->
+
+                        <div class="publish-service-field">
+
+                            <label for="serviceCategory">
+
+                                Catégorie
+                                <span>*</span>
+
+                            </label>
+
+
+                            <select
+                                id="serviceCategory"
+                                name="category"
+                                required
+                            >
+
+                                <option value="">
+                                    Choisir une catégorie
+                                </option>
+
+                                <option value="plomberie">
+                                    Plomberie
+                                </option>
+
+                                <option value="electricite">
+                                    Électricité
+                                </option>
+
+                                <option value="maconnerie">
+                                    Maçonnerie
+                                </option>
+
+                                <option value="climatisation">
+                                    Climatisation
+                                </option>
+
+                                <option value="informatique">
+                                    Informatique
+                                </option>
+
+                                <option value="mecanique">
+                                    Mécanique
+                                </option>
+
+                                <option value="transport">
+                                    Transport
+                                </option>
+
+                                <option value="nettoyage">
+                                    Nettoyage
+                                </option>
+
+                                <option value="beaute">
+                                    Beauté & Coiffure
+                                </option>
+
+                                <option value="photographie">
+                                    Photographie
+                                </option>
+
+                                <option value="design">
+                                    Design graphique
+                                </option>
+
+                                <option value="formation">
+                                    Formation
+                                </option>
+
+                                <option value="topographie">
+                                    Topographie
+                                </option>
+
+                                <option value="marketing">
+                                    Marketing
+                                </option>
+
+                                <option value="construction">
+                                    Construction
+                                </option>
+
+                                <option value="securite">
+                                    Sécurité
+                                </option>
+
+                                <option value="sante">
+                                    Santé
+                                </option>
+
+                                <option value="autres">
+                                    Autres
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VILLE -->
+
+                        <div class="publish-service-field">
+
+                            <label for="serviceCity">
+
+                                Ville
+                                <span>*</span>
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <input
+                                    type="text"
+                                    id="serviceCity"
+                                    name="city"
+                                    maxlength="80"
+                                    placeholder="Ex. Lubumbashi"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="publish-service-field full">
+
+                            <label for="serviceDescription">
+
+                                Description
+                                <span>*</span>
+
+                            </label>
+
+
+                            <textarea
+                                id="serviceDescription"
+                                name="description"
+                                rows="7"
+                                maxlength="5000"
+                                placeholder="Décrivez votre service, ce que vous proposez, votre méthode de travail..."
+                                required
+                            ></textarea>
+
+
+                            <div class="publish-service-counter">
+
+                                <span id="serviceDescriptionCounter">
+                                    0
+                                </span>
+
+                                / 5000 caractères
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     TARIFICATION
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <div class="publish-service-section-header">
+
+                        <div class="publish-service-section-icon">
+
+                            <i class="fa-solid fa-money-bill-wave"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                ÉTAPE 2
+                            </span>
+
+                            <h2>
+                                Tarification
+                            </h2>
+
+                            <p>
+                                Indiquez le tarif de votre prestation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-service-grid">
+
+
+                        <!-- TYPE PRIX -->
+
+                        <div class="publish-service-field">
+
+                            <label for="servicePriceType">
+
+                                Type de tarif
+
+                            </label>
+
+
+                            <select
+                                id="servicePriceType"
+                                name="priceType"
+                            >
+
+                                <option value="negociable">
+                                    Prix à négocier
+                                </option>
+
+                                <option value="fixe">
+                                    Prix fixe
+                                </option>
+
+                                <option value="heure">
+                                    Par heure
+                                </option>
+
+                                <option value="jour">
+                                    Par jour
+                                </option>
+
+                                <option value="mois">
+                                    Par mois
+                                </option>
+
+                                <option value="sur-devis">
+                                    Sur devis
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DEVISE -->
+
+                        <div class="publish-service-field">
+
+                            <label for="serviceCurrency">
+
+                                Devise
+
+                            </label>
+
+
+                            <select
+                                id="serviceCurrency"
+                                name="currency"
+                            >
+
+                                <option value="USD">
+                                    USD
+                                </option>
+
+                                <option value="CDF">
+                                    CDF
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRIX -->
+
+                        <div
+                            class="publish-service-field full"
+                            id="servicePriceField"
+                        >
+
+                            <label for="servicePrice">
+
+                                Tarif
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-coins"></i>
+
+                                <input
+                                    type="number"
+                                    id="servicePrice"
+                                    name="price"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Ex. 50"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     PRESTATAIRE
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <div class="publish-service-section-header">
+
+                        <div class="publish-service-section-icon">
+
+                            <i class="fa-solid fa-user-tie"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                ÉTAPE 3
+                            </span>
+
+                            <h2>
+                                Informations du prestataire
+                            </h2>
+
+                            <p>
+                                Donnez aux clients les moyens
+                                de vous contacter.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-service-grid">
+
+
+                        <!-- NOM -->
+
+                        <div class="publish-service-field">
+
+                            <label for="providerName">
+
+                                Nom / Nom commercial
+                                <span>*</span>
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    id="providerName"
+                                    name="providerName"
+                                    maxlength="150"
+                                    placeholder="Ex. ABC Électricité"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TELEPHONE -->
+
+                        <div class="publish-service-field">
+
+                            <label for="providerPhone">
+
+                                Téléphone
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-phone"></i>
+
+                                <input
+                                    type="tel"
+                                    id="providerPhone"
+                                    name="phone"
+                                    maxlength="30"
+                                    placeholder="+243 ..."
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="publish-service-field">
+
+                            <label for="providerEmail">
+
+                                Email
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                <input
+                                    type="email"
+                                    id="providerEmail"
+                                    name="email"
+                                    maxlength="150"
+                                    placeholder="contact@entreprise.com"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- WHATSAPP -->
+
+                        <div class="publish-service-field">
+
+                            <label for="providerWhatsapp">
+
+                                WhatsApp
+
+                            </label>
+
+
+                            <div class="publish-service-input">
+
+                                <i class="fa-brands fa-whatsapp"></i>
+
+                                <input
+                                    type="tel"
+                                    id="providerWhatsapp"
+                                    name="whatsapp"
+                                    maxlength="30"
+                                    placeholder="+243 ..."
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- À PROPOS -->
+
+                        <div class="publish-service-field full">
+
+                            <label for="providerDescription">
+
+                                À propos du prestataire
+
+                            </label>
+
+
+                            <textarea
+                                id="providerDescription"
+                                name="providerDescription"
+                                rows="5"
+                                maxlength="2500"
+                                placeholder="Présentez votre expérience, vos qualifications ou votre entreprise..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     COMPÉTENCES
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <div class="publish-service-section-header">
+
+                        <div class="publish-service-section-icon">
+
+                            <i class="fa-solid fa-list-check"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                ÉTAPE 4
+                            </span>
+
+                            <h2>
+                                Compétences
+                            </h2>
+
+                            <p>
+                                Ajoutez les compétences liées à votre service.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-service-grid">
+
+                        <div class="publish-service-field full">
+
+                            <label for="serviceSkills">
+
+                                Compétences / Spécialités
+
+                            </label>
+
+
+                            <textarea
+                                id="serviceSkills"
+                                name="skills"
+                                rows="4"
+                                placeholder="Ex. Installation, maintenance, dépannage, diagnostic..."
+                            ></textarea>
+
+
+                            <small>
+                                Séparez les compétences par des virgules.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     IMAGE
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <div class="publish-service-section-header">
+
+                        <div class="publish-service-section-icon">
+
+                            <i class="fa-solid fa-image"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                ÉTAPE 5
+                            </span>
+
+                            <h2>
+                                Image du service
+                            </h2>
+
+                            <p>
+                                Ajoutez une image qui représente votre activité.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="publish-service-grid">
+
+                        <div class="publish-service-field full">
+
+                            <label for="serviceImage">
+
+                                Photo / Image
+
+                            </label>
+
+
+                            <input
+                                type="file"
+                                id="serviceImage"
+                                name="imageFile"
+                                accept="image/jpeg,image/png,image/webp"
+                            >
+
+
+                            <small>
+                                JPG, PNG ou WEBP — maximum 5 Mo.
+                            </small>
+
+
+                            <div
+                                id="serviceImagePreview"
+                                class="publish-service-image-preview"
+                                style="display:none;"
+                            >
+
+                                <img
+                                    id="serviceImagePreviewImg"
+                                    src=""
+                                    alt="Aperçu du service"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     CONDITIONS
+                ================================================== -->
+
+                <section class="publish-service-section">
+
+                    <label class="publish-service-checkbox">
+
+                        <input
+                            type="checkbox"
+                            id="serviceTerms"
+                            required
+                        >
+
+                        <span>
+
+                            Je confirme que les informations
+                            publiées sont exactes et que ce service
+                            respecte les règles de publication
+                            de CAMU SERVICES.
+
+                        </span>
+
+                    </label>
+
+
+                    <a
+                        href="conditions.html"
+                        target="_
