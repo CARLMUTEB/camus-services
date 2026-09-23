@@ -1,0 +1,551 @@
+/* =========================================================
+   CAMU SERVICES
+   PUBLICATION D'UN SERVICE
+   CSS HARMONISÉ AVEC CAMU IMMO / SERVICES
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.publish-service-page {
+    --publish-blue: #063b73;
+    --publish-blue-dark: #04294f;
+    --publish-green: #20a86b;
+    --publish-green-dark: #168653;
+    --publish-white: #ffffff;
+    --publish-light: #f5f7fa;
+    --publish-border: #e2e7ee;
+    --publish-text: #1d2939;
+    --publish-muted: #667085;
+    --publish-danger: #d92d20;
+    --publish-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --publish-radius: 14px;
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
+.publish-service-page {
+    min-height: 100vh;
+    background: var(--publish-light);
+    color: var(--publish-text);
+}
+
+.publish-service-page a {
+    text-decoration: none;
+}
+
+.publish-service-page button,
+.publish-service-page input,
+.publish-service-page select,
+.publish-service-page textarea {
+    font: inherit;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   RETOUR
+========================================================= */
+
+.publish-service-back {
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px 6% 0;
+}
+
+.publish-service-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 13px;
+    border: 1px solid var(--publish-border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--publish-blue);
+    font-size: 13px;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.publish-service-back-button:hover {
+    border-color: var(--publish-blue);
+    background: #f8fafc;
+}
+
+.publish-service-back-button i {
+    color: var(--publish-green);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.publish-service-hero {
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 35px 6%;
+    border-radius: var(--publish-radius);
+    background:
+        linear-gradient(
+            110deg,
+            rgba(4, 41, 79, .97),
+            rgba(6, 59, 115, .92)
+        );
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: var(--publish-shadow);
+}
+
+.publish-service-hero::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: -170px;
+    right: -70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+}
+
+.publish-service-hero-icon {
+    position: relative;
+    z-index: 1;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    color: #80e0b4;
+    font-size: 25px;
+}
+
+.publish-service-hero > div:last-child {
+    position: relative;
+    z-index: 1;
+}
+
+.publish-service-hero > div:last-child > span {
+    display: block;
+    margin-bottom: 6px;
+    color: #80e0b4;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.publish-service-hero h1 {
+    margin: 0 0 7px;
+    color: #fff;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.1;
+}
+
+.publish-service-hero p {
+    max-width: 720px;
+    margin: 0;
+    color: rgba(255, 255, 255, .82);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   AUTH MESSAGE
+========================================================= */
+
+.publish-service-message {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 15px 20px;
+    border: 1px solid #cbdfea;
+    border-radius: var(--publish-radius);
+    background: #edf6fb;
+    color: #42647d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.publish-service-message > i {
+    color: var(--publish-blue);
+    font-size: 18px;
+}
+
+.publish-service-message span {
+    flex: 1;
+}
+
+.publish-service-message a {
+    padding: 9px 13px;
+    border-radius: 8px;
+    background: var(--publish-blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FORMULAIRE
+========================================================= */
+
+.publish-service-form {
+    max-width: 1200px;
+    margin: 25px auto 0;
+    padding: 0 6% 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.publish-service-section {
+    padding: 27px;
+    border: 1px solid var(--publish-border);
+    border-radius: var(--publish-radius);
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+}
+
+.publish-service-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--publish-border);
+}
+
+.publish-service-section-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border-radius: 50%;
+    background: rgba(32, 168, 107, .10);
+    color: var(--publish-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.publish-service-section-header > div:last-child {
+    min-width: 0;
+}
+
+.publish-service-section-header span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--publish-green);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.publish-service-section-header h2 {
+    margin: 0 0 5px;
+    color: var(--publish-blue);
+    font-size: 21px;
+}
+
+.publish-service-section-header p {
+    margin: 0;
+    color: var(--publish-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   GRILLE
+========================================================= */
+
+.publish-service-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.publish-service-field {
+    min-width: 0;
+}
+
+.publish-service-field.full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.publish-service-field > label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--publish-muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.publish-service-field > label span {
+    color: var(--publish-danger);
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   INPUT AVEC ICÔNE
+========================================================= */
+
+.publish-service-input {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    overflow: hidden;
+    border: 1px solid var(--publish-border);
+    border-radius: 8px;
+    background: #fff;
+    transition: .2s ease;
+}
+
+.publish-service-input:focus-within {
+    border-color: var(--publish-blue);
+}
+
+.publish-service-input > i {
+    width: 43px;
+    flex: 0 0 43px;
+    text-align: center;
+    color: var(--publish-muted);
+    font-size: 14px;
+}
+
+.publish-service-input input {
+    width: 100%;
+    height: 46px;
+    padding: 0 12px 0 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--publish-text);
+    font-size: 13px;
+}
+
+.publish-service-input input::placeholder {
+    color: #98a2b3;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.publish-service-field > select {
+    width: 100%;
+    height: 46px;
+    padding: 0 12px;
+    border: 1px solid var(--publish-border);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--publish-text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.publish-service-field > select:focus {
+    border-color: var(--publish-blue);
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.publish-service-field textarea {
+    display: block;
+    width: 100%;
+    min-height: 125px;
+    padding: 12px 13px;
+    border: 1px solid var(--publish-border);
+    border-radius: 8px;
+    outline: none;
+    resize: vertical;
+    background: #fff;
+    color: var(--publish-text);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.publish-service-field textarea:focus {
+    border-color: var(--publish-blue);
+}
+
+.publish-service-field textarea::placeholder {
+    color: #98a2b3;
+}
+
+.publish-service-field small {
+    display: block;
+    margin-top: 6px;
+    color: var(--publish-muted);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   COMPTEUR
+========================================================= */
+
+.publish-service-counter {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+    color: var(--publish-muted);
+    font-size: 11px;
+}
+
+.publish-service-counter span {
+    color: var(--publish-green);
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.publish-service-field input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed #cbd5df;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: var(--publish-muted);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.publish-service-field input[type="file"]:hover {
+    border-color: var(--publish-blue);
+}
+
+.publish-service-field input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: #edf3fa;
+    color: var(--publish-blue);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.publish-service-image-preview {
+    width: 170px;
+    height: 140px;
+    margin-top: 14px;
+    overflow: hidden;
+    border: 1px solid var(--publish-border);
+    border-radius: var(--publish-radius);
+    background: #edf1f5;
+}
+
+.publish-service-image-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.publish-service-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.publish-service-checkbox input {
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    accent-color: var(--publish-green);
+    cursor: pointer;
+}
+
+.publish-service-checkbox span {
+    color: var(--publish-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.publish-service-section > a {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 29px;
+    color: var(--publish-blue);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.publish-service-section > a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   SUCCÈS
+========================================================= */
+
+.publish-service-success {
+    max-width: 1200px;
+    padding: 17px;
+    border: 1px solid #cbe8d3;
+    border-radius: var(--publish-radius);
+    background: #eef9f1;
+    color: #267841;
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.publish-service-success > i {
+    color: var(--publish-green);
+    font-size: 21px;
+}
+
+.publish-service-success strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #196c35;
+    font-size: 14px;
+}
+
+.publish-service-success p {
+   
