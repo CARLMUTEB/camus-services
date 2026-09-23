@@ -1,0 +1,794 @@
+/* =========================================================
+   CAMU SERVICES
+   MES OFFRES — RECRUTEUR
+   CSS HARMONISÉ AVEC CAMU IMMO / JOBS
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.mes-jobs-page {
+    --mes-blue: #063b73;
+    --mes-blue-dark: #04294f;
+    --mes-green: #20a86b;
+    --mes-green-dark: #168653;
+    --mes-white: #ffffff;
+    --mes-light: #f5f7fa;
+    --mes-border: #e2e7ee;
+    --mes-text: #1d2939;
+    --mes-muted: #667085;
+    --mes-warning: #d98c00;
+    --mes-danger: #d92d20;
+    --mes-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --mes-radius: 14px;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.mes-jobs-page {
+    min-height: 100vh;
+    background: var(--mes-light);
+    color: var(--mes-text);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.mes-jobs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 45px 6% 35px;
+    background: #fff;
+    border-bottom: 1px solid var(--mes-border);
+}
+
+.mes-jobs-header > div:first-child {
+    min-width: 0;
+}
+
+.mes-jobs-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--mes-green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.mes-jobs-header h1 {
+    margin: 0 0 8px;
+    color: var(--mes-blue);
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.1;
+}
+
+.mes-jobs-header p {
+    max-width: 700px;
+    margin: 0;
+    color: var(--mes-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   BOUTON NOUVELLE OFFRE
+========================================================= */
+
+.mes-jobs-publish-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    background: var(--mes-green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: .2s ease;
+}
+
+.mes-jobs-publish-button:hover {
+    background: var(--mes-green-dark);
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MESSAGE AUTH
+========================================================= */
+
+.mes-jobs-message {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 1200px;
+    margin: 25px auto 0;
+    padding: 16px 20px;
+    border: 1px solid #cbdfea;
+    border-radius: var(--mes-radius);
+    background: #edf6fb;
+    color: #42647d;
+}
+
+.mes-jobs-message > i {
+    flex: 0 0 auto;
+    color: var(--mes-blue);
+    font-size: 20px;
+}
+
+.mes-jobs-message > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.mes-jobs-message strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--mes-blue);
+    font-size: 14px;
+}
+
+.mes-jobs-message p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.mes-jobs-login-button {
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--mes-blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+.mes-jobs-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 1200px;
+    margin: 30px auto 0;
+    padding: 0 6%;
+}
+
+.mes-job-stat {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid var(--mes-border);
+    border-radius: var(--mes-radius);
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+}
+
+.mes-job-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(6, 59, 115, .08);
+    color: var(--mes-blue);
+    font-size: 19px;
+}
+
+.mes-job-stat-icon.active {
+    background: rgba(32, 168, 107, .10);
+    color: var(--mes-green);
+}
+
+.mes-job-stat-icon.pending {
+    background: rgba(217, 140, 0, .10);
+    color: var(--mes-warning);
+}
+
+.mes-job-stat-icon.closed {
+    background: rgba(217, 45, 32, .09);
+    color: var(--mes-danger);
+}
+
+.mes-job-stat > div:last-child {
+    min-width: 0;
+}
+
+.mes-job-stat span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--mes-muted);
+    font-size: 11px;
+}
+
+.mes-job-stat strong {
+    display: block;
+    color: var(--mes-blue);
+    font-size: 24px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.mes-jobs-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 190px 190px;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 35px auto 0;
+    padding: 0 6%;
+}
+
+.mes-jobs-search {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    overflow: hidden;
+    border: 1px solid var(--mes-border);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.mes-jobs-search:focus-within {
+    border-color: var(--mes-blue);
+}
+
+.mes-jobs-search > i {
+    flex: 0 0 42px;
+    width: 42px;
+    text-align: center;
+    color: var(--mes-muted);
+    font-size: 14px;
+}
+
+.mes-jobs-search input {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px 0 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--mes-text);
+    font-size: 13px;
+}
+
+.mes-jobs-search input::placeholder {
+    color: #98a2b3;
+}
+
+.mes-jobs-filter {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--mes-border);
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--mes-text);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.mes-jobs-filter:focus {
+    border-color: var(--mes-blue);
+}
+
+
+/* =========================================================
+   SECTION OFFRES
+========================================================= */
+
+.mes-jobs-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 55px 6% 25px;
+}
+
+.mes-jobs-section-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.mes-jobs-section-header > div > span {
+    color: var(--mes-green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.mes-jobs-section-header h2 {
+    margin: 8px 0 0;
+    color: var(--mes-blue);
+    font-size: 30px;
+}
+
+.mes-jobs-count {
+    color: var(--mes-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LISTE
+========================================================= */
+
+.mes-jobs-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CARTE MES JOB
+========================================================= */
+
+.my-job-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--mes-border);
+    border-radius: var(--mes-radius);
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    transition: .2s ease;
+}
+
+.my-job-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--mes-shadow);
+}
+
+
+/* =========================================================
+   HEADER CARTE
+========================================================= */
+
+.my-job-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 17px 12px;
+}
+
+.my-job-card-title {
+    min-width: 0;
+}
+
+.my-job-card-title h3 {
+    margin: 0 0 5px;
+    color: var(--mes-blue);
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+.my-job-card-company {
+    margin: 0;
+    color: var(--mes-muted);
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   STATUT
+========================================================= */
+
+.my-job-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-height: 27px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.my-job-status.active {
+    background: #e7f8ef;
+    color: var(--mes-green-dark);
+}
+
+.my-job-status.pending {
+    background: #fff5df;
+    color: #a56a00;
+}
+
+.my-job-status.closed {
+    background: #fff0ef;
+    color: var(--mes-danger);
+}
+
+
+/* =========================================================
+   CORPS
+========================================================= */
+
+.my-job-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 8px 17px 17px;
+}
+
+.my-job-description {
+    margin: 0 0 14px;
+    color: var(--mes-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.my-job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 15px;
+}
+
+.my-job-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border-radius: 7px;
+    background: #f5f7fa;
+    color: var(--mes-muted);
+    font-size: 11px;
+}
+
+.my-job-meta-item i {
+    color: var(--mes-blue);
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.my-job-date {
+    margin-bottom: 14px;
+    color: var(--mes-muted);
+    font-size: 11px;
+}
+
+.my-job-date i {
+    margin-right: 5px;
+    color: var(--mes-green);
+}
+
+
+/* =========================================================
+   ACTIONS CARTE
+========================================================= */
+
+.my-job-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--mes-border);
+}
+
+.my-job-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 8px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.my-job-action.view {
+    background: #edf3fa;
+    color: var(--mes-blue);
+}
+
+.my-job-action.edit {
+    background: #e7f8ef;
+    color: var(--mes-green-dark);
+}
+
+.my-job-action.close {
+    background: #fff5df;
+    color: #a56a00;
+}
+
+.my-job-action.delete {
+    background: #fff0ef;
+    color: var(--mes-danger);
+}
+
+.my-job-action:hover {
+    filter: brightness(.96);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.mes-jobs-loading {
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid var(--mes-border);
+    border-radius: var(--mes-radius);
+    background: #fff;
+    color: var(--mes-muted);
+    font-size: 13px;
+}
+
+.mes-jobs-loading i {
+    color: var(--mes-green);
+}
+
+
+/* =========================================================
+   VIDE
+========================================================= */
+
+.mes-jobs-empty {
+    padding: 45px 25px;
+    border: 1px solid var(--mes-border);
+    border-radius: var(--mes-radius);
+    background: #fff;
+    text-align: center;
+}
+
+.mes-jobs-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: rgba(6, 59, 115, .08);
+    color: var(--mes-blue);
+    font-size: 25px;
+}
+
+.mes-jobs-empty h3 {
+    margin: 0 0 8px;
+    color: var(--mes-blue);
+    font-size: 20px;
+}
+
+.mes-jobs-empty p {
+    max-width: 520px;
+    margin: 0 auto 20px;
+    color: var(--mes-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.mes-jobs-empty-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: var(--mes-green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.mes-jobs-empty-button:hover {
+    background: var(--mes-green-dark);
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .mes-jobs-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mes-jobs-toolbar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mes-jobs-search {
+        grid-column: 1 / -1;
+    }
+
+    .mes-jobs-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .mes-jobs-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 40px 15px 30px;
+    }
+
+    .mes-jobs-publish-button {
+        width: 100%;
+    }
+
+    .mes-jobs-message {
+        margin: 20px 15px 0;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .mes-jobs-login-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .mes-jobs-stats {
+        grid-template-columns: 1fr 1fr;
+        padding: 0 15px;
+    }
+
+    .mes-jobs-toolbar {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+
+    .mes-jobs-search {
+        grid-column: auto;
+    }
+
+    .mes-jobs-section {
+        padding: 45px 15px 20px;
+    }
+
+    .mes-jobs-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .mes-jobs-section-header h2 {
+        font-size: 25px;
+    }
+
+    .mes-jobs-list {
+        grid-template-columns: 1fr;
+    }
+
+    .my-job-card {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .mes-jobs-header {
+        padding: 35px 12px 25px;
+    }
+
+    .mes-jobs-header h1 {
+        font-size: 30px;
+    }
+
+    .mes-jobs-stats {
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .mes-job-stat {
+        padding: 14px;
+        gap: 9px;
+    }
+
+    .mes-job-stat-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .mes-job-stat strong {
+        font-size: 21px;
+    }
+
+    .mes-jobs-toolbar {
+        padding: 0 12px;
+    }
+
+    .mes-jobs-section {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .my-job-card-header {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .my-job-card-body {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   TRÈS PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .mes-jobs-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .my-job-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
