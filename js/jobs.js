@@ -13,7 +13,8 @@
    - Compteur d'offres
    - Favoris
    - État vide
-========================================================= */
+   - Protection des images invalides
+   ========================================================= */
 
 import {
     getApps,
@@ -33,13 +34,12 @@ import {
 
 /* =========================================================
    FIREBASE
-========================================================= */
+   ========================================================= */
 
 let db = null;
 let auth = null;
 
 try {
-
     if (!getApps().length) {
         throw new Error(
             "Firebase n'est pas encore initialisé par app.js."
@@ -52,18 +52,16 @@ try {
     auth = getAuth(app);
 
 } catch (error) {
-
     console.error(
         "JOBS — Erreur initialisation Firebase :",
         error
     );
-
 }
 
 
 /* =========================================================
    VARIABLES
-========================================================= */
+   ========================================================= */
 
 let allJobs = [];
 let filteredJobs = [];
@@ -73,14 +71,25 @@ const FAVORITES_KEY = "camu_jobs_favorites";
 
 /* =========================================================
    ÉLÉMENTS DOM
-========================================================= */
+   ========================================================= */
 
-const jobSearch = document.getElementById("jobSearch");
-const jobCity = document.getElementById("jobCity");
-const jobCategory = document.getElementById("jobCategory");
-const jobContract = document.getElementById("jobContract");
-const jobExperience = document.getElementById("jobExperience");
-const jobSort = document.getElementById("jobSort");
+const jobSearch =
+    document.getElementById("jobSearch");
+
+const jobCity =
+    document.getElementById("jobCity");
+
+const jobCategory =
+    document.getElementById("jobCategory");
+
+const jobContract =
+    document.getElementById("jobContract");
+
+const jobExperience =
+    document.getElementById("jobExperience");
+
+const jobSort =
+    document.getElementById("jobSort");
 
 const jobSearchButton =
     document.getElementById("jobSearchButton");
@@ -106,43 +115,37 @@ const jobsCount =
 
 /* =========================================================
    UTILITAIRES
-========================================================= */
+   ========================================================= */
 
 function normalizeText(value) {
-
-    return String(value || "")
+    return String(value ?? "")
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .trim();
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ÉCHAPPER HTML
---------------------------------------------------------- */
+   ========================================================= */
 
 function escapeHtml(value) {
-
     return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
 }
 
 
-/* ---------------------------------------------------------
-   VALEUR CHAMPS
---------------------------------------------------------- */
+/* =========================================================
+   PREMIÈRE VALEUR DISPONIBLE
+   ========================================================= */
 
 function firstValue(...values) {
-
     for (const value of values) {
-
         if (
             value !== undefined &&
             value !== null &&
@@ -150,20 +153,17 @@ function firstValue(...values) {
         ) {
             return value;
         }
-
     }
 
     return "";
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    DATE FIRESTORE
---------------------------------------------------------- */
+   ========================================================= */
 
 function getDateValue(value) {
-
     if (!value) {
         return null;
     }
@@ -179,74 +179,65 @@ function getDateValue(value) {
         return value;
     }
 
-    if (typeof value === "number") {
-
+    if (
+        typeof value === "number" ||
+        typeof value === "string"
+    ) {
         const date = new Date(value);
 
-        if (!isNaN(date.getTime())) {
+        if (!Number.isNaN(date.getTime())) {
             return date;
         }
-
-    }
-
-    if (typeof value === "string") {
-
-        const date = new Date(value);
-
-        if (!isNaN(date.getTime())) {
-            return date;
-        }
-
     }
 
     return null;
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    FORMAT DATE
---------------------------------------------------------- */
+   ========================================================= */
 
 function formatDate(value) {
-
     const date = getDateValue(value);
 
     if (!date) {
         return "Date non précisée";
     }
 
-    return new Intl.DateTimeFormat(
-        "fr-FR",
-        {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        }
-    ).format(date);
-
+    try {
+        return new Intl.DateTimeFormat(
+            "fr-FR",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        ).format(date);
+    } catch (error) {
+        return "Date non précisée";
+    }
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    TIMESTAMP POUR TRI
---------------------------------------------------------- */
+   ========================================================= */
 
 function getTimestamp(value) {
-
     const date = getDateValue(value);
 
-    return date ? date.getTime() : 0;
-
+    return date
+        ? date.getTime()
+        : 0;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    SALAIRE
---------------------------------------------------------- */
+   ========================================================= */
 
 function formatSalary(job) {
-
     const salary = firstValue(
         job.salary,
         job.remuneration,
@@ -256,7 +247,6 @@ function formatSalary(job) {
     if (salary) {
         return String(salary);
     }
-
 
     const min = firstValue(
         job.salaryMin,
@@ -273,36 +263,69 @@ function formatSalary(job) {
         job.devise
     );
 
-    if (min && max) {
-
+    if (
+        min !== "" &&
+        max !== ""
+    ) {
         return `${min} - ${max}${currency ? ` ${currency}` : ""}`;
-
     }
 
-    if (min) {
-
+    if (min !== "") {
         return `À partir de ${min}${currency ? ` ${currency}` : ""}`;
-
     }
 
-    if (max) {
-
+    if (max !== "") {
         return `Jusqu'à ${max}${currency ? ` ${currency}` : ""}`;
+    }
 
+    const salaryType = normalizeText(
+        firstValue(
+            job.salaryType,
+            job.typeSalaire
+        )
+    );
+
+    if (
+        salaryType.includes("fixe")
+    ) {
+        return "Salaire fixe";
+    }
+
+    if (
+        salaryType.includes("heure")
+    ) {
+        return "Salaire horaire";
+    }
+
+    if (
+        salaryType.includes("jour")
+    ) {
+        return "Salaire journalier";
+    }
+
+    if (
+        salaryType.includes("mois")
+    ) {
+        return "Salaire mensuel";
+    }
+
+    if (
+        salaryType.includes("sur devis") ||
+        salaryType.includes("sur-devis")
+    ) {
+        return "Sur devis";
     }
 
     return "Salaire à négocier";
-
 }
 
 
-/* ---------------------------------------------------------
-   LOGO
---------------------------------------------------------- */
+/* =========================================================
+   LOGO / IMAGE ENTREPRISE
+   ========================================================= */
 
 function getCompanyLogo(job) {
-
-    return firstValue(
+    const value = firstValue(
         job.image,
         job.logo,
         job.companyLogo,
@@ -310,62 +333,100 @@ function getCompanyLogo(job) {
         job.imageUrl
     );
 
+    if (!value) {
+        return "";
+    }
+
+    const image = String(value).trim();
+
+    if (!image) {
+        return "";
+    }
+
+    const invalidValues = [
+        "laisser vide pour le test",
+        "laisser vide",
+        "a laisser vide",
+        "à laisser vide",
+        "test",
+        "null",
+        "undefined",
+        "none",
+        "sans image",
+        "pas d'image",
+        "no image"
+    ];
+
+    if (
+        invalidValues.includes(
+            normalizeText(image)
+        )
+    ) {
+        return "";
+    }
+
+    /*
+     * On accepte uniquement les vraies URLs.
+     * Un texte comme "laisser vide pour le test"
+     * ne sera donc jamais utilisé comme src.
+     */
+    if (
+        !image.startsWith("http://") &&
+        !image.startsWith("https://")
+    ) {
+        return "";
+    }
+
+    return image;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    TYPE CONTRAT
---------------------------------------------------------- */
+   ========================================================= */
 
 function getContract(job) {
-
     return firstValue(
         job.contractType,
         job.typeContrat,
         job.contract,
         job.type
     );
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    EXPÉRIENCE
---------------------------------------------------------- */
+   ========================================================= */
 
 function getExperience(job) {
-
     return firstValue(
         job.experience,
         job.experienceLevel,
         job.niveauExperience
     );
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    VILLE
---------------------------------------------------------- */
+   ========================================================= */
 
 function getCity(job) {
-
     return firstValue(
         job.city,
         job.ville,
         job.location,
         job.localisation
     );
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    DOMAINE
---------------------------------------------------------- */
+   ========================================================= */
 
 function getCategory(job) {
-
     return firstValue(
         job.category,
         job.categoryName,
@@ -373,32 +434,28 @@ function getCategory(job) {
         job.domaine,
         job.sector
     );
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    DESCRIPTION
---------------------------------------------------------- */
+   ========================================================= */
 
 function getDescription(job) {
-
     return firstValue(
         job.description,
         job.details,
         job.content,
         job.resume
     );
-
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    COMPÉTENCES
---------------------------------------------------------- */
+   ========================================================= */
 
 function getSkills(job) {
-
     const skills = firstValue(
         job.skills,
         job.competences,
@@ -410,125 +467,128 @@ function getSkills(job) {
     }
 
     if (typeof skills === "string") {
-
         return skills
             .split(",")
             .map(item => item.trim())
             .filter(Boolean);
-
     }
 
     return [];
-
 }
 
 
 /* =========================================================
    FAVORIS
-========================================================= */
+   ========================================================= */
 
 function getFavorites() {
-
     try {
-
         const value =
-            localStorage.getItem(FAVORITES_KEY);
+            localStorage.getItem(
+                FAVORITES_KEY
+            );
 
         if (!value) {
             return [];
         }
 
-        const parsed = JSON.parse(value);
+        const parsed =
+            JSON.parse(value);
 
         return Array.isArray(parsed)
             ? parsed
             : [];
 
     } catch (error) {
-
         console.warn(
             "JOBS — Impossible de lire les favoris :",
             error
         );
 
         return [];
-
     }
-
 }
 
 
 function saveFavorites(favorites) {
-
-    localStorage.setItem(
-        FAVORITES_KEY,
-        JSON.stringify(favorites)
-    );
-
+    try {
+        localStorage.setItem(
+            FAVORITES_KEY,
+            JSON.stringify(favorites)
+        );
+    } catch (error) {
+        console.warn(
+            "JOBS — Impossible d'enregistrer les favoris :",
+            error
+        );
+    }
 }
 
 
 function isFavorite(jobId) {
-
     return getFavorites().includes(jobId);
-
 }
 
 
 function toggleFavorite(jobId) {
-
-    const favorites = getFavorites();
+    const favorites =
+        getFavorites();
 
     const index =
         favorites.indexOf(jobId);
 
-
     if (index >= 0) {
-
         favorites.splice(index, 1);
-
     } else {
-
         favorites.push(jobId);
-
     }
-
 
     saveFavorites(favorites);
 
     renderJobs(filteredJobs);
-
 }
 
 
 /* =========================================================
-   VILLE — REMPLIR SELECT
-========================================================= */
+   REMPLIR LES VILLES
+   ========================================================= */
 
 function populateCities(jobs) {
-
     if (!jobCity) {
         return;
     }
 
+    /*
+     * Si jobCity est un input texte,
+     * on ne crée pas d'options.
+     */
+    if (
+        jobCity.tagName.toLowerCase() !== "select"
+    ) {
+        return;
+    }
 
-    const currentValue = jobCity.value;
-
+    const currentValue =
+        jobCity.value;
 
     const cities = [
         ...new Set(
             jobs
                 .map(job => getCity(job))
                 .filter(Boolean)
-                .map(city => String(city).trim())
+                .map(city =>
+                    String(city).trim()
+                )
         )
     ];
 
-
-    cities.sort((a, b) =>
-        a.localeCompare(b, "fr")
+    cities.sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                "fr"
+            )
     );
-
 
     jobCity.innerHTML = `
         <option value="">
@@ -536,144 +596,132 @@ function populateCities(jobs) {
         </option>
     `;
 
-
     cities.forEach(city => {
-
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.value = city;
         option.textContent = city;
 
         jobCity.appendChild(option);
-
     });
 
-
     if (
-        cities.some(city => city === currentValue)
+        cities.some(
+            city => city === currentValue
+        )
     ) {
-        jobCity.value = currentValue;
+        jobCity.value =
+            currentValue;
     }
-
 }
 
 
 /* =========================================================
    CHARGER LES JOBS
-========================================================= */
+   ========================================================= */
 
 async function loadJobs() {
-
     if (!db) {
-
         showError(
             "Firebase n'est pas disponible."
         );
 
         return;
-
     }
-
 
     showLoading(true);
 
-
     try {
-
         const snapshot =
             await getDocs(
                 collection(db, "jobs")
             );
 
-
         allJobs = [];
 
+        snapshot.forEach(
+            documentSnapshot => {
+                const data =
+                    documentSnapshot.data();
 
-        snapshot.forEach(documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
-
-
-            allJobs.push({
-                id: documentSnapshot.id,
-                ...data
-            });
-
-        });
-
+                allJobs.push({
+                    id:
+                        documentSnapshot.id,
+                    ...data
+                });
+            }
+        );
 
         /*
-         * On conserve les offres publiées.
-         * Si aucune propriété status n'est présente,
+         * On conserve les offres publiques.
+         *
+         * Si status est absent,
          * l'offre reste affichable.
          */
 
-        allJobs = allJobs.filter(job => {
+        allJobs =
+            allJobs.filter(job => {
+                const status =
+                    normalizeText(
+                        job.status
+                    );
 
-            const status =
-                normalizeText(job.status);
+                if (!status) {
+                    return true;
+                }
 
-            if (!status) {
-                return true;
-            }
+                return [
+                    "active",
+                    "published",
+                    "publie",
+                    "publiee",
+                    "public",
+                    "valide"
+                ].includes(status);
+            });
 
-            return [
-                "active",
-                "published",
-                "publie",
-                "publiee",
-                "public",
-                "valide"
-            ].includes(status);
+        populateCities(
+            allJobs
+        );
 
-        });
-
-
-        populateCities(allJobs);
-
-
-        filteredJobs = [...allJobs];
-
+        filteredJobs = [
+            ...allJobs
+        ];
 
         applyFilters();
-
 
         console.log(
             "JOBS — Offres chargées :",
             allJobs
         );
 
-
     } catch (error) {
-
         console.error(
             "JOBS — Erreur chargement des offres :",
             error
         );
 
+        allJobs = [];
+        filteredJobs = [];
 
         showError(
             "Impossible de charger les offres pour le moment."
         );
 
-
     } finally {
-
         showLoading(false);
-
     }
-
 }
 
 
 /* =========================================================
    FILTRES
-========================================================= */
+   ========================================================= */
 
 function applyFilters() {
-
     const keyword =
         normalizeText(
             jobSearch?.value
@@ -699,20 +747,17 @@ function applyFilters() {
             jobExperience?.value
         );
 
-
     filteredJobs =
         allJobs.filter(job => {
 
             /* -----------------------------------------
                RECHERCHE
-            ----------------------------------------- */
+               ----------------------------------------- */
 
             if (keyword) {
-
                 const skills =
                     getSkills(job)
                         .join(" ");
-
 
                 const searchContent =
                     normalizeText(
@@ -722,6 +767,7 @@ function applyFilters() {
                             job.name,
                             job.company,
                             job.entreprise,
+                            job.employer,
                             getDescription(job),
                             getCategory(job),
                             getCity(job),
@@ -731,44 +777,44 @@ function applyFilters() {
                         ].join(" ")
                     );
 
-
                 if (
-                    !searchContent.includes(keyword)
+                    !searchContent.includes(
+                        keyword
+                    )
                 ) {
                     return false;
                 }
-
             }
 
 
             /* -----------------------------------------
                VILLE
-            ----------------------------------------- */
+               ----------------------------------------- */
 
             if (city) {
-
-                if (
+                const jobCityValue =
                     normalizeText(
                         getCity(job)
-                    ) !== city
+                    );
+
+                if (
+                    jobCityValue !== city &&
+                    !jobCityValue.includes(city)
                 ) {
                     return false;
                 }
-
             }
 
 
             /* -----------------------------------------
                DOMAINE
-            ----------------------------------------- */
+               ----------------------------------------- */
 
             if (category) {
-
                 const jobCategoryValue =
                     normalizeText(
                         getCategory(job)
                     );
-
 
                 if (
                     !jobCategoryValue.includes(
@@ -777,21 +823,18 @@ function applyFilters() {
                 ) {
                     return false;
                 }
-
             }
 
 
             /* -----------------------------------------
                CONTRAT
-            ----------------------------------------- */
+               ----------------------------------------- */
 
             if (contract) {
-
                 const jobContractValue =
                     normalizeText(
                         getContract(job)
                     );
-
 
                 if (
                     !jobContractValue.includes(
@@ -800,21 +843,18 @@ function applyFilters() {
                 ) {
                     return false;
                 }
-
             }
 
 
             /* -----------------------------------------
                EXPÉRIENCE
-            ----------------------------------------- */
+               ----------------------------------------- */
 
             if (experience) {
-
                 const jobExperienceValue =
                     normalizeText(
                         getExperience(job)
                     );
-
 
                 if (
                     !matchesExperience(
@@ -824,36 +864,30 @@ function applyFilters() {
                 ) {
                     return false;
                 }
-
             }
 
-
             return true;
-
         });
-
 
     applySort();
 
-
-    renderJobs(filteredJobs);
-
+    renderJobs(
+        filteredJobs
+    );
 }
 
 
 /* =========================================================
    EXPÉRIENCE — CORRESPONDANCE
-========================================================= */
+   ========================================================= */
 
 function matchesExperience(
     value,
     filter
 ) {
-
     if (!value) {
         return false;
     }
-
 
     const aliases = {
         debutant: [
@@ -867,6 +901,7 @@ function matchesExperience(
         "1-2": [
             "1-2",
             "1 a 2",
+            "1 à 2",
             "1 an",
             "2 ans"
         ],
@@ -874,6 +909,7 @@ function matchesExperience(
         "3-5": [
             "3-5",
             "3 a 5",
+            "3 à 5",
             "3 ans",
             "4 ans",
             "5 ans"
@@ -888,30 +924,35 @@ function matchesExperience(
         ]
     };
 
-
     const possibleValues =
         aliases[filter] || [];
 
+    if (!possibleValues.length) {
+        return value.includes(filter);
+    }
 
     return possibleValues.some(
-        item => value.includes(item)
+        item =>
+            value.includes(
+                normalizeText(item)
+            )
     );
-
 }
 
 
 /* =========================================================
    TRI
-========================================================= */
+   ========================================================= */
 
 function applySort() {
-
     const sort =
         jobSort?.value || "recent";
 
+    /* -----------------------------------------
+       PLUS RÉCENT
+       ----------------------------------------- */
 
     if (sort === "recent") {
-
         filteredJobs.sort(
             (a, b) =>
                 getTimestamp(
@@ -921,8 +962,7 @@ function applySort() {
                         b.publishedAt,
                         b.created_at
                     )
-                )
-                -
+                ) -
                 getTimestamp(
                     firstValue(
                         a.createdAt,
@@ -937,8 +977,14 @@ function applySort() {
     }
 
 
-    if (sort === "old") {
+    /* -----------------------------------------
+       PLUS ANCIEN
+       ----------------------------------------- */
 
+    if (
+        sort === "old" ||
+        sort === "ancien"
+    ) {
         filteredJobs.sort(
             (a, b) =>
                 getTimestamp(
@@ -948,8 +994,7 @@ function applySort() {
                         a.publishedAt,
                         a.created_at
                     )
-                )
-                -
+                ) -
                 getTimestamp(
                     firstValue(
                         b.createdAt,
@@ -964,96 +1009,127 @@ function applySort() {
     }
 
 
-    if (sort === "title") {
+    /* -----------------------------------------
+       TITRE A → Z
+       ----------------------------------------- */
 
+    if (
+        sort === "title" ||
+        sort === "az"
+    ) {
         filteredJobs.sort(
             (a, b) => {
-
                 const titleA =
                     firstValue(
                         a.title,
                         a.poste,
-                        a.name
+                        a.name,
+                        ""
                     );
 
                 const titleB =
                     firstValue(
                         b.title,
                         b.poste,
-                        b.name
+                        b.name,
+                        ""
                     );
 
-
-                return String(titleA)
-                    .localeCompare(
-                        String(titleB),
-                        "fr"
-                    );
-
+                return String(
+                    titleA
+                ).localeCompare(
+                    String(titleB),
+                    "fr"
+                );
             }
         );
-
     }
 
+
+    /* -----------------------------------------
+       TITRE Z → A
+       ----------------------------------------- */
+
+    if (sort === "za") {
+        filteredJobs.sort(
+            (a, b) => {
+                const titleA =
+                    firstValue(
+                        a.title,
+                        a.poste,
+                        a.name,
+                        ""
+                    );
+
+                const titleB =
+                    firstValue(
+                        b.title,
+                        b.poste,
+                        b.name,
+                        ""
+                    );
+
+                return String(
+                    titleB
+                ).localeCompare(
+                    String(titleA),
+                    "fr"
+                );
+            }
+        );
+    }
 }
 
 
 /* =========================================================
    RENDU DES JOBS
-========================================================= */
+   ========================================================= */
 
 function renderJobs(jobs) {
-
     if (!jobsList) {
         return;
     }
 
-
     jobsList.innerHTML = "";
 
-
-    updateCount(jobs.length);
-
+    updateCount(
+        jobs.length
+    );
 
     if (!jobs.length) {
-
         showEmpty(true);
-
         return;
-
     }
-
 
     showEmpty(false);
 
-
     jobs.forEach(job => {
-
         const card =
             createJobCard(job);
 
         jobsList.appendChild(card);
-
     });
-
 }
 
 
 /* =========================================================
-   CRÉER UNE CARTE
-========================================================= */
+   CRÉER UNE CARTE JOB
+   ========================================================= */
 
 function createJobCard(job) {
-
     const article =
         document.createElement("article");
 
+    article.className =
+        "job-card";
 
-    article.className = "job-card";
+    article.dataset.jobId =
+        job.id;
 
 
-    article.dataset.jobId = job.id;
-
+    /* -----------------------------------------
+       TITRE
+       ----------------------------------------- */
 
     const title =
         firstValue(
@@ -1064,6 +1140,10 @@ function createJobCard(job) {
         );
 
 
+    /* -----------------------------------------
+       ENTREPRISE
+       ----------------------------------------- */
+
     const company =
         firstValue(
             job.company,
@@ -1073,35 +1153,31 @@ function createJobCard(job) {
         );
 
 
-    const city =
-        getCity(job) ||
-        "Ville non précisée";
+    /* -----------------------------------------
+       INFORMATIONS
+       ----------------------------------------- */
 
+    const city =
+        getCity(job);
 
     const category =
         getCategory(job);
 
-
     const contract =
         getContract(job);
 
-
     const experience =
         getExperience(job);
-
 
     const description =
         getDescription(job) ||
         "Aucune description disponible.";
 
-
     const salary =
         formatSalary(job);
 
-
     const logo =
         getCompanyLogo(job);
-
 
     const createdAt =
         firstValue(
@@ -1111,133 +1187,124 @@ function createJobCard(job) {
             job.created_at
         );
 
-
     const skills =
         getSkills(job);
-
 
     const favorite =
         isFavorite(job.id);
 
 
-    /* -----------------------------------------------------
+    /* -----------------------------------------
        LOGO
-    ----------------------------------------------------- */
+       ----------------------------------------- */
 
     let logoHtml;
 
-
     if (logo) {
-
         logoHtml = `
             <div class="job-company-logo">
                 <img
                     src="${escapeHtml(logo)}"
                     alt="${escapeHtml(company)}"
                     loading="lazy"
+                    referrerpolicy="no-referrer"
+                    onerror="
+                        this.style.display='none';
+                        this.nextElementSibling.style.display='flex';
+                    "
                 >
+
+                <div
+                    class="job-company-logo-placeholder"
+                    style="display:none;"
+                >
+                    <i class="fa-solid fa-building"></i>
+                </div>
             </div>
         `;
-
     } else {
-
         logoHtml = `
             <div class="job-company-logo">
-                <i class="fa-solid fa-building"></i>
+                <div class="job-company-logo-placeholder">
+                    <i class="fa-solid fa-building"></i>
+                </div>
             </div>
         `;
-
     }
 
 
-    /* -----------------------------------------------------
+    /* -----------------------------------------
        META
-    ----------------------------------------------------- */
+       ----------------------------------------- */
 
     let metaHtml = "";
 
-
     if (city) {
-
         metaHtml += `
             <span class="job-meta-item">
                 <i class="fa-solid fa-location-dot"></i>
                 ${escapeHtml(city)}
             </span>
         `;
-
     }
 
-
     if (contract) {
-
         metaHtml += `
             <span class="job-meta-item">
                 <i class="fa-solid fa-file-contract"></i>
                 ${escapeHtml(contract)}
             </span>
         `;
-
     }
 
-
     if (experience) {
-
         metaHtml += `
             <span class="job-meta-item">
                 <i class="fa-solid fa-user-clock"></i>
                 ${escapeHtml(experience)}
             </span>
         `;
-
     }
 
 
-    /* -----------------------------------------------------
+    /* -----------------------------------------
        TAGS
-    ----------------------------------------------------- */
+       ----------------------------------------- */
 
     let tagsHtml = "";
 
-
     if (category) {
-
         tagsHtml += `
             <span class="job-tag">
                 ${escapeHtml(category)}
             </span>
         `;
-
     }
-
 
     skills
         .slice(0, 3)
         .forEach(skill => {
-
             tagsHtml += `
                 <span class="job-tag">
                     ${escapeHtml(skill)}
                 </span>
             `;
-
         });
 
 
-    /* -----------------------------------------------------
-       LIEN OFFRE
-    ----------------------------------------------------- */
+    /* -----------------------------------------
+       LIEN DÉTAIL
+       ----------------------------------------- */
 
     const detailUrl =
         `job-details.html?id=${encodeURIComponent(job.id)}`;
 
 
-    /* -----------------------------------------------------
+    /* -----------------------------------------
        HTML
-    ----------------------------------------------------- */
+       ----------------------------------------- */
 
     article.innerHTML = `
-
         <div class="job-card-header">
 
             ${logoHtml}
@@ -1255,7 +1322,6 @@ function createJobCard(job) {
             </div>
 
         </div>
-
 
         <button
             type="button"
@@ -1279,20 +1345,15 @@ function createJobCard(job) {
             }"></i>
         </button>
 
-
         <div class="job-card-body">
 
             <p class="job-description">
                 ${escapeHtml(description)}
             </p>
 
-
             <div class="job-meta">
-
                 ${metaHtml}
-
             </div>
-
 
             ${
                 tagsHtml
@@ -1304,10 +1365,9 @@ function createJobCard(job) {
                     : ""
             }
 
-
             <div class="job-card-footer">
 
-                <div>
+                <div class="job-salary-block">
 
                     <span class="job-salary-label">
                         Rémunération
@@ -1319,7 +1379,6 @@ function createJobCard(job) {
 
                 </div>
 
-
                 <a
                     href="${detailUrl}"
                     class="job-view-button"
@@ -1330,117 +1389,113 @@ function createJobCard(job) {
 
             </div>
 
+            <div class="job-card-date">
+                <i class="fa-regular fa-clock"></i>
+                ${escapeHtml(
+                    formatDate(createdAt)
+                )}
+            </div>
+
         </div>
     `;
 
 
-    /* -----------------------------------------------------
+    /* -----------------------------------------
        FAVORI
-    ----------------------------------------------------- */
+       ----------------------------------------- */
 
     const favoriteButton =
         article.querySelector(
             ".job-favorite"
         );
 
-
     if (favoriteButton) {
-
         favoriteButton.addEventListener(
             "click",
             event => {
-
                 event.preventDefault();
                 event.stopPropagation();
 
-                toggleFavorite(job.id);
-
+                toggleFavorite(
+                    job.id
+                );
             }
         );
-
     }
 
 
     return article;
-
 }
 
 
 /* =========================================================
    COMPTEUR
-========================================================= */
+   ========================================================= */
 
 function updateCount(count) {
-
     if (!jobsCount) {
         return;
     }
 
-
     jobsCount.textContent =
         `${count} offre${count > 1 ? "s" : ""}`;
-
 }
 
 
 /* =========================================================
    LOADING
-========================================================= */
+   ========================================================= */
 
 function showLoading(show) {
-
     if (!jobsLoading) {
         return;
     }
 
-
     jobsLoading.style.display =
-        show ? "flex" : "none";
+        show
+            ? "flex"
+            : "none";
 
-
-    if (show && jobsList) {
+    if (
+        show &&
+        jobsList
+    ) {
         jobsList.innerHTML = "";
     }
 
     if (show) {
         showEmpty(false);
     }
-
 }
 
 
 /* =========================================================
    EMPTY
-========================================================= */
+   ========================================================= */
 
 function showEmpty(show) {
-
     if (!jobsEmpty) {
         return;
     }
 
-
     jobsEmpty.style.display =
-        show ? "block" : "none";
-
+        show
+            ? "block"
+            : "none";
 }
 
 
 /* =========================================================
    ERREUR
-========================================================= */
+   ========================================================= */
 
 function showError(message) {
-
     if (jobsLoading) {
-
-        jobsLoading.style.display = "none";
-
+        jobsLoading.style.display =
+            "none";
     }
 
-
     if (jobsList) {
-
         jobsList.innerHTML = `
             <div
                 style="
@@ -1456,6 +1511,7 @@ function showError(message) {
                 <i
                     class="fa-solid fa-triangle-exclamation"
                     style="
+                        display: block;
                         margin-bottom: 12px;
                         font-size: 28px;
                         color: #d9534f;
@@ -1474,22 +1530,19 @@ function showError(message) {
 
             </div>
         `;
-
     }
 
-
     updateCount(0);
-    showEmpty(false);
 
+    showEmpty(false);
 }
 
 
 /* =========================================================
-   RÉINITIALISER FILTRES
-========================================================= */
+   RÉINITIALISER LES FILTRES
+   ========================================================= */
 
 function resetFilters() {
-
     if (jobSearch) {
         jobSearch.value = "";
     }
@@ -1514,117 +1567,110 @@ function resetFilters() {
         jobSort.value = "recent";
     }
 
-
-    filteredJobs = [...allJobs];
+    filteredJobs = [
+        ...allJobs
+    ];
 
     applyFilters();
-
 }
 
 
 /* =========================================================
    ÉVÉNEMENTS
-========================================================= */
+   ========================================================= */
 
 if (jobSearch) {
-
     jobSearch.addEventListener(
         "input",
         applyFilters
     );
-
 }
 
 
 if (jobCity) {
-
     jobCity.addEventListener(
         "change",
         applyFilters
     );
-
 }
 
 
 if (jobCategory) {
-
     jobCategory.addEventListener(
         "change",
         applyFilters
     );
-
 }
 
 
 if (jobContract) {
-
     jobContract.addEventListener(
         "change",
         applyFilters
     );
-
 }
 
 
 if (jobExperience) {
-
     jobExperience.addEventListener(
         "change",
         applyFilters
     );
-
 }
 
 
 if (jobSort) {
-
     jobSort.addEventListener(
         "change",
         applyFilters
     );
-
 }
 
 
 if (jobSearchButton) {
-
     jobSearchButton.addEventListener(
         "click",
         applyFilters
     );
-
 }
 
 
 if (resetJobFilters) {
-
     resetJobFilters.addEventListener(
         "click",
         resetFilters
     );
-
 }
 
 
 if (emptyResetButton) {
-
     emptyResetButton.addEventListener(
         "click",
         resetFilters
     );
-
 }
 
 
 /* =========================================================
    INITIALISATION
-========================================================= */
+   ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
-
         loadJobs();
-
     }
 );
+
+
+/* =========================================================
+   DEBUG / API OPTIONNELLE
+   ========================================================= */
+
+window.CAMU_JOBS = {
+    loadJobs,
+    applyFilters,
+    resetFilters,
+    toggleFavorite,
+    getFavorites
+};
