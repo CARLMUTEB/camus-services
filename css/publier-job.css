@@ -1,148 +1,388 @@
 /* =========================================================
-   CAMU SERVICES — PUBLICATION D'UNE OFFRE JOB
-   Fichier : css/publier-job.css
+   CAMU SERVICES
+   PUBLIER UN JOB
 ========================================================= */
 
+:root {
+    --publish-blue: #063b73;
+    --publish-blue-dark: #04294f;
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+    --publish-green: #20a86b;
+    --publish-green-dark: #168653;
 
-.publish-job-page {
-    --publish-primary: #1677b8;
-    --publish-primary-dark: #105d91;
-    --publish-green: #18a64a;
-    --publish-green-dark: #14853b;
-    --publish-text: #172033;
-    --publish-muted: #728092;
-    --publish-border: #dfe6ed;
-    --publish-bg: #f7f9fb;
     --publish-white: #ffffff;
-    --publish-danger: #d9534f;
+    --publish-light: #f5f7fa;
+    --publish-border: #e2e7ee;
+
+    --publish-text: #1d2939;
+    --publish-muted: #667085;
+
+    --publish-danger: #d92d20;
+    --publish-success: #167c4a;
+
+    --publish-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --publish-radius: 14px;
 }
 
 
 /* =========================================================
-   PAGE
+   BASE
 ========================================================= */
 
 .publish-job-page {
-    min-height: 100vh;
-    padding-bottom: 55px;
+    margin: 0;
+    background: var(--publish-light);
+    color: var(--publish-text);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-
-/* =========================================================
-   RETOUR
-========================================================= */
-
-.publish-job-back {
-    margin: 22px 0 18px;
+.publish-job-page *,
+.publish-job-page *::before,
+.publish-job-page *::after {
+    box-sizing: border-box;
 }
 
-.publish-job-page .back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 40px;
-    padding: 8px 13px;
-    border: 1px solid var(--publish-border);
-    border-radius: 10px;
-    background: #ffffff;
-    color: #536071;
+.publish-job-page a {
+    color: inherit;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 700;
-    transition: 0.2s ease;
 }
 
-.publish-job-page .back-button:hover {
-    color: var(--publish-primary);
-    border-color: #c8d7e5;
-    background: #f7fafc;
+.publish-job-page button,
+.publish-job-page input,
+.publish-job-page select,
+.publish-job-page textarea {
+    font: inherit;
 }
 
-.publish-job-page .back-button i {
-    color: var(--publish-primary);
+.publish-job-page input,
+.publish-job-page select,
+.publish-job-page textarea {
+    width: 100%;
 }
 
 
 /* =========================================================
-   HERO
+   SIDEBAR
 ========================================================= */
 
-.publish-job-hero {
-    position: relative;
+.publish-job-page > .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 245px;
+    height: 100vh;
+
+    background: var(--publish-blue);
+    color: #fff;
+
+    z-index: 1000;
+
     display: flex;
-    align-items: center;
-    gap: 18px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    padding: 30px;
-    border-radius: 22px;
-    background: linear-gradient(
-        135deg,
-        #0878bd 0%,
-        #0b91af 100%
-    );
-    color: #ffffff;
-    box-shadow: 0 12px 30px rgba(20, 35, 55, 0.08);
+    flex-direction: column;
+
+    box-shadow: 4px 0 20px rgba(0, 0, 0, .12);
+
+    overflow-y: auto;
 }
 
-.publish-job-hero::after {
-    content: "";
-    position: absolute;
-    width: 260px;
-    height: 260px;
-    top: -155px;
-    right: -50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-}
+.publish-job-page .sidebar-header {
+    height: 105px;
 
-.publish-job-hero-icon {
-    position: relative;
-    z-index: 1;
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 68px;
-    width: 68px;
-    height: 68px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    font-size: 28px;
+
+    padding: 15px;
+
+    background: #fff;
 }
 
-.publish-job-hero > div:last-child {
-    position: relative;
-    z-index: 1;
+.publish-job-page .sidebar-logo {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
 }
 
-.publish-job-hero .section-label {
-    display: block;
-    margin-bottom: 7px;
-    color: #b2f3c1;
-    font-size: 11px;
-    font-weight: 850;
-    letter-spacing: 1.2px;
+.publish-job-page .logo-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--publish-blue);
+    color: #fff;
+
+    border-radius: 10px;
+
+    font-size: 20px;
 }
 
-.publish-job-hero h1 {
-    margin: 0 0 8px;
-    color: #ffffff;
-    font-size: clamp(28px, 4vw, 43px);
-    line-height: 1.15;
-    font-weight: 850;
+.publish-job-page .logo-text {
+    color: var(--publish-blue);
+
+    font-size: 16px;
+    font-weight: 800;
+
+    white-space: nowrap;
 }
 
-.publish-job-hero p {
-    max-width: 700px;
-    margin: 0;
-    color: rgba(255, 255, 255, 0.88);
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
+
+.publish-job-page .sidebar-nav {
+    padding: 18px 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.publish-job-page .sidebar-link {
+    min-height: 46px;
+
+    padding: 10px 13px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    border-radius: 9px;
+
+    color: rgba(255, 255, 255, .88);
+
+    transition: .2s ease;
+}
+
+.publish-job-page .sidebar-link i {
+    width: 21px;
+
+    text-align: center;
+
+    flex-shrink: 0;
+}
+
+.publish-job-page .sidebar-link span {
     font-size: 14px;
-    line-height: 1.65;
+}
+
+.publish-job-page .sidebar-link:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+.publish-job-page .sidebar-link.active {
+    background: var(--publish-green);
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.publish-job-page .sidebar-footer {
+    margin-top: auto;
+
+    padding: 15px 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+
+/* =========================================================
+   SIDEBAR OVERLAY
+========================================================= */
+
+.publish-job-page .sidebar-overlay {
+    display: none;
+}
+
+
+/* =========================================================
+   MAIN WRAPPER
+========================================================= */
+
+.publish-job-page .main-wrapper {
+    min-height: 100vh;
+
+    margin-left: 245px;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.publish-job-page .topbar {
+    position: sticky;
+
+    top: 0;
+
+    height: 82px;
+
+    background: #fff;
+
+    border-bottom: 1px solid var(--publish-border);
+
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 25px;
+
+    z-index: 900;
+}
+
+.publish-job-page .topbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.publish-job-page .topbar-back {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--publish-blue);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.publish-job-page .topbar-back:hover {
+    color: var(--publish-green);
+}
+
+.publish-job-page .topbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.publish-job-page .topbar-action {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: var(--publish-blue);
+
+    font-size: 18px;
+}
+
+.publish-job-page .topbar-action:hover {
+    background: var(--publish-light);
+
+    color: var(--publish-green);
+}
+
+.publish-job-page .mobile-menu-button {
+    display: none;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.publish-job-page .main-content {
+    min-height: calc(100vh - 82px);
+}
+
+
+/* =========================================================
+   ZONE PUBLICATION
+========================================================= */
+
+.publish-job-page .publish-job-main {
+    width: 100%;
+
+    padding: 35px 25px 60px;
+}
+
+.publish-job-page .publish-job-container {
+    width: 100%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   TITRE DE PAGE
+========================================================= */
+
+.publish-job-page .publish-job-header {
+    margin-bottom: 25px;
+
+    text-align: center;
+}
+
+.publish-job-page .publish-job-header .publish-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+
+    padding: 7px 13px;
+
+    background: rgba(32, 168, 107, .10);
+
+    border-radius: 50px;
+
+    color: var(--publish-green);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.publish-job-page .publish-job-header h1 {
+    margin: 0 0 10px;
+
+    color: var(--publish-blue);
+
+    font-size: clamp(28px, 4vw, 40px);
+
+    line-height: 1.15;
+}
+
+.publish-job-page .publish-job-header p {
+    max-width: 680px;
+
+    margin: 0 auto;
+
+    color: var(--publish-muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
 }
 
 
@@ -150,134 +390,154 @@
    MESSAGE AUTH
 ========================================================= */
 
-.publish-job-message {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    margin-bottom: 20px;
-    padding: 14px 16px;
-    border: 1px solid #cfe1ef;
-    border-radius: 13px;
-    background: #eef7fc;
-    color: #38627e;
-    font-size: 13px;
-    line-height: 1.5;
-}
+.publish-job-page #authMessage {
+    margin-bottom: 18px;
 
-.publish-job-message i {
-    flex: 0 0 auto;
-    color: var(--publish-primary);
-    font-size: 18px;
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    background: rgba(6, 59, 115, .07);
+
+    border: 1px solid rgba(6, 59, 115, .15);
+
+    color: var(--publish-blue);
+
+    font-size: 13px;
+
+    line-height: 1.5;
 }
 
 
 /* =========================================================
-   FORMULAIRE PRINCIPAL
+   FORMULAIRE
 ========================================================= */
 
-.publish-job-form {
+.publish-job-page #publishJobForm {
     display: flex;
     flex-direction: column;
+
     gap: 20px;
 }
 
 
 /* =========================================================
-   SECTION
+   SECTION FORMULAIRE
 ========================================================= */
 
-.publish-job-section {
-    padding: 27px;
+.publish-job-page .form-section,
+.publish-job-page .publish-form-section,
+.publish-job-page .job-form-section {
+    padding: 25px;
+
+    background: #fff;
+
     border: 1px solid var(--publish-border);
-    border-radius: 20px;
-    background: var(--publish-white);
-    box-shadow: 0 7px 24px rgba(20, 35, 55, 0.045);
-}
 
-.publish-job-section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 25px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid #edf0f3;
-}
+    border-radius: var(--publish-radius);
 
-.publish-job-section-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
-    border-radius: 13px;
-    background: #edf6fc;
-    color: var(--publish-primary);
-    font-size: 20px;
-}
-
-.publish-job-section-header > div:last-child {
-    min-width: 0;
-}
-
-.publish-job-section-header span {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--publish-green);
-    font-size: 10px;
-    font-weight: 850;
-    letter-spacing: 1px;
-}
-
-.publish-job-section-header h2 {
-    margin: 0 0 5px;
-    color: var(--publish-text);
-    font-size: 20px;
-    line-height: 1.3;
-}
-
-.publish-job-section-header p {
-    margin: 0;
-    color: var(--publish-muted);
-    font-size: 13px;
-    line-height: 1.5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
 }
 
 
 /* =========================================================
-   GRILLE FORMULAIRE
+   TITRE SECTION
 ========================================================= */
 
-.publish-job-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+.publish-job-page .form-section-title,
+.publish-job-page .publish-section-title,
+.publish-job-page .job-form-section-title {
+    margin-bottom: 22px;
+
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid var(--publish-border);
 }
 
-.publish-job-field {
+.publish-job-page .form-section-title span,
+.publish-job-page .publish-section-title span,
+.publish-job-page .job-form-section-title span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--publish-green);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: .08em;
+}
+
+.publish-job-page .form-section-title h2,
+.publish-job-page .publish-section-title h2,
+.publish-job-page .job-form-section-title h2 {
+    margin: 0;
+
+    color: var(--publish-blue);
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   GRID FORMULAIRE
+========================================================= */
+
+.publish-job-page .form-grid,
+.publish-job-page .publish-form-grid,
+.publish-job-page .job-form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   GROUPE FORMULAIRE
+========================================================= */
+
+.publish-job-page .form-group {
     min-width: 0;
 }
 
-.publish-job-field.full {
+.publish-job-page .form-group.full-width,
+.publish-job-page .form-group.span-2 {
     grid-column: 1 / -1;
 }
 
 
 /* =========================================================
-   LABELS
+   LABEL
 ========================================================= */
 
-.publish-job-field > label {
+.publish-job-page .form-group label {
     display: block;
-    margin-bottom: 8px;
-    color: #4f5c6d;
+
+    margin-bottom: 7px;
+
+    color: var(--publish-text);
+
     font-size: 13px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
-.required {
+.publish-job-page .form-group label .required {
     color: var(--publish-danger);
-    font-weight: 900;
+}
+
+.publish-job-page .form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--publish-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
 }
 
 
@@ -285,47 +545,55 @@
    INPUTS
 ========================================================= */
 
-.publish-job-input {
-    display: flex;
-    align-items: center;
-    min-height: 50px;
-    overflow: hidden;
-    border: 1px solid var(--publish-border);
-    border-radius: 11px;
-    background: #f9fbfc;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-.publish-job-input:focus-within {
-    border-color: var(--publish-primary);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
-}
-
-.publish-job-input > i {
-    flex: 0 0 45px;
-    text-align: center;
-    color: #7a8796;
-    font-size: 15px;
-}
-
-.publish-job-input input {
+.publish-job-page .form-group input,
+.publish-job-page .form-group select,
+.publish-job-page .form-group textarea {
     width: 100%;
-    height: 50px;
-    padding: 0 13px 0 0;
-    border: 0;
-    outline: none;
-    background: transparent;
+
+    border: 1px solid var(--publish-border);
+
+    border-radius: 9px;
+
+    background: #fff;
+
     color: var(--publish-text);
-    font: inherit;
-    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
 }
 
-.publish-job-input input::placeholder {
-    color: #9aa5b2;
+.publish-job-page .form-group input,
+.publish-job-page .form-group select {
+    height: 46px;
+
+    padding: 0 13px;
+}
+
+.publish-job-page .form-group textarea {
+    min-height: 120px;
+
+    padding: 12px 13px;
+
+    line-height: 1.6;
+
+    resize: vertical;
+}
+
+.publish-job-page .form-group input::placeholder,
+.publish-job-page .form-group textarea::placeholder {
+    color: #98a2b3;
+}
+
+.publish-job-page .form-group input:focus,
+.publish-job-page .form-group select:focus,
+.publish-job-page .form-group textarea:focus {
+    border-color: var(--publish-blue);
+
+    box-shadow: 0 0 0 3px rgba(6, 59, 115, .08);
 }
 
 
@@ -333,76 +601,34 @@
    SELECT
 ========================================================= */
 
-.publish-job-field > select {
-    width: 100%;
-    min-height: 50px;
-    padding: 0 13px;
-    border: 1px solid var(--publish-border);
-    border-radius: 11px;
-    outline: none;
-    background: #f9fbfc;
-    color: var(--publish-text);
-    font: inherit;
-    font-size: 14px;
+.publish-job-page .form-group select {
     cursor: pointer;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
 
-.publish-job-field > select:focus {
-    border-color: var(--publish-primary);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
+    appearance: auto;
 }
 
 
 /* =========================================================
-   TEXTAREA
+   TEXTAREA LONG
 ========================================================= */
 
-.publish-job-field textarea {
-    display: block;
-    width: 100%;
-    min-height: 120px;
-    padding: 13px 14px;
-    border: 1px solid var(--publish-border);
-    border-radius: 11px;
-    outline: none;
-    resize: vertical;
-    background: #f9fbfc;
-    color: var(--publish-text);
-    font-family: inherit;
-    font-size: 14px;
-    line-height: 1.65;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-    box-sizing: border-box;
-}
-
-.publish-job-field textarea:focus {
-    border-color: var(--publish-primary);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(22, 119, 184, 0.09);
-}
-
-.publish-job-field textarea::placeholder {
-    color: #9aa5b2;
+.publish-job-page textarea.description-field,
+.publish-job-page textarea.large-textarea {
+    min-height: 180px;
 }
 
 
 /* =========================================================
-   SMALL TEXT
+   CONTENU DE FORMATION / LISTE
 ========================================================= */
 
-.publish-job-field small {
-    display: block;
+.publish-job-page .form-help {
     margin-top: 7px;
-    color: #8a95a3;
+
+    color: var(--publish-muted);
+
     font-size: 11px;
+
     line-height: 1.5;
 }
 
@@ -411,277 +637,348 @@
    COMPTEUR
 ========================================================= */
 
-.publish-job-counter {
+.publish-job-page .character-counter {
     display: flex;
+
     justify-content: flex-end;
-    margin-top: 6px;
-    color: #8a95a3;
+
+    margin-top: 5px;
+
+    color: var(--publish-muted);
+
     font-size: 11px;
 }
 
-.publish-job-counter span {
-    color: var(--publish-primary);
-    font-weight: 750;
+
+/* =========================================================
+   SALAIRE
+========================================================= */
+
+.publish-job-page .salary-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+.publish-job-page .salary-row {
+    display: grid;
+
+    grid-template-columns: 140px 1fr;
+
+    gap: 10px;
 }
 
 
 /* =========================================================
-   IMAGE
+   IMAGE / LOGO
 ========================================================= */
 
-.publish-job-field input[type="file"] {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    border: 1px dashed #cfd9e3;
-    border-radius: 11px;
-    background: #f9fbfc;
-    color: #5f6c7c;
-    font-family: inherit;
-    font-size: 13px;
-    cursor: pointer;
-    box-sizing: border-box;
-}
+.publish-job-page .image-upload-box {
+    position: relative;
 
-.publish-job-field input[type="file"]:hover {
-    border-color: var(--publish-primary);
-    background: #f5faff;
-}
+    min-height: 150px;
 
-.publish-job-field input[type="file"]::file-selector-button {
-    margin-right: 10px;
-    padding: 8px 12px;
-    border: 0;
-    border-radius: 8px;
-    background: #eaf3f9;
-    color: var(--publish-primary);
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 750;
-    cursor: pointer;
-}
+    padding: 20px;
 
-
-/* =========================================================
-   APERÇU IMAGE
-========================================================= */
-
-.publish-job-image-preview {
-    width: 150px;
-    height: 150px;
-    margin-top: 15px;
-    overflow: hidden;
-    border: 1px solid var(--publish-border);
-    border-radius: 15px;
-    background: #f5f7f9;
-}
-
-.publish-job-image-preview img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   CONDITIONS
-========================================================= */
-
-.publish-job-conditions {
-    background: #fbfcfd;
-}
-
-.publish-job-checkbox {
     display: flex;
-    align-items: flex-start;
-    gap: 11px;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 2px dashed var(--publish-border);
+
+    border-radius: 12px;
+
+    background: var(--publish-light);
+
+    transition:
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.publish-job-page .image-upload-box:hover {
+    border-color: var(--publish-blue);
+
+    background: rgba(6, 59, 115, .03);
+}
+
+.publish-job-page .image-upload-box i {
+    margin-bottom: 10px;
+
+    color: var(--publish-blue);
+
+    font-size: 30px;
+}
+
+.publish-job-page .image-upload-box span {
+    margin-bottom: 5px;
+
+    color: var(--publish-text);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.publish-job-page .image-upload-box small {
+    color: var(--publish-muted);
+
+    font-size: 11px;
+}
+
+.publish-job-page #serviceImage,
+.publish-job-page #jobImage {
     cursor: pointer;
 }
 
-.publish-job-checkbox input {
-    flex: 0 0 auto;
+
+/* =========================================================
+   PREVIEW IMAGE
+========================================================= */
+
+.publish-job-page .image-preview,
+.publish-job-page #imagePreview,
+.publish-job-page #jobImagePreview {
+    margin-top: 15px;
+
+    max-width: 180px;
+
+    max-height: 140px;
+
+    border-radius: 10px;
+
+    object-fit: cover;
+
+    border: 1px solid var(--publish-border);
+}
+
+
+/* =========================================================
+   CHECKBOX / CONDITIONS
+========================================================= */
+
+.publish-job-page .form-checkbox {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    background: var(--publish-light);
+
+    border: 1px solid var(--publish-border);
+
+    border-radius: 10px;
+}
+
+.publish-job-page .form-checkbox input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    margin: 1px 0 0;
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
     accent-color: var(--publish-green);
+
     cursor: pointer;
 }
 
-.publish-job-checkbox span {
-    color: #5f6c7b;
-    font-size: 13px;
+.publish-job-page .form-checkbox label {
+    margin: 0;
+
+    color: var(--publish-muted);
+
+    font-size: 12px;
+
     line-height: 1.6;
-}
 
-.publish-job-conditions > a {
-    display: inline-block;
-    margin-top: 10px;
-    margin-left: 29px;
-    color: var(--publish-primary);
-    font-size: 12px;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.publish-job-conditions > a:hover {
-    text-decoration: underline;
+    cursor: pointer;
 }
 
 
 /* =========================================================
-   MESSAGE SUCCÈS
+   ALERT SUCCESS
 ========================================================= */
 
-.publish-job-success {
-    display: flex;
-    align-items: flex-start;
-    gap: 13px;
-    padding: 17px;
-    border: 1px solid #cbe8d3;
-    border-radius: 13px;
-    background: #eef9f1;
-    color: #267841;
-}
+.publish-job-page .success-message,
+.publish-job-page #publishJobSuccess {
+    padding: 14px 16px;
 
-.publish-job-success > i {
-    margin-top: 2px;
-    color: var(--publish-green);
-    font-size: 21px;
-}
+    border-radius: 10px;
 
-.publish-job-success strong {
-    display: block;
-    margin-bottom: 4px;
-    color: #196c35;
-    font-size: 14px;
-}
+    background: rgba(32, 168, 107, .10);
 
-.publish-job-success p {
-    margin: 0;
-    color: #4e775a;
-    font-size: 12px;
+    border: 1px solid rgba(32, 168, 107, .25);
+
+    color: var(--publish-success);
+
+    font-size: 13px;
+
     line-height: 1.5;
 }
 
 
 /* =========================================================
-   MESSAGE ERREUR
+   ALERT ERREUR
 ========================================================= */
 
-.publish-job-error {
-    display: flex;
-    align-items: flex-start;
-    gap: 13px;
-    padding: 17px;
-    border: 1px solid #f0cfcf;
-    border-radius: 13px;
-    background: #fff6f6;
-    color: #914542;
-}
+.publish-job-page .error-message,
+.publish-job-page #publishJobError {
+    padding: 14px 16px;
 
-.publish-job-error > i {
-    margin-top: 2px;
+    border-radius: 10px;
+
+    background: rgba(217, 45, 32, .07);
+
+    border: 1px solid rgba(217, 45, 32, .20);
+
     color: var(--publish-danger);
-    font-size: 21px;
-}
 
-.publish-job-error strong {
-    display: block;
-    margin-bottom: 4px;
-    color: #8c3936;
-    font-size: 14px;
-}
+    font-size: 13px;
 
-.publish-job-error p {
-    margin: 0;
-    color: #9a5d59;
-    font-size: 12px;
     line-height: 1.5;
 }
 
 
 /* =========================================================
-   ACTIONS FINALES
+   BOUTONS
 ========================================================= */
 
-.publish-job-actions {
+.publish-job-page .form-actions,
+.publish-job-page .publish-form-actions {
     display: flex;
+
+    justify-content: flex-end;
+
     align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 5px 0 0;
+
+    gap: 12px;
+
+    padding-top: 5px;
 }
 
-.publish-job-cancel,
-.publish-job-submit {
+.publish-job-page .btn-cancel,
+.publish-job-page .publish-cancel-button {
+    min-height: 46px;
+
+    padding: 0 20px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
-    min-height: 48px;
-    padding: 11px 19px;
-    border-radius: 11px;
-    font-family: inherit;
+
+    border: 1px solid var(--publish-border);
+
+    border-radius: 9px;
+
+    background: #fff;
+
+    color: var(--publish-muted);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.publish-job-page .btn-cancel:hover,
+.publish-job-page .publish-cancel-button:hover {
+    background: var(--publish-light);
+
+    color: var(--publish-text);
+}
+
+
+/* BOUTON PUBLIER */
+
+.publish-job-page #publishJobButton,
+.publish-job-page .publish-job-button,
+.publish-job-page .btn-publish {
+    min-height: 46px;
+
+    padding: 0 22px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border-radius: 9px;
+
+    background: var(--publish-green);
+
+    color: #fff;
+
     font-size: 14px;
     font-weight: 800;
-    text-decoration: none;
+
     cursor: pointer;
+
     transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
-.publish-job-cancel {
-    border: 1px solid var(--publish-border);
-    background: #ffffff;
-    color: #5b6878;
-}
-
-.publish-job-cancel:hover {
-    border-color: #cbd7e2;
-    background: #f7f9fb;
-}
-
-.publish-job-submit {
-    border: 0;
-    background: var(--publish-green);
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(24, 166, 74, 0.16);
-}
-
-.publish-job-submit:hover {
+.publish-job-page #publishJobButton:hover,
+.publish-job-page .publish-job-button:hover,
+.publish-job-page .btn-publish:hover {
     background: var(--publish-green-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 11px 24px rgba(24, 166, 74, 0.20);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 15px rgba(32, 168, 107, .20);
 }
 
-.publish-job-submit:disabled {
-    opacity: 0.65;
-    transform: none;
+.publish-job-page #publishJobButton:disabled {
+    opacity: .65;
+
     cursor: not-allowed;
+
+    transform: none;
+
     box-shadow: none;
 }
 
 
 /* =========================================================
-   ÉTAT VALIDATION
+   SPINNER BOUTON
 ========================================================= */
 
-.publish-job-field.invalid input,
-.publish-job-field.invalid select,
-.publish-job-field.invalid textarea,
-.publish-job-field.invalid .publish-job-input {
-    border-color: #dc5a55;
+.publish-job-page .button-loading {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
 }
 
-.publish-job-field.invalid input:focus,
-.publish-job-field.invalid select:focus,
-.publish-job-field.invalid textarea:focus,
-.publish-job-field.invalid .publish-job-input:focus-within {
-    box-shadow: 0 0 0 4px rgba(220, 90, 85, 0.09);
+
+/* =========================================================
+   CHAMPS INVALIDES
+========================================================= */
+
+.publish-job-page .form-group input.invalid,
+.publish-job-page .form-group select.invalid,
+.publish-job-page .form-group textarea.invalid {
+    border-color: var(--publish-danger);
+
+    background: rgba(217, 45, 32, .02);
+}
+
+.publish-job-page .field-error {
+    margin-top: 5px;
+
+    color: var(--publish-danger);
+
+    font-size: 11px;
 }
 
 
@@ -689,17 +986,44 @@
    TABLETTE
 ========================================================= */
 
+@media (max-width: 1100px) {
+
+    .publish-job-page .publish-job-main {
+        padding: 30px 20px 50px;
+    }
+
+    .publish-job-page .publish-job-container {
+        max-width: 950px;
+    }
+
+    .publish-job-page .form-grid,
+    .publish-job-page .publish-form-grid,
+    .publish-job-page .job-form-grid {
+        gap: 16px;
+    }
+}
+
+
+/* =========================================================
+   PETITE TABLETTE
+========================================================= */
+
 @media (max-width: 900px) {
 
-    .publish-job-section {
-        padding: 23px;
+    .publish-job-page .form-grid,
+    .publish-job-page .publish-form-grid,
+    .publish-job-page .job-form-grid {
+        grid-template-columns: 1fr;
     }
 
-    .publish-job-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 17px;
+    .publish-job-page .form-group.full-width,
+    .publish-job-page .form-group.span-2 {
+        grid-column: auto;
     }
 
+    .publish-job-page .salary-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 
@@ -707,113 +1031,198 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 
-    .publish-job-page {
-        padding-bottom: 30px;
+    /* SIDEBAR */
+
+    .publish-job-page > .sidebar {
+        width: 280px;
+
+        transform: translateX(-100%);
+
+        transition: transform .25s ease;
     }
 
-    .publish-job-back {
-        margin: 15px 0;
+    .publish-job-page > .sidebar.open {
+        transform: translateX(0);
     }
 
-    .publish-job-hero {
-        align-items: flex-start;
-        gap: 13px;
-        margin-bottom: 18px;
-        padding: 22px;
-        border-radius: 17px;
+
+    /* OVERLAY */
+
+    .publish-job-page .sidebar-overlay.active {
+        display: block;
+
+        position: fixed;
+
+        inset: 0;
+
+        background: rgba(0, 0, 0, .45);
+
+        z-index: 999;
     }
 
-    .publish-job-hero-icon {
-        flex-basis: 52px;
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
-        font-size: 22px;
+
+    /* MAIN */
+
+    .publish-job-page .main-wrapper {
+        margin-left: 0;
     }
 
-    .publish-job-hero h1 {
-        font-size: 29px;
+
+    /* TOPBAR */
+
+    .publish-job-page .topbar {
+        height: 72px;
+
+        padding: 0 15px;
     }
 
-    .publish-job-hero p {
+
+    /* MOBILE MENU */
+
+    .publish-job-page .mobile-menu-button {
+        width: 42px;
+        height: 42px;
+
+        margin-right: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: transparent;
+
+        color: var(--publish-blue);
+
+        font-size: 21px;
+
+        border-radius: 8px;
+
+        cursor: pointer;
+    }
+
+    .publish-job-page .mobile-menu-button:hover {
+        background: var(--publish-light);
+    }
+
+
+    /* MAIN */
+
+    .publish-job-page .publish-job-main {
+        padding: 22px 15px 40px;
+    }
+
+
+    /* HEADER */
+
+    .publish-job-page .publish-job-header {
+        margin-bottom: 20px;
+    }
+
+    .publish-job-page .publish-job-header h1 {
+        font-size: 30px;
+    }
+
+    .publish-job-page .publish-job-header p {
         font-size: 13px;
     }
 
-    .publish-job-section {
+
+    /* SECTIONS */
+
+    .publish-job-page .form-section,
+    .publish-job-page .publish-form-section,
+    .publish-job-page .job-form-section {
         padding: 19px;
-        border-radius: 16px;
+
+        border-radius: 12px;
     }
 
-    .publish-job-section-header {
-        gap: 11px;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-    }
 
-    .publish-job-section-icon {
-        flex-basis: 42px;
-        width: 42px;
-        height: 42px;
-        border-radius: 11px;
-        font-size: 17px;
-    }
+    /* TITRE */
 
-    .publish-job-section-header h2 {
+    .publish-job-page .form-section-title h2,
+    .publish-job-page .publish-section-title h2,
+    .publish-job-page .job-form-section-title h2 {
         font-size: 18px;
     }
 
-    .publish-job-section-header p {
-        font-size: 12px;
-    }
 
-    .publish-job-grid {
+    /* FORM */
+
+    .publish-job-page .form-grid,
+    .publish-job-page .publish-form-grid,
+    .publish-job-page .job-form-grid {
         grid-template-columns: 1fr;
-        gap: 17px;
+
+        gap: 15px;
     }
 
-    .publish-job-field.full {
-        grid-column: auto;
+
+    /* INPUTS */
+
+    .publish-job-page .form-group input,
+    .publish-job-page .form-group select {
+        height: 46px;
     }
 
-    .publish-job-actions {
+
+    /* TEXTAREA */
+
+    .publish-job-page .form-group textarea {
+        min-height: 130px;
+    }
+
+
+    /* ACTIONS */
+
+    .publish-job-page .form-actions,
+    .publish-job-page .publish-form-actions {
         flex-direction: column-reverse;
+
+        align-items: stretch;
     }
 
-    .publish-job-cancel,
-    .publish-job-submit {
+    .publish-job-page .btn-cancel,
+    .publish-job-page .publish-cancel-button,
+    .publish-job-page #publishJobButton,
+    .publish-job-page .publish-job-button,
+    .publish-job-page .btn-publish {
         width: 100%;
-        box-sizing: border-box;
-    }
-
-    .publish-job-conditions > a {
-        margin-left: 29px;
     }
 
 }
 
 
 /* =========================================================
-   PETITS TÉLÉPHONES
+   PETIT MOBILE
 ========================================================= */
 
-@media (max-width: 430px) {
+@media (max-width: 420px) {
 
-    .publish-job-hero {
-        padding: 19px;
+    .publish-job-page .publish-job-main {
+        padding: 18px 12px 35px;
     }
 
-    .publish-job-hero h1 {
-        font-size: 25px;
+    .publish-job-page .publish-job-header h1 {
+        font-size: 26px;
     }
 
-    .publish-job-hero .section-label {
-        font-size: 9px;
-    }
-
-    .publish-job-section {
+    .publish-job-page .form-section,
+    .publish-job-page .publish-form-section,
+    .publish-job-page .job-form-section {
         padding: 16px;
     }
 
-    .publish-job-section-header
+    .publish-job-page .form-section-title h2,
+    .publish-job-page .publish-section-title h2,
+    .publish-job-page .job-form-section-title h2 {
+        font-size: 17px;
+    }
+
+    .publish-job-page .topbar-back {
+        font-size: 13px;
+    }
+
+}
