@@ -1,6 +1,6 @@
 /* =========================================================
    CAMU SERVICES
-   PUBLIER UN JOB
+   PAGE : PUBLIER UNE OFFRE D'EMPLOI
 ========================================================= */
 
 :root {
@@ -54,10 +54,8 @@
     font: inherit;
 }
 
-.publish-job-page input,
-.publish-job-page select,
-.publish-job-page textarea {
-    width: 100%;
+.publish-job-page img {
+    max-width: 100%;
 }
 
 
@@ -85,11 +83,16 @@
     box-shadow: 4px 0 20px rgba(0, 0, 0, .12);
 
     overflow-y: auto;
+    overflow-x: hidden;
 }
+
+
+/* =========================================================
+   SIDEBAR HEADER
+========================================================= */
 
 .publish-job-page .sidebar-header {
     height: 105px;
-
     flex-shrink: 0;
 
     display: flex;
@@ -119,10 +122,10 @@
     align-items: center;
     justify-content: center;
 
+    border-radius: 10px;
+
     background: var(--publish-blue);
     color: #fff;
-
-    border-radius: 10px;
 
     font-size: 20px;
 }
@@ -170,9 +173,10 @@
 .publish-job-page .sidebar-link i {
     width: 21px;
 
-    text-align: center;
-
     flex-shrink: 0;
+
+    text-align: center;
+    font-size: 16px;
 }
 
 .publish-job-page .sidebar-link span {
@@ -181,11 +185,11 @@
 
 .publish-job-page .sidebar-link:hover {
     background: rgba(255, 255, 255, .12);
+    color: #fff;
 }
 
 .publish-job-page .sidebar-link.active {
     background: var(--publish-green);
-
     color: #fff;
 }
 
@@ -204,7 +208,7 @@
 
 
 /* =========================================================
-   SIDEBAR OVERLAY
+   OVERLAY MOBILE
 ========================================================= */
 
 .publish-job-page .sidebar-overlay {
@@ -263,6 +267,8 @@
 
     font-size: 14px;
     font-weight: 700;
+
+    transition: .2s ease;
 }
 
 .publish-job-page .topbar-back:hover {
@@ -289,11 +295,12 @@
     color: var(--publish-blue);
 
     font-size: 18px;
+
+    transition: .2s ease;
 }
 
 .publish-job-page .topbar-action:hover {
     background: var(--publish-light);
-
     color: var(--publish-green);
 }
 
@@ -331,36 +338,36 @@
 
 
 /* =========================================================
-   TITRE DE PAGE
+   HEADER PAGE
 ========================================================= */
 
 .publish-job-page .publish-job-header {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 
     text-align: center;
 }
 
-.publish-job-page .publish-job-header .publish-badge {
+.publish-job-page .publish-badge {
     display: inline-flex;
     align-items: center;
 
     gap: 7px;
 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 
-    padding: 7px 13px;
-
-    background: rgba(32, 168, 107, .10);
+    padding: 7px 14px;
 
     border-radius: 50px;
+
+    background: rgba(32, 168, 107, .10);
 
     color: var(--publish-green);
 
     font-size: 11px;
     font-weight: 800;
 
-    text-transform: uppercase;
     letter-spacing: .06em;
+    text-transform: uppercase;
 }
 
 .publish-job-page .publish-job-header h1 {
@@ -368,13 +375,13 @@
 
     color: var(--publish-blue);
 
-    font-size: clamp(28px, 4vw, 40px);
+    font-size: clamp(30px, 4vw, 42px);
 
-    line-height: 1.15;
+    line-height: 1.12;
 }
 
 .publish-job-page .publish-job-header p {
-    max-width: 680px;
+    max-width: 700px;
 
     margin: 0 auto;
 
@@ -387,25 +394,45 @@
 
 
 /* =========================================================
-   MESSAGE AUTH
+   MESSAGES
 ========================================================= */
 
-.publish-job-page #authMessage {
+.publish-job-page #authMessage,
+.publish-job-page #publishJobSuccess,
+.publish-job-page #publishJobError {
     margin-bottom: 18px;
 
     padding: 14px 16px;
 
     border-radius: 10px;
 
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.publish-job-page #authMessage {
     background: rgba(6, 59, 115, .07);
 
     border: 1px solid rgba(6, 59, 115, .15);
 
     color: var(--publish-blue);
+}
 
-    font-size: 13px;
+.publish-job-page #publishJobSuccess {
+    background: rgba(32, 168, 107, .10);
 
-    line-height: 1.5;
+    border: 1px solid rgba(32, 168, 107, .25);
+
+    color: var(--publish-success);
+}
+
+.publish-job-page #publishJobError {
+    background: rgba(217, 45, 32, .07);
+
+    border: 1px solid rgba(217, 45, 32, .20);
+
+    color: var(--publish-danger);
 }
 
 
@@ -422,12 +449,10 @@
 
 
 /* =========================================================
-   SECTION FORMULAIRE
+   SECTIONS
 ========================================================= */
 
-.publish-job-page .form-section,
-.publish-job-page .publish-form-section,
-.publish-job-page .job-form-section {
+.publish-job-page .form-section {
     padding: 25px;
 
     background: #fff;
@@ -436,7 +461,8 @@
 
     border-radius: var(--publish-radius);
 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, .04);
 }
 
 
@@ -444,9 +470,7 @@
    TITRE SECTION
 ========================================================= */
 
-.publish-job-page .form-section-title,
-.publish-job-page .publish-section-title,
-.publish-job-page .job-form-section-title {
+.publish-job-page .form-section-title {
     margin-bottom: 22px;
 
     padding-bottom: 14px;
@@ -454,9 +478,7 @@
     border-bottom: 1px solid var(--publish-border);
 }
 
-.publish-job-page .form-section-title span,
-.publish-job-page .publish-section-title span,
-.publish-job-page .job-form-section-title span {
+.publish-job-page .form-section-title span {
     display: block;
 
     margin-bottom: 5px;
@@ -469,42 +491,40 @@
     letter-spacing: .08em;
 }
 
-.publish-job-page .form-section-title h2,
-.publish-job-page .publish-section-title h2,
-.publish-job-page .job-form-section-title h2 {
+.publish-job-page .form-section-title h2 {
     margin: 0;
 
     color: var(--publish-blue);
 
     font-size: 20px;
+
+    line-height: 1.3;
 }
 
 
 /* =========================================================
-   GRID FORMULAIRE
+   FORM GRID
 ========================================================= */
 
-.publish-job-page .form-grid,
-.publish-job-page .publish-form-grid,
-.publish-job-page .job-form-grid {
+.publish-job-page .form-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 18px;
 }
 
 
 /* =========================================================
-   GROUPE FORMULAIRE
+   FORM GROUP
 ========================================================= */
 
 .publish-job-page .form-group {
     min-width: 0;
 }
 
-.publish-job-page .form-group.full-width,
-.publish-job-page .form-group.span-2 {
+.publish-job-page .form-group.full-width {
     grid-column: 1 / -1;
 }
 
@@ -524,25 +544,13 @@
     font-weight: 700;
 }
 
-.publish-job-page .form-group label .required {
+.publish-job-page .required {
     color: var(--publish-danger);
-}
-
-.publish-job-page .form-group small {
-    display: block;
-
-    margin-top: 6px;
-
-    color: var(--publish-muted);
-
-    font-size: 11px;
-
-    line-height: 1.5;
 }
 
 
 /* =========================================================
-   INPUTS
+   INPUT / SELECT / TEXTAREA
 ========================================================= */
 
 .publish-job-page .form-group input,
@@ -578,9 +586,17 @@
 
     padding: 12px 13px;
 
-    line-height: 1.6;
+    line-height: 1.65;
 
     resize: vertical;
+}
+
+.publish-job-page .form-group textarea#jobDescription {
+    min-height: 180px;
+}
+
+.publish-job-page .form-group textarea#jobResponsibilities {
+    min-height: 180px;
 }
 
 .publish-job-page .form-group input::placeholder,
@@ -593,94 +609,54 @@
 .publish-job-page .form-group textarea:focus {
     border-color: var(--publish-blue);
 
-    box-shadow: 0 0 0 3px rgba(6, 59, 115, .08);
+    box-shadow:
+        0 0 0 3px rgba(6, 59, 115, .08);
 }
 
 
 /* =========================================================
-   SELECT
+   PETITS TEXTES D'AIDE
 ========================================================= */
 
-.publish-job-page .form-group select {
+.publish-job-page .form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--publish-muted);
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   CHAMP DATE
+========================================================= */
+
+.publish-job-page input[type="date"] {
     cursor: pointer;
-
-    appearance: auto;
 }
 
 
 /* =========================================================
-   TEXTAREA LONG
+   CHAMP NOMBRE DE POSTES
 ========================================================= */
 
-.publish-job-page textarea.description-field,
-.publish-job-page textarea.large-textarea {
-    min-height: 180px;
+.publish-job-page #jobPositions {
+    text-align: left;
 }
 
 
 /* =========================================================
-   CONTENU DE FORMATION / LISTE
-========================================================= */
-
-.publish-job-page .form-help {
-    margin-top: 7px;
-
-    color: var(--publish-muted);
-
-    font-size: 11px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   COMPTEUR
-========================================================= */
-
-.publish-job-page .character-counter {
-    display: flex;
-
-    justify-content: flex-end;
-
-    margin-top: 5px;
-
-    color: var(--publish-muted);
-
-    font-size: 11px;
-}
-
-
-/* =========================================================
-   SALAIRE
-========================================================= */
-
-.publish-job-page .salary-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 12px;
-}
-
-.publish-job-page .salary-row {
-    display: grid;
-
-    grid-template-columns: 140px 1fr;
-
-    gap: 10px;
-}
-
-
-/* =========================================================
-   IMAGE / LOGO
+   UPLOAD IMAGE
 ========================================================= */
 
 .publish-job-page .image-upload-box {
-    position: relative;
+    min-height: 160px;
 
-    min-height: 150px;
-
-    padding: 20px;
+    padding: 25px;
 
     display: flex;
     flex-direction: column;
@@ -688,13 +664,15 @@
     align-items: center;
     justify-content: center;
 
+    gap: 7px;
+
     text-align: center;
+
+    background: var(--publish-light);
 
     border: 2px dashed var(--publish-border);
 
     border-radius: 12px;
-
-    background: var(--publish-light);
 
     transition:
         border-color .2s ease,
@@ -707,63 +685,68 @@
     background: rgba(6, 59, 115, .03);
 }
 
-.publish-job-page .image-upload-box i {
-    margin-bottom: 10px;
+.publish-job-page .image-upload-box > i {
+    margin-bottom: 4px;
 
     color: var(--publish-blue);
 
     font-size: 30px;
 }
 
-.publish-job-page .image-upload-box span {
-    margin-bottom: 5px;
-
+.publish-job-page .image-upload-box > span {
     color: var(--publish-text);
 
     font-size: 13px;
     font-weight: 700;
 }
 
-.publish-job-page .image-upload-box small {
+.publish-job-page .image-upload-box > small {
+    margin: 0;
+
     color: var(--publish-muted);
 
     font-size: 11px;
 }
 
-.publish-job-page #serviceImage,
 .publish-job-page #jobImage {
+    width: auto;
+
+    max-width: 100%;
+
+    margin-top: 10px;
+
     cursor: pointer;
+
+    font-size: 12px;
 }
 
 
 /* =========================================================
-   PREVIEW IMAGE
+   APERÇU IMAGE
 ========================================================= */
 
-.publish-job-page .image-preview,
-.publish-job-page #imagePreview,
 .publish-job-page #jobImagePreview {
-    margin-top: 15px;
+    display: block;
 
     max-width: 180px;
-
     max-height: 140px;
+
+    margin-top: 15px;
+
+    border: 1px solid var(--publish-border);
 
     border-radius: 10px;
 
     object-fit: cover;
-
-    border: 1px solid var(--publish-border);
 }
 
 
 /* =========================================================
-   CHECKBOX / CONDITIONS
+   CHECKBOX CONDITIONS
 ========================================================= */
 
 .publish-job-page .form-checkbox {
     display: flex;
-
     align-items: flex-start;
 
     gap: 10px;
@@ -781,9 +764,9 @@
     width: 18px;
     height: 18px;
 
-    flex-shrink: 0;
-
     margin-top: 1px;
+
+    flex-shrink: 0;
 
     accent-color: var(--publish-green);
 
@@ -804,68 +787,26 @@
 
 
 /* =========================================================
-   ALERT SUCCESS
+   ACTIONS
 ========================================================= */
 
-.publish-job-page .success-message,
-.publish-job-page #publishJobSuccess {
-    padding: 14px 16px;
-
-    border-radius: 10px;
-
-    background: rgba(32, 168, 107, .10);
-
-    border: 1px solid rgba(32, 168, 107, .25);
-
-    color: var(--publish-success);
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   ALERT ERREUR
-========================================================= */
-
-.publish-job-page .error-message,
-.publish-job-page #publishJobError {
-    padding: 14px 16px;
-
-    border-radius: 10px;
-
-    background: rgba(217, 45, 32, .07);
-
-    border: 1px solid rgba(217, 45, 32, .20);
-
-    color: var(--publish-danger);
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   BOUTONS
-========================================================= */
-
-.publish-job-page .form-actions,
-.publish-job-page .publish-form-actions {
+.publish-job-page .form-actions {
     display: flex;
 
-    justify-content: flex-end;
-
     align-items: center;
+    justify-content: flex-end;
 
     gap: 12px;
 
     padding-top: 5px;
 }
 
-.publish-job-page .btn-cancel,
-.publish-job-page .publish-cancel-button {
+
+/* =========================================================
+   BOUTON ANNULER
+========================================================= */
+
+.publish-job-page .btn-cancel {
     min-height: 46px;
 
     padding: 0 20px;
@@ -886,21 +827,22 @@
 
     font-size: 14px;
     font-weight: 700;
+
+    transition: .2s ease;
 }
 
-.publish-job-page .btn-cancel:hover,
-.publish-job-page .publish-cancel-button:hover {
+.publish-job-page .btn-cancel:hover {
     background: var(--publish-light);
 
     color: var(--publish-text);
 }
 
 
-/* BOUTON PUBLIER */
+/* =========================================================
+   BOUTON PUBLIER
+========================================================= */
 
-.publish-job-page #publishJobButton,
-.publish-job-page .publish-job-button,
-.publish-job-page .btn-publish {
+.publish-job-page #publishJobButton {
     min-height: 46px;
 
     padding: 0 22px;
@@ -910,6 +852,8 @@
     justify-content: center;
 
     gap: 9px;
+
+    border: 0;
 
     border-radius: 9px;
 
@@ -928,14 +872,13 @@
         box-shadow .2s ease;
 }
 
-.publish-job-page #publishJobButton:hover,
-.publish-job-page .publish-job-button:hover,
-.publish-job-page .btn-publish:hover {
+.publish-job-page #publishJobButton:hover {
     background: var(--publish-green-dark);
 
     transform: translateY(-1px);
 
-    box-shadow: 0 5px 15px rgba(32, 168, 107, .20);
+    box-shadow:
+        0 5px 15px rgba(32, 168, 107, .20);
 }
 
 .publish-job-page #publishJobButton:disabled {
@@ -946,18 +889,6 @@
     transform: none;
 
     box-shadow: none;
-}
-
-
-/* =========================================================
-   SPINNER BOUTON
-========================================================= */
-
-.publish-job-page .button-loading {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 8px;
 }
 
 
@@ -995,12 +926,6 @@
     .publish-job-page .publish-job-container {
         max-width: 950px;
     }
-
-    .publish-job-page .form-grid,
-    .publish-job-page .publish-form-grid,
-    .publish-job-page .job-form-grid {
-        gap: 16px;
-    }
 }
 
 
@@ -1010,19 +935,12 @@
 
 @media (max-width: 900px) {
 
-    .publish-job-page .form-grid,
-    .publish-job-page .publish-form-grid,
-    .publish-job-page .job-form-grid {
+    .publish-job-page .form-grid {
         grid-template-columns: 1fr;
     }
 
-    .publish-job-page .form-group.full-width,
-    .publish-job-page .form-group.span-2 {
+    .publish-job-page .form-group.full-width {
         grid-column: auto;
-    }
-
-    .publish-job-page .salary-grid {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -1079,7 +997,7 @@
     }
 
 
-    /* MOBILE MENU */
+    /* MENU */
 
     .publish-job-page .mobile-menu-button {
         width: 42px;
@@ -1091,13 +1009,14 @@
         align-items: center;
         justify-content: center;
 
+        border: 0;
+        border-radius: 8px;
+
         background: transparent;
 
         color: var(--publish-blue);
 
         font-size: 21px;
-
-        border-radius: 8px;
 
         cursor: pointer;
     }
@@ -1117,7 +1036,7 @@
     /* HEADER */
 
     .publish-job-page .publish-job-header {
-        margin-bottom: 20px;
+        margin-bottom: 22px;
     }
 
     .publish-job-page .publish-job-header h1 {
@@ -1129,31 +1048,29 @@
     }
 
 
-    /* SECTIONS */
+    /* CARDS */
 
-    .publish-job-page .form-section,
-    .publish-job-page .publish-form-section,
-    .publish-job-page .job-form-section {
+    .publish-job-page .form-section {
         padding: 19px;
 
         border-radius: 12px;
     }
 
 
-    /* TITRE */
+    /* SECTION TITLE */
 
-    .publish-job-page .form-section-title h2,
-    .publish-job-page .publish-section-title h2,
-    .publish-job-page .job-form-section-title h2 {
+    .publish-job-page .form-section-title {
+        margin-bottom: 18px;
+    }
+
+    .publish-job-page .form-section-title h2 {
         font-size: 18px;
     }
 
 
     /* FORM */
 
-    .publish-job-page .form-grid,
-    .publish-job-page .publish-form-grid,
-    .publish-job-page .job-form-grid {
+    .publish-job-page .form-grid {
         grid-template-columns: 1fr;
 
         gap: 15px;
@@ -1167,31 +1084,28 @@
         height: 46px;
     }
 
-
-    /* TEXTAREA */
-
     .publish-job-page .form-group textarea {
         min-height: 130px;
+    }
+
+    .publish-job-page .form-group textarea#jobDescription,
+    .publish-job-page .form-group textarea#jobResponsibilities {
+        min-height: 160px;
     }
 
 
     /* ACTIONS */
 
-    .publish-job-page .form-actions,
-    .publish-job-page .publish-form-actions {
+    .publish-job-page .form-actions {
         flex-direction: column-reverse;
 
         align-items: stretch;
     }
 
     .publish-job-page .btn-cancel,
-    .publish-job-page .publish-cancel-button,
-    .publish-job-page #publishJobButton,
-    .publish-job-page .publish-job-button,
-    .publish-job-page .btn-publish {
+    .publish-job-page #publishJobButton {
         width: 100%;
     }
-
 }
 
 
@@ -1209,20 +1123,19 @@
         font-size: 26px;
     }
 
-    .publish-job-page .form-section,
-    .publish-job-page .publish-form-section,
-    .publish-job-page .job-form-section {
+    .publish-job-page .form-section {
         padding: 16px;
     }
 
-    .publish-job-page .form-section-title h2,
-    .publish-job-page .publish-section-title h2,
-    .publish-job-page .job-form-section-title h2 {
+    .publish-job-page .form-section-title h2 {
         font-size: 17px;
+    }
+
+    .publish-job-page .form-group label {
+        font-size: 12px;
     }
 
     .publish-job-page .topbar-back {
         font-size: 13px;
     }
-
 }
