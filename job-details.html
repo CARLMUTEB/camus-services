@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
 
@@ -10,58 +11,54 @@
 
     <meta
         name="description"
-        content="Consultez les détails des offres d'emploi disponibles sur CAMU SERVICES."
+        content="Consultez les détails de cette offre d'emploi sur CAMU SERVICES."
     >
 
     <title>Offre d'emploi | CAMU SERVICES</title>
 
-    <!-- =====================================================
-         CSS GLOBAL
-         ===================================================== -->
-
+    <!-- CSS GLOBAL -->
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-    <!-- =====================================================
-         CSS JOBS
-         ===================================================== -->
-
+    <!-- CSS JOBS -->
     <link
         rel="stylesheet"
         href="css/jobs.css"
     >
 
-    <!-- =====================================================
-         CSS JOB DETAILS
-         ===================================================== -->
-
+    <!-- CSS JOB DETAILS -->
     <link
         rel="stylesheet"
         href="css/job-details.css"
     >
 
-    <!-- =====================================================
-         FONT AWESOME
-         ===================================================== -->
-
+    <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-
 </head>
 
 
 <body class="job-details-page">
 
+    <!-- OVERLAY MOBILE -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
 
     <!-- =====================================================
          SIDEBAR
-         ===================================================== -->
+    ====================================================== -->
 
-    <aside class="sidebar">
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
         <div class="sidebar-header">
 
@@ -175,15 +172,12 @@
 
 
     <!-- =====================================================
-         CONTENU PRINCIPAL
-         ===================================================== -->
+         MAIN
+    ====================================================== -->
 
-    <div class="main-content">
+    <div class="main-wrapper">
 
-
-        <!-- =================================================
-             TOPBAR
-             ================================================= -->
+        <!-- TOPBAR -->
 
         <header class="topbar">
 
@@ -191,8 +185,8 @@
 
                 <button
                     type="button"
-                    class="mobile-menu-button"
-                    id="mobileMenuButton"
+                    class="menu-button mobile-menu-button"
+                    id="menuButton"
                     aria-label="Ouvrir le menu"
                 >
                     <i class="fa-solid fa-bars"></i>
@@ -234,623 +228,686 @@
         </header>
 
 
-        <!-- =================================================
-             CONTENU JOB
-             ================================================= -->
+        <!-- =====================================================
+             CONTENU
+        ====================================================== -->
 
-        <main class="job-details-main">
+        <main class="main-content">
 
-            <div class="job-details-container">
+            <div class="job-details-main">
 
-
-                <!-- =========================================
-                     RETOUR
-                     ========================================= -->
-
-                <a
-                    href="jobs.html"
-                    class="job-details-back"
-                >
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Retour aux offres
-
-                </a>
+                <div class="job-details-container">
 
 
-                <!-- =========================================
-                     CHARGEMENT
-                     ========================================= -->
-
-                <div
-                    id="jobDetailsLoading"
-                    class="job-details-loading"
-                >
-
-                    <div class="job-loading-spinner">
-
-                        <i
-                            class="fa-solid fa-spinner fa-spin"
-                        ></i>
-
-                    </div>
-
-
-                    <p>
-                        Chargement de l'offre...
-                    </p>
-
-                </div>
-
-
-                <!-- =========================================
-                     ERREUR
-                     ========================================= -->
-
-                <div
-                    id="jobDetailsError"
-                    class="job-details-error"
-                    style="display: none;"
-                >
-
-                    <div class="job-error-icon">
-
-                        <i
-                            class="fa-solid fa-triangle-exclamation"
-                        ></i>
-
-                    </div>
-
-
-                    <h2>
-                        Offre indisponible
-                    </h2>
-
-
-                    <p id="jobDetailsErrorText">
-                        Impossible de charger cette offre.
-                    </p>
-
+                    <!-- RETOUR -->
 
                     <a
                         href="jobs.html"
-                        class="job-error-button"
+                        class="job-details-back"
                     >
-
                         <i class="fa-solid fa-arrow-left"></i>
-
                         Retour aux offres
-
                     </a>
 
-                </div>
+
+                    <!-- =================================================
+                         LOADING
+                    ================================================== -->
+
+                    <div
+                        id="jobDetailsLoading"
+                        class="job-details-loading"
+                    >
+
+                        <div class="job-loading-spinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                        </div>
+
+                        <p>
+                            Chargement de l'offre...
+                        </p>
+
+                    </div>
 
 
-                <!-- =========================================
-                     CONTENU DE L'OFFRE
-                     ========================================= -->
+                    <!-- =================================================
+                         ERREUR
+                    ================================================== -->
 
-                <div
-                    id="jobDetailsContent"
-                    class="job-details-content"
-                    style="display: none;"
-                >
+                    <div
+                        id="jobDetailsError"
+                        class="job-details-error"
+                        style="display:none;"
+                    >
+
+                        <div class="job-error-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+
+                        <h2>
+                            Offre indisponible
+                        </h2>
+
+                        <p id="jobDetailsErrorText">
+                            Impossible de charger cette offre.
+                        </p>
+
+                        <a
+                            href="jobs.html"
+                            class="job-error-button"
+                        >
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Retour aux offres
+                        </a>
+
+                    </div>
 
 
-                    <!-- =====================================
-                         EN-TÊTE OFFRE
-                         ===================================== -->
+                    <!-- =================================================
+                         CONTENU OFFRE
+                    ================================================== -->
 
-                    <section class="job-details-header">
+                    <div
+                        id="jobDetailsContent"
+                        class="job-details-content"
+                        style="display:none;"
+                    >
 
 
-                        <!-- LOGO -->
+                        <!-- =================================================
+                             EN-TÊTE
+                        ================================================== -->
 
-                        <div class="job-details-company-logo">
+                        <section class="job-details-header">
 
-                            <div
-                                id="jobCompanyLogo"
-                                class="job-company-logo-large"
-                            >
+
+                            <!-- LOGO -->
+
+                            <div class="job-details-company-logo">
 
                                 <div
-                                    class="job-company-logo-placeholder"
+                                    id="jobCompanyLogo"
+                                    class="job-company-logo-large"
                                 >
-                                    <i
-                                        class="fa-solid fa-building"
-                                    ></i>
+
+                                    <div class="job-company-logo-placeholder">
+                                        <i class="fa-solid fa-building"></i>
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                        </div>
+
+                            <!-- TITRE -->
+
+                            <div class="job-details-header-main">
+
+                                <div class="job-details-company">
+
+                                    <span>
+                                        Entreprise
+                                    </span>
+
+                                    <strong id="jobCompany">
+                                        Entreprise
+                                    </strong>
+
+                                </div>
 
 
-                        <!-- INFORMATIONS PRINCIPALES -->
+                                <h1 id="jobTitle">
+                                    Poste
+                                </h1>
 
-                        <div class="job-details-header-main">
+
+                                <div class="job-details-header-meta">
+
+                                    <span
+                                        id="jobLocation"
+                                        class="job-detail-header-item"
+                                    >
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Localisation</span>
+                                    </span>
 
 
-                            <div class="job-details-company">
+                                    <span
+                                        id="jobCategory"
+                                        class="job-detail-header-item"
+                                    >
+                                        <i class="fa-solid fa-layer-group"></i>
+                                        <span>Catégorie</span>
+                                    </span>
 
-                                <span>
-                                    Entreprise
-                                </span>
-
-                                <strong id="jobCompany">
-                                    Entreprise
-                                </strong>
+                                </div>
 
                             </div>
 
 
-                            <h1 id="jobTitle">
-                                Poste
-                            </h1>
+                            <!-- ACTIONS -->
 
+                            <div class="job-details-header-actions">
 
-                            <div class="job-details-header-meta">
-
-
-                                <span
-                                    id="jobLocation"
-                                    class="job-detail-header-item"
+                                <button
+                                    type="button"
+                                    id="jobFavorite"
+                                    class="job-action-button"
+                                    title="Ajouter aux favoris"
                                 >
-
-                                    <i
-                                        class="fa-solid fa-location-dot"
-                                    ></i>
-
-                                    Ville
-
-                                </span>
-
-
-                                <span
-                                    id="jobCategory"
-                                    class="job-detail-header-item"
-                                >
-
-                                    <i
-                                        class="fa-solid fa-layer-group"
-                                    ></i>
-
-                                    Domaine
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ACTIONS -->
-
-                        <div class="job-details-header-actions">
-
-
-                            <button
-                                type="button"
-                                id="jobFavorite"
-                                class="job-action-button"
-                                aria-label="Ajouter aux favoris"
-                                title="Ajouter aux favoris"
-                            >
-
-                                <i
-                                    class="fa-regular fa-heart"
-                                ></i>
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                id="jobShare"
-                                class="job-action-button"
-                                aria-label="Partager l'offre"
-                                title="Partager l'offre"
-                            >
-
-                                <i
-                                    class="fa-solid fa-share-nodes"
-                                ></i>
-
-                            </button>
-
-                        </div>
-
-                    </section>
-
-
-                    <!-- =====================================
-                         LAYOUT
-                         ===================================== -->
-
-                    <div class="job-details-layout">
-
-
-                        <!-- =================================
-                             COLONNE PRINCIPALE
-                             ================================= -->
-
-                        <div class="job-details-primary">
-
-
-                            <!-- =================================
-                                 INFORMATIONS
-                                 ================================= -->
-
-                            <section class="job-detail-card">
-
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        Informations sur l'offre
-                                    </h2>
-
-                                </div>
-
-
-                                <div class="job-detail-info-grid">
-
-
-                                    <!-- CONTRAT -->
-
-                                    <div class="job-detail-info-item">
-
-                                        <span class="label">
-
-                                            <i
-                                                class="fa-solid fa-file-contract"
-                                            ></i>
-
-                                            Contrat
-
-                                        </span>
-
-
-                                        <strong id="jobContract">
-                                            Non précisé
-                                        </strong>
-
-                                    </div>
-
-
-                                    <!-- EXPERIENCE -->
-
-                                    <div class="job-detail-info-item">
-
-                                        <span class="label">
-
-                                            <i
-                                                class="fa-solid fa-user-clock"
-                                            ></i>
-
-                                            Expérience
-
-                                        </span>
-
-
-                                        <strong id="jobExperience">
-                                            Non précisée
-                                        </strong>
-
-                                    </div>
-
-
-                                    <!-- SALAIRE -->
-
-                                    <div class="job-detail-info-item">
-
-                                        <span class="label">
-
-                                            <i
-                                                class="fa-solid fa-money-bill-wave"
-                                            ></i>
-
-                                            Rémunération
-
-                                        </span>
-
-
-                                        <strong id="jobSalary">
-                                            À négocier
-                                        </strong>
-
-                                    </div>
-
-
-                                    <!-- DATE -->
-
-                                    <div class="job-detail-info-item">
-
-                                        <span class="label">
-
-                                            <i
-                                                class="fa-regular fa-calendar"
-                                            ></i>
-
-                                            Date de publication
-
-                                        </span>
-
-
-                                        <strong id="jobDate">
-                                            Date non précisée
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-                            </section>
-
-
-                            <!-- =================================
-                                 DESCRIPTION
-                                 ================================= -->
-
-                            <section class="job-detail-card">
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        Description du poste
-                                    </h2>
-
-                                </div>
-
-
-                                <div
-                                    id="jobDescription"
-                                    class="job-detail-text"
-                                >
-                                    Aucune description disponible.
-                                </div>
-
-                            </section>
-
-
-                            <!-- =================================
-                                 COMPÉTENCES
-                                 ================================= -->
-
-                            <section
-                                class="job-detail-card"
-                                id="jobSkillsSection"
-                            >
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        Compétences recherchées
-                                    </h2>
-
-                                </div>
-
-
-                                <ul
-                                    id="jobSkills"
-                                    class="job-detail-list"
-                                ></ul>
-
-                            </section>
-
-
-                            <!-- =================================
-                                 EXIGENCES
-                                 ================================= -->
-
-                            <section
-                                class="job-detail-card"
-                                id="jobRequirementsSection"
-                            >
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        Exigences
-                                    </h2>
-
-                                </div>
-
-
-                                <ul
-                                    id="jobRequirements"
-                                    class="job-detail-list"
-                                ></ul>
-
-                            </section>
-
-
-                            <!-- =================================
-                                 AVANTAGES
-                                 ================================= -->
-
-                            <section
-                                class="job-detail-card"
-                                id="jobBenefitsSection"
-                            >
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        Avantages
-                                    </h2>
-
-                                </div>
-
-
-                                <ul
-                                    id="jobBenefits"
-                                    class="job-detail-list"
-                                ></ul>
-
-                            </section>
-
-
-                            <!-- =================================
-                                 ENTREPRISE
-                                 ================================= -->
-
-                            <section
-                                class="job-detail-card"
-                                id="jobCompanyDescriptionSection"
-                            >
-
-                                <div class="job-detail-card-title">
-
-                                    <h2>
-                                        À propos de l'entreprise
-                                    </h2>
-
-                                </div>
-
-
-                                <div
-                                    id="jobCompanyDescription"
-                                    class="job-detail-text"
-                                ></div>
-
-                            </section>
-
-                        </div>
-
-
-                        <!-- =================================
-                             SIDEBAR DROITE
-                             ================================= -->
-
-                        <aside class="job-details-sidebar">
-
-
-                            <!-- =================================
-                                 POSTULER
-                                 ================================= -->
-
-                            <section class="job-apply-card">
-
-
-                                <h2>
-                                    Intéressé par cette offre ?
-                                </h2>
-
-
-                                <p>
-                                    Envoyez votre candidature
-                                    directement au recruteur.
-                                </p>
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
 
 
                                 <button
                                     type="button"
-                                    id="jobApply"
-                                    class="job-apply-button"
+                                    id="jobShare"
+                                    class="job-action-button"
+                                    title="Partager"
                                 >
-
-                                    <i
-                                        class="fa-solid fa-paper-plane"
-                                    ></i>
-
-                                    Postuler
-
+                                    <i class="fa-solid fa-share-nodes"></i>
                                 </button>
 
+                            </div>
 
-                                <div
-                                    id="jobApplicationLink"
-                                    class="job-application-link"
-                                ></div>
-
-                            </section>
+                        </section>
 
 
-                            <!-- =================================
-                                 CONTACT
-                                 ================================= -->
+                        <!-- =================================================
+                             LAYOUT
+                        ================================================== -->
 
-                            <section class="job-contact-card">
-
-
-                                <h2>
-                                    Contact
-                                </h2>
+                        <div class="job-details-layout">
 
 
-                                <!-- TELEPHONE -->
+                            <!-- =================================================
+                                 COLONNE PRINCIPALE
+                            ================================================== -->
 
-                                <div class="job-contact-item">
-
-                                    <i
-                                        class="fa-solid fa-phone"
-                                    ></i>
+                            <div class="job-details-primary">
 
 
-                                    <div>
+                                <!-- =================================================
+                                     INFORMATIONS
+                                ================================================== -->
 
-                                        <span>
-                                            Téléphone
+                                <section class="job-detail-card">
+
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            DÉTAILS DE L'OFFRE
                                         </span>
 
-
-                                        <div id="jobPhone"></div>
+                                        <h2>
+                                            Informations sur l'offre
+                                        </h2>
 
                                     </div>
 
-                                </div>
+
+                                    <div class="job-detail-info-grid">
 
 
-                                <!-- EMAIL -->
+                                        <!-- CATÉGORIE -->
 
-                                <div class="job-contact-item">
+                                        <div class="job-detail-info-item">
 
-                                    <i
-                                        class="fa-solid fa-envelope"
-                                    ></i>
+                                            <span class="label">
+                                                <i class="fa-solid fa-layer-group"></i>
+                                                Catégorie
+                                            </span>
+
+                                            <strong id="jobCategoryInfo">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
 
 
-                                    <div>
+                                        <!-- CONTRAT -->
 
-                                        <span>
-                                            Email
-                                        </span>
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-file-contract"></i>
+                                                Type de contrat
+                                            </span>
+
+                                            <strong id="jobContract">
+                                                Non précisé
+                                            </strong>
+
+                                        </div>
 
 
-                                        <div id="jobEmail"></div>
+                                        <!-- POSTES -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-users"></i>
+                                                Postes à pourvoir
+                                            </span>
+
+                                            <strong id="jobPositions">
+                                                Non précisé
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- EXPÉRIENCE -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-user-clock"></i>
+                                                Expérience
+                                            </span>
+
+                                            <strong id="jobExperience">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- LOCALISATION -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-location-dot"></i>
+                                                Localisation
+                                            </span>
+
+                                            <strong id="jobLocationInfo">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- RÉMUNÉRATION -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-money-bill-wave"></i>
+                                                Rémunération
+                                            </span>
+
+                                            <strong id="jobSalary">
+                                                Selon la grille salariale de l'entreprise
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- DATE PUBLICATION -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-regular fa-calendar"></i>
+                                                Date de publication
+                                            </span>
+
+                                            <strong id="jobDate">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- DATE LIMITE -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-calendar-xmark"></i>
+                                                Date limite
+                                            </span>
+
+                                            <strong id="jobDeadline">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- DISPONIBILITÉ -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-clock"></i>
+                                                Disponibilité
+                                            </span>
+
+                                            <strong id="jobAvailability">
+                                                Non précisée
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- DÉPLACEMENTS -->
+
+                                        <div class="job-detail-info-item">
+
+                                            <span class="label">
+                                                <i class="fa-solid fa-plane"></i>
+                                                Déplacements
+                                            </span>
+
+                                            <strong id="jobTravel">
+                                                Non précisé
+                                            </strong>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
-
-                            </section>
+                                </section>
 
 
-                            <!-- =================================
-                                 SIGNALER
-                                 ================================= -->
+                                <!-- =================================================
+                                     DESCRIPTION
+                                ================================================== -->
 
-                            <section class="job-report-card">
+                                <section class="job-detail-card">
 
-                                <button
-                                    type="button"
-                                    id="jobReport"
-                                    class="job-report-button"
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            PRÉSENTATION
+                                        </span>
+
+                                        <h2>
+                                            Description du poste
+                                        </h2>
+
+                                    </div>
+
+
+                                    <div
+                                        id="jobDescription"
+                                        class="job-detail-text"
+                                    >
+                                        Aucune description disponible.
+                                    </div>
+
+                                </section>
+
+
+                                <!-- =================================================
+                                     RESPONSABILITÉS
+                                ================================================== -->
+
+                                <section
+                                    class="job-detail-card"
+                                    id="jobResponsibilitiesSection"
                                 >
 
-                                    <i
-                                        class="fa-solid fa-flag"
-                                    ></i>
+                                    <div class="job-detail-card-title">
 
-                                    Signaler cette offre
+                                        <span class="job-section-label">
+                                            MISSIONS
+                                        </span>
 
-                                </button>
+                                        <h2>
+                                            Responsabilités
+                                        </h2>
 
-                            </section>
+                                    </div>
 
-                        </aside>
+
+                                    <ul
+                                        id="jobResponsibilities"
+                                        class="job-detail-list"
+                                    ></ul>
+
+                                </section>
+
+
+                                <!-- =================================================
+                                     COMPÉTENCES
+                                ================================================== -->
+
+                                <section
+                                    class="job-detail-card"
+                                    id="jobSkillsSection"
+                                >
+
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            SAVOIR-FAIRE
+                                        </span>
+
+                                        <h2>
+                                            Compétences recherchées
+                                        </h2>
+
+                                    </div>
+
+
+                                    <ul
+                                        id="jobSkills"
+                                        class="job-detail-list"
+                                    ></ul>
+
+                                </section>
+
+
+                                <!-- =================================================
+                                     PROFIL
+                                ================================================== -->
+
+                                <section
+                                    class="job-detail-card"
+                                    id="jobRequirementsSection"
+                                >
+
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            PROFIL
+                                        </span>
+
+                                        <h2>
+                                            Profil recherché
+                                        </h2>
+
+                                    </div>
+
+
+                                    <ul
+                                        id="jobRequirements"
+                                        class="job-detail-list"
+                                    ></ul>
+
+                                </section>
+
+
+                                <!-- =================================================
+                                     AVANTAGES
+                                ================================================== -->
+
+                                <section
+                                    class="job-detail-card"
+                                    id="jobBenefitsSection"
+                                >
+
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            CE QUE NOUS OFFRONS
+                                        </span>
+
+                                        <h2>
+                                            Avantages
+                                        </h2>
+
+                                    </div>
+
+
+                                    <ul
+                                        id="jobBenefits"
+                                        class="job-detail-list"
+                                    ></ul>
+
+                                </section>
+
+
+                                <!-- =================================================
+                                     ENTREPRISE
+                                ================================================== -->
+
+                                <section
+                                    class="job-detail-card"
+                                    id="jobCompanyDescriptionSection"
+                                >
+
+                                    <div class="job-detail-card-title">
+
+                                        <span class="job-section-label">
+                                            L'EMPLOYEUR
+                                        </span>
+
+                                        <h2>
+                                            À propos de l'entreprise
+                                        </h2>
+
+                                    </div>
+
+
+                                    <div
+                                        id="jobCompanyDescription"
+                                        class="job-detail-text"
+                                    ></div>
+
+                                </section>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 SIDEBAR DROITE
+                            ================================================== -->
+
+                            <aside class="job-details-sidebar">
+
+
+                                <!-- POSTULER -->
+
+                                <section class="job-apply-card">
+
+                                    <div class="job-apply-icon">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </div>
+
+                                    <h2>
+                                        Intéressé par cette offre ?
+                                    </h2>
+
+                                    <p>
+                                        Préparez votre candidature et
+                                        contactez directement le recruteur.
+                                    </p>
+
+
+                                    <button
+                                        type="button"
+                                        id="jobApply"
+                                        class="job-apply-button"
+                                    >
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                        <span>Postuler</span>
+                                    </button>
+
+
+                                    <div
+                                        id="jobApplicationLink"
+                                        class="job-application-link"
+                                    ></div>
+
+                                </section>
+
+
+                                <!-- CONTACT -->
+
+                                <section class="job-contact-card">
+
+                                    <h2>
+                                        Contact du recruteur
+                                    </h2>
+
+
+                                    <!-- TÉLÉPHONE -->
+
+                                    <div class="job-contact-item">
+
+                                        <i class="fa-solid fa-phone"></i>
+
+                                        <div>
+
+                                            <span>
+                                                Téléphone
+                                            </span>
+
+                                            <div id="jobPhone">
+                                                Non renseigné
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- EMAIL -->
+
+                                    <div class="job-contact-item">
+
+                                        <i class="fa-solid fa-envelope"></i>
+
+                                        <div>
+
+                                            <span>
+                                                Email
+                                            </span>
+
+                                            <div id="jobEmail">
+                                                Non renseigné
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </section>
+
+
+                                <!-- SIGNALER -->
+
+                                <section class="job-report-card">
+
+                                    <button
+                                        type="button"
+                                        id="jobReport"
+                                        class="job-report-button"
+                                    >
+                                        <i class="fa-solid fa-flag"></i>
+                                        <span>Signaler cette offre</span>
+                                    </button>
+
+                                </section>
+
+                            </aside>
+
+                        </div>
 
                     </div>
 
@@ -863,27 +920,22 @@
     </div>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
+    <!-- JAVASCRIPT -->
 
     <script
         type="module"
         src="js/app.js"
     ></script>
 
-
     <script
         type="module"
         src="js/job-details.js"
     ></script>
 
-
     <script
         type="module"
         src="js/theme.js"
     ></script>
-
 
 </body>
 </html>
