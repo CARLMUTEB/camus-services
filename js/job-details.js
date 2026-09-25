@@ -1,7 +1,8 @@
 /* =========================================================
-   CAMU SERVICES — JOB DETAILS
-   Fichier : js/job-details.js
-   ========================================================= */
+   CAMU SERVICES
+   JOB DETAILS
+   Compatible avec la collection Firestore "jobs"
+========================================================= */
 
 import {
     getApps,
@@ -24,181 +25,120 @@ import {
 
 /* =========================================================
    FIREBASE
-   ========================================================= */
+   app.js initialise déjà Firebase
+========================================================= */
 
-let db = null;
-let auth = null;
+let app;
+let db;
+let auth;
 
 try {
-    if (!getApps().length) {
+    const apps = getApps();
+
+    if (!apps.length) {
         throw new Error(
-            "Firebase n'est pas initialisé par app.js."
+            "Firebase n'est pas encore initialisé. Vérifiez app.js."
         );
     }
 
-    const app = getApp();
-
+    app = getApp();
     db = getFirestore(app);
     auth = getAuth(app);
 
 } catch (error) {
     console.error(
-        "JOB DETAILS — Erreur Firebase :",
+        "JOB DETAILS — Erreur initialisation Firebase :",
         error
     );
 }
 
 
 /* =========================================================
-   UTILITAIRES DOM
-   ========================================================= */
+   ELEMENTS HTML
+========================================================= */
 
-function getElement(...ids) {
-    for (const id of ids) {
-        const element = document.getElementById(id);
+const loading = document.getElementById("jobDetailsLoading");
+const errorBox = document.getElementById("jobDetailsError");
+const errorText = document.getElementById("jobDetailsErrorText");
+const content = document.getElementById("jobDetailsContent");
 
-        if (element) {
-            return element;
-        }
-    }
+const jobCompanyLogo = document.getElementById("jobCompanyLogo");
 
-    return null;
-}
+const jobCompany = document.getElementById("jobCompany");
+const jobTitle = document.getElementById("jobTitle");
 
+const jobLocation = document.getElementById("jobLocation");
+const jobCategory = document.getElementById("jobCategory");
 
-/* =========================================================
-   ÉLÉMENTS
-   ========================================================= */
+const jobCategoryInfo = document.getElementById("jobCategoryInfo");
+const jobContract = document.getElementById("jobContract");
+const jobPositions = document.getElementById("jobPositions");
+const jobExperience = document.getElementById("jobExperience");
+const jobLocationInfo = document.getElementById("jobLocationInfo");
+const jobSalary = document.getElementById("jobSalary");
+const jobDate = document.getElementById("jobDate");
 
-const loadingElement = getElement(
-    "jobDetailsLoading",
-    "jobsDetailsLoading",
-    "jobLoading"
-);
+const jobDeadline = document.getElementById("jobDeadline");
+const jobAvailability = document.getElementById("jobAvailability");
+const jobTravel = document.getElementById("jobTravel");
 
-const contentElement = getElement(
-    "jobDetailsContent",
-    "jobDetails",
-    "jobContent"
-);
+const jobDescription = document.getElementById("jobDescription");
 
-const errorElement = getElement(
-    "jobDetailsError",
-    "jobError"
-);
+const jobResponsibilitiesSection =
+    document.getElementById("jobResponsibilitiesSection");
 
-const errorTextElement = getElement(
-    "jobDetailsErrorText",
-    "jobErrorText"
-);
+const jobResponsibilities =
+    document.getElementById("jobResponsibilities");
 
-const jobTitle = getElement(
-    "jobTitle"
-);
+const jobSkillsSection =
+    document.getElementById("jobSkillsSection");
 
-const jobCompany = getElement(
-    "jobCompany"
-);
+const jobSkills =
+    document.getElementById("jobSkills");
 
-const jobLocation = getElement(
-    "jobLocation"
-);
+const jobRequirementsSection =
+    document.getElementById("jobRequirementsSection");
 
-const jobCategory = getElement(
-    "jobCategory"
-);
+const jobRequirements =
+    document.getElementById("jobRequirements");
 
-const jobDate = getElement(
-    "jobDate"
-);
+const jobBenefitsSection =
+    document.getElementById("jobBenefitsSection");
 
-const jobContract = getElement(
-    "jobContract"
-);
+const jobBenefits =
+    document.getElementById("jobBenefits");
 
-const jobExperience = getElement(
-    "jobExperience"
-);
+const jobCompanyDescriptionSection =
+    document.getElementById("jobCompanyDescriptionSection");
 
-const jobSalary = getElement(
-    "jobSalary"
-);
+const jobCompanyDescription =
+    document.getElementById("jobCompanyDescription");
 
-const jobDescription = getElement(
-    "jobDescription"
-);
+const jobFavorite =
+    document.getElementById("jobFavorite");
 
-const jobSkills = getElement(
-    "jobSkills"
-);
+const jobShare =
+    document.getElementById("jobShare");
 
-const jobRequirements = getElement(
-    "jobRequirements"
-);
+const jobApply =
+    document.getElementById("jobApply");
 
-const jobBenefits = getElement(
-    "jobBenefits"
-);
+const jobApplicationLink =
+    document.getElementById("jobApplicationLink");
 
-const jobCompanyLogo = getElement(
-    "jobCompanyLogo"
-);
+const jobPhone =
+    document.getElementById("jobPhone");
 
-const jobCompanyDescription = getElement(
-    "jobCompanyDescription"
-);
+const jobEmail =
+    document.getElementById("jobEmail");
 
-const jobPhone = getElement(
-    "jobPhone"
-);
-
-const jobEmail = getElement(
-    "jobEmail"
-);
-
-const jobApplicationLink = getElement(
-    "jobApplicationLink"
-);
-
-const favoriteButton = getElement(
-    "jobFavorite"
-);
-
-const shareButton = getElement(
-    "jobShare"
-);
-
-const applyButton = getElement(
-    "jobApply"
-);
-
-const reportButton = getElement(
-    "jobReport"
-);
+const jobReport =
+    document.getElementById("jobReport");
 
 
 /* =========================================================
-   VARIABLES
-   ========================================================= */
-
-const FAVORITES_KEY =
-    "camu_jobs_favorites";
-
-let currentJob = null;
-
-
-/* =========================================================
-   OUTILS
-   ========================================================= */
-
-function normalizeText(value) {
-    return String(value ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim();
-}
-
+   UTILITAIRES
+========================================================= */
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -210,1237 +150,1046 @@ function escapeHtml(value) {
 }
 
 
-function firstValue(...values) {
-    for (const value of values) {
-        if (
-            value !== undefined &&
-            value !== null &&
-            String(value).trim() !== ""
-        ) {
-            return value;
-        }
+function cleanValue(value, fallback = "") {
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return fallback;
     }
 
-    return "";
+    const text = String(value).trim();
+
+    if (!text) {
+        return fallback;
+    }
+
+    return text;
 }
 
 
-/* =========================================================
-   ID DE L'OFFRE
-   ========================================================= */
+function formatList(value) {
+    if (Array.isArray(value)) {
+        return value
+            .map(item => cleanValue(item))
+            .filter(Boolean);
+    }
 
-function getJobId() {
-    const params = new URLSearchParams(
-        window.location.search
-    );
-
-    return params.get("id");
-}
-
-
-/* =========================================================
-   DATE
-   ========================================================= */
-
-function getDateValue(value) {
     if (!value) {
-        return null;
+        return [];
     }
 
-    if (
-        typeof value === "object" &&
-        typeof value.toDate === "function"
-    ) {
-        return value.toDate();
-    }
-
-    if (value instanceof Date) {
-        return value;
-    }
-
-    if (
-        typeof value === "string" ||
-        typeof value === "number"
-    ) {
-        const date = new Date(value);
-
-        if (!Number.isNaN(date.getTime())) {
-            return date;
-        }
-    }
-
-    return null;
+    return String(value)
+        .split(/\r?\n|[,;|]/)
+        .map(item => item.trim())
+        .filter(Boolean);
 }
 
 
 function formatDate(value) {
-    const date = getDateValue(value);
-
-    if (!date) {
-        return "Date non précisée";
+    if (!value) {
+        return "Non précisée";
     }
 
     try {
+        let date;
+
+        if (
+            value &&
+            typeof value.toDate === "function"
+        ) {
+            date = value.toDate();
+
+        } else if (
+            value instanceof Date
+        ) {
+            date = value;
+
+        } else {
+            date = new Date(value);
+        }
+
+        if (Number.isNaN(date.getTime())) {
+            return "Non précisée";
+        }
+
         return new Intl.DateTimeFormat(
             "fr-FR",
             {
                 day: "2-digit",
-                month: "long",
+                month: "2-digit",
                 year: "numeric"
             }
         ).format(date);
+
     } catch (error) {
-        return "Date non précisée";
+        console.warn(
+            "JOB DETAILS — Date invalide :",
+            value
+        );
+
+        return "Non précisée";
     }
 }
 
 
-/* =========================================================
-   CHAMPS JOB
-   ========================================================= */
-
-function getTitle(job) {
-    return firstValue(
-        job.title,
-        job.poste,
-        job.name,
-        job.jobTitle,
-        job.position,
-        "Poste non précisé"
-    );
-}
-
-
-function getCompany(job) {
-    return firstValue(
-        job.company,
-        job.entreprise,
-        job.companyName,
-        job.employer,
-        "Entreprise non précisée"
-    );
-}
-
-
-function getCity(job) {
-    return firstValue(
-        job.city,
-        job.ville,
-        job.location,
-        job.localisation,
-        ""
-    );
-}
-
-
-function getCategory(job) {
-    return firstValue(
-        job.category,
-        job.categoryName,
-        job.categorie,
-        job.domaine,
-        job.sector,
-        ""
-    );
-}
-
-
-function getContract(job) {
-    return firstValue(
-        job.contractType,
-        job.typeContrat,
-        job.contract,
-        job.type,
-        ""
-    );
-}
-
-
-function getExperience(job) {
-    return firstValue(
-        job.experience,
-        job.experienceLevel,
-        job.niveauExperience,
-        job.niveau,
-        ""
-    );
-}
-
-
-function getDescription(job) {
-    return firstValue(
-        job.description,
-        job.details,
-        job.content,
-        job.resume,
-        ""
-    );
-}
-
-
-function getCompanyDescription(job) {
-    return firstValue(
-        job.companyDescription,
-        job.descriptionCompany,
-        job.aboutCompany,
-        job.presentationEntreprise,
-        ""
-    );
-}
-
-
-function getPhone(job) {
-    return firstValue(
-        job.phone,
-        job.telephone,
-        job.contactPhone,
-        ""
-    );
-}
-
-
-function getEmail(job) {
-    return firstValue(
-        job.email,
-        job.contactEmail,
-        job.providerEmail,
-        job.recruiterEmail,
-        ""
-    );
-}
-
-
-function getApplicationLink(job) {
-    return firstValue(
-        job.applicationLink,
-        job.applyLink,
-        job.candidatureLink,
-        job.url,
-        ""
-    );
-}
-
-
-/* =========================================================
-   LISTES
-   ========================================================= */
-
-function convertToList(value) {
-    if (Array.isArray(value)) {
-        return value
-            .map(item => String(item).trim())
-            .filter(Boolean);
-    }
-
-    if (typeof value === "string") {
-        return value
-            .split(/[,;\n]/)
-            .map(item => item.trim())
-            .filter(Boolean);
-    }
-
-    return [];
-}
-
-
-function getSkills(job) {
-    return convertToList(
-        firstValue(
-            job.skills,
-            job.competences,
-            job.tags,
-            ""
-        )
-    );
-}
-
-
-function getRequirements(job) {
-    return convertToList(
-        firstValue(
-            job.requirements,
-            job.exigences,
-            job.conditions,
-            ""
-        )
-    );
-}
-
-
-function getBenefits(job) {
-    return convertToList(
-        firstValue(
-            job.benefits,
-            job.avantages,
-            job.benefitsList,
-            ""
-        )
-    );
-}
-
-
-/* =========================================================
-   SALAIRE
-   ========================================================= */
-
-function getSalary(job) {
-    const currency = firstValue(
-        job.currency,
-        job.devise,
-        ""
-    );
-
-    const salary = firstValue(
-        job.salary,
-        job.salaire,
-        job.remuneration,
-        ""
-    );
-
-    const min = firstValue(
-        job.salaryMin,
-        job.salaireMin,
-        ""
-    );
-
-    const max = firstValue(
-        job.salaryMax,
-        job.salaireMax,
-        ""
-    );
-
-    if (salary) {
-        return String(salary) +
-            (currency ? " " + currency : "");
-    }
-
-    if (min !== "" && max !== "") {
-        return String(min) +
-            " - " +
-            String(max) +
-            (currency ? " " + currency : "");
-    }
-
-    if (min !== "") {
-        return "À partir de " +
-            String(min) +
-            (currency ? " " + currency : "");
-    }
-
-    if (max !== "") {
-        return "Jusqu'à " +
-            String(max) +
-            (currency ? " " + currency : "");
-    }
-
-    const salaryType = normalizeText(
-        firstValue(
-            job.salaryType,
-            job.typeSalaire,
-            ""
-        )
-    );
-
-    if (
-        salaryType.includes("sur devis") ||
-        salaryType.includes("sur-devis")
-    ) {
-        return "Sur devis";
-    }
-
-    return "À négocier";
-}
-
-
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-function getJobImage(job) {
-    const value = firstValue(
-        job.image,
-        job.imageUrl,
-        job.logo,
-        job.companyLogo,
-        job.photo,
-        job.cover,
-        ""
-    );
-
-    if (!value) {
-        return "";
-    }
-
-    const image = String(value).trim();
-
-    if (!image) {
-        return "";
-    }
-
-    const invalidValues = [
-        "laisser vide pour le test",
-        "laisser vide",
-        "test",
-        "null",
-        "undefined",
-        "none",
-        "sans image",
-        "pas d'image",
-        "no image"
-    ];
-
-    if (
-        invalidValues.includes(
-            normalizeText(image)
-        )
-    ) {
-        return "";
-    }
-
-    if (
-        !image.startsWith("http://") &&
-        !image.startsWith("https://")
-    ) {
-        return "";
-    }
-
-    return image;
-}
-
-
-/* =========================================================
-   CHARGEMENT
-   ========================================================= */
-
-function showLoading() {
-    if (loadingElement) {
-        loadingElement.style.display = "flex";
-    }
-
-    if (contentElement) {
-        contentElement.style.display = "none";
-    }
-
-    if (errorElement) {
-        errorElement.style.display = "none";
-    }
-}
-
-
-function hideLoading() {
-    if (loadingElement) {
-        loadingElement.style.display = "none";
-    }
-}
-
-
-function showContent() {
-    hideLoading();
-
-    if (contentElement) {
-        contentElement.style.display = "";
-    }
-
-    if (errorElement) {
-        errorElement.style.display = "none";
-    }
-}
-
-
-function showError(message) {
-    hideLoading();
-
-    if (contentElement) {
-        contentElement.style.display = "none";
-    }
-
-    if (errorElement) {
-        errorElement.style.display = "block";
-    }
-
-    if (errorTextElement) {
-        errorTextElement.textContent = message;
-    }
-
-    console.error(
-        "JOB DETAILS —",
-        message
-    );
-}
-
-
-/* =========================================================
-   AFFICHAGE TEXTE
-   ========================================================= */
-
-function setValue(element, value) {
-    if (!element) {
-        return;
-    }
-
-    element.textContent = value || "";
-}
-
-
-function setOptionalValue(element, value) {
-    if (!element) {
-        return;
-    }
-
-    if (
-        value !== undefined &&
-        value !== null &&
-        String(value).trim() !== ""
-    ) {
-        element.textContent = String(value);
-        element.style.display = "";
-    } else {
-        element.textContent = "";
+function hideElement(element) {
+    if (element) {
         element.style.display = "none";
     }
 }
 
 
-/* =========================================================
-   AFFICHAGE LISTE
-   ========================================================= */
+function showElement(element, display = "") {
+    if (element) {
+        element.style.display = display;
+    }
+}
 
-function renderList(element, items) {
+
+function setText(element, value, fallback = "Non précisé") {
     if (!element) {
         return;
     }
 
-    element.innerHTML = "";
-
-    if (!items.length) {
-        element.style.display = "none";
-        return;
-    }
-
-    element.style.display = "";
-
-    items.forEach(item => {
-        const li =
-            document.createElement("li");
-
-        li.textContent =
-            String(item);
-
-        element.appendChild(li);
-    });
+    element.textContent =
+        cleanValue(value, fallback);
 }
 
 
 /* =========================================================
-   LOGO
-   ========================================================= */
+   LOGO ENTREPRISE
+========================================================= */
 
-function renderLogo(job) {
+function renderCompanyLogo(imageUrl) {
+
     if (!jobCompanyLogo) {
         return;
     }
 
-    const image =
-        getJobImage(job);
+    const image = cleanValue(imageUrl);
 
-    jobCompanyLogo.innerHTML = "";
+    /*
+     * Ne pas tenter de charger :
+     * - chaîne vide
+     * - texte de test
+     * - valeurs invalides
+     */
+    const invalidImageValues = [
+        "laisser vide pour le test",
+        "laisser vide",
+        "test",
+        "none",
+        "null",
+        "undefined"
+    ];
 
-    if (!image) {
-        const placeholder =
-            document.createElement("div");
+    if (
+        !image ||
+        invalidImageValues.includes(image.toLowerCase()) ||
+        !/^https?:\/\//i.test(image)
+    ) {
 
-        placeholder.className =
-            "job-company-logo-placeholder";
-
-        placeholder.innerHTML =
-            '<i class="fa-solid fa-building"></i>';
-
-        jobCompanyLogo.appendChild(
-            placeholder
-        );
+        jobCompanyLogo.innerHTML = `
+            <div class="job-company-logo-placeholder">
+                <i class="fa-solid fa-building"></i>
+            </div>
+        `;
 
         return;
     }
 
-    const img =
-        document.createElement("img");
+
+    jobCompanyLogo.innerHTML = "";
+
+    const img = document.createElement("img");
 
     img.src = image;
+    img.alt = "Logo de l'entreprise";
 
-    img.alt =
-        getCompany(job);
+    img.loading = "lazy";
 
-    img.loading =
-        "eager";
+    img.addEventListener("error", () => {
 
-    img.referrerPolicy =
-        "no-referrer";
+        jobCompanyLogo.innerHTML = `
+            <div class="job-company-logo-placeholder">
+                <i class="fa-solid fa-building"></i>
+            </div>
+        `;
 
-    img.addEventListener(
-        "error",
-        () => {
-            jobCompanyLogo.innerHTML = "";
+    });
 
-            const placeholder =
-                document.createElement("div");
+    jobCompanyLogo.appendChild(img);
+}
 
-            placeholder.className =
-                "job-company-logo-placeholder";
 
-            placeholder.innerHTML =
-                '<i class="fa-solid fa-building"></i>';
+/* =========================================================
+   AFFICHER UNE LISTE
+========================================================= */
 
-            jobCompanyLogo.appendChild(
-                placeholder
-            );
-        },
-        {
-            once: true
-        }
+function renderList(section, listElement, value) {
+
+    if (!section || !listElement) {
+        return;
+    }
+
+    const items = formatList(value);
+
+    listElement.innerHTML = "";
+
+    if (!items.length) {
+        hideElement(section);
+        return;
+    }
+
+    items.forEach(item => {
+
+        const li = document.createElement("li");
+
+        li.textContent = item;
+
+        listElement.appendChild(li);
+
+    });
+
+    showElement(section);
+}
+
+
+/* =========================================================
+   AFFICHER LES INFORMATIONS
+========================================================= */
+
+function renderJob(job) {
+
+    /* -----------------------------------------------------
+       VALEURS
+    ----------------------------------------------------- */
+
+    const title =
+        cleanValue(job.title, "Poste non précisé");
+
+    const company =
+        cleanValue(job.company, "Entreprise non précisée");
+
+    const category =
+        cleanValue(job.category, "Non précisée");
+
+    const city =
+        cleanValue(job.city, "Non précisée");
+
+    const contract =
+        cleanValue(job.contractType, "Non précisé");
+
+    const experience =
+        cleanValue(job.experience, "Non précisée");
+
+    const positions =
+        cleanValue(job.poste, "Non précisé");
+
+    const salary =
+        cleanValue(
+            job.salary,
+            "Selon la grille de l'entreprise"
+        );
+
+    const description =
+        cleanValue(
+            job.description,
+            "Aucune description disponible."
+        );
+
+    const companyDescription =
+        cleanValue(
+            job.companyDescription,
+            ""
+        );
+
+    const phone =
+        cleanValue(job.phone, "");
+
+    const email =
+        cleanValue(
+            job.email || job.providerEmail,
+            ""
+        );
+
+    const applicationLink =
+        cleanValue(
+            job.applicationLink,
+            ""
+        );
+
+
+    /* -----------------------------------------------------
+       HEADER
+    ----------------------------------------------------- */
+
+    setText(
+        jobTitle,
+        title,
+        "Poste non précisé"
     );
 
-    jobCompanyLogo.appendChild(
-        img
+    setText(
+        jobCompany,
+        company,
+        "Entreprise non précisée"
+    );
+
+
+    /* LOCALISATION HEADER */
+
+    if (jobLocation) {
+        jobLocation.innerHTML = `
+            <i class="fa-solid fa-location-dot"></i>
+            <span>${escapeHtml(city)}</span>
+        `;
+    }
+
+
+    /* CATÉGORIE HEADER */
+
+    if (jobCategory) {
+        jobCategory.innerHTML = `
+            <i class="fa-solid fa-layer-group"></i>
+            <span>${escapeHtml(category)}</span>
+        `;
+    }
+
+
+    /* LOGO */
+
+    renderCompanyLogo(job.image);
+
+
+    /* -----------------------------------------------------
+       INFORMATIONS
+    ----------------------------------------------------- */
+
+    setText(
+        jobCategoryInfo,
+        category,
+        "Non précisée"
+    );
+
+    setText(
+        jobContract,
+        contract,
+        "Non précisé"
+    );
+
+    setText(
+        jobPositions,
+        positions,
+        "Non précisé"
+    );
+
+    setText(
+        jobExperience,
+        experience,
+        "Non précisée"
+    );
+
+    setText(
+        jobLocationInfo,
+        city,
+        "Non précisée"
+    );
+
+    setText(
+        jobSalary,
+        salary,
+        "Selon la grille de l'entreprise"
+    );
+
+    setText(
+        jobDate,
+        formatDate(job.createdAt),
+        "Non précisée"
+    );
+
+
+    /* -----------------------------------------------------
+       CHAMPS OPTIONNELS
+    ----------------------------------------------------- */
+
+    if (jobDeadline) {
+        if (job.applicationDeadline) {
+            jobDeadline.textContent =
+                formatDate(job.applicationDeadline);
+
+            showElement(jobDeadline.parentElement);
+        } else {
+            hideElement(jobDeadline.parentElement);
+        }
+    }
+
+
+    if (jobAvailability) {
+        const availability =
+            cleanValue(job.availability);
+
+        if (availability) {
+            jobAvailability.textContent =
+                availability;
+
+            showElement(jobAvailability.parentElement);
+        } else {
+            hideElement(jobAvailability.parentElement);
+        }
+    }
+
+
+    if (jobTravel) {
+        const travel =
+            cleanValue(job.travelRequired);
+
+        if (travel) {
+            jobTravel.textContent =
+                travel;
+
+            showElement(jobTravel.parentElement);
+        } else {
+            hideElement(jobTravel.parentElement);
+        }
+    }
+
+
+    /* -----------------------------------------------------
+       DESCRIPTION
+    ----------------------------------------------------- */
+
+    if (jobDescription) {
+        jobDescription.textContent = description;
+    }
+
+
+    /* -----------------------------------------------------
+       RESPONSABILITÉS
+    ----------------------------------------------------- */
+
+    renderList(
+        jobResponsibilitiesSection,
+        jobResponsibilities,
+        job.responsibilities
+    );
+
+
+    /* -----------------------------------------------------
+       COMPÉTENCES
+    ----------------------------------------------------- */
+
+    renderList(
+        jobSkillsSection,
+        jobSkills,
+        job.skills
+    );
+
+
+    /* -----------------------------------------------------
+       EXIGENCES / PROFIL
+    ----------------------------------------------------- */
+
+    renderList(
+        jobRequirementsSection,
+        jobRequirements,
+        job.requirements
+    );
+
+
+    /* -----------------------------------------------------
+       AVANTAGES
+    ----------------------------------------------------- */
+
+    renderList(
+        jobBenefitsSection,
+        jobBenefits,
+        job.benefits
+    );
+
+
+    /* -----------------------------------------------------
+       ENTREPRISE
+    ----------------------------------------------------- */
+
+    if (jobCompanyDescription) {
+
+        if (companyDescription) {
+
+            jobCompanyDescription.textContent =
+                companyDescription;
+
+            showElement(
+                jobCompanyDescriptionSection
+            );
+
+        } else {
+
+            hideElement(
+                jobCompanyDescriptionSection
+            );
+        }
+    }
+
+
+    /* -----------------------------------------------------
+       CONTACT
+    ----------------------------------------------------- */
+
+    renderPhone(phone);
+    renderEmail(email);
+
+
+    /* -----------------------------------------------------
+       CANDIDATURE
+    ----------------------------------------------------- */
+
+    setupApplication(
+        applicationLink,
+        email,
+        phone
     );
 }
 
 
 /* =========================================================
-   AFFICHER L'OFFRE
-   ========================================================= */
+   TELEPHONE
+========================================================= */
 
-function renderJob(job) {
-    currentJob = job;
+function renderPhone(phone) {
 
-    const title =
-        getTitle(job);
-
-    const company =
-        getCompany(job);
-
-    const city =
-        getCity(job);
-
-    const category =
-        getCategory(job);
-
-    const contract =
-        getContract(job);
-
-    const experience =
-        getExperience(job);
-
-    const description =
-        getDescription(job);
-
-    const companyDescription =
-        getCompanyDescription(job);
-
-    const phone =
-        getPhone(job);
-
-    const email =
-        getEmail(job);
-
-    const applicationLink =
-        getApplicationLink(job);
-
-    const salary =
-        getSalary(job);
-
-    const createdAt =
-        firstValue(
-            job.createdAt,
-            job.date,
-            job.publishedAt,
-            job.created_at,
-            null
-        );
-
-
-    /* -----------------------------------------
-       TITRE
-       ----------------------------------------- */
-
-    setValue(
-        jobTitle,
-        title
-    );
-
-    setValue(
-        jobCompany,
-        company
-    );
-
-
-    /* -----------------------------------------
-       INFORMATIONS
-       ----------------------------------------- */
-
-    setOptionalValue(
-        jobLocation,
-        city
-    );
-
-    setOptionalValue(
-        jobCategory,
-        category
-    );
-
-    setOptionalValue(
-        jobDate,
-        formatDate(createdAt)
-    );
-
-    setOptionalValue(
-        jobContract,
-        contract
-    );
-
-    setOptionalValue(
-        jobExperience,
-        experience
-    );
-
-    setOptionalValue(
-        jobSalary,
-        salary
-    );
-
-
-    /* -----------------------------------------
-       DESCRIPTION
-       ----------------------------------------- */
-
-    if (jobDescription) {
-        jobDescription.textContent =
-            description ||
-            "Aucune description disponible.";
+    if (!jobPhone) {
+        return;
     }
 
+    jobPhone.innerHTML = "";
 
-    /* -----------------------------------------
-       COMPÉTENCES
-       ----------------------------------------- */
+    if (!phone) {
 
-    renderList(
-        jobSkills,
-        getSkills(job)
-    );
+        jobPhone.textContent =
+            "Non renseigné";
 
-
-    /* -----------------------------------------
-       EXIGENCES
-       ----------------------------------------- */
-
-    renderList(
-        jobRequirements,
-        getRequirements(job)
-    );
-
-
-    /* -----------------------------------------
-       AVANTAGES
-       ----------------------------------------- */
-
-    renderList(
-        jobBenefits,
-        getBenefits(job)
-    );
-
-
-    /* -----------------------------------------
-       ENTREPRISE
-       ----------------------------------------- */
-
-    setOptionalValue(
-        jobCompanyDescription,
-        companyDescription
-    );
-
-
-    /* -----------------------------------------
-       TÉLÉPHONE
-       ----------------------------------------- */
-
-    if (jobPhone) {
-        jobPhone.innerHTML = "";
-
-        if (phone) {
-            const link =
-                document.createElement("a");
-
-            link.href =
-                "tel:" + phone;
-
-            link.textContent =
-                phone;
-
-            jobPhone.appendChild(
-                link
-            );
-
-            jobPhone.style.display =
-                "";
-        } else {
-            jobPhone.style.display =
-                "none";
-        }
+        return;
     }
 
+    const link = document.createElement("a");
 
-    /* -----------------------------------------
-       EMAIL
-       ----------------------------------------- */
+    link.href =
+        `tel:${phone.replace(/\s+/g, "")}`;
 
-    if (jobEmail) {
-        jobEmail.innerHTML = "";
+    link.textContent = phone;
 
-        if (email) {
-            const link =
-                document.createElement("a");
+    jobPhone.appendChild(link);
+}
 
-            link.href =
-                "mailto:" + email;
 
-            link.textContent =
-                email;
+/* =========================================================
+   EMAIL
+========================================================= */
 
-            jobEmail.appendChild(
-                link
-            );
+function renderEmail(email) {
 
-            jobEmail.style.display =
-                "";
-        } else {
-            jobEmail.style.display =
-                "none";
-        }
+    if (!jobEmail) {
+        return;
     }
 
+    jobEmail.innerHTML = "";
 
-    /* -----------------------------------------
-       LIEN DE CANDIDATURE
-       ----------------------------------------- */
+    if (!email) {
+
+        jobEmail.textContent =
+            "Non renseigné";
+
+        return;
+    }
+
+    const link = document.createElement("a");
+
+    link.href =
+        `mailto:${email}`;
+
+    link.textContent = email;
+
+    jobEmail.appendChild(link);
+}
+
+
+/* =========================================================
+   POSTULER
+========================================================= */
+
+function setupApplication(
+    applicationLink,
+    email,
+    phone
+) {
+
+    if (!jobApply) {
+        return;
+    }
 
     if (jobApplicationLink) {
         jobApplicationLink.innerHTML = "";
+    }
 
-        if (applicationLink) {
-            const link =
-                document.createElement("a");
 
-            link.href =
-                applicationLink;
+    /* -----------------------------------------------------
+       LIEN DIRECT
+    ----------------------------------------------------- */
 
-            link.target =
-                "_blank";
+    if (applicationLink) {
 
-            link.rel =
-                "noopener noreferrer";
+        jobApply.onclick = () => {
 
-            link.textContent =
-                "Postuler en ligne";
-
-            jobApplicationLink.appendChild(
-                link
+            window.open(
+                applicationLink,
+                "_blank",
+                "noopener,noreferrer"
             );
 
-            jobApplicationLink.style.display =
-                "";
-        } else {
-            jobApplicationLink.style.display =
-                "none";
+        };
+
+        if (jobApplicationLink) {
+
+            const text =
+                document.createElement("div");
+
+            text.innerHTML = `
+                <a
+                    href="${escapeHtml(applicationLink)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Voir la page de candidature
+                </a>
+            `;
+
+            jobApplicationLink.appendChild(text);
         }
+
+        return;
     }
 
 
-    /* -----------------------------------------
-       BOUTON POSTULER
-       ----------------------------------------- */
+    /* -----------------------------------------------------
+       EMAIL
+    ----------------------------------------------------- */
 
-    if (applyButton) {
-        applyButton.onclick = null;
+    if (email) {
 
-        if (applicationLink) {
-            applyButton.style.display =
-                "";
+        jobApply.onclick = () => {
 
-            applyButton.onclick =
-                function () {
-                    window.open(
-                        applicationLink,
-                        "_blank",
-                        "noopener,noreferrer"
-                    );
-                };
+            window.location.href =
+                `mailto:${email}?subject=${encodeURIComponent(
+                    "Candidature - offre CAMU SERVICES"
+                )}`;
 
-        } else if (email) {
-            applyButton.style.display =
-                "";
+        };
 
-            applyButton.onclick =
-                function () {
-                    const subject =
-                        encodeURIComponent(
-                            "Candidature - " + title
-                        );
-
-                    window.location.href =
-                        "mailto:" +
-                        email +
-                        "?subject=" +
-                        subject;
-                };
-
-        } else if (phone) {
-            applyButton.style.display =
-                "";
-
-            applyButton.onclick =
-                function () {
-                    window.location.href =
-                        "tel:" + phone;
-                };
-
-        } else {
-            applyButton.style.display =
-                "none";
-        }
+        return;
     }
 
 
-    /* -----------------------------------------
-       LOGO
-       ----------------------------------------- */
+    /* -----------------------------------------------------
+       TELEPHONE
+    ----------------------------------------------------- */
 
-    renderLogo(job);
+    if (phone) {
+
+        jobApply.onclick = () => {
+
+            window.location.href =
+                `tel:${phone.replace(/\s+/g, "")}`;
+
+        };
+
+        return;
+    }
 
 
-    /* -----------------------------------------
-       FAVORI
-       ----------------------------------------- */
+    /* -----------------------------------------------------
+       AUCUN MOYEN
+    ----------------------------------------------------- */
 
-    updateFavoriteButton();
+    jobApply.onclick = () => {
 
+        alert(
+            "Aucune méthode de candidature n'est renseignée pour cette offre."
+        );
 
-    /* -----------------------------------------
-       TITRE DU NAVIGATEUR
-       ----------------------------------------- */
-
-    document.title =
-        title +
-        " — " +
-        company +
-        " | CAMU SERVICES";
+    };
 }
 
 
 /* =========================================================
    FAVORIS
-   ========================================================= */
+========================================================= */
+
+const FAVORITES_KEY =
+    "camu_jobs_favorites";
+
 
 function getFavorites() {
-    try {
-        const value =
-            localStorage.getItem(
-                FAVORITES_KEY
-            );
 
-        if (!value) {
+    try {
+
+        const data =
+            localStorage.getItem(FAVORITES_KEY);
+
+        if (!data) {
             return [];
         }
 
-        const parsed =
-            JSON.parse(value);
+        const favorites =
+            JSON.parse(data);
 
-        return Array.isArray(parsed)
-            ? parsed
+        return Array.isArray(favorites)
+            ? favorites
             : [];
 
     } catch (error) {
+
+        console.warn(
+            "JOB DETAILS — Favoris illisibles :",
+            error
+        );
+
         return [];
     }
 }
 
 
 function saveFavorites(favorites) {
-    try {
-        localStorage.setItem(
-            FAVORITES_KEY,
-            JSON.stringify(favorites)
-        );
-    } catch (error) {
-        console.warn(
-            "JOB DETAILS — Erreur favoris :",
-            error
-        );
-    }
-}
 
-
-function isFavorite() {
-    if (!currentJob) {
-        return false;
-    }
-
-    return getFavorites().includes(
-        currentJob.id
+    localStorage.setItem(
+        FAVORITES_KEY,
+        JSON.stringify(favorites)
     );
 }
 
 
-function updateFavoriteButton() {
-    if (!favoriteButton) {
+function updateFavoriteIcon(jobId) {
+
+    if (!jobFavorite) {
         return;
     }
 
-    const active =
-        isFavorite();
+    const favorites = getFavorites();
 
-    favoriteButton.classList.toggle(
+    const isFavorite =
+        favorites.includes(jobId);
+
+    jobFavorite.classList.toggle(
         "active",
-        active
+        isFavorite
     );
 
-    favoriteButton.innerHTML =
-        active
-            ? '<i class="fa-solid fa-heart"></i>'
-            : '<i class="fa-regular fa-heart"></i>';
+    jobFavorite.setAttribute(
+        "aria-pressed",
+        String(isFavorite)
+    );
 
-    favoriteButton.setAttribute(
-        "aria-label",
-        active
+    jobFavorite.title =
+        isFavorite
             ? "Retirer des favoris"
-            : "Ajouter aux favoris"
-    );
+            : "Ajouter aux favoris";
+
+    jobFavorite.innerHTML = isFavorite
+        ? `<i class="fa-solid fa-heart"></i>`
+        : `<i class="fa-regular fa-heart"></i>`;
 }
 
 
-function toggleFavorite() {
-    if (!currentJob) {
+function setupFavorite(jobId) {
+
+    if (!jobFavorite) {
         return;
     }
 
-    const favorites =
-        getFavorites();
+    updateFavoriteIcon(jobId);
 
-    const index =
-        favorites.indexOf(
-            currentJob.id
-        );
+    jobFavorite.addEventListener(
+        "click",
+        () => {
 
-    if (index >= 0) {
-        favorites.splice(
-            index,
-            1
-        );
-    } else {
-        favorites.push(
-            currentJob.id
-        );
-    }
+            let favorites =
+                getFavorites();
 
-    saveFavorites(
-        favorites
+            const index =
+                favorites.indexOf(jobId);
+
+            if (index === -1) {
+
+                favorites.push(jobId);
+
+            } else {
+
+                favorites.splice(index, 1);
+
+            }
+
+            saveFavorites(favorites);
+
+            updateFavoriteIcon(jobId);
+        }
     );
-
-    updateFavoriteButton();
 }
 
 
 /* =========================================================
    PARTAGE
-   ========================================================= */
+========================================================= */
 
-async function shareJob() {
-    if (!currentJob) {
+function setupShare(job) {
+
+    if (!jobShare) {
         return;
     }
 
-    const title =
-        getTitle(currentJob);
+    jobShare.addEventListener(
+        "click",
+        async () => {
 
-    const company =
-        getCompany(currentJob);
+            const shareUrl =
+                window.location.href;
 
-    const shareText =
-        "Découvrez cette offre d'emploi sur CAMU SERVICES : " +
-        title +
-        " — " +
-        company;
-
-    try {
-        if (
-            typeof navigator.share ===
-            "function"
-        ) {
-            await navigator.share({
+            const shareData = {
                 title:
-                    title +
-                    " — " +
-                    company,
-
+                    cleanValue(
+                        job.title,
+                        "Offre d'emploi"
+                    ),
                 text:
-                    shareText,
+                    `${cleanValue(
+                        job.title,
+                        "Offre d'emploi"
+                    )} - ${cleanValue(
+                        job.company,
+                        "CAMU SERVICES"
+                    )}`,
+                url: shareUrl
+            };
 
-                url:
-                    window.location.href
-            });
 
-            return;
+            /* Partage natif */
+
+            if (
+                navigator.share
+            ) {
+
+                try {
+
+                    await navigator.share(
+                        shareData
+                    );
+
+                    return;
+
+                } catch (error) {
+
+                    if (
+                        error?.name ===
+                        "AbortError"
+                    ) {
+                        return;
+                    }
+
+                    console.warn(
+                        "JOB DETAILS — Partage natif échoué :",
+                        error
+                    );
+                }
+            }
+
+
+            /* Presse-papiers */
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    shareUrl
+                );
+
+                alert(
+                    "Lien de l'offre copié."
+                );
+
+            } catch (error) {
+
+                window.prompt(
+                    "Copiez le lien de l'offre :",
+                    shareUrl
+                );
+            }
         }
-
-        if (
-            navigator.clipboard &&
-            window.isSecureContext
-        ) {
-            await navigator.clipboard.writeText(
-                window.location.href
-            );
-
-            alert(
-                "Lien de l'offre copié."
-            );
-
-            return;
-        }
-
-        window.prompt(
-            "Copiez le lien de l'offre :",
-            window.location.href
-        );
-
-    } catch (error) {
-        if (
-            error &&
-            error.name ===
-            "AbortError"
-        ) {
-            return;
-        }
-
-        console.error(
-            "JOB DETAILS — Erreur partage :",
-            error
-        );
-    }
+    );
 }
 
 
 /* =========================================================
-   SIGNALEMENT
-   ========================================================= */
+   SIGNALER
+========================================================= */
 
-async function reportJob() {
-    if (!currentJob) {
+function setupReport(jobId) {
+
+    if (!jobReport) {
         return;
     }
 
-    if (!db) {
-        alert(
-            "Firebase n'est pas disponible."
-        );
+    jobReport.addEventListener(
+        "click",
+        async () => {
 
-        return;
-    }
+            const reason =
+                window.prompt(
+                    "Pourquoi souhaitez-vous signaler cette offre ?"
+                );
 
-    const reason =
-        window.prompt(
-            "Pourquoi souhaitez-vous signaler cette offre ?"
-        );
-
-    if (!reason) {
-        return;
-    }
-
-    try {
-        const user =
-            auth?.currentUser || null;
-
-        await addDoc(
-            collection(
-                db,
-                "jobReports"
-            ),
-            {
-                jobId:
-                    currentJob.id,
-
-                reason:
-                    reason.trim(),
-
-                pageUrl:
-                    window.location.href,
-
-                userId:
-                    user
-                        ? user.uid
-                        : null,
-
-                userEmail:
-                    user
-                        ? user.email
-                        : null,
-
-                createdAt:
-                    serverTimestamp()
+            if (!reason) {
+                return;
             }
-        );
 
-        alert(
-            "Merci. Votre signalement a été envoyé."
-        );
 
-    } catch (error) {
-        console.error(
-            "JOB DETAILS — Erreur signalement :",
-            error
-        );
+            try {
 
-        alert(
-            "Impossible d'envoyer le signalement."
-        );
+                if (!db) {
+                    throw new Error(
+                        "Firestore n'est pas disponible."
+                    );
+                }
+
+
+                const currentUser =
+                    auth?.currentUser || null;
+
+
+                const reportData = {
+                    jobId,
+                    reason: reason.trim(),
+
+                    pageUrl:
+                        window.location.href,
+
+                    createdAt:
+                        serverTimestamp()
+                };
+
+
+                if (currentUser) {
+
+                    reportData.userId =
+                        currentUser.uid;
+
+                    if (currentUser.email) {
+
+                        reportData.userEmail =
+                            currentUser.email;
+                    }
+                }
+
+
+                await addDoc(
+                    collection(
+                        db,
+                        "jobReports"
+                    ),
+                    reportData
+                );
+
+
+                alert(
+                    "Merci. Votre signalement a été envoyé."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "JOB DETAILS — Erreur signalement :",
+                    error
+                );
+
+                alert(
+                    "Impossible d'envoyer le signalement."
+                );
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   AFFICHER ERREUR
+========================================================= */
+
+function showError(message) {
+
+    if (loading) {
+        hideElement(loading);
+    }
+
+    if (content) {
+        hideElement(content);
+    }
+
+    if (errorBox) {
+        showElement(errorBox);
+    }
+
+    if (errorText) {
+        errorText.textContent =
+            message;
     }
 }
 
 
 /* =========================================================
    CHARGER L'OFFRE
-   ========================================================= */
+========================================================= */
 
-async function loadJobDetails() {
-    showLoading();
+async function loadJob() {
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
 
     const jobId =
-        getJobId();
+        urlParams.get("id");
+
 
     console.log(
         "JOB DETAILS — ID demandé :",
         jobId
     );
 
+
     if (!jobId) {
+
         showError(
-            "Aucune offre n'a été spécifiée."
+            "Identifiant de l'offre manquant."
         );
 
         return;
     }
+
 
     if (!db) {
+
         showError(
-            "Firebase n'est pas disponible."
+            "La connexion à la base de données n'est pas disponible."
         );
 
         return;
     }
 
+
     try {
+
         console.log(
-            "JOB DETAILS — Lecture de jobs/" +
-            jobId
+            `JOB DETAILS — Lecture de jobs/${jobId}`
         );
+
 
         const jobRef =
             doc(
@@ -1449,30 +1198,32 @@ async function loadJobDetails() {
                 jobId
             );
 
-        const snapshot =
-            await getDoc(
-                jobRef
-            );
+
+        const jobSnapshot =
+            await getDoc(jobRef);
+
 
         console.log(
             "JOB DETAILS — Document existe :",
-            snapshot.exists()
+            jobSnapshot.exists()
         );
 
-        if (!snapshot.exists()) {
+
+        if (!jobSnapshot.exists()) {
+
             showError(
-                "Cette offre n'existe pas ou a été supprimée."
+                "Cette offre d'emploi n'existe plus ou n'est pas disponible."
             );
 
             return;
         }
 
-        const job = {
-            id:
-                snapshot.id,
 
-            ...snapshot.data()
+        const job = {
+            id: jobSnapshot.id,
+            ...jobSnapshot.data()
         };
+
 
         console.log(
             "JOB DETAILS — Offre chargée :",
@@ -1480,124 +1231,171 @@ async function loadJobDetails() {
         );
 
 
-        /* -----------------------------------------
-           STATUT
-           ----------------------------------------- */
-
-        const status =
-            normalizeText(
-                job.status
-            );
-
-        const allowedStatuses = [
-            "active",
-            "published",
-            "publie",
-            "publiee",
-            "public",
-            "valide"
-        ];
-
-        if (
-            status &&
-            !allowedStatuses.includes(
-                status
-            )
-        ) {
-            showError(
-                "Cette offre n'est plus disponible."
-            );
-
-            return;
-        }
+        renderJob(job);
 
 
-        /* -----------------------------------------
-           RENDU
-           ----------------------------------------- */
+        setupFavorite(
+            jobId
+        );
 
-        renderJob(
+
+        setupShare(
             job
         );
 
-        showContent();
+
+        setupReport(
+            jobId
+        );
+
+
+        if (loading) {
+            hideElement(loading);
+        }
+
+        if (errorBox) {
+            hideElement(errorBox);
+        }
+
+        if (content) {
+            showElement(content);
+        }
+
 
         console.log(
             "JOB DETAILS — Offre affichée avec succès."
         );
 
+
     } catch (error) {
+
         console.error(
-            "JOB DETAILS — Erreur chargement :",
+            "JOB DETAILS — Erreur de chargement :",
             error
         );
 
+
         showError(
-            "Impossible de charger cette offre."
+            "Impossible de charger cette offre. Veuillez réessayer."
         );
 
     } finally {
-        hideLoading();
+
+        if (loading) {
+            hideElement(loading);
+        }
     }
 }
 
 
 /* =========================================================
-   ÉVÉNEMENTS
-   ========================================================= */
+   MENU MOBILE
+========================================================= */
 
-if (favoriteButton) {
-    favoriteButton.addEventListener(
+function setupMobileMenu() {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("sidebarOverlay");
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    if (
+        !sidebar ||
+        !overlay ||
+        !menuButton
+    ) {
+        return;
+    }
+
+
+    function openMenu() {
+
+        sidebar.classList.add(
+            "open"
+        );
+
+        overlay.classList.add(
+            "active"
+        );
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+
+
+    function closeMenu() {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+        overlay.classList.remove(
+            "active"
+        );
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+
+    menuButton.addEventListener(
         "click",
-        function (event) {
-            event.preventDefault();
-            toggleFavorite();
+        () => {
+
+            if (
+                sidebar.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeMenu();
+
+            } else {
+
+                openMenu();
+            }
         }
     );
-}
 
 
-if (shareButton) {
-    shareButton.addEventListener(
+    overlay.addEventListener(
         "click",
-        function (event) {
-            event.preventDefault();
-            shareJob();
-        }
+        closeMenu
     );
-}
 
 
-if (reportButton) {
-    reportButton.addEventListener(
-        "click",
-        function (event) {
-            event.preventDefault();
-            reportJob();
-        }
-    );
+    sidebar
+        .querySelectorAll("a")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                closeMenu
+            );
+
+        });
 }
 
 
 /* =========================================================
    INITIALISATION
-   ========================================================= */
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function () {
-        loadJobDetails();
+    () => {
+
+        setupMobileMenu();
+
+        loadJob();
+
     }
 );
-
-
-/* =========================================================
-   DEBUG
-   ========================================================= */
-
-window.CAMU_JOB_DETAILS = {
-    loadJobDetails,
-    toggleFavorite,
-    shareJob,
-    reportJob
-};
