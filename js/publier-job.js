@@ -1,30 +1,12 @@
 /* =========================================================
-   CAMU SERVICES — PUBLICATION D'UNE OFFRE JOB
-   Fichier : js/publier-job.js
-
-   Fonctionnalités :
-   - Authentification Firebase
-   - Validation du formulaire
-   - Aperçu image
-   - Upload image Firebase Storage
-   - Création offre Firestore
-   - Gestion salaire
-   - Gestion compétences
-   - Messages succès / erreur
+   CAMU SERVICES
+   PUBLICATION D'UNE OFFRE D'EMPLOI
 ========================================================= */
-
 
 import {
     getApps,
     getApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-
-import {
-    getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 
 import {
     getFirestore,
@@ -33,6 +15,10 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
     getStorage,
@@ -46,1052 +32,130 @@ import {
    FIREBASE
 ========================================================= */
 
-let app = null;
-let auth = null;
-let db = null;
-let storage = null;
+let app;
+let db;
+let auth;
+let storage;
 
 try {
 
     if (!getApps().length) {
-
         throw new Error(
-            "Firebase n'est pas initialisé. Vérifie js/app.js."
+            "Firebase n'est pas initialisé. Vérifiez app.js."
         );
-
     }
-
 
     app = getApp();
 
-    auth = getAuth(app);
-
     db = getFirestore(app);
-
+    auth = getAuth(app);
     storage = getStorage(app);
-
 
 } catch (error) {
 
     console.error(
-        "PUBLICATION JOB — Initialisation Firebase :",
+        "PUBLISH JOB — Firebase :",
         error
     );
-
 }
 
 
 /* =========================================================
-   ÉLÉMENTS DOM
+   ELEMENTS
 ========================================================= */
 
 const form =
-    document.getElementById(
-        "publishJobForm"
-    );
+    document.getElementById("publishJobForm");
 
-
-const submitButton =
-    document.getElementById(
-        "publishJobButton"
-    );
-
-
-const submitButtonText =
-    submitButton?.querySelector(
-        "span"
-    );
-
+const publishButton =
+    document.getElementById("publishJobButton");
 
 const authMessage =
-    document.getElementById(
-        "authMessage"
-    );
-
-
-const authMessageText =
-    document.getElementById(
-        "authMessageText"
-    );
-
+    document.getElementById("authMessage");
 
 const successMessage =
-    document.getElementById(
-        "publishJobSuccess"
-    );
-
+    document.getElementById("publishJobSuccess");
 
 const errorMessage =
-    document.getElementById(
-        "publishJobError"
-    );
+    document.getElementById("publishJobError");
 
-
-const errorMessageText =
-    document.getElementById(
-        "publishJobErrorText"
-    );
-
-
-/* ---------------------------------------------------------
-   CHAMPS
---------------------------------------------------------- */
-
-const jobTitle =
-    document.getElementById(
-        "jobTitle"
-    );
-
-
-const jobCategory =
-    document.getElementById(
-        "jobCategory"
-    );
-
-
-const jobContract =
-    document.getElementById(
-        "jobContract"
-    );
-
-
-const jobExperience =
-    document.getElementById(
-        "jobExperience"
-    );
-
-
-const jobCity =
-    document.getElementById(
-        "jobCity"
-    );
-
-
-const jobDescription =
-    document.getElementById(
-        "jobDescription"
-    );
-
-
-const jobSkills =
-    document.getElementById(
-        "jobSkills"
-    );
-
-
-const jobRequirements =
-    document.getElementById(
-        "jobRequirements"
-    );
-
-
-const salaryType =
-    document.getElementById(
-        "salaryType"
-    );
-
-
-const jobCurrency =
-    document.getElementById(
-        "jobCurrency"
-    );
-
-
-const salaryMin =
-    document.getElementById(
-        "salaryMin"
-    );
-
-
-const salaryMax =
-    document.getElementById(
-        "salaryMax"
-    );
-
-
-const jobSalary =
-    document.getElementById(
-        "jobSalary"
-    );
-
-
-const companyName =
-    document.getElementById(
-        "companyName"
-    );
-
-
-const companyPhone =
-    document.getElementById(
-        "companyPhone"
-    );
-
-
-const companyEmail =
-    document.getElementById(
-        "companyEmail"
-    );
-
-
-const applicationLink =
-    document.getElementById(
-        "applicationLink"
-    );
-
-
-const companyDescription =
-    document.getElementById(
-        "companyDescription"
-    );
-
-
-const jobBenefits =
-    document.getElementById(
-        "jobBenefits"
-    );
-
-
-const companyImage =
-    document.getElementById(
-        "companyImage"
-    );
-
+const imageInput =
+    document.getElementById("jobImage");
 
 const imagePreview =
-    document.getElementById(
-        "imagePreview"
-    );
-
-
-const imagePreviewImg =
-    document.getElementById(
-        "imagePreviewImg"
-    );
-
-
-const jobTerms =
-    document.getElementById(
-        "jobTerms"
-    );
-
-
-const descriptionCounter =
-    document.getElementById(
-        "descriptionCounter"
-    );
-
-
-const salaryMinField =
-    document.getElementById(
-        "salaryMinField"
-    );
-
-
-const salaryMaxField =
-    document.getElementById(
-        "salaryMaxField"
-    );
-
-
-const salaryDirectField =
-    document.getElementById(
-        "salaryDirectField"
-    );
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-let currentUser = null;
-
-
-/* =========================================================
-   CONSTANTES
-========================================================= */
-
-const MAX_IMAGE_SIZE =
-    5 * 1024 * 1024;
-
-const ALLOWED_IMAGE_TYPES = [
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-];
+    document.getElementById("jobImagePreview");
 
 
 /* =========================================================
    UTILITAIRES
 ========================================================= */
 
-function showAuthMessage(
-    message
-) {
+function value(id) {
 
-    if (authMessage) {
-
-        authMessage.style.display =
-            "flex";
-
-    }
-
-
-    if (authMessageText) {
-
-        authMessageText.textContent =
-            message;
-
-    }
-
-}
-
-
-function hideAuthMessage() {
-
-    if (authMessage) {
-
-        authMessage.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* ---------------------------------------------------------
-   SUCCÈS
---------------------------------------------------------- */
-
-function showSuccess(
-    message
-) {
-
-    hideError();
-
-
-    if (successMessage) {
-
-        successMessage.style.display =
-            "flex";
-
-
-        const paragraph =
-            successMessage.querySelector(
-                "p"
-            );
-
-
-        if (paragraph) {
-
-            paragraph.textContent =
-                message;
-
-        }
-
-    }
-
-
-    successMessage?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-
-}
-
-
-/* ---------------------------------------------------------
-   ERREUR
---------------------------------------------------------- */
-
-function showError(
-    message
-) {
-
-    if (errorMessage) {
-
-        errorMessage.style.display =
-            "flex";
-
-    }
-
-
-    if (errorMessageText) {
-
-        errorMessageText.textContent =
-            message;
-
-    }
-
-
-    errorMessage?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-
-}
-
-
-function hideError() {
-
-    if (errorMessage) {
-
-        errorMessage.style.display =
-            "none";
-
-    }
-
-}
-
-
-function hideSuccess() {
-
-    if (successMessage) {
-
-        successMessage.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* =========================================================
-   BOUTON
-========================================================= */
-
-function setSubmitting(
-    submitting
-) {
-
-    if (!submitButton) {
-        return;
-    }
-
-
-    submitButton.disabled =
-        submitting;
-
-
-    if (submitting) {
-
-        submitButtonText &&
-            (
-                submitButtonText.textContent =
-                    "Publication..."
-            );
-
-
-        submitButton.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>Publication...</span>
-        `;
-
-    } else {
-
-        submitButton.innerHTML = `
-            <i class="fa-solid fa-paper-plane"></i>
-            <span>Publier l'offre</span>
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   NORMALISATION
-========================================================= */
-
-function normalizeText(
-    value
-) {
-
-    return String(value || "")
-        .trim();
-
-}
-
-
-function normalizeArray(
-    value
-) {
-
-    if (!value) {
-        return [];
-    }
-
-
-    return String(value)
-        .split(",")
-        .map(item =>
-            item.trim()
-        )
-        .filter(Boolean);
-
-}
-
-
-/* =========================================================
-   EMAIL
-========================================================= */
-
-function isValidEmail(
-    value
-) {
-
-    if (!value) {
-        return true;
-    }
-
-
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        .test(value);
-
-}
-
-
-/* =========================================================
-   URL
-========================================================= */
-
-function isValidUrl(
-    value
-) {
-
-    if (!value) {
-        return true;
-    }
-
-
-    try {
-
-        const url =
-            new URL(value);
-
-
-        return [
-            "http:",
-            "https:"
-        ].includes(
-            url.protocol
-        );
-
-    } catch {
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================================
-   VALIDATION
-========================================================= */
-
-function markInvalid(
-    element
-) {
+    const element =
+        document.getElementById(id);
 
     if (!element) {
-        return;
+        return "";
     }
 
-
-    const field =
-        element.closest(
-            ".publish-job-field"
-        );
-
-
-    if (field) {
-
-        field.classList.add(
-            "invalid"
-        );
-
-    }
-
+    return element.value.trim();
 }
 
 
-function clearInvalidFields() {
+function showError(message) {
 
-    document
-        .querySelectorAll(
-            ".publish-job-field.invalid"
-        )
-        .forEach(field => {
+    if (successMessage) {
+        successMessage.style.display = "none";
+    }
 
-            field.classList.remove(
-                "invalid"
-            );
+    if (errorMessage) {
 
-        });
+        errorMessage.textContent =
+            message;
 
+        errorMessage.style.display =
+            "block";
+    }
 }
 
 
-function validateForm() {
+function showSuccess(message) {
 
-    clearInvalidFields();
-
-
-    const title =
-        normalizeText(
-            jobTitle?.value
-        );
-
-
-    const category =
-        normalizeText(
-            jobCategory?.value
-        );
-
-
-    const contract =
-        normalizeText(
-            jobContract?.value
-        );
-
-
-    const city =
-        normalizeText(
-            jobCity?.value
-        );
-
-
-    const description =
-        normalizeText(
-            jobDescription?.value
-        );
-
-
-    const company =
-        normalizeText(
-            companyName?.value
-        );
-
-
-    if (!title) {
-
-        markInvalid(jobTitle);
-
-        showError(
-            "Veuillez renseigner l'intitulé du poste."
-        );
-
-        jobTitle?.focus();
-
-        return false;
-
+    if (errorMessage) {
+        errorMessage.style.display =
+            "none";
     }
 
+    if (successMessage) {
 
-    if (!category) {
+        successMessage.textContent =
+            message;
 
-        markInvalid(jobCategory);
-
-        showError(
-            "Veuillez sélectionner un domaine."
-        );
-
-        jobCategory?.focus();
-
-        return false;
-
+        successMessage.style.display =
+            "block";
     }
-
-
-    if (!contract) {
-
-        markInvalid(jobContract);
-
-        showError(
-            "Veuillez sélectionner le type de contrat."
-        );
-
-        jobContract?.focus();
-
-        return false;
-
-    }
-
-
-    if (!city) {
-
-        markInvalid(jobCity);
-
-        showError(
-            "Veuillez renseigner la ville."
-        );
-
-        jobCity?.focus();
-
-        return false;
-
-    }
-
-
-    if (!description) {
-
-        markInvalid(jobDescription);
-
-        showError(
-            "Veuillez renseigner la description du poste."
-        );
-
-        jobDescription?.focus();
-
-        return false;
-
-    }
-
-
-    if (description.length < 30) {
-
-        markInvalid(jobDescription);
-
-        showError(
-            "La description du poste doit contenir au moins 30 caractères."
-        );
-
-        jobDescription?.focus();
-
-        return false;
-
-    }
-
-
-    if (!company) {
-
-        markInvalid(companyName);
-
-        showError(
-            "Veuillez renseigner le nom de l'entreprise."
-        );
-
-        companyName?.focus();
-
-        return false;
-
-    }
-
-
-    const email =
-        normalizeText(
-            companyEmail?.value
-        );
-
-
-    if (
-        email &&
-        !isValidEmail(email)
-    ) {
-
-        markInvalid(companyEmail);
-
-        showError(
-            "L'adresse email de candidature n'est pas valide."
-        );
-
-        companyEmail?.focus();
-
-        return false;
-
-    }
-
-
-    const link =
-        normalizeText(
-            applicationLink?.value
-        );
-
-
-    if (
-        link &&
-        !isValidUrl(link)
-    ) {
-
-        markInvalid(applicationLink);
-
-        showError(
-            "Le lien de candidature doit commencer par http:// ou https://."
-        );
-
-        applicationLink?.focus();
-
-        return false;
-
-    }
-
-
-    /* -------------------------------------------------------
-       SALAIRE
-    ------------------------------------------------------- */
-
-    const selectedSalaryType =
-        salaryType?.value ||
-        "negociable";
-
-
-    if (
-        selectedSalaryType === "intervalle"
-    ) {
-
-        const min =
-            parseFloat(
-                salaryMin?.value
-            );
-
-
-        const max =
-            parseFloat(
-                salaryMax?.value
-            );
-
-
-        if (
-            !Number.isFinite(min) ||
-            min < 0
-        ) {
-
-            markInvalid(salaryMin);
-
-            showError(
-                "Veuillez renseigner un salaire minimum valide."
-            );
-
-            salaryMin?.focus();
-
-            return false;
-
-        }
-
-
-        if (
-            !Number.isFinite(max) ||
-            max < 0
-        ) {
-
-            markInvalid(salaryMax);
-
-            showError(
-                "Veuillez renseigner un salaire maximum valide."
-            );
-
-            salaryMax?.focus();
-
-            return false;
-
-        }
-
-
-        if (max < min) {
-
-            markInvalid(salaryMin);
-            markInvalid(salaryMax);
-
-            showError(
-                "Le salaire maximum doit être supérieur ou égal au salaire minimum."
-            );
-
-            return false;
-
-        }
-
-    }
-
-
-    if (
-        selectedSalaryType === "fixe"
-    ) {
-
-        const directSalary =
-            normalizeText(
-                jobSalary?.value
-            );
-
-
-        if (!directSalary) {
-
-            markInvalid(jobSalary);
-
-            showError(
-                "Veuillez renseigner le salaire proposé."
-            );
-
-            jobSalary?.focus();
-
-            return false;
-
-        }
-
-    }
-
-
-    /* -------------------------------------------------------
-       CONDITIONS
-    ------------------------------------------------------- */
-
-    if (
-        jobTerms &&
-        !jobTerms.checked
-    ) {
-
-        showError(
-            "Vous devez accepter les règles de publication."
-        );
-
-        jobTerms.focus();
-
-        return false;
-
-    }
-
-
-    /* -------------------------------------------------------
-       IMAGE
-    ------------------------------------------------------- */
-
-    if (companyImage?.files?.length) {
-
-        const file =
-            companyImage.files[0];
-
-
-        if (
-            !ALLOWED_IMAGE_TYPES.includes(
-                file.type
-            )
-        ) {
-
-            showError(
-                "L'image doit être au format JPG, PNG ou WEBP."
-            );
-
-            companyImage.focus();
-
-            return false;
-
-        }
-
-
-        if (
-            file.size >
-            MAX_IMAGE_SIZE
-        ) {
-
-            showError(
-                "L'image ne doit pas dépasser 5 Mo."
-            );
-
-            companyImage.focus();
-
-            return false;
-
-        }
-
-    }
-
-
-    return true;
-
 }
 
 
-/* =========================================================
-   GESTION DU SALAIRE
-========================================================= */
+function hideMessages() {
 
-function updateSalaryFields() {
-
-    const type =
-        salaryType?.value ||
-        "negociable";
-
-
-    if (
-        salaryMinField
-    ) {
-
-        salaryMinField.style.display =
-            type === "intervalle"
-                ? ""
-                : "none";
-
+    if (errorMessage) {
+        errorMessage.style.display = "none";
     }
 
-
-    if (
-        salaryMaxField
-    ) {
-
-        salaryMaxField.style.display =
-            type === "intervalle"
-                ? ""
-                : "none";
-
+    if (successMessage) {
+        successMessage.style.display = "none";
     }
-
-
-    if (
-        salaryDirectField
-    ) {
-
-        salaryDirectField.style.display =
-            type === "fixe"
-                ? ""
-                : "none";
-
-    }
-
-
-    if (
-        type !== "intervalle"
-    ) {
-
-        if (salaryMin) {
-            salaryMin.value = "";
-        }
-
-        if (salaryMax) {
-            salaryMax.value = "";
-        }
-
-    }
-
-
-    if (
-        type !== "fixe"
-    ) {
-
-        if (jobSalary) {
-            jobSalary.value = "";
-        }
-
-    }
-
 }
 
 
-/* =========================================================
-   COMPTEUR DESCRIPTION
-========================================================= */
+function splitLines(text) {
 
-function updateDescriptionCounter() {
-
-    if (
-        !descriptionCounter ||
-        !jobDescription
-    ) {
-        return;
-    }
-
-
-    descriptionCounter.textContent =
-        jobDescription.value.length;
-
+    return String(text || "")
+        .split(/\r?\n/)
+        .map(item => item.trim())
+        .filter(Boolean);
 }
 
 
@@ -1099,62 +163,83 @@ function updateDescriptionCounter() {
    APERÇU IMAGE
 ========================================================= */
 
-function previewImage(
-    file
-) {
+if (imageInput && imagePreview) {
 
-    if (
-        !file ||
-        !imagePreview ||
-        !imagePreviewImg
-    ) {
-        return;
-    }
-
-
-    const objectUrl =
-        URL.createObjectURL(
-            file
-        );
-
-
-    imagePreviewImg.src =
-        objectUrl;
-
-
-    imagePreview.style.display =
-        "block";
-
-
-    imagePreviewImg.onload =
+    imageInput.addEventListener(
+        "change",
         () => {
 
-            URL.revokeObjectURL(
-                objectUrl
-            );
+            const file =
+                imageInput.files?.[0];
 
-        };
+            if (!file) {
 
-}
+                imagePreview.src = "";
 
+                imagePreview.style.display =
+                    "none";
 
-function clearImagePreview() {
-
-    if (imagePreview) {
-
-        imagePreview.style.display =
-            "none";
-
-    }
+                return;
+            }
 
 
-    if (imagePreviewImg) {
+            const validTypes = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
 
-        imagePreviewImg.src =
-            "";
 
-    }
+            if (!validTypes.includes(file.type)) {
 
+                imageInput.value = "";
+
+                imagePreview.src = "";
+
+                imagePreview.style.display =
+                    "none";
+
+                showError(
+                    "Format d'image invalide. Utilisez JPG, PNG ou WEBP."
+                );
+
+                return;
+            }
+
+
+            if (file.size > 5 * 1024 * 1024) {
+
+                imageInput.value = "";
+
+                imagePreview.src = "";
+
+                imagePreview.style.display =
+                    "none";
+
+                showError(
+                    "L'image ne doit pas dépasser 5 MB."
+                );
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                event => {
+
+                    imagePreview.src =
+                        event.target.result;
+
+                    imagePreview.style.display =
+                        "block";
+                };
+
+            reader.readAsDataURL(file);
+        }
+    );
 }
 
 
@@ -1163,534 +248,45 @@ function clearImagePreview() {
 ========================================================= */
 
 async function uploadCompanyImage(
-    file,
-    user
+    user,
+    file
 ) {
 
-    if (
-        !file ||
-        !storage
-    ) {
-
+    if (!file) {
         return "";
+    }
 
+
+    if (!storage) {
+
+        throw new Error(
+            "Firebase Storage n'est pas disponible."
+        );
     }
 
 
     const safeName =
         file.name
-            .replace(
-                /[^a-zA-Z0-9._-]/g,
-                "_"
-            );
+            .replace(/[^a-zA-Z0-9._-]/g, "_");
 
 
-    const fileName =
-        `${Date.now()}_${safeName}`;
+    const filePath =
+        `job-images/${user.uid}/${Date.now()}-${safeName}`;
 
 
-    const storagePath =
-        `job-images/${user.uid}/${fileName}`;
-
-
-    const storageReference =
-        ref(
-            storage,
-            storagePath
-        );
+    const storageRef =
+        ref(storage, filePath);
 
 
     await uploadBytes(
-        storageReference,
-        file,
-        {
-            contentType:
-                file.type
-        }
+        storageRef,
+        file
     );
 
 
-    const downloadUrl =
-        await getDownloadURL(
-            storageReference
-        );
-
-
-    return downloadUrl;
-
-}
-
-
-/* =========================================================
-   DONNÉES DU FORMULAIRE
-========================================================= */
-
-function collectFormData() {
-
-    const salarySelectedType =
-        salaryType?.value ||
-        "negociable";
-
-
-    let salaryValue =
-        "";
-
-
-    let salaryMinValue =
-        null;
-
-
-    let salaryMaxValue =
-        null;
-
-
-    if (
-        salarySelectedType === "fixe"
-    ) {
-
-        salaryValue =
-            normalizeText(
-                jobSalary?.value
-            );
-
-    }
-
-
-    if (
-        salarySelectedType === "intervalle"
-    ) {
-
-        salaryMinValue =
-            Number(
-                salaryMin.value
-            );
-
-
-        salaryMaxValue =
-            Number(
-                salaryMax.value
-            );
-
-    }
-
-
-    const skillsArray =
-        normalizeArray(
-            jobSkills?.value
-        );
-
-
-    return {
-
-        title:
-            normalizeText(
-                jobTitle?.value
-            ),
-
-        category:
-            normalizeText(
-                jobCategory?.value
-            ),
-
-        contractType:
-            normalizeText(
-                jobContract?.value
-            ),
-
-        experience:
-            normalizeText(
-                jobExperience?.value
-            ),
-
-        city:
-            normalizeText(
-                jobCity?.value
-            ),
-
-        description:
-            normalizeText(
-                jobDescription?.value
-            ),
-
-        skills:
-            skillsArray,
-
-        requirements:
-            normalizeText(
-                jobRequirements?.value
-            ),
-
-        salaryType:
-            salarySelectedType,
-
-        salary:
-            salaryValue,
-
-        salaryMin:
-            salaryMinValue,
-
-        salaryMax:
-            salaryMaxValue,
-
-        currency:
-            normalizeText(
-                jobCurrency?.value
-            ),
-
-        company:
-            normalizeText(
-                companyName?.value
-            ),
-
-        phone:
-            normalizeText(
-                companyPhone?.value
-            ),
-
-        email:
-            normalizeText(
-                companyEmail?.value
-            ),
-
-        applicationLink:
-            normalizeText(
-                applicationLink?.value
-            ),
-
-        companyDescription:
-            normalizeText(
-                companyDescription?.value
-            ),
-
-        benefits:
-            normalizeText(
-                jobBenefits?.value
-            )
-
-    };
-
-}
-
-
-/* =========================================================
-   PUBLICATION FIRESTORE
-========================================================= */
-
-async function publishJob() {
-
-    if (!db) {
-
-        throw new Error(
-            "Firestore n'est pas disponible."
-        );
-
-    }
-
-
-    if (!currentUser) {
-
-        throw new Error(
-            "Vous devez être connecté pour publier une offre."
-        );
-
-    }
-
-
-    const formData =
-        collectFormData();
-
-
-    let imageUrl =
-        "";
-
-
-    /* -------------------------------------------------------
-       IMAGE
-    ------------------------------------------------------- */
-
-    if (
-        companyImage?.files?.length
-    ) {
-
-        const file =
-            companyImage.files[0];
-
-
-        imageUrl =
-            await uploadCompanyImage(
-                file,
-                currentUser
-            );
-
-    }
-
-
-    /* -------------------------------------------------------
-       DOCUMENT FIRESTORE
-    ------------------------------------------------------- */
-
-    const jobData = {
-
-        /* Offre */
-
-        title:
-            formData.title,
-
-        category:
-            formData.category,
-
-        contractType:
-            formData.contractType,
-
-        experience:
-            formData.experience,
-
-        city:
-            formData.city,
-
-        description:
-            formData.description,
-
-        skills:
-            formData.skills,
-
-        requirements:
-            formData.requirements,
-
-        /* Salaire */
-
-        salaryType:
-            formData.salaryType,
-
-        salary:
-            formData.salary,
-
-        salaryMin:
-            formData.salaryMin,
-
-        salaryMax:
-            formData.salaryMax,
-
-        currency:
-            formData.currency,
-
-        /* Entreprise */
-
-        company:
-            formData.company,
-
-        companyDescription:
-            formData.companyDescription,
-
-        phone:
-            formData.phone,
-
-        email:
-            formData.email,
-
-        applicationLink:
-            formData.applicationLink,
-
-        /* Avantages */
-
-        benefits:
-            formData.benefits,
-
-        /* Image */
-
-        image:
-            imageUrl,
-
-        /* Propriétaire */
-
-        userId:
-            currentUser.uid,
-
-        recruiterEmail:
-            currentUser.email || "",
-
-        /* Statut */
-
-        status:
-            "active",
-
-        /* Dates */
-
-        createdAt:
-            serverTimestamp(),
-
-        updatedAt:
-            serverTimestamp()
-
-    };
-
-
-    const jobReference =
-        await addDoc(
-            collection(
-                db,
-                "jobs"
-            ),
-            jobData
-        );
-
-
-    return jobReference.id;
-
-}
-
-
-/* =========================================================
-   SOUMISSION
-========================================================= */
-
-async function handleSubmit(
-    event
-) {
-
-    event.preventDefault();
-
-
-    hideError();
-    hideSuccess();
-
-
-    /* -------------------------------------------------------
-       Auth
-    ------------------------------------------------------- */
-
-    if (!currentUser) {
-
-        showError(
-            "Vous devez être connecté pour publier une offre."
-        );
-
-        return;
-
-    }
-
-
-    /* -------------------------------------------------------
-       Validation
-    ------------------------------------------------------- */
-
-    if (!validateForm()) {
-        return;
-    }
-
-
-    setSubmitting(true);
-
-
-    try {
-
-        const jobId =
-            await publishJob();
-
-
-        showSuccess(
-            "Votre offre a été publiée avec succès."
-        );
-
-
-        /*
-         * On désactive le formulaire après succès.
-         */
-
-        const fields =
-            form.querySelectorAll(
-                "input, select, textarea, button"
-            );
-
-
-        fields.forEach(
-            field => {
-
-                if (
-                    field !== submitButton
-                ) {
-
-                    field.disabled =
-                        true;
-
-                }
-
-            }
-        );
-
-
-        /*
-         * Redirection vers la fiche de l'offre.
-         *
-         * Petit délai pour laisser voir le message
-         * de confirmation.
-         */
-
-        setTimeout(
-            () => {
-
-                window.location.href =
-                    `job-details.html?id=${encodeURIComponent(jobId)}`;
-
-            },
-            1500
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "PUBLICATION JOB — Erreur publication :",
-            error
-        );
-
-
-        let message =
-            "Une erreur est survenue lors de la publication de l'offre.";
-
-
-        if (
-            error?.code ===
-            "permission-denied"
-        ) {
-
-            message =
-                "Publication refusée par Firebase. Vérifiez les règles Firestore.";
-
-        }
-
-
-        if (
-            error?.code ===
-            "storage/unauthorized"
-        ) {
-
-            message =
-                "L'image ne peut pas être envoyée. Vérifiez les règles Firebase Storage.";
-
-        }
-
-
-        if (
-            error?.code ===
-            "storage/unauthenticated"
-        ) {
-
-            message =
-                "Vous devez être connecté pour envoyer une image.";
-
-        }
-
-
-        showError(message);
-
-
-    } finally {
-
-        setSubmitting(false);
-
-    }
-
+    return await getDownloadURL(
+        storageRef
+    );
 }
 
 
@@ -1698,228 +294,510 @@ async function handleSubmit(
    AUTHENTIFICATION
 ========================================================= */
 
-function handleAuthState(
-    user
-) {
-
-    currentUser =
-        user;
+let currentUser = null;
 
 
-    if (user) {
+onAuthStateChanged(
+    auth,
+    user => {
 
-        hideAuthMessage();
+        currentUser = user || null;
 
 
-        if (submitButton) {
-
-            submitButton.disabled =
-                false;
-
+        if (!authMessage) {
+            return;
         }
 
 
-        console.log(
-            "PUBLICATION JOB — Utilisateur connecté :",
-            user.uid
-        );
+        if (!user) {
+
+            authMessage.textContent =
+                "Vous devez être connecté pour publier une offre.";
+
+            authMessage.style.display =
+                "block";
+
+            if (publishButton) {
+                publishButton.disabled = true;
+            }
+
+            return;
+        }
 
 
-    } else {
+        authMessage.textContent =
+            `Connecté : ${user.email || "Compte utilisateur"}`;
 
-        showAuthMessage(
-            "Vous devez être connecté pour publier une offre."
-        );
+        authMessage.style.display =
+            "block";
+
+        authMessage.style.background =
+            "rgba(32, 168, 107, .08)";
+
+        authMessage.style.borderColor =
+            "rgba(32, 168, 107, .20)";
+
+        authMessage.style.color =
+            "#167c4a";
 
 
-        if (submitButton) {
-
-            submitButton.disabled =
-                true;
-
+        if (publishButton) {
+            publishButton.disabled = false;
         }
 
     }
+);
 
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function validateForm() {
+
+    const title =
+        value("jobTitle");
+
+    const company =
+        value("jobCompany");
+
+    const category =
+        value("jobCategory");
+
+    const contractType =
+        value("jobContractType");
+
+    const city =
+        value("jobCity");
+
+    const description =
+        value("jobDescription");
+
+    const terms =
+        document.getElementById("jobTerms");
+
+
+    if (!title) {
+        showError(
+            "Veuillez renseigner l'intitulé du poste."
+        );
+        return false;
+    }
+
+
+    if (!company) {
+        showError(
+            "Veuillez renseigner le nom de l'entreprise."
+        );
+        return false;
+    }
+
+
+    if (!category) {
+        showError(
+            "Veuillez sélectionner une catégorie."
+        );
+        return false;
+    }
+
+
+    if (!contractType) {
+        showError(
+            "Veuillez sélectionner le type de contrat."
+        );
+        return false;
+    }
+
+
+    if (!city) {
+        showError(
+            "Veuillez renseigner la localisation."
+        );
+        return false;
+    }
+
+
+    if (!description) {
+        showError(
+            "Veuillez renseigner la description du poste."
+        );
+        return false;
+    }
+
+
+    if (!terms?.checked) {
+        showError(
+            "Veuillez accepter les conditions de publication."
+        );
+        return false;
+    }
+
+
+    return true;
 }
 
 
 /* =========================================================
-   EVENEMENTS SALAIRE
-========================================================= */
-
-if (salaryType) {
-
-    salaryType.addEventListener(
-        "change",
-        updateSalaryFields
-    );
-
-}
-
-
-/* =========================================================
-   COMPTEUR
-========================================================= */
-
-if (jobDescription) {
-
-    jobDescription.addEventListener(
-        "input",
-        updateDescriptionCounter
-    );
-
-}
-
-
-/* =========================================================
-   IMAGE
-========================================================= */
-
-if (companyImage) {
-
-    companyImage.addEventListener(
-        "change",
-        () => {
-
-            const file =
-                companyImage.files?.[0];
-
-
-            if (!file) {
-
-                clearImagePreview();
-
-                return;
-
-            }
-
-
-            previewImage(file);
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SUPPRIMER ERREUR LORSQUE L'UTILISATEUR MODIFIE
-========================================================= */
-
-document
-    .querySelectorAll(
-        ".publish-job-field input, .publish-job-field select, .publish-job-field textarea"
-    )
-    .forEach(
-        field => {
-
-            field.addEventListener(
-                "input",
-                () => {
-
-                    const wrapper =
-                        field.closest(
-                            ".publish-job-field"
-                        );
-
-
-                    wrapper?.classList.remove(
-                        "invalid"
-                    );
-
-                }
-            );
-
-
-            field.addEventListener(
-                "change",
-                () => {
-
-                    const wrapper =
-                        field.closest(
-                            ".publish-job-field"
-                        );
-
-
-                    wrapper?.classList.remove(
-                        "invalid"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   FORMULAIRE
+   PUBLICATION
 ========================================================= */
 
 if (form) {
 
     form.addEventListener(
         "submit",
-        handleSubmit
-    );
+        async event => {
 
+            event.preventDefault();
+
+            hideMessages();
+
+
+            /* AUTH */
+
+            if (!currentUser) {
+
+                showError(
+                    "Vous devez être connecté pour publier une offre."
+                );
+
+                return;
+            }
+
+
+            /* FIREBASE */
+
+            if (!db) {
+
+                showError(
+                    "La base de données n'est pas disponible."
+                );
+
+                return;
+            }
+
+
+            /* VALIDATION */
+
+            if (!validateForm()) {
+                return;
+            }
+
+
+            /* BOUTON */
+
+            const originalButton =
+                publishButton?.innerHTML;
+
+
+            if (publishButton) {
+
+                publishButton.disabled =
+                    true;
+
+                publishButton.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Publication...</span>
+                `;
+            }
+
+
+            try {
+
+                /* ---------------------------------------------
+                   IMAGE
+                --------------------------------------------- */
+
+                let imageUrl = "";
+
+                const selectedFile =
+                    imageInput?.files?.[0] || null;
+
+
+                if (selectedFile) {
+
+                    imageUrl =
+                        await uploadCompanyImage(
+                            currentUser,
+                            selectedFile
+                        );
+                }
+
+
+                /* ---------------------------------------------
+                   DONNÉES
+                --------------------------------------------- */
+
+                const jobData = {
+
+                    title:
+                        value("jobTitle"),
+
+                    company:
+                        value("jobCompany"),
+
+                    category:
+                        value("jobCategory"),
+
+                    poste:
+                        value("jobPositions") || "1",
+
+                    city:
+                        value("jobCity"),
+
+                    contractType:
+                        value("jobContractType"),
+
+                    experience:
+                        value("jobExperience"),
+
+                    salary:
+                        value("jobSalary") ||
+                        "Selon la grille de l'entreprise",
+
+                    description:
+                        value("jobDescription"),
+
+                    responsibilities:
+                        splitLines(
+                            value("jobResponsibilities")
+                        ),
+
+                    skills:
+                        splitLines(
+                            value("jobSkills")
+                        ),
+
+                    requirements:
+                        splitLines(
+                            value("jobRequirements")
+                        ),
+
+                    benefits:
+                        splitLines(
+                            value("jobBenefits")
+                        ),
+
+                    companyDescription:
+                        value("companyDescription"),
+
+                    phone:
+                        value("jobPhone"),
+
+                    email:
+                        value("jobEmail") ||
+                        currentUser.email ||
+                        "",
+
+                    providerEmail:
+                        value("jobEmail") ||
+                        currentUser.email ||
+                        "",
+
+                    applicationLink:
+                        value("applicationLink"),
+
+                    applicationDeadline:
+                        value("jobDeadline"),
+
+                    availability:
+                        value("jobAvailability"),
+
+                    travelRequired:
+                        value("jobTravel"),
+
+                    image:
+                        imageUrl,
+
+                    userId:
+                        currentUser.uid,
+
+                    status:
+                        "active",
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    updatedAt:
+                        serverTimestamp()
+                };
+
+
+                console.log(
+                    "PUBLISH JOB — Données :",
+                    jobData
+                );
+
+
+                /* ---------------------------------------------
+                   FIRESTORE
+                --------------------------------------------- */
+
+                const docRef =
+                    await addDoc(
+                        collection(
+                            db,
+                            "jobs"
+                        ),
+                        jobData
+                    );
+
+
+                console.log(
+                    "PUBLISH JOB — Offre créée :",
+                    docRef.id
+                );
+
+
+                showSuccess(
+                    "Votre offre d'emploi a été publiée avec succès."
+                );
+
+
+                form.reset();
+
+
+                /* Valeur par défaut */
+
+                const salaryField =
+                    document.getElementById(
+                        "jobSalary"
+                    );
+
+                if (salaryField) {
+
+                    salaryField.value =
+                        "Selon la grille de l'entreprise";
+                }
+
+
+                if (imagePreview) {
+
+                    imagePreview.src = "";
+
+                    imagePreview.style.display =
+                        "none";
+                }
+
+
+                /*
+                 * Redirection après publication.
+                 * Un petit délai permet d'afficher
+                 * le message de succès.
+                 */
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            `job-details.html?id=${encodeURIComponent(
+                                docRef.id
+                            )}`;
+
+                    },
+                    1200
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "PUBLISH JOB — Erreur :",
+                    error
+                );
+
+
+                showError(
+                    error?.message ||
+                    "Impossible de publier l'offre."
+                );
+
+
+            } finally {
+
+                if (publishButton) {
+
+                    publishButton.disabled =
+                        false;
+
+                    publishButton.innerHTML =
+                        originalButton ||
+                        `
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Publier l'offre</span>
+                        `;
+                }
+            }
+        }
+    );
 }
 
 
 /* =========================================================
-   INITIALISATION
+   MENU MOBILE
 ========================================================= */
 
-function init() {
+function setupMobileMenu() {
 
-    updateSalaryFields();
+    const sidebar =
+        document.getElementById("sidebar");
 
-    updateDescriptionCounter();
+    const overlay =
+        document.getElementById("sidebarOverlay");
 
-    clearImagePreview();
+    const menuButton =
+        document.getElementById("menuButton");
 
 
-    if (!auth) {
-
-        showAuthMessage(
-            "Firebase n'est pas disponible."
-        );
-
-        if (submitButton) {
-            submitButton.disabled =
-                true;
-        }
-
+    if (
+        !sidebar ||
+        !overlay ||
+        !menuButton
+    ) {
         return;
-
     }
 
 
-    onAuthStateChanged(
-        auth,
-        handleAuthState
+    menuButton.addEventListener(
+        "click",
+        () => {
+
+            const opened =
+                sidebar.classList.toggle(
+                    "open"
+                );
+
+            overlay.classList.toggle(
+                "active",
+                opened
+            );
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                String(opened)
+            );
+        }
     );
 
+
+    overlay.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+            overlay.classList.remove(
+                "active"
+            );
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    );
 }
 
 
-/* =========================================================
-   DOM READY
-========================================================= */
-
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        init
-    );
-
-} else {
-
-    init();
-
-}
+setupMobileMenu();
