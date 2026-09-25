@@ -1,137 +1,1100 @@
-<!-- CATÉGORIE -->
-<div class="form-group">
+<!DOCTYPE html>
+<html lang="fr">
 
-    <label for="jobCategory">
-        Catégorie du poste
-    </label>
+<head>
+    <meta charset="UTF-8">
 
-    <select
-        id="jobCategory"
-        name="category"
-    >
-        <option value="">
-            Sélectionner
-        </option>
-
-        <option value="Cadre de Direction">
-            Cadre de Direction
-        </option>
-
-        <option value="Cadre intermédiaire">
-            Cadre intermédiaire
-        </option>
-
-        <option value="Agent de maîtrise">
-            Agent de maîtrise
-        </option>
-
-        <option value="Employé">
-            Employé
-        </option>
-
-        <option value="Technicien">
-            Technicien
-        </option>
-
-        <option value="Ouvrier">
-            Ouvrier
-        </option>
-
-        <option value="Stagiaire">
-            Stagiaire
-        </option>
-
-        <option value="Autre">
-            Autre
-        </option>
-    </select>
-
-</div>
-
-
-<!-- NOMBRE DE POSTES -->
-<div class="form-group">
-
-    <label for="jobPositions">
-        Nombre de postes à pourvoir
-    </label>
-
-    <input
-        type="number"
-        id="jobPositions"
-        name="numberOfPositions"
-        min="1"
-        value="1"
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
 
-</div>
-
-
-<!-- DATE LIMITE -->
-<div class="form-group">
-
-    <label for="jobDeadline">
-        Date limite de candidature
-    </label>
-
-    <input
-        type="date"
-        id="jobDeadline"
-        name="applicationDeadline"
+    <meta
+        name="description"
+        content="Publiez une offre d'emploi sur CAMU SERVICES."
     >
 
-</div>
+    <title>Publier une offre d'emploi | CAMU SERVICES</title>
 
-
-<!-- DISPONIBILITÉ -->
-<div class="form-group">
-
-    <label for="jobAvailability">
-        Disponibilité
-    </label>
-
-    <input
-        type="text"
-        id="jobAvailability"
-        name="availability"
-        placeholder="Ex. Immédiate"
+    <link
+        rel="stylesheet"
+        href="css/style.css"
     >
 
-</div>
-
-
-<!-- DÉPLACEMENTS -->
-<div class="form-group">
-
-    <label for="jobTravel">
-        Déplacements éventuels
-    </label>
-
-    <select
-        id="jobTravel"
-        name="travelRequired"
+    <link
+        rel="stylesheet"
+        href="css/jobs.css"
     >
 
-        <option value="">
-            Non précisé
-        </option>
+    <link
+        rel="stylesheet"
+        href="css/publier-job.css"
+    >
 
-        <option value="Aucun déplacement">
-            Aucun déplacement
-        </option>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
 
-        <option value="Déplacements occasionnels">
-            Déplacements occasionnels
-        </option>
 
-        <option value="Déplacements fréquents">
-            Déplacements fréquents
-        </option>
+<body class="publish-job-page">
 
-        <option value="Disponible pour voyager au besoin">
-            Disponible pour voyager au besoin
-        </option>
+    <!-- OVERLAY MOBILE -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
 
-    </select>
 
-</div>
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <a
+                href="index.html"
+                class="sidebar-logo"
+            >
+                <span class="logo-icon">
+                    <i class="fa-solid fa-store"></i>
+                </span>
+
+                <span class="logo-text">
+                    CAMU SERVICES
+                </span>
+            </a>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="index.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a
+                href="services.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Services</span>
+            </a>
+
+            <a
+                href="jobs.html"
+                class="sidebar-link active"
+            >
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Jobs</span>
+            </a>
+
+            <a
+                href="immobilier.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>Immobilier</span>
+            </a>
+
+            <a
+                href="commerce.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-shop"></i>
+                <span>Commerce</span>
+            </a>
+
+            <a
+                href="vehicules.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-car"></i>
+                <span>Véhicules</span>
+            </a>
+
+            <a
+                href="hotels.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-hotel"></i>
+                <span>Hôtels</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="compte.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+            <a
+                href="parametres.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Paramètres</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <div class="main-wrapper">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    id="menuButton"
+                    aria-label="Ouvrir le menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <a
+                    href="jobs.html"
+                    class="topbar-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Jobs</span>
+                </a>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <a
+                    href="favoris.html"
+                    class="topbar-action"
+                    title="Favoris"
+                >
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+
+                <a
+                    href="compte.html"
+                    class="topbar-action"
+                    title="Mon compte"
+                >
+                    <i class="fa-regular fa-user"></i>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             CONTENU
+        ====================================================== -->
+
+        <main class="main-content">
+
+            <div class="publish-job-main">
+
+                <div class="publish-job-container">
+
+
+                    <!-- HEADER -->
+
+                    <div class="publish-job-header">
+
+                        <span class="publish-badge">
+                            <i class="fa-solid fa-briefcase"></i>
+                            Recrutement
+                        </span>
+
+                        <h1>
+                            Publier une offre d'emploi
+                        </h1>
+
+                        <p>
+                            Présentez clairement votre offre afin
+                            d'attirer les candidats correspondants
+                            à votre besoin.
+                        </p>
+
+                    </div>
+
+
+                    <!-- AUTH -->
+
+                    <div
+                        id="authMessage"
+                        style="display:none;"
+                    ></div>
+
+
+                    <!-- SUCCESS -->
+
+                    <div
+                        id="publishJobSuccess"
+                        class="success-message"
+                        style="display:none;"
+                    ></div>
+
+
+                    <!-- ERROR -->
+
+                    <div
+                        id="publishJobError"
+                        class="error-message"
+                        style="display:none;"
+                    ></div>
+
+
+                    <!-- =================================================
+                         FORMULAIRE
+                    ================================================== -->
+
+                    <form
+                        id="publishJobForm"
+                        novalidate
+                    >
+
+
+                        <!-- =================================================
+                             INFORMATIONS GÉNÉRALES
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    OFFRE
+                                </span>
+
+                                <h2>
+                                    Informations générales
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <!-- TITRE -->
+
+                                <div class="form-group full-width">
+
+                                    <label for="jobTitle">
+                                        Intitulé du poste
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobTitle"
+                                        name="title"
+                                        placeholder="Ex. Électricien industriel"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- ENTREPRISE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobCompany">
+                                        Nom de l'entreprise
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobCompany"
+                                        name="company"
+                                        placeholder="Ex. CAMU SERVICES"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- CATÉGORIE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobCategory">
+                                        Catégorie
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <select
+                                        id="jobCategory"
+                                        name="category"
+                                        required
+                                    >
+                                        <option value="">
+                                            Sélectionner
+                                        </option>
+
+                                        <option value="Cadre de Direction">
+                                            Cadre de Direction
+                                        </option>
+
+                                        <option value="Cadre intermédiaire">
+                                            Cadre intermédiaire
+                                        </option>
+
+                                        <option value="Agent de maîtrise">
+                                            Agent de maîtrise
+                                        </option>
+
+                                        <option value="Employé">
+                                            Employé
+                                        </option>
+
+                                        <option value="Technicien">
+                                            Technicien
+                                        </option>
+
+                                        <option value="Ouvrier">
+                                            Ouvrier
+                                        </option>
+
+                                        <option value="Stagiaire">
+                                            Stagiaire
+                                        </option>
+
+                                        <option value="Autre">
+                                            Autre
+                                        </option>
+                                    </select>
+
+                                </div>
+
+
+                                <!-- TYPE CONTRAT -->
+
+                                <div class="form-group">
+
+                                    <label for="jobContractType">
+                                        Type de contrat
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <select
+                                        id="jobContractType"
+                                        name="contractType"
+                                        required
+                                    >
+                                        <option value="">
+                                            Sélectionner
+                                        </option>
+
+                                        <option value="CDI">
+                                            CDI
+                                        </option>
+
+                                        <option value="CDD">
+                                            CDD
+                                        </option>
+
+                                        <option value="Stage">
+                                            Stage
+                                        </option>
+
+                                        <option value="Consultance">
+                                            Consultance
+                                        </option>
+
+                                        <option value="Temporaire">
+                                            Temporaire
+                                        </option>
+
+                                        <option value="Freelance">
+                                            Freelance
+                                        </option>
+
+                                        <option value="Autre">
+                                            Autre
+                                        </option>
+                                    </select>
+
+                                </div>
+
+
+                                <!-- NOMBRE DE POSTES -->
+
+                                <div class="form-group">
+
+                                    <label for="jobPositions">
+                                        Nombre de postes
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        id="jobPositions"
+                                        name="poste"
+                                        min="1"
+                                        value="1"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- EXPÉRIENCE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobExperience">
+                                        Expérience
+                                    </label>
+
+                                    <select
+                                        id="jobExperience"
+                                        name="experience"
+                                    >
+
+                                        <option value="">
+                                            Sélectionner
+                                        </option>
+
+                                        <option value="Aucune expérience">
+                                            Aucune expérience
+                                        </option>
+
+                                        <option value="Moins d'un an">
+                                            Moins d'un an
+                                        </option>
+
+                                        <option value="1 à 2 ans">
+                                            1 à 2 ans
+                                        </option>
+
+                                        <option value="2 à 5 ans">
+                                            2 à 5 ans
+                                        </option>
+
+                                        <option value="5 ans et plus">
+                                            5 ans et plus
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <!-- VILLE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobCity">
+                                        Localisation
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobCity"
+                                        name="city"
+                                        placeholder="Ex. Lubumbashi"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- SALAIRE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobSalary">
+                                        Rémunération
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobSalary"
+                                        name="salary"
+                                        value="Selon la grille de l'entreprise"
+                                        placeholder="Ex. Selon la grille de l'entreprise"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             CONDITIONS
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    CONDITIONS
+                                </span>
+
+                                <h2>
+                                    Informations complémentaires
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <!-- DATE LIMITE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobDeadline">
+                                        Date limite de candidature
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="jobDeadline"
+                                        name="applicationDeadline"
+                                    >
+
+                                </div>
+
+
+                                <!-- DISPONIBILITÉ -->
+
+                                <div class="form-group">
+
+                                    <label for="jobAvailability">
+                                        Disponibilité
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobAvailability"
+                                        name="availability"
+                                        placeholder="Ex. Immédiate"
+                                    >
+
+                                </div>
+
+
+                                <!-- DÉPLACEMENTS -->
+
+                                <div class="form-group">
+
+                                    <label for="jobTravel">
+                                        Déplacements
+                                    </label>
+
+                                    <select
+                                        id="jobTravel"
+                                        name="travelRequired"
+                                    >
+
+                                        <option value="">
+                                            Non précisé
+                                        </option>
+
+                                        <option value="Aucun déplacement">
+                                            Aucun déplacement
+                                        </option>
+
+                                        <option value="Déplacements occasionnels">
+                                            Déplacements occasionnels
+                                        </option>
+
+                                        <option value="Déplacements fréquents">
+                                            Déplacements fréquents
+                                        </option>
+
+                                        <option value="Disponible pour voyager au besoin">
+                                            Disponible pour voyager au besoin
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             DESCRIPTION
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    DESCRIPTION
+                                </span>
+
+                                <h2>
+                                    Description du poste
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="jobDescription">
+                                    Présentation du poste
+                                    <span class="required">*</span>
+                                </label>
+
+                                <textarea
+                                    id="jobDescription"
+                                    name="description"
+                                    rows="7"
+                                    placeholder="Décrivez le poste, son objectif et le contexte..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             RESPONSABILITÉS
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    MISSIONS
+                                </span>
+
+                                <h2>
+                                    Responsabilités
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="jobResponsibilities">
+                                    Responsabilités principales
+                                </label>
+
+                                <textarea
+                                    id="jobResponsibilities"
+                                    name="responsibilities"
+                                    rows="7"
+                                    placeholder="Une responsabilité par ligne"
+                                ></textarea>
+
+                                <small>
+                                    Exemple :<br>
+                                    Superviser les opérations<br>
+                                    Effectuer la maintenance<br>
+                                    Rédiger les rapports
+                                </small>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             PROFIL
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    PROFIL
+                                </span>
+
+                                <h2>
+                                    Compétences et exigences
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <!-- COMPÉTENCES -->
+
+                                <div class="form-group">
+
+                                    <label for="jobSkills">
+                                        Compétences
+                                    </label>
+
+                                    <textarea
+                                        id="jobSkills"
+                                        name="skills"
+                                        rows="6"
+                                        placeholder="Une compétence par ligne"
+                                    ></textarea>
+
+                                </div>
+
+
+                                <!-- EXIGENCES -->
+
+                                <div class="form-group">
+
+                                    <label for="jobRequirements">
+                                        Exigences
+                                    </label>
+
+                                    <textarea
+                                        id="jobRequirements"
+                                        name="requirements"
+                                        rows="6"
+                                        placeholder="Une exigence par ligne"
+                                    ></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             AVANTAGES
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    AVANTAGES
+                                </span>
+
+                                <h2>
+                                    Ce que l'entreprise offre
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="jobBenefits">
+                                    Avantages
+                                </label>
+
+                                <textarea
+                                    id="jobBenefits"
+                                    name="benefits"
+                                    rows="5"
+                                    placeholder="Une avantage par ligne"
+                                ></textarea>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             ENTREPRISE
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    EMPLOYEUR
+                                </span>
+
+                                <h2>
+                                    Présentation de l'entreprise
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="companyDescription">
+                                    À propos de l'entreprise
+                                </label>
+
+                                <textarea
+                                    id="companyDescription"
+                                    name="companyDescription"
+                                    rows="6"
+                                    placeholder="Présentez brièvement votre entreprise..."
+                                ></textarea>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             CANDIDATURE
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    CANDIDATURE
+                                </span>
+
+                                <h2>
+                                    Comment postuler ?
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <!-- TÉLÉPHONE -->
+
+                                <div class="form-group">
+
+                                    <label for="jobPhone">
+                                        Téléphone
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        id="jobPhone"
+                                        name="phone"
+                                        placeholder="+243..."
+                                    >
+
+                                </div>
+
+
+                                <!-- EMAIL -->
+
+                                <div class="form-group">
+
+                                    <label for="jobEmail">
+                                        Email de recrutement
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        id="jobEmail"
+                                        name="email"
+                                        placeholder="recrutement@entreprise.com"
+                                    >
+
+                                </div>
+
+
+                                <!-- LIEN -->
+
+                                <div class="form-group full-width">
+
+                                    <label for="applicationLink">
+                                        Lien de candidature
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        id="applicationLink"
+                                        name="applicationLink"
+                                        placeholder="https://..."
+                                    >
+
+                                    <small>
+                                        Lien vers le formulaire ou la page
+                                        de candidature de l'entreprise.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             IMAGE
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-section-title">
+
+                                <span>
+                                    VISUEL
+                                </span>
+
+                                <h2>
+                                    Logo de l'entreprise
+                                </h2>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="jobImage">
+                                    Logo / image
+                                </label>
+
+                                <div class="image-upload-box">
+
+                                    <i class="fa-solid fa-image"></i>
+
+                                    <span>
+                                        Ajouter le logo de l'entreprise
+                                    </span>
+
+                                    <small>
+                                        JPG, PNG ou WEBP — 5 MB maximum
+                                    </small>
+
+                                    <input
+                                        type="file"
+                                        id="jobImage"
+                                        name="image"
+                                        accept="image/jpeg,image/png,image/webp"
+                                    >
+
+                                </div>
+
+
+                                <img
+                                    id="jobImagePreview"
+                                    class="image-preview"
+                                    style="display:none;"
+                                    alt="Aperçu du logo"
+                                >
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             CONDITIONS
+                        ================================================== -->
+
+                        <section class="form-section">
+
+                            <div class="form-checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    id="jobTerms"
+                                    required
+                                >
+
+                                <label for="jobTerms">
+                                    Je confirme que les informations publiées
+                                    sont exactes et j'accepte les conditions
+                                    de publication de CAMU SERVICES.
+                                </label>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- =================================================
+                             ACTIONS
+                        ================================================== -->
+
+                        <div class="form-actions">
+
+                            <a
+                                href="jobs.html"
+                                class="btn-cancel"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                                Annuler
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                id="publishJobButton"
+                                class="btn-publish"
+                            >
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Publier l'offre</span>
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/publier-job.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/theme.js"
+    ></script>
+
+</body>
+</html>
