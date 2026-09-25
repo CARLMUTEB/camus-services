@@ -1,5 +1,6 @@
 /* =========================================================
    CAMU SERVICES — INSCRIPTION DYNAMIQUE
+   Firebase + Cloudinary
 ========================================================= */
 
 import { auth, db } from "./firebase-config.js";
@@ -16,6 +17,18 @@ import {
     setDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =========================================================
+   CLOUDINARY
+========================================================= */
+
+const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+
+const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =========================================================
@@ -85,7 +98,8 @@ let selectedAccountType = null;
 ========================================================= */
 
 if (signupYear) {
-    signupYear.textContent = new Date().getFullYear();
+    signupYear.textContent =
+        new Date().getFullYear();
 }
 
 
@@ -95,28 +109,40 @@ if (signupYear) {
 
 if (signupMenuButton) {
 
-    signupMenuButton.addEventListener("click", () => {
+    signupMenuButton.addEventListener(
+        "click",
+        () => {
 
-        signupSidebar.classList.add("open");
-        signupOverlay.classList.add("open");
+            if (signupSidebar) {
+                signupSidebar.classList.add("open");
+            }
 
-    });
-
+            if (signupOverlay) {
+                signupOverlay.classList.add("open");
+            }
+        }
+    );
 }
 
 
 if (signupOverlay) {
 
-    signupOverlay.addEventListener("click", closeMobileMenu);
-
+    signupOverlay.addEventListener(
+        "click",
+        closeMobileMenu
+    );
 }
 
 
 function closeMobileMenu() {
 
-    signupSidebar.classList.remove("open");
-    signupOverlay.classList.remove("open");
+    if (signupSidebar) {
+        signupSidebar.classList.remove("open");
+    }
 
+    if (signupOverlay) {
+        signupOverlay.classList.remove("open");
+    }
 }
 
 
@@ -155,8 +181,7 @@ const ACCOUNT_TYPES = {
 
 
 /* =========================================================
-   CATEGORIES COMMERCE
-   IMPORTANT : PAS DE COLLECTION FIRESTORE
+   CATÉGORIES COMMERCE
 ========================================================= */
 
 const COMMERCE_CATEGORIES = [
@@ -234,7 +259,6 @@ const COMMERCE_CATEGORIES = [
 ========================================================= */
 
 const HOTEL_TYPES = [
-
     "Hôtel",
     "Résidence",
     "Appartement",
@@ -243,7 +267,6 @@ const HOTEL_TYPES = [
     "Lodge",
     "Courte durée",
     "Autre"
-
 ];
 
 
@@ -252,14 +275,12 @@ const HOTEL_TYPES = [
 ========================================================= */
 
 const VEHICLE_TYPES = [
-
     "Taxi / Voiture",
     "Moto",
     "Bus / Minibus",
     "Camion",
     "Engin / Machine",
     "Autre"
-
 ];
 
 
@@ -268,7 +289,6 @@ const VEHICLE_TYPES = [
 ========================================================= */
 
 const VEHICLE_SERVICES = [
-
     "Transport de personnes",
     "Transport de marchandises",
     "Taxi",
@@ -276,8 +296,166 @@ const VEHICLE_SERVICES = [
     "Location de véhicules",
     "Vente de véhicules",
     "Autre"
-
 ];
+
+
+/* =========================================================
+   PHOTO DE PROFIL
+   Créée automatiquement dans le HTML
+========================================================= */
+
+function ensureProfilePhotoField() {
+
+    if (!signupForm) {
+        return;
+    }
+
+    if (document.getElementById("profilePhoto")) {
+        return;
+    }
+
+    const fullNameInput =
+        document.getElementById("fullName");
+
+    if (!fullNameInput) {
+        return;
+    }
+
+    const fullNameGroup =
+        fullNameInput.closest(".form-group");
+
+    if (!fullNameGroup) {
+        return;
+    }
+
+    const photoGroup =
+        document.createElement("div");
+
+    photoGroup.className =
+        "form-group full profile-photo-group";
+
+    photoGroup.innerHTML = `
+        <label for="profilePhoto">
+            Photo de profil
+        </label>
+
+        <input
+            type="file"
+            id="profilePhoto"
+            name="profilePhoto"
+            accept="image/jpeg,image/png,image/webp"
+        >
+
+        <small>
+            JPG, PNG ou WEBP — 5 MB maximum.
+        </small>
+
+        <img
+            id="profilePhotoPreview"
+            class="signup-photo-preview"
+            style="display:none;"
+            alt="Aperçu de votre photo"
+        >
+    `;
+
+    fullNameGroup.insertAdjacentElement(
+        "afterend",
+        photoGroup
+    );
+
+    setupProfilePhotoPreview();
+}
+
+
+/* =========================================================
+   APERÇU PHOTO
+========================================================= */
+
+function setupProfilePhotoPreview() {
+
+    const input =
+        document.getElementById("profilePhoto");
+
+    const preview =
+        document.getElementById("profilePhotoPreview");
+
+    if (!input || !preview) {
+        return;
+    }
+
+    input.addEventListener(
+        "change",
+        () => {
+
+            const file =
+                input.files?.[0];
+
+            if (!file) {
+
+                preview.src = "";
+                preview.style.display = "none";
+
+                return;
+            }
+
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+
+            if (!allowedTypes.includes(file.type)) {
+
+                input.value = "";
+
+                preview.src = "";
+                preview.style.display = "none";
+
+                showMessage(
+                    "Format de photo invalide. Utilisez JPG, PNG ou WEBP.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (file.size > 5 * 1024 * 1024) {
+
+                input.value = "";
+
+                preview.src = "";
+                preview.style.display = "none";
+
+                showMessage(
+                    "La photo ne doit pas dépasser 5 MB.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                event => {
+
+                    preview.src =
+                        event.target.result;
+
+                    preview.style.display =
+                        "block";
+                };
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+}
 
 
 /* =========================================================
@@ -288,14 +466,20 @@ document
     .querySelectorAll(".account-type-card")
     .forEach(card => {
 
-        card.addEventListener("click", () => {
+        card.addEventListener(
+            "click",
+            () => {
 
-            const type =
-                card.dataset.accountType;
+                const type =
+                    card.dataset.accountType;
 
-            selectAccountType(type, card);
+                selectAccountType(
+                    type,
+                    card
+                );
 
-        });
+            }
+        );
 
     });
 
@@ -304,48 +488,64 @@ document
    SÉLECTION ESPACE
 ========================================================= */
 
-function selectAccountType(type, selectedCard = null) {
+function selectAccountType(
+    type,
+    selectedCard = null
+) {
 
     if (!ACCOUNT_TYPES[type]) {
         return;
     }
 
-    selectedAccountType = type;
+    selectedAccountType =
+        type;
+
 
     document
         .querySelectorAll(".account-type-card")
         .forEach(card => {
-
             card.classList.remove("selected");
-
         });
+
 
     if (selectedCard) {
         selectedCard.classList.add("selected");
     }
 
+
     const accountInfo =
         ACCOUNT_TYPES[type];
+
 
     selectedSpaceName.textContent =
         accountInfo.name;
 
+
     selectedSpaceIcon.className =
         accountInfo.icon;
 
+
     buildSpecificFields(type);
 
-    accountTypeStep.classList.add("hidden");
+    ensureProfilePhotoField();
 
-    signupFormWrapper.classList.remove("hidden");
+
+    accountTypeStep.classList.add(
+        "hidden"
+    );
+
+    signupFormWrapper.classList.remove(
+        "hidden"
+    );
+
 
     clearMessage();
+
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
 }
 
 
@@ -355,25 +555,38 @@ function selectAccountType(type, selectedCard = null) {
 
 if (changeAccountType) {
 
-    changeAccountType.addEventListener("click", () => {
+    changeAccountType.addEventListener(
+        "click",
+        () => {
 
-        selectedAccountType = null;
+            selectedAccountType =
+                null;
 
-        signupFormWrapper.classList.add("hidden");
 
-        accountTypeStep.classList.remove("hidden");
+            signupFormWrapper.classList.add(
+                "hidden"
+            );
 
-        specificFields.innerHTML = "";
+            accountTypeStep.classList.remove(
+                "hidden"
+            );
 
-        clearMessage();
 
-        window.scrollTo({
-            top: accountTypeStep.offsetTop - 20,
-            behavior: "smooth"
-        });
+            specificFields.innerHTML =
+                "";
 
-    });
 
+            clearMessage();
+
+
+            window.scrollTo({
+                top:
+                    accountTypeStep.offsetTop - 20,
+                behavior: "smooth"
+            });
+
+        }
+    );
 }
 
 
@@ -399,16 +612,19 @@ function buildSpecificFields(type) {
                 <i class="fa-solid fa-user"></i>
 
                 <div>
-                    <h3>Profil utilisateur</h3>
+
+                    <h3>
+                        Profil utilisateur
+                    </h3>
 
                     <p>
                         Aucun renseignement professionnel
                         supplémentaire n'est nécessaire.
                     </p>
+
                 </div>
 
             </div>
-
         `;
 
         return;
@@ -428,12 +644,16 @@ function buildSpecificFields(type) {
                 <i class="fa-solid fa-house"></i>
 
                 <div>
-                    <h3>Informations immobilières</h3>
+
+                    <h3>
+                        Informations immobilières
+                    </h3>
 
                     <p>
                         Présentez votre activité dans le domaine
                         immobilier.
                     </p>
+
                 </div>
 
             </div>
@@ -479,10 +699,7 @@ function buildSpecificFields(type) {
                 </div>
 
 
-                <div
-                    class="form-group"
-                    id="immoAgencyGroup"
-                >
+                <div class="form-group">
 
                     <label for="immoAgency">
                         Nom de l'agence
@@ -512,57 +729,8 @@ function buildSpecificFields(type) {
 
                 </div>
 
-
-                <div class="form-group full">
-
-                    <label for="immoPhoto">
-                        Photo / Logo
-                    </label>
-
-                    <input
-                        type="url"
-                        id="immoPhoto"
-                        name="immoPhoto"
-                        placeholder="URL de votre photo ou logo"
-                    >
-
-                </div>
-
             </div>
-
         `;
-
-        const immoType =
-            document.getElementById("immoType");
-
-        if (immoType) {
-
-            immoType.addEventListener("change", () => {
-
-                const agencyGroup =
-                    document.getElementById(
-                        "immoAgencyGroup"
-                    );
-
-                if (
-                    immoType.value === "agence"
-                    ||
-                    immoType.value === "agent"
-                ) {
-
-                    agencyGroup.style.display =
-                        "flex";
-
-                } else {
-
-                    agencyGroup.style.display =
-                        "flex";
-
-                }
-
-            });
-
-        }
 
         return;
     }
@@ -576,16 +744,19 @@ function buildSpecificFields(type) {
 
         const categoryOptions =
             COMMERCE_CATEGORIES
-                .map(category => {
-
-                    return `
-                        <option value="${escapeHtml(category.value)}">
-                            ${escapeHtml(category.label)}
+                .map(
+                    category => `
+                        <option value="${escapeHtml(
+                            category.value
+                        )}">
+                            ${escapeHtml(
+                                category.label
+                            )}
                         </option>
-                    `;
-
-                })
+                    `
+                )
                 .join("");
+
 
         specificFields.innerHTML = `
 
@@ -594,12 +765,16 @@ function buildSpecificFields(type) {
                 <i class="fa-solid fa-store"></i>
 
                 <div>
-                    <h3>Informations de l'établissement</h3>
+
+                    <h3>
+                        Informations de l'établissement
+                    </h3>
 
                     <p>
                         Ces informations seront utilisées
                         pour présenter votre établissement.
                     </p>
+
                 </div>
 
             </div>
@@ -679,24 +854,7 @@ function buildSpecificFields(type) {
 
                 </div>
 
-
-                <div class="form-group full">
-
-                    <label for="commercePhoto">
-                        Photo / Logo
-                    </label>
-
-                    <input
-                        type="url"
-                        id="commercePhoto"
-                        name="commercePhoto"
-                        placeholder="URL de votre photo ou logo"
-                    >
-
-                </div>
-
             </div>
-
         `;
 
         return;
@@ -711,21 +869,35 @@ function buildSpecificFields(type) {
 
         const vehicleTypes =
             VEHICLE_TYPES
-                .map(type => `
-                    <option value="${escapeHtml(type)}">
-                        ${escapeHtml(type)}
-                    </option>
-                `)
+                .map(
+                    vehicleType => `
+                        <option value="${escapeHtml(
+                            vehicleType
+                        )}">
+                            ${escapeHtml(
+                                vehicleType
+                            )}
+                        </option>
+                    `
+                )
                 .join("");
+
 
         const vehicleServices =
             VEHICLE_SERVICES
-                .map(service => `
-                    <option value="${escapeHtml(service)}">
-                        ${escapeHtml(service)}
-                    </option>
-                `)
+                .map(
+                    service => `
+                        <option value="${escapeHtml(
+                            service
+                        )}">
+                            ${escapeHtml(
+                                service
+                            )}
+                        </option>
+                    `
+                )
                 .join("");
+
 
         specificFields.innerHTML = `
 
@@ -734,12 +906,16 @@ function buildSpecificFields(type) {
                 <i class="fa-solid fa-car"></i>
 
                 <div>
-                    <h3>Informations véhicules & transport</h3>
+
+                    <h3>
+                        Informations véhicules & transport
+                    </h3>
 
                     <p>
                         Présentez votre véhicule ou votre
                         activité de transport.
                     </p>
+
                 </div>
 
             </div>
@@ -875,24 +1051,7 @@ function buildSpecificFields(type) {
 
                 </div>
 
-
-                <div class="form-group full">
-
-                    <label for="vehiclePhoto">
-                        Photo du véhicule
-                    </label>
-
-                    <input
-                        type="url"
-                        id="vehiclePhoto"
-                        name="vehiclePhoto"
-                        placeholder="URL de la photo"
-                    >
-
-                </div>
-
             </div>
-
         `;
 
         return;
@@ -907,12 +1066,19 @@ function buildSpecificFields(type) {
 
         const hotelOptions =
             HOTEL_TYPES
-                .map(type => `
-                    <option value="${escapeHtml(type)}">
-                        ${escapeHtml(type)}
-                    </option>
-                `)
+                .map(
+                    hotelType => `
+                        <option value="${escapeHtml(
+                            hotelType
+                        )}">
+                            ${escapeHtml(
+                                hotelType
+                            )}
+                        </option>
+                    `
+                )
                 .join("");
+
 
         specificFields.innerHTML = `
 
@@ -921,12 +1087,16 @@ function buildSpecificFields(type) {
                 <i class="fa-solid fa-hotel"></i>
 
                 <div>
-                    <h3>Informations de l'établissement</h3>
+
+                    <h3>
+                        Informations de l'établissement
+                    </h3>
 
                     <p>
                         Présentez votre hôtel ou votre
                         établissement d'hébergement.
                     </p>
+
                 </div>
 
             </div>
@@ -1006,28 +1176,9 @@ function buildSpecificFields(type) {
 
                 </div>
 
-
-                <div class="form-group full">
-
-                    <label for="hotelPhoto">
-                        Photo / Logo
-                    </label>
-
-                    <input
-                        type="url"
-                        id="hotelPhoto"
-                        name="hotelPhoto"
-                        placeholder="URL de votre photo ou logo"
-                    >
-
-                </div>
-
             </div>
-
         `;
-
     }
-
 }
 
 
@@ -1037,6 +1188,10 @@ function buildSpecificFields(type) {
 
 async function loadCities() {
 
+    if (!villeSelect) {
+        return;
+    }
+
     try {
 
         villeSelect.innerHTML = `
@@ -1045,52 +1200,78 @@ async function loadCities() {
             </option>
         `;
 
+
         const snapshot =
             await getDocs(
-                collection(db, "villes")
+                collection(
+                    db,
+                    "villes"
+                )
             );
+
 
         const cities = [];
 
-        snapshot.forEach(documentSnapshot => {
 
-            const data =
-                documentSnapshot.data();
+        snapshot.forEach(
+            documentSnapshot => {
 
-            if (data.active !== false) {
+                const data =
+                    documentSnapshot.data();
+
+
+                if (data.active === false) {
+                    return;
+                }
+
+
+                const name =
+                    String(
+                        data.name || ""
+                    ).trim();
+
+
+                if (!name) {
+                    return;
+                }
+
 
                 cities.push({
 
-                    id: documentSnapshot.id,
+                    id:
+                        documentSnapshot.id,
 
-                    name:
-                        String(
-                            data.name || ""
-                        ).trim(),
+                    name,
 
                     order:
                         Number(
                             data.order
                         ) || 999
-
                 });
 
             }
+        );
 
-        });
 
-        cities.sort((a, b) => {
+        cities.sort(
+            (a, b) => {
 
-            if (a.order !== b.order) {
-                return a.order - b.order;
+                if (
+                    a.order !==
+                    b.order
+                ) {
+                    return (
+                        a.order -
+                        b.order
+                    );
+                }
+
+                return a.name.localeCompare(
+                    b.name,
+                    "fr"
+                );
             }
-
-            return a.name.localeCompare(
-                b.name,
-                "fr"
-            );
-
-        });
+        );
 
 
         villeSelect.innerHTML = `
@@ -1100,36 +1281,37 @@ async function loadCities() {
         `;
 
 
-        cities.forEach(city => {
+        cities.forEach(
+            city => {
 
-            if (!city.name) {
-                return;
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    city.name;
+
+                option.textContent =
+                    city.name;
+
+
+                villeSelect.appendChild(
+                    option
+                );
             }
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                city.name;
-
-            option.textContent =
-                city.name;
-
-            villeSelect.appendChild(option);
-
-        });
+        );
 
 
-        if (cities.length === 0) {
+        if (!cities.length) {
 
             villeSelect.innerHTML = `
                 <option value="">
                     Aucune ville disponible
                 </option>
             `;
-
         }
-
 
     } catch (error) {
 
@@ -1138,14 +1320,129 @@ async function loadCities() {
             error
         );
 
+
         villeSelect.innerHTML = `
             <option value="">
                 Impossible de charger les villes
             </option>
         `;
+    }
+}
 
+
+/* =========================================================
+   RÉCUPÉRER LA PHOTO
+========================================================= */
+
+function getSelectedProfilePhoto() {
+
+    const input =
+        document.getElementById(
+            "profilePhoto"
+        );
+
+    return input?.files?.[0] || null;
+}
+
+
+/* =========================================================
+   UPLOAD PHOTO CLOUDINARY
+========================================================= */
+
+async function uploadProfilePhoto(
+    file
+) {
+
+    if (!file) {
+        return "";
     }
 
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+
+    if (!allowedTypes.includes(file.type)) {
+
+        throw new Error(
+            "Format de photo invalide. Utilisez JPG, PNG ou WEBP."
+        );
+    }
+
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        throw new Error(
+            "La photo ne doit pas dépasser 5 MB."
+        );
+    }
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file
+    );
+
+
+    formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+    );
+
+
+    formData.append(
+        "folder",
+        "camu-services/profiles"
+    );
+
+
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+    let result;
+
+    try {
+
+        result =
+            await response.json();
+
+    } catch {
+
+        result = null;
+    }
+
+
+    if (
+        !response.ok ||
+        !result?.secure_url
+    ) {
+
+        console.error(
+            "CAMU INSCRIPTION — Cloudinary :",
+            result
+        );
+
+        throw new Error(
+            "Impossible d'envoyer la photo vers Cloudinary."
+        );
+    }
+
+
+    return result.secure_url;
 }
 
 
@@ -1153,299 +1450,389 @@ async function loadCities() {
    SUBMIT
 ========================================================= */
 
-signupForm.addEventListener(
-    "submit",
-    async event => {
+if (signupForm) {
 
-        event.preventDefault();
+    signupForm.addEventListener(
+        "submit",
+        async event => {
 
-        clearMessage();
+            event.preventDefault();
 
-
-        if (!selectedAccountType) {
-
-            showMessage(
-                "Veuillez choisir votre espace.",
-                "error"
-            );
-
-            return;
-        }
+            clearMessage();
 
 
-        if (
-            !signupForm.checkValidity()
-        ) {
+            /* ---------------------------------------------
+               TYPE DE COMPTE
+            --------------------------------------------- */
 
-            signupForm.reportValidity();
+            if (!selectedAccountType) {
 
-            return;
-        }
-
-
-        const password =
-            document.getElementById(
-                "password"
-            ).value;
-
-        const confirmPassword =
-            document.getElementById(
-                "confirmPassword"
-            ).value;
-
-
-        if (password.length < 6) {
-
-            showMessage(
-                "Le mot de passe doit contenir au moins 6 caractères.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (password !== confirmPassword) {
-
-            showMessage(
-                "Les deux mots de passe ne correspondent pas.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        const terms =
-            document.getElementById(
-                "acceptTerms"
-            );
-
-        if (!terms.checked) {
-
-            showMessage(
-                "Veuillez accepter les conditions d'utilisation.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        setLoading(true);
-
-
-        try {
-
-            const fullName =
-                getValue("fullName");
-
-            const phone =
-                getValue("phone");
-
-            const whatsapp =
-                getValue("whatsapp") || phone;
-
-            const email =
-                getValue("email").toLowerCase();
-
-            const ville =
-                getValue("ville");
-
-            const commune =
-                getValue("commune");
-
-
-            /* =============================================
-               CRÉATION DU COMPTE AUTHENTIFICATION
-            ============================================== */
-
-            const userCredential =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+                showMessage(
+                    "Veuillez choisir votre espace.",
+                    "error"
                 );
 
-            const user =
-                userCredential.user;
+                return;
+            }
 
 
-            /* =============================================
-               NOM FIREBASE AUTH
-            ============================================== */
+            /* ---------------------------------------------
+               VALIDATION HTML
+            --------------------------------------------- */
 
-            await updateProfile(
-                user,
-                {
-                    displayName: fullName
-                }
-            );
+            if (
+                !signupForm.checkValidity()
+            ) {
 
+                signupForm.reportValidity();
 
-            /* =============================================
-               DOCUMENT USERS
-            ============================================== */
-
-            const userData = {
-
-                uid: user.uid,
-
-                name: fullName,
-
-                email: email,
-
-                phone: phone,
-
-                whatsapp: whatsapp,
-
-                ville: ville,
-
-                commune: commune,
-
-                accountType:
-                    selectedAccountType,
-
-                accountStatus:
-                    selectedAccountType === "client"
-                        ? "active"
-                        : "pending",
-
-                createdAt:
-                    serverTimestamp(),
-
-                updatedAt:
-                    serverTimestamp()
-
-            };
+                return;
+            }
 
 
-            await setDoc(
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                ),
-                userData
-            );
+            /* ---------------------------------------------
+               MOT DE PASSE
+            --------------------------------------------- */
+
+            const password =
+                getValue("password");
 
 
-            /* =============================================
-               CRÉATION PROFIL SPÉCIFIQUE
-            ============================================== */
-
-            await createProfessionalProfile(
-                user.uid,
-                {
-                    fullName,
-                    email,
-                    phone,
-                    whatsapp,
-                    ville,
-                    commune
-                }
-            );
+            const confirmPassword =
+                getValue("confirmPassword");
 
 
-            /* =============================================
-               SUCCÈS
-            ============================================== */
+            if (password.length < 6) {
 
-            showMessage(
-                selectedAccountType === "client"
-                    ? "Votre compte a été créé avec succès."
-                    : "Votre compte a été créé. Votre profil professionnel sera vérifié avant sa publication.",
-                "success"
-            );
+                showMessage(
+                    "Le mot de passe doit contenir au moins 6 caractères.",
+                    "error"
+                );
 
-
-            signupForm.reset();
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "compte.html";
-
-            }, 1800);
-
-
-        } catch (error) {
-
-            console.error(
-                "CAMU INSCRIPTION — erreur :",
-                error
-            );
-
-
-            let message =
-                "Une erreur est survenue lors de l'inscription.";
+                return;
+            }
 
 
             if (
-                error.code ===
-                "auth/email-already-in-use"
+                password !==
+                confirmPassword
             ) {
 
-                message =
-                    "Cette adresse e-mail est déjà utilisée.";
+                showMessage(
+                    "Les deux mots de passe ne correspondent pas.",
+                    "error"
+                );
 
-            }
-
-            else if (
-                error.code ===
-                "auth/invalid-email"
-            ) {
-
-                message =
-                    "L'adresse e-mail est invalide.";
-
-            }
-
-            else if (
-                error.code ===
-                "auth/weak-password"
-            ) {
-
-                message =
-                    "Le mot de passe est trop faible.";
-
-            }
-
-            else if (
-                error.code ===
-                "auth/network-request-failed"
-            ) {
-
-                message =
-                    "Problème de connexion Internet.";
-
-            }
-
-            else if (
-                error.code ===
-                "permission-denied"
-            ) {
-
-                message =
-                    "Vous n'avez pas l'autorisation nécessaire.";
-
+                return;
             }
 
 
-            showMessage(
-                message,
-                "error"
-            );
+            /* ---------------------------------------------
+               CONDITIONS
+            --------------------------------------------- */
 
-        } finally {
+            const terms =
+                document.getElementById(
+                    "acceptTerms"
+                );
 
-            setLoading(false);
+
+            if (!terms?.checked) {
+
+                showMessage(
+                    "Veuillez accepter les conditions d'utilisation.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            setLoading(true);
+
+
+            try {
+
+                /* =========================================
+                   INFORMATIONS COMMUNES
+                ========================================== */
+
+                const fullName =
+                    getValue("fullName");
+
+
+                const phone =
+                    getValue("phone");
+
+
+                const whatsapp =
+                    getValue("whatsapp") ||
+                    phone;
+
+
+                const email =
+                    getValue("email")
+                        .toLowerCase();
+
+
+                const ville =
+                    getValue("ville");
+
+
+                const commune =
+                    getValue("commune");
+
+
+                const photoFile =
+                    getSelectedProfilePhoto();
+
+
+                /* =========================================
+                   CRÉER COMPTE FIREBASE AUTH
+                ========================================== */
+
+                const userCredential =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    userCredential.user;
+
+
+                /* =========================================
+                   PHOTO CLOUDINARY
+                ========================================== */
+
+                let photoURL = "";
+
+
+                if (photoFile) {
+
+                    photoURL =
+                        await uploadProfilePhoto(
+                            photoFile
+                        );
+                }
+
+
+                /* =========================================
+                   PROFIL FIREBASE AUTH
+                ========================================== */
+
+                await updateProfile(
+                    user,
+                    {
+                        displayName:
+                            fullName,
+
+                        photoURL:
+                            photoURL || null
+                    }
+                );
+
+
+                /* =========================================
+                   DOCUMENT USERS
+                ========================================== */
+
+                const userData = {
+
+                    uid:
+                        user.uid,
+
+                    name:
+                        fullName,
+
+                    email:
+                        email,
+
+                    phone:
+                        phone,
+
+                    whatsapp:
+                        whatsapp,
+
+                    ville:
+                        ville,
+
+                    commune:
+                        commune,
+
+                    photoURL:
+                        photoURL,
+
+                    accountType:
+                        selectedAccountType,
+
+                    accountStatus:
+                        selectedAccountType ===
+                        "client"
+                            ? "active"
+                            : "pending",
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    updatedAt:
+                        serverTimestamp()
+                };
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    ),
+                    userData
+                );
+
+
+                /* =========================================
+                   PROFIL PROFESSIONNEL
+                ========================================== */
+
+                await createProfessionalProfile(
+                    user.uid,
+                    {
+                        fullName,
+                        email,
+                        phone,
+                        whatsapp,
+                        ville,
+                        commune,
+                        photoURL
+                    }
+                );
+
+
+                /* =========================================
+                   SUCCÈS
+                ========================================== */
+
+                showMessage(
+                    selectedAccountType === "client"
+                        ? "Votre compte a été créé avec succès."
+                        : "Votre compte a été créé. Votre profil professionnel sera vérifié avant sa publication.",
+                    "success"
+                );
+
+
+                signupForm.reset();
+
+
+                const preview =
+                    document.getElementById(
+                        "profilePhotoPreview"
+                    );
+
+
+                if (preview) {
+
+                    preview.src = "";
+
+                    preview.style.display =
+                        "none";
+                }
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            "compte.html";
+
+                    },
+                    1800
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "CAMU INSCRIPTION — erreur :",
+                    error
+                );
+
+
+                let message =
+                    "Une erreur est survenue lors de l'inscription.";
+
+
+                if (
+                    error.code ===
+                    "auth/email-already-in-use"
+                ) {
+
+                    message =
+                        "Cette adresse e-mail est déjà utilisée.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    message =
+                        "L'adresse e-mail est invalide.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/weak-password"
+                ) {
+
+                    message =
+                        "Le mot de passe est trop faible.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/network-request-failed"
+                ) {
+
+                    message =
+                        "Problème de connexion Internet.";
+                }
+
+                else if (
+                    error.code ===
+                    "permission-denied"
+                    ||
+                    error.code ===
+                    "firestore/permission-denied"
+                ) {
+
+                    message =
+                        "Votre compte a été créé, mais votre profil n'a pas pu être enregistré à cause des règles de sécurité Firestore.";
+                }
+
+                else if (
+                    error?.message
+                ) {
+
+                    message =
+                        error.message;
+                }
+
+
+                showMessage(
+                    message,
+                    "error"
+                );
+
+            } finally {
+
+                setLoading(false);
+            }
 
         }
-
-    }
-);
+    );
+}
 
 
 /* =========================================================
@@ -1463,7 +1850,8 @@ async function createProfessionalProfile(
         phone,
         whatsapp,
         ville,
-        commune
+        commune,
+        photoURL
     } = common;
 
 
@@ -1472,7 +1860,8 @@ async function createProfessionalProfile(
     ====================================================== */
 
     if (
-        selectedAccountType === "client"
+        selectedAccountType ===
+        "client"
     ) {
 
         return;
@@ -1484,61 +1873,72 @@ async function createProfessionalProfile(
     ====================================================== */
 
     if (
-        selectedAccountType === "immobilier"
+        selectedAccountType ===
+        "immobilier"
     ) {
 
         const type =
             getValue("immoType");
 
+
         const agency =
             getValue("immoAgency");
+
 
         const description =
             getValue("immoDescription");
 
-        const photoURL =
-            getValue("immoPhoto");
-
 
         const profile = {
 
-            uid: uid,
+            uid:
+                uid,
 
-            name: fullName,
+            name:
+                fullName,
 
-            email: email,
+            email:
+                email,
 
-            phone: phone,
+            phone:
+                phone,
 
-            WhatsApp: whatsapp,
+            WhatsApp:
+                whatsapp,
 
-            ville: ville,
+            ville:
+                ville,
 
-            commune: commune,
+            commune:
+                commune,
 
-            type: type,
+            type:
+                type,
 
-            agencyName: agency,
+            agencyName:
+                agency,
 
-            description: description,
+            description:
+                description,
 
-            photoURL: photoURL,
+            photoURL:
+                photoURL,
 
-            active: false,
+            active:
+                false,
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
-
         };
 
 
         await setDoc(
             doc(
                 db,
-                "agents_immobiliers",
+                COLLECTIONS.immobilier,
                 uid
             ),
             profile
@@ -1553,64 +1953,84 @@ async function createProfessionalProfile(
     ====================================================== */
 
     if (
-        selectedAccountType === "commerce"
+        selectedAccountType ===
+        "commerce"
     ) {
 
         const name =
-            getValue("commerceName");
+            getValue(
+                "commerceName"
+            );
+
 
         const category =
-            getValue("commerceCategory");
+            getValue(
+                "commerceCategory"
+            );
+
 
         const address =
-            getValue("commerceAddress");
+            getValue(
+                "commerceAddress"
+            );
+
 
         const description =
-            getValue("commerceDescription");
-
-        const photoURL =
-            getValue("commercePhoto");
+            getValue(
+                "commerceDescription"
+            );
 
 
         const profile = {
 
-            uid: uid,
+            uid:
+                uid,
 
-            name: name,
+            name:
+                name,
 
-            email: email,
+            email:
+                email,
 
-            phone: phone,
+            phone:
+                phone,
 
-            WhatsApp: whatsapp,
+            WhatsApp:
+                whatsapp,
 
-            ville: ville,
+            ville:
+                ville,
 
-            commune: commune,
+            commune:
+                commune,
 
-            adresse: address,
+            adresse:
+                address,
 
-            category: category,
+            category:
+                category,
 
-            description: description,
+            description:
+                description,
 
-            photoURL: photoURL,
+            photoURL:
+                photoURL,
 
-            active: false,
+            active:
+                false,
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
-
         };
 
 
         await setDoc(
             doc(
                 db,
-                "etablissements_commerciaux",
+                COLLECTIONS.commerce,
                 uid
             ),
             profile
@@ -1625,7 +2045,8 @@ async function createProfessionalProfile(
     ====================================================== */
 
     if (
-        selectedAccountType === "vehicules"
+        selectedAccountType ===
+        "vehicules"
     ) {
 
         const professionalType =
@@ -1633,23 +2054,35 @@ async function createProfessionalProfile(
                 "vehicleProfessionalType"
             );
 
+
         const vehicleType =
-            getValue("vehicleType");
+            getValue(
+                "vehicleType"
+            );
+
 
         const brand =
-            getValue("vehicleBrand");
+            getValue(
+                "vehicleBrand"
+            );
+
 
         const plate =
-            getValue("vehiclePlate");
+            getValue(
+                "vehiclePlate"
+            );
+
 
         const service =
-            getValue("vehicleService");
+            getValue(
+                "vehicleService"
+            );
+
 
         const description =
-            getValue("vehicleDescription");
-
-        const photoURL =
-            getValue("vehiclePhoto");
+            getValue(
+                "vehicleDescription"
+            );
 
 
         /* =============================================
@@ -1657,41 +2090,56 @@ async function createProfessionalProfile(
         ============================================== */
 
         if (
-            professionalType === "agence"
+            professionalType ===
+            "agence"
         ) {
 
             const profile = {
 
-                uid: uid,
+                uid:
+                    uid,
 
-                nom: fullName,
+                nom:
+                    fullName,
 
-                name: fullName,
+                name:
+                    fullName,
 
-                email: email,
+                email:
+                    email,
 
-                phone: phone,
+                phone:
+                    phone,
 
-                whatsapp: whatsapp,
+                whatsapp:
+                    whatsapp,
 
-                ville: ville,
+                ville:
+                    ville,
 
-                commune: commune,
+                commune:
+                    commune,
 
-                description: description,
+                description:
+                    description,
 
-                logoURL: photoURL,
+                logoURL:
+                    photoURL,
 
-                services: service,
+                photoURL:
+                    photoURL,
 
-                active: false,
+                services:
+                    service,
+
+                active:
+                    false,
 
                 createdAt:
                     serverTimestamp(),
 
                 updatedAt:
                     serverTimestamp()
-
             };
 
 
@@ -1715,19 +2163,26 @@ async function createProfessionalProfile(
 
         const profile = {
 
-            uid: uid,
+            uid:
+                uid,
 
-            name: fullName,
+            name:
+                fullName,
 
-            email: email,
+            email:
+                email,
 
-            phone: phone,
+            phone:
+                phone,
 
-            WhatsApp: whatsapp,
+            WhatsApp:
+                whatsapp,
 
-            ville: ville,
+            ville:
+                ville,
 
-            commune: commune,
+            commune:
+                commune,
 
             typeProfessionnel:
                 professionalType,
@@ -1750,21 +2205,21 @@ async function createProfessionalProfile(
             photoURL:
                 photoURL,
 
-            active: false,
+            active:
+                false,
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
-
         };
 
 
         await setDoc(
             doc(
                 db,
-                "chauffeurs",
+                COLLECTIONS.vehicules,
                 uid
             ),
             profile
@@ -1780,71 +2235,89 @@ async function createProfessionalProfile(
     ====================================================== */
 
     if (
-        selectedAccountType === "hotels"
+        selectedAccountType ===
+        "hotels"
     ) {
 
         const name =
-            getValue("hotelName");
+            getValue(
+                "hotelName"
+            );
+
 
         const type =
-            getValue("hotelType");
+            getValue(
+                "hotelType"
+            );
+
 
         const address =
-            getValue("hotelAddress");
+            getValue(
+                "hotelAddress"
+            );
+
 
         const description =
-            getValue("hotelDescription");
-
-        const photoURL =
-            getValue("hotelPhoto");
+            getValue(
+                "hotelDescription"
+            );
 
 
         const profile = {
 
-            uid: uid,
+            uid:
+                uid,
 
-            name: name,
+            name:
+                name,
 
-            email: email,
+            email:
+                email,
 
-            phone: phone,
+            phone:
+                phone,
 
-            whatsapp: whatsapp,
+            whatsapp:
+                whatsapp,
 
-            ville: ville,
+            ville:
+                ville,
 
-            commune: commune,
+            commune:
+                commune,
 
-            adresse: address,
+            adresse:
+                address,
 
-            category: type,
+            category:
+                type,
 
-            description: description,
+            description:
+                description,
 
-            photoURL: photoURL,
+            photoURL:
+                photoURL,
 
-            active: false,
+            active:
+                false,
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
-
         };
 
 
         await setDoc(
             doc(
                 db,
-                "etablissements_hoteliers",
+                COLLECTIONS.hotels,
                 uid
             ),
             profile
         );
-
     }
-
 }
 
 
@@ -1857,14 +2330,15 @@ function getValue(id) {
     const element =
         document.getElementById(id);
 
+
     if (!element) {
         return "";
     }
 
+
     return String(
         element.value || ""
     ).trim();
-
 }
 
 
@@ -1877,22 +2351,31 @@ function showMessage(
     type = "error"
 ) {
 
+    if (!signupMessage) {
+        return;
+    }
+
+
     signupMessage.textContent =
         message;
 
+
     signupMessage.className =
         `signup-message show ${type}`;
-
 }
 
 
 function clearMessage() {
 
+    if (!signupMessage) {
+        return;
+    }
+
+
     signupMessage.textContent = "";
 
     signupMessage.className =
         "signup-message";
-
 }
 
 
@@ -1900,26 +2383,42 @@ function clearMessage() {
    LOADING
 ========================================================= */
 
-function setLoading(loading) {
+function setLoading(
+    loading
+) {
+
+    if (!signupSubmit) {
+        return;
+    }
+
 
     signupSubmit.disabled =
         loading;
 
+
     const icon =
-        signupSubmit.querySelector("i");
+        signupSubmit.querySelector(
+            "i"
+        );
+
 
     const span =
-        signupSubmit.querySelector("span");
+        signupSubmit.querySelector(
+            "span"
+        );
 
 
     if (loading) {
 
         if (icon) {
+
             icon.className =
                 "fa-solid fa-spinner fa-spin";
         }
 
+
         if (span) {
+
             span.textContent =
                 "Création du compte...";
         }
@@ -1927,17 +2426,18 @@ function setLoading(loading) {
     } else {
 
         if (icon) {
+
             icon.className =
                 "fa-solid fa-user-plus";
         }
 
+
         if (span) {
+
             span.textContent =
                 "Créer mon compte";
         }
-
     }
-
 }
 
 
@@ -1946,48 +2446,62 @@ function setLoading(loading) {
 ========================================================= */
 
 document
-    .querySelectorAll(".password-toggle")
-    .forEach(button => {
+    .querySelectorAll(
+        ".password-toggle"
+    )
+    .forEach(
+        button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-                const targetId =
-                    button.dataset.target;
+                    const targetId =
+                        button.dataset.target;
 
-                const input =
-                    document.getElementById(
-                        targetId
-                    );
 
-                if (!input) {
-                    return;
+                    const input =
+                        document.getElementById(
+                            targetId
+                        );
+
+
+                    if (!input) {
+                        return;
+                    }
+
+
+                    if (
+                        input.type ===
+                        "password"
+                    ) {
+
+                        input.type =
+                            "text";
+
+
+                        button.innerHTML =
+                            `
+                            <i class="fa-solid fa-eye-slash"></i>
+                            `;
+
+                    } else {
+
+                        input.type =
+                            "password";
+
+
+                        button.innerHTML =
+                            `
+                            <i class="fa-solid fa-eye"></i>
+                            `;
+                    }
+
                 }
+            );
 
-
-                if (
-                    input.type === "password"
-                ) {
-
-                    input.type = "text";
-
-                    button.innerHTML =
-                        '<i class="fa-solid fa-eye-slash"></i>';
-
-                } else {
-
-                    input.type = "password";
-
-                    button.innerHTML =
-                        '<i class="fa-solid fa-eye"></i>';
-
-                }
-
-            }
-        );
-
-    });
+        }
+    );
 
 
 /* =========================================================
@@ -1996,13 +2510,29 @@ document
 
 function escapeHtml(value) {
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 
@@ -2010,7 +2540,10 @@ function escapeHtml(value) {
    INITIALISATION
 ========================================================= */
 
+ensureProfilePhotoField();
+
 loadCities();
+
 
 console.log(
     "CAMU INSCRIPTION — formulaire dynamique initialisé."
