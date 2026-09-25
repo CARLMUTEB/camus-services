@@ -1,15 +1,11 @@
 /* =========================================================
    CAMU SERVICES
-   PROTECTION GLOBALE DES PAGES
+   AUTH GUARD
 ========================================================= */
 
-import {
-    getApps,
-    getApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { auth } from "./app.js";
 
 import {
-    getAuth,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
@@ -18,11 +14,10 @@ import {
    PAGES PUBLIQUES
 ========================================================= */
 
-const PUBLIC_PAGES = [
+const publicPages = [
     "connexion.html",
     "inscription.html",
-    "mot-de-passe-oublie.html",
-    "404.html"
+    "mot-de-passe-oublie.html"
 ];
 
 
@@ -41,7 +36,7 @@ const currentPage =
    NE PAS PROTÉGER LES PAGES PUBLIQUES
 ========================================================= */
 
-if (PUBLIC_PAGES.includes(currentPage)) {
+if (publicPages.includes(currentPage)) {
 
     console.log(
         "AUTH GUARD — Page publique :",
@@ -60,132 +55,57 @@ if (PUBLIC_PAGES.includes(currentPage)) {
 
 
     /* =====================================================
-       ATTENDRE FIREBASE
+       VÉRIFICATION FIREBASE AUTH
     ====================================================== */
 
-    function waitForFirebase() {
+    onAuthStateChanged(
+        auth,
+        user => {
 
-        return new Promise(
-            resolve => {
+            if (user) {
 
-                const maxAttempts = 100;
-                let attempts = 0;
-
-                const check = () => {
-
-                    attempts++;
-
-                    if (getApps().length > 0) {
-
-                        resolve(
-                            getAuth(getApp())
-                        );
-
-                        return;
-                    }
-
-                    if (attempts >= maxAttempts) {
-
-                        resolve(null);
-
-                        return;
-                    }
-
-                    setTimeout(
-                        check,
-                        50
-                    );
-                };
-
-                check();
-            }
-        );
-    }
-
-
-    /* =====================================================
-       PROTECTION
-    ====================================================== */
-
-    waitForFirebase()
-        .then(
-            auth => {
-
-                if (!auth) {
-
-                    console.error(
-                        "AUTH GUARD — Firebase indisponible."
-                    );
-
-                    window.location.replace(
-                        "connexion.html"
-                    );
-
-                    return;
-                }
-
-
-                onAuthStateChanged(
-                    auth,
-                    user => {
-
-                        /* =================================
-                           UTILISATEUR CONNECTÉ
-                        ================================== */
-
-                        if (user) {
-
-                            console.log(
-                                "AUTH GUARD — Accès autorisé :",
-                                user.email
-                            );
-
-                            document.documentElement
-                                .classList.remove(
-                                    "auth-checking"
-                                );
-
-                            return;
-                        }
-
-
-                        /* =================================
-                           PAS CONNECTÉ
-                        ================================== */
-
-                        console.log(
-                            "AUTH GUARD — Connexion obligatoire."
-                        );
-
-
-                        const requestedUrl =
-                            window.location.href;
-
-
-                        /*
-                         * Évite de stocker une ancienne
-                         * URL de connexion.
-                         */
-
-                        const redirect =
-                            encodeURIComponent(
-                                requestedUrl
-                            );
-
-
-                        window.location.replace(
-                            `connexion.html?redirect=${redirect}`
-                        );
-
-                    }
+                console.log(
+                    "AUTH GUARD — Utilisateur connecté :",
+                    user.email
                 );
+
+                document.documentElement.classList.remove(
+                    "auth-checking"
+                );
+
+                return;
             }
-        );
+
+
+            /* =============================================
+               UTILISATEUR NON CONNECTÉ
+            ============================================== */
+
+            console.log(
+                "AUTH GUARD — Utilisateur non connecté."
+            );
+
+
+            const requestedUrl =
+                window.location.href;
+
+
+            const redirect =
+                encodeURIComponent(
+                    requestedUrl
+                );
+
+
+            window.location.replace(
+                `connexion.html?redirect=${redirect}`
+            );
+        }
+    );
 }
 
 
 /* =========================================================
-   STYLE ANTI-FLASH
+   ANTI FLASH
 ========================================================= */
 
 const style =
