@@ -1,9 +1,10 @@
 /* =========================================================
    CAMU SERVICES
    AUTH GUARD
+   CONNEXION OBLIGATOIRE POUR LES ESPACES
 ========================================================= */
 
-import { auth } from "./app.js";
+import { auth } from "./firebase-config.js";
 
 import {
     onAuthStateChanged
@@ -11,10 +12,10 @@ import {
 
 
 /* =========================================================
-   PAGES PUBLIQUES
+   PAGES QUI RESTENT ACCESSIBLES SANS COMPTE
 ========================================================= */
 
-const publicPages = [
+const PUBLIC_PAGES = [
     "connexion.html",
     "inscription.html",
     "mot-de-passe-oublie.html"
@@ -22,7 +23,7 @@ const publicPages = [
 
 
 /* =========================================================
-   PAGE ACTUELLE
+   DÉTERMINER LA PAGE ACTUELLE
 ========================================================= */
 
 const currentPage =
@@ -33,10 +34,10 @@ const currentPage =
 
 
 /* =========================================================
-   NE PAS PROTÉGER LES PAGES PUBLIQUES
+   PAGE PUBLIQUE
 ========================================================= */
 
-if (publicPages.includes(currentPage)) {
+if (PUBLIC_PAGES.includes(currentPage)) {
 
     console.log(
         "AUTH GUARD — Page publique :",
@@ -46,32 +47,51 @@ if (publicPages.includes(currentPage)) {
 } else {
 
     /* =====================================================
-       MASQUER LA PAGE PENDANT LA VÉRIFICATION
+       BLOQUER L'AFFICHAGE PENDANT LA VÉRIFICATION
     ====================================================== */
 
+    const guardStyle =
+        document.createElement("style");
+
+    guardStyle.textContent = `
+        html.camu-auth-checking body {
+            visibility: hidden !important;
+        }
+    `;
+
+    document.head.appendChild(
+        guardStyle
+    );
+
     document.documentElement.classList.add(
-        "auth-checking"
+        "camu-auth-checking"
     );
 
 
     /* =====================================================
-       VÉRIFICATION FIREBASE AUTH
+       VÉRIFICATION DE L'AUTHENTIFICATION
     ====================================================== */
 
     onAuthStateChanged(
         auth,
         user => {
 
+            /* =============================================
+               UTILISATEUR CONNECTÉ
+            ============================================== */
+
             if (user) {
 
                 console.log(
-                    "AUTH GUARD — Utilisateur connecté :",
+                    "AUTH GUARD — Accès autorisé :",
                     user.email
                 );
 
+
                 document.documentElement.classList.remove(
-                    "auth-checking"
+                    "camu-auth-checking"
                 );
+
 
                 return;
             }
@@ -82,17 +102,17 @@ if (publicPages.includes(currentPage)) {
             ============================================== */
 
             console.log(
-                "AUTH GUARD — Utilisateur non connecté."
+                "AUTH GUARD — Connexion obligatoire."
             );
 
 
-            const requestedUrl =
+            const currentUrl =
                 window.location.href;
 
 
             const redirect =
                 encodeURIComponent(
-                    requestedUrl
+                    currentUrl
                 );
 
 
@@ -102,19 +122,3 @@ if (publicPages.includes(currentPage)) {
         }
     );
 }
-
-
-/* =========================================================
-   ANTI FLASH
-========================================================= */
-
-const style =
-    document.createElement("style");
-
-style.textContent = `
-    html.auth-checking body {
-        visibility: hidden;
-    }
-`;
-
-document.head.appendChild(style);
