@@ -1,6 +1,7 @@
 /* =========================================================
    CAMU SERVICES — PUBLICATION DYNAMIQUE
    Firebase + Cloudinary
+   ADMIN : publication dans tous les espaces
 ========================================================= */
 
 import { auth, db } from "./firebase-config.js";
@@ -17,6 +18,15 @@ import {
     addDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+const ADMIN_EMAIL = "meschackmuteb@gmail.com";
+
+let isAdmin = false;
 
 
 /* =========================================================
@@ -114,37 +124,21 @@ const publishOverlay =
 
 
 if (publishMenuButton) {
-
-    publishMenuButton.addEventListener(
-        "click",
-        () => {
-
-            publishSidebar.classList.add("open");
-
-            publishOverlay.classList.add("open");
-
-        }
-    );
-
+    publishMenuButton.addEventListener("click", () => {
+        publishSidebar?.classList.add("open");
+        publishOverlay?.classList.add("open");
+    });
 }
 
 
 if (publishOverlay) {
-
-    publishOverlay.addEventListener(
-        "click",
-        closeMobileMenu
-    );
-
+    publishOverlay.addEventListener("click", closeMobileMenu);
 }
 
 
 function closeMobileMenu() {
-
-    publishSidebar.classList.remove("open");
-
-    publishOverlay.classList.remove("open");
-
+    publishSidebar?.classList.remove("open");
+    publishOverlay?.classList.remove("open");
 }
 
 
@@ -153,10 +147,7 @@ function closeMobileMenu() {
 ========================================================= */
 
 if (publishYear) {
-
-    publishYear.textContent =
-        new Date().getFullYear();
-
+    publishYear.textContent = new Date().getFullYear();
 }
 
 
@@ -167,71 +158,75 @@ if (publishYear) {
 const ACCOUNT_INFO = {
 
     client: {
-
         name: "Client",
-
         icon: "fa-solid fa-user",
-
         title: "Publier une demande",
-
         description:
             "Publiez une demande afin de trouver un produit, un service ou un professionnel."
-
     },
 
     immobilier: {
-
         name: "CAMU IMMO",
-
         icon: "fa-solid fa-house",
-
         title: "Publier une annonce immobilière",
-
         description:
             "Publiez un bien immobilier à vendre ou à louer."
-
     },
 
     commerce: {
-
         name: "CAMU COMMERCE",
-
         icon: "fa-solid fa-store",
-
         title: "Publier un produit ou service",
-
         description:
             "Présentez vos produits ou services à vos clients."
-
     },
 
     vehicules: {
-
         name: "VÉHICULES & TRANSPORT",
-
         icon: "fa-solid fa-car",
-
         title: "Publier une annonce véhicule",
-
         description:
             "Publiez un véhicule, un service de transport ou une offre automobile."
-
     },
 
     hotels: {
-
         name: "HÔTELS & HÉBERGEMENT",
-
         icon: "fa-solid fa-hotel",
-
         title: "Publier une offre d'hébergement",
-
         description:
             "Présentez votre hôtel, logement ou offre d'hébergement."
-
     }
 
 };
+
+
+const ADMIN_SPACES = [
+    {
+        value: "client",
+        label: "Client",
+        icon: "fa-solid fa-user"
+    },
+    {
+        value: "immobilier",
+        label: "CAMU IMMO",
+        icon: "fa-solid fa-house"
+    },
+    {
+        value: "commerce",
+        label: "CAMU COMMERCE",
+        icon: "fa-solid fa-store"
+    },
+    {
+        value: "vehicules",
+        label: "Véhicules & Transport",
+        icon: "fa-solid fa-car"
+    },
+    {
+        value: "hotels",
+        label: "Hôtels & Hébergement",
+        icon: "fa-solid fa-hotel"
+    }
+];
 
 
 let currentUser = null;
@@ -246,7 +241,6 @@ let selectedFiles = [];
 ========================================================= */
 
 const COMMERCE_CATEGORIES = [
-
     ["mode", "Mode & Vêtements"],
     ["chaussures", "Chaussures"],
     ["telephones", "Téléphones & Accessoires"],
@@ -260,24 +254,20 @@ const COMMERCE_CATEGORIES = [
     ["enfants", "Enfants & Jouets"],
     ["bijoux", "Bijoux & Accessoires"],
     ["autres", "Autres commerces"]
-
 ];
 
 
 const VEHICLE_TYPES = [
-
     "Taxi / Voiture",
     "Moto",
     "Bus / Minibus",
     "Camion",
     "Engin / Machine",
     "Autre"
-
 ];
 
 
 const HOTEL_TYPES = [
-
     "Hôtel",
     "Résidence",
     "Appartement",
@@ -286,7 +276,6 @@ const HOTEL_TYPES = [
     "Lodge",
     "Courte durée",
     "Autre"
-
 ];
 
 
@@ -294,44 +283,54 @@ const HOTEL_TYPES = [
    AUTH
 ========================================================= */
 
-onAuthStateChanged(
-    auth,
-    async user => {
+onAuthStateChanged(auth, async (user) => {
 
-        if (!user) {
+    if (!user) {
 
-            currentUser = null;
+        currentUser = null;
+        isAdmin = false;
 
-            showAccessDenied();
+        showAccessDenied();
 
-            return;
-
-        }
-
-
-        currentUser = user;
-
-
-        try {
-
-            await loadUserProfile(user);
-
-        } catch (error) {
-
-            console.error(
-                "CAMU PUBLICATION — profil :",
-                error
-            );
-
-            showMessage(
-                "Impossible de récupérer votre profil.",
-                "error"
-            );
-
-        }
-
+        return;
     }
-);
+
+    currentUser = user;
+
+    isAdmin =
+        String(user.email || "")
+            .trim()
+            .toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+    console.log(
+        "CAMU PUBLICATION — utilisateur :",
+        user.email
+    );
+
+    console.log(
+        "CAMU PUBLICATION — administrateur :",
+        isAdmin
+    );
+
+    try {
+
+        await loadUserProfile(user);
+
+    } catch (error) {
+
+        console.error(
+            "CAMU PUBLICATION — profil :",
+            error
+        );
+
+        showMessage(
+            "Impossible de récupérer votre profil.",
+            "error"
+        );
+
+        hideLoading();
+    }
+});
 
 
 /* =========================================================
@@ -340,96 +339,101 @@ onAuthStateChanged(
 
 async function loadUserProfile(user) {
 
-    const userRef =
-        doc(
-            db,
-            "users",
-            user.uid
-        );
+    let userData = {};
 
+    const userRef = doc(
+        db,
+        "users",
+        user.uid
+    );
 
     const userSnapshot =
         await getDoc(userRef);
 
 
-    if (!userSnapshot.exists()) {
-
-        showMessage(
-            "Votre profil CAMU SERVICES est introuvable.",
-            "error"
-        );
-
-        return;
-
+    if (userSnapshot.exists()) {
+        userData = userSnapshot.data();
     }
 
 
-    const userData =
-        userSnapshot.data();
+    /* =====================================================
+       ADMIN
+       L'administrateur ne dépend PAS de accountType
+    ====================================================== */
 
+    if (isAdmin) {
 
-    currentAccountType =
-        String(
-            userData.accountType || "client"
-        )
-        .trim()
-        .toLowerCase();
+        currentAccountType = "client";
 
+        buildAdminSpaceSelector();
 
-    if (
-        !ACCOUNT_INFO[currentAccountType]
-    ) {
+    }
+
+    /* =====================================================
+       UTILISATEUR NORMAL
+    ====================================================== */
+
+    else {
+
+        if (!userSnapshot.exists()) {
+
+            showMessage(
+                "Votre profil CAMU SERVICES est introuvable.",
+                "error"
+            );
+
+            hideLoading();
+
+            return;
+        }
 
         currentAccountType =
-            "client";
+            String(
+                userData.accountType || "client"
+            )
+            .trim()
+            .toLowerCase();
 
+        if (!ACCOUNT_INFO[currentAccountType]) {
+            currentAccountType = "client";
+        }
     }
 
 
-    const info =
-        ACCOUNT_INFO[currentAccountType];
+    updateSpaceHeader();
 
 
-    publishSpaceName.textContent =
-        info.name;
-
-    publishSpaceIcon.className =
-        info.icon;
-
-    publishHeroTitle.textContent =
-        info.title;
-
-    publishHeroDescription.textContent =
-        info.description;
-
+    /* =====================================================
+       CONTACT
+    ====================================================== */
 
     if (
-        userData.phone
-        &&
+        userData.phone &&
+        publishPhone &&
         !publishPhone.value
     ) {
 
         publishPhone.value =
             userData.phone;
-
     }
 
 
     if (
-        userData.whatsapp
-        &&
+        userData.whatsapp &&
+        publishWhatsapp &&
         !publishWhatsapp.value
     ) {
 
         publishWhatsapp.value =
             userData.whatsapp;
-
     }
 
 
-    if (
-        userData.ville
-    ) {
+    /* =====================================================
+       VILLE
+    ====================================================== */
+
+    if (userData.ville) {
 
         await loadCities(
             userData.ville
@@ -438,16 +442,197 @@ async function loadUserProfile(user) {
     } else {
 
         await loadCities();
-
     }
 
+
+    /* =====================================================
+       CHAMPS
+    ====================================================== */
 
     buildPublishTypes();
 
     buildSpecificFields();
 
     hideLoading();
+}
 
+
+/* =========================================================
+   SÉLECTEUR DES ESPACES POUR ADMIN
+========================================================= */
+
+function buildAdminSpaceSelector() {
+
+    const existing =
+        document.getElementById(
+            "adminSpaceSelector"
+        );
+
+    if (existing) {
+        existing.remove();
+    }
+
+
+    const container =
+        document.createElement("div");
+
+    container.id =
+        "adminSpaceSelector";
+
+    container.className =
+        "admin-space-selector";
+
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "admin-space-selector-title";
+
+    title.innerHTML = `
+        <i class="fa-solid fa-user-shield"></i>
+        <div>
+            <strong>Mode administrateur</strong>
+            <small>Choisissez l’espace dans lequel vous souhaitez publier.</small>
+        </div>
+    `;
+
+    container.appendChild(title);
+
+
+    const grid =
+        document.createElement("div");
+
+    grid.className =
+        "admin-space-grid";
+
+
+    ADMIN_SPACES.forEach((space) => {
+
+        const button =
+            document.createElement("button");
+
+        button.type =
+            "button";
+
+        button.className =
+            "admin-space-button";
+
+        button.dataset.space =
+            space.value;
+
+        button.innerHTML = `
+            <i class="${escapeHtml(space.icon)}"></i>
+            <span>${escapeHtml(space.label)}</span>
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                currentAccountType =
+                    space.value;
+
+                document
+                    .querySelectorAll(
+                        ".admin-space-button"
+                    )
+                    .forEach(
+                        item => {
+                            item.classList.remove(
+                                "active"
+                            );
+                        }
+                    );
+
+                button.classList.add("active");
+
+                updateSpaceHeader();
+
+                buildPublishTypes();
+
+                buildSpecificFields();
+
+                resetSelectedPhotos();
+
+            }
+        );
+
+
+        grid.appendChild(button);
+
+    });
+
+
+    container.appendChild(grid);
+
+
+    /* Insérer au-dessus des types d'annonce */
+
+    if (publishTypeFields) {
+
+        publishTypeFields.parentNode.insertBefore(
+            container,
+            publishTypeFields
+        );
+
+    }
+
+
+    /* Première sélection : Client */
+
+    const firstButton =
+        container.querySelector(
+            '[data-space="client"]'
+        );
+
+    if (firstButton) {
+        firstButton.classList.add("active");
+    }
+}
+
+
+/* =========================================================
+   MISE À JOUR DU HEADER
+========================================================= */
+
+function updateSpaceHeader() {
+
+    const info =
+        ACCOUNT_INFO[currentAccountType];
+
+    if (!info) {
+        return;
+    }
+
+
+    if (publishSpaceName) {
+
+        publishSpaceName.textContent =
+            info.name;
+    }
+
+
+    if (publishSpaceIcon) {
+
+        publishSpaceIcon.className =
+            info.icon;
+    }
+
+
+    if (publishHeroTitle) {
+
+        publishHeroTitle.textContent =
+            info.title;
+    }
+
+
+    if (publishHeroDescription) {
+
+        publishHeroDescription.textContent =
+            info.description;
+    }
 }
 
 
@@ -458,6 +643,11 @@ async function loadUserProfile(user) {
 async function loadCities(
     selectedCity = ""
 ) {
+
+    if (!publishVille) {
+        return;
+    }
+
 
     try {
 
@@ -483,9 +673,7 @@ async function loadCities(
                 if (
                     data.active === false
                 ) {
-
                     return;
-
                 }
 
 
@@ -496,21 +684,16 @@ async function loadCities(
 
 
                 if (!name) {
-
                     return;
-
                 }
 
 
                 cities.push({
-
                     name,
-
                     order:
                         Number(
                             data.order
                         ) || 999
-
                 });
 
             }
@@ -524,19 +707,16 @@ async function loadCities(
                     a.order !==
                     b.order
                 ) {
-
                     return (
                         a.order -
                         b.order
                     );
-
                 }
 
                 return a.name.localeCompare(
                     b.name,
                     "fr"
                 );
-
             }
         );
 
@@ -562,16 +742,16 @@ async function loadCities(
                 option.textContent =
                     city.name;
 
+
                 if (
-                    normalizeText(city.name)
-                    ===
+                    normalizeText(city.name) ===
                     normalizeText(selectedCity)
                 ) {
 
                     option.selected =
                         true;
-
                 }
+
 
                 publishVille.appendChild(
                     option
@@ -594,9 +774,7 @@ async function loadCities(
                 Impossible de charger les villes
             </option>
         `;
-
     }
-
 }
 
 
@@ -605,6 +783,11 @@ async function loadCities(
 ========================================================= */
 
 function buildPublishTypes() {
+
+    if (!publishTypeFields) {
+        return;
+    }
+
 
     publishTypeFields.innerHTML = "";
 
@@ -618,11 +801,16 @@ function buildPublishTypes() {
     ) {
 
         types = [
-
-            ["vente", "Vente", "fa-house-circle-check"],
-
-            ["location", "Location", "fa-key"]
-
+            [
+                "vente",
+                "Vente",
+                "fa-house-circle-check"
+            ],
+            [
+                "location",
+                "Location",
+                "fa-key"
+            ]
         ];
 
     }
@@ -634,11 +822,16 @@ function buildPublishTypes() {
     ) {
 
         types = [
-
-            ["produit", "Produit", "fa-box"],
-
-            ["service", "Service", "fa-hand-holding-heart"]
-
+            [
+                "produit",
+                "Produit",
+                "fa-box"
+            ],
+            [
+                "service",
+                "Service",
+                "fa-hand-holding-heart"
+            ]
         ];
 
     }
@@ -650,15 +843,26 @@ function buildPublishTypes() {
     ) {
 
         types = [
-
-            ["vente_vehicule", "Vente de véhicule", "fa-car"],
-
-            ["location", "Location", "fa-key"],
-
-            ["transport", "Transport", "fa-route"],
-
-            ["service_auto", "Service automobile", "fa-screwdriver-wrench"]
-
+            [
+                "vente_vehicule",
+                "Vente de véhicule",
+                "fa-car"
+            ],
+            [
+                "location",
+                "Location",
+                "fa-key"
+            ],
+            [
+                "transport",
+                "Transport",
+                "fa-route"
+            ],
+            [
+                "service_auto",
+                "Service automobile",
+                "fa-screwdriver-wrench"
+            ]
         ];
 
     }
@@ -670,11 +874,16 @@ function buildPublishTypes() {
     ) {
 
         types = [
-
-            ["hebergement", "Hébergement", "fa-bed"],
-
-            ["location_courte_duree", "Location courte durée", "fa-calendar-days"]
-
+            [
+                "hebergement",
+                "Hébergement",
+                "fa-bed"
+            ],
+            [
+                "location_courte_duree",
+                "Location courte durée",
+                "fa-calendar-days"
+            ]
         ];
 
     }
@@ -683,13 +892,21 @@ function buildPublishTypes() {
     else {
 
         types = [
-
-            ["demande_service", "Demande de service", "fa-hand-holding-heart"],
-
-            ["recherche_produit", "Recherche d'un produit", "fa-magnifying-glass"],
-
-            ["autre_demande", "Autre demande", "fa-circle-question"]
-
+            [
+                "demande_service",
+                "Demande de service",
+                "fa-hand-holding-heart"
+            ],
+            [
+                "recherche_produit",
+                "Recherche d'un produit",
+                "fa-magnifying-glass"
+            ],
+            [
+                "autre_demande",
+                "Autre demande",
+                "fa-circle-question"
+            ]
         ];
 
     }
@@ -716,7 +933,6 @@ function buildPublishTypes() {
 
 
             wrapper.innerHTML = `
-
                 <input
                     type="radio"
                     name="publishType"
@@ -733,17 +949,14 @@ function buildPublishTypes() {
                     </strong>
 
                 </span>
-
             `;
 
 
             publishTypeFields.appendChild(
                 wrapper
             );
-
         }
     );
-
 }
 
 
@@ -752,6 +965,11 @@ function buildPublishTypes() {
 ========================================================= */
 
 function buildSpecificFields() {
+
+    if (!publishSpecificFields) {
+        return;
+    }
+
 
     publishSpecificFields.innerHTML = "";
 
@@ -878,7 +1096,6 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
-
         `;
 
         return;
@@ -997,7 +1214,6 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
-
         `;
 
         return;
@@ -1162,7 +1378,6 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
-
         `;
 
         return;
@@ -1280,7 +1495,6 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
-
         `;
 
         return;
@@ -1322,9 +1536,7 @@ function buildSpecificFields() {
             ></textarea>
 
         </div>
-
     `;
-
 }
 
 
@@ -1332,20 +1544,21 @@ function buildSpecificFields() {
    PHOTOS — SÉLECTION
 ========================================================= */
 
-publishPhotos.addEventListener(
-    "change",
-    event => {
+if (publishPhotos) {
 
-        selectedFiles =
-            Array.from(
-                event.target.files || []
-            );
+    publishPhotos.addEventListener(
+        "change",
+        event => {
 
+            selectedFiles =
+                Array.from(
+                    event.target.files || []
+                );
 
-        renderPhotoPreview();
-
-    }
-);
+            renderPhotoPreview();
+        }
+    );
+}
 
 
 /* =========================================================
@@ -1354,6 +1567,11 @@ publishPhotos.addEventListener(
 
 function renderPhotoPreview() {
 
+    if (!publishPhotoPreview) {
+        return;
+    }
+
+
     publishPhotoPreview.innerHTML = "";
 
 
@@ -1361,16 +1579,21 @@ function renderPhotoPreview() {
         selectedFiles.length === 0
     ) {
 
-        publishPhotoInfo.textContent =
-            "Vous pouvez sélectionner plusieurs photos.";
+        if (publishPhotoInfo) {
+
+            publishPhotoInfo.textContent =
+                "Vous pouvez sélectionner plusieurs photos.";
+        }
 
         return;
-
     }
 
 
-    publishPhotoInfo.textContent =
-        `${selectedFiles.length} photo(s) sélectionnée(s).`;
+    if (publishPhotoInfo) {
+
+        publishPhotoInfo.textContent =
+            `${selectedFiles.length} photo(s) sélectionnée(s).`;
+    }
 
 
     selectedFiles.forEach(
@@ -1380,39 +1603,70 @@ function renderPhotoPreview() {
                 new FileReader();
 
 
-            reader.onload = event => {
+            reader.onload =
+                event => {
 
-                const item =
-                    document.createElement(
-                        "div"
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+                    item.className =
+                        "publish-photo-item";
+
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+                    image.src =
+                        event.target.result;
+
+                    image.alt =
+                        "Aperçu";
+
+
+                    item.appendChild(
+                        image
                     );
 
-                item.className =
-                    "publish-photo-item";
 
-
-                item.innerHTML = `
-
-                    <img
-                        src="${event.target.result}"
-                        alt="Aperçu"
-                    >
-
-                `;
-
-
-                publishPhotoPreview.appendChild(
-                    item
-                );
-
-            };
+                    publishPhotoPreview.appendChild(
+                        item
+                    );
+                };
 
 
             reader.readAsDataURL(file);
-
         }
     );
+}
 
+
+/* =========================================================
+   RESET PHOTOS
+========================================================= */
+
+function resetSelectedPhotos() {
+
+    selectedFiles = [];
+
+
+    if (publishPhotos) {
+        publishPhotos.value = "";
+    }
+
+
+    if (publishPhotoPreview) {
+        publishPhotoPreview.innerHTML = "";
+    }
+
+
+    if (publishPhotoInfo) {
+        publishPhotoInfo.textContent =
+            "Vous pouvez sélectionner plusieurs photos.";
+    }
 }
 
 
@@ -1420,262 +1674,286 @@ function renderPhotoPreview() {
    SUBMIT
 ========================================================= */
 
-publishForm.addEventListener(
-    "submit",
-    async event => {
+if (publishForm) {
 
-        event.preventDefault();
+    publishForm.addEventListener(
+        "submit",
+        async event => {
 
-        clearMessage();
+            event.preventDefault();
 
-
-        if (!currentUser) {
-
-            showMessage(
-                "Vous devez être connecté pour publier.",
-                "error"
-            );
-
-            return;
-
-        }
+            clearMessage();
 
 
-        if (
-            !publishForm.checkValidity()
-        ) {
+            if (!currentUser) {
 
-            publishForm.reportValidity();
+                showMessage(
+                    "Vous devez être connecté pour publier.",
+                    "error"
+                );
 
-            return;
-
-        }
-
-
-        const selectedType =
-            document.querySelector(
-                'input[name="publishType"]:checked'
-            );
+                return;
+            }
 
 
-        if (!selectedType) {
+            if (
+                !publishForm.checkValidity()
+            ) {
 
-            showMessage(
-                "Veuillez choisir le type d'annonce.",
-                "error"
-            );
+                publishForm.reportValidity();
 
-            return;
-
-        }
+                return;
+            }
 
 
-        if (
-            selectedFiles.length === 0
-            &&
-            currentAccountType !== "client"
-        ) {
-
-            showMessage(
-                "Ajoutez au moins une photo à votre annonce.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        setLoading(true);
-
-
-        try {
-
-            /* =============================================
-               INFORMATIONS
-            ============================================== */
-
-            const title =
-                getValue("publishTitle");
-
-            const description =
-                getValue("publishDescription");
-
-            const ville =
-                getValue("publishVille");
-
-            const commune =
-                getValue("publishCommune");
-
-            const neighborhood =
-                getValue("publishNeighborhood");
-
-            const whatsapp =
-                getValue("publishWhatsapp");
-
-            const phone =
-                getValue("publishPhone");
-
-            const publishType =
-                selectedType.value;
-
-
-            /* =============================================
-               PHOTOS CLOUDINARY
-            ============================================== */
-
-            const imageURLs =
-                await uploadImages(
-                    selectedFiles
+            const selectedType =
+                document.querySelector(
+                    'input[name="publishType"]:checked'
                 );
 
 
-            /* =============================================
-               DONNÉES COMMUNES
-            ============================================== */
+            if (!selectedType) {
 
-            const data = {
+                showMessage(
+                    "Veuillez choisir le type d'annonce.",
+                    "error"
+                );
 
-                title: title,
+                return;
+            }
 
-                description: description,
 
-                category:
-                    getCategory(),
+            /*
+             * Les annonces professionnelles nécessitent
+             * au moins une photo.
+             */
+            if (
+                selectedFiles.length === 0 &&
+                currentAccountType !== "client"
+            ) {
 
-                publicationType:
-                    publishType,
+                showMessage(
+                    "Ajoutez au moins une photo à votre annonce.",
+                    "error"
+                );
 
-                city: ville,
+                return;
+            }
 
-                commune: commune,
 
-                neighborhood:
+            setLoading(true);
+
+
+            try {
+
+                /* =========================================
+                   INFORMATIONS
+                ========================================== */
+
+                const title =
+                    getValue("publishTitle");
+
+                const description =
+                    getValue("publishDescription");
+
+                const ville =
+                    getValue("publishVille");
+
+                const commune =
+                    getValue("publishCommune");
+
+                const neighborhood =
+                    getValue("publishNeighborhood");
+
+                const whatsapp =
+                    getValue("publishWhatsapp");
+
+                const phone =
+                    getValue("publishPhone");
+
+                const publishType =
+                    selectedType.value;
+
+
+                /* =========================================
+                   PHOTOS CLOUDINARY
+                ========================================== */
+
+                const imageURLs =
+                    await uploadImages(
+                        selectedFiles
+                    );
+
+
+                /* =========================================
+                   DONNÉES COMMUNES
+                ========================================== */
+
+                const data = {
+
+                    title,
+
+                    description,
+
+                    category:
+                        getCategory(),
+
+                    publicationType:
+                        publishType,
+
+                    city:
+                        ville,
+
+                    commune,
+
                     neighborhood,
 
-                whatsapp:
                     whatsapp,
 
-                phone:
                     phone,
 
-                images:
-                    imageURLs,
+                    images:
+                        imageURLs,
 
-                imageURL:
-                    imageURLs[0] || "",
+                    imageURL:
+                        imageURLs[0] || "",
 
-                imageCount:
-                    imageURLs.length,
+                    imageCount:
+                        imageURLs.length,
 
-                userId:
-                    currentUser.uid,
+                    userId:
+                        currentUser.uid,
 
-                ownerId:
-                    currentUser.uid,
+                    ownerId:
+                        currentUser.uid,
 
-                ownerName:
-                    currentUser.displayName
-                    ||
-                    "Utilisateur",
+                    ownerName:
+                        currentUser.displayName ||
+                        "Administrateur",
 
-                ownerEmail:
-                    currentUser.email
-                    ||
-                    "",
+                    ownerEmail:
+                        currentUser.email ||
+                        "",
 
-                accountType:
-                    currentAccountType,
+                    accountType:
+                        currentAccountType,
 
-                status:
-                    "active",
+                    status:
+                        "active",
 
-                createdAt:
-                    serverTimestamp(),
+                    createdAt:
+                        serverTimestamp(),
 
-                updatedAt:
-                    serverTimestamp()
-
-            };
+                    updatedAt:
+                        serverTimestamp()
+                };
 
 
-            /* =============================================
-               CHAMPS SPÉCIFIQUES
-            ============================================== */
+                /* =========================================
+                   MARQUEUR ADMIN
+                ========================================== */
 
-            addSpecificData(
-                data
-            );
+                if (isAdmin) {
+
+                    data.isAdminPublication = true;
+
+                }
 
 
-            /* =============================================
-               FIRESTORE
-            ============================================== */
+                /* =========================================
+                   CHAMPS SPÉCIFIQUES
+                ========================================== */
 
-            const annonceRef =
-                await addDoc(
-                    collection(
-                        db,
-                        "annonces"
-                    ),
-                    data
+                addSpecificData(data);
+
+
+                /* =========================================
+                   FIRESTORE
+                ========================================== */
+
+                const annonceRef =
+                    await addDoc(
+                        collection(
+                            db,
+                            "annonces"
+                        ),
+                        data
+                    );
+
+
+                console.log(
+                    "CAMU PUBLICATION — annonce créée :",
+                    annonceRef.id
                 );
 
 
-            console.log(
-                "CAMU PUBLICATION — annonce créée :",
-                annonceRef.id
-            );
+                showMessage(
+                    "Votre annonce a été publiée avec succès.",
+                    "success"
+                );
 
 
-            showMessage(
-                "Votre annonce a été publiée avec succès.",
-                "success"
-            );
+                publishForm.reset();
+
+                selectedFiles = [];
 
 
-            publishForm.reset();
-
-            selectedFiles = [];
-
-            publishPhotoPreview.innerHTML = "";
-
-            publishPhotoInfo.textContent =
-                "Vous pouvez sélectionner plusieurs photos.";
+                if (publishPhotoPreview) {
+                    publishPhotoPreview.innerHTML = "";
+                }
 
 
-            setTimeout(
-                () => {
-
-                    window.location.href =
-                        `explorer.html?id=${encodeURIComponent(annonceRef.id)}`;
-
-                },
-                1200
-            );
+                if (publishPhotoInfo) {
+                    publishPhotoInfo.textContent =
+                        "Vous pouvez sélectionner plusieurs photos.";
+                }
 
 
-        } catch (error) {
+                /*
+                 * Après reset du formulaire, on reconstruit
+                 * les champs de l'espace actuellement choisi.
+                 */
 
-            console.error(
-                "CAMU PUBLICATION — erreur :",
-                error
-            );
+                buildPublishTypes();
+
+                buildSpecificFields();
 
 
-            showMessage(
-                getErrorMessage(error),
-                "error"
-            );
+                setTimeout(
+                    () => {
 
-        } finally {
+                        window.location.href =
+                            `explorer.html?id=${encodeURIComponent(
+                                annonceRef.id
+                            )}`;
 
-            setLoading(false);
+                    },
+                    1200
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "CAMU PUBLICATION — erreur :",
+                    error
+                );
+
+
+                showMessage(
+                    getErrorMessage(error),
+                    "error"
+                );
+
+
+            } finally {
+
+                setLoading(false);
+            }
 
         }
-
-    }
-);
+    );
+}
 
 
 /* =========================================================
@@ -1688,9 +1966,7 @@ function getCategory() {
         currentAccountType ===
         "immobilier"
     ) {
-
         return "immobilier";
-
     }
 
 
@@ -1698,9 +1974,7 @@ function getCategory() {
         currentAccountType ===
         "commerce"
     ) {
-
         return "commerce";
-
     }
 
 
@@ -1708,9 +1982,7 @@ function getCategory() {
         currentAccountType ===
         "vehicules"
     ) {
-
         return "vehicules";
-
     }
 
 
@@ -1718,14 +1990,11 @@ function getCategory() {
         currentAccountType ===
         "hotels"
     ) {
-
         return "hotels";
-
     }
 
 
     return "demande";
-
 }
 
 
@@ -1734,7 +2003,6 @@ function getCategory() {
 ========================================================= */
 
 function addSpecificData(data) {
-
 
     /* =====================================================
        IMMOBILIER
@@ -1750,20 +2018,24 @@ function addSpecificData(data) {
                 "publishPropertyType"
             );
 
+
         data.price =
             numberValue(
                 "publishPrice"
             );
+
 
         data.currency =
             getValue(
                 "publishCurrency"
             );
 
+
         data.transactionType =
             document.querySelector(
                 'input[name="publishType"]:checked'
             )?.value || "";
+
 
         return;
     }
@@ -1783,15 +2055,18 @@ function addSpecificData(data) {
                 "publishCommerceCategory"
             );
 
+
         data.price =
             numberValue(
                 "publishPrice"
             );
 
+
         data.currency =
             getValue(
                 "publishCurrency"
             );
+
 
         return;
     }
@@ -1811,35 +2086,42 @@ function addSpecificData(data) {
                 "publishVehicleType"
             );
 
+
         data.marque =
             getValue(
                 "publishBrand"
             );
+
 
         data.modele =
             getValue(
                 "publishModel"
             );
 
+
         data.annee =
             numberValue(
                 "publishYearVehicle"
             );
+
 
         data.price =
             numberValue(
                 "publishPrice"
             );
 
+
         data.currency =
             getValue(
                 "publishCurrency"
             );
 
+
         data.vehiclePublicationType =
             document.querySelector(
                 'input[name="publishType"]:checked'
             )?.value || "";
+
 
         return;
     }
@@ -1859,15 +2141,18 @@ function addSpecificData(data) {
                 "publishHotelType"
             );
 
+
         data.price =
             numberValue(
                 "publishPrice"
             );
 
+
         data.currency =
             getValue(
                 "publishCurrency"
             );
+
 
         return;
     }
@@ -1881,7 +2166,6 @@ function addSpecificData(data) {
         document.querySelector(
             'input[name="publishType"]:checked'
         )?.value || "";
-
 }
 
 
@@ -1889,16 +2173,12 @@ function addSpecificData(data) {
    CLOUDINARY
 ========================================================= */
 
-async function uploadImages(
-    files
-) {
+async function uploadImages(files) {
 
     if (
         files.length === 0
     ) {
-
         return [];
-
     }
 
 
@@ -1918,7 +2198,6 @@ async function uploadImages(
             throw new Error(
                 "Un des fichiers sélectionnés n'est pas une image."
             );
-
         }
 
 
@@ -1930,7 +2209,6 @@ async function uploadImages(
             throw new Error(
                 `L'image "${file.name}" dépasse 10 Mo.`
             );
-
         }
 
 
@@ -1942,6 +2220,7 @@ async function uploadImages(
             "file",
             file
         );
+
 
         formData.append(
             "upload_preset",
@@ -1970,15 +2249,12 @@ async function uploadImages(
         } catch {
 
             result = null;
-
         }
 
 
         if (
-            !response.ok
-            ||
-            !result
-            ||
+            !response.ok ||
+            !result ||
             !result.secure_url
         ) {
 
@@ -1987,22 +2263,20 @@ async function uploadImages(
                 result
             );
 
+
             throw new Error(
                 `Impossible de téléverser l'image "${file.name}".`
             );
-
         }
 
 
         urls.push(
             result.secure_url
         );
-
     }
 
 
     return urls;
-
 }
 
 
@@ -2017,16 +2291,13 @@ function getValue(id) {
 
 
     if (!element) {
-
         return "";
-
     }
 
 
     return String(
         element.value || ""
     ).trim();
-
 }
 
 
@@ -2037,9 +2308,7 @@ function numberValue(id) {
 
 
     if (!value) {
-
         return 0;
-
     }
 
 
@@ -2050,7 +2319,6 @@ function numberValue(id) {
     return Number.isFinite(number)
         ? number
         : 0;
-
 }
 
 
@@ -2066,7 +2334,6 @@ function normalizeText(value) {
         /[\u0300-\u036f]/g,
         ""
     );
-
 }
 
 
@@ -2078,7 +2345,6 @@ function escapeHtml(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
 
@@ -2088,31 +2354,29 @@ function escapeHtml(value) {
 
 function hideLoading() {
 
-    publishLoading.classList.add(
+    publishLoading?.classList.add(
         "hidden"
     );
 
-    publishFormContainer.classList.remove(
+    publishFormContainer?.classList.remove(
         "hidden"
     );
-
 }
 
 
 function showAccessDenied() {
 
-    publishLoading.classList.add(
+    publishLoading?.classList.add(
         "hidden"
     );
 
-    publishAccessDenied.classList.remove(
+    publishAccessDenied?.classList.remove(
         "hidden"
     );
 
-    publishFormContainer.classList.add(
+    publishFormContainer?.classList.add(
         "hidden"
     );
-
 }
 
 
@@ -2121,22 +2385,31 @@ function showMessage(
     type = "error"
 ) {
 
+    if (!publishMessage) {
+        return;
+    }
+
+
     publishMessage.textContent =
         message;
 
+
     publishMessage.className =
         `publish-message show ${type}`;
-
 }
 
 
 function clearMessage() {
 
+    if (!publishMessage) {
+        return;
+    }
+
+
     publishMessage.textContent = "";
 
     publishMessage.className =
         "publish-message";
-
 }
 
 
@@ -2144,9 +2417,12 @@ function clearMessage() {
    LOADING SUBMIT
 ========================================================= */
 
-function setLoading(
-    loading
-) {
+function setLoading(loading) {
+
+    if (!publishSubmit) {
+        return;
+    }
+
 
     publishSubmit.disabled =
         loading;
@@ -2165,14 +2441,13 @@ function setLoading(
 
             icon.className =
                 "fa-solid fa-spinner fa-spin";
-
         }
+
 
         if (span) {
 
             span.textContent =
                 "Publication en cours...";
-
         }
 
     } else {
@@ -2181,18 +2456,15 @@ function setLoading(
 
             icon.className =
                 "fa-solid fa-cloud-arrow-up";
-
         }
+
 
         if (span) {
 
             span.textContent =
                 "Publier l'annonce";
-
         }
-
     }
-
 }
 
 
@@ -2200,13 +2472,19 @@ function setLoading(
    ERREURS FIREBASE
 ========================================================= */
 
-function getErrorMessage(
-    error
-) {
+function getErrorMessage(error) {
 
     if (
-        error instanceof Error
-        &&
+        error?.code ===
+        "permission-denied"
+    ) {
+
+        return "Vous n'avez pas l'autorisation de publier cette annonce.";
+    }
+
+
+    if (
+        error instanceof Error &&
         error.message
     ) {
 
@@ -2217,27 +2495,14 @@ function getErrorMessage(
         ) {
 
             return "Vous n'avez pas l'autorisation de publier cette annonce.";
-
         }
 
 
         return error.message;
-
-    }
-
-
-    if (
-        error?.code ===
-        "permission-denied"
-    ) {
-
-        return "Vous n'avez pas l'autorisation de publier cette annonce.";
-
     }
 
 
     return "Une erreur est survenue pendant la publication.";
-
 }
 
 
