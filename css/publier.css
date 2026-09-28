@@ -982,4 +982,179 @@ body {
             repeat(2, 1fr);
     }
 
+   /* =========================================================
+   ADMIN — SÉLECTION DES ESPACES
+========================================================= */
+
+.admin-space-selector {
+    margin-bottom: 25px;
+    padding: 18px;
+    background: #f8fafc;
+    border: 1px solid var(--publish-border);
+    border-radius: 14px;
+}
+
+.admin-space-selector-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.admin-space-selector-title > i {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: var(--publish-blue);
+    color: #ffffff;
+
+    font-size: 18px;
+}
+
+.admin-space-selector-title div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.admin-space-selector-title strong {
+    color: var(--publish-text);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.admin-space-selector-title small {
+    color: var(--publish-muted);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.admin-space-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.admin-space-button {
+    min-height: 82px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px 8px;
+
+    border: 1px solid var(--publish-border);
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-space-button:hover {
+    border-color: var(--publish-blue);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 15px rgba(6, 59, 115, 0.08);
+}
+
+.admin-space-button i {
+    color: var(--publish-blue);
+    font-size: 20px;
+}
+
+.admin-space-button span {
+    color: var(--publish-text);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: center;
+
+    line-height: 1.3;
+}
+
+
+/* ESPACE ADMIN ACTIF */
+
+.admin-space-button.active {
+    background: var(--publish-blue);
+    border-color: var(--publish-blue);
+
+    box-shadow:
+        0 5px 15px rgba(6, 59, 115, 0.15);
+}
+
+.admin-space-button.active i,
+.admin-space-button.active span {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ADMIN — RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-space-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-space-selector {
+        padding: 15px;
+    }
+
+    .admin-space-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-space-button {
+        min-height: 75px;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .admin-space-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .admin-space-button {
+        min-height: 70px;
+    }
+
+    .admin-space-button span {
+        font-size: 11px;
+    }
+
+}
 }
