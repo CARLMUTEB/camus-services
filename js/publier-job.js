@@ -1,67 +1,36 @@
 /* =========================================================
    CAMU SERVICES
    PUBLICATION D'UNE OFFRE D'EMPLOI
+   Firebase Firestore + Cloudinary
 ========================================================= */
 
-import {
-    getApps,
-    getApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
-    getFirestore,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
     collection,
     addDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-import {
-    getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
-
 
 /* =========================================================
-   FIREBASE
+   CONFIGURATION CLOUDINARY
 ========================================================= */
 
-let app;
-let db;
-let auth;
-let storage;
+const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
 
-try {
+const CLOUDINARY_UPLOAD_PRESET = "camu_services";
 
-    if (!getApps().length) {
-        throw new Error(
-            "Firebase n'est pas initialisé. Vérifiez app.js."
-        );
-    }
-
-    app = getApp();
-
-    db = getFirestore(app);
-    auth = getAuth(app);
-    storage = getStorage(app);
-
-} catch (error) {
-
-    console.error(
-        "PUBLISH JOB — Firebase :",
-        error
-    );
-}
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =========================================================
-   ELEMENTS
+   ÉLÉMENTS HTML
 ========================================================= */
 
 const form =
@@ -87,7 +56,14 @@ const imagePreview =
 
 
 /* =========================================================
-   UTILITAIRES
+   UTILISATEUR
+========================================================= */
+
+let currentUser = null;
+
+
+/* =========================================================
+   UTILITAIRE — VALEUR D'UN CHAMP
 ========================================================= */
 
 function value(id) {
@@ -99,9 +75,28 @@ function value(id) {
         return "";
     }
 
-    return element.value.trim();
+    return String(
+        element.value || ""
+    ).trim();
 }
 
+
+/* =========================================================
+   UTILITAIRE — LISTES
+========================================================= */
+
+function splitLines(text) {
+
+    return String(text || "")
+        .split(/\r?\n/)
+        .map(item => item.trim())
+        .filter(Boolean);
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
 
 function showError(message) {
 
@@ -116,15 +111,24 @@ function showError(message) {
 
         errorMessage.style.display =
             "block";
+
+        errorMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
     }
+
+    console.error(
+        "PUBLISH JOB —",
+        message
+    );
 }
 
 
 function showSuccess(message) {
 
     if (errorMessage) {
-        errorMessage.style.display =
-            "none";
+        errorMessage.style.display = "none";
     }
 
     if (successMessage) {
@@ -134,6 +138,11 @@ function showSuccess(message) {
 
         successMessage.style.display =
             "block";
+
+        successMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
     }
 }
 
@@ -150,20 +159,11 @@ function hideMessages() {
 }
 
 
-function splitLines(text) {
-
-    return String(text || "")
-        .split(/\r?\n/)
-        .map(item => item.trim())
-        .filter(Boolean);
-}
-
-
 /* =========================================================
-   APERÇU IMAGE
+   APERÇU DE L'IMAGE
 ========================================================= */
 
-if (imageInput && imagePreview) {
+if (imageInput) {
 
     imageInput.addEventListener(
         "change",
@@ -174,14 +174,21 @@ if (imageInput && imagePreview) {
 
             if (!file) {
 
-                imagePreview.src = "";
+                if (imagePreview) {
 
-                imagePreview.style.display =
-                    "none";
+                    imagePreview.src = "";
+
+                    imagePreview.style.display =
+                        "none";
+                }
 
                 return;
             }
 
+
+            /* -----------------------------------------
+               FORMAT
+            ----------------------------------------- */
 
             const validTypes = [
                 "image/jpeg",
@@ -194,10 +201,13 @@ if (imageInput && imagePreview) {
 
                 imageInput.value = "";
 
-                imagePreview.src = "";
+                if (imagePreview) {
 
-                imagePreview.style.display =
-                    "none";
+                    imagePreview.src = "";
+
+                    imagePreview.style.display =
+                        "none";
+                }
 
                 showError(
                     "Format d'image invalide. Utilisez JPG, PNG ou WEBP."
@@ -207,14 +217,25 @@ if (imageInput && imagePreview) {
             }
 
 
-            if (file.size > 5 * 1024 * 1024) {
+            /* -----------------------------------------
+               TAILLE
+            ----------------------------------------- */
+
+            const maxSize =
+                5 * 1024 * 1024;
+
+
+            if (file.size > maxSize) {
 
                 imageInput.value = "";
 
-                imagePreview.src = "";
+                if (imagePreview) {
 
-                imagePreview.style.display =
-                    "none";
+                    imagePreview.src = "";
+
+                    imagePreview.style.display =
+                        "none";
+                }
 
                 showError(
                     "L'image ne doit pas dépasser 5 MB."
@@ -224,69 +245,142 @@ if (imageInput && imagePreview) {
             }
 
 
-            const reader =
-                new FileReader();
+            /* -----------------------------------------
+               APERÇU
+            ----------------------------------------- */
 
-            reader.onload =
-                event => {
+            if (imagePreview) {
 
-                    imagePreview.src =
-                        event.target.result;
+                const reader =
+                    new FileReader();
 
-                    imagePreview.style.display =
-                        "block";
-                };
+                reader.onload =
+                    event => {
 
-            reader.readAsDataURL(file);
+                        imagePreview.src =
+                            event.target.result;
+
+                        imagePreview.style.display =
+                            "block";
+                    };
+
+                reader.readAsDataURL(file);
+            }
+
         }
     );
 }
 
 
 /* =========================================================
-   UPLOAD IMAGE
+   UPLOAD IMAGE — CLOUDINARY
 ========================================================= */
 
-async function uploadCompanyImage(
-    user,
-    file
-) {
+async function uploadCompanyImage(file) {
 
     if (!file) {
         return "";
     }
 
 
-    if (!storage) {
-
-        throw new Error(
-            "Firebase Storage n'est pas disponible."
-        );
-    }
-
-
-    const safeName =
+    console.log(
+        "PUBLISH JOB — Début upload Cloudinary :",
         file.name
-            .replace(/[^a-zA-Z0-9._-]/g, "_");
+    );
 
 
-    const filePath =
-        `job-images/${user.uid}/${Date.now()}-${safeName}`;
+    const formData =
+        new FormData();
 
 
-    const storageRef =
-        ref(storage, filePath);
-
-
-    await uploadBytes(
-        storageRef,
+    formData.append(
+        "file",
         file
     );
 
 
-    return await getDownloadURL(
-        storageRef
+    formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
     );
+
+
+    /* -----------------------------------------
+       DOSSIER CLOUDINARY
+    ----------------------------------------- */
+
+    formData.append(
+        "folder",
+        "camu-services/jobs"
+    );
+
+
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+    if (!response.ok) {
+
+        let errorMessage =
+            "Impossible d'envoyer l'image sur Cloudinary.";
+
+        try {
+
+            const errorData =
+                await response.json();
+
+            console.error(
+                "CLOUDINARY ERROR :",
+                errorData
+            );
+
+            if (
+                errorData?.error?.message
+            ) {
+
+                errorMessage =
+                    `Cloudinary : ${errorData.error.message}`;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lecture Cloudinary :",
+                error
+            );
+        }
+
+        throw new Error(
+            errorMessage
+        );
+    }
+
+
+    const data =
+        await response.json();
+
+
+    console.log(
+        "PUBLISH JOB — Image Cloudinary :",
+        data.secure_url
+    );
+
+
+    if (!data.secure_url) {
+
+        throw new Error(
+            "Cloudinary n'a pas retourné l'URL de l'image."
+        );
+    }
+
+
+    return data.secure_url;
 }
 
 
@@ -294,20 +388,22 @@ async function uploadCompanyImage(
    AUTHENTIFICATION
 ========================================================= */
 
-let currentUser = null;
-
-
 onAuthStateChanged(
     auth,
     user => {
 
-        currentUser = user || null;
+        currentUser =
+            user || null;
 
 
         if (!authMessage) {
             return;
         }
 
+
+        /* -----------------------------------------
+           PAS CONNECTÉ
+        ----------------------------------------- */
 
         if (!user) {
 
@@ -317,6 +413,7 @@ onAuthStateChanged(
             authMessage.style.display =
                 "block";
 
+
             if (publishButton) {
                 publishButton.disabled = true;
             }
@@ -324,6 +421,10 @@ onAuthStateChanged(
             return;
         }
 
+
+        /* -----------------------------------------
+           CONNECTÉ
+        ----------------------------------------- */
 
         authMessage.textContent =
             `Connecté : ${user.email || "Compte utilisateur"}`;
@@ -344,6 +445,12 @@ onAuthStateChanged(
         if (publishButton) {
             publishButton.disabled = false;
         }
+
+
+        console.log(
+            "PUBLISH JOB — Utilisateur connecté :",
+            user.email
+        );
 
     }
 );
@@ -377,58 +484,103 @@ function validateForm() {
         document.getElementById("jobTerms");
 
 
+    /* -----------------------------------------
+       TITRE
+    ----------------------------------------- */
+
     if (!title) {
+
         showError(
             "Veuillez renseigner l'intitulé du poste."
         );
+
         return false;
     }
 
 
+    /* -----------------------------------------
+       ENTREPRISE
+    ----------------------------------------- */
+
     if (!company) {
+
         showError(
             "Veuillez renseigner le nom de l'entreprise."
         );
+
         return false;
     }
 
 
+    /* -----------------------------------------
+       CATÉGORIE
+    ----------------------------------------- */
+
     if (!category) {
+
         showError(
             "Veuillez sélectionner une catégorie."
         );
+
         return false;
     }
 
 
+    /* -----------------------------------------
+       CONTRAT
+    ----------------------------------------- */
+
     if (!contractType) {
+
         showError(
             "Veuillez sélectionner le type de contrat."
         );
+
         return false;
     }
 
 
+    /* -----------------------------------------
+       LOCALISATION
+    ----------------------------------------- */
+
     if (!city) {
+
         showError(
             "Veuillez renseigner la localisation."
         );
+
         return false;
     }
 
 
+    /* -----------------------------------------
+       DESCRIPTION
+    ----------------------------------------- */
+
     if (!description) {
+
         showError(
             "Veuillez renseigner la description du poste."
         );
+
         return false;
     }
 
 
-    if (!terms?.checked) {
+    /* -----------------------------------------
+       CONDITIONS
+    ----------------------------------------- */
+
+    if (
+        terms &&
+        !terms.checked
+    ) {
+
         showError(
             "Veuillez accepter les conditions de publication."
         );
+
         return false;
     }
 
@@ -449,10 +601,18 @@ if (form) {
 
             event.preventDefault();
 
+
+            console.log(
+                "PUBLISH JOB — Formulaire soumis."
+            );
+
+
             hideMessages();
 
 
-            /* AUTH */
+            /* -----------------------------------------
+               AUTHENTIFICATION
+            ----------------------------------------- */
 
             if (!currentUser) {
 
@@ -464,26 +624,18 @@ if (form) {
             }
 
 
-            /* FIREBASE */
-
-            if (!db) {
-
-                showError(
-                    "La base de données n'est pas disponible."
-                );
-
-                return;
-            }
-
-
-            /* VALIDATION */
+            /* -----------------------------------------
+               VALIDATION
+            ----------------------------------------- */
 
             if (!validateForm()) {
                 return;
             }
 
 
-            /* BOUTON */
+            /* -----------------------------------------
+               BOUTON
+            ----------------------------------------- */
 
             const originalButton =
                 publishButton?.innerHTML;
@@ -503,11 +655,12 @@ if (form) {
 
             try {
 
-                /* ---------------------------------------------
+                /* =====================================
                    IMAGE
-                --------------------------------------------- */
+                ===================================== */
 
                 let imageUrl = "";
+
 
                 const selectedFile =
                     imageInput?.files?.[0] || null;
@@ -515,17 +668,27 @@ if (form) {
 
                 if (selectedFile) {
 
+                    showSuccess(
+                        "Envoi de l'image en cours..."
+                    );
+
+
                     imageUrl =
                         await uploadCompanyImage(
-                            currentUser,
                             selectedFile
                         );
+
+
+                    console.log(
+                        "PUBLISH JOB — Image envoyée :",
+                        imageUrl
+                    );
                 }
 
 
-                /* ---------------------------------------------
+                /* =====================================
                    DONNÉES
-                --------------------------------------------- */
+                ===================================== */
 
                 const jobData = {
 
@@ -605,14 +768,43 @@ if (form) {
                     travelRequired:
                         value("jobTravel"),
 
+
+                    /* =================================
+                       IMAGE
+                    ================================= */
+
                     image:
                         imageUrl,
+
+                    imageURL:
+                        imageUrl,
+
+
+                    /* =================================
+                       PROPRIÉTAIRE
+                    ================================= */
 
                     userId:
                         currentUser.uid,
 
+                    ownerId:
+                        currentUser.uid,
+
+                    ownerName:
+                        currentUser.displayName ||
+                        currentUser.email ||
+                        "Administrateur",
+
+
+                    /* =================================
+                       STATUT
+                    ================================= */
+
                     status:
                         "active",
+
+                    accountType:
+                        "jobs",
 
                     createdAt:
                         serverTimestamp(),
@@ -623,14 +815,19 @@ if (form) {
 
 
                 console.log(
-                    "PUBLISH JOB — Données :",
+                    "PUBLISH JOB — Données Firestore :",
                     jobData
                 );
 
 
-                /* ---------------------------------------------
+                /* =====================================
                    FIRESTORE
-                --------------------------------------------- */
+                ===================================== */
+
+                showSuccess(
+                    "Enregistrement de l'offre..."
+                );
+
 
                 const docRef =
                     await addDoc(
@@ -648,20 +845,27 @@ if (form) {
                 );
 
 
+                /* =====================================
+                   SUCCÈS
+                ===================================== */
+
                 showSuccess(
                     "Votre offre d'emploi a été publiée avec succès."
                 );
 
 
+                /* =====================================
+                   RÉINITIALISATION
+                ===================================== */
+
                 form.reset();
 
-
-                /* Valeur par défaut */
 
                 const salaryField =
                     document.getElementById(
                         "jobSalary"
                     );
+
 
                 if (salaryField) {
 
@@ -679,11 +883,9 @@ if (form) {
                 }
 
 
-                /*
-                 * Redirection après publication.
-                 * Un petit délai permet d'afficher
-                 * le message de succès.
-                 */
+                /* =====================================
+                   REDIRECTION
+                ===================================== */
 
                 setTimeout(
                     () => {
@@ -697,20 +899,73 @@ if (form) {
                     1200
                 );
 
-
             } catch (error) {
 
                 console.error(
-                    "PUBLISH JOB — Erreur :",
+                    "PUBLISH JOB — ERREUR COMPLÈTE :",
                     error
                 );
 
 
-                showError(
-                    error?.message ||
-                    "Impossible de publier l'offre."
-                );
+                let message =
+                    "Impossible de publier l'offre.";
 
+
+                /* -----------------------------------------
+                   ERREURS CLOUDINARY
+                ----------------------------------------- */
+
+                if (
+                    String(error.message || "")
+                        .toLowerCase()
+                        .includes("cloudinary")
+                ) {
+
+                    message =
+                        error.message;
+                }
+
+
+                /* -----------------------------------------
+                   FIRESTORE
+                ----------------------------------------- */
+
+                else if (
+                    error.code ===
+                    "permission-denied"
+                ) {
+
+                    message =
+                        "Publication refusée par Firebase Firestore. Vérifiez les règles de la collection jobs.";
+                }
+
+
+                /* -----------------------------------------
+                   RÉSEAU
+                ----------------------------------------- */
+
+                else if (
+                    error.name ===
+                    "TypeError"
+                ) {
+
+                    message =
+                        "Problème de connexion Internet ou impossible de contacter le serveur.";
+                }
+
+
+                else if (
+                    error.message
+                ) {
+
+                    message =
+                        error.message;
+                }
+
+
+                showError(
+                    message
+                );
 
             } finally {
 
@@ -727,6 +982,7 @@ if (form) {
                         `;
                 }
             }
+
         }
     );
 }
@@ -753,6 +1009,7 @@ function setupMobileMenu() {
         !overlay ||
         !menuButton
     ) {
+
         return;
     }
 
@@ -766,10 +1023,12 @@ function setupMobileMenu() {
                     "open"
                 );
 
+
             overlay.classList.toggle(
                 "active",
                 opened
             );
+
 
             menuButton.setAttribute(
                 "aria-expanded",
@@ -787,9 +1046,11 @@ function setupMobileMenu() {
                 "open"
             );
 
+
             overlay.classList.remove(
                 "active"
             );
+
 
             menuButton.setAttribute(
                 "aria-expanded",
@@ -801,3 +1062,12 @@ function setupMobileMenu() {
 
 
 setupMobileMenu();
+
+
+/* =========================================================
+   FIN
+========================================================= */
+
+console.log(
+    "CAMU SERVICES — publier-job.js chargé correctement."
+);
