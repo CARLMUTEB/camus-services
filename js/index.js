@@ -1,3 +1,4 @@
+```javascript
 // =========================================================
 // CAMU SERVICES — INDEX.JS
 // Accueil
@@ -8,7 +9,7 @@
 // - Recherche
 // - ESPACE IMMOBILIER
 // - ESPACE COMMERCE
-// - ESPACE VÉHICULES & TRANSPORT
+// - ESPACE CAMU TAXI
 // - ESPACE HÔTELS & HÉBERGEMENT
 // - ESPACE SERVICES
 // - ESPACE JOBS / EMPLOI
@@ -132,11 +133,6 @@ function normalizeIcon(icon) {
 
     let value = String(icon).trim();
 
-    // Si Firestore contient seulement :
-    // fa-house
-    // fa-store
-    // fa-car
-    // etc.
     if (
         value.startsWith("fa-") &&
         !value.includes("fa-solid") &&
@@ -210,7 +206,6 @@ function formatPrice(
 
 function getImage(ad) {
 
-    // Tableau Firestore
     if (
         Array.isArray(ad.images) &&
         ad.images.length > 0 &&
@@ -220,7 +215,6 @@ function getImage(ad) {
     }
 
 
-    // Images stockées sous forme JSON
     if (
         typeof ad.images === "string" &&
         ad.images.trim() !== ""
@@ -241,8 +235,8 @@ function getImage(ad) {
 
         } catch (error) {
 
-            // Ce n'est pas du JSON.
-            // On continue avec les autres champs.
+            // Pas du JSON.
+            // On continue.
 
         }
 
@@ -368,10 +362,6 @@ async function loadCities() {
         });
 
 
-        // =====================================================
-        // TRI
-        // =====================================================
-
         cities.sort((a, b) => {
 
             if (a.order !== b.order) {
@@ -389,10 +379,6 @@ async function loadCities() {
         });
 
 
-        // =====================================================
-        // SELECT
-        // =====================================================
-
         citySelect.innerHTML = `
             <option value="">
                 Toutes les villes
@@ -403,9 +389,7 @@ async function loadCities() {
         cities.forEach(city => {
 
             const option =
-                document.createElement(
-                    "option"
-                );
+                document.createElement("option");
 
             option.value =
                 city.id;
@@ -483,7 +467,6 @@ async function loadCategories() {
                         data.name ||
                         "Catégorie",
 
-                    // CORRECTION ICÔNE
                     icon:
                         normalizeIcon(
                             data.icon
@@ -502,10 +485,6 @@ async function loadCategories() {
 
         });
 
-
-        // =====================================================
-        // TRI
-        // =====================================================
 
         categories.sort((a, b) => {
 
@@ -526,10 +505,6 @@ async function loadCategories() {
 
         homeCategories.innerHTML = "";
 
-
-        // =====================================================
-        // AUCUNE CATEGORIE
-        // =====================================================
 
         if (categories.length === 0) {
 
@@ -565,7 +540,7 @@ async function loadCategories() {
 
 
             // =================================================
-            // NOM DE LA CATEGORIE
+            // NOM NORMALISÉ
             // =================================================
 
             const categoryName =
@@ -574,15 +549,19 @@ async function loadCategories() {
                 );
 
 
+            console.log(
+                "INDEX — catégorie :",
+                category.name,
+                "→",
+                categoryName
+            );
+
+
             // =================================================
-            // ROUTING DES ESPACES
+            // ROUTING
             // =================================================
 
-
-            // -------------------------------------------------
-            // ESPACE IMMOBILIER
-            // -------------------------------------------------
-
+            // IMMOBILIER
             if (
                 categoryName === "immobilier" ||
                 categoryName.includes("immobilier")
@@ -594,10 +573,7 @@ async function loadCategories() {
             }
 
 
-            // -------------------------------------------------
-            // ESPACE COMMERCE
-            // -------------------------------------------------
-
+            // COMMERCE
             else if (
                 categoryName === "commerce" ||
                 categoryName.includes("commerce")
@@ -609,25 +585,20 @@ async function loadCategories() {
             }
 
 
-            // -------------------------------------------------
-            // ESPACE VÉHICULES & TRANSPORT
-            // -------------------------------------------------
-
+            // CAMU TAXI
             else if (
                 categoryName.includes("vehicule") ||
-                categoryName.includes("transport")
+                categoryName.includes("transport") ||
+                categoryName.includes("taxi")
             ) {
 
                 card.href =
-                    "vehicules.html";
+                    "camu-taxi.html";
 
             }
 
 
-            // -------------------------------------------------
-            // ESPACE HÔTELS & HÉBERGEMENT
-            // -------------------------------------------------
-
+            // HÔTELS
             else if (
                 categoryName.includes("hotel") ||
                 categoryName.includes("hebergement")
@@ -639,10 +610,7 @@ async function loadCategories() {
             }
 
 
-            // -------------------------------------------------
-            // ESPACE SERVICES
-            // -------------------------------------------------
-
+            // SERVICES
             else if (
                 categoryName === "services" ||
                 categoryName === "service" ||
@@ -655,10 +623,7 @@ async function loadCategories() {
             }
 
 
-            // -------------------------------------------------
-            // ESPACE JOBS / EMPLOI
-            // -------------------------------------------------
-
+            // JOBS
             else if (
                 categoryName === "jobs" ||
                 categoryName === "job" ||
@@ -672,10 +637,7 @@ async function loadCategories() {
             }
 
 
-            // -------------------------------------------------
-            // AUTRES CATEGORIES
-            // -------------------------------------------------
-
+            // AUTRES
             else {
 
                 card.href =
@@ -717,6 +679,25 @@ async function loadCategories() {
             `;
 
 
+            // =================================================
+            // PROTECTION CLIC
+            // =================================================
+
+            card.addEventListener(
+                "click",
+                event => {
+
+                    console.log(
+                        "INDEX — clic catégorie :",
+                        category.name,
+                        "→",
+                        card.href
+                    );
+
+                }
+            );
+
+
             homeCategories.appendChild(
                 card
             );
@@ -730,13 +711,15 @@ async function loadCategories() {
         );
 
 
-        // Vérification des icônes dans la console
         console.log(
-            "INDEX — icônes catégories :",
-            categories.map(category => ({
-                name: category.name,
-                icon: category.icon
-            }))
+            "INDEX — destinations :",
+            [...homeCategories.querySelectorAll(".category-card")]
+                .map(card => ({
+                    texte:
+                        card.querySelector("h3")?.textContent,
+                    href:
+                        card.href
+                }))
         );
 
 
@@ -797,7 +780,6 @@ async function checkFavorite(listingId) {
             );
 
         return snapshot.exists();
-
 
     } catch (error) {
 
@@ -930,10 +912,6 @@ async function toggleFavorite(button) {
             );
 
 
-        // =====================================================
-        // RETIRER
-        // =====================================================
-
         if (snapshot.exists()) {
 
             await deleteDoc(
@@ -945,14 +923,7 @@ async function toggleFavorite(button) {
                 false
             );
 
-        }
-
-
-        // =====================================================
-        // AJOUTER
-        // =====================================================
-
-        else {
+        } else {
 
             await setDoc(
                 favoriteRef,
@@ -1035,7 +1006,6 @@ async function restoreFavoriteButtons() {
 
 // =========================================================
 // CHARGER LES ANNONCES
-// COLLECTION : annonces
 // =========================================================
 
 async function loadRecentAds() {
@@ -1061,10 +1031,6 @@ async function loadRecentAds() {
         `;
 
 
-        // =====================================================
-        // FIRESTORE
-        // =====================================================
-
         const snapshot =
             await getDocs(
                 collection(
@@ -1073,10 +1039,6 @@ async function loadRecentAds() {
                 )
             );
 
-
-        // =====================================================
-        // TRANSFORMATION
-        // =====================================================
 
         const ads =
             snapshot.docs.map(
@@ -1090,10 +1052,6 @@ async function loadRecentAds() {
                 })
             );
 
-
-        // =====================================================
-        // FILTRER LES ANNONCES
-        // =====================================================
 
         const activeAds =
             ads.filter(ad => {
@@ -1121,10 +1079,6 @@ async function loadRecentAds() {
             });
 
 
-        // =====================================================
-        // TRI PAR DATE
-        // =====================================================
-
         activeAds.sort(
             (a, b) => {
 
@@ -1146,10 +1100,6 @@ async function loadRecentAds() {
         );
 
 
-        // =====================================================
-        // 8 ANNONCES RECENTES
-        // =====================================================
-
         const recent =
             activeAds.slice(
                 0,
@@ -1162,10 +1112,6 @@ async function loadRecentAds() {
             activeAds.length
         );
 
-
-        // =====================================================
-        // AUCUNE ANNONCE
-        // =====================================================
 
         if (recent.length === 0) {
 
@@ -1196,16 +1142,8 @@ async function loadRecentAds() {
         }
 
 
-        // =====================================================
-        // VIDER
-        // =====================================================
-
         recentAds.innerHTML = "";
 
-
-        // =====================================================
-        // CREER LES CARTES
-        // =====================================================
 
         for (const ad of recent) {
 
@@ -1231,10 +1169,6 @@ async function loadRecentAds() {
                     ad.currency || "USD"
                 );
 
-
-            // =================================================
-            // CARTE
-            // =================================================
 
             const card =
                 document.createElement(
@@ -1304,11 +1238,9 @@ async function loadRecentAds() {
                         <i class="fa-solid fa-location-dot"></i>
 
                         <span>
-
                             ${escapeHtml(
                                 city
                             )}
-
                         </span>
 
                     </div>
@@ -1324,10 +1256,6 @@ async function loadRecentAds() {
 
             `;
 
-
-            // =================================================
-            // OUVRIR ANNONCE
-            // =================================================
 
             card.addEventListener(
                 "click",
@@ -1349,10 +1277,6 @@ async function loadRecentAds() {
                 }
             );
 
-
-            // =================================================
-            // FAVORI
-            // =================================================
 
             const favoriteButton =
                 card.querySelector(
@@ -1386,10 +1310,6 @@ async function loadRecentAds() {
 
         }
 
-
-        // =====================================================
-        // RESTAURER FAVORIS
-        // =====================================================
 
         await restoreFavoriteButtons();
 
@@ -1527,3 +1447,4 @@ async function initHomePage() {
 // =========================================================
 
 initHomePage();
+```
