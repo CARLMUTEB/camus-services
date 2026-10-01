@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CAMU TAXI BOOKING — Trouver un chauffeur</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/camu-taxi.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="taxi-page">
+
+    <!-- HEADER -->
+    <header class="taxi-header">
+
+        <div class="taxi-header-inner">
+
+            <a href="index.html" class="taxi-logo">
+                <span class="taxi-logo-icon">
+                    <i class="fa-solid fa-taxi"></i>
+                </span>
+
+                <span>
+                    <strong>CAMU</strong>
+                    <small>TAXI BOOKING</small>
+                </span>
+            </a>
+
+            <a href="index.html" class="taxi-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Retour
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="taxi-hero">
+
+        <div class="taxi-container">
+
+            <span class="taxi-badge">
+                <i class="fa-solid fa-car-side"></i>
+                Chauffeurs membres CAMU
+            </span>
+
+            <h1>
+                Trouvez un chauffeur
+                <span>près de vous</span>
+            </h1>
+
+            <p>
+                Recherchez les chauffeurs CAMU SERVICES par ville,
+                commune ou quartier et contactez-les directement sur WhatsApp.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECHERCHE -->
+    <main class="taxi-container">
+
+        <section class="taxi-search-card">
+
+            <div class="taxi-search-title">
+                <div>
+                    <h2>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Rechercher un chauffeur
+                    </h2>
+
+                    <p>
+                        Sélectionnez votre zone ou utilisez votre position.
+                    </p>
+                </div>
+
+                <button id="taxiNearMeButton" class="taxi-location-button">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    Taxis près de moi
+                </button>
+            </div>
+
+
+            <div class="taxi-filters">
+
+                <!-- VILLE -->
+                <div class="taxi-field">
+
+                    <label for="taxiVille">
+                        <i class="fa-solid fa-city"></i>
+                        Ville
+                    </label>
+
+                    <select id="taxiVille">
+                        <option value="">
+                            Chargement des villes...
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!-- COMMUNE -->
+                <div class="taxi-field">
+
+                    <label for="taxiCommune">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Commune
+                    </label>
+
+                    <select id="taxiCommune" disabled>
+
+                        <option value="">
+                            Toutes les communes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUARTIER -->
+                <div class="taxi-field">
+
+                    <label for="taxiQuartier">
+                        <i class="fa-solid fa-map-pin"></i>
+                        Quartier
+                    </label>
+
+                    <select id="taxiQuartier" disabled>
+
+                        <option value="">
+                            Tous les quartiers
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- NOM -->
+                <div class="taxi-field">
+
+                    <label for="taxiSearch">
+
+                        <i class="fa-solid fa-user"></i>
+                        Nom du chauffeur
+
+                    </label>
+
+                    <input
+                        type="search"
+                        id="taxiSearch"
+                        placeholder="Ex. Jean..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="taxi-filter-actions">
+
+                <label class="taxi-available-check">
+
+                    <input
+                        type="checkbox"
+                        id="taxiAvailableOnly"
+                    >
+
+                    <span>
+                        Afficher uniquement les chauffeurs disponibles
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="button"
+                    id="taxiResetButton"
+                    class="taxi-reset-button"
+                >
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Réinitialiser
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- POSITION -->
+        <div
+            id="taxiLocationMessage"
+            class="taxi-location-message hidden"
+        ></div>
+
+
+        <!-- RESULTATS -->
+        <section class="taxi-results-section">
+
+            <div class="taxi-results-header">
+
+                <div>
+                    <h2>
+                        Chauffeurs CAMU
+                    </h2>
+
+                    <p id="taxiResultsCount">
+                        Chargement...
+                    </p>
+                </div>
+
+                <div
+                    id="taxiResultsStatus"
+                    class="taxi-results-status"
+                ></div>
+
+            </div>
+
+
+            <!-- LOADING -->
+            <div id="taxiLoading" class="taxi-loading">
+
+                <div class="taxi-spinner"></div>
+
+                <p>
+                    Recherche des chauffeurs...
+                </p>
+
+            </div>
+
+
+            <!-- LISTE -->
+            <div
+                id="taxiDriversList"
+                class="taxi-drivers-grid"
+            ></div>
+
+
+            <!-- AUCUN RESULTAT -->
+            <div
+                id="taxiEmpty"
+                class="taxi-empty hidden"
+            >
+
+                <div class="taxi-empty-icon">
+                    <i class="fa-solid fa-taxi"></i>
+                </div>
+
+                <h3>
+                    Aucun chauffeur trouvé
+                </h3>
+
+                <p>
+                    Aucun chauffeur CAMU ne correspond à votre recherche.
+                    Essayez une autre ville ou une autre zone.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="taxi-footer">
+
+        <div class="taxi-container">
+
+            <strong>CAMU TAXI BOOKING</strong>
+
+            <span>
+                Un service de mise en relation entre clients
+                et chauffeurs membres de CAMU SERVICES.
+            </span>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/camu-taxi.js"></script>
+<script type="module" src="js/theme.js"></script>
+
+</body>
+</html>
