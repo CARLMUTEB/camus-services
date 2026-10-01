@@ -1,4 +1,3 @@
-```javascript
 // =========================================================
 // CAMU SERVICES — INDEX.JS
 // Accueil
@@ -1447,4 +1446,3 @@ async function initHomePage() {
 // =========================================================
 
 initHomePage();
-```
