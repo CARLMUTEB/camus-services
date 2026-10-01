@@ -1,0 +1,893 @@
+/* =====================================================
+   CAMU TAXI BOOKING — V1
+   ===================================================== */
+
+:root {
+    --taxi-blue: #063b73;
+    --taxi-blue-dark: #04294f;
+    --taxi-green: #20a86b;
+    --taxi-green-dark: #168653;
+    --taxi-yellow: #f5b800;
+    --taxi-light: #f5f7fa;
+    --taxi-border: #e2e7ee;
+    --taxi-text: #1d2939;
+    --taxi-muted: #667085;
+    --taxi-danger: #d92d20;
+    --taxi-white: #ffffff;
+    --taxi-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --taxi-radius: 16px;
+}
+
+
+/* =====================================================
+   BASE
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    background: var(--taxi-light);
+    color: var(--taxi-text);
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+.taxi-container {
+    width: min(1200px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.taxi-header {
+    background: var(--taxi-white);
+    border-bottom: 1px solid var(--taxi-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+
+.taxi-header-inner {
+    width: min(1200px, calc(100% - 32px));
+    height: 76px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.taxi-logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    text-decoration: none;
+    color: var(--taxi-blue);
+}
+
+
+.taxi-logo-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    background: var(--taxi-blue);
+    color: white;
+
+    font-size: 20px;
+}
+
+
+.taxi-logo strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+}
+
+
+.taxi-logo small {
+    display: block;
+    margin-top: 4px;
+    color: var(--taxi-muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+
+.taxi-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--taxi-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   HERO
+   ===================================================== */
+
+.taxi-hero {
+    background: linear-gradient(
+        135deg,
+        var(--taxi-blue),
+        var(--taxi-blue-dark)
+    );
+
+    color: white;
+    padding: 58px 0 65px;
+}
+
+
+.taxi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 13px;
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .18);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.taxi-hero h1 {
+    max-width: 700px;
+    margin: 18px 0 12px;
+
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.08;
+}
+
+
+.taxi-hero h1 span {
+    display: block;
+    color: #b9e8d0;
+}
+
+
+.taxi-hero p {
+    max-width: 700px;
+    margin: 0;
+
+    color: rgba(255, 255, 255, .82);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   SEARCH CARD
+   ===================================================== */
+
+.taxi-search-card {
+    margin-top: -30px;
+    position: relative;
+    z-index: 2;
+
+    background: white;
+    border: 1px solid var(--taxi-border);
+    border-radius: var(--taxi-radius);
+
+    padding: 25px;
+
+    box-shadow: var(--taxi-shadow);
+}
+
+
+.taxi-search-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+
+.taxi-search-title h2 {
+    margin: 0 0 5px;
+    font-size: 21px;
+}
+
+
+.taxi-search-title h2 i {
+    color: var(--taxi-blue);
+}
+
+
+.taxi-search-title p {
+    margin: 0;
+    color: var(--taxi-muted);
+    font-size: 14px;
+}
+
+
+.taxi-location-button {
+    border: 0;
+    border-radius: 10px;
+
+    padding: 12px 17px;
+
+    background: var(--taxi-blue);
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+
+.taxi-location-button:hover {
+    background: var(--taxi-blue-dark);
+}
+
+
+/* =====================================================
+   FILTERS
+   ===================================================== */
+
+.taxi-filters {
+    display: grid;
+    grid-template-columns:
+        1fr
+        1fr
+        1fr
+        1.2fr;
+
+    gap: 15px;
+}
+
+
+.taxi-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--taxi-text);
+}
+
+
+.taxi-field label i {
+    color: var(--taxi-blue);
+    margin-right: 5px;
+}
+
+
+.taxi-field select,
+.taxi-field input {
+    width: 100%;
+    height: 46px;
+
+    border: 1px solid var(--taxi-border);
+    border-radius: 10px;
+
+    padding: 0 13px;
+
+    background: white;
+    color: var(--taxi-text);
+
+    outline: none;
+}
+
+
+.taxi-field select:focus,
+.taxi-field input:focus {
+    border-color: var(--taxi-blue);
+    box-shadow: 0 0 0 3px rgba(6, 59, 115, .08);
+}
+
+
+.taxi-field select:disabled {
+    background: #f3f4f6;
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   FILTER ACTIONS
+   ===================================================== */
+
+.taxi-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--taxi-border);
+}
+
+
+.taxi-available-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: var(--taxi-muted);
+
+    cursor: pointer;
+}
+
+
+.taxi-available-check input {
+    width: 17px;
+    height: 17px;
+}
+
+
+.taxi-reset-button {
+    border: 0;
+    background: transparent;
+
+    color: var(--taxi-blue);
+
+    cursor: pointer;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   LOCATION MESSAGE
+   ===================================================== */
+
+.taxi-location-message {
+    margin-top: 18px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+
+.taxi-location-message.success {
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+
+.taxi-location-message.error {
+    background: #fef3f2;
+    color: var(--taxi-danger);
+}
+
+
+.taxi-location-message.loading {
+    background: #eff8ff;
+    color: var(--taxi-blue);
+}
+
+
+/* =====================================================
+   RESULTS
+   ===================================================== */
+
+.taxi-results-section {
+    padding: 45px 0 60px;
+}
+
+
+.taxi-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.taxi-results-header h2 {
+    margin: 0 0 5px;
+    font-size: 24px;
+}
+
+
+.taxi-results-header p {
+    margin: 0;
+    color: var(--taxi-muted);
+    font-size: 14px;
+}
+
+
+.taxi-results-status {
+    color: var(--taxi-muted);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.taxi-loading {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--taxi-muted);
+}
+
+
+.taxi-spinner {
+    width: 38px;
+    height: 38px;
+
+    margin: 0 auto 15px;
+
+    border: 4px solid #e5e7eb;
+    border-top-color: var(--taxi-blue);
+
+    border-radius: 50%;
+
+    animation: taxiSpin .8s linear infinite;
+}
+
+
+@keyframes taxiSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =====================================================
+   DRIVER GRID
+   ===================================================== */
+
+.taxi-drivers-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =====================================================
+   DRIVER CARD
+   ===================================================== */
+
+.taxi-driver-card {
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid var(--taxi-border);
+    border-radius: var(--taxi-radius);
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .05);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.taxi-driver-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--taxi-shadow);
+}
+
+
+.taxi-driver-photo {
+    position: relative;
+    height: 205px;
+
+    background: #edf1f5;
+}
+
+
+.taxi-driver-photo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+.taxi-photo-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #98a2b3;
+    font-size: 58px;
+}
+
+
+.taxi-availability {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .1);
+}
+
+
+.taxi-availability span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+
+.taxi-availability.available {
+    color: var(--taxi-green-dark);
+}
+
+
+.taxi-availability.available span {
+    background: var(--taxi-green);
+}
+
+
+.taxi-availability.unavailable {
+    color: var(--taxi-muted);
+}
+
+
+.taxi-availability.unavailable span {
+    background: #98a2b3;
+}
+
+
+/* =====================================================
+   DRIVER CONTENT
+   ===================================================== */
+
+.taxi-driver-content {
+    padding: 18px;
+}
+
+
+.taxi-driver-name-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+
+.taxi-driver-name-row h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+
+.taxi-verified {
+    color: var(--taxi-blue);
+}
+
+
+.taxi-info-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 10px;
+
+    color: var(--taxi-muted);
+
+    font-size: 13px;
+}
+
+
+.taxi-info-line i {
+    width: 16px;
+    color: var(--taxi-blue);
+    text-align: center;
+}
+
+
+.taxi-distance {
+    margin-top: 12px;
+
+    color: var(--taxi-green-dark);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.taxi-distance i {
+    margin-right: 5px;
+}
+
+
+/* =====================================================
+   ACTION
+   ===================================================== */
+
+.taxi-driver-actions {
+    margin-top: 18px;
+}
+
+
+.taxi-whatsapp-button {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 10px;
+
+    background: var(--taxi-green);
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+
+.taxi-whatsapp-button:hover {
+    background: var(--taxi-green-dark);
+}
+
+
+.taxi-disabled-button {
+    width: 100%;
+    height: 44px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #eaecf0;
+    color: #98a2b3;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   EMPTY
+   ===================================================== */
+
+.taxi-empty {
+    text-align: center;
+
+    padding: 60px 20px;
+
+    background: white;
+
+    border: 1px solid var(--taxi-border);
+    border-radius: var(--taxi-radius);
+}
+
+
+.taxi-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #edf3f9;
+    color: var(--taxi-blue);
+
+    font-size: 25px;
+}
+
+
+.taxi-empty h3 {
+    margin: 0 0 8px;
+}
+
+
+.taxi-empty p {
+    max-width: 500px;
+
+    margin: auto;
+
+    color: var(--taxi-muted);
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.taxi-footer {
+    padding: 25px 0;
+
+    background: var(--taxi-blue-dark);
+    color: white;
+}
+
+
+.taxi-footer .taxi-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+
+.taxi-footer span {
+    color: rgba(255, 255, 255, .65);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .taxi-filters {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .taxi-drivers-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .taxi-container {
+        width: min(
+            100% - 22px,
+            1200px
+        );
+    }
+
+
+    .taxi-header-inner {
+        width: min(
+            100% - 22px,
+            1200px
+        );
+
+        height: 68px;
+    }
+
+
+    .taxi-logo-icon {
+        width: 39px;
+        height: 39px;
+    }
+
+
+    .taxi-logo strong {
+        font-size: 17px;
+    }
+
+
+    .taxi-back {
+        font-size: 13px;
+    }
+
+
+    .taxi-hero {
+        padding: 42px 0 55px;
+    }
+
+
+    .taxi-hero h1 {
+        font-size: 34px;
+    }
+
+
+    .taxi-hero p {
+        font-size: 15px;
+    }
+
+
+    .taxi-search-card {
+        margin-top: -25px;
+        padding: 18px;
+    }
+
+
+    .taxi-search-title {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .taxi-location-button {
+        width: 100%;
+    }
+
+
+    .taxi-filters {
+        grid-template-columns: 1fr;
+    }
+
+
+    .taxi-filter-actions {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+
+    .taxi-results-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+
+    .taxi-drivers-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .taxi-driver-photo {
+        height: 220px;
+    }
+
+
+    .taxi-footer .taxi-container {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
