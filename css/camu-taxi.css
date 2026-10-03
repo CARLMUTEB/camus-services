@@ -2339,3 +2339,382 @@ body {
     }
 
 }
+
+/* ============================================================
+   CAMU TAXI — CENTRAGE MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    /* --------------------------------------------------------
+       TOPBAR
+    -------------------------------------------------------- */
+
+    .camu-taxi-topbar {
+        justify-content: center;
+        position: relative;
+    }
+
+    .camu-taxi-menu-button {
+        position: absolute;
+        left: 15px;
+    }
+
+    .camu-taxi-location-button {
+        position: absolute;
+        right: 15px;
+    }
+
+    .camu-taxi-brand {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-brand-text {
+        align-items: center;
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       SIDEBAR MOBILE
+    -------------------------------------------------------- */
+
+    .camu-taxi-sidebar {
+        text-align: center;
+    }
+
+    .camu-taxi-sidebar-logo {
+        justify-content: center;
+    }
+
+    .camu-taxi-sidebar-logo img {
+        margin: 0 auto;
+    }
+
+    .camu-taxi-sidebar-menu {
+        align-items: stretch;
+    }
+
+    .camu-taxi-menu-link {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-menu-link i {
+        width: 22px;
+        flex: 0 0 22px;
+    }
+
+    .camu-taxi-sidebar-bottom {
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       HERO
+    -------------------------------------------------------- */
+
+    .camu-taxi-hero {
+        text-align: center;
+    }
+
+    .camu-taxi-hero-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .camu-taxi-hero-icon {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .camu-taxi-hero-label {
+        text-align: center;
+    }
+
+    .camu-taxi-hero h1 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .camu-taxi-hero p {
+        width: 100%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .camu-taxi-hero-actions {
+        width: 100%;
+        align-items: center;
+    }
+
+    .camu-taxi-hero-actions .camu-taxi-button {
+        justify-content: center;
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       STATUT POSITION
+    -------------------------------------------------------- */
+
+    .camu-taxi-location-status {
+        text-align: center;
+        padding: 0 15px;
+    }
+
+
+    /* --------------------------------------------------------
+       TITRES DES SECTIONS
+    -------------------------------------------------------- */
+
+    .camu-taxi-section-header {
+        text-align: center;
+    }
+
+    .camu-taxi-section-header > div {
+        width: 100%;
+    }
+
+    .camu-taxi-section-label {
+        display: block;
+        text-align: center;
+    }
+
+    .camu-taxi-section-header h2 {
+        text-align: center;
+    }
+
+    .camu-taxi-section-header p {
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       CARTE
+    -------------------------------------------------------- */
+
+    .camu-taxi-map-card {
+        width: 100%;
+    }
+
+
+    /* --------------------------------------------------------
+       RECHERCHE
+    -------------------------------------------------------- */
+
+    .camu-taxi-search-card {
+        text-align: center;
+    }
+
+    .camu-taxi-field {
+        text-align: left;
+    }
+
+    .camu-taxi-field label {
+        justify-content: flex-start;
+    }
+
+    .camu-taxi-checkbox {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-search-actions {
+        width: 100%;
+        align-items: center;
+    }
+
+    .camu-taxi-search-actions .camu-taxi-button {
+        justify-content: center;
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       CHAUFFEURS
+    -------------------------------------------------------- */
+
+    .camu-taxi-drivers-header {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .camu-taxi-drivers-header > div:first-child {
+        width: 100%;
+    }
+
+    .camu-taxi-drivers-header h2 {
+        text-align: center;
+    }
+
+    .camu-taxi-drivers-header p {
+        text-align: center;
+    }
+
+    .camu-taxi-online {
+        margin: 0 auto;
+    }
+
+
+    /* --------------------------------------------------------
+       CARTE CHAUFFEUR
+    -------------------------------------------------------- */
+
+    .camu-taxi-driver-card {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-top {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .camu-taxi-driver-photo {
+        margin: 0 auto;
+    }
+
+    .camu-taxi-driver-name {
+        width: 100%;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-name h3 {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-location {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-status {
+        position: static;
+        display: inline-flex;
+        width: max-content;
+        margin: 0 auto 15px;
+    }
+
+    .camu-taxi-driver-details {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-detail {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-detail span {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-detail strong {
+        display: block;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-distance {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-actions {
+        width: 100%;
+    }
+
+    .camu-taxi-driver-action {
+        justify-content: center;
+        text-align: center;
+    }
+
+
+    /* --------------------------------------------------------
+       AUCUN CHAUFFEUR
+    -------------------------------------------------------- */
+
+    .camu-taxi-empty {
+        text-align: center;
+    }
+
+    .camu-taxi-empty-icon {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* --------------------------------------------------------
+       CTA DEVENIR CHAUFFEUR
+    -------------------------------------------------------- */
+
+    .camu-taxi-driver-cta {
+        align-items: center;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-cta-icon {
+        margin: 0 auto;
+    }
+
+    .camu-taxi-driver-cta-text {
+        width: 100%;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-cta-text > span {
+        display: block;
+        text-align: center;
+    }
+
+    .camu-taxi-driver-cta-text h2 {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-cta-text p {
+        text-align: center;
+    }
+
+    .camu-taxi-driver-cta .camu-taxi-button {
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+
+    /* --------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------- */
+
+    .camu-taxi-footer {
+        align-items: center;
+        text-align: center;
+    }
+
+    .camu-taxi-footer-brand {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-footer-brand div {
+        align-items: center;
+        text-align: center;
+    }
+
+    .camu-taxi-footer-links {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .camu-taxi-footer > p {
+        width: 100%;
+        text-align: center;
+    }
+
+}
