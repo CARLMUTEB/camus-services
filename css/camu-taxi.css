@@ -1,36 +1,41 @@
 /* ============================================================
    CAMU TAXI — CSS COMPLET
+   Compatible avec le HTML CAMU TAXI actuel
 ============================================================ */
 
 
 /* ============================================================
-   VARIABLES
+   1. VARIABLES
 ============================================================ */
 
 :root {
-    --taxi-primary: #0878d1;
-    --taxi-primary-dark: #0564b0;
-    --taxi-secondary: #16a34a;
 
-    --taxi-white: #ffffff;
-    --taxi-black: #111827;
-    --taxi-text: #1f2937;
-    --taxi-muted: #64748b;
+    --camu-blue: #0878d1;
+    --camu-blue-dark: #0564b0;
+    --camu-green: #16a34a;
 
-    --taxi-bg: #f5f8fb;
-    --taxi-card: #ffffff;
-    --taxi-border: #e2e8f0;
+    --camu-white: #ffffff;
+    --camu-black: #111827;
 
-    --taxi-radius: 18px;
-    --taxi-sidebar-width: 245px;
+    --camu-text: #1f2937;
+    --camu-muted: #64748b;
 
-    --taxi-shadow:
+    --camu-bg: #f5f8fb;
+    --camu-border: #e2e8f0;
+
+    --camu-danger: #dc2626;
+
+    --camu-sidebar-width: 245px;
+
+    --camu-radius: 18px;
+
+    --camu-shadow:
         0 8px 30px rgba(15, 23, 42, 0.08);
 }
 
 
 /* ============================================================
-   RESET
+   2. RESET
 ============================================================ */
 
 * {
@@ -45,8 +50,8 @@ body {
     margin: 0;
     padding: 0;
 
-    background: var(--taxi-bg);
-    color: var(--taxi-text);
+    background: var(--camu-bg);
+    color: var(--camu-text);
 
     font-family:
         Arial,
@@ -60,7 +65,7 @@ button,
 input,
 select,
 textarea {
-    font: inherit;
+    font-family: inherit;
 }
 
 button {
@@ -69,35 +74,86 @@ button {
 
 a {
     text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
 }
 
 
 /* ============================================================
-   SIDEBAR
+   3. OVERLAY MOBILE
 ============================================================ */
 
-.camu-taxi-sidebar {
+.camu-taxi-overlay {
+
     position: fixed;
 
     top: 0;
     left: 0;
 
-    width: var(--taxi-sidebar-width);
+    width: 100%;
     height: 100vh;
 
-    background: var(--taxi-primary);
-    color: var(--taxi-white);
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    z-index: 9998;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.camu-taxi-overlay.is-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* ============================================================
+   4. SIDEBAR
+============================================================ */
+
+.camu-taxi-sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: var(--camu-sidebar-width);
+    height: 100vh;
+
+    background:
+        var(--camu-blue);
+
+    color:
+        var(--camu-white);
 
     z-index: 10000;
 
     display: flex;
+
     flex-direction: column;
 
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
 
     box-shadow:
-        4px 0 20px rgba(0, 0, 0, 0.08);
+        4px 0 20px
+        rgba(0, 0, 0, 0.08);
 
     transition:
         transform 0.3s ease;
@@ -105,25 +161,48 @@ a {
 
 
 /* ============================================================
-   LOGO SIDEBAR
+   5. LOGO SIDEBAR
 ============================================================ */
 
 .camu-taxi-sidebar-logo {
+
+    width: 100%;
+
     height: 105px;
+
     min-height: 105px;
 
-    background: #ffffff;
+    background:
+        #ffffff;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 15px;
 }
 
+.camu-taxi-sidebar-logo a {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
 .camu-taxi-sidebar-logo img {
+
     width: 155px;
+
     max-width: 100%;
+
     height: auto;
 
     display: block;
@@ -131,40 +210,54 @@ a {
 
 
 /* ============================================================
-   MENU SIDEBAR
+   6. MENU SIDEBAR
 ============================================================ */
 
-.camu-taxi-menu {
-    padding: 15px 10px;
+.camu-taxi-sidebar-menu {
+
+    width: 100%;
+
+    padding:
+        15px 10px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 5px;
 }
 
 .camu-taxi-menu-link {
+
+    width: 100%;
+
     min-height: 46px;
 
     display: flex;
+
     align-items: center;
 
     gap: 12px;
 
-    padding: 10px 14px;
+    padding:
+        10px 14px;
 
     color:
-        rgba(255, 255, 255, 0.92);
+        rgba(255, 255, 255, 0.94);
 
     border-radius: 10px;
 
     transition:
         background 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .camu-taxi-menu-link i {
+
     width: 22px;
+
+    min-width: 22px;
 
     text-align: center;
 
@@ -172,33 +265,45 @@ a {
 }
 
 .camu-taxi-menu-link span {
+
     font-size: 14px;
+
     font-weight: 600;
 }
 
 .camu-taxi-menu-link:hover {
+
     background:
         rgba(255, 255, 255, 0.12);
 
-    color: #ffffff;
+    color:
+        #ffffff;
 }
 
 .camu-taxi-menu-link.active {
-    background:
-        var(--taxi-secondary);
 
-    color: #ffffff;
+    background:
+        var(--camu-green);
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.08);
 }
 
 
 /* ============================================================
-   BAS DE SIDEBAR
+   7. BAS SIDEBAR
 ============================================================ */
 
 .camu-taxi-sidebar-bottom {
+
     margin-top: auto;
 
-    padding: 15px;
+    padding:
+        15px 10px;
 
     border-top:
         1px solid
@@ -207,12 +312,13 @@ a {
 
 
 /* ============================================================
-   APPLICATION
+   8. APPLICATION PRINCIPALE
 ============================================================ */
 
 .camu-taxi-app {
+
     margin-left:
-        var(--taxi-sidebar-width);
+        var(--camu-sidebar-width);
 
     min-height: 100vh;
 
@@ -221,198 +327,316 @@ a {
 
 
 /* ============================================================
-   TOPBAR
+   9. TOPBAR
 ============================================================ */
 
 .camu-taxi-topbar {
-    height: 82px;
-
-    background: #ffffff;
-
-    border-bottom:
-        1px solid
-        var(--taxi-border);
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
 
     position: sticky;
 
     top: 0;
 
+    width: 100%;
+
+    height: 82px;
+
+    background:
+        #ffffff;
+
+    border-bottom:
+        1px solid
+        var(--camu-border);
+
     z-index: 9000;
 
-    padding:
-        0 25px;
-}
-
-
-/* ============================================================
-   BRAND
-============================================================ */
-
-.camu-taxi-brand {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    gap: 10px;
-}
+    padding:
+        0 70px;
 
-.camu-taxi-brand img {
-    width: 45px;
-    height: 45px;
-
-    object-fit: contain;
-}
-
-.camu-taxi-brand-text {
-    display: flex;
-
-    flex-direction: column;
-}
-
-.camu-taxi-brand-text strong {
-    color:
-        var(--taxi-primary);
-
-    font-size: 18px;
-}
-
-.camu-taxi-brand-text span {
-    color:
-        var(--taxi-muted);
-
-    font-size: 11px;
+    box-shadow:
+        0 2px 10px
+        rgba(15, 23, 42, 0.03);
 }
 
 
 /* ============================================================
-   BOUTON MENU MOBILE
+   10. BOUTON MENU MOBILE
 ============================================================ */
 
 .camu-taxi-menu-button {
+
     display: none;
 
+    position: absolute;
+
+    left: 12px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
     width: 44px;
+
     height: 44px;
 
     border: none;
 
-    background: transparent;
+    border-radius: 10px;
+
+    background:
+        transparent;
 
     color:
-        var(--taxi-primary);
-
-    cursor: pointer;
+        var(--camu-blue);
 
     font-size: 22px;
 
-    padding: 10px;
-
     align-items: center;
+
     justify-content: center;
 
     z-index: 10001;
 }
 
 .camu-taxi-menu-button:hover {
+
     background:
         #eef6ff;
-
-    border-radius: 10px;
 }
 
 
 /* ============================================================
-   BOUTON LOCALISATION
+   11. BRAND TOPBAR
+============================================================ */
+
+.camu-taxi-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    text-align: center;
+}
+
+.camu-taxi-brand img {
+
+    width: 45px;
+
+    height: 45px;
+
+    object-fit: contain;
+}
+
+.camu-taxi-brand-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+}
+
+.camu-taxi-brand-text strong {
+
+    color:
+        var(--camu-blue);
+
+    font-size: 18px;
+
+    line-height: 1.2;
+}
+
+.camu-taxi-brand-text span {
+
+    color:
+        var(--camu-muted);
+
+    font-size: 11px;
+
+    margin-top: 2px;
+}
+
+
+/* ============================================================
+   12. BOUTON LOCALISATION TOPBAR
 ============================================================ */
 
 .camu-taxi-location-button {
+
     position: absolute;
 
     right: 20px;
 
-    min-height: 42px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 44px;
+
+    height: 44px;
 
     border: none;
+
+    border-radius: 10px;
 
     background:
         #eef6ff;
 
     color:
-        var(--taxi-primary);
-
-    border-radius: 10px;
-
-    padding:
-        10px 13px;
-
-    cursor: pointer;
-
-    font-weight: 600;
-
-    transition:
-        background 0.2s ease;
-}
-
-.camu-taxi-location-button:hover {
-    background:
-        #dceeff;
-}
-
-.camu-taxi-location-button i {
-    margin-right: 5px;
-}
-
-
-/* ============================================================
-   CONTENU
-============================================================ */
-
-.camu-taxi-content {
-    width: 100%;
-}
-
-
-/* ============================================================
-   HERO
-============================================================ */
-
-.camu-taxi-hero {
-    margin: 25px;
-
-    padding: 40px;
-
-    border-radius:
-        var(--taxi-radius);
-
-    background:
-        linear-gradient(
-            135deg,
-            #0878d1,
-            #075fa8
-        );
-
-    color: #ffffff;
-
-    min-height: 260px;
+        var(--camu-blue);
 
     display: flex;
 
     align-items: center;
+
+    justify-content: center;
+
+    font-size: 17px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
+.camu-taxi-location-button:hover {
+
+    background:
+        #dceeff;
+
+    transform:
+        translateY(-50%)
+        scale(1.04);
+}
+
+
+/* ============================================================
+   13. CONTENU
+============================================================ */
+
+.camu-taxi-content {
+
+    width: 100%;
+
+    max-width: 1600px;
+
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   14. HERO
+============================================================ */
+
+.camu-taxi-hero {
+
+    position: relative;
+
+    margin:
+        25px;
+
+    padding:
+        45px;
+
+    min-height:
+        290px;
+
+    border-radius:
+        var(--camu-radius);
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0878d1 0%,
+            #0564b0 100%
+        );
+
+    color:
+        #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    box-shadow:
+        0 12px 35px
+        rgba(8, 120, 209, 0.18);
+}
+
+
+/* Décoration */
+
+.camu-taxi-hero-decoration {
+
+    position: absolute;
+
+    width: 280px;
+
+    height: 280px;
+
+    right: -80px;
+
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    pointer-events: none;
+}
+
+.camu-taxi-hero-decoration::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    right: 100px;
+
+    top: 140px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+
+/* Contenu */
+
 .camu-taxi-hero-content {
-    max-width: 750px;
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 760px;
 }
 
 .camu-taxi-hero-icon {
-    width: 60px;
-    height: 60px;
+
+    width: 62px;
+
+    height: 62px;
+
+    margin-bottom: 16px;
 
     border-radius: 16px;
 
@@ -422,35 +646,63 @@ a {
     display: flex;
 
     align-items: center;
-    justify-content: center;
 
-    margin-bottom: 20px;
+    justify-content: center;
 
     font-size: 28px;
 }
 
+.camu-taxi-hero-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing:
+        0.12em;
+}
+
 .camu-taxi-hero h1 {
+
     margin:
         0 0 12px;
 
     font-size:
-        clamp(28px, 4vw, 46px);
+        clamp(30px, 4vw, 48px);
+
+    line-height: 1.1;
+}
+
+.camu-taxi-hero h1 span {
+
+    color:
+        #dff1ff;
 }
 
 .camu-taxi-hero p {
-    margin: 0;
 
-    line-height: 1.7;
+    margin: 0;
 
     max-width: 650px;
 
-    opacity: 0.95;
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    opacity: 0.94;
 }
 
 .camu-taxi-hero-actions {
+
     margin-top: 25px;
 
     display: flex;
+
+    align-items: center;
 
     gap: 12px;
 
@@ -459,142 +711,146 @@ a {
 
 
 /* ============================================================
-   BOUTONS
-============================================================ */
-
-.camu-taxi-button {
-    min-height: 44px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    padding:
-        11px 18px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-
-    cursor: pointer;
-
-    font-weight: 700;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.camu-taxi-button:hover {
-    transform:
-        translateY(-1px);
-}
-
-.camu-taxi-button-primary {
-    background:
-        var(--taxi-primary);
-
-    color:
-        #ffffff;
-}
-
-.camu-taxi-button-secondary {
-    background:
-        #ffffff;
-
-    color:
-        var(--taxi-primary);
-}
-
-
-/* ============================================================
-   STATUT LOCALISATION
+   15. STATUT LOCALISATION
 ============================================================ */
 
 .camu-taxi-location-status {
+
     margin:
         0 25px 20px;
 
-    padding:
-        12px 15px;
+    min-height: 45px;
 
-    border-radius: 10px;
+    padding:
+        12px 16px;
+
+    border:
+        1px solid
+        var(--camu-border);
+
+    border-radius:
+        10px;
 
     background:
         #ffffff;
 
-    border:
-        1px solid
-        var(--taxi-border);
-
     color:
-        var(--taxi-muted);
+        var(--camu-muted);
+
+    display: flex;
+
+    align-items: center;
 
     font-size: 14px;
 }
 
 
 /* ============================================================
-   CARTE — STRUCTURE
+   16. SECTIONS
 ============================================================ */
 
-.camu-taxi-map-section {
-    position: relative;
+.camu-taxi-section {
+
+    margin:
+        0 25px 30px;
+}
+
+.camu-taxi-section-header {
+
+    margin-bottom:
+        18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+}
+
+.camu-taxi-section-label {
 
     display: block;
 
-    width:
-        calc(100% - 50px);
+    color:
+        var(--camu-blue);
 
-    height: 400px;
+    font-size: 11px;
 
-    min-height: 400px;
+    font-weight: 800;
+
+    letter-spacing:
+        0.1em;
+}
+
+.camu-taxi-section-header h2 {
 
     margin:
-        0 25px 25px;
+        5px 0 7px;
+
+    color:
+        var(--camu-black);
+
+    font-size: 27px;
+
+    line-height: 1.2;
+}
+
+.camu-taxi-section-header p {
+
+    margin: 0;
+
+    color:
+        var(--camu-muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   17. CARTE
+============================================================ */
+
+/*
+   Ton HTML possède :
+
+   <div class="camu-taxi-map-card">
+       <div id="taxiMap" class="camu-taxi-map"></div>
+       ...
+   </div>
+*/
+
+.camu-taxi-map-card {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 420px;
 
     background:
-        #ffffff;
+        #e9f1f5;
 
     border:
         1px solid
-        var(--taxi-border);
+        var(--camu-border);
 
     border-radius:
-        var(--taxi-radius);
+        var(--camu-radius);
 
     overflow: hidden;
 
     box-shadow:
-        var(--taxi-shadow);
+        var(--camu-shadow);
 }
 
 
-/* ============================================================
-   CONTENEUR CARTE
-============================================================ */
+/* La carte Leaflet */
 
-.camu-taxi-map {
-    position: relative;
-
-    display: block;
-
-    width: 100%;
-
-    height: 400px;
-
-    min-height: 400px;
-}
-
-
-/* ============================================================
-   LEAFLET
-============================================================ */
-
+.camu-taxi-map,
 #taxiMap {
+
     position: absolute;
 
     top: 0;
@@ -604,20 +860,24 @@ a {
 
     height: 100% !important;
 
-    min-height: 400px;
+    min-height: 420px;
 
     z-index: 1;
 }
 
+
+/* Leaflet */
+
 .leaflet-container {
+
     width: 100% !important;
 
     height: 100% !important;
 
-    min-height: 400px;
+    min-height: 420px;
 
     background:
-        #e8f1f7;
+        #dceaf1;
 
     font-family:
         Arial,
@@ -628,106 +888,123 @@ a {
 }
 
 
-/* ============================================================
-   CHARGEMENT CARTE
-============================================================ */
+/* Contrôles Leaflet */
+
+.leaflet-control-zoom {
+
+    border:
+        1px solid
+        rgba(0, 0, 0, 0.12) !important;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0, 0, 0, 0.12) !important;
+}
+
+.leaflet-control-zoom a {
+
+    color:
+        var(--camu-text) !important;
+}
+
+
+/* Loading carte */
 
 .camu-taxi-map-loading {
+
     position: absolute;
 
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+
+    width: 100%;
+    height: 100%;
 
     z-index: 500;
+
+    background:
+        rgba(255, 255, 255, 0.88);
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    background:
-        rgba(255, 255, 255, 0.85);
+    flex-direction: column;
+
+    gap: 12px;
 
     color:
-        var(--taxi-text);
+        var(--camu-muted);
 
     font-size: 14px;
-}
 
-.camu-taxi-map-loading i {
-    margin-right: 8px;
-
-    color:
-        var(--taxi-primary);
+    transition:
+        opacity 0.25s ease;
 }
 
 
 /* ============================================================
-   SECTIONS
+   18. SPINNER
 ============================================================ */
 
-.camu-taxi-section {
-    margin:
-        0 25px 30px;
+.camu-taxi-spinner {
+
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 50%;
+
+    border:
+        4px solid
+        #dbeafe;
+
+    border-top-color:
+        var(--camu-blue);
+
+    animation:
+        camuTaxiSpin
+        0.8s linear infinite;
 }
 
-.camu-taxi-section-header {
-    margin-bottom: 18px;
-}
+@keyframes camuTaxiSpin {
 
-.camu-taxi-section-label {
-    color:
-        var(--taxi-primary);
+    from {
+        transform:
+            rotate(0deg);
+    }
 
-    font-size: 12px;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing:
-        0.08em;
-}
-
-.camu-taxi-section-header h2 {
-    margin:
-        5px 0;
-
-    font-size: 27px;
-}
-
-.camu-taxi-section-header p {
-    margin: 0;
-
-    color:
-        var(--taxi-muted);
+    to {
+        transform:
+            rotate(360deg);
+    }
 }
 
 
 /* ============================================================
-   RECHERCHE
+   19. RECHERCHE
 ============================================================ */
 
-.camu-taxi-search-box {
+.camu-taxi-search-card {
+
     background:
         #ffffff;
 
     border:
         1px solid
-        var(--taxi-border);
+        var(--camu-border);
 
     border-radius:
-        var(--taxi-radius);
+        var(--camu-radius);
 
-    padding: 22px;
+    padding:
+        24px;
 
     box-shadow:
-        var(--taxi-shadow);
-}
+        var(--camu-shadow);
 
-.camu-taxi-search-grid {
     display: grid;
 
     grid-template-columns:
@@ -736,144 +1013,339 @@ a {
             minmax(0, 1fr)
         );
 
-    gap: 15px;
+    gap: 18px;
 }
 
+
+/* Champs */
+
 .camu-taxi-field {
+
     display: flex;
 
     flex-direction: column;
 
-    gap: 7px;
+    gap: 8px;
+
+    min-width: 0;
 }
 
 .camu-taxi-field label {
+
+    color:
+        var(--camu-text);
+
     font-size: 13px;
 
     font-weight: 700;
-
-    color:
-        var(--taxi-text);
 }
 
 .camu-taxi-field label i {
-    color:
-        var(--taxi-primary);
 
     margin-right: 5px;
+
+    color:
+        var(--camu-blue);
 }
 
 .camu-taxi-field input,
 .camu-taxi-field select {
+
     width: 100%;
 
-    min-height: 44px;
+    height: 46px;
+
+    min-height: 46px;
+
+    padding:
+        0 13px;
 
     border:
         1px solid
-        var(--taxi-border);
+        var(--camu-border);
 
-    border-radius: 9px;
+    border-radius:
+        10px;
 
     background:
         #ffffff;
 
     color:
-        var(--taxi-text);
-
-    padding:
-        10px 12px;
+        var(--camu-text);
 
     outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.camu-taxi-field input::placeholder {
+
+    color:
+        #94a3b8;
 }
 
 .camu-taxi-field input:focus,
 .camu-taxi-field select:focus {
+
     border-color:
-        var(--taxi-primary);
+        var(--camu-blue);
 
     box-shadow:
         0 0 0 3px
-        rgba(
-            8,
-            120,
-            209,
-            0.1
-        );
-}
-
-.camu-taxi-search-actions {
-    margin-top: 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    flex-wrap: wrap;
-}
-
-.camu-taxi-checkbox {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    color:
-        var(--taxi-muted);
-
-    font-size: 14px;
-}
-
-.camu-taxi-checkbox input {
-    width: 17px;
-    height: 17px;
+        rgba(8, 120, 209, 0.10);
 }
 
 
 /* ============================================================
-   CHAUFFEURS — HEADER
+   20. CHECKBOX
 ============================================================ */
 
-.camu-taxi-drivers-header {
+.camu-taxi-checkbox {
+
+    grid-column:
+        1 / -1;
+
     display: flex;
 
     align-items: center;
 
+    gap: 10px;
+
+    color:
+        var(--camu-muted);
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.camu-taxi-checkbox input {
+
+    width: 18px;
+
+    height: 18px;
+
+    margin: 0;
+
+    accent-color:
+        var(--camu-blue);
+}
+
+.camu-taxi-checkmark {
+
+    display: none;
+}
+
+
+/* ============================================================
+   21. BOUTONS
+============================================================ */
+
+.camu-taxi-button {
+
+    min-height: 44px;
+
+    padding:
+        11px 18px;
+
+    border:
+        1px solid transparent;
+
+    border-radius:
+        10px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.camu-taxi-button:hover {
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* Bleu */
+
+.camu-taxi-button-primary {
+
+    background:
+        var(--camu-blue);
+
+    color:
+        #ffffff;
+
+    border-color:
+        var(--camu-blue);
+
+    box-shadow:
+        0 5px 15px
+        rgba(8, 120, 209, 0.15);
+}
+
+.camu-taxi-button-primary:hover {
+
+    background:
+        var(--camu-blue-dark);
+
+    border-color:
+        var(--camu-blue-dark);
+}
+
+
+/* Bouton blanc Hero */
+
+.camu-taxi-button-light {
+
+    background:
+        #ffffff;
+
+    color:
+        var(--camu-blue);
+
+    border-color:
+        #ffffff;
+}
+
+.camu-taxi-button-light:hover {
+
+    background:
+        #f1f7fc;
+}
+
+
+/* Reset */
+
+.camu-taxi-button-reset {
+
+    background:
+        #f8fafc;
+
+    color:
+        var(--camu-muted);
+
+    border-color:
+        var(--camu-border);
+}
+
+.camu-taxi-button-reset:hover {
+
+    background:
+        #eef2f7;
+
+    color:
+        var(--camu-text);
+}
+
+
+/* ============================================================
+   22. ACTIONS RECHERCHE
+============================================================ */
+
+.camu-taxi-search-actions {
+
+    grid-column:
+        1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* ============================================================
+   23. HEADER CHAUFFEURS
+============================================================ */
+
+.camu-taxi-drivers-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
     justify-content: space-between;
 
-    gap: 15px;
+    gap: 20px;
 
     margin-bottom: 18px;
 }
 
 .camu-taxi-drivers-header h2 {
-    margin: 0;
+
+    margin:
+        5px 0 7px;
 }
 
+.camu-taxi-drivers-header p {
+
+    margin: 0;
+
+    color:
+        var(--camu-muted);
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   24. INDICATEUR CAMU TAXI
+============================================================ */
+
 .camu-taxi-online {
+
     display: inline-flex;
 
     align-items: center;
 
-    gap: 7px;
+    gap: 8px;
+
+    padding:
+        8px 12px;
+
+    border-radius:
+        20px;
+
+    background:
+        #f0fdf4;
 
     color:
-        #16a34a;
+        #15803d;
 
-    font-size: 13px;
+    font-size: 12px;
 
-    font-weight: 700;
+    font-weight: 800;
+
+    white-space: nowrap;
 }
 
-.camu-taxi-online::before {
-    content: "";
+.camu-taxi-online span {
 
     width: 8px;
+
     height: 8px;
 
     border-radius: 50%;
@@ -884,10 +1356,11 @@ a {
 
 
 /* ============================================================
-   LISTE CHAUFFEURS
+   25. LISTE CHAUFFEURS
 ============================================================ */
 
 .camu-taxi-drivers-list {
+
     display: grid;
 
     grid-template-columns:
@@ -901,26 +1374,25 @@ a {
 
 
 /* ============================================================
-   CARTE CHAUFFEUR
+   26. CARTE CHAUFFEUR
 ============================================================ */
 
 .camu-taxi-driver-card {
+
     background:
         #ffffff;
 
     border:
         1px solid
-        var(--taxi-border);
+        var(--camu-border);
 
     border-radius:
-        var(--taxi-radius);
+        var(--camu-radius);
 
     overflow: hidden;
 
     box-shadow:
-        var(--taxi-shadow);
-
-    padding-bottom: 18px;
+        var(--camu-shadow);
 
     transition:
         transform 0.2s ease,
@@ -928,51 +1400,52 @@ a {
 }
 
 .camu-taxi-driver-card:hover {
+
     transform:
         translateY(-3px);
 
     box-shadow:
         0 14px 35px
-        rgba(
-            15,
-            23,
-            42,
-            0.12
-        );
+        rgba(15, 23, 42, 0.12);
 }
 
 
 /* ============================================================
-   PHOTO VEHICULE
+   27. PHOTO VEHICULE
 ============================================================ */
 
 .camu-taxi-vehicle-image-wrapper {
+
+    position: relative;
+
     width: 100%;
 
     height: 220px;
 
-    overflow: hidden;
-
     background:
-        #eef2f7;
+        #edf2f7;
+
+    overflow: hidden;
 }
 
 .camu-taxi-vehicle-image {
+
     width: 100%;
 
     height: 100%;
 
-    object-fit: cover;
-
     display: block;
+
+    object-fit: cover;
 }
 
 
 /* ============================================================
-   STATUT CHAUFFEUR
+   28. STATUT CHAUFFEUR
 ============================================================ */
 
 .camu-taxi-driver-status {
+
     display: inline-flex;
 
     align-items: center;
@@ -985,7 +1458,8 @@ a {
     padding:
         6px 10px;
 
-    border-radius: 20px;
+    border-radius:
+        20px;
 
     background:
         #f0fdf4;
@@ -999,18 +1473,24 @@ a {
 }
 
 .camu-taxi-status-dot {
+
     width: 8px;
+
     height: 8px;
 
     border-radius: 50%;
+
+    background:
+        #16a34a;
 }
 
 
 /* ============================================================
-   PROFIL CHAUFFEUR
+   29. PROFIL CHAUFFEUR
 ============================================================ */
 
 .camu-taxi-driver-top {
+
     display: flex;
 
     align-items: center;
@@ -1022,7 +1502,9 @@ a {
 }
 
 .camu-taxi-driver-photo {
+
     width: 58px;
+
     height: 58px;
 
     min-width: 58px;
@@ -1030,6 +1512,9 @@ a {
     border-radius: 50%;
 
     object-fit: cover;
+
+    background:
+        #e5e7eb;
 
     border:
         3px solid
@@ -1041,20 +1526,25 @@ a {
 }
 
 .camu-taxi-driver-name {
+
     min-width: 0;
 }
 
 .camu-taxi-driver-name h3 {
+
     margin:
         0 0 5px;
 
+    color:
+        var(--camu-black);
+
     font-size: 18px;
 
-    color:
-        var(--taxi-black);
+    line-height: 1.3;
 }
 
 .camu-taxi-driver-location {
+
     display: flex;
 
     align-items: center;
@@ -1062,17 +1552,18 @@ a {
     gap: 5px;
 
     color:
-        var(--taxi-muted);
+        var(--camu-muted);
 
     font-size: 13px;
 }
 
 
 /* ============================================================
-   DETAILS CHAUFFEUR
+   30. DETAILS
 ============================================================ */
 
 .camu-taxi-driver-detail {
+
     display: flex;
 
     align-items: flex-start;
@@ -1083,31 +1574,168 @@ a {
         7px 18px;
 
     color:
-        var(--taxi-muted);
+        var(--camu-muted);
 
     font-size: 13px;
+
+    line-height: 1.4;
 }
 
 .camu-taxi-driver-detail i {
+
     width: 18px;
 
+    min-width: 18px;
+
     color:
-        var(--taxi-primary);
+        var(--camu-blue);
 
     text-align: center;
 }
 
 .camu-taxi-driver-detail strong {
+
     color:
-        var(--taxi-text);
+        var(--camu-text);
 }
 
 
 /* ============================================================
-   DISTANCE
+   31. DISTANCE
 ============================================================ */
 
 .camu-taxi-driver-distance {
+
     display: flex;
 
     align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin:
+        10px 18px;
+
+    padding:
+        8px;
+
+    border-radius:
+        8px;
+
+    background:
+        #f0f7ff;
+
+    color:
+        var(--camu-blue);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   32. ACTIONS CHAUFFEUR
+============================================================ */
+
+.camu-taxi-driver-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 8px;
+
+    padding:
+        10px 18px 0;
+}
+
+.camu-taxi-driver-action {
+
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding:
+        8px 10px;
+
+    border-radius:
+        9px;
+
+    background:
+        #f0f7ff;
+
+    color:
+        var(--camu-blue);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease;
+}
+
+.camu-taxi-driver-action:hover {
+
+    background:
+        #dceeff;
+}
+
+
+/* ============================================================
+   33. LOADING CHAUFFEURS
+============================================================ */
+
+.camu-taxi-loading {
+
+    padding:
+        50px 20px;
+
+    text-align: center;
+
+    color:
+        var(--camu-muted);
+}
+
+
+/* ============================================================
+   34. EMPTY
+============================================================ */
+
+.camu-taxi-empty {
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--camu-border);
+
+    border-radius:
+        var(--camu-radius);
+
+    padding:
+        50px 20px;
+
+    text-align: center;
+}
+
+.camu-taxi-empty-icon {
+
+    width: 68px;
+
+    height: 68px;
+
+    margin:
+        0 auto 15px;
+
+    border-radius: 
