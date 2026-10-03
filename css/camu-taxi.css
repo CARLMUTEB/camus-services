@@ -1535,6 +1535,305 @@ body.camu-taxi-sidebar-open {
 
     line-height: 34px !important;
 }
+/* =====================================================
+   CORRECTION CAMU TAXI — MOBILE
+   Empêche le sidebar global de casser la page
+   ===================================================== */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.taxi-page {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+
+/* -----------------------------------------------------
+   MOBILE : le contenu TAXI prend toute la largeur
+   ----------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    /*
+       Le sidebar de CAMU SERVICES ne doit pas
+       rester visible en permanence sur cette page.
+    */
+
+    body:has(.taxi-page) .sidebar {
+        display: none !important;
+    }
+
+    body:has(.taxi-page) .sidebar-overlay {
+        display: none !important;
+    }
+
+
+    /*
+       Supprime les marges réservées au sidebar
+    */
+
+    body:has(.taxi-page) .main-wrapper,
+    body:has(.taxi-page) .main-content,
+    body:has(.taxi-page) main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+
+    /*
+       Notre page TAXI reprend toute la largeur
+    */
+
+    .taxi-page {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+
+    .taxi-container {
+        width: calc(100% - 24px) !important;
+        max-width: none !important;
+    }
+
+
+    /*
+       Header
+    */
+
+    .taxi-header {
+        width: 100%;
+    }
+
+
+    .taxi-header-inner {
+        width: calc(100% - 24px) !important;
+        min-width: 0 !important;
+    }
+
+
+    .taxi-header-actions {
+        flex-shrink: 0;
+    }
+
+
+    /*
+       Hero
+    */
+
+    .taxi-hero {
+        width: 100%;
+    }
+
+
+    .taxi-hero-content {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    /*
+       Carte
+    */
+
+    .taxi-map-section {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .taxi-map {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 360px;
+    }
+
+
+    /*
+       Filtres
+    */
+
+    .taxi-search-card {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+
+    .taxi-filters {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+    }
+
+
+    .taxi-field {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .taxi-field label {
+        white-space: normal;
+    }
+
+
+    .taxi-field select,
+    .taxi-field input {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+
+    /*
+       Boutons des filtres
+    */
+
+    .taxi-filter-bottom {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+
+    .taxi-checkbox {
+        width: 100%;
+    }
+
+
+    .taxi-reset-button {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--taxi-border);
+        border-radius: 9px;
+        background: white;
+    }
+
+
+    /*
+       Résultats
+    */
+
+    .taxi-results {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .taxi-results-header {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .taxi-drivers-grid {
+        width: 100%;
+        grid-template-columns: 1fr !important;
+    }
+
+
+    /*
+       CTA chauffeur
+    */
+
+    .taxi-driver-cta {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    /*
+       Footer
+    */
+
+    .taxi-footer {
+        width: 100%;
+    }
+
+}
+
+
+/* =====================================================
+   TRÈS PETIT MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+    .taxi-container {
+        width: calc(100% - 20px) !important;
+    }
+
+
+    .taxi-header-inner {
+        width: calc(100% - 20px) !important;
+    }
+
+
+    .taxi-logo {
+        width: 105px;
+        max-width: 105px;
+    }
+
+
+    .taxi-driver-header-button {
+        min-width: 40px;
+        width: 40px;
+        padding: 0;
+    }
+
+
+    .taxi-driver-header-button span {
+        display: none;
+    }
+
+
+    .taxi-map {
+        height: 330px;
+    }
+
+
+    .taxi-section-header {
+        padding: 15px;
+    }
+
+
+    .taxi-section-header h2 {
+        font-size: 18px;
+    }
+
+
+    .taxi-search-card {
+        padding: 16px;
+    }
+
+
+    .taxi-hero h1 {
+        font-size: 32px;
+    }
+
+
+    .taxi-hero-buttons {
+        width: 100%;
+    }
+
+
+    .taxi-primary-button,
+    .taxi-secondary-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+}
 
 .leaflet-control-attribution {
     font-size: 9px;
