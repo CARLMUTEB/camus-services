@@ -3,11 +3,13 @@
    Firebase + Firestore + Leaflet
    ============================================================ */
 
+
 import {
     initializeApp,
     getApps,
     getApp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
 
 import {
     getFirestore,
@@ -16,140 +18,119 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
+
 /* ============================================================
-   1. CONFIGURATION FIREBASE CAMU SERVICES
-   ============================================================ */
+   1. FIREBASE
+============================================================ */
 
 const firebaseConfig = {
+
     apiKey: "AIzaSyB9zYQHEYVPJ1nGGx_TEzjQ8a7MyXCWdrg",
-    authDomain: "camu-services.firebaseapp.com",
-    projectId: "camu-services",
-    storageBucket: "camu-services.firebasestorage.app",
-    messagingSenderId: "879100396449",
-    appId: "1:879100396449:web:9d7ffe441a3df2daf841e0",
-    measurementId: "G-RQ16SX2SNV"
+
+    authDomain:
+        "camu-services.firebaseapp.com",
+
+    projectId:
+        "camu-services",
+
+    storageBucket:
+        "camu-services.firebasestorage.app",
+
+    messagingSenderId:
+        "879100396449",
+
+    appId:
+        "1:879100396449:web:9d7ffe441a3df2daf841e0",
+
+    measurementId:
+        "G-RQ16SX2SNV"
+
 };
+
 
 
 /* ============================================================
    2. INITIALISATION FIREBASE
-   ============================================================ */
+============================================================ */
 
-let camuApp;
+let camuApp = null;
+
+let db = null;
+
 
 try {
 
-    const apps = getApps();
-
-    if (apps.length > 0) {
+    if (getApps().length > 0) {
 
         camuApp = getApp();
 
     } else {
 
-        camuApp = initializeApp(firebaseConfig);
+        camuApp =
+            initializeApp(
+                firebaseConfig
+            );
 
     }
 
-} catch (error) {
 
-    console.error(
-        "CAMU TAXI — Erreur initialisation Firebase :",
-        error
-    );
-
-}
-
-
-/* ============================================================
-   3. FIRESTORE
-   ============================================================ */
-
-let db = null;
-
-try {
-
-    if (camuApp) {
-
-        db = getFirestore(camuApp);
-
-        console.log(
-            "CAMU TAXI — Firestore connecté."
+    db =
+        getFirestore(
+            camuApp
         );
 
-    }
+
+    console.log(
+        "CAMU TAXI — Firestore connecté."
+    );
+
 
 } catch (error) {
 
     console.error(
-        "CAMU TAXI — Impossible d'initialiser Firestore :",
+        "CAMU TAXI — Erreur Firebase :",
         error
     );
 
 }
 
 
+
 /* ============================================================
-   4. CONFIGURATION
-   ============================================================ */
+   3. CONFIGURATION
+============================================================ */
 
 const CONFIG = {
 
     cities: [
+
         "Lubumbashi",
+
         "Likasi",
+
         "Kipushi",
+
         "Kasumbalesa",
+
         "Kolwezi",
+
         "Fungurume"
+
     ],
 
-    communes: {
 
-        Lubumbashi: [
-            "Annexe",
-            "Kamalondo",
-            "Kampemba",
-            "Katuba",
-            "Kenya",
-            "Lubumbashi",
-            "Ruashi"
-        ],
+    retryAttempts: 3,
 
-        Likasi: [
-            "Kikula",
-            "Likasi",
-            "Panda",
-            "Shituru"
-        ],
 
-        Kolwezi: [
-            "Dilala",
-            "Manika"
-        ],
-
-        Kipushi: [
-            "Kipushi"
-        ],
-
-        Kasumbalesa: [
-            "Musumali",
-            "Musoshi",
-            "Lwina"
-        ],
-
-        Fungurume: [
-            "Fungurume"
-        ]
-
-    }
+    retryDelay: 4000
 
 };
 
 
+
 /* ============================================================
-   5. VARIABLES
-   ============================================================ */
+   4. VARIABLES
+============================================================ */
 
 let map = null;
 
@@ -163,10 +144,13 @@ let filteredDrivers = [];
 
 let userLocation = null;
 
+let firestoreConnected = false;
+
+
 
 /* ============================================================
-   6. OUTIL DOM
-   ============================================================ */
+   5. DOM
+============================================================ */
 
 function $(id) {
 
@@ -175,9 +159,10 @@ function $(id) {
 }
 
 
+
 /* ============================================================
-   7. INITIALISATION
-   ============================================================ */
+   6. INITIALISATION
+============================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -191,13 +176,18 @@ async function initTaxi() {
         "CAMU TAXI — Initialisation..."
     );
 
+
+    initYear();
+
     initMap();
 
     initCities();
 
     initEvents();
 
-    await loadDrivers();
+
+    await loadDriversWithRetry();
+
 
     console.log(
         "CAMU TAXI — Initialisation terminée."
@@ -206,23 +196,48 @@ async function initTaxi() {
 }
 
 
+
+/* ============================================================
+   7. ANNÉE
+============================================================ */
+
+function initYear() {
+
+    const year =
+        $("taxiCurrentYear");
+
+
+    if (year) {
+
+        year.textContent =
+            new Date().getFullYear();
+
+    }
+
+}
+
+
+
 /* ============================================================
    8. CARTE
-   ============================================================ */
+============================================================ */
 
 function initMap() {
 
-    const element = $("taxiMap");
+    const element =
+        $("taxiMap");
+
 
     if (!element) {
 
         console.warn(
-            "CAMU TAXI — #taxiMap introuvable."
+            "CAMU TAXI — Carte introuvable."
         );
 
         return;
 
     }
+
 
     if (typeof L === "undefined") {
 
@@ -234,23 +249,38 @@ function initMap() {
 
     }
 
-    map = L.map("taxiMap");
+
+    map =
+        L.map(
+            "taxiMap"
+        );
+
 
     L.tileLayer(
+
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
         {
+
             maxZoom: 19,
+
             attribution:
                 "&copy; OpenStreetMap"
+
         }
+
     ).addTo(map);
 
 
-    /* Lubumbashi */
-
     map.setView(
-        [-11.6647, 27.4794],
+
+        [
+            -11.6647,
+            27.4794
+        ],
+
         12
+
     );
 
 
@@ -261,168 +291,245 @@ function initMap() {
 }
 
 
+
 /* ============================================================
    9. VILLES
-   ============================================================ */
+============================================================ */
 
 function initCities() {
 
-    const select = $("taxiVille");
+    const select =
+        $("taxiVille");
 
-    if (!select) return;
+
+    if (!select)
+        return;
 
 
-    select.innerHTML =
-        `<option value="">
+    select.innerHTML = `
+
+        <option value="">
             Toutes les villes
-        </option>`;
+        </option>
+
+    `;
 
 
-    CONFIG.cities.forEach(city => {
+    CONFIG.cities.forEach(
+        city => {
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.value = city;
 
-        option.textContent = city;
+            option.value =
+                city;
 
-        select.appendChild(option);
 
-    });
+            option.textContent =
+                city;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
 
 
     select.addEventListener(
         "change",
-        () => {
-
-            updateCommunes(
-                select.value
-            );
-
-            applyFilters();
-
-        }
+        applyFilters
     );
 
 }
 
 
-/* ============================================================
-   10. COMMUNES
-   ============================================================ */
-
-function updateCommunes(city) {
-
-    const select =
-        $("taxiCommune");
-
-    if (!select) return;
-
-
-    select.innerHTML =
-        `<option value="">
-            Toutes les communes
-        </option>`;
-
-
-    const communes =
-        CONFIG.communes[city] || [];
-
-
-    communes.forEach(commune => {
-
-        const option =
-            document.createElement("option");
-
-        option.value = commune;
-
-        option.textContent = commune;
-
-        select.appendChild(option);
-
-    });
-
-}
-
 
 /* ============================================================
-   11. EVENEMENTS
-   ============================================================ */
+   10. EVENEMENTS
+============================================================ */
 
 function initEvents() {
 
-    const searchButton =
-        $("taxiSearchButton");
 
-    if (searchButton) {
+    /* RECHERCHER */
 
-        searchButton.addEventListener(
+    $("taxiSearchButton")
+        ?.addEventListener(
             "click",
             applyFilters
         );
 
-    }
 
+    /* RESET */
 
-    const resetButton =
-        $("taxiResetButton");
-
-    if (resetButton) {
-
-        resetButton.addEventListener(
+    $("taxiResetButton")
+        ?.addEventListener(
             "click",
             resetFilters
         );
 
-    }
 
+    /* RECHERCHE TEXTE */
 
-    const search =
-        $("taxiSearch");
-
-    if (search) {
-
-        search.addEventListener(
+    $("taxiSearch")
+        ?.addEventListener(
             "input",
             applyFilters
         );
 
-    }
+
+    /* COMMUNE */
+
+    $("taxiCommune")
+        ?.addEventListener(
+            "input",
+            applyFilters
+        );
 
 
-    const available =
-        $("taxiAvailableOnly");
+    /* QUARTIER */
 
-    if (available) {
+    $("taxiQuartier")
+        ?.addEventListener(
+            "input",
+            applyFilters
+        );
 
-        available.addEventListener(
+
+    /* DISPONIBILITÉ */
+
+    $("taxiAvailableOnly")
+        ?.addEventListener(
             "change",
             applyFilters
         );
 
-    }
+
+    /* POSITION */
+
+    $("taxiNearMeButton")
+        ?.addEventListener(
+            "click",
+            getUserLocation
+        );
 
 
-    document
-        .querySelectorAll(
-            "[data-taxi-location], #taxiUseLocation"
-        )
-        .forEach(button => {
+    $("taxiTopLocationButton")
+        ?.addEventListener(
+            "click",
+            getUserLocation
+        );
 
-            button.addEventListener(
-                "click",
-                getUserLocation
-            );
 
-        });
+    /* VOIR CHAUFFEURS */
+
+    $("taxiAllDriversButton")
+        ?.addEventListener(
+            "click",
+            () => {
+
+                $("chauffeurs")
+                    ?.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
+        );
 
 }
 
 
+
 /* ============================================================
-   12. CHARGER LES CHAUFFEURS
-   ============================================================ */
+   11. CHARGEMENT FIRESTORE AVEC RETRY
+============================================================ */
+
+async function loadDriversWithRetry() {
+
+    let lastError = null;
+
+
+    for (
+        let attempt = 1;
+        attempt <= CONFIG.retryAttempts;
+        attempt++
+    ) {
+
+
+        console.log(
+
+            `CAMU TAXI — Tentative Firestore ${attempt}/${CONFIG.retryAttempts}...`
+
+        );
+
+
+        try {
+
+            await loadDrivers();
+
+
+            return;
+
+
+        } catch (error) {
+
+            lastError =
+                error;
+
+
+            console.warn(
+
+                `CAMU TAXI — Échec tentative ${attempt} :`,
+
+                error
+
+            );
+
+
+            if (
+                attempt <
+                CONFIG.retryAttempts
+            ) {
+
+                showFirestoreConnecting(
+                    attempt
+                );
+
+
+                await sleep(
+                    CONFIG.retryDelay
+                );
+
+            }
+
+        }
+
+    }
+
+
+    console.error(
+
+        "CAMU TAXI — Firestore inaccessible.",
+
+        lastError
+
+    );
+
+
+    showFirestoreOffline();
+
+}
+
+
+
+/* ============================================================
+   12. CHARGEMENT CHAUFFEURS
+============================================================ */
 
 async function loadDrivers() {
 
@@ -433,66 +540,58 @@ async function loadDrivers() {
 
     if (!db) {
 
-        console.error(
-            "CAMU TAXI — Firestore DB est null."
+        throw new Error(
+            "Firestore n'est pas initialisé."
         );
-
-        showError(
-            "Firebase Firestore n'est pas correctement initialisé."
-        );
-
-        return;
 
     }
 
 
-    try {
-
-        /*
-         * IMPORTANT :
-         *
-         * Ici db est créé directement avec :
-         *
-         * getFirestore(camuApp)
-         *
-         */
-
-        const driversCollection =
-            collection(
-                db,
-                "chauffeurs"
-            );
+    const driversRef =
+        collection(
+            db,
+            "chauffeurs"
+        );
 
 
-        const snapshot =
-            await getDocs(
-                driversCollection
-            );
+    /*
+     * IMPORTANT :
+     *
+     * Si Firestore répond :
+     *   snapshot.empty = collection réellement vide.
+     *
+     * Si Firestore ne répond pas :
+     *   une erreur est levée.
+     *
+     * On ne dira donc plus "0 chauffeur"
+     * lorsqu'il s'agit d'un problème réseau.
+     */
+
+    const snapshot =
+        await getDocs(
+            driversRef
+        );
+
+
+    firestoreConnected =
+        true;
+
+
+    if (snapshot.empty) {
+
+        console.log(
+
+            "CAMU TAXI — Firestore connecté, mais aucun chauffeur enregistré."
+
+        );
 
 
         allDrivers = [];
 
-
-        snapshot.forEach(doc => {
-
-            allDrivers.push({
-
-                id: doc.id,
-
-                ...doc.data()
-
-            });
-
-        });
+        filteredDrivers = [];
 
 
-        console.log(
-            `CAMU TAXI — ${allDrivers.length} chauffeur(s) trouvé(s).`
-        );
-
-
-        filteredDrivers =
-            [...allDrivers];
+        hideLoading();
 
 
         renderDrivers();
@@ -500,152 +599,297 @@ async function loadDrivers() {
         updateMapMarkers();
 
 
-    } catch (error) {
+        showFirestoreConnected();
 
-        console.error(
-            "CAMU TAXI — Erreur chauffeurs :",
-            error
+
+        return;
+
+    }
+
+
+    allDrivers =
+        snapshot.docs.map(
+            doc => ({
+
+                id:
+                    doc.id,
+
+                ...doc.data()
+
+            })
         );
 
 
-        showError(
-            "Impossible de charger les chauffeurs."
-        );
+    console.log(
+
+        `CAMU TAXI — ${allDrivers.length} chauffeur(s) trouvé(s).`
+
+    );
+
+
+    filteredDrivers =
+        [...allDrivers];
+
+
+    hideLoading();
+
+
+    renderDrivers();
+
+    updateMapMarkers();
+
+
+    showFirestoreConnected();
+
+}
+
+
+
+/* ============================================================
+   13. LOADING
+============================================================ */
+
+function hideLoading() {
+
+    const loading =
+        $("taxiLoading");
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+    const mapLoading =
+        $("taxiMapLoading");
+
+
+    if (mapLoading) {
+
+        mapLoading.style.display =
+            "none";
 
     }
 
 }
 
 
+
 /* ============================================================
-   13. FILTRES
-   ============================================================ */
+   14. FILTRES
+============================================================ */
 
 function applyFilters() {
 
+
     const city =
-        $("taxiVille")?.value || "";
+        $("taxiVille")
+            ?.value
+            .trim() || "";
+
+
+    /*
+     * COMMUNE :
+     * ÉCRITE MANUELLEMENT
+     */
 
     const commune =
-        $("taxiCommune")?.value || "";
+        $("taxiCommune")
+            ?.value
+            .trim() || "";
+
+
+    /*
+     * QUARTIER :
+     * ÉCRIT MANUELLEMENT
+     */
 
     const quartier =
-        $("taxiQuartier")?.value || "";
+        $("taxiQuartier")
+            ?.value
+            .trim() || "";
+
 
     const search =
         (
-            $("taxiSearch")?.value ||
-            ""
+            $("taxiSearch")
+                ?.value || ""
         )
-            .trim()
-            .toLowerCase();
+        .trim()
+        .toLowerCase();
 
 
     const availableOnly =
-        $("taxiAvailableOnly")?.checked ||
-        false;
+        $("taxiAvailableOnly")
+            ?.checked || false;
+
 
 
     filteredDrivers =
-        allDrivers.filter(driver => {
+        allDrivers.filter(
+            driver => {
 
 
-            if (
-                city &&
-                normalize(
-                    driver.city ||
-                    driver.ville
-                ) !== normalize(city)
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                commune &&
-                normalize(
-                    driver.commune
-                ) !== normalize(commune)
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                quartier &&
-                normalize(
-                    driver.quartier
-                ) !== normalize(quartier)
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                availableOnly &&
-                !isAvailable(driver)
-            ) {
-
-                return false;
-
-            }
-
-
-            if (search) {
-
-                const content = [
-
-                    driver.name,
-                    driver.nom,
-                    driver.firstName,
-                    driver.lastName,
-                    driver.phone,
-                    driver.whatsapp,
-                    driver.vehicle,
-                    driver.vehicleType,
-                    driver.brand,
-                    driver.model,
-                    driver.color,
-                    driver.plate,
-                    driver.city,
-                    driver.ville,
-                    driver.commune,
-                    driver.quartier
-
-                ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
-
+                /* =========================
+                   VILLE
+                ========================= */
 
                 if (
-                    !content.includes(search)
+                    city &&
+                    normalize(
+                        driver.city ||
+                        driver.ville
+                    ) !==
+                    normalize(city)
                 ) {
 
                     return false;
 
                 }
 
+
+
+                /* =========================
+                   COMMUNE
+                   SAISIE MANUELLEMENT
+                ========================= */
+
+                if (
+                    commune &&
+                    !normalize(
+                        driver.commune
+                    ).includes(
+                        normalize(commune)
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+
+                /* =========================
+                   QUARTIER
+                   SAISI MANUELLEMENT
+                ========================= */
+
+                if (
+                    quartier &&
+                    !normalize(
+                        driver.quartier
+                    ).includes(
+                        normalize(quartier)
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+
+                /* =========================
+                   DISPONIBILITÉ
+                ========================= */
+
+                if (
+                    availableOnly &&
+                    !isAvailable(driver)
+                ) {
+
+                    return false;
+
+                }
+
+
+
+                /* =========================
+                   RECHERCHE
+                ========================= */
+
+                if (search) {
+
+
+                    const content = [
+
+                        driver.name,
+
+                        driver.nom,
+
+                        driver.firstName,
+
+                        driver.lastName,
+
+                        driver.phone,
+
+                        driver.whatsapp,
+
+                        driver.vehicle,
+
+                        driver.vehicleType,
+
+                        driver.brand,
+
+                        driver.model,
+
+                        driver.color,
+
+                        driver.plate,
+
+                        driver.city,
+
+                        driver.ville,
+
+                        driver.commune,
+
+                        driver.quartier
+
+                    ]
+
+                    .filter(Boolean)
+
+                    .join(" ")
+
+                    .toLowerCase();
+
+
+                    if (
+                        !content.includes(
+                            search
+                        )
+                    ) {
+
+                        return false;
+
+                    }
+
+                }
+
+
+                return true;
+
             }
+        );
 
 
-            return true;
 
-        });
-
+    /*
+     * TRI PAR DISTANCE
+     */
 
     if (userLocation) {
 
         filteredDrivers.sort(
+
             (a, b) =>
+
                 getDistance(a) -
                 getDistance(b)
+
         );
 
     }
@@ -658,33 +902,53 @@ function applyFilters() {
 }
 
 
+
 /* ============================================================
-   14. RESET
-   ============================================================ */
+   15. RESET
+============================================================ */
 
 function resetFilters() {
 
-    if ($("taxiVille"))
-        $("taxiVille").value = "";
+
+    if ($("taxiVille")) {
+
+        $("taxiVille").value =
+            "";
+
+    }
 
 
-    updateCommunes("");
+    if ($("taxiCommune")) {
+
+        $("taxiCommune").value =
+            "";
+
+    }
 
 
-    if ($("taxiCommune"))
-        $("taxiCommune").value = "";
+    if ($("taxiQuartier")) {
+
+        $("taxiQuartier").value =
+            "";
+
+    }
 
 
-    if ($("taxiQuartier"))
-        $("taxiQuartier").value = "";
+    if ($("taxiSearch")) {
+
+        $("taxiSearch").value =
+            "";
+
+    }
 
 
-    if ($("taxiSearch"))
-        $("taxiSearch").value = "";
+    if ($("taxiAvailableOnly")) {
 
+        $("taxiAvailableOnly")
+            .checked =
+            false;
 
-    if ($("taxiAvailableOnly"))
-        $("taxiAvailableOnly").checked = false;
+    }
 
 
     filteredDrivers =
@@ -698,31 +962,37 @@ function resetFilters() {
 }
 
 
+
 /* ============================================================
-   15. AFFICHAGE
-   ============================================================ */
+   16. AFFICHAGE CHAUFFEURS
+============================================================ */
 
 function renderDrivers() {
 
     const container =
         $("taxiDriversList");
 
+
     const empty =
         $("taxiEmpty");
+
 
     const count =
         $("taxiResultsCount");
 
 
-    if (!container) return;
+    if (!container)
+        return;
 
 
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
     if (count) {
 
         count.textContent =
+
             `${filteredDrivers.length} chauffeur${
                 filteredDrivers.length > 1
                     ? "s"
@@ -736,23 +1006,35 @@ function renderDrivers() {
         filteredDrivers.length === 0
     ) {
 
-        if (empty)
-            empty.style.display = "block";
+        if (empty) {
+
+            empty.hidden =
+                false;
+
+        }
 
         return;
 
     }
 
 
-    if (empty)
-        empty.style.display = "none";
+    if (empty) {
+
+        empty.hidden =
+            true;
+
+    }
 
 
     filteredDrivers.forEach(
         driver => {
 
             container.appendChild(
-                createDriverCard(driver)
+
+                createDriverCard(
+                    driver
+                )
+
             );
 
         }
@@ -761,14 +1043,20 @@ function renderDrivers() {
 }
 
 
-/* ============================================================
-   16. CARTE CHAUFFEUR
-   ============================================================ */
 
-function createDriverCard(driver) {
+/* ============================================================
+   17. CARTE CHAUFFEUR
+============================================================ */
+
+function createDriverCard(
+    driver
+) {
+
 
     const card =
-        document.createElement("article");
+        document.createElement(
+            "article"
+        );
 
 
     card.className =
@@ -776,10 +1064,13 @@ function createDriverCard(driver) {
 
 
     const name =
+
         driver.name ||
+
         `${driver.firstName || ""} ${
             driver.lastName || ""
         }`.trim() ||
+
         "Chauffeur CAMU";
 
 
@@ -845,7 +1136,9 @@ function createDriverCard(driver) {
 
 
     const available =
-        isAvailable(driver);
+        isAvailable(
+            driver
+        );
 
 
     const distance =
@@ -861,11 +1154,21 @@ function createDriverCard(driver) {
         );
 
 
+
     card.innerHTML = `
 
-        <div class="camu-taxi-driver-status">
+        <div
+            class="camu-taxi-driver-status"
+            style="${
+                available
+                    ? ""
+                    : "opacity:.65;"
+            }"
+        >
 
-            <span class="camu-taxi-status-dot"></span>
+            <span
+                class="camu-taxi-status-dot"
+            ></span>
 
             ${
                 available
@@ -876,36 +1179,52 @@ function createDriverCard(driver) {
         </div>
 
 
-        <div class="camu-taxi-driver-top">
+
+        <div
+            class="camu-taxi-driver-top"
+        >
 
             <img
                 class="camu-taxi-driver-photo"
                 src="${escapeAttr(photo)}"
                 alt="${escapeAttr(name)}"
+                onerror="
+                    this.src='assets/images/default-avatar.png'
+                "
             >
 
 
-            <div class="camu-taxi-driver-name">
+            <div
+                class="camu-taxi-driver-name"
+            >
 
                 <h3>
+
                     ${escapeHTML(name)}
 
                     ${
                         driver.verified
-                            ? `<span
-                                style="color:#16a34a"
-                                title="Chauffeur vérifié">
-                                ✓
-                               </span>`
+                            ? `
+                                <span
+                                    style="color:#16a34a"
+                                    title="Chauffeur vérifié"
+                                >
+                                    ✓
+                                </span>
+                            `
                             : ""
                     }
 
                 </h3>
 
 
-                <div class="camu-taxi-driver-location">
+                <div
+                    class="camu-taxi-driver-location"
+                >
 
-                    <i class="fa-solid fa-location-dot"></i>
+                    <i
+                        class="fa-solid fa-location-dot"
+                    ></i>
 
                     ${escapeHTML(
                         [
@@ -913,8 +1232,8 @@ function createDriverCard(driver) {
                             commune,
                             quartier
                         ]
-                            .filter(Boolean)
-                            .join(" • ")
+                        .filter(Boolean)
+                        .join(" • ")
                     )}
 
                 </div>
@@ -924,123 +1243,194 @@ function createDriverCard(driver) {
         </div>
 
 
-        <div class="camu-taxi-driver-detail">
 
-            <i class="fa-solid fa-car"></i>
+        <div
+            class="camu-taxi-driver-detail"
+        >
+
+            <i
+                class="fa-solid fa-car"
+            ></i>
 
             <span>
-                <strong>Véhicule :</strong>
+
+                <strong>
+                    Véhicule :
+                </strong>
+
                 ${escapeHTML(vehicle)}
+
             </span>
 
         </div>
 
 
+
         ${
             brand || model
                 ? `
-                    <div class="camu-taxi-driver-detail">
 
-                        <i class="fa-solid fa-car-side"></i>
+                    <div
+                        class="camu-taxi-driver-detail"
+                    >
+
+                        <i
+                            class="fa-solid fa-car-side"
+                        ></i>
 
                         <span>
-                            <strong>Modèle :</strong>
+
+                            <strong>
+                                Modèle :
+                            </strong>
+
                             ${escapeHTML(
                                 `${brand} ${model}`.trim()
                             )}
+
                         </span>
 
                     </div>
-                  `
+
+                `
                 : ""
         }
+
 
 
         ${
             color
                 ? `
-                    <div class="camu-taxi-driver-detail">
 
-                        <i class="fa-solid fa-palette"></i>
+                    <div
+                        class="camu-taxi-driver-detail"
+                    >
+
+                        <i
+                            class="fa-solid fa-palette"
+                        ></i>
 
                         <span>
-                            <strong>Couleur :</strong>
+
+                            <strong>
+                                Couleur :
+                            </strong>
+
                             ${escapeHTML(color)}
+
                         </span>
 
                     </div>
-                  `
+
+                `
                 : ""
         }
+
 
 
         ${
             plate
                 ? `
-                    <div class="camu-taxi-driver-detail">
 
-                        <i class="fa-solid fa-id-card"></i>
+                    <div
+                        class="camu-taxi-driver-detail"
+                    >
+
+                        <i
+                            class="fa-solid fa-id-card"
+                        ></i>
 
                         <span>
-                            <strong>Plaque :</strong>
+
+                            <strong>
+                                Plaque :
+                            </strong>
+
                             ${escapeHTML(plate)}
+
                         </span>
 
                     </div>
-                  `
+
+                `
                 : ""
         }
+
 
 
         ${
             Number.isFinite(distance)
                 ? `
-                    <div class="camu-taxi-driver-distance">
 
-                        <i class="fa-solid fa-location-dot"></i>
+                    <div
+                        class="camu-taxi-driver-distance"
+                    >
 
-                        ${formatDistance(distance)}
+                        <i
+                            class="fa-solid fa-location-dot"
+                        ></i>
+
+                        ${formatDistance(
+                            distance
+                        )}
 
                     </div>
-                  `
+
+                `
                 : ""
         }
 
 
-        <div class="camu-taxi-driver-actions">
+
+        <div
+            class="camu-taxi-driver-actions"
+        >
 
             ${
                 phone
                     ? `
+
                         <a
                             class="camu-taxi-driver-action"
-                            href="tel:${escapeAttr(phone)}">
+                            href="tel:${escapeAttr(phone)}"
+                        >
 
-                            <i class="fa-solid fa-phone"></i>
+                            <i
+                                class="fa-solid fa-phone"
+                            ></i>
 
                             Appeler
 
                         </a>
-                      `
+
+                    `
                     : ""
             }
+
 
 
             ${
                 whatsapp
                     ? `
+
                         <a
                             class="camu-taxi-driver-action"
-                            href="${escapeAttr(whatsappURL)}"
+                            href="${escapeAttr(
+                                whatsappURL
+                            )}"
                             target="_blank"
-                            rel="noopener noreferrer">
+                            rel="noopener noreferrer"
+                        >
 
-                            <i class="fa-brands fa-whatsapp"></i>
+                            <i
+                                class="fa-brands fa-whatsapp"
+                            ></i>
 
                             WhatsApp
 
                         </a>
-                      `
+
+                    `
                     : ""
             }
 
@@ -1054,13 +1444,17 @@ function createDriverCard(driver) {
 }
 
 
+
 /* ============================================================
-   17. GEOLOCALISATION
-   ============================================================ */
+   18. GÉOLOCALISATION
+============================================================ */
 
 function getUserLocation() {
 
-    if (!navigator.geolocation) {
+
+    if (
+        !navigator.geolocation
+    ) {
 
         updateLocation(
             "La géolocalisation n'est pas disponible."
@@ -1080,6 +1474,7 @@ function getUserLocation() {
 
         position => {
 
+
             userLocation = {
 
                 lat:
@@ -1092,18 +1487,35 @@ function getUserLocation() {
 
 
             console.log(
+
                 "CAMU TAXI — Position utilisateur :",
+
                 userLocation
+
             );
 
 
             showUserMarker();
 
 
+            if (
+                $("taxiResultsStatus")
+            ) {
+
+                $("taxiResultsStatus")
+                    .textContent =
+                    "Les chauffeurs sont classés selon leur proximité.";
+
+            }
+
+
             filteredDrivers.sort(
+
                 (a, b) =>
+
                     getDistance(a) -
                     getDistance(b)
+
             );
 
 
@@ -1122,24 +1534,33 @@ function getUserLocation() {
         error => {
 
             console.warn(
-                "CAMU TAXI — Géolocalisation refusée :",
+
+                "CAMU TAXI — Géolocalisation :",
+
                 error
+
             );
 
 
             updateLocation(
-                "Autorisation de localisation refusée."
+
+                "Impossible d'obtenir votre position."
+
             );
 
         },
 
+
         {
 
-            enableHighAccuracy: true,
+            enableHighAccuracy:
+                true,
 
-            timeout: 10000,
+            timeout:
+                10000,
 
-            maximumAge: 60000
+            maximumAge:
+                60000
 
         }
 
@@ -1148,13 +1569,18 @@ function getUserLocation() {
 }
 
 
+
 /* ============================================================
-   18. MARQUEUR UTILISATEUR
-   ============================================================ */
+   19. MARQUEUR UTILISATEUR
+============================================================ */
 
 function showUserMarker() {
 
-    if (!map || !userLocation)
+
+    if (
+        !map ||
+        !userLocation
+    )
         return;
 
 
@@ -1168,40 +1594,57 @@ function showUserMarker() {
 
 
     userMarker =
-        L.marker([
-            userLocation.lat,
-            userLocation.lng
-        ])
+
+        L.marker(
+
+            [
+                userLocation.lat,
+                userLocation.lng
+            ]
+
+        )
+
         .addTo(map)
+
         .bindPopup(
             "<strong>Votre position</strong>"
         );
 
 
     map.setView(
+
         [
             userLocation.lat,
             userLocation.lng
         ],
+
         14
+
     );
 
 }
 
 
+
 /* ============================================================
-   19. MARQUEURS CHAUFFEURS
-   ============================================================ */
+   20. MARQUEURS CHAUFFEURS
+============================================================ */
 
 function updateMapMarkers() {
+
 
     if (!map)
         return;
 
 
     driverMarkers.forEach(
+
         marker =>
-            map.removeLayer(marker)
+
+            map.removeLayer(
+                marker
+            )
+
     );
 
 
@@ -1211,8 +1654,11 @@ function updateMapMarkers() {
     filteredDrivers.forEach(
         driver => {
 
+
             const coordinates =
-                getCoordinates(driver);
+                getCoordinates(
+                    driver
+                );
 
 
             if (!coordinates)
@@ -1220,14 +1666,21 @@ function updateMapMarkers() {
 
 
             const marker =
-                L.marker([
-                    coordinates.lat,
-                    coordinates.lng
-                ])
+
+                L.marker(
+
+                    [
+                        coordinates.lat,
+                        coordinates.lng
+                    ]
+
+                )
+
                 .addTo(map);
 
 
             const name =
+
                 driver.name ||
                 "Chauffeur CAMU";
 
@@ -1249,7 +1702,9 @@ function updateMapMarkers() {
             `);
 
 
-            driverMarkers.push(marker);
+            driverMarkers.push(
+                marker
+            );
 
         }
     );
@@ -1257,30 +1712,43 @@ function updateMapMarkers() {
 }
 
 
-/* ============================================================
-   20. COORDONNÉES
-   ============================================================ */
 
-function getCoordinates(driver) {
+/* ============================================================
+   21. COORDONNÉES
+============================================================ */
+
+function getCoordinates(
+    driver
+) {
+
 
     const lat =
+
         Number(
+
             driver.latitude ??
             driver.lat
+
         );
 
 
     const lng =
+
         Number(
+
             driver.longitude ??
             driver.lng ??
             driver.lon
+
         );
 
 
     if (
+
         !Number.isFinite(lat) ||
+
         !Number.isFinite(lng)
+
     ) {
 
         return null;
@@ -1289,25 +1757,34 @@ function getCoordinates(driver) {
 
 
     return {
+
         lat,
+
         lng
+
     };
 
 }
 
 
-/* ============================================================
-   21. DISTANCE
-   ============================================================ */
 
-function getDistance(driver) {
+/* ============================================================
+   22. DISTANCE
+============================================================ */
+
+function getDistance(
+    driver
+) {
+
 
     if (!userLocation)
         return Infinity;
 
 
     const coordinates =
-        getCoordinates(driver);
+        getCoordinates(
+            driver
+        );
 
 
     if (!coordinates)
@@ -1317,9 +1794,11 @@ function getDistance(driver) {
     return calculateDistance(
 
         userLocation.lat,
+
         userLocation.lng,
 
         coordinates.lat,
+
         coordinates.lng
 
     );
@@ -1328,29 +1807,37 @@ function getDistance(driver) {
 
 
 function calculateDistance(
+
     lat1,
     lon1,
     lat2,
     lon2
+
 ) {
+
 
     const R = 6371;
 
 
     const dLat =
+
         toRadians(
             lat2 - lat1
         );
 
 
     const dLon =
+
         toRadians(
             lon2 - lon1
         );
 
 
     const a =
-        Math.sin(dLat / 2) ** 2 +
+
+        Math.sin(
+            dLat / 2
+        ) ** 2 +
 
         Math.cos(
             toRadians(lat1)
@@ -1360,14 +1847,23 @@ function calculateDistance(
             toRadians(lat2)
         ) *
 
-        Math.sin(dLon / 2) ** 2;
+        Math.sin(
+            dLon / 2
+        ) ** 2;
 
 
     const c =
+
         2 *
+
         Math.atan2(
+
             Math.sqrt(a),
-            Math.sqrt(1 - a)
+
+            Math.sqrt(
+                1 - a
+            )
+
         );
 
 
@@ -1376,22 +1872,34 @@ function calculateDistance(
 }
 
 
-function toRadians(value) {
+function toRadians(
+    value
+) {
 
-    return value *
+    return (
+
+        value *
         Math.PI /
-        180;
+        180
+
+    );
 
 }
 
 
+
 /* ============================================================
-   22. FORMAT DISTANCE
-   ============================================================ */
+   23. FORMAT DISTANCE
+============================================================ */
 
-function formatDistance(distance) {
+function formatDistance(
+    distance
+) {
 
-    if (distance < 1) {
+
+    if (
+        distance < 1
+    ) {
 
         return `${Math.round(
             distance * 1000
@@ -1405,17 +1913,26 @@ function formatDistance(distance) {
 }
 
 
-/* ============================================================
-   23. DISPONIBILITÉ
-   ============================================================ */
 
-function isAvailable(driver) {
+/* ============================================================
+   24. DISPONIBILITÉ
+============================================================ */
+
+function isAvailable(
+    driver
+) {
+
 
     if (
+
         driver.available === false ||
+
         driver.disponible === false ||
+
         driver.status === "offline" ||
+
         driver.status === "indisponible"
+
     ) {
 
         return false;
@@ -1428,22 +1945,31 @@ function isAvailable(driver) {
 }
 
 
+
 /* ============================================================
-   24. WHATSAPP
-   ============================================================ */
+   25. WHATSAPP
+============================================================ */
 
 function buildWhatsApp(
+
     phone,
     driverName
+
 ) {
+
 
     if (!phone)
         return "#";
 
 
     let number =
+
         String(phone)
-            .replace(/[^\d+]/g, "");
+
+        .replace(
+            /[^\d+]/g,
+            ""
+        );
 
 
     if (
@@ -1451,6 +1977,7 @@ function buildWhatsApp(
     ) {
 
         number =
+
             "243" +
             number.substring(1);
 
@@ -1462,28 +1989,204 @@ function buildWhatsApp(
     ) {
 
         number =
+
             number.substring(1);
 
     }
 
 
     const message =
+
         `Bonjour ${driverName}, je vous contacte via CAMU TAXI. Êtes-vous disponible ?`;
 
 
     return (
+
         `https://wa.me/${number}` +
-        `?text=${encodeURIComponent(message)}`
+
+        `?text=${encodeURIComponent(
+            message
+        )}`
+
     );
 
 }
 
 
-/* ============================================================
-   25. MESSAGES
-   ============================================================ */
 
-function updateLocation(message) {
+/* ============================================================
+   26. STATUT FIRESTORE
+============================================================ */
+
+function showFirestoreConnecting(
+    attempt
+) {
+
+
+    const element =
+        $("taxiLocationStatus");
+
+
+    if (!element)
+        return;
+
+
+    element.textContent =
+
+        `Connexion à CAMU TAXI... tentative ${attempt}/${CONFIG.retryAttempts}`;
+
+}
+
+
+
+function showFirestoreConnected() {
+
+
+    const element =
+        $("taxiLocationStatus");
+
+
+    if (!element)
+        return;
+
+
+    if (
+        firestoreConnected
+    ) {
+
+        element.textContent =
+
+            "CAMU TAXI est connecté.";
+
+    }
+
+}
+
+
+
+function showFirestoreOffline() {
+
+
+    firestoreConnected =
+        false;
+
+
+    const container =
+        $("taxiDriversList");
+
+
+    const loading =
+        $("taxiLoading");
+
+
+    if (loading) {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+    if (!container)
+        return;
+
+
+    container.innerHTML = `
+
+        <div
+            class="camu-taxi-empty"
+            style="display:block;"
+        >
+
+            <div
+                class="camu-taxi-empty-icon"
+            >
+
+                <i
+                    class="fa-solid fa-wifi"
+                ></i>
+
+            </div>
+
+
+            <h3>
+                Connexion impossible
+            </h3>
+
+
+            <p>
+
+                CAMU TAXI n'arrive pas à contacter
+                le serveur. Vérifiez votre connexion
+                Internet puis réessayez.
+
+            </p>
+
+
+            <button
+                type="button"
+                class="camu-taxi-button camu-taxi-button-primary"
+                id="taxiRetryButton"
+            >
+
+                <i
+                    class="fa-solid fa-rotate"
+                ></i>
+
+                Réessayer
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    $("taxiRetryButton")
+        ?.addEventListener(
+
+            "click",
+
+            async () => {
+
+                container.innerHTML = `
+
+                    <div
+                        class="camu-taxi-loading"
+                        style="display:block;"
+                    >
+
+                        <div
+                            class="camu-taxi-spinner"
+                        ></div>
+
+                        <p>
+                            Reconnexion...
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                await loadDriversWithRetry();
+
+            }
+
+        );
+
+}
+
+
+
+/* ============================================================
+   27. STATUT LOCALISATION
+============================================================ */
+
+function updateLocation(
+    message
+) {
+
 
     const element =
         $("taxiLocationStatus");
@@ -1499,105 +2202,131 @@ function updateLocation(message) {
 }
 
 
-function showError(message) {
 
-    const container =
-        $("taxiDriversList");
+/* ============================================================
+   28. SLEEP
+============================================================ */
 
+function sleep(
+    milliseconds
+) {
 
-    if (!container)
-        return;
-
-
-    container.innerHTML = `
-
-        <div class="camu-taxi-empty">
-
-            <div class="camu-taxi-empty-icon">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-            </div>
-
-
-            <h3>
-                ${escapeHTML(message)}
-            </h3>
-
-
-            <p>
-                Vérifiez votre connexion
-                et rechargez la page.
-            </p>
-
-        </div>
-
-    `;
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                milliseconds
+            )
+    );
 
 }
+
 
 
 /* ============================================================
-   26. SECURITÉ HTML
-   ============================================================ */
+   29. NORMALISATION
+============================================================ */
 
-function escapeHTML(value) {
+function normalize(
+    value
+) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
 
-        .replace(/&/g, "&amp;")
+    .normalize("NFD")
 
-        .replace(/</g, "&lt;")
+    .replace(
+        /[\u0300-\u036f]/g,
+        ""
+    )
 
-        .replace(/>/g, "&gt;")
+    .toLowerCase()
 
-        .replace(/"/g, "&quot;")
-
-        .replace(/'/g, "&#039;");
-
-}
-
-
-function escapeAttr(value) {
-
-    return escapeHTML(value);
+    .trim();
 
 }
 
-
-function normalize(value) {
-
-    return String(value ?? "")
-
-        .normalize("NFD")
-
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
-
-        .toLowerCase()
-
-        .trim();
-
-}
 
 
 /* ============================================================
-   27. DEBUG
-   ============================================================ */
+   30. SÉCURITÉ HTML
+============================================================ */
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+function escapeAttr(
+    value
+) {
+
+    return escapeHTML(
+        value
+    );
+
+}
+
+
+
+/* ============================================================
+   31. DEBUG
+============================================================ */
 
 window.CAMUTAXI = {
 
-    reload: loadDrivers,
+    reload:
+        loadDriversWithRetry,
 
-    drivers: () =>
-        [...allDrivers],
+    drivers:
+        () => [
+            ...allDrivers
+        ],
 
-    filtered: () =>
-        [...filteredDrivers],
+    filtered:
+        () => [
+            ...filteredDrivers
+        ],
 
-    location: () =>
-        userLocation
+    location:
+        () => userLocation,
+
+    firestoreStatus:
+        () =>
+            firestoreConnected
 
 };
