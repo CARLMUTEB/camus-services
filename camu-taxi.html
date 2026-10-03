@@ -13,75 +13,88 @@
         content="CAMU TAXI - Trouvez facilement les chauffeurs CAMU SERVICES près de vous."
     >
 
+    <meta name="theme-color" content="#0878d1">
+
     <title>CAMU TAXI — CAMU SERVICES</title>
 
-    <!-- =========================================================
+    <!-- =====================================================
          FAVICON
-    ========================================================== -->
+    ====================================================== -->
     <link
         rel="icon"
         type="image/png"
         href="assets/logo/camu-services-logo.png"
     >
 
-    <!-- =========================================================
+    <!-- =====================================================
          FONT AWESOME
-    ========================================================== -->
+    ====================================================== -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
-    <!-- =========================================================
-         LEAFLET
-         IMPORTANT : pas de mauvais integrity
-    ========================================================== -->
+    <!-- =====================================================
+         LEAFLET CSS
+         IMPORTANT : aucun integrity
+    ====================================================== -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
-    <!-- =========================================================
-         CSS GLOBAL
-    ========================================================== -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- =========================================================
+    <!-- =====================================================
          CSS CAMU TAXI
-    ========================================================== -->
-    <link rel="stylesheet" href="css/camu-taxi.css">
+    ====================================================== -->
+    <link
+        rel="stylesheet"
+        href="css/camu-taxi.css"
+    >
 </head>
 
 <body>
 
-<!-- =============================================================
+<!-- =========================================================
      OVERLAY MOBILE
-============================================================= -->
-<div class="taxi-sidebar-overlay" id="taxiSidebarOverlay"></div>
+========================================================= -->
+<div
+    class="camu-taxi-overlay"
+    id="camuTaxiOverlay"
+></div>
 
 
-<!-- =============================================================
+<!-- =========================================================
      SIDEBAR
-============================================================= -->
-<aside class="immo-sidebar taxi-sidebar" id="taxiSidebar">
+========================================================= -->
+<aside
+    class="camu-taxi-sidebar"
+    id="camuTaxiSidebar"
+>
 
     <!-- LOGO -->
-    <div class="immo-sidebar-logo">
-        <a href="index.html" aria-label="CAMU SERVICES">
+    <div class="camu-taxi-sidebar-logo">
+
+        <a
+            href="index.html"
+            aria-label="CAMU SERVICES"
+        >
+
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
+
         </a>
+
     </div>
 
 
     <!-- MENU -->
-    <nav class="immo-menu">
+    <nav class="camu-taxi-sidebar-menu">
 
         <a
             href="index.html"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
         >
             <i class="fa-solid fa-house"></i>
             <span>Accueil</span>
@@ -90,7 +103,7 @@
 
         <a
             href="#"
-            class="immo-menu-link active"
+            class="camu-taxi-menu-link active"
             id="menuTaxiNear"
         >
             <i class="fa-solid fa-location-dot"></i>
@@ -100,7 +113,7 @@
 
         <a
             href="#chauffeurs"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
             id="menuChauffeurs"
         >
             <i class="fa-solid fa-taxi"></i>
@@ -110,7 +123,7 @@
 
         <a
             href="#rechercher"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
             id="menuSearch"
         >
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -120,7 +133,7 @@
 
         <a
             href="favoris.html"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
         >
             <i class="fa-solid fa-heart"></i>
             <span>Favoris</span>
@@ -129,7 +142,7 @@
 
         <a
             href="devenir-chauffeur.html"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
         >
             <i class="fa-solid fa-id-card"></i>
             <span>Devenir chauffeur</span>
@@ -138,7 +151,7 @@
 
         <a
             href="parametres.html"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
         >
             <i class="fa-solid fa-gear"></i>
             <span>Paramètres</span>
@@ -147,12 +160,12 @@
     </nav>
 
 
-    <!-- BAS SIDEBAR -->
-    <div class="immo-sidebar-bottom">
+    <!-- BAS -->
+    <div class="camu-taxi-sidebar-bottom">
 
         <a
             href="index.html"
-            class="immo-menu-link"
+            class="camu-taxi-menu-link"
         >
             <i class="fa-solid fa-arrow-left"></i>
             <span>CAMU SERVICES</span>
@@ -163,36 +176,41 @@
 </aside>
 
 
-<!-- =============================================================
-     CONTENU PRINCIPAL
-============================================================= -->
-<main class="immo-main taxi-main">
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+<div class="camu-taxi-app">
 
-    <!-- =========================================================
+    <!-- =====================================================
          TOPBAR
-    ========================================================== -->
-    <header class="immo-topbar taxi-topbar">
+    ====================================================== -->
+    <header class="camu-taxi-topbar">
 
         <button
             type="button"
-            class="taxi-menu-button"
-            id="taxiMenuButton"
+            class="camu-taxi-menu-button"
+            id="camuTaxiMenuButton"
             aria-label="Ouvrir le menu"
         >
             <i class="fa-solid fa-bars"></i>
         </button>
 
 
-        <div class="taxi-topbar-brand">
+        <div class="camu-taxi-brand">
 
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
 
-            <div>
+            <div class="camu-taxi-brand-text">
+
                 <strong>CAMU TAXI</strong>
-                <small>Transport local</small>
+
+                <span>
+                    Transport local
+                </span>
+
             </div>
 
         </div>
@@ -200,7 +218,7 @@
 
         <button
             type="button"
-            class="taxi-location-top"
+            class="camu-taxi-location-button"
             id="taxiTopLocationButton"
             title="Utiliser ma position"
         >
@@ -210,390 +228,466 @@
     </header>
 
 
-    <!-- =========================================================
-         HERO
-    ========================================================== -->
-    <section class="taxi-hero">
-
-        <div class="taxi-hero-content">
-
-            <div class="taxi-hero-icon">
-                <i class="fa-solid fa-taxi"></i>
-            </div>
-
-            <span class="taxi-hero-label">
-                CAMU SERVICES
-            </span>
-
-            <h1>
-                Trouvez un taxi<br>
-                <span>près de vous</span>
-            </h1>
-
-            <p>
-                Découvrez les chauffeurs CAMU disponibles
-                dans votre ville et contactez-les directement.
-            </p>
+    <!-- =====================================================
+         CONTENU
+    ====================================================== -->
+    <main class="camu-taxi-content">
 
 
-            <div class="taxi-hero-actions">
+        <!-- =================================================
+             HERO
+        ================================================== -->
+        <section class="camu-taxi-hero">
 
-                <button
-                    type="button"
-                    class="taxi-primary-button"
-                    id="taxiNearMeButton"
-                >
-                    <i class="fa-solid fa-location-crosshairs"></i>
-                    Utiliser ma position
-                </button>
+            <div class="camu-taxi-hero-decoration"></div>
 
+            <div class="camu-taxi-hero-content">
 
-                <button
-                    type="button"
-                    class="taxi-secondary-button"
-                    id="taxiAllDriversButton"
-                >
-                    <i class="fa-solid fa-users"></i>
-                    Voir les chauffeurs
-                </button>
+                <div class="camu-taxi-hero-icon">
 
-            </div>
+                    <i class="fa-solid fa-taxi"></i>
 
-        </div>
-
-    </section>
+                </div>
 
 
-    <!-- =========================================================
-         STATUT POSITION
-    ========================================================== -->
-    <div
-        class="taxi-location-status"
-        id="taxiLocationStatus"
-        aria-live="polite"
-    ></div>
-
-
-    <!-- =========================================================
-         CARTE
-    ========================================================== -->
-    <section
-        class="taxi-map-section"
-        id="taxiMapSection"
-    >
-
-        <div class="taxi-section-header">
-
-            <div>
-                <span class="taxi-section-kicker">
-                    LOCALISATION
+                <span class="camu-taxi-hero-label">
+                    CAMU SERVICES
                 </span>
 
-                <h2>
-                    Chauffeurs à proximité
-                </h2>
 
-                <p id="taxiResultsStatus">
-                    Activez votre position pour rechercher les taxis proches.
-                </p>
-            </div>
+                <h1>
+                    Trouvez un taxi
+                    <span>près de vous</span>
+                </h1>
 
-        </div>
-
-
-        <div class="taxi-map-wrapper">
-
-            <div
-                id="taxiMap"
-                class="taxi-map"
-            ></div>
-
-            <div
-                class="taxi-map-loading"
-                id="taxiMapLoading"
-            >
-                <div class="taxi-spinner"></div>
-                <span>Chargement de la carte...</span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         RECHERCHE
-    ========================================================== -->
-    <section
-        class="taxi-search-section"
-        id="rechercher"
-    >
-
-        <div class="taxi-section-header">
-
-            <div>
-                <span class="taxi-section-kicker">
-                    RECHERCHE
-                </span>
-
-                <h2>
-                    Rechercher un chauffeur
-                </h2>
 
                 <p>
-                    Filtrez les chauffeurs selon votre localisation.
-                </p>
-            </div>
-
-        </div>
-
-
-        <div class="taxi-search-box">
-
-            <!-- VILLE -->
-            <div class="taxi-field">
-
-                <label for="taxiVille">
-                    <i class="fa-solid fa-city"></i>
-                    Ville
-                </label>
-
-                <select id="taxiVille">
-                    <option value="">
-                        Toutes les villes
-                    </option>
-                </select>
-
-            </div>
-
-
-            <!-- COMMUNE -->
-            <div class="taxi-field">
-
-                <label for="taxiCommune">
-                    <i class="fa-solid fa-map"></i>
-                    Commune
-                </label>
-
-                <select id="taxiCommune" disabled>
-                    <option value="">
-                        Toutes les communes
-                    </option>
-                </select>
-
-            </div>
-
-
-            <!-- QUARTIER -->
-            <div class="taxi-field">
-
-                <label for="taxiQuartier">
-                    <i class="fa-solid fa-location-dot"></i>
-                    Quartier
-                </label>
-
-                <select id="taxiQuartier" disabled>
-                    <option value="">
-                        Tous les quartiers
-                    </option>
-                </select>
-
-            </div>
-
-
-            <!-- RECHERCHE -->
-            <div class="taxi-field taxi-search-field">
-
-                <label for="taxiSearch">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Recherche
-                </label>
-
-                <input
-                    type="search"
-                    id="taxiSearch"
-                    placeholder="Nom, téléphone, véhicule..."
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <!-- DISPONIBILITÉ -->
-            <label class="taxi-checkbox">
-
-                <input
-                    type="checkbox"
-                    id="taxiAvailableOnly"
-                >
-
-                <span class="taxi-checkmark"></span>
-
-                <span>
-                    Chauffeurs disponibles uniquement
-                </span>
-
-            </label>
-
-
-            <!-- BOUTONS -->
-            <div class="taxi-search-actions">
-
-                <button
-                    type="button"
-                    class="taxi-primary-button"
-                    id="taxiSearchButton"
-                >
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Rechercher
-                </button>
-
-
-                <button
-                    type="button"
-                    class="taxi-reset-button"
-                    id="taxiResetButton"
-                >
-                    <i class="fa-solid fa-rotate-left"></i>
-                    Réinitialiser
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         CHAUFFEURS
-    ========================================================== -->
-    <section
-        class="taxi-drivers-section"
-        id="chauffeurs"
-    >
-
-        <div class="taxi-section-header taxi-drivers-header">
-
-            <div>
-
-                <span class="taxi-section-kicker">
-                    ANNuaire CAMU
-                </span>
-
-                <h2>
-                    Chauffeurs CAMU
-                </h2>
-
-                <p id="taxiResultsCount">
-                    Chargement des chauffeurs...
+                    Découvrez les chauffeurs CAMU disponibles
+                    dans votre ville et contactez-les directement.
                 </p>
 
+
+                <div class="camu-taxi-hero-actions">
+
+                    <button
+                        type="button"
+                        class="camu-taxi-button camu-taxi-button-primary"
+                        id="taxiNearMeButton"
+                    >
+
+                        <i class="fa-solid fa-location-crosshairs"></i>
+
+                        Utiliser ma position
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="camu-taxi-button camu-taxi-button-light"
+                        id="taxiAllDriversButton"
+                    >
+
+                        <i class="fa-solid fa-users"></i>
+
+                        Voir les chauffeurs
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="taxi-online-indicator">
-
-                <span></span>
-
-                <strong>
-                    CAMU TAXI
-                </strong>
-
-            </div>
-
-        </div>
+        </section>
 
 
-        <!-- LOADING -->
+        <!-- =================================================
+             STATUT POSITION
+        ================================================== -->
         <div
-            class="taxi-loading"
-            id="taxiLoading"
-        >
-            <div class="taxi-spinner"></div>
-
-            <p>
-                Recherche des chauffeurs...
-            </p>
-        </div>
-
-
-        <!-- LISTE -->
-        <div
-            class="taxi-drivers-list"
-            id="taxiDriversList"
+            class="camu-taxi-location-status"
+            id="taxiLocationStatus"
+            aria-live="polite"
         ></div>
 
 
-        <!-- EMPTY -->
-        <div
-            class="taxi-empty"
-            id="taxiEmpty"
-            hidden
+        <!-- =================================================
+             CARTE
+        ================================================== -->
+        <section
+            class="camu-taxi-section"
+            id="taxiMapSection"
         >
 
-            <div class="taxi-empty-icon">
-                <i class="fa-solid fa-taxi"></i>
+            <div class="camu-taxi-section-header">
+
+                <div>
+
+                    <span class="camu-taxi-section-label">
+                        LOCALISATION
+                    </span>
+
+                    <h2>
+                        Chauffeurs à proximité
+                    </h2>
+
+                    <p id="taxiResultsStatus">
+                        Activez votre position pour rechercher
+                        les taxis proches.
+                    </p>
+
+                </div>
+
             </div>
 
-            <h3>
-                Aucun chauffeur trouvé
-            </h3>
 
-            <p>
-                Aucun chauffeur ne correspond actuellement
-                à votre recherche.
-            </p>
+            <div class="camu-taxi-map-card">
 
-        </div>
-
-    </section>
+                <div
+                    id="taxiMap"
+                    class="camu-taxi-map"
+                ></div>
 
 
-    <!-- =========================================================
-         CTA CHAUFFEUR
-    ========================================================== -->
-    <section class="taxi-driver-cta">
+                <div
+                    class="camu-taxi-map-loading"
+                    id="taxiMapLoading"
+                >
 
-        <div class="taxi-driver-cta-icon">
-            <i class="fa-solid fa-steering-wheel"></i>
-        </div>
+                    <div class="camu-taxi-spinner"></div>
 
+                    <span>
+                        Chargement de la carte...
+                    </span>
 
-        <div class="taxi-driver-cta-content">
+                </div>
 
-            <span>
-                VOUS ÊTES CHAUFFEUR ?
-            </span>
+            </div>
 
-            <h2>
-                Rejoignez CAMU TAXI
-            </h2>
-
-            <p>
-                Présentez votre profil et permettez aux clients
-                de vous trouver facilement dans votre ville.
-            </p>
-
-        </div>
+        </section>
 
 
-        <a
-            href="devenir-chauffeur.html"
-            class="taxi-primary-button"
+        <!-- =================================================
+             RECHERCHE
+        ================================================== -->
+        <section
+            class="camu-taxi-section"
+            id="rechercher"
         >
-            <i class="fa-solid fa-arrow-right"></i>
-            Devenir chauffeur
-        </a>
 
-    </section>
+            <div class="camu-taxi-section-header">
+
+                <div>
+
+                    <span class="camu-taxi-section-label">
+                        RECHERCHE
+                    </span>
+
+                    <h2>
+                        Rechercher un chauffeur
+                    </h2>
+
+                    <p>
+                        Filtrez les chauffeurs selon votre localisation.
+                    </p>
+
+                </div>
+
+            </div>
 
 
-    <!-- =========================================================
+            <div class="camu-taxi-search-card">
+
+                <!-- VILLE -->
+                <div class="camu-taxi-field">
+
+                    <label for="taxiVille">
+
+                        <i class="fa-solid fa-city"></i>
+
+                        Ville
+
+                    </label>
+
+
+                    <select id="taxiVille">
+
+                        <option value="">
+                            Toutes les villes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- COMMUNE -->
+                <div class="camu-taxi-field">
+
+                    <label for="taxiCommune">
+
+                        <i class="fa-solid fa-map"></i>
+
+                        Commune
+
+                    </label>
+
+
+                    <select
+                        id="taxiCommune"
+                        disabled
+                    >
+
+                        <option value="">
+                            Toutes les communes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUARTIER -->
+                <div class="camu-taxi-field">
+
+                    <label for="taxiQuartier">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        Quartier
+
+                    </label>
+
+
+                    <select
+                        id="taxiQuartier"
+                        disabled
+                    >
+
+                        <option value="">
+                            Tous les quartiers
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- RECHERCHE -->
+                <div class="camu-taxi-field">
+
+                    <label for="taxiSearch">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        Recherche
+
+                    </label>
+
+
+                    <input
+                        type="search"
+                        id="taxiSearch"
+                        placeholder="Nom, téléphone, véhicule..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <!-- DISPONIBILITÉ -->
+                <label class="camu-taxi-checkbox">
+
+                    <input
+                        type="checkbox"
+                        id="taxiAvailableOnly"
+                    >
+
+                    <span class="camu-taxi-checkmark"></span>
+
+                    <span>
+                        Chauffeurs disponibles uniquement
+                    </span>
+
+                </label>
+
+
+                <!-- ACTIONS -->
+                <div class="camu-taxi-search-actions">
+
+                    <button
+                        type="button"
+                        class="camu-taxi-button camu-taxi-button-primary"
+                        id="taxiSearchButton"
+                    >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        Rechercher
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="camu-taxi-button camu-taxi-button-reset"
+                        id="taxiResetButton"
+                    >
+
+                        <i class="fa-solid fa-rotate-left"></i>
+
+                        Réinitialiser
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHAUFFEURS
+        ================================================== -->
+        <section
+            class="camu-taxi-section"
+            id="chauffeurs"
+        >
+
+            <div class="camu-taxi-drivers-header">
+
+                <div>
+
+                    <span class="camu-taxi-section-label">
+                        ANNUAIRE CAMU
+                    </span>
+
+                    <h2>
+                        Chauffeurs CAMU
+                    </h2>
+
+                    <p id="taxiResultsCount">
+                        Chargement des chauffeurs...
+                    </p>
+
+                </div>
+
+
+                <div class="camu-taxi-online">
+
+                    <span></span>
+
+                    CAMU TAXI
+
+                </div>
+
+            </div>
+
+
+            <!-- LOADING -->
+            <div
+                class="camu-taxi-loading"
+                id="taxiLoading"
+            >
+
+                <div class="camu-taxi-spinner"></div>
+
+                <p>
+                    Recherche des chauffeurs...
+                </p>
+
+            </div>
+
+
+            <!-- LISTE -->
+            <div
+                class="camu-taxi-drivers-list"
+                id="taxiDriversList"
+            ></div>
+
+
+            <!-- EMPTY -->
+            <div
+                class="camu-taxi-empty"
+                id="taxiEmpty"
+                hidden
+            >
+
+                <div class="camu-taxi-empty-icon">
+
+                    <i class="fa-solid fa-taxi"></i>
+
+                </div>
+
+
+                <h3>
+                    Aucun chauffeur trouvé
+                </h3>
+
+
+                <p>
+                    Aucun chauffeur ne correspond actuellement
+                    à votre recherche.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CTA CHAUFFEUR
+        ================================================== -->
+        <section class="camu-taxi-driver-cta">
+
+            <div class="camu-taxi-driver-cta-icon">
+
+                <i class="fa-solid fa-steering-wheel"></i>
+
+            </div>
+
+
+            <div class="camu-taxi-driver-cta-text">
+
+                <span>
+                    VOUS ÊTES CHAUFFEUR ?
+                </span>
+
+                <h2>
+                    Rejoignez CAMU TAXI
+                </h2>
+
+                <p>
+                    Présentez votre profil et permettez aux clients
+                    de vous trouver facilement dans votre ville.
+                </p>
+
+            </div>
+
+
+            <a
+                href="devenir-chauffeur.html"
+                class="camu-taxi-button camu-taxi-button-primary"
+            >
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+                Devenir chauffeur
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
          FOOTER
-    ========================================================== -->
-    <footer class="taxi-footer">
+    ====================================================== -->
+    <footer class="camu-taxi-footer">
 
-        <div class="taxi-footer-brand">
+        <div class="camu-taxi-footer-brand">
 
             <img
                 src="assets/logo/camu-services-logo.png"
@@ -601,14 +695,21 @@
             >
 
             <div>
-                <strong>CAMU TAXI</strong>
-                <span>Un service de CAMU SERVICES</span>
+
+                <strong>
+                    CAMU TAXI
+                </strong>
+
+                <span>
+                    Un service de CAMU SERVICES
+                </span>
+
             </div>
 
         </div>
 
 
-        <div class="taxi-footer-links">
+        <div class="camu-taxi-footer-links">
 
             <a href="index.html">
                 CAMU SERVICES
@@ -626,33 +727,31 @@
 
 
         <p>
-            © <span id="taxiCurrentYear"></span>
+            ©
+            <span id="taxiCurrentYear"></span>
             CAMU SERVICES. Tous droits réservés.
         </p>
 
     </footer>
 
-</main>
+</div>
 
 
-<!-- =============================================================
+<!-- =========================================================
      LEAFLET JS
-============================================================= -->
+========================================================= -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 
-<!-- =============================================================
-     APPLICATION
-============================================================= -->
+<!-- =========================================================
+     APPLICATION CAMU
+========================================================= -->
 <script type="module" src="js/app.js"></script>
 
-<!-- AUTH -->
 <script type="module" src="js/auth-guard.js"></script>
 
-<!-- TAXI -->
 <script type="module" src="js/camu-taxi.js"></script>
 
-<!-- THEME -->
 <script type="module" src="js/theme.js"></script>
 
 </body>
