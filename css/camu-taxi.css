@@ -75,3 +75,81 @@
     }
 
 }
+
+/* ============================================================
+   SIDEBAR MOBILE
+============================================================ */
+
+.camu-taxi-menu-button {
+    display: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 10px;
+    z-index: 10001;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .camu-taxi-menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .camu-taxi-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 280px;
+        max-width: 85vw;
+        height: 100vh;
+
+        z-index: 10000;
+
+        transform: translateX(-100%);
+
+        transition:
+            transform 0.3s ease;
+
+        overflow-y: auto;
+    }
+
+
+    .camu-taxi-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+
+    .camu-taxi-app {
+        margin-left: 0;
+    }
+
+
+    .camu-taxi-topbar {
+        position: relative;
+        z-index: 9000;
+    }
+
+}
+
+
+/* ============================================================
+   BLOQUER LE SCROLL QUAND MENU OUVERT
+============================================================ */
+
+@media (max-width: 768px) {
+
+    body.camu-taxi-sidebar-open {
+        overflow: hidden;
+    }
+
+}
