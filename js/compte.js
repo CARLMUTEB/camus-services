@@ -49,9 +49,7 @@ const CLOUDINARY_UPLOAD_URL =
 ========================================================= */
 
 let currentUser = null;
-
 let currentUserData = null;
-
 let currentTaxiData = null;
 
 
@@ -81,59 +79,37 @@ const accountSpaceTitle =
     document.getElementById("accountSpaceTitle");
 
 const accountSpaceDescription =
-    document.getElementById(
-        "accountSpaceDescription"
-    );
+    document.getElementById("accountSpaceDescription");
 
 const accountSpaceIcon =
-    document.getElementById(
-        "accountSpaceIcon"
-    );
+    document.getElementById("accountSpaceIcon");
 
 const accountVille =
-    document.getElementById(
-        "accountVille"
-    );
+    document.getElementById("accountVille");
 
 const accountCommune =
-    document.getElementById(
-        "accountCommune"
-    );
+    document.getElementById("accountCommune");
 
 const accountQuartier =
-    document.getElementById(
-        "accountQuartier"
-    );
+    document.getElementById("accountQuartier");
 
 const accountQuartierCard =
-    document.getElementById(
-        "accountQuartierCard"
-    );
+    document.getElementById("accountQuartierCard");
 
 const profileName =
-    document.getElementById(
-        "profileName"
-    );
+    document.getElementById("profileName");
 
 const profileEmail =
-    document.getElementById(
-        "profileEmail"
-    );
+    document.getElementById("profileEmail");
 
 const profilePhone =
-    document.getElementById(
-        "profilePhone"
-    );
+    document.getElementById("profilePhone");
 
 const profileWhatsapp =
-    document.getElementById(
-        "profileWhatsapp"
-    );
+    document.getElementById("profileWhatsapp");
 
 const profileDescription =
-    document.getElementById(
-        "profileDescription"
-    );
+    document.getElementById("profileDescription");
 
 
 /* =========================================================
@@ -143,72 +119,38 @@ const profileDescription =
 const ACCOUNT_TYPES = {
 
     client: {
-
-        name:
-            "Client",
-
-        icon:
-            "fa-solid fa-user",
-
+        name: "Client",
+        icon: "fa-solid fa-user",
         description:
             "Votre espace personnel pour rechercher et utiliser les services CAMU."
-
     },
-
 
     immobilier: {
-
-        name:
-            "CAMU IMMO",
-
-        icon:
-            "fa-solid fa-house",
-
+        name: "CAMU IMMO",
+        icon: "fa-solid fa-house",
         description:
             "Votre espace professionnel immobilier."
-
     },
-
 
     commerce: {
-
-        name:
-            "CAMU COMMERCE",
-
-        icon:
-            "fa-solid fa-store",
-
+        name: "CAMU COMMERCE",
+        icon: "fa-solid fa-store",
         description:
             "Votre espace professionnel pour présenter votre commerce."
-
     },
-
 
     taxi: {
-
-        name:
-            "CAMU TAXI",
-
-        icon:
-            "fa-solid fa-taxi",
-
+        name: "CAMU TAXI",
+        icon: "fa-solid fa-taxi",
         description:
             "Votre espace chauffeur pour être visible par les clients CAMU et recevoir des demandes de transport."
-
     },
 
-
     hotels: {
-
-        name:
-            "CAMU HÔTELS",
-
-        icon:
-            "fa-solid fa-hotel",
-
+        name: "CAMU HÔTELS",
+        icon: "fa-solid fa-hotel",
         description:
             "Votre espace professionnel pour présenter votre établissement."
-
     }
 
 };
@@ -229,13 +171,9 @@ onAuthStateChanged(
             );
 
             return;
-
         }
 
-
-        currentUser =
-            user;
-
+        currentUser = user;
 
         await loadAccount();
 
@@ -256,7 +194,6 @@ async function loadAccount() {
             currentUser.uid
         );
 
-
         const userRef =
             doc(
                 db,
@@ -264,21 +201,14 @@ async function loadAccount() {
                 currentUser.uid
             );
 
-
         const userSnapshot =
-            await getDoc(
-                userRef
-            );
+            await getDoc(userRef);
 
-
-        if (
-            !userSnapshot.exists()
-        ) {
+        if (!userSnapshot.exists()) {
 
             console.warn(
                 "CAMU COMPTE — document users introuvable."
             );
-
 
             currentUserData = {
 
@@ -290,7 +220,8 @@ async function loadAccount() {
                     "Utilisateur",
 
                 email:
-                    currentUser.email || "",
+                    currentUser.email ||
+                    "",
 
                 phone:
                     "",
@@ -303,23 +234,18 @@ async function loadAccount() {
 
             };
 
-        }
-
-        else {
+        } else {
 
             currentUserData =
                 userSnapshot.data();
 
         }
 
-
         renderAccount();
-
 
         await loadMyAds();
 
         await loadSubscription();
-
 
         if (
             currentUserData.accountType ===
@@ -329,7 +255,6 @@ async function loadAccount() {
             await loadTaxiProfile();
 
         }
-
 
         console.log(
             "CAMU COMPTE — compte chargé."
@@ -363,25 +288,19 @@ function renderAccount() {
     const data =
         currentUserData;
 
-
     const accountType =
         data.accountType ||
         "client";
 
-
     const info =
-        ACCOUNT_TYPES[
-            accountType
-        ] ||
+        ACCOUNT_TYPES[accountType] ||
         ACCOUNT_TYPES.client;
-
 
     const name =
         data.name ||
         data.fullName ||
         currentUser.displayName ||
         "Utilisateur";
-
 
     const email =
         data.email ||
@@ -398,30 +317,25 @@ function renderAccount() {
         name
     );
 
-
     setText(
         accountEmail,
         email
     );
-
 
     setText(
         profileName,
         name
     );
 
-
     setText(
         profileEmail,
         email
     );
 
-
     setText(
         profilePhone,
         data.phone || "—"
     );
-
 
     setText(
         profileWhatsapp,
@@ -430,7 +344,6 @@ function renderAccount() {
         data.phone ||
         "—"
     );
-
 
     setText(
         profileDescription,
@@ -448,18 +361,15 @@ function renderAccount() {
         info.name
     );
 
-
     setText(
         accountSpaceTitle,
         info.name
     );
 
-
     setText(
         accountSpaceDescription,
         info.description
     );
-
 
     if (accountSpaceIcon) {
 
@@ -478,31 +388,29 @@ function renderAccount() {
         data.ville || "—"
     );
 
-
     setText(
         accountCommune,
         data.commune || "—"
     );
 
-
-    if (
-        data.quartier
-    ) {
+    if (data.quartier) {
 
         setText(
             accountQuartier,
             data.quartier
         );
 
-        accountQuartierCard.hidden =
-            false;
+        if (accountQuartierCard) {
+            accountQuartierCard.hidden =
+                false;
+        }
 
-    }
+    } else {
 
-    else {
-
-        accountQuartierCard.hidden =
-            true;
+        if (accountQuartierCard) {
+            accountQuartierCard.hidden =
+                true;
+        }
 
     }
 
@@ -515,7 +423,6 @@ function renderAccount() {
         data.photoURL ||
         currentUser.photoURL ||
         "";
-
 
     displayAvatar(
         photoURL
@@ -530,7 +437,6 @@ function renderAccount() {
         data.accountStatus ||
         "active";
 
-
     if (
         status ===
         "pending"
@@ -541,9 +447,7 @@ function renderAccount() {
             "Profil en attente de validation"
         );
 
-    }
-
-    else {
+    } else {
 
         setText(
             accountStatusText,
@@ -554,7 +458,7 @@ function renderAccount() {
 
 
     /* ---------------------------------------------
-       ADAPTATION CONTENU TAXI
+       ADAPTATION TAXI
     --------------------------------------------- */
 
     if (
@@ -564,9 +468,7 @@ function renderAccount() {
 
         activateTaxiAccountContent();
 
-    }
-
-    else {
+    } else {
 
         deactivateTaxiAccountContent();
 
@@ -586,14 +488,12 @@ function deactivateTaxiAccountContent() {
             "taxiAccountSection"
         );
 
-
     if (taxiSection) {
 
         taxiSection.hidden =
             true;
 
     }
-
 
     setText(
         document.getElementById(
@@ -602,14 +502,12 @@ function deactivateTaxiAccountContent() {
         "Mes annonces"
     );
 
-
     setText(
         document.getElementById(
             "quickAdsDescription"
         ),
         "Gérer mes publications"
     );
-
 
     setText(
         document.getElementById(
@@ -618,13 +516,56 @@ function deactivateTaxiAccountContent() {
         "Publier une annonce"
     );
 
-
     setText(
         document.getElementById(
             "quickPublishDescription"
         ),
         "Créer une nouvelle publication"
     );
+
+
+    const quickAds =
+        document.getElementById(
+            "quickAdsAction"
+        );
+
+    if (quickAds) {
+
+        quickAds.href =
+            "#mes-annonces";
+
+    }
+
+
+    const quickPublish =
+        document.getElementById(
+            "quickPublishAction"
+        );
+
+    if (quickPublish) {
+
+        quickPublish.href =
+            "publier.html";
+
+    }
+
+
+    const publishButton =
+        document.getElementById(
+            "publishAdsButton"
+        );
+
+    if (publishButton) {
+
+        publishButton.href =
+            "publier.html";
+
+        publishButton.innerHTML = `
+            <i class="fa-solid fa-plus"></i>
+            Publier une annonce
+        `;
+
+    }
 
 }
 
@@ -640,14 +581,12 @@ function activateTaxiAccountContent() {
             "taxiAccountSection"
         );
 
-
     if (taxiSection) {
 
         taxiSection.hidden =
             false;
 
     }
-
 
     setText(
         document.getElementById(
@@ -656,7 +595,6 @@ function activateTaxiAccountContent() {
         "Mon profil chauffeur"
     );
 
-
     setText(
         document.getElementById(
             "quickAdsDescription"
@@ -664,12 +602,10 @@ function activateTaxiAccountContent() {
         "Gérer mon profil CAMU TAXI"
     );
 
-
     const quickAds =
         document.getElementById(
             "quickAdsAction"
         );
-
 
     if (quickAds) {
 
@@ -678,14 +614,12 @@ function activateTaxiAccountContent() {
 
     }
 
-
     setText(
         document.getElementById(
             "quickPublishTitle"
         ),
         "CAMU TAXI"
     );
-
 
     setText(
         document.getElementById(
@@ -694,12 +628,10 @@ function activateTaxiAccountContent() {
         "Trouver les clients et gérer ma disponibilité"
     );
 
-
     const quickPublish =
         document.getElementById(
             "quickPublishAction"
         );
-
 
     if (quickPublish) {
 
@@ -708,12 +640,10 @@ function activateTaxiAccountContent() {
 
     }
 
-
     const publishButton =
         document.getElementById(
             "publishAdsButton"
         );
-
 
     if (publishButton) {
 
@@ -721,30 +651,23 @@ function activateTaxiAccountContent() {
             "camu-taxi.html";
 
         publishButton.innerHTML = `
-
             <i class="fa-solid fa-taxi"></i>
-
             CAMU TAXI
-
         `;
 
     }
-
 
     const servicePublishCard =
         document.getElementById(
             "servicePublishCard"
         );
 
-
     if (servicePublishCard) {
 
         servicePublishCard.href =
             "camu-taxi.html";
 
-
         servicePublishCard.innerHTML = `
-
             <i class="fa-solid fa-taxi"></i>
 
             <strong>
@@ -754,7 +677,6 @@ function activateTaxiAccountContent() {
             <span>
                 Accéder à mon espace chauffeur
             </span>
-
         `;
 
     }
@@ -773,11 +695,9 @@ async function loadTaxiProfile() {
             "taxiAccountSection"
         );
 
-
     if (!taxiSection) {
         return;
     }
-
 
     try {
 
@@ -788,21 +708,18 @@ async function loadTaxiProfile() {
                 currentUser.uid
             );
 
-
         const taxiSnapshot =
             await getDoc(
                 taxiRef
             );
 
-
-        if (
-            !taxiSnapshot.exists()
-        ) {
+        if (!taxiSnapshot.exists()) {
 
             console.warn(
                 "CAMU TAXI — profil chauffeur introuvable."
             );
 
+            currentTaxiData = null;
 
             showTaxiNotConfigured();
 
@@ -810,10 +727,8 @@ async function loadTaxiProfile() {
 
         }
 
-
         currentTaxiData =
             taxiSnapshot.data();
-
 
         renderTaxiProfile();
 
@@ -825,7 +740,6 @@ async function loadTaxiProfile() {
             "CAMU TAXI — erreur profil chauffeur :",
             error
         );
-
 
         showTaxiNotConfigured();
 
@@ -843,10 +757,10 @@ function renderTaxiProfile() {
     const taxi =
         currentTaxiData;
 
+    if (!taxi) {
+        return;
+    }
 
-    /* ---------------------------------------------
-       INFORMATIONS
-    --------------------------------------------- */
 
     setText(
         document.getElementById(
@@ -857,7 +771,6 @@ function renderTaxiProfile() {
         "—"
     );
 
-
     setText(
         document.getElementById(
             "taxiVehicleBrand"
@@ -867,7 +780,6 @@ function renderTaxiProfile() {
         "—"
     );
 
-
     setText(
         document.getElementById(
             "taxiVehiclePlate"
@@ -876,7 +788,6 @@ function renderTaxiProfile() {
         taxi.plate ||
         "—"
     );
-
 
     setText(
         document.getElementById(
@@ -888,7 +799,6 @@ function renderTaxiProfile() {
         "—"
     );
 
-
     setText(
         document.getElementById(
             "taxiDescription"
@@ -898,28 +808,20 @@ function renderTaxiProfile() {
     );
 
 
-    /* ---------------------------------------------
-       QUARTIER
-    --------------------------------------------- */
-
-    if (
-        taxi.quartier
-    ) {
+    if (taxi.quartier) {
 
         setText(
             accountQuartier,
             taxi.quartier
         );
 
-        accountQuartierCard.hidden =
-            false;
+        if (accountQuartierCard) {
+            accountQuartierCard.hidden =
+                false;
+        }
 
     }
 
-
-    /* ---------------------------------------------
-       PHOTOS
-    --------------------------------------------- */
 
     setText(
         document.getElementById(
@@ -929,7 +831,6 @@ function renderTaxiProfile() {
             ? "Photo enregistrée"
             : "Aucune photo"
     );
-
 
     setText(
         document.getElementById(
@@ -942,16 +843,7 @@ function renderTaxiProfile() {
     );
 
 
-    /* ---------------------------------------------
-       DISPONIBILITÉ
-    --------------------------------------------- */
-
     renderTaxiAvailability();
-
-
-    /* ---------------------------------------------
-       POSITION
-    --------------------------------------------- */
 
     renderTaxiLocation();
 
@@ -971,12 +863,18 @@ function showTaxiNotConfigured() {
         "Profil en attente"
     );
 
-
     setText(
         document.getElementById(
             "taxiStatusInfo"
         ),
         "Votre profil chauffeur CAMU TAXI n'est pas encore disponible."
+    );
+
+    setText(
+        document.getElementById(
+            "taxiLocationText"
+        ),
+        "Position non enregistrée"
     );
 
 }
@@ -991,24 +889,20 @@ function renderTaxiAvailability() {
     const available =
         currentTaxiData?.disponible === true;
 
-
     const status =
         document.getElementById(
             "taxiStatus"
         );
-
 
     const statusInfo =
         document.getElementById(
             "taxiStatusInfo"
         );
 
-
     const button =
         document.getElementById(
             "taxiAvailabilityButton"
         );
-
 
     if (available) {
 
@@ -1017,49 +911,37 @@ function renderTaxiAvailability() {
             "Disponible"
         );
 
-
         setText(
             statusInfo,
             "Les clients peuvent voir votre disponibilité."
         );
 
-
         if (button) {
 
             button.innerHTML = `
-
                 <i class="fa-solid fa-toggle-on"></i>
-
                 Passer indisponible
-
             `;
 
         }
 
-    }
-
-    else {
+    } else {
 
         setText(
             status,
             "Indisponible"
         );
 
-
         setText(
             statusInfo,
             "Vous n'êtes actuellement pas disponible pour les clients."
         );
 
-
         if (button) {
 
             button.innerHTML = `
-
                 <i class="fa-solid fa-toggle-off"></i>
-
                 Devenir disponible
-
             `;
 
         }
@@ -1077,7 +959,6 @@ const taxiAvailabilityButton =
     document.getElementById(
         "taxiAvailabilityButton"
     );
-
 
 if (taxiAvailabilityButton) {
 
@@ -1098,16 +979,13 @@ async function toggleTaxiAvailability() {
         return;
     }
 
-
     const newStatus =
         currentTaxiData.disponible !== true;
-
 
     try {
 
         taxiAvailabilityButton.disabled =
             true;
-
 
         await updateDoc(
 
@@ -1118,33 +996,25 @@ async function toggleTaxiAvailability() {
             ),
 
             {
-
                 disponible:
                     newStatus,
 
                 updatedAt:
                     serverTimestamp()
-
             }
 
         );
 
-
         currentTaxiData.disponible =
             newStatus;
 
-
         renderTaxiAvailability();
 
-
         showAccountMessage(
-
             newStatus
                 ? "Vous êtes maintenant disponible sur CAMU TAXI."
                 : "Vous êtes maintenant indisponible sur CAMU TAXI.",
-
             "success"
-
         );
 
     }
@@ -1155,7 +1025,6 @@ async function toggleTaxiAvailability() {
             "CAMU TAXI — erreur disponibilité :",
             error
         );
-
 
         showAccountMessage(
             "Impossible de modifier votre disponibilité.",
@@ -1183,7 +1052,6 @@ const taxiLocationButton =
         "taxiLocationButton"
     );
 
-
 if (taxiLocationButton) {
 
     taxiLocationButton.addEventListener(
@@ -1203,10 +1071,7 @@ function updateTaxiLocation() {
         return;
     }
 
-
-    if (
-        !navigator.geolocation
-    ) {
+    if (!navigator.geolocation) {
 
         showAccountMessage(
             "La géolocalisation n'est pas disponible sur cet appareil.",
@@ -1217,10 +1082,8 @@ function updateTaxiLocation() {
 
     }
 
-
     taxiLocationButton.disabled =
         true;
-
 
     setText(
         document.getElementById(
@@ -1228,7 +1091,6 @@ function updateTaxiLocation() {
         ),
         "Recherche de votre position..."
     );
-
 
     navigator.geolocation.getCurrentPosition(
 
@@ -1239,10 +1101,8 @@ function updateTaxiLocation() {
                 const latitude =
                     position.coords.latitude;
 
-
                 const longitude =
                     position.coords.longitude;
-
 
                 await updateDoc(
 
@@ -1253,9 +1113,7 @@ function updateTaxiLocation() {
                     ),
 
                     {
-
                         latitude,
-
                         longitude,
 
                         lastLocationUpdate:
@@ -1263,22 +1121,17 @@ function updateTaxiLocation() {
 
                         updatedAt:
                             serverTimestamp()
-
                     }
 
                 );
 
-
                 currentTaxiData.latitude =
                     latitude;
-
 
                 currentTaxiData.longitude =
                     longitude;
 
-
                 renderTaxiLocation();
-
 
                 showAccountMessage(
                     "Votre position a été mise à jour.",
@@ -1293,7 +1146,6 @@ function updateTaxiLocation() {
                     "CAMU TAXI — erreur mise à jour position :",
                     error
                 );
-
 
                 showAccountMessage(
                     "Impossible d'enregistrer votre position.",
@@ -1311,14 +1163,12 @@ function updateTaxiLocation() {
 
         },
 
-
         error => {
 
             console.error(
                 "CAMU TAXI — géolocalisation :",
                 error
             );
-
 
             setText(
                 document.getElementById(
@@ -1327,7 +1177,6 @@ function updateTaxiLocation() {
                 "Position non disponible"
             );
 
-
             showAccountMessage(
                 getGeolocationErrorMessage(
                     error
@@ -1335,15 +1184,12 @@ function updateTaxiLocation() {
                 "error"
             );
 
-
             taxiLocationButton.disabled =
                 false;
 
         },
 
-
         {
-
             enableHighAccuracy:
                 true,
 
@@ -1352,7 +1198,6 @@ function updateTaxiLocation() {
 
             maximumAge:
                 60000
-
         }
 
     );
@@ -1371,34 +1216,25 @@ function renderTaxiLocation() {
             "taxiLocationText"
         );
 
-
     if (!text) {
         return;
     }
 
-
     const latitude =
         currentTaxiData?.latitude;
-
 
     const longitude =
         currentTaxiData?.longitude;
 
-
     if (
-        typeof latitude ===
-            "number" &&
-
-        typeof longitude ===
-            "number"
+        typeof latitude === "number" &&
+        typeof longitude === "number"
     ) {
 
         text.textContent =
             `Position enregistrée : ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
 
-    }
-
-    else {
+    } else {
 
         text.textContent =
             "Position non enregistrée";
@@ -1417,7 +1253,6 @@ const profilePhotoInput =
         "profilePhotoInput"
     );
 
-
 if (profilePhotoInput) {
 
     profilePhotoInput.addEventListener(
@@ -1433,11 +1268,9 @@ async function uploadProfilePhoto() {
     const file =
         profilePhotoInput?.files?.[0];
 
-
     if (!file) {
         return;
     }
-
 
     if (
         ![
@@ -1459,7 +1292,6 @@ async function uploadProfilePhoto() {
 
     }
 
-
     if (
         file.size >
         5 * 1024 * 1024
@@ -1477,7 +1309,6 @@ async function uploadProfilePhoto() {
 
     }
 
-
     try {
 
         showAccountMessage(
@@ -1485,13 +1316,11 @@ async function uploadProfilePhoto() {
             "info"
         );
 
-
         const photoURL =
             await uploadImage(
                 file,
                 "camu-services/profiles"
             );
-
 
         await updateProfile(
             currentUser,
@@ -1499,7 +1328,6 @@ async function uploadProfilePhoto() {
                 photoURL
             }
         );
-
 
         await updateDoc(
 
@@ -1510,25 +1338,20 @@ async function uploadProfilePhoto() {
             ),
 
             {
-
                 photoURL,
 
                 updatedAt:
                     serverTimestamp()
-
             }
 
         );
 
-
         currentUserData.photoURL =
             photoURL;
-
 
         displayAvatar(
             photoURL
         );
-
 
         showAccountMessage(
             "Photo de profil mise à jour.",
@@ -1543,7 +1366,6 @@ async function uploadProfilePhoto() {
             "CAMU COMPTE — photo :",
             error
         );
-
 
         showAccountMessage(
             "Impossible de mettre à jour la photo.",
@@ -1574,43 +1396,35 @@ async function uploadImage(
     const formData =
         new FormData();
 
-
     formData.append(
         "file",
         file
     );
-
 
     formData.append(
         "upload_preset",
         CLOUDINARY_UPLOAD_PRESET
     );
 
-
     formData.append(
         "folder",
         folder
     );
 
-
     const response =
         await fetch(
             CLOUDINARY_UPLOAD_URL,
             {
-
                 method:
                     "POST",
 
                 body:
                     formData
-
             }
         );
 
-
     const result =
         await response.json();
-
 
     if (
         !response.ok ||
@@ -1622,7 +1436,6 @@ async function uploadImage(
         );
 
     }
-
 
     return result.secure_url;
 
@@ -1644,27 +1457,41 @@ function displayAvatar(
         )
     ) {
 
-        accountAvatarImage.src =
-            photoURL;
+        if (accountAvatarImage) {
 
-        accountAvatarImage.style.display =
-            "block";
+            accountAvatarImage.src =
+                photoURL;
 
-        accountAvatarDefault.style.display =
-            "none";
+            accountAvatarImage.style.display =
+                "block";
 
-    }
+        }
 
-    else {
+        if (accountAvatarDefault) {
 
-        accountAvatarImage.src =
-            "";
+            accountAvatarDefault.style.display =
+                "none";
 
-        accountAvatarImage.style.display =
-            "none";
+        }
 
-        accountAvatarDefault.style.display =
-            "flex";
+    } else {
+
+        if (accountAvatarImage) {
+
+            accountAvatarImage.src =
+                "";
+
+            accountAvatarImage.style.display =
+                "none";
+
+        }
+
+        if (accountAvatarDefault) {
+
+            accountAvatarDefault.style.display =
+                "flex";
+
+        }
 
     }
 
@@ -1682,23 +1509,19 @@ async function loadMyAds() {
             "myAdsContainer"
         );
 
-
     const empty =
         document.getElementById(
             "myAdsEmpty"
         );
-
 
     const count =
         document.getElementById(
             "myAdsCount"
         );
 
-
     if (!container) {
         return;
     }
-
 
     try {
 
@@ -1745,8 +1568,7 @@ async function loadMyAds() {
             );
 
 
-        const ads =
-            [];
+        const ads = [];
 
 
         snapshot.forEach(
@@ -1815,7 +1637,6 @@ async function loadMyAds() {
             error
         );
 
-
         container.innerHTML = `
 
             <div class="empty-state">
@@ -1845,11 +1666,17 @@ async function loadMyAds() {
 
 /* =========================================================
    CARTE ANNONCE
+   CORRECTION :
+   - carte compacte
+   - carte entièrement cliquable
+   - ouverture des détails
+   - image
+   - ville
+   - commune
+   - statut
 ========================================================= */
 
-function renderAdCard(
-    ad
-) {
+function renderAdCard(ad) {
 
     const title =
         escapeHtml(
@@ -1868,23 +1695,54 @@ function renderAdCard(
         );
 
 
+    const commune =
+        escapeHtml(
+            ad.commune ||
+            ""
+        );
+
+
     const image =
         getValidImage(
             ad.imageURL ||
             ad.imageUrl ||
             ad.photoURL ||
+            ad.image ||
             ad.images?.[0]
         );
 
 
     const status =
-        ad.status ||
-        "active";
+        escapeHtml(
+            ad.status ||
+            "active"
+        );
+
+
+    const location =
+        [city, commune]
+            .filter(Boolean)
+            .join(" • ");
+
+
+    /*
+       IMPORTANT :
+       On ouvre l'annonce avec son ID Firestore.
+       La page explorer.html?id=... doit ensuite
+       charger les détails de cette annonce.
+    */
+
+    const detailsUrl =
+        `explorer.html?id=${encodeURIComponent(ad.id)}`;
 
 
     return `
 
-        <article class="my-ad-card">
+        <a
+            href="${detailsUrl}"
+            class="my-ad-card"
+            aria-label="Voir les détails de ${title}"
+        >
 
             ${
                 image
@@ -1896,6 +1754,7 @@ function renderAdCard(
                             <img
                                 src="${escapeAttribute(image)}"
                                 alt="${title}"
+                                loading="lazy"
                             >
 
                         </div>
@@ -1922,34 +1781,46 @@ function renderAdCard(
 
 
                 ${
-                    city
+                    location
 
                         ? `
 
-                            <p>
+                            <p class="my-ad-location">
 
                                 <i class="fa-solid fa-location-dot"></i>
 
-                                ${city}
+                                ${location}
 
                             </p>
 
                         `
 
                         : ""
-
                 }
 
 
-                <span class="my-ad-status">
+                <div class="my-ad-footer">
 
-                    ${escapeHtml(status)}
+                    <span class="my-ad-status">
 
-                </span>
+                        ${status}
+
+                    </span>
+
+
+                    <span class="my-ad-details">
+
+                        Voir les détails
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </span>
+
+                </div>
 
             </div>
 
-        </article>
+        </a>
 
     `;
 
@@ -1967,23 +1838,19 @@ async function loadSubscription() {
             "subscriptionPlan"
         );
 
-
     const info =
         document.getElementById(
             "subscriptionInfo"
         );
-
 
     const days =
         document.getElementById(
             "subscriptionDays"
         );
 
-
     if (!plan) {
         return;
     }
-
 
     try {
 
@@ -1998,28 +1865,23 @@ async function loadSubscription() {
 
             );
 
-
         const data =
             snapshot.exists()
                 ? snapshot.data()
                 : {};
 
-
         const currentPlan =
             data.plan ||
             "Gratuit";
-
 
         const subscriptionStatus =
             data.subscriptionStatus ||
             "active";
 
-
         setText(
             plan,
             currentPlan
         );
-
 
         setText(
             info,
@@ -2028,7 +1890,6 @@ async function loadSubscription() {
                 data
             )
         );
-
 
         if (
             days &&
@@ -2039,7 +1900,6 @@ async function loadSubscription() {
                 convertFirestoreDate(
                     data.subscriptionEnd
                 );
-
 
             if (endDate) {
 
@@ -2052,15 +1912,12 @@ async function loadSubscription() {
                         86400000
                     );
 
-
                 if (remaining > 0) {
 
                     days.textContent =
                         `${remaining} jour(s) restant(s)`;
 
-                }
-
-                else {
+                } else {
 
                     days.textContent =
                         "Abonnement expiré";
@@ -2080,12 +1937,10 @@ async function loadSubscription() {
             error
         );
 
-
         setText(
             plan,
             "Gratuit"
         );
-
 
         setText(
             info,
@@ -2162,13 +2017,11 @@ function fillEditForm() {
         ""
     );
 
-
     setInputValue(
         "editPhone",
         currentUserData?.phone ||
         ""
     );
-
 
     setInputValue(
         "editWhatsapp",
@@ -2176,7 +2029,6 @@ function fillEditForm() {
         currentUserData?.WhatsApp ||
         ""
     );
-
 
     setInputValue(
         "editDescription",
@@ -2197,30 +2049,25 @@ profileForm?.addEventListener(
 
         event.preventDefault();
 
-
         const name =
             getInputValue(
                 "editName"
             );
-
 
         const phone =
             getInputValue(
                 "editPhone"
             );
 
-
         const whatsapp =
             getInputValue(
                 "editWhatsapp"
             );
 
-
         const description =
             getInputValue(
                 "editDescription"
             );
-
 
         if (!name) {
 
@@ -2233,14 +2080,12 @@ profileForm?.addEventListener(
 
         }
 
-
         try {
 
             const button =
                 profileForm.querySelector(
                     "button[type='submit']"
                 );
-
 
             if (button) {
 
@@ -2253,10 +2098,8 @@ profileForm?.addEventListener(
             await updateProfile(
                 currentUser,
                 {
-
                     displayName:
                         name
-
                 }
             );
 
@@ -2301,7 +2144,7 @@ profileForm?.addEventListener(
 
 
             /* -----------------------------------------
-               SI TAXI : synchroniser aussi chauffeurs
+               SI TAXI : synchroniser chauffeurs
             ----------------------------------------- */
 
             if (
@@ -2309,31 +2152,44 @@ profileForm?.addEventListener(
                 "taxi"
             ) {
 
-                await updateDoc(
+                try {
 
-                    doc(
-                        db,
-                        "chauffeurs",
-                        currentUser.uid
-                    ),
+                    await updateDoc(
 
-                    {
+                        doc(
+                            db,
+                            "chauffeurs",
+                            currentUser.uid
+                        ),
 
-                        name,
+                        {
 
-                        phone,
+                            name,
 
-                        WhatsApp:
-                            whatsapp,
+                            phone,
 
-                        description,
+                            WhatsApp:
+                                whatsapp,
 
-                        updatedAt:
-                            serverTimestamp()
+                            description,
 
-                    }
+                            updatedAt:
+                                serverTimestamp()
 
-                );
+                        }
+
+                    );
+
+                }
+
+                catch (taxiError) {
+
+                    console.warn(
+                        "CAMU TAXI — synchronisation profil impossible :",
+                        taxiError
+                    );
+
+                }
 
 
                 if (currentTaxiData) {
@@ -2387,7 +2243,6 @@ profileForm?.addEventListener(
                 error
             );
 
-
             showAccountMessage(
                 "Impossible de mettre à jour votre profil.",
                 "error"
@@ -2401,7 +2256,6 @@ profileForm?.addEventListener(
                 profileForm.querySelector(
                     "button[type='submit']"
                 );
-
 
             if (button) {
 
@@ -2425,7 +2279,6 @@ const logoutButton =
         "logoutButton"
     );
 
-
 logoutButton?.addEventListener(
     "click",
     async () => {
@@ -2435,11 +2288,9 @@ logoutButton?.addEventListener(
             logoutButton.disabled =
                 true;
 
-
             await signOut(
                 auth
             );
-
 
             window.location.replace(
                 "connexion.html"
@@ -2454,10 +2305,8 @@ logoutButton?.addEventListener(
                 error
             );
 
-
             logoutButton.disabled =
                 false;
-
 
             showAccountMessage(
                 "Impossible de vous déconnecter.",
@@ -2478,7 +2327,6 @@ const accountYear =
     document.getElementById(
         "accountYear"
     );
-
 
 if (accountYear) {
 
@@ -2501,7 +2349,6 @@ function setText(
         return;
     }
 
-
     element.textContent =
         value ??
         "—";
@@ -2518,7 +2365,6 @@ function setInputValue(
         document.getElementById(
             id
         );
-
 
     if (element) {
 
@@ -2539,7 +2385,6 @@ function getInputValue(
             id
         );
 
-
     return String(
         element?.value ||
         ""
@@ -2558,7 +2403,6 @@ function isValidImageURL(
             new URL(
                 url
             );
-
 
         return (
             parsed.protocol ===
@@ -2592,10 +2436,8 @@ function getValidImage(
 
     }
 
-
     const url =
         value.trim();
-
 
     return isValidImageURL(
         url
@@ -2657,12 +2499,9 @@ function convertFirestoreDate(
     value
 ) {
 
-    if (
-        !value
-    ) {
+    if (!value) {
         return null;
     }
-
 
     if (
         typeof value.toDate ===
@@ -2673,7 +2512,6 @@ function convertFirestoreDate(
 
     }
 
-
     if (
         value instanceof Date
     ) {
@@ -2682,12 +2520,10 @@ function convertFirestoreDate(
 
     }
 
-
     const date =
         new Date(
             value
         );
-
 
     return Number.isNaN(
         date.getTime()
@@ -2716,7 +2552,6 @@ function getSubscriptionText(
 
     }
 
-
     if (
         status ===
         "pending"
@@ -2726,7 +2561,6 @@ function getSubscriptionText(
 
     }
 
-
     if (
         status ===
         "expired"
@@ -2735,7 +2569,6 @@ function getSubscriptionText(
         return "Votre abonnement est arrivé à expiration.";
 
     }
-
 
     return "Votre formule actuelle est disponible dans votre espace.";
 
@@ -2759,7 +2592,6 @@ function getGeolocationErrorMessage(
 
     }
 
-
     if (
         error?.code ===
         2
@@ -2769,7 +2601,6 @@ function getGeolocationErrorMessage(
 
     }
 
-
     if (
         error?.code ===
         3
@@ -2778,7 +2609,6 @@ function getGeolocationErrorMessage(
         return "La recherche de votre position a pris trop de temps.";
 
     }
-
 
     return "Impossible d'obtenir votre position.";
 
@@ -2799,7 +2629,6 @@ function showAccountMessage(
             "accountDynamicMessage"
         );
 
-
     if (!element) {
 
         element =
@@ -2807,14 +2636,11 @@ function showAccountMessage(
                 "div"
             );
 
-
         element.id =
             "accountDynamicMessage";
 
-
         element.className =
             "signup-message show";
-
 
         document
             .querySelector(
@@ -2826,14 +2652,11 @@ function showAccountMessage(
 
     }
 
-
     element.textContent =
         message;
 
-
     element.className =
         `signup-message show ${type}`;
-
 
     setTimeout(
         () => {
