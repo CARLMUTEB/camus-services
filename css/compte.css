@@ -1,1856 +1,893 @@
 /* =========================================================
    CAMU SERVICES — INSCRIPTION
-   Compatible avec inscription.html fourni
-   CAMU SERVICES / CAMU IMMO / CAMU COMMERCE /
-   CAMU TAXI / CAMU HÔTELS
-========================================================= */
+   Contenu compatible avec le style global CAMU SERVICES
+   ========================================================= */
 
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-:root {
-
-    --blue: #063b73;
-    --blue-dark: #04294f;
-    --blue-light: #eef5fb;
-
-    --green: #20a86b;
-    --green-dark: #168653;
-    --green-light: #edf9f3;
-
-    --white: #ffffff;
-    --light: #f5f7fa;
-
-    --border: #e2e7ee;
-
-    --text: #1d2939;
-    --muted: #667085;
-
-    --danger: #d92d20;
-    --warning: #f79009;
-
-    --shadow:
-        0 8px 25px rgba(0, 0, 0, .08);
-
-    --radius: 14px;
-
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    background: var(--light);
-    color: var(--text);
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-    overflow-x: hidden;
-}
-
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar {
-
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 245px;
-    height: 100vh;
-
-    background: var(--blue);
-
-    color: var(--white);
-
-    z-index: 1000;
-
-    display: flex;
-    flex-direction: column;
-
-    box-shadow:
-        4px 0 20px rgba(0, 0, 0, .08);
-
-}
-
-
-/* Logo */
-
-.sidebar-logo {
-
-    height: 105px;
-
-    background: var(--white);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 15px;
-}
-
-
-.sidebar-logo a {
-
+.signup-section {
     width: 100%;
-    height: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    padding: 35px 20px 60px;
 }
 
-
-.sidebar-logo img {
-
-    max-width: 180px;
-    max-height: 75px;
-
-    width: auto;
-    height: auto;
-
-    object-fit: contain;
-
-}
-
-
-/* Navigation */
-
-.sidebar-nav {
-
-    flex: 1;
-
-    padding: 20px 12px;
-
-    overflow-y: auto;
-
-}
-
-
-.sidebar-link {
-
-    min-height: 48px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 12px 15px;
-
-    margin-bottom: 5px;
-
-    border-radius: 10px;
-
-    color:
-        rgba(255, 255, 255, .88);
-
-    transition:
-        background .2s ease,
-        color .2s ease;
-
-}
-
-
-.sidebar-link i {
-
-    width: 21px;
-
-    text-align: center;
-
-    font-size: 16px;
-
-}
-
-
-.sidebar-link span {
-
-    font-size: 14px;
-
-    font-weight: 500;
-
-}
-
-
-.sidebar-link:hover {
-
-    background:
-        rgba(255, 255, 255, .10);
-
-    color: var(--white);
-
-}
-
-
-.sidebar-link.active {
-
-    background: var(--green);
-
-    color: var(--white);
-
-}
-
-
-.sidebar-bottom {
-
-    padding: 12px;
-
-    border-top:
-        1px solid rgba(255, 255, 255, .10);
-
-}
-
-
-/* =========================================================
-   OVERLAY MOBILE
-========================================================= */
-
-.sidebar-overlay {
-
-    position: fixed;
-
-    inset: 0;
-
-    background:
-        rgba(0, 0, 0, .45);
-
-    z-index: 999;
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity .25s ease,
-        visibility .25s ease;
-
-}
-
-
-.sidebar-overlay.active {
-
-    opacity: 1;
-
-    visibility: visible;
-
-}
-
-
-/* =========================================================
-   MAIN WRAPPER
-========================================================= */
-
-.main-wrapper {
-
-    min-height: 100vh;
-
-    margin-left: 245px;
-
-}
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.topbar {
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 900;
-
-    height: 82px;
-
-    background: var(--white);
-
-    border-bottom:
-        1px solid var(--border);
-
-    display: flex;
-
-    align-items: center;
-
-    padding:
-        0 25px;
-
-}
-
-
-/* Menu mobile */
-
-.menu-button {
-
-    display: none;
-
-    width: 42px;
-    height: 42px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    background: var(--blue-light);
-
-    color: var(--blue);
-
-    align-items: center;
-    justify-content: center;
-
-}
-
-
-/* Logo central */
-
-.topbar-logo {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-}
-
-
-.topbar-logo img {
-
-    width: 180px;
-
-    max-height: 68px;
-
-    object-fit: contain;
-
-}
-
-
-/* Action droite */
-
-.topbar-actions {
-
-    margin-left: auto;
-
-    display: flex;
-
-    align-items: center;
-
-}
-
-
-.topbar-login {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    min-height: 42px;
-
-    padding:
-        0 16px;
-
-    border-radius: 10px;
-
-    color: var(--blue);
-
-    background: var(--blue-light);
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    transition:
-        background .2s ease,
-        color .2s ease;
-
-}
-
-
-.topbar-login:hover {
-
-    background: var(--blue);
-
-    color: var(--white);
-
-}
-
-
-/* =========================================================
-   MAIN CONTENT
-========================================================= */
-
-.main-content {
-
+.signup-container {
     width: 100%;
-
-    max-width: 1200px;
-
+    max-width: 1100px;
     margin: 0 auto;
-
-    padding:
-        45px 25px 60px;
-
 }
 
 
 /* =========================================================
-   HEADER INSCRIPTION
-========================================================= */
+   EN-TÊTE
+   ========================================================= */
 
 .signup-header {
-
     text-align: center;
-
-    max-width: 720px;
-
-    margin:
-        0 auto 35px;
-
+    max-width: 760px;
+    margin: 0 auto 35px;
 }
 
-
 .signup-header-icon {
-
     width: 64px;
     height: 64px;
+    margin: 0 auto 15px;
 
-    margin:
-        0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border-radius: 18px;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: var(--blue-light);
-
-    color: var(--blue);
+    background: #eef5ff;
+    color: #063b73;
 
     font-size: 25px;
-
 }
-
 
 .signup-header h1 {
+    margin: 0 0 10px;
 
-    color: var(--blue-dark);
+    color: #063b73;
 
-    font-size:
-        clamp(28px, 4vw, 40px);
-
-    line-height: 1.15;
-
-    margin-bottom: 12px;
-
+    font-size: 32px;
+    font-weight: 800;
 }
-
 
 .signup-header p {
+    margin: 0;
 
-    color: var(--muted);
+    color: #667085;
 
     font-size: 15px;
-
-    line-height: 1.6;
-
+    line-height: 1.7;
 }
 
 
 /* =========================================================
-   CARTE
-========================================================= */
+   ÉTAPE
+   ========================================================= */
 
-.signup-card {
-
+.signup-step {
     width: 100%;
-
-    background: var(--white);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: var(--radius);
-
-    box-shadow: var(--shadow);
-
-    overflow: hidden;
-
-    margin-bottom: 25px;
-
 }
 
+.step-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
 
-.signup-card.hidden {
-
-    display: none;
-
+    margin-bottom: 22px;
 }
 
+.step-number,
+.section-number {
+    width: 38px;
+    height: 38px;
 
-/* =========================================================
-   HEADER DE CARTE
-========================================================= */
-
-.signup-card-header {
-
-    padding:
-        30px 32px 24px;
-
-    border-bottom:
-        1px solid var(--border);
-
-}
-
-
-.signup-card-header h2 {
-
-    color: var(--blue-dark);
-
-    font-size: 22px;
-
-    margin-bottom: 7px;
-
-}
-
-
-.signup-card-header p {
-
-    color: var(--muted);
-
-    font-size: 14px;
-
-    line-height: 1.6;
-
-}
-
-
-/* =========================================================
-   TYPES DE COMPTE
-========================================================= */
-
-.account-types-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-
-    gap: 15px;
-
-    padding: 30px 32px;
-
-}
-
-
-/* Carte */
-
-.account-type-card {
-
-    min-height: 190px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 14px;
-
-    background: var(--white);
-
-    padding:
-        22px 15px;
+    flex: 0 0 38px;
 
     display: flex;
-
-    flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
+
+    border-radius: 50%;
+
+    background: #063b73;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.step-title h2,
+.form-section-title h2 {
+    margin: 0 0 5px;
+
+    color: #1d2939;
+
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.step-title p,
+.form-section-title p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CHOIX DES ESPACES
+   ========================================================= */
+
+.account-type-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    width: 100%;
+}
+
+.account-type-card {
+    width: 100%;
+    min-height: 190px;
+
+    padding: 25px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    border: 1px solid #e2e7ee;
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    cursor: pointer;
 
     text-align: center;
 
-    gap: 10px;
-
     transition:
-        transform .2s ease,
-        border-color .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
-
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
-
 
 .account-type-card:hover {
+    transform: translateY(-3px);
 
-    transform:
-        translateY(-3px);
+    border-color: #063b73;
 
-    border-color:
-        var(--blue);
-
-    background:
-        #fbfdff;
-
-    box-shadow:
-        0 8px 20px rgba(6, 59, 115, .09);
-
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
+.account-type-card.active,
+.account-type-card.selected {
+    border-color: #063b73;
 
-/* Icône */
+    background: #f4f8fd;
+
+    box-shadow: 0 8px 25px rgba(6, 59, 115, 0.12);
+}
 
 .account-type-icon {
+    width: 62px;
+    height: 62px;
 
-    width: 58px;
-    height: 58px;
-
-    border-radius: 15px;
+    margin-bottom: 15px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    background: var(--blue-light);
+    border-radius: 16px;
 
-    color: var(--blue);
+    background: #eef5ff;
+    color: #063b73;
 
-    font-size: 23px;
-
-    transition:
-        background .2s ease,
-        color .2s ease;
-
+    font-size: 25px;
 }
-
-
-.account-type-card:hover
-.account-type-icon {
-
-    background: var(--blue);
-
-    color: var(--white);
-
-}
-
 
 .account-type-card strong {
-
-    color: var(--blue-dark);
-
-    font-size: 14px;
-
-    line-height: 1.3;
-
-}
-
-
-.account-type-card small {
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-    line-height: 1.5;
-
-}
-
-
-/* =========================================================
-   CAMU TAXI
-========================================================= */
-
-.account-type-card[data-account-type="taxi"] {
-
-    border-color:
-        rgba(32, 168, 107, .35);
-
-}
-
-
-.account-type-card[data-account-type="taxi"]
-.account-type-icon {
-
-    background:
-        var(--green-light);
-
-    color:
-        var(--green);
-
-}
-
-
-.account-type-card[data-account-type="taxi"]:hover {
-
-    border-color:
-        var(--green);
-
-}
-
-
-.account-type-card[data-account-type="taxi"]:hover
-.account-type-icon {
-
-    background:
-        var(--green);
-
-    color:
-        var(--white);
-
-}
-
-
-/* =========================================================
-   ESPACE SÉLECTIONNÉ
-========================================================= */
-
-.selected-space {
-
-    margin:
-        25px 32px 0;
-
-    padding:
-        16px 18px;
-
-    border:
-        1px solid #d8e7f5;
-
-    border-radius:
-        12px;
-
-    background:
-        var(--blue-light);
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-}
-
-
-.selected-space-icon {
-
-    width: 48px;
-    height: 48px;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: var(--blue);
-
-    color: var(--white);
-
-    font-size: 20px;
-
-}
-
-
-.selected-space > div:nth-child(2) {
-
-    min-width: 0;
-
-}
-
-
-.selected-space span {
-
     display: block;
 
-    color: var(--muted);
+    margin-bottom: 9px;
 
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: .06em;
-
-    margin-bottom: 3px;
-
-}
-
-
-.selected-space strong {
-
-    color: var(--blue-dark);
+    color: #1d2939;
 
     font-size: 16px;
-
+    font-weight: 800;
 }
 
+.account-type-card small {
+    display: block;
 
-.change-space-button {
+    max-width: 250px;
 
-    margin-left: auto;
-
-    flex-shrink: 0;
-
-    border: 0;
-
-    background: transparent;
-
-    color: var(--blue);
+    color: #667085;
 
     font-size: 13px;
-
-    font-weight: 700;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-}
-
-
-.change-space-button:hover {
-
-    color: var(--green-dark);
-
+    line-height: 1.55;
 }
 
 
 /* =========================================================
    FORMULAIRE
-========================================================= */
+   ========================================================= */
 
-#signupForm {
+.signup-form-wrapper {
+    width: 100%;
+}
 
-    padding:
-        0 32px 32px;
-
+.signup-form-wrapper[hidden] {
+    display: none !important;
 }
 
 
 /* =========================================================
-   SECTION FORMULAIRE
-========================================================= */
+   ESPACE SÉLECTIONNÉ
+   ========================================================= */
 
-.form-section {
+.selected-space {
+    width: 100%;
 
-    margin-top: 30px;
-
-}
-
-
-.form-section-title {
+    margin-bottom: 25px;
+    padding: 15px 18px;
 
     display: flex;
+    align-items: center;
+    gap: 13px;
 
-    align-items: flex-start;
+    border: 1px solid #dbe4ef;
+    border-radius: 14px;
 
-    gap: 12px;
-
-    padding-bottom: 15px;
-
-    margin-bottom: 20px;
-
-    border-bottom:
-        1px solid var(--border);
-
+    background: #f7faff;
 }
 
+.selected-space-icon {
+    width: 46px;
+    height: 46px;
 
-.form-section-title > i {
-
-    width: 38px;
-    height: 38px;
-
-    flex-shrink: 0;
+    flex: 0 0 46px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
-    background:
-        var(--blue-light);
+    background: #063b73;
+    color: #ffffff;
 
-    color:
-        var(--blue);
-
-    font-size: 15px;
-
+    font-size: 19px;
 }
 
+.selected-space > div:nth-child(2) {
+    min-width: 0;
 
-.form-section-title h3 {
-
-    color:
-        var(--blue-dark);
-
-    font-size: 16px;
-
-    margin-bottom: 4px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-
-.form-section-title p {
-
-    color:
-        var(--muted);
+.selected-space span {
+    color: #667085;
 
     font-size: 12px;
+}
 
-    line-height: 1.5;
+.selected-space strong {
+    color: #1d2939;
 
+    font-size: 15px;
+}
+
+.change-account-type {
+    margin-left: auto;
+
+    padding: 9px 13px;
+
+    border: 1px solid #063b73;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #063b73;
+
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.change-account-type:hover {
+    background: #063b73;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SECTIONS FORMULAIRE
+   ========================================================= */
+
+.form-section {
+    width: 100%;
+
+    margin-bottom: 25px;
+    padding: 25px;
+
+    border: 1px solid #e2e7ee;
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+}
+
+.form-section-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+
+    margin-bottom: 24px;
 }
 
 
 /* =========================================================
    GRILLE
-========================================================= */
+   ========================================================= */
 
 .form-grid {
-
     display: grid;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    gap:
-        18px;
+    gap: 20px;
+}
 
+.form-group {
+    width: 100%;
+    min-width: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
 }
 
 
 /* =========================================================
-   FORM GROUP
-========================================================= */
-
-.form-group {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
-
-}
-
+   LABELS
+   ========================================================= */
 
 .form-group label {
+    display: block;
 
-    color:
-        var(--text);
+    margin-bottom: 8px;
+
+    color: #344054;
 
     font-size: 13px;
-
     font-weight: 700;
-
 }
 
-
 .form-group label span {
-
-    color:
-        var(--danger);
-
+    color: #d92d20;
 }
 
 
 /* =========================================================
    INPUTS
-========================================================= */
+   ========================================================= */
 
-.form-group input,
-.form-group select {
+.input-with-icon {
+    position: relative;
 
     width: 100%;
+}
 
-    min-height: 48px;
+.input-with-icon > i {
+    position: absolute;
 
-    padding:
-        0 14px;
+    left: 14px;
+    top: 50%;
 
-    border:
-        1px solid var(--border);
+    transform: translateY(-50%);
 
-    border-radius:
-        10px;
+    color: #667085;
 
-    background:
-        var(--white);
+    font-size: 15px;
 
-    color:
-        var(--text);
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+.input-with-icon input,
+.input-with-icon select,
+.input-with-icon textarea {
+    width: 100%;
+
+    min-height: 46px;
+
+    padding: 11px 13px 11px 42px;
+
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #1d2939;
 
     outline: none;
 
+    font-family: inherit;
+    font-size: 14px;
+
+    box-sizing: border-box;
+
     transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
+.input-with-icon textarea {
+    min-height: 120px;
 
-.form-group input::placeholder {
+    resize: vertical;
 
-    color:
-        #98a2b3;
-
+    padding-top: 13px;
 }
 
+.input-with-icon input:focus,
+.input-with-icon select:focus,
+.input-with-icon textarea:focus {
+    border-color: #063b73;
 
-.form-group input:focus,
-.form-group select:focus {
+    box-shadow: 0 0 0 3px rgba(6, 59, 115, 0.1);
+}
 
-    border-color:
-        var(--blue);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(6, 59, 115, .08);
-
+.input-with-icon input::placeholder,
+.input-with-icon textarea::placeholder {
+    color: #98a2b3;
 }
 
 
 /* =========================================================
    CHAMPS SPÉCIFIQUES
-========================================================= */
+   ========================================================= */
 
 #specificFields {
-
     width: 100%;
-
 }
 
-
-/*
-   Le JS peut créer ses propres .form-grid
-   et .form-group dans #specificFields.
-*/
-
-#specificFields .form-grid {
-
-    margin-top: 0;
-
+#specificFields:empty {
+    display: none;
 }
 
+#specificFields > .specific-fields-header {
+    margin-bottom: 20px;
+}
 
-/* =========================================================
-   CAMU TAXI — CHAMPS DYNAMIQUES
-========================================================= */
-
-#specificFields
-.taxi-section-title {
-
+.specific-fields-title {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
-    padding:
-        14px 16px;
-
     margin-bottom: 18px;
-
-    border-radius: 10px;
-
-    background:
-        var(--green-light);
-
-    border:
-        1px solid
-        rgba(32, 168, 107, .20);
-
 }
 
-
-#specificFields
-.taxi-section-title i {
-
-    color:
-        var(--green);
-
+.specific-fields-title i {
+    color: #063b73;
 }
 
+.specific-fields-title h3 {
+    margin: 0;
 
-#specificFields
-.taxi-section-title strong {
+    color: #1d2939;
 
-    color:
-        var(--blue-dark);
+    font-size: 18px;
+}
 
-    font-size: 14px;
+.specific-fields-grid {
+    display: grid;
 
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.specific-field-full {
+    grid-column: 1 / -1;
 }
 
 
 /* =========================================================
-   TEXTAREA DYNAMIQUE
-========================================================= */
+   CHAMPS PHOTO
+   ========================================================= */
 
-.form-group textarea {
-
+.photo-upload-box {
     width: 100%;
 
-    min-height: 110px;
+    padding: 18px;
 
-    padding:
-        13px 14px;
+    border: 1px dashed #b8c4d3;
+    border-radius: 12px;
 
-    resize: vertical;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        10px;
-
-    background:
-        var(--white);
-
-    color:
-        var(--text);
-
-    outline: none;
-
+    background: #f9fafb;
 }
 
+.photo-upload-box input[type="file"] {
+    width: 100%;
 
-.form-group textarea:focus {
+    font-size: 13px;
 
-    border-color:
-        var(--blue);
+    color: #475467;
+}
 
-    box-shadow:
-        0 0 0 3px
-        rgba(6, 59, 115, .08);
+.photo-preview {
+    display: none;
 
+    width: 110px;
+    height: 110px;
+
+    margin-top: 12px;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+
+    border: 1px solid #e2e7ee;
+}
+
+.photo-preview.show {
+    display: block;
 }
 
 
 /* =========================================================
-   PASSWORD
-========================================================= */
+   BOUTONS / AVAILABILITÉ
+   ========================================================= */
 
-.password-wrapper {
-
-    position: relative;
-
-}
-
-
-.password-wrapper input {
-
-    padding-right: 48px;
-
-}
-
-
-.password-toggle {
-
-    position: absolute;
-
-    right: 5px;
-
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 38px;
-    height: 38px;
-
-    border: 0;
-
-    background: transparent;
-
-    color:
-        var(--muted);
-
-    border-radius: 8px;
-
+.availability-options {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.availability-option {
+    position: relative;
+}
+
+.availability-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.availability-option label {
+    display: inline-flex;
 
     align-items: center;
-    justify-content: center;
+    gap: 8px;
 
+    padding: 11px 15px;
+
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #344054;
+
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 650;
 }
 
+.availability-option input:checked + label {
+    border-color: #20a86b;
 
-.password-toggle:hover {
-
-    background:
-        var(--blue-light);
-
-    color:
-        var(--blue);
-
+    background: #eefbf5;
+    color: #168653;
 }
 
 
 /* =========================================================
    CONDITIONS
-========================================================= */
+   ========================================================= */
 
 .terms-group {
+    width: 100%;
 
-    margin-top: 25px;
-
-    padding:
-        14px 16px;
-
-    background:
-        #fafafa;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        10px;
-
+    margin: 5px 0 20px;
 }
 
-
-.terms-group label {
-
+.checkbox-label {
     display: flex;
-
     align-items: flex-start;
-
     gap: 10px;
 
-    color:
-        var(--muted);
+    color: #667085;
 
-    font-size: 12px;
-
+    font-size: 13px;
     line-height: 1.6;
 
     cursor: pointer;
-
 }
 
-
-.terms-group input {
-
+.checkbox-label input {
     width: 17px;
     height: 17px;
 
-    flex-shrink: 0;
+    flex: 0 0 17px;
 
     margin-top: 2px;
 
-    accent-color:
-        var(--green);
-
+    accent-color: #063b73;
 }
 
-
-.terms-group a {
-
-    color:
-        var(--blue);
-
+.checkbox-label a {
+    color: #063b73;
     font-weight: 700;
-
+    text-decoration: none;
 }
 
-
-.terms-group a:hover {
-
-    color:
-        var(--green-dark);
-
+.checkbox-label a:hover {
+    text-decoration: underline;
 }
 
 
 /* =========================================================
    MESSAGE
-========================================================= */
+   ========================================================= */
 
 .signup-message {
-
     display: none;
 
-    margin-top: 18px;
+    width: 100%;
 
-    padding:
-        13px 15px;
+    margin-bottom: 18px;
+    padding: 13px 15px;
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
-    font-size: 13px;
-
+    font-size: 14px;
     line-height: 1.5;
-
 }
-
 
 .signup-message.show {
-
     display: block;
-
 }
-
 
 .signup-message.success {
+    border: 1px solid #a6e4c5;
 
-    color:
-        var(--green-dark);
-
-    background:
-        var(--green-light);
-
-    border:
-        1px solid
-        rgba(32, 168, 107, .25);
-
+    background: #ecfdf3;
+    color: #067647;
 }
-
 
 .signup-message.error {
+    border: 1px solid #f5b5b0;
 
-    color:
-        var(--danger);
-
-    background:
-        #fff1f0;
-
-    border:
-        1px solid
-        rgba(217, 45, 32, .20);
-
+    background: #fef3f2;
+    color: #b42318;
 }
 
-
 .signup-message.info {
+    border: 1px solid #b9d8f5;
 
-    color:
-        var(--blue);
-
-    background:
-        var(--blue-light);
-
-    border:
-        1px solid
-        rgba(6, 59, 115, .18);
-
+    background: #eff8ff;
+    color: #175cd3;
 }
 
 
 /* =========================================================
    BOUTON INSCRIPTION
-========================================================= */
+   ========================================================= */
 
 .signup-submit {
-
     width: 100%;
 
     min-height: 50px;
 
-    margin-top: 20px;
-
-    border:
-        1px solid var(--blue);
-
-    border-radius:
-        10px;
-
-    background:
-        var(--blue);
-
-    color:
-        var(--white);
-
     display: flex;
-
     align-items: center;
     justify-content: center;
+    gap: 10px;
 
-    gap: 9px;
+    border: 0;
+    border-radius: 11px;
 
-    font-size: 14px;
+    background: #063b73;
+    color: #ffffff;
 
-    font-weight: 700;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
 
     transition:
-        background .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
-
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
-
 
 .signup-submit:hover {
+    background: #04294f;
 
-    background:
-        var(--blue-dark);
+    transform: translateY(-1px);
 
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 6px 18px
-        rgba(6, 59, 115, .18);
-
+    box-shadow: 0 8px 20px rgba(6, 59, 115, 0.2);
 }
 
-
 .signup-submit:disabled {
-
-    opacity: .65;
+    opacity: 0.65;
 
     cursor: not-allowed;
 
     transform: none;
 
+    box-shadow: none;
 }
 
 
 /* =========================================================
-   BOUTON TAXI
-   Si JS ajoute cette classe
-========================================================= */
+   CONNEXION
+   ========================================================= */
 
-.signup-submit.taxi-submit {
-
-    background:
-        var(--green);
-
-    border-color:
-        var(--green);
-
-}
-
-
-.signup-submit.taxi-submit:hover {
-
-    background:
-        var(--green-dark);
-
-}
-
-
-/* =========================================================
-   FOOTER FORMULAIRE
-========================================================= */
-
-.signup-footer {
+.login-link {
+    padding-top: 18px;
 
     text-align: center;
 
-    padding-top:
-        20px;
+    color: #667085;
 
-    color:
-        var(--muted);
+    font-size: 14px;
+}
 
-    font-size: 12px;
+.login-link a {
+    color: #063b73;
 
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
 }
 
 
 /* =========================================================
-   RESPONSIVE — 1100 PX
-========================================================= */
+   TABLETTE
+   ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 1000px) {
 
-    .account-types-grid {
-
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
+    .signup-section {
+        padding: 30px 18px 50px;
     }
 
-}
-
-
-/* =========================================================
-   RESPONSIVE — 900 PX
-========================================================= */
-
-@media (max-width: 900px) {
-
-    .sidebar {
-
-        transform:
-            translateX(-100%);
-
-        transition:
-            transform .25s ease;
-
-    }
-
-
-    .sidebar.open {
-
-        transform:
-            translateX(0);
-
-    }
-
-
-    .main-wrapper {
-
-        margin-left: 0;
-
-    }
-
-
-    .menu-button {
-
-        display: flex;
-
-    }
-
-
-    .account-types-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
+    .account-type-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — 700 PX
-========================================================= */
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 700px) {
 
-    .topbar {
-
-        height: 72px;
-
-        padding:
-            0 15px;
-
+    .signup-section {
+        padding: 22px 12px 40px;
     }
-
-
-    .topbar-logo img {
-
-        width: 150px;
-
-        max-height: 58px;
-
-    }
-
-
-    .main-content {
-
-        padding:
-            30px 15px 45px;
-
-    }
-
 
     .signup-header {
-
         margin-bottom: 25px;
-
     }
-
 
     .signup-header h1 {
-
-        font-size: 29px;
-
+        font-size: 26px;
     }
-
 
     .signup-header p {
-
-        font-size: 13px;
-
+        font-size: 14px;
     }
 
+    .account-type-grid {
+        grid-template-columns: 1fr;
 
-    .signup-card-header {
-
-        padding:
-            24px 20px 20px;
-
+        gap: 12px;
     }
-
-
-    .account-types-grid {
-
-        grid-template-columns:
-            1fr;
-
-        padding:
-            22px 20px;
-
-    }
-
 
     .account-type-card {
+        min-height: auto;
 
-        min-height: 125px;
-
-        display: grid;
-
-        grid-template-columns:
-            58px 1fr;
-
-        grid-template-rows:
-            auto auto;
-
-        column-gap: 14px;
-
-        text-align: left;
-
-        justify-content: initial;
-
+        padding: 20px 16px;
     }
 
+    .form-section {
+        padding: 18px 15px;
 
-    .account-type-icon {
-
-        grid-row:
-            1 / 3;
-
+        border-radius: 13px;
     }
 
+    .form-grid,
+    .specific-fields-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width,
+    .specific-field-full {
+        grid-column: auto;
+    }
 
     .selected-space {
+        align-items: flex-start;
 
-        margin:
-            20px 20px 0;
-
+        flex-wrap: wrap;
     }
 
-
-    #signupForm {
-
-        padding:
-            0 20px 25px;
-
-    }
-
-
-    .form-grid {
-
-        grid-template-columns:
-            1fr;
-
+    .change-account-type {
+        margin-left: 59px;
     }
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — 480 PX
-========================================================= */
+   PETIT MOBILE
+   ========================================================= */
 
 @media (max-width: 480px) {
 
-    .main-content {
-
-        padding:
-            22px 10px 35px;
-
+    .signup-section {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
-
-    .topbar-login {
-
-        padding:
-            0 10px;
-
+    .signup-header h1 {
+        font-size: 23px;
     }
-
-
-    .topbar-login span {
-
-        display: none;
-
-    }
-
 
     .signup-header-icon {
-
         width: 55px;
         height: 55px;
 
-        font-size: 21px;
+        border-radius: 15px;
 
+        font-size: 22px;
     }
 
-
-    .signup-header h1 {
-
-        font-size: 25px;
-
+    .step-title h2,
+    .form-section-title h2 {
+        font-size: 17px;
     }
 
+    .step-number,
+    .section-number {
+        width: 34px;
+        height: 34px;
 
-    .signup-card {
-
-        border-radius:
-            11px;
-
+        flex-basis: 34px;
     }
-
-
-    .signup-card-header {
-
-        padding:
-            20px 15px;
-
-    }
-
-
-    .account-types-grid {
-
-        padding:
-            18px 15px;
-
-    }
-
 
     .selected-space {
-
-        margin:
-            18px 15px 0;
-
-        padding:
-            13px;
-
-        flex-wrap: wrap;
-
+        padding: 12px;
     }
 
+    .change-account-type {
+        width: calc(100% - 59px);
 
-    .selected-space-icon {
-
-        width: 42px;
-        height: 42px;
-
-    }
-
-
-    .change-space-button {
-
-        width: 100%;
-
-        margin-left: 0;
-
-        justify-content: flex-start;
-
-        padding-top: 5px;
-
-    }
-
-
-    #signupForm {
-
-        padding:
-            0 15px 20px;
-
-    }
-
-
-    .form-section-title h3 {
-
-        font-size: 15px;
-
-    }
-
-
-    .form-section-title p {
-
-        font-size: 11px;
-
-    }
-
-
-    .signup-submit {
-
-        min-height: 48px;
-
+        margin-left: 59px;
     }
 
 }
-
-
-/* =========================================================
-   ACCESSIBILITÉ
-========================================================= */
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-
-    outline:
-        3px solid
-        rgba(32, 168, 107, .25);
-
-    outline-offset:
-        2px;
-
-}
-
-
-/* =========================================================
-   FIN
-========================================================= */
