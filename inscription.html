@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Inscription — CAMU SERVICES</title>
     <meta
-        name="description"
-        content="Créez votre compte CAMU SERVICES et accédez à CAMU IMMO, CAMU COMMERCE, CAMU TAXI et aux autres services."
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="Créez votre compte CAMU SERVICES et accédez à CAMU IMMO, CAMU COMMERCE, CAMU TAXI et CAMU HÔTELS."
+    >
+
+    <title>Inscription — CAMU SERVICES</title>
+
+    <!-- CSS GLOBAL -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS INSCRIPTION -->
     <link rel="stylesheet" href="css/inscription.css">
 
+    <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -21,65 +31,94 @@
 
 <body>
 
-    <!-- OVERLAY MOBILE -->
-    <div class="sidebar-overlay" id="signupOverlay"></div>
+    <!-- =====================================================
+         OVERLAY MOBILE
+    ====================================================== -->
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="signupSidebar">
+    <div
+        class="sidebar-overlay"
+        id="signupOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="signupSidebar"
+    >
 
         <div class="sidebar-logo">
+
             <a href="index.html">
-                <img src="images/logo.png" alt="CAMU SERVICES">
+
+                <img
+                    src="images/logo.png"
+                    alt="CAMU SERVICES"
+                >
+
             </a>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <a href="index.html" class="sidebar-link">
+            <a
+                href="index.html"
+                class="sidebar-link"
+            >
                 <i class="fa-solid fa-house"></i>
                 <span>Accueil</span>
             </a>
 
-            <a href="categories.html" class="sidebar-link">
+
+            <a
+                href="categories.html"
+                class="sidebar-link"
+            >
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Catégories</span>
             </a>
 
-            <a href="recherche.html" class="sidebar-link">
+
+            <a
+                href="recherche.html"
+                class="sidebar-link"
+            >
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span>Rechercher</span>
             </a>
 
-            <a href="camu-taxi.html" class="sidebar-link">
-                <i class="fa-solid fa-taxi"></i>
-                <span>CAMU TAXI</span>
+
+            <a
+                href="a-propos.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-circle-info"></i>
+                <span>À propos</span>
             </a>
 
-            <a href="publier.html" class="sidebar-link">
-                <i class="fa-solid fa-plus"></i>
-                <span>Publier</span>
-            </a>
 
-            <a href="favoris.html" class="sidebar-link">
-                <i class="fa-solid fa-heart"></i>
-                <span>Favoris</span>
-            </a>
-
-            <a href="compte.html" class="sidebar-link">
-                <i class="fa-solid fa-user"></i>
-                <span>Mon compte</span>
-            </a>
-
-            <a href="parametres.html" class="sidebar-link">
-                <i class="fa-solid fa-gear"></i>
-                <span>Paramètres</span>
+            <a
+                href="contact.html"
+                class="sidebar-link"
+            >
+                <i class="fa-solid fa-envelope"></i>
+                <span>Contact</span>
             </a>
 
         </nav>
 
+
         <div class="sidebar-bottom">
 
-            <a href="connexion.html" class="sidebar-link">
+            <a
+                href="connexion.html"
+                class="sidebar-link"
+            >
                 <i class="fa-solid fa-right-to-bracket"></i>
                 <span>Connexion</span>
             </a>
@@ -88,10 +127,18 @@
 
     </aside>
 
-    <!-- CONTENU PRINCIPAL -->
+
+    <!-- =====================================================
+         CONTENU PRINCIPAL
+    ====================================================== -->
+
     <div class="main-wrapper">
 
-        <!-- TOPBAR -->
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
         <header class="topbar">
 
             <button
@@ -103,13 +150,26 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
 
-            <a href="index.html" class="top-logo">
-                <img src="images/logo.png" alt="CAMU SERVICES">
+
+            <a
+                href="index.html"
+                class="topbar-logo"
+            >
+
+                <img
+                    src="images/logo.png"
+                    alt="CAMU SERVICES"
+                >
+
             </a>
 
-            <div class="top-actions">
 
-                <a href="connexion.html" class="top-action-button">
+            <div class="topbar-actions">
+
+                <a
+                    href="connexion.html"
+                    class="topbar-login"
+                >
                     <i class="fa-solid fa-right-to-bracket"></i>
                     <span>Connexion</span>
                 </a>
@@ -118,543 +178,600 @@
 
         </header>
 
-        <!-- MAIN -->
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
         <main class="main-content">
 
-            <section class="signup-section">
 
-                <div class="signup-container">
+            <!-- =================================================
+                 EN-TÊTE
+            ================================================== -->
 
-                    <!-- EN-TÊTE -->
-                    <div class="signup-header">
+            <section class="signup-header">
 
-                        <div class="signup-header-icon">
-                            <i class="fa-solid fa-user-plus"></i>
-                        </div>
+                <div class="signup-header-icon">
 
-                        <h1>Créer votre compte</h1>
+                    <i class="fa-solid fa-user-plus"></i>
 
-                        <p>
-                            Rejoignez CAMU SERVICES et accédez à nos différents espaces :
-                            immobilier, commerce, CAMU TAXI, hôtels et services.
-                        </p>
-
-                    </div>
+                </div>
 
 
-                    <!-- ÉTAPE 1 : CHOIX DE L'ESPACE -->
-                    <div id="accountTypeStep" class="signup-step">
-
-                        <div class="step-title">
-                            <span class="step-number">1</span>
-
-                            <div>
-                                <h2>Choisissez votre espace</h2>
-                                <p>
-                                    Sélectionnez le type de compte qui correspond à votre activité.
-                                </p>
-                            </div>
-                        </div>
+                <h1>
+                    Créer votre compte
+                </h1>
 
 
-                        <div class="account-type-grid">
+                <p>
+                    Rejoignez CAMU SERVICES et accédez à votre espace.
+                </p>
 
-                            <!-- CLIENT -->
-                            <button
-                                type="button"
-                                class="account-type-card"
-                                data-account-type="client"
-                            >
-                                <span class="account-type-icon">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-
-                                <strong>Client</strong>
-
-                                <small>
-                                    Rechercher des produits, services, logements,
-                                    emplois et autres opportunités.
-                                </small>
-                            </button>
+            </section>
 
 
-                            <!-- IMMOBILIER -->
-                            <button
-                                type="button"
-                                class="account-type-card"
-                                data-account-type="immobilier"
-                            >
-                                <span class="account-type-icon">
-                                    <i class="fa-solid fa-house"></i>
-                                </span>
+            <!-- =================================================
+                 ÉTAPE 1 — CHOIX ESPACE
+            ================================================== -->
 
-                                <strong>CAMU IMMO</strong>
+            <section
+                class="signup-card"
+                id="accountTypeStep"
+            >
 
-                                <small>
-                                    Publier et gérer vos maisons, terrains,
-                                    appartements et biens immobiliers.
-                                </small>
-                            </button>
+                <div class="signup-card-header">
 
+                    <h2>
+                        Choisissez votre espace
+                    </h2>
 
-                            <!-- COMMERCE -->
-                            <button
-                                type="button"
-                                class="account-type-card"
-                                data-account-type="commerce"
-                            >
-                                <span class="account-type-icon">
-                                    <i class="fa-solid fa-store"></i>
-                                </span>
+                    <p>
+                        Sélectionnez le type de compte qui correspond à votre activité.
+                    </p>
 
-                                <strong>CAMU COMMERCE</strong>
-
-                                <small>
-                                    Présenter votre commerce, vos produits
-                                    et vos offres aux clients.
-                                </small>
-                            </button>
+                </div>
 
 
-                            <!-- CAMU TAXI -->
-                            <button
-                                type="button"
-                                class="account-type-card"
-                                data-account-type="taxi"
-                            >
-                                <span class="account-type-icon">
-                                    <i class="fa-solid fa-taxi"></i>
-                                </span>
-
-                                <strong>CAMU TAXI</strong>
-
-                                <small>
-                                    Je suis chauffeur et je souhaite proposer
-                                    mes services aux clients CAMU.
-                                </small>
-                            </button>
+                <div class="account-types-grid">
 
 
-                            <!-- HÔTELS -->
-                            <button
-                                type="button"
-                                class="account-type-card"
-                                data-account-type="hotels"
-                            >
-                                <span class="account-type-icon">
-                                    <i class="fa-solid fa-hotel"></i>
-                                </span>
+                    <!-- CLIENT -->
 
-                                <strong>HÔTELS & HÉBERGEMENT</strong>
-
-                                <small>
-                                    Présenter votre hôtel, résidence,
-                                    chambre ou hébergement.
-                                </small>
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- FORMULAIRE -->
-                    <div
-                        id="signupFormWrapper"
-                        class="signup-form-wrapper"
-                        hidden
+                    <button
+                        type="button"
+                        class="account-type-card"
+                        data-account-type="client"
                     >
 
-                        <!-- ESPACE SÉLECTIONNÉ -->
-                        <div class="selected-space">
+                        <span class="account-type-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
 
-                            <div class="selected-space-icon">
-                                <i id="selectedSpaceIcon" class="fa-solid fa-user"></i>
-                            </div>
+                        <strong>
+                            Client
+                        </strong>
+
+                        <small>
+                            Recherchez des services, commerces,
+                            logements, taxis et opportunités.
+                        </small>
+
+                    </button>
+
+
+                    <!-- CAMU IMMO -->
+
+                    <button
+                        type="button"
+                        class="account-type-card"
+                        data-account-type="immobilier"
+                    >
+
+                        <span class="account-type-icon">
+                            <i class="fa-solid fa-house"></i>
+                        </span>
+
+                        <strong>
+                            CAMU IMMO
+                        </strong>
+
+                        <small>
+                            Agent immobilier, agence,
+                            propriétaire ou promoteur.
+                        </small>
+
+                    </button>
+
+
+                    <!-- CAMU COMMERCE -->
+
+                    <button
+                        type="button"
+                        class="account-type-card"
+                        data-account-type="commerce"
+                    >
+
+                        <span class="account-type-icon">
+                            <i class="fa-solid fa-store"></i>
+                        </span>
+
+                        <strong>
+                            CAMU COMMERCE
+                        </strong>
+
+                        <small>
+                            Présentez votre commerce,
+                            boutique ou activité.
+                        </small>
+
+                    </button>
+
+
+                    <!-- CAMU TAXI -->
+
+                    <button
+                        type="button"
+                        class="account-type-card"
+                        data-account-type="taxi"
+                    >
+
+                        <span class="account-type-icon">
+                            <i class="fa-solid fa-taxi"></i>
+                        </span>
+
+                        <strong>
+                            CAMU TAXI
+                        </strong>
+
+                        <small>
+                            Je suis chauffeur et je souhaite
+                            proposer mes services aux clients CAMU.
+                        </small>
+
+                    </button>
+
+
+                    <!-- CAMU HÔTELS -->
+
+                    <button
+                        type="button"
+                        class="account-type-card"
+                        data-account-type="hotels"
+                    >
+
+                        <span class="account-type-icon">
+                            <i class="fa-solid fa-hotel"></i>
+                        </span>
+
+                        <strong>
+                            CAMU HÔTELS
+                        </strong>
+
+                        <small>
+                            Hôtel, résidence, appartement,
+                            maison d'hôtes ou hébergement.
+                        </small>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ÉTAPE 2 — FORMULAIRE
+            ================================================== -->
+
+            <section
+                class="signup-card hidden"
+                id="signupFormWrapper"
+            >
+
+
+                <!-- ESPACE SÉLECTIONNÉ -->
+
+                <div class="selected-space">
+
+                    <div class="selected-space-icon">
+
+                        <i
+                            id="selectedSpaceIcon"
+                            class="fa-solid fa-user"
+                        ></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Votre espace
+                        </span>
+
+                        <strong id="selectedSpaceName">
+                            Client
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="changeAccountType"
+                        class="change-space-button"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                        Modifier
+                    </button>
+
+                </div>
+
+
+                <!-- FORMULAIRE -->
+
+                <form
+                    id="signupForm"
+                    novalidate
+                >
+
+
+                    <!-- =================================================
+                         INFORMATIONS PERSONNELLES
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <i class="fa-solid fa-user"></i>
 
                             <div>
-                                <span>Espace sélectionné</span>
-                                <strong id="selectedSpaceName">
-                                    Client
-                                </strong>
-                            </div>
 
-                            <button
-                                type="button"
-                                id="changeAccountType"
-                                class="change-account-type"
-                            >
-                                Modifier
-                            </button>
+                                <h3>
+                                    Informations personnelles
+                                </h3>
+
+                                <p>
+                                    Ces informations permettent de créer votre compte CAMU SERVICES.
+                                </p>
+
+                            </div>
 
                         </div>
 
 
-                        <form id="signupForm" novalidate>
+                        <div class="form-grid">
 
-                            <!-- INFORMATIONS PERSONNELLES -->
-                            <section class="form-section">
 
-                                <div class="form-section-title">
+                            <div class="form-group">
 
-                                    <div>
-                                        <span class="section-number">1</span>
-                                    </div>
+                                <label for="fullName">
+                                    Nom complet
+                                    <span>*</span>
+                                </label>
 
-                                    <div>
-                                        <h2>Informations personnelles</h2>
-                                        <p>
-                                            Renseignez vos informations de contact.
-                                        </p>
-                                    </div>
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    placeholder="Votre nom complet"
+                                    autocomplete="name"
+                                    required
+                                >
 
-                                </div>
+                            </div>
 
 
-                                <div class="form-grid">
+                            <div class="form-group">
 
-                                    <!-- NOM -->
-                                    <div class="form-group">
+                                <label for="phone">
+                                    Téléphone
+                                    <span>*</span>
+                                </label>
 
-                                        <label for="fullName">
-                                            Nom complet
-                                            <span>*</span>
-                                        </label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="+243..."
+                                    autocomplete="tel"
+                                    required
+                                >
 
-                                        <div class="input-with-icon">
+                            </div>
 
-                                            <i class="fa-solid fa-user"></i>
 
-                                            <input
-                                                type="text"
-                                                id="fullName"
-                                                name="fullName"
-                                                placeholder="Votre nom complet"
-                                                autocomplete="name"
-                                                required
-                                            >
+                            <div class="form-group">
 
-                                        </div>
+                                <label for="whatsapp">
+                                    WhatsApp
+                                </label>
 
-                                    </div>
+                                <input
+                                    type="tel"
+                                    id="whatsapp"
+                                    name="whatsapp"
+                                    placeholder="+243..."
+                                >
 
+                            </div>
 
-                                    <!-- TÉLÉPHONE -->
-                                    <div class="form-group">
 
-                                        <label for="phone">
-                                            Téléphone
-                                            <span>*</span>
-                                        </label>
+                            <div class="form-group">
 
-                                        <div class="input-with-icon">
+                                <label for="email">
+                                    Adresse e-mail
+                                    <span>*</span>
+                                </label>
 
-                                            <i class="fa-solid fa-phone"></i>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="exemple@email.com"
+                                    autocomplete="email"
+                                    required
+                                >
 
-                                            <input
-                                                type="tel"
-                                                id="phone"
-                                                name="phone"
-                                                placeholder="+243..."
-                                                autocomplete="tel"
-                                                required
-                                            >
+                            </div>
 
-                                        </div>
 
-                                    </div>
+                            <!-- PHOTO AJOUTÉE PAR JS -->
 
+                        </div>
 
-                                    <!-- WHATSAPP -->
-                                    <div class="form-group">
+                    </div>
 
-                                        <label for="whatsapp">
-                                            WhatsApp
-                                        </label>
 
-                                        <div class="input-with-icon">
+                    <!-- =================================================
+                         LOCALISATION
+                    ================================================== -->
 
-                                            <i class="fa-brands fa-whatsapp"></i>
+                    <div class="form-section">
 
-                                            <input
-                                                type="tel"
-                                                id="whatsapp"
-                                                name="whatsapp"
-                                                placeholder="+243..."
-                                            >
+                        <div class="form-section-title">
 
-                                        </div>
+                            <i class="fa-solid fa-location-dot"></i>
 
-                                    </div>
+                            <div>
 
+                                <h3>
+                                    Localisation
+                                </h3>
 
-                                    <!-- EMAIL -->
-                                    <div class="form-group">
+                                <p>
+                                    Indiquez votre zone d'activité ou de prise en charge.
+                                </p>
 
-                                        <label for="email">
-                                            Adresse e-mail
-                                            <span>*</span>
-                                        </label>
+                            </div>
 
-                                        <div class="input-with-icon">
+                        </div>
 
-                                            <i class="fa-solid fa-envelope"></i>
 
-                                            <input
-                                                type="email"
-                                                id="email"
-                                                name="email"
-                                                placeholder="exemple@email.com"
-                                                autocomplete="email"
-                                                required
-                                            >
+                        <div class="form-grid">
 
-                                        </div>
 
-                                    </div>
+                            <div class="form-group">
 
-                                </div>
+                                <label for="ville">
+                                    Ville
+                                    <span>*</span>
+                                </label>
 
-                            </section>
+                                <select
+                                    id="ville"
+                                    name="ville"
+                                    required
+                                >
 
+                                    <option value="">
+                                        Chargement des villes...
+                                    </option>
 
-                            <!-- LOCALISATION -->
-                            <section class="form-section">
+                                </select>
 
-                                <div class="form-section-title">
+                            </div>
 
-                                    <div>
-                                        <span class="section-number">2</span>
-                                    </div>
 
-                                    <div>
-                                        <h2>Localisation</h2>
+                            <div class="form-group">
 
-                                        <p>
-                                            Indiquez votre zone d'activité ou de service.
-                                        </p>
-                                    </div>
+                                <label for="commune">
+                                    Commune
+                                    <span>*</span>
+                                </label>
 
-                                </div>
+                                <input
+                                    type="text"
+                                    id="commune"
+                                    name="commune"
+                                    placeholder="Ex. Katuba"
+                                    required
+                                >
 
+                            </div>
 
-                                <div class="form-grid">
+                        </div>
 
-                                    <!-- VILLE -->
-                                    <div class="form-group">
+                    </div>
 
-                                        <label for="ville">
-                                            Ville
-                                            <span>*</span>
-                                        </label>
 
-                                        <div class="input-with-icon">
+                    <!-- =================================================
+                         CHAMPS SPÉCIFIQUES
+                    ================================================== -->
 
-                                            <i class="fa-solid fa-location-dot"></i>
+                    <div
+                        id="specificFields"
+                        class="form-section"
+                    ></div>
 
-                                            <select
-                                                id="ville"
-                                                name="ville"
-                                                required
-                                            >
-                                                <option value="">
-                                                    Sélectionnez votre ville
-                                                </option>
-                                            </select>
 
-                                        </div>
+                    <!-- =================================================
+                         SÉCURITÉ
+                    ================================================== -->
 
-                                    </div>
+                    <div class="form-section">
 
+                        <div class="form-section-title">
 
-                                    <!-- COMMUNE -->
-                                    <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
 
-                                        <label for="commune">
-                                            Commune
-                                            <span>*</span>
-                                        </label>
+                            <div>
 
-                                        <div class="input-with-icon">
+                                <h3>
+                                    Sécurité du compte
+                                </h3>
 
-                                            <i class="fa-solid fa-map-location-dot"></i>
+                                <p>
+                                    Choisissez un mot de passe sécurisé.
+                                </p>
 
-                                            <input
-                                                type="text"
-                                                id="commune"
-                                                name="commune"
-                                                placeholder="Votre commune"
-                                                required
-                                            >
+                            </div>
 
-                                        </div>
+                        </div>
 
-                                    </div>
 
-                                </div>
+                        <div class="form-grid">
 
-                            </section>
 
+                            <div class="form-group">
 
-                            <!-- CHAMPS SPÉCIFIQUES -->
-                            <section
-                                class="form-section"
-                                id="specificFieldsSection"
-                            >
+                                <label for="password">
+                                    Mot de passe
+                                    <span>*</span>
+                                </label>
 
-                                <div id="specificFields"></div>
-
-                            </section>
-
-
-                            <!-- SÉCURITÉ -->
-                            <section class="form-section">
-
-                                <div class="form-section-title">
-
-                                    <div>
-                                        <span class="section-number">3</span>
-                                    </div>
-
-                                    <div>
-                                        <h2>Sécurité du compte</h2>
-
-                                        <p>
-                                            Choisissez un mot de passe sécurisé.
-                                        </p>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-grid">
-
-                                    <!-- PASSWORD -->
-                                    <div class="form-group">
-
-                                        <label for="password">
-                                            Mot de passe
-                                            <span>*</span>
-                                        </label>
-
-                                        <div class="input-with-icon">
-
-                                            <i class="fa-solid fa-lock"></i>
-
-                                            <input
-                                                type="password"
-                                                id="password"
-                                                name="password"
-                                                placeholder="Minimum 6 caractères"
-                                                autocomplete="new-password"
-                                                minlength="6"
-                                                required
-                                            >
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- CONFIRM -->
-                                    <div class="form-group">
-
-                                        <label for="confirmPassword">
-                                            Confirmer le mot de passe
-                                            <span>*</span>
-                                        </label>
-
-                                        <div class="input-with-icon">
-
-                                            <i class="fa-solid fa-lock"></i>
-
-                                            <input
-                                                type="password"
-                                                id="confirmPassword"
-                                                name="confirmPassword"
-                                                placeholder="Répétez le mot de passe"
-                                                autocomplete="new-password"
-                                                minlength="6"
-                                                required
-                                            >
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </section>
-
-
-                            <!-- CONDITIONS -->
-                            <div class="terms-group">
-
-                                <label class="checkbox-label">
+                                <div class="password-wrapper">
 
                                     <input
-                                        type="checkbox"
-                                        id="terms"
-                                        name="terms"
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Minimum 6 caractères"
+                                        autocomplete="new-password"
+                                        minlength="6"
                                         required
                                     >
 
-                                    <span>
-                                        J'accepte les
-                                        <a href="conditions.html" target="_blank">
-                                            conditions d'utilisation
-                                        </a>
-                                        et la
-                                        <a href="confidentialite.html" target="_blank">
-                                            politique de confidentialité
-                                        </a>
-                                        de CAMU SERVICES.
-                                    </span>
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        data-target="password"
+                                        aria-label="Afficher le mot de passe"
+                                    >
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="confirmPassword">
+                                    Confirmer le mot de passe
+                                    <span>*</span>
                                 </label>
 
-                            </div>
+                                <div class="password-wrapper">
 
+                                    <input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        placeholder="Confirmez votre mot de passe"
+                                        autocomplete="new-password"
+                                        minlength="6"
+                                        required
+                                    >
 
-                            <!-- MESSAGE -->
-                            <div
-                                id="signupMessage"
-                                class="signup-message"
-                                role="alert"
-                                aria-live="polite"
-                            ></div>
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        data-target="confirmPassword"
+                                        aria-label="Afficher le mot de passe"
+                                    >
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
 
-
-                            <!-- BOUTON -->
-                            <button
-                                type="submit"
-                                id="signupSubmit"
-                                class="signup-submit"
-                            >
-                                <i class="fa-solid fa-user-plus"></i>
-
-                                <span>
-                                    Créer mon compte
-                                </span>
-                            </button>
-
-
-                            <!-- CONNEXION -->
-                            <div class="login-link">
-
-                                Vous avez déjà un compte ?
-
-                                <a href="connexion.html">
-                                    Se connecter
-                                </a>
+                                </div>
 
                             </div>
 
-                        </form>
+                        </div>
 
                     </div>
 
-                </div>
+
+                    <!-- =================================================
+                         CONDITIONS
+                    ================================================== -->
+
+                    <div class="terms-group">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="acceptTerms"
+                                name="acceptTerms"
+                                required
+                            >
+
+                            <span>
+                                J'accepte les
+                                <a href="conditions.html">
+                                    conditions d'utilisation
+                                </a>
+                                et la
+                                <a href="confidentialite.html">
+                                    politique de confidentialité
+                                </a>.
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div
+                        id="signupMessage"
+                        class="signup-message"
+                    ></div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        id="signupSubmit"
+                        class="signup-submit"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        <span>
+                            Créer mon compte
+                        </span>
+
+                    </button>
+
+
+                    <!-- ANNÉE -->
+
+                    <div class="signup-footer">
+
+                        ©
+                        <span id="signupYear"></span>
+                        CAMU SERVICES
+
+                    </div>
+
+                </form>
 
             </section>
 
@@ -663,14 +780,15 @@
     </div>
 
 
-    <!-- ANNÉE -->
-    <script>
-        document.querySelectorAll("[data-year]").forEach(el => {
-            el.textContent = new Date().getFullYear();
-        });
-    </script>
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-    <script type="module" src="js/inscription.js"></script>
+    <script
+        type="module"
+        src="js/inscription.js"
+    ></script>
 
 </body>
+
 </html>
