@@ -14,7 +14,7 @@
 
     <meta
         name="description"
-        content="Gérez votre profil, vos annonces, vos favoris et votre compte CAMU SERVICES."
+        content="Gérez votre profil, vos publications et votre espace CAMU SERVICES."
     >
 
     <link
@@ -97,13 +97,8 @@
             href="index.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-house"></i>
-
-            <span>
-                Accueil
-            </span>
-
+            <span>Accueil</span>
         </a>
 
 
@@ -111,13 +106,8 @@
             href="categories.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-layer-group"></i>
-
-            <span>
-                Catégories
-            </span>
-
+            <span>Catégories</span>
         </a>
 
 
@@ -125,13 +115,17 @@
             href="recherche.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Rechercher</span>
+        </a>
 
-            <span>
-                Rechercher
-            </span>
 
+        <a
+            href="camu-taxi.html"
+            class="sidebar-link"
+        >
+            <i class="fa-solid fa-taxi"></i>
+            <span>CAMU TAXI</span>
         </a>
 
 
@@ -139,13 +133,8 @@
             href="publier.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-plus"></i>
-
-            <span>
-                Publier une annonce
-            </span>
-
+            <span>Publier une annonce</span>
         </a>
 
 
@@ -153,13 +142,8 @@
             href="favoris.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-heart"></i>
-
-            <span>
-                Mes favoris
-            </span>
-
+            <span>Mes favoris</span>
         </a>
 
 
@@ -170,13 +154,8 @@
             href="compte.html"
             class="sidebar-link active"
         >
-
             <i class="fa-solid fa-user"></i>
-
-            <span>
-                Mon compte
-            </span>
-
+            <span>Mon compte</span>
         </a>
 
 
@@ -184,13 +163,8 @@
             href="parametres.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-gear"></i>
-
-            <span>
-                Paramètres
-            </span>
-
+            <span>Paramètres</span>
         </a>
 
 
@@ -198,13 +172,8 @@
             href="aide.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-circle-question"></i>
-
-            <span>
-                Centre d'aide
-            </span>
-
+            <span>Centre d'aide</span>
         </a>
 
     </nav>
@@ -216,13 +185,8 @@
             href="contact.html"
             class="sidebar-link"
         >
-
             <i class="fa-solid fa-envelope"></i>
-
-            <span>
-                Contact
-            </span>
-
+            <span>Contact</span>
         </a>
 
     </div>
@@ -243,16 +207,13 @@
 
     <header class="account-topbar">
 
-
         <button
             type="button"
             class="mobile-menu-button"
             id="mobileMenuButton"
             aria-label="Ouvrir le menu"
         >
-
             <i class="fa-solid fa-bars"></i>
-
         </button>
 
 
@@ -271,16 +232,13 @@
 
         <div class="topbar-actions">
 
-
             <a
                 href="favoris.html"
                 class="topbar-icon"
                 aria-label="Mes favoris"
                 title="Mes favoris"
             >
-
                 <i class="fa-regular fa-heart"></i>
-
             </a>
 
 
@@ -290,11 +248,8 @@
                 aria-label="Mon compte"
                 title="Mon compte"
             >
-
                 <i class="fa-regular fa-user"></i>
-
             </a>
-
 
         </div>
 
@@ -319,22 +274,17 @@
                 <div>
 
                     <span class="section-kicker">
-
                         <i class="fa-solid fa-user"></i>
-
                         ESPACE PERSONNEL
-
                     </span>
 
-
-                    <h1>
+                    <h1 id="accountPageTitle">
                         Mon compte
                     </h1>
 
-
-                    <p>
-                        Gérez votre profil, vos annonces, vos favoris
-                        et les paramètres de votre compte.
+                    <p id="accountPageDescription">
+                        Gérez votre profil, vos publications,
+                        vos favoris et les paramètres de votre compte.
                     </p>
 
                 </div>
@@ -353,9 +303,7 @@
 
                 <div class="profile-content">
 
-
                     <div class="profile-avatar-area">
-
 
                         <div class="profile-avatar">
 
@@ -365,14 +313,11 @@
                                 alt="Photo de profil"
                             >
 
-
                             <div
                                 id="accountAvatarDefault"
                                 class="profile-avatar-default"
                             >
-
                                 <i class="fa-solid fa-user"></i>
-
                             </div>
 
                         </div>
@@ -383,16 +328,14 @@
                             class="avatar-edit-button"
                             title="Modifier la photo"
                         >
-
                             <i class="fa-solid fa-camera"></i>
-
                         </label>
 
 
                         <input
                             type="file"
                             id="profilePhotoInput"
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/webp"
                             hidden
                         >
 
@@ -413,15 +356,470 @@
 
                         <div class="profile-status">
 
-                            <span class="status-dot"></span>
+                            <span
+                                class="status-dot"
+                                id="accountStatusDot"
+                            ></span>
 
-                            <span>
+                            <span id="accountStatusText">
                                 Compte actif
                             </span>
 
                         </div>
 
                     </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 BADGE ESPACE
+            ================================================== -->
+
+            <section
+                id="accountSpaceCard"
+                class="account-section"
+            >
+
+                <div class="section-title-row">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            <i class="fa-solid fa-layer-group"></i>
+                            MON ESPACE
+                        </span>
+
+                        <h2 id="accountSpaceTitle">
+                            CAMU SERVICES
+                        </h2>
+
+                        <p id="accountSpaceDescription">
+                            Votre espace personnel CAMU SERVICES.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i
+                                id="accountSpaceIcon"
+                                class="fa-solid fa-user"
+                            ></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Type de compte
+                            </span>
+
+                            <strong id="accountTypeLabel">
+                                Client
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Ville
+                            </span>
+
+                            <strong id="accountVille">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Commune
+                            </span>
+
+                            <strong id="accountCommune">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="info-card"
+                        id="accountQuartierCard"
+                        hidden
+                    >
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-map-pin"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Quartier
+                            </span>
+
+                            <strong id="accountQuartier">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESPACE CAMU TAXI
+            ================================================== -->
+
+            <section
+                id="taxiAccountSection"
+                class="account-section"
+                hidden
+            >
+
+                <div class="section-title-row">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            <i class="fa-solid fa-taxi"></i>
+                            CAMU TAXI
+                        </span>
+
+                        <h2>
+                            Mon profil chauffeur
+                        </h2>
+
+                        <p>
+                            Gérez les informations visibles par les clients
+                            qui recherchent un chauffeur CAMU.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUT CHAUFFEUR -->
+
+                <div
+                    id="taxiStatusCard"
+                    class="subscription-card"
+                >
+
+                    <div class="subscription-icon">
+
+                        <i class="fa-solid fa-taxi"></i>
+
+                    </div>
+
+
+                    <div class="subscription-content">
+
+                        <span class="subscription-label">
+                            STATUT CHAUFFEUR
+                        </span>
+
+                        <h3 id="taxiStatus">
+                            Chargement...
+                        </h3>
+
+                        <p id="taxiStatusInfo">
+                            Chargement des informations...
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="taxiAvailabilityButton"
+                        class="subscription-button"
+                    >
+                        Disponibilité
+                    </button>
+
+                </div>
+
+
+                <!-- INFORMATIONS CHAUFFEUR -->
+
+                <div class="info-grid">
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Type de véhicule
+                            </span>
+
+                            <strong id="taxiVehicleType">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Marque / modèle
+                            </span>
+
+                            <strong id="taxiVehicleBrand">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Plaque
+                            </span>
+
+                            <strong id="taxiVehiclePlate">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                WhatsApp
+                            </span>
+
+                            <strong id="taxiWhatsapp">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card info-card-full">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-align-left"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Présentation
+                            </span>
+
+                            <strong id="taxiDescription">
+                                Aucune présentation renseignée.
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PHOTOS -->
+
+                <div class="info-grid">
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Photo chauffeur
+                            </span>
+
+                            <strong id="taxiDriverPhotoStatus">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Photo véhicule
+                            </span>
+
+                            <strong id="taxiVehiclePhotoStatus">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS TAXI -->
+
+                <div class="quick-actions">
+
+
+                    <a
+                        href="camu-taxi.html"
+                        class="quick-action primary"
+                    >
+
+                        <div class="quick-action-icon">
+                            <i class="fa-solid fa-taxi"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Voir CAMU TAXI
+                            </strong>
+
+                            <span>
+                                Voir les chauffeurs disponibles
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+
+                    <button
+                        type="button"
+                        id="taxiLocationButton"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Mettre à jour ma position
+                            </strong>
+
+                            <span id="taxiLocationText">
+                                Position non enregistrée
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </button>
+
+
+                    <a
+                        href="devenir-chauffeur.html"
+                        id="taxiProfileButton"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Gérer mon profil chauffeur
+                            </strong>
+
+                            <span>
+                                Modifier mes informations CAMU TAXI
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
 
                 </div>
 
@@ -438,27 +836,24 @@
                 <a
                     href="#mes-annonces"
                     class="quick-action"
+                    id="quickAdsAction"
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-bullhorn"></i>
-
                     </div>
-
 
                     <div>
 
-                        <strong>
+                        <strong id="quickAdsTitle">
                             Mes annonces
                         </strong>
 
-                        <span>
+                        <span id="quickAdsDescription">
                             Gérer mes publications
                         </span>
 
                     </div>
-
 
                     <i class="fa-solid fa-chevron-right"></i>
 
@@ -471,11 +866,8 @@
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-heart"></i>
-
                     </div>
-
 
                     <div>
 
@@ -489,7 +881,6 @@
 
                     </div>
 
-
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </a>
@@ -498,27 +889,24 @@
                 <a
                     href="publier.html"
                     class="quick-action primary"
+                    id="quickPublishAction"
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-plus"></i>
-
                     </div>
-
 
                     <div>
 
-                        <strong>
+                        <strong id="quickPublishTitle">
                             Publier une annonce
                         </strong>
 
-                        <span>
+                        <span id="quickPublishDescription">
                             Créer une nouvelle publication
                         </span>
 
                     </div>
-
 
                     <i class="fa-solid fa-chevron-right"></i>
 
@@ -531,11 +919,8 @@
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-id-card"></i>
-
                     </div>
-
 
                     <div>
 
@@ -549,7 +934,6 @@
 
                     </div>
 
-
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </a>
@@ -561,11 +945,8 @@
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-gear"></i>
-
                     </div>
-
 
                     <div>
 
@@ -579,7 +960,6 @@
 
                     </div>
 
-
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </a>
@@ -591,11 +971,8 @@
                 >
 
                     <div class="quick-action-icon">
-
                         <i class="fa-solid fa-circle-question"></i>
-
                     </div>
-
 
                     <div>
 
@@ -609,17 +986,15 @@
 
                     </div>
 
-
                     <i class="fa-solid fa-chevron-right"></i>
 
                 </a>
-
 
             </section>
 
 
             <!-- =================================================
-                 PROFIL / INFORMATIONS
+                 PROFIL
             ================================================== -->
 
             <section
@@ -627,25 +1002,18 @@
                 id="profil"
             >
 
-
                 <div class="section-title-row">
-
 
                     <div>
 
                         <span class="section-kicker">
-
                             <i class="fa-solid fa-id-card"></i>
-
                             PROFIL
-
                         </span>
-
 
                         <h2>
                             Mes informations
                         </h2>
-
 
                         <p>
                             Consultez et gérez vos informations personnelles.
@@ -666,7 +1034,6 @@
 
                     </button>
 
-
                 </div>
 
 
@@ -676,11 +1043,8 @@
                     <div class="info-card">
 
                         <div class="info-icon">
-
                             <i class="fa-solid fa-user"></i>
-
                         </div>
-
 
                         <div>
 
@@ -700,11 +1064,8 @@
                     <div class="info-card">
 
                         <div class="info-icon">
-
                             <i class="fa-solid fa-envelope"></i>
-
                         </div>
-
 
                         <div>
 
@@ -724,11 +1085,8 @@
                     <div class="info-card">
 
                         <div class="info-icon">
-
                             <i class="fa-solid fa-phone"></i>
-
                         </div>
-
 
                         <div>
 
@@ -745,14 +1103,32 @@
                     </div>
 
 
-                    <div class="info-card info-card-full">
+                    <div class="info-card">
 
                         <div class="info-icon">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
 
-                            <i class="fa-solid fa-align-left"></i>
+                        <div>
+
+                            <span>
+                                WhatsApp
+                            </span>
+
+                            <strong id="profileWhatsapp">
+                                —
+                            </strong>
 
                         </div>
 
+                    </div>
+
+
+                    <div class="info-card info-card-full">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-align-left"></i>
+                        </div>
 
                         <div>
 
@@ -768,7 +1144,6 @@
 
                     </div>
 
-
                 </div>
 
             </section>
@@ -783,27 +1158,20 @@
                 class="account-section edit-profile-section hidden"
             >
 
-
                 <div class="section-title-row">
-
 
                     <div>
 
                         <span class="section-kicker">
-
                             <i class="fa-solid fa-pen"></i>
-
                             MODIFICATION
-
                         </span>
-
 
                         <h2>
                             Modifier mon profil
                         </h2>
 
                     </div>
-
 
                 </div>
 
@@ -812,7 +1180,6 @@
                     id="profileForm"
                     class="profile-form"
                 >
-
 
                     <div class="form-grid">
 
@@ -823,11 +1190,9 @@
                                 Nom complet
                             </label>
 
-
                             <div class="input-wrapper">
 
                                 <i class="fa-solid fa-user"></i>
-
 
                                 <input
                                     type="text"
@@ -847,11 +1212,9 @@
                                 Téléphone
                             </label>
 
-
                             <div class="input-wrapper">
 
                                 <i class="fa-solid fa-phone"></i>
-
 
                                 <input
                                     type="tel"
@@ -865,12 +1228,34 @@
                         </div>
 
 
-                        <div class="form-group form-group-full">
+                        <div class="form-group">
+
+                            <label for="editWhatsapp">
+                                WhatsApp
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-brands fa-whatsapp"></i>
+
+                                <input
+                                    type="tel"
+                                    id="editWhatsapp"
+                                    placeholder="+243..."
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="form-group form-group-full"
+                        >
 
                             <label for="editDescription">
                                 Description
                             </label>
-
 
                             <textarea
                                 id="editDescription"
@@ -880,21 +1265,17 @@
 
                         </div>
 
-
                     </div>
 
 
                     <div class="form-actions">
-
 
                         <button
                             type="button"
                             id="cancelEditProfileButton"
                             class="secondary-button"
                         >
-
                             Annuler
-
                         </button>
 
 
@@ -909,9 +1290,7 @@
 
                         </button>
 
-
                     </div>
-
 
                 </form>
 
@@ -927,28 +1306,21 @@
                 id="mes-annonces"
             >
 
-
                 <div class="section-title-row">
-
 
                     <div>
 
                         <span class="section-kicker">
-
                             <i class="fa-solid fa-bullhorn"></i>
-
                             PUBLICATIONS
-
                         </span>
-
 
                         <h2>
                             Mes annonces
                         </h2>
 
-
                         <p>
-                            Retrouvez toutes vos annonces publiées sur CAMU SERVICES.
+                            Retrouvez vos publications sur CAMU SERVICES.
                         </p>
 
                     </div>
@@ -956,6 +1328,7 @@
 
                     <a
                         href="publier.html"
+                        id="publishAdsButton"
                         class="outline-button"
                     >
 
@@ -965,12 +1338,10 @@
 
                     </a>
 
-
                 </div>
 
 
                 <div class="ads-header">
-
 
                     <div class="ads-count">
 
@@ -984,16 +1355,13 @@
 
                     </div>
 
-
                 </div>
 
 
                 <div
                     id="myAdsContainer"
                     class="my-ads-grid"
-                >
-                    <!-- Annonces injectées par compte.js -->
-                </div>
+                ></div>
 
 
                 <div
@@ -1002,23 +1370,17 @@
                     hidden
                 >
 
-
                     <div class="empty-icon">
-
                         <i class="fa-solid fa-bullhorn"></i>
-
                     </div>
-
 
                     <h3>
                         Aucune annonce
                     </h3>
 
-
                     <p>
                         Vous n'avez pas encore publié d'annonce.
                     </p>
-
 
                     <a
                         href="publier.html"
@@ -1031,9 +1393,7 @@
 
                     </a>
 
-
                 </div>
-
 
             </section>
 
@@ -1044,32 +1404,24 @@
 
             <section class="account-section">
 
-
                 <div class="section-title-row">
-
 
                     <div>
 
                         <span class="section-kicker">
-
                             <i class="fa-solid fa-crown"></i>
-
                             ABONNEMENT
-
                         </span>
-
 
                         <h2>
                             Mon abonnement
                         </h2>
-
 
                         <p>
                             Consultez votre formule et votre statut.
                         </p>
 
                     </div>
-
 
                 </div>
 
@@ -1079,37 +1431,29 @@
                     class="subscription-card"
                 >
 
-
                     <div class="subscription-icon">
-
                         <i class="fa-solid fa-crown"></i>
-
                     </div>
 
 
                     <div class="subscription-content">
 
-
                         <span class="subscription-label">
                             FORMULE ACTUELLE
                         </span>
-
 
                         <h3 id="subscriptionPlan">
                             Chargement...
                         </h3>
 
-
                         <p id="subscriptionInfo">
                             Chargement des informations...
                         </p>
-
 
                         <div
                             id="subscriptionDays"
                             class="subscription-days"
                         ></div>
-
 
                     </div>
 
@@ -1126,9 +1470,7 @@
 
                     </a>
 
-
                 </div>
-
 
             </section>
 
@@ -1139,27 +1481,20 @@
 
             <section class="account-section">
 
-
                 <div class="section-title-row">
-
 
                     <div>
 
                         <span class="section-kicker">
-
                             <i class="fa-solid fa-grid-2"></i>
-
                             SERVICES
-
                         </span>
-
 
                         <h2>
                             Accès rapides
                         </h2>
 
                     </div>
-
 
                 </div>
 
@@ -1187,6 +1522,7 @@
 
                     <a
                         href="publier.html"
+                        id="servicePublishCard"
                         class="service-card"
                     >
 
@@ -1238,7 +1574,6 @@
 
                     </a>
 
-
                 </div>
 
             </section>
@@ -1250,7 +1585,6 @@
 
             <section class="logout-section">
 
-
                 <div>
 
                     <span class="section-kicker danger-kicker">
@@ -1261,11 +1595,9 @@
 
                     </span>
 
-
                     <h2>
                         Déconnexion
                     </h2>
-
 
                     <p>
                         Vous pouvez vous déconnecter de votre compte
@@ -1287,9 +1619,7 @@
 
                 </button>
 
-
             </section>
-
 
         </div>
 
@@ -1302,41 +1632,34 @@
 
     <footer class="account-footer">
 
-
         <div class="footer-inner">
 
-
             <p>
-                © 2026 CAMU SERVICES. Tous droits réservés.
+                ©
+                <span id="accountYear">2026</span>
+                CAMU SERVICES. Tous droits réservés.
             </p>
 
 
             <div class="footer-links">
 
-
                 <a href="conditions.html">
                     Conditions
                 </a>
-
 
                 <a href="politique.html">
                     Confidentialité
                 </a>
 
-
                 <a href="contact.html">
                     Contact
                 </a>
 
-
             </div>
-
 
         </div>
 
-
     </footer>
-
 
 </div>
 
