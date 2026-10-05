@@ -1,88 +1,958 @@
 /* =========================================================
-   CAMU SERVICES — INSCRIPTION
-   Contenu compatible avec le style global CAMU SERVICES
+   CAMU SERVICES — MON COMPTE
+   compte.css
    ========================================================= */
 
-.signup-section {
-    width: 100%;
-    padding: 35px 20px 60px;
+/* ---------------------------------------------------------
+   VARIABLES
+--------------------------------------------------------- */
+
+:root {
+    --account-blue: #063b73;
+    --account-blue-dark: #04294f;
+    --account-blue-light: #eef5ff;
+
+    --account-green: #20a86b;
+    --account-green-dark: #168653;
+    --account-green-light: #ecfdf3;
+
+    --account-white: #ffffff;
+    --account-light: #f5f7fa;
+    --account-border: #e2e7ee;
+
+    --account-text: #1d2939;
+    --account-muted: #667085;
+
+    --account-danger: #d92d20;
+    --account-danger-light: #fef3f2;
+
+    --account-warning: #b54708;
+    --account-warning-light: #fffaeb;
+
+    --account-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+    --account-radius: 14px;
 }
 
-.signup-container {
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.account-page {
     width: 100%;
-    max-width: 1100px;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.account-container {
+    width: 100%;
+    max-width: 1200px;
+
     margin: 0 auto;
+    padding: 30px 20px 60px;
+
+    box-sizing: border-box;
 }
 
 
 /* =========================================================
    EN-TÊTE
-   ========================================================= */
+========================================================= */
 
-.signup-header {
-    text-align: center;
-    max-width: 760px;
-    margin: 0 auto 35px;
+.account-header {
+    margin-bottom: 25px;
 }
 
-.signup-header-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 15px;
+.account-header h1 {
+    margin: 0 0 7px;
+
+    color: var(--account-text);
+
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.account-header p {
+    margin: 0;
+
+    color: var(--account-muted);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   PROFIL PRINCIPAL
+========================================================= */
+
+.account-profile-card {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+    padding: 24px;
+
+    border: 1px solid var(--account-border);
+    border-radius: var(--account-radius);
+
+    background: var(--account-white);
+
+    box-shadow: var(--account-shadow);
+
+    box-sizing: border-box;
+}
+
+.account-avatar {
+    width: 92px;
+    height: 92px;
+
+    flex: 0 0 92px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 18px;
+    overflow: hidden;
 
-    background: #eef5ff;
-    color: #063b73;
+    border-radius: 50%;
 
-    font-size: 25px;
-}
+    background: var(--account-blue-light);
+    color: var(--account-blue);
 
-.signup-header h1 {
-    margin: 0 0 10px;
-
-    color: #063b73;
-
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 800;
 }
 
-.signup-header p {
-    margin: 0;
+.account-avatar img {
+    width: 100%;
+    height: 100%;
 
-    color: #667085;
+    display: block;
 
-    font-size: 15px;
-    line-height: 1.7;
+    object-fit: cover;
+}
+
+.account-profile-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.account-profile-info h2 {
+    margin: 0 0 5px;
+
+    color: var(--account-text);
+
+    font-size: 22px;
+    font-weight: 800;
+
+    overflow-wrap: anywhere;
+}
+
+.account-profile-info p {
+    margin: 3px 0;
+
+    color: var(--account-muted);
+
+    font-size: 14px;
+}
+
+.account-profile-info .account-email {
+    overflow-wrap: anywhere;
+}
+
+.account-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 9px;
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    background: var(--account-blue-light);
+    color: var(--account-blue);
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.account-profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    flex-wrap: wrap;
 }
 
 
 /* =========================================================
-   ÉTAPE
-   ========================================================= */
+   BOUTONS
+========================================================= */
 
-.signup-step {
-    width: 100%;
+.account-btn {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.step-title {
+.account-btn:hover {
+    transform: translateY(-1px);
+}
+
+.account-btn-primary {
+    background: var(--account-blue);
+    color: var(--account-white);
+}
+
+.account-btn-primary:hover {
+    background: var(--account-blue-dark);
+}
+
+.account-btn-secondary {
+    border-color: var(--account-border);
+
+    background: var(--account-white);
+    color: var(--account-text);
+}
+
+.account-btn-secondary:hover {
+    border-color: var(--account-blue);
+    color: var(--account-blue);
+}
+
+.account-btn-green {
+    background: var(--account-green);
+    color: var(--account-white);
+}
+
+.account-btn-green:hover {
+    background: var(--account-green-dark);
+}
+
+.account-btn-danger {
+    background: var(--account-danger);
+    color: var(--account-white);
+}
+
+.account-btn-danger:hover {
+    background: #b42318;
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+.account-stats {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 25px;
+}
+
+.account-stat-card {
+    min-width: 0;
+
+    padding: 19px;
+
+    border: 1px solid var(--account-border);
+    border-radius: var(--account-radius);
+
+    background: var(--account-white);
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.045);
+}
+
+.account-stat-top {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.account-stat-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--account-blue-light);
+    color: var(--account-blue);
+
+    font-size: 17px;
+}
+
+.account-stat-card strong {
+    display: block;
+
+    margin-top: 14px;
+
+    color: var(--account-text);
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.account-stat-card span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   GRILLE PRINCIPALE
+========================================================= */
+
+.account-grid {
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+
+    gap: 22px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   CARTES
+========================================================= */
+
+.account-card {
+    width: 100%;
+    min-width: 0;
 
     margin-bottom: 22px;
+    padding: 22px;
+
+    border: 1px solid var(--account-border);
+    border-radius: var(--account-radius);
+
+    background: var(--account-white);
+
+    box-shadow: var(--account-shadow);
+
+    box-sizing: border-box;
 }
 
-.step-number,
-.section-number {
-    width: 38px;
-    height: 38px;
+.account-card:last-child {
+    margin-bottom: 0;
+}
 
-    flex: 0 0 38px;
+.account-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.account-card-title {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 0;
+}
+
+.account-card-title-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--account-blue-light);
+    color: var(--account-blue);
+
+    font-size: 17px;
+}
+
+.account-card-header h2 {
+    margin: 0;
+
+    color: var(--account-text);
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.account-card-header p {
+    margin: 4px 0 0;
+
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   INFORMATIONS
+========================================================= */
+
+.account-info-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+}
+
+.account-info-row {
+    display: grid;
+
+    grid-template-columns: 170px minmax(0, 1fr);
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #edf0f3;
+}
+
+.account-info-row:last-child {
+    border-bottom: 0;
+}
+
+.account-info-label {
+    color: var(--account-muted);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.account-info-value {
+    min-width: 0;
+
+    color: var(--account-text);
+
+    font-size: 14px;
+    font-weight: 650;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   CAMU TAXI — PROFIL CHAUFFEUR
+========================================================= */
+
+.taxi-account-card {
+    border-color: #d8e7f7;
+}
+
+.taxi-account-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.taxi-account-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: var(--account-blue-light);
+    color: var(--account-blue);
+
+    font-size: 20px;
+}
+
+.taxi-account-header h2 {
+    margin: 0;
+
+    color: var(--account-text);
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.taxi-account-header p {
+    margin: 3px 0 0;
+
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   VÉHICULE
+========================================================= */
+
+.taxi-vehicle-box {
+    display: grid;
+
+    grid-template-columns: 140px minmax(0, 1fr);
+
+    gap: 20px;
+
+    padding: 16px;
+
+    border: 1px solid var(--account-border);
+    border-radius: 12px;
+
+    background: #fafbfc;
+}
+
+.taxi-vehicle-photo {
+    width: 140px;
+    height: 110px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #edf0f3;
+}
+
+.taxi-vehicle-photo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+.taxi-vehicle-photo-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #98a2b3;
+
+    font-size: 30px;
+}
+
+.taxi-vehicle-info {
+    min-width: 0;
+}
+
+.taxi-vehicle-info h3 {
+    margin: 0 0 8px;
+
+    color: var(--account-text);
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.taxi-vehicle-info p {
+    margin: 5px 0;
+
+    color: var(--account-muted);
+
+    font-size: 13px;
+}
+
+.taxi-vehicle-info strong {
+    color: var(--account-text);
+}
+
+
+/* =========================================================
+   DISPONIBILITÉ CHAUFFEUR
+========================================================= */
+
+.taxi-availability {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 18px;
+    padding: 15px;
+
+    border-radius: 11px;
+
+    background: var(--account-light);
+}
+
+.taxi-availability-info {
+    min-width: 0;
+}
+
+.taxi-availability-info strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--account-text);
+
+    font-size: 14px;
+}
+
+.taxi-availability-info span {
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+.taxi-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+.taxi-status::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+}
+
+.taxi-status.available {
+    background: var(--account-green-light);
+    color: var(--account-green-dark);
+}
+
+.taxi-status.available::before {
+    background: var(--account-green);
+}
+
+.taxi-status.unavailable {
+    background: var(--account-danger-light);
+    color: var(--account-danger);
+}
+
+.taxi-status.unavailable::before {
+    background: var(--account-danger);
+}
+
+
+/* =========================================================
+   LOCALISATION CHAUFFEUR
+========================================================= */
+
+.taxi-location-box {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 15px;
+    padding: 14px;
+
+    border: 1px solid #dbe4ef;
+    border-radius: 11px;
+
+    background: #f7faff;
+}
+
+.taxi-location-icon {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--account-blue-light);
+    color: var(--account-blue);
+}
+
+.taxi-location-text {
+    min-width: 0;
+}
+
+.taxi-location-text strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--account-text);
+
+    font-size: 13px;
+}
+
+.taxi-location-text span {
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   WHATSAPP / CONTACT
+========================================================= */
+
+.account-contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.account-contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+
+    padding: 9px 14px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.account-contact-whatsapp {
+    background: #25d366;
+    color: #ffffff;
+}
+
+.account-contact-phone {
+    background: var(--account-blue);
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ANNONCES
+========================================================= */
+
+.account-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.account-list-item {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid var(--account-border);
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
+}
+
+.account-list-image {
+    width: 72px;
+    height: 60px;
+
+    flex: 0 0 72px;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background: #f0f2f5;
+}
+
+.account-list-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.account-list-image-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #98a2b3;
+}
+
+.account-list-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.account-list-content h3 {
+    margin: 0 0 5px;
+
+    color: var(--account-text);
+
+    font-size: 14px;
+    font-weight: 750;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-list-content p {
+    margin: 2px 0;
+
+    color: var(--account-muted);
+
+    font-size: 12px;
+}
+
+.account-list-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.account-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.account-status.active {
+    background: var(--account-green-light);
+    color: var(--account-green-dark);
+}
+
+.account-status.pending {
+    background: var(--account-warning-light);
+    color: var(--account-warning);
+}
+
+.account-status.inactive {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+
+/* =========================================================
+   FAVORIS
+========================================================= */
+
+.account-favorite-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: var(--account-danger);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ÉTAT VIDE
+========================================================= */
+
+.account-empty {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    border: 1px dashed #d0d5dd;
+    border-radius: 12px;
+
+    background: #fafbfc;
+}
+
+.account-empty-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 13px;
 
     display: flex;
     align-items: center;
@@ -90,594 +960,90 @@
 
     border-radius: 50%;
 
-    background: #063b73;
-    color: #ffffff;
+    background: var(--account-light);
+    color: #98a2b3;
 
-    font-size: 15px;
-    font-weight: 800;
+    font-size: 22px;
 }
 
-.step-title h2,
-.form-section-title h2 {
-    margin: 0 0 5px;
+.account-empty h3 {
+    margin: 0 0 6px;
 
-    color: #1d2939;
-
-    font-size: 20px;
-    font-weight: 750;
-}
-
-.step-title p,
-.form-section-title p {
-    margin: 0;
-
-    color: #667085;
-
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   CHOIX DES ESPACES
-   ========================================================= */
-
-.account-type-grid {
-    display: grid;
-
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    gap: 18px;
-
-    width: 100%;
-}
-
-.account-type-card {
-    width: 100%;
-    min-height: 190px;
-
-    padding: 25px 20px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-    border: 1px solid #e2e7ee;
-    border-radius: 16px;
-
-    background: #ffffff;
-
-    cursor: pointer;
-
-    text-align: center;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-.account-type-card:hover {
-    transform: translateY(-3px);
-
-    border-color: #063b73;
-
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
-}
-
-.account-type-card.active,
-.account-type-card.selected {
-    border-color: #063b73;
-
-    background: #f4f8fd;
-
-    box-shadow: 0 8px 25px rgba(6, 59, 115, 0.12);
-}
-
-.account-type-icon {
-    width: 62px;
-    height: 62px;
-
-    margin-bottom: 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 16px;
-
-    background: #eef5ff;
-    color: #063b73;
-
-    font-size: 25px;
-}
-
-.account-type-card strong {
-    display: block;
-
-    margin-bottom: 9px;
-
-    color: #1d2939;
+    color: var(--account-text);
 
     font-size: 16px;
-    font-weight: 800;
 }
 
-.account-type-card small {
-    display: block;
-
-    max-width: 250px;
-
-    color: #667085;
-
-    font-size: 13px;
-    line-height: 1.55;
-}
-
-
-/* =========================================================
-   FORMULAIRE
-   ========================================================= */
-
-.signup-form-wrapper {
-    width: 100%;
-}
-
-.signup-form-wrapper[hidden] {
-    display: none !important;
-}
-
-
-/* =========================================================
-   ESPACE SÉLECTIONNÉ
-   ========================================================= */
-
-.selected-space {
-    width: 100%;
-
-    margin-bottom: 25px;
-    padding: 15px 18px;
-
-    display: flex;
-    align-items: center;
-    gap: 13px;
-
-    border: 1px solid #dbe4ef;
-    border-radius: 14px;
-
-    background: #f7faff;
-}
-
-.selected-space-icon {
-    width: 46px;
-    height: 46px;
-
-    flex: 0 0 46px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: #063b73;
-    color: #ffffff;
-
-    font-size: 19px;
-}
-
-.selected-space > div:nth-child(2) {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.selected-space span {
-    color: #667085;
-
-    font-size: 12px;
-}
-
-.selected-space strong {
-    color: #1d2939;
-
-    font-size: 15px;
-}
-
-.change-account-type {
-    margin-left: auto;
-
-    padding: 9px 13px;
-
-    border: 1px solid #063b73;
-    border-radius: 8px;
-
-    background: #ffffff;
-    color: #063b73;
-
-    cursor: pointer;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.change-account-type:hover {
-    background: #063b73;
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   SECTIONS FORMULAIRE
-   ========================================================= */
-
-.form-section {
-    width: 100%;
-
-    margin-bottom: 25px;
-    padding: 25px;
-
-    border: 1px solid #e2e7ee;
-    border-radius: 16px;
-
-    background: #ffffff;
-
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
-}
-
-.form-section-title {
-    display: flex;
-    align-items: flex-start;
-    gap: 13px;
-
-    margin-bottom: 24px;
-}
-
-
-/* =========================================================
-   GRILLE
-   ========================================================= */
-
-.form-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 20px;
-}
-
-.form-group {
-    width: 100%;
-    min-width: 0;
-}
-
-.form-group.full-width {
-    grid-column: 1 / -1;
-}
-
-
-/* =========================================================
-   LABELS
-   ========================================================= */
-
-.form-group label {
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: #344054;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.form-group label span {
-    color: #d92d20;
-}
-
-
-/* =========================================================
-   INPUTS
-   ========================================================= */
-
-.input-with-icon {
-    position: relative;
-
-    width: 100%;
-}
-
-.input-with-icon > i {
-    position: absolute;
-
-    left: 14px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    color: #667085;
-
-    font-size: 15px;
-
-    pointer-events: none;
-
-    z-index: 2;
-}
-
-.input-with-icon input,
-.input-with-icon select,
-.input-with-icon textarea {
-    width: 100%;
-
-    min-height: 46px;
-
-    padding: 11px 13px 11px 42px;
-
-    border: 1px solid #d0d5dd;
-    border-radius: 10px;
-
-    background: #ffffff;
-    color: #1d2939;
-
-    outline: none;
-
-    font-family: inherit;
-    font-size: 14px;
-
-    box-sizing: border-box;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.input-with-icon textarea {
-    min-height: 120px;
-
-    resize: vertical;
-
-    padding-top: 13px;
-}
-
-.input-with-icon input:focus,
-.input-with-icon select:focus,
-.input-with-icon textarea:focus {
-    border-color: #063b73;
-
-    box-shadow: 0 0 0 3px rgba(6, 59, 115, 0.1);
-}
-
-.input-with-icon input::placeholder,
-.input-with-icon textarea::placeholder {
-    color: #98a2b3;
-}
-
-
-/* =========================================================
-   CHAMPS SPÉCIFIQUES
-   ========================================================= */
-
-#specificFields {
-    width: 100%;
-}
-
-#specificFields:empty {
-    display: none;
-}
-
-#specificFields > .specific-fields-header {
-    margin-bottom: 20px;
-}
-
-.specific-fields-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    margin-bottom: 18px;
-}
-
-.specific-fields-title i {
-    color: #063b73;
-}
-
-.specific-fields-title h3 {
+.account-empty p {
     margin: 0;
 
-    color: #1d2939;
-
-    font-size: 18px;
-}
-
-.specific-fields-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 20px;
-}
-
-.specific-field-full {
-    grid-column: 1 / -1;
-}
-
-
-/* =========================================================
-   CHAMPS PHOTO
-   ========================================================= */
-
-.photo-upload-box {
-    width: 100%;
-
-    padding: 18px;
-
-    border: 1px dashed #b8c4d3;
-    border-radius: 12px;
-
-    background: #f9fafb;
-}
-
-.photo-upload-box input[type="file"] {
-    width: 100%;
-
-    font-size: 13px;
-
-    color: #475467;
-}
-
-.photo-preview {
-    display: none;
-
-    width: 110px;
-    height: 110px;
-
-    margin-top: 12px;
-
-    border-radius: 12px;
-
-    object-fit: cover;
-
-    border: 1px solid #e2e7ee;
-}
-
-.photo-preview.show {
-    display: block;
-}
-
-
-/* =========================================================
-   BOUTONS / AVAILABILITÉ
-   ========================================================= */
-
-.availability-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.availability-option {
-    position: relative;
-}
-
-.availability-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.availability-option label {
-    display: inline-flex;
-
-    align-items: center;
-    gap: 8px;
-
-    padding: 11px 15px;
-
-    border: 1px solid #d0d5dd;
-    border-radius: 9px;
-
-    background: #ffffff;
-    color: #344054;
-
-    cursor: pointer;
-
-    font-size: 13px;
-    font-weight: 650;
-}
-
-.availability-option input:checked + label {
-    border-color: #20a86b;
-
-    background: #eefbf5;
-    color: #168653;
-}
-
-
-/* =========================================================
-   CONDITIONS
-   ========================================================= */
-
-.terms-group {
-    width: 100%;
-
-    margin: 5px 0 20px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-
-    color: #667085;
+    color: var(--account-muted);
 
     font-size: 13px;
     line-height: 1.6;
-
-    cursor: pointer;
 }
 
-.checkbox-label input {
-    width: 17px;
-    height: 17px;
 
-    flex: 0 0 17px;
+/* =========================================================
+   CHARGEMENT
+========================================================= */
 
-    margin-top: 2px;
+.account-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    accent-color: #063b73;
+    gap: 10px;
+
+    padding: 35px;
+
+    color: var(--account-muted);
+
+    font-size: 14px;
 }
 
-.checkbox-label a {
-    color: #063b73;
-    font-weight: 700;
-    text-decoration: none;
-}
+.account-loading i {
+    color: var(--account-blue);
 
-.checkbox-label a:hover {
-    text-decoration: underline;
+    font-size: 18px;
 }
 
 
 /* =========================================================
    MESSAGE
-   ========================================================= */
+========================================================= */
 
-.signup-message {
+.account-message {
     display: none;
 
-    width: 100%;
-
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     padding: 13px 15px;
 
     border-radius: 10px;
 
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
 }
 
-.signup-message.show {
+.account-message.show {
     display: block;
 }
 
-.signup-message.success {
+.account-message.success {
     border: 1px solid #a6e4c5;
 
-    background: #ecfdf3;
+    background: var(--account-green-light);
     color: #067647;
 }
 
-.signup-message.error {
+.account-message.error {
     border: 1px solid #f5b5b0;
 
-    background: #fef3f2;
+    background: var(--account-danger-light);
     color: #b42318;
 }
 
-.signup-message.info {
+.account-message.info {
     border: 1px solid #b9d8f5;
 
     background: #eff8ff;
@@ -686,95 +1052,77 @@
 
 
 /* =========================================================
-   BOUTON INSCRIPTION
-   ========================================================= */
+   LIENS RAPIDES
+========================================================= */
 
-.signup-submit {
-    width: 100%;
+.account-quick-links {
+    display: grid;
 
-    min-height: 50px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.account-quick-link {
+    min-width: 0;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+
     gap: 10px;
 
-    border: 0;
-    border-radius: 11px;
+    padding: 12px;
 
-    background: #063b73;
-    color: #ffffff;
+    border: 1px solid var(--account-border);
+    border-radius: 10px;
 
-    cursor: pointer;
+    background: #ffffff;
+    color: var(--account-text);
 
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 800;
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
-.signup-submit:hover {
-    background: #04294f;
-
-    transform: translateY(-1px);
-
-    box-shadow: 0 8px 20px rgba(6, 59, 115, 0.2);
+.account-quick-link i {
+    color: var(--account-blue);
 }
 
-.signup-submit:disabled {
-    opacity: 0.65;
+.account-quick-link:hover {
+    border-color: var(--account-blue);
 
-    cursor: not-allowed;
-
-    transform: none;
-
-    box-shadow: none;
+    background: var(--account-blue-light);
 }
 
 
 /* =========================================================
-   CONNEXION
-   ========================================================= */
+   DÉCONNEXION
+========================================================= */
 
-.login-link {
-    padding-top: 18px;
+.account-logout {
+    width: 100%;
 
-    text-align: center;
-
-    color: #667085;
-
-    font-size: 14px;
-}
-
-.login-link a {
-    color: #063b73;
-
-    font-weight: 800;
-
-    text-decoration: none;
-}
-
-.login-link a:hover {
-    text-decoration: underline;
+    margin-top: 15px;
 }
 
 
 /* =========================================================
    TABLETTE
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
 
-    .signup-section {
-        padding: 30px 18px 50px;
+    .account-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .account-type-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .account-grid {
+        grid-template-columns: 1fr;
     }
 
 }
@@ -782,62 +1130,69 @@
 
 /* =========================================================
    MOBILE
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 
-    .signup-section {
-        padding: 22px 12px 40px;
+    .account-container {
+        padding: 22px 14px 45px;
     }
 
-    .signup-header {
-        margin-bottom: 25px;
+    .account-header h1 {
+        font-size: 25px;
     }
 
-    .signup-header h1 {
-        font-size: 26px;
-    }
-
-    .signup-header p {
-        font-size: 14px;
-    }
-
-    .account-type-grid {
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-    }
-
-    .account-type-card {
-        min-height: auto;
-
-        padding: 20px 16px;
-    }
-
-    .form-section {
-        padding: 18px 15px;
-
-        border-radius: 13px;
-    }
-
-    .form-grid,
-    .specific-fields-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group.full-width,
-    .specific-field-full {
-        grid-column: auto;
-    }
-
-    .selected-space {
+    .account-profile-card {
         align-items: flex-start;
 
         flex-wrap: wrap;
+
+        padding: 18px;
     }
 
-    .change-account-type {
-        margin-left: 59px;
+    .account-profile-info {
+        flex: 1 1 calc(100% - 120px);
+    }
+
+    .account-profile-actions {
+        width: 100%;
+    }
+
+    .account-profile-actions .account-btn {
+        flex: 1;
+    }
+
+    .account-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+    .account-stat-card {
+        padding: 15px;
+    }
+
+    .account-stat-card strong {
+        font-size: 21px;
+    }
+
+    .account-card {
+        padding: 18px;
+    }
+
+    .account-info-row {
+        grid-template-columns: 1fr;
+
+        gap: 5px;
+    }
+
+    .taxi-vehicle-box {
+        grid-template-columns: 1fr;
+    }
+
+    .taxi-vehicle-photo {
+        width: 100%;
+        height: 170px;
     }
 
 }
@@ -845,49 +1200,108 @@
 
 /* =========================================================
    PETIT MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 480px) {
 
-    .signup-section {
+    .account-container {
         padding-left: 10px;
         padding-right: 10px;
     }
 
-    .signup-header h1 {
-        font-size: 23px;
+    .account-profile-card {
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
     }
 
-    .signup-header-icon {
-        width: 55px;
-        height: 55px;
-
-        border-radius: 15px;
-
-        font-size: 22px;
+    .account-profile-info {
+        width: 100%;
     }
 
-    .step-title h2,
-    .form-section-title h2 {
-        font-size: 17px;
+    .account-profile-actions {
+        flex-direction: column;
+
+        width: 100%;
     }
 
-    .step-number,
-    .section-number {
-        width: 34px;
-        height: 34px;
-
-        flex-basis: 34px;
+    .account-profile-actions .account-btn {
+        width: 100%;
+        flex: none;
     }
 
-    .selected-space {
-        padding: 12px;
+    .account-stats {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .change-account-type {
-        width: calc(100% - 59px);
+    .account-stat-card {
+        padding: 13px;
+    }
 
-        margin-left: 59px;
+    .account-stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .account-stat-card strong {
+        font-size: 19px;
+    }
+
+    .account-card-header {
+        align-items: flex-start;
+    }
+
+    .account-card-header h2 {
+        font-size: 16px;
+    }
+
+    .taxi-availability {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .taxi-status {
+        align-self: flex-start;
+    }
+
+    .account-list-item {
+        align-items: flex-start;
+    }
+
+    .account-list-actions {
+        flex-direction: column;
+    }
+
+    .account-quick-links {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   TRÈS PETIT ÉCRAN
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .account-container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .account-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .account-avatar {
+        width: 78px;
+        height: 78px;
+
+        flex-basis: 78px;
     }
 
 }
