@@ -1,6 +1,12 @@
 /* =========================================================
-   CAMU SERVICES — INSCRIPTION DYNAMIQUE
+   CAMU SERVICES — INSCRIPTION
    Firebase + Cloudinary
+   ESPACES :
+   Client
+   CAMU IMMO
+   CAMU COMMERCE
+   CAMU TAXI
+   CAMU HÔTELS
 ========================================================= */
 
 import { auth, db } from "./firebase-config.js";
@@ -32,19 +38,28 @@ const CLOUDINARY_UPLOAD_URL =
 
 
 /* =========================================================
-   CONFIGURATION
+   COLLECTIONS
 ========================================================= */
 
 const COLLECTIONS = {
-    immobilier: "agents_immobiliers",
-    commerce: "etablissements_commerciaux",
-    vehicules: "chauffeurs",
-    hotels: "etablissements_hoteliers"
+
+    immobilier:
+        "agents_immobiliers",
+
+    commerce:
+        "etablissements_commerciaux",
+
+    taxi:
+        "chauffeurs",
+
+    hotels:
+        "etablissements_hoteliers"
+
 };
 
 
 /* =========================================================
-   ÉLÉMENTS DOM
+   DOM
 ========================================================= */
 
 const accountTypeStep =
@@ -98,8 +113,10 @@ let selectedAccountType = null;
 ========================================================= */
 
 if (signupYear) {
+
     signupYear.textContent =
         new Date().getFullYear();
+
 }
 
 
@@ -113,15 +130,13 @@ if (signupMenuButton) {
         "click",
         () => {
 
-            if (signupSidebar) {
-                signupSidebar.classList.add("open");
-            }
+            signupSidebar?.classList.add("open");
 
-            if (signupOverlay) {
-                signupOverlay.classList.add("open");
-            }
+            signupOverlay?.classList.add("open");
+
         }
     );
+
 }
 
 
@@ -131,50 +146,77 @@ if (signupOverlay) {
         "click",
         closeMobileMenu
     );
+
 }
 
 
 function closeMobileMenu() {
 
-    if (signupSidebar) {
-        signupSidebar.classList.remove("open");
-    }
+    signupSidebar?.classList.remove("open");
 
-    if (signupOverlay) {
-        signupOverlay.classList.remove("open");
-    }
+    signupOverlay?.classList.remove("open");
+
 }
 
 
 /* =========================================================
-   INFORMATIONS DES ESPACES
+   ESPACES CAMU
 ========================================================= */
 
 const ACCOUNT_TYPES = {
 
     client: {
-        name: "Client",
-        icon: "fa-solid fa-user"
+
+        name:
+            "Client",
+
+        icon:
+            "fa-solid fa-user"
+
     },
+
 
     immobilier: {
-        name: "CAMU IMMO",
-        icon: "fa-solid fa-house"
+
+        name:
+            "CAMU IMMO",
+
+        icon:
+            "fa-solid fa-house"
+
     },
+
 
     commerce: {
-        name: "CAMU COMMERCE",
-        icon: "fa-solid fa-store"
+
+        name:
+            "CAMU COMMERCE",
+
+        icon:
+            "fa-solid fa-store"
+
     },
 
-    vehicules: {
-        name: "VÉHICULES & TRANSPORT",
-        icon: "fa-solid fa-car"
+
+    taxi: {
+
+        name:
+            "CAMU TAXI",
+
+        icon:
+            "fa-solid fa-taxi"
+
     },
+
 
     hotels: {
-        name: "HÔTELS & HÉBERGEMENT",
-        icon: "fa-solid fa-hotel"
+
+        name:
+            "CAMU HÔTELS",
+
+        icon:
+            "fa-solid fa-hotel"
+
     }
 
 };
@@ -255,10 +297,11 @@ const COMMERCE_CATEGORIES = [
 
 
 /* =========================================================
-   CATÉGORIES HÔTELS
+   TYPES HÔTELS
 ========================================================= */
 
 const HOTEL_TYPES = [
+
     "Hôtel",
     "Résidence",
     "Appartement",
@@ -267,41 +310,29 @@ const HOTEL_TYPES = [
     "Lodge",
     "Courte durée",
     "Autre"
+
 ];
 
 
 /* =========================================================
-   CATÉGORIES VÉHICULES
+   TYPES DE VÉHICULES POUR CAMU TAXI
 ========================================================= */
 
-const VEHICLE_TYPES = [
+const TAXI_VEHICLE_TYPES = [
+
     "Taxi / Voiture",
-    "Moto",
-    "Bus / Minibus",
-    "Camion",
-    "Engin / Machine",
-    "Autre"
-];
 
-
-/* =========================================================
-   SERVICES VÉHICULES
-========================================================= */
-
-const VEHICLE_SERVICES = [
-    "Transport de personnes",
-    "Transport de marchandises",
-    "Taxi",
     "Moto-taxi",
-    "Location de véhicules",
-    "Vente de véhicules",
+
+    "Minibus",
+
     "Autre"
+
 ];
 
 
 /* =========================================================
-   PHOTO DE PROFIL
-   Créée automatiquement dans le HTML
+   PHOTO PROFIL
 ========================================================= */
 
 function ensureProfilePhotoField() {
@@ -310,34 +341,56 @@ function ensureProfilePhotoField() {
         return;
     }
 
-    if (document.getElementById("profilePhoto")) {
+
+    if (
+        document.getElementById(
+            "profilePhoto"
+        )
+    ) {
         return;
     }
 
+
     const fullNameInput =
-        document.getElementById("fullName");
+        document.getElementById(
+            "fullName"
+        );
+
 
     if (!fullNameInput) {
         return;
     }
 
+
     const fullNameGroup =
-        fullNameInput.closest(".form-group");
+        fullNameInput.closest(
+            ".form-group"
+        );
+
 
     if (!fullNameGroup) {
         return;
     }
 
+
     const photoGroup =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     photoGroup.className =
         "form-group full profile-photo-group";
 
+
     photoGroup.innerHTML = `
+
         <label for="profilePhoto">
+
             Photo de profil
+
         </label>
+
 
         <input
             type="file"
@@ -346,9 +399,13 @@ function ensureProfilePhotoField() {
             accept="image/jpeg,image/png,image/webp"
         >
 
+
         <small>
+
             JPG, PNG ou WEBP — 5 MB maximum.
+
         </small>
+
 
         <img
             id="profilePhotoPreview"
@@ -356,32 +413,163 @@ function ensureProfilePhotoField() {
             style="display:none;"
             alt="Aperçu de votre photo"
         >
+
     `;
+
 
     fullNameGroup.insertAdjacentElement(
         "afterend",
         photoGroup
     );
 
+
     setupProfilePhotoPreview();
+
 }
 
 
 /* =========================================================
-   APERÇU PHOTO
+   PHOTO VÉHICULE — UNIQUEMENT CAMU TAXI
+========================================================= */
+
+function ensureTaxiVehiclePhotoField() {
+
+    if (
+        selectedAccountType !==
+        "taxi"
+    ) {
+        return;
+    }
+
+
+    if (
+        document.getElementById(
+            "vehiclePhoto"
+        )
+    ) {
+        return;
+    }
+
+
+    const taxiDescription =
+        document.getElementById(
+            "taxiDescription"
+        );
+
+
+    if (!taxiDescription) {
+        return;
+    }
+
+
+    const descriptionGroup =
+        taxiDescription.closest(
+            ".form-group"
+        );
+
+
+    if (!descriptionGroup) {
+        return;
+    }
+
+
+    const photoGroup =
+        document.createElement(
+            "div"
+        );
+
+
+    photoGroup.className =
+        "form-group full";
+
+
+    photoGroup.innerHTML = `
+
+        <label for="vehiclePhoto">
+
+            Photo du véhicule
+
+        </label>
+
+
+        <input
+            type="file"
+            id="vehiclePhoto"
+            name="vehiclePhoto"
+            accept="image/jpeg,image/png,image/webp"
+        >
+
+
+        <small>
+
+            Ajoutez une photo claire de votre véhicule.
+            JPG, PNG ou WEBP — 5 MB maximum.
+
+        </small>
+
+
+        <img
+            id="vehiclePhotoPreview"
+            class="signup-photo-preview"
+            style="display:none;"
+            alt="Aperçu du véhicule"
+        >
+
+    `;
+
+
+    descriptionGroup.insertAdjacentElement(
+        "afterend",
+        photoGroup
+    );
+
+
+    setupImagePreview(
+        "vehiclePhoto",
+        "vehiclePhotoPreview"
+    );
+
+}
+
+
+/* =========================================================
+   APERÇU PHOTO PROFIL
 ========================================================= */
 
 function setupProfilePhotoPreview() {
 
+    setupImagePreview(
+        "profilePhoto",
+        "profilePhotoPreview"
+    );
+
+}
+
+
+/* =========================================================
+   APERÇU IMAGE GÉNÉRIQUE
+========================================================= */
+
+function setupImagePreview(
+    inputId,
+    previewId
+) {
+
     const input =
-        document.getElementById("profilePhoto");
+        document.getElementById(
+            inputId
+        );
 
     const preview =
-        document.getElementById("profilePhotoPreview");
+        document.getElementById(
+            previewId
+        );
+
 
     if (!input || !preview) {
         return;
     }
+
 
     input.addEventListener(
         "change",
@@ -390,28 +578,42 @@ function setupProfilePhotoPreview() {
             const file =
                 input.files?.[0];
 
+
             if (!file) {
 
                 preview.src = "";
-                preview.style.display = "none";
+
+                preview.style.display =
+                    "none";
 
                 return;
+
             }
 
 
             const allowedTypes = [
+
                 "image/jpeg",
+
                 "image/png",
+
                 "image/webp"
+
             ];
 
 
-            if (!allowedTypes.includes(file.type)) {
+            if (
+                !allowedTypes.includes(
+                    file.type
+                )
+            ) {
 
                 input.value = "";
 
                 preview.src = "";
-                preview.style.display = "none";
+
+                preview.style.display =
+                    "none";
 
                 showMessage(
                     "Format de photo invalide. Utilisez JPG, PNG ou WEBP.",
@@ -419,15 +621,21 @@ function setupProfilePhotoPreview() {
                 );
 
                 return;
+
             }
 
 
-            if (file.size > 5 * 1024 * 1024) {
+            if (
+                file.size >
+                5 * 1024 * 1024
+            ) {
 
                 input.value = "";
 
                 preview.src = "";
-                preview.style.display = "none";
+
+                preview.style.display =
+                    "none";
 
                 showMessage(
                     "La photo ne doit pas dépasser 5 MB.",
@@ -435,11 +643,13 @@ function setupProfilePhotoPreview() {
                 );
 
                 return;
+
             }
 
 
             const reader =
                 new FileReader();
+
 
             reader.onload =
                 event => {
@@ -449,39 +659,49 @@ function setupProfilePhotoPreview() {
 
                     preview.style.display =
                         "block";
+
                 };
 
-            reader.readAsDataURL(file);
+
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
+
 }
 
 
 /* =========================================================
-   CHOIX DU TYPE DE COMPTE
+   CHOIX ESPACE
 ========================================================= */
 
 document
-    .querySelectorAll(".account-type-card")
-    .forEach(card => {
+    .querySelectorAll(
+        ".account-type-card"
+    )
+    .forEach(
+        card => {
 
-        card.addEventListener(
-            "click",
-            () => {
+            card.addEventListener(
+                "click",
+                () => {
 
-                const type =
-                    card.dataset.accountType;
+                    const type =
+                        card.dataset.accountType;
 
-                selectAccountType(
-                    type,
-                    card
-                );
 
-            }
-        );
+                    selectAccountType(
+                        type,
+                        card
+                    );
 
-    });
+                }
+            );
+
+        }
+    );
 
 
 /* =========================================================
@@ -493,48 +713,78 @@ function selectAccountType(
     selectedCard = null
 ) {
 
-    if (!ACCOUNT_TYPES[type]) {
+    if (
+        !ACCOUNT_TYPES[type]
+    ) {
         return;
     }
+
 
     selectedAccountType =
         type;
 
 
     document
-        .querySelectorAll(".account-type-card")
-        .forEach(card => {
-            card.classList.remove("selected");
-        });
+        .querySelectorAll(
+            ".account-type-card"
+        )
+        .forEach(
+            card => {
+
+                card.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
 
 
-    if (selectedCard) {
-        selectedCard.classList.add("selected");
-    }
+    selectedCard?.classList.add(
+        "selected"
+    );
 
 
     const accountInfo =
         ACCOUNT_TYPES[type];
 
 
-    selectedSpaceName.textContent =
-        accountInfo.name;
+    if (selectedSpaceName) {
+
+        selectedSpaceName.textContent =
+            accountInfo.name;
+
+    }
 
 
-    selectedSpaceIcon.className =
-        accountInfo.icon;
+    if (selectedSpaceIcon) {
+
+        selectedSpaceIcon.className =
+            accountInfo.icon;
+
+    }
 
 
-    buildSpecificFields(type);
+    buildSpecificFields(
+        type
+    );
+
 
     ensureProfilePhotoField();
 
 
-    accountTypeStep.classList.add(
+    if (type === "taxi") {
+
+        ensureTaxiVehiclePhotoField();
+
+    }
+
+
+    accountTypeStep?.classList.add(
         "hidden"
     );
 
-    signupFormWrapper.classList.remove(
+
+    signupFormWrapper?.classList.remove(
         "hidden"
     );
 
@@ -542,15 +792,22 @@ function selectAccountType(
     clearMessage();
 
 
+    closeMobileMenu();
+
+
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
+
 }
 
 
 /* =========================================================
-   MODIFIER LE TYPE
+   MODIFIER ESPACE
 ========================================================= */
 
 if (changeAccountType) {
@@ -563,40 +820,58 @@ if (changeAccountType) {
                 null;
 
 
-            signupFormWrapper.classList.add(
-                "hidden"
-            );
-
-            accountTypeStep.classList.remove(
+            signupFormWrapper?.classList.add(
                 "hidden"
             );
 
 
-            specificFields.innerHTML =
-                "";
+            accountTypeStep?.classList.remove(
+                "hidden"
+            );
+
+
+            if (specificFields) {
+
+                specificFields.innerHTML =
+                    "";
+
+            }
 
 
             clearMessage();
 
 
             window.scrollTo({
+
                 top:
-                    accountTypeStep.offsetTop - 20,
-                behavior: "smooth"
+                    (accountTypeStep?.offsetTop || 0) - 20,
+
+                behavior:
+                    "smooth"
+
             });
 
         }
     );
+
 }
 
 
 /* =========================================================
-   CONSTRUCTION DES CHAMPS
+   CHAMPS SPÉCIFIQUES
 ========================================================= */
 
-function buildSpecificFields(type) {
+function buildSpecificFields(
+    type
+) {
 
-    specificFields.innerHTML = "";
+    if (!specificFields) {
+        return;
+    }
+
+
+    specificFields.innerHTML =
+        "";
 
 
     /* =====================================================
@@ -618,21 +893,22 @@ function buildSpecificFields(type) {
                     </h3>
 
                     <p>
-                        Aucun renseignement professionnel
-                        supplémentaire n'est nécessaire.
+                        Aucun renseignement professionnel supplémentaire n'est nécessaire.
                     </p>
 
                 </div>
 
             </div>
+
         `;
 
         return;
+
     }
 
 
     /* =====================================================
-       IMMOBILIER
+       CAMU IMMO
     ====================================================== */
 
     if (type === "immobilier") {
@@ -650,8 +926,7 @@ function buildSpecificFields(type) {
                     </h3>
 
                     <p>
-                        Présentez votre activité dans le domaine
-                        immobilier.
+                        Présentez votre activité dans le domaine immobilier.
                     </p>
 
                 </div>
@@ -730,14 +1005,16 @@ function buildSpecificFields(type) {
                 </div>
 
             </div>
+
         `;
 
         return;
+
     }
 
 
     /* =====================================================
-       COMMERCE
+       CAMU COMMERCE
     ====================================================== */
 
     if (type === "commerce") {
@@ -746,13 +1023,13 @@ function buildSpecificFields(type) {
             COMMERCE_CATEGORIES
                 .map(
                     category => `
-                        <option value="${escapeHtml(
-                            category.value
-                        )}">
-                            ${escapeHtml(
-                                category.label
-                            )}
+
+                        <option
+                            value="${escapeHtml(category.value)}"
+                        >
+                            ${escapeHtml(category.label)}
                         </option>
+
                     `
                 )
                 .join("");
@@ -771,8 +1048,7 @@ function buildSpecificFields(type) {
                     </h3>
 
                     <p>
-                        Ces informations seront utilisées
-                        pour présenter votre établissement.
+                        Ces informations seront utilisées pour présenter votre établissement.
                     </p>
 
                 </div>
@@ -855,45 +1131,31 @@ function buildSpecificFields(type) {
                 </div>
 
             </div>
+
         `;
 
         return;
+
     }
 
 
     /* =====================================================
-       VÉHICULES
+       CAMU TAXI
     ====================================================== */
 
-    if (type === "vehicules") {
+    if (type === "taxi") {
 
-        const vehicleTypes =
-            VEHICLE_TYPES
+        const taxiVehicleOptions =
+            TAXI_VEHICLE_TYPES
                 .map(
                     vehicleType => `
-                        <option value="${escapeHtml(
-                            vehicleType
-                        )}">
-                            ${escapeHtml(
-                                vehicleType
-                            )}
-                        </option>
-                    `
-                )
-                .join("");
 
-
-        const vehicleServices =
-            VEHICLE_SERVICES
-                .map(
-                    service => `
-                        <option value="${escapeHtml(
-                            service
-                        )}">
-                            ${escapeHtml(
-                                service
-                            )}
+                        <option
+                            value="${escapeHtml(vehicleType)}"
+                        >
+                            ${escapeHtml(vehicleType)}
                         </option>
+
                     `
                 )
                 .join("");
@@ -903,17 +1165,16 @@ function buildSpecificFields(type) {
 
             <div class="form-section-title">
 
-                <i class="fa-solid fa-car"></i>
+                <i class="fa-solid fa-taxi"></i>
 
                 <div>
 
                     <h3>
-                        Informations véhicules & transport
+                        Profil chauffeur CAMU TAXI
                     </h3>
 
                     <p>
-                        Présentez votre véhicule ou votre
-                        activité de transport.
+                        Ces informations permettront aux clients CAMU de trouver votre profil et de vous contacter sur WhatsApp.
                     </p>
 
                 </div>
@@ -923,16 +1184,39 @@ function buildSpecificFields(type) {
 
             <div class="form-grid">
 
+
+                <!-- QUARTIER -->
+
                 <div class="form-group">
 
-                    <label for="vehicleProfessionalType">
-                        Type de professionnel
+                    <label for="taxiQuartier">
+                        Quartier
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="taxiQuartier"
+                        name="taxiQuartier"
+                        placeholder="Ex. Kenya"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- TYPE VÉHICULE -->
+
+                <div class="form-group">
+
+                    <label for="taxiVehicleType">
+                        Type de véhicule
                         <span>*</span>
                     </label>
 
                     <select
-                        id="vehicleProfessionalType"
-                        name="vehicleProfessionalType"
+                        id="taxiVehicleType"
+                        name="taxiVehicleType"
                         required
                     >
 
@@ -940,126 +1224,118 @@ function buildSpecificFields(type) {
                             Sélectionner
                         </option>
 
-                        <option value="chauffeur">
-                            Chauffeur
-                        </option>
-
-                        <option value="proprietaire">
-                            Propriétaire de véhicule
-                        </option>
-
-                        <option value="agence">
-                            Agence automobile
-                        </option>
-
-                        <option value="transporteur">
-                            Entreprise de transport
-                        </option>
+                        ${taxiVehicleOptions}
 
                     </select>
 
                 </div>
 
 
-                <div class="form-group">
-
-                    <label for="vehicleType">
-                        Type de véhicule
-                    </label>
-
-                    <select
-                        id="vehicleType"
-                        name="vehicleType"
-                    >
-
-                        <option value="">
-                            Sélectionner
-                        </option>
-
-                        ${vehicleTypes}
-
-                    </select>
-
-                </div>
-
+                <!-- MARQUE -->
 
                 <div class="form-group">
 
-                    <label for="vehicleBrand">
-                        Marque du véhicule
+                    <label for="taxiVehicleBrand">
+                        Marque / modèle
+                        <span>*</span>
                     </label>
 
                     <input
                         type="text"
-                        id="vehicleBrand"
-                        name="vehicleBrand"
-                        placeholder="Ex. Nissan"
+                        id="taxiVehicleBrand"
+                        name="taxiVehicleBrand"
+                        placeholder="Ex. Toyota Corolla"
+                        required
                     >
 
                 </div>
 
 
+                <!-- PLAQUE -->
+
                 <div class="form-group">
 
-                    <label for="vehiclePlate">
+                    <label for="taxiVehiclePlate">
                         Plaque d'immatriculation
+                        <span>*</span>
                     </label>
 
                     <input
                         type="text"
-                        id="vehiclePlate"
-                        name="vehiclePlate"
-                        placeholder="Ex. AA2243/05"
+                        id="taxiVehiclePlate"
+                        name="taxiVehiclePlate"
+                        placeholder="Ex. CGO 1234 AB"
+                        required
                     >
 
                 </div>
 
 
-                <div class="form-group full">
+                <!-- DISPONIBILITÉ -->
 
-                    <label for="vehicleService">
-                        Service proposé
+                <div class="form-group">
+
+                    <label for="taxiAvailability">
+                        Disponibilité
                     </label>
 
                     <select
-                        id="vehicleService"
-                        name="vehicleService"
+                        id="taxiAvailability"
+                        name="taxiAvailability"
                     >
 
-                        <option value="">
-                            Sélectionner
+                        <option value="false">
+                            Indisponible
                         </option>
 
-                        ${vehicleServices}
+                        <option value="true">
+                            Disponible
+                        </option>
 
                     </select>
 
                 </div>
 
 
+                <!-- DESCRIPTION -->
+
                 <div class="form-group full">
 
-                    <label for="vehicleDescription">
-                        Description
+                    <label for="taxiDescription">
+                        Présentation
                     </label>
 
                     <textarea
-                        id="vehicleDescription"
-                        name="vehicleDescription"
-                        placeholder="Présentez votre activité..."
+                        id="taxiDescription"
+                        name="taxiDescription"
+                        placeholder="Présentez votre service de transport..."
                     ></textarea>
 
                 </div>
 
             </div>
+
         `;
 
+
+        /*
+         * Le champ photo du véhicule est ajouté
+         * après la construction du formulaire.
+         */
+
+        setTimeout(
+            ensureTaxiVehiclePhotoField,
+            0
+        );
+
+
         return;
+
     }
 
 
     /* =====================================================
-       HÔTELS
+       CAMU HÔTELS
     ====================================================== */
 
     if (type === "hotels") {
@@ -1068,13 +1344,13 @@ function buildSpecificFields(type) {
             HOTEL_TYPES
                 .map(
                     hotelType => `
-                        <option value="${escapeHtml(
-                            hotelType
-                        )}">
-                            ${escapeHtml(
-                                hotelType
-                            )}
+
+                        <option
+                            value="${escapeHtml(hotelType)}"
+                        >
+                            ${escapeHtml(hotelType)}
                         </option>
+
                     `
                 )
                 .join("");
@@ -1093,8 +1369,7 @@ function buildSpecificFields(type) {
                     </h3>
 
                     <p>
-                        Présentez votre hôtel ou votre
-                        établissement d'hébergement.
+                        Présentez votre hôtel ou votre établissement d'hébergement.
                     </p>
 
                 </div>
@@ -1103,6 +1378,7 @@ function buildSpecificFields(type) {
 
 
             <div class="form-grid">
+
 
                 <div class="form-group full">
 
@@ -1177,13 +1453,16 @@ function buildSpecificFields(type) {
                 </div>
 
             </div>
+
         `;
+
     }
+
 }
 
 
 /* =========================================================
-   CHARGER LES VILLES
+   CHARGER LES VILLES DEPUIS FIRESTORE
 ========================================================= */
 
 async function loadCities() {
@@ -1192,12 +1471,15 @@ async function loadCities() {
         return;
     }
 
+
     try {
 
         villeSelect.innerHTML = `
+
             <option value="">
                 Chargement des villes...
             </option>
+
         `;
 
 
@@ -1220,7 +1502,9 @@ async function loadCities() {
                     documentSnapshot.data();
 
 
-                if (data.active === false) {
+                if (
+                    data.active === false
+                ) {
                     return;
                 }
 
@@ -1247,6 +1531,7 @@ async function loadCities() {
                         Number(
                             data.order
                         ) || 999
+
                 });
 
             }
@@ -1260,24 +1545,30 @@ async function loadCities() {
                     a.order !==
                     b.order
                 ) {
+
                     return (
                         a.order -
                         b.order
                     );
+
                 }
+
 
                 return a.name.localeCompare(
                     b.name,
                     "fr"
                 );
+
             }
         );
 
 
         villeSelect.innerHTML = `
+
             <option value="">
                 Sélectionner votre ville
             </option>
+
         `;
 
 
@@ -1293,6 +1584,7 @@ async function loadCities() {
                 option.value =
                     city.name;
 
+
                 option.textContent =
                     city.name;
 
@@ -1300,6 +1592,7 @@ async function loadCities() {
                 villeSelect.appendChild(
                     option
                 );
+
             }
         );
 
@@ -1307,10 +1600,13 @@ async function loadCities() {
         if (!cities.length) {
 
             villeSelect.innerHTML = `
+
                 <option value="">
                     Aucune ville disponible
                 </option>
+
             `;
+
         }
 
     } catch (error) {
@@ -1322,16 +1618,20 @@ async function loadCities() {
 
 
         villeSelect.innerHTML = `
+
             <option value="">
                 Impossible de charger les villes
             </option>
+
         `;
+
     }
+
 }
 
 
 /* =========================================================
-   RÉCUPÉRER LA PHOTO
+   RÉCUPÉRER PHOTO PROFIL
 ========================================================= */
 
 function getSelectedProfilePhoto() {
@@ -1341,16 +1641,42 @@ function getSelectedProfilePhoto() {
             "profilePhoto"
         );
 
-    return input?.files?.[0] || null;
+
+    return (
+        input?.files?.[0] ||
+        null
+    );
+
 }
 
 
 /* =========================================================
-   UPLOAD PHOTO CLOUDINARY
+   RÉCUPÉRER PHOTO VÉHICULE
 ========================================================= */
 
-async function uploadProfilePhoto(
-    file
+function getSelectedVehiclePhoto() {
+
+    const input =
+        document.getElementById(
+            "vehiclePhoto"
+        );
+
+
+    return (
+        input?.files?.[0] ||
+        null
+    );
+
+}
+
+
+/* =========================================================
+   UPLOAD CLOUDINARY
+========================================================= */
+
+async function uploadImage(
+    file,
+    folder
 ) {
 
     if (!file) {
@@ -1359,25 +1685,38 @@ async function uploadProfilePhoto(
 
 
     const allowedTypes = [
+
         "image/jpeg",
+
         "image/png",
+
         "image/webp"
+
     ];
 
 
-    if (!allowedTypes.includes(file.type)) {
+    if (
+        !allowedTypes.includes(
+            file.type
+        )
+    ) {
 
         throw new Error(
             "Format de photo invalide. Utilisez JPG, PNG ou WEBP."
         );
+
     }
 
 
-    if (file.size > 5 * 1024 * 1024) {
+    if (
+        file.size >
+        5 * 1024 * 1024
+    ) {
 
         throw new Error(
             "La photo ne doit pas dépasser 5 MB."
         );
+
     }
 
 
@@ -1399,7 +1738,7 @@ async function uploadProfilePhoto(
 
     formData.append(
         "folder",
-        "camu-services/profiles"
+        folder
     );
 
 
@@ -1407,13 +1746,19 @@ async function uploadProfilePhoto(
         await fetch(
             CLOUDINARY_UPLOAD_URL,
             {
-                method: "POST",
-                body: formData
+
+                method:
+                    "POST",
+
+                body:
+                    formData
+
             }
         );
 
 
-    let result;
+    let result = null;
+
 
     try {
 
@@ -1423,6 +1768,7 @@ async function uploadProfilePhoto(
     } catch {
 
         result = null;
+
     }
 
 
@@ -1436,18 +1782,21 @@ async function uploadProfilePhoto(
             result
         );
 
+
         throw new Error(
             "Impossible d'envoyer la photo vers Cloudinary."
         );
+
     }
 
 
     return result.secure_url;
+
 }
 
 
 /* =========================================================
-   SUBMIT
+   SUBMIT INSCRIPTION
 ========================================================= */
 
 if (signupForm) {
@@ -1458,12 +1807,9 @@ if (signupForm) {
 
             event.preventDefault();
 
+
             clearMessage();
 
-
-            /* ---------------------------------------------
-               TYPE DE COMPTE
-            --------------------------------------------- */
 
             if (!selectedAccountType) {
 
@@ -1473,12 +1819,9 @@ if (signupForm) {
                 );
 
                 return;
+
             }
 
-
-            /* ---------------------------------------------
-               VALIDATION HTML
-            --------------------------------------------- */
 
             if (
                 !signupForm.checkValidity()
@@ -1487,22 +1830,25 @@ if (signupForm) {
                 signupForm.reportValidity();
 
                 return;
+
             }
 
 
-            /* ---------------------------------------------
-               MOT DE PASSE
-            --------------------------------------------- */
-
             const password =
-                getValue("password");
+                getValue(
+                    "password"
+                );
 
 
             const confirmPassword =
-                getValue("confirmPassword");
+                getValue(
+                    "confirmPassword"
+                );
 
 
-            if (password.length < 6) {
+            if (
+                password.length < 6
+            ) {
 
                 showMessage(
                     "Le mot de passe doit contenir au moins 6 caractères.",
@@ -1510,6 +1856,7 @@ if (signupForm) {
                 );
 
                 return;
+
             }
 
 
@@ -1524,12 +1871,9 @@ if (signupForm) {
                 );
 
                 return;
+
             }
 
-
-            /* ---------------------------------------------
-               CONDITIONS
-            --------------------------------------------- */
 
             const terms =
                 document.getElementById(
@@ -1537,7 +1881,9 @@ if (signupForm) {
                 );
 
 
-            if (!terms?.checked) {
+            if (
+                !terms?.checked
+            ) {
 
                 showMessage(
                     "Veuillez accepter les conditions d'utilisation.",
@@ -1545,6 +1891,7 @@ if (signupForm) {
                 );
 
                 return;
+
             }
 
 
@@ -1558,29 +1905,40 @@ if (signupForm) {
                 ========================================== */
 
                 const fullName =
-                    getValue("fullName");
+                    getValue(
+                        "fullName"
+                    );
 
 
                 const phone =
-                    getValue("phone");
+                    getValue(
+                        "phone"
+                    );
 
 
                 const whatsapp =
-                    getValue("whatsapp") ||
+                    getValue(
+                        "whatsapp"
+                    ) ||
                     phone;
 
 
                 const email =
-                    getValue("email")
-                        .toLowerCase();
+                    getValue(
+                        "email"
+                    ).toLowerCase();
 
 
                 const ville =
-                    getValue("ville");
+                    getValue(
+                        "ville"
+                    );
 
 
                 const commune =
-                    getValue("commune");
+                    getValue(
+                        "commune"
+                    );
 
 
                 const photoFile =
@@ -1588,7 +1946,7 @@ if (signupForm) {
 
 
                 /* =========================================
-                   CRÉER COMPTE FIREBASE AUTH
+                   COMPTE FIREBASE AUTH
                 ========================================== */
 
                 const userCredential =
@@ -1604,7 +1962,7 @@ if (signupForm) {
 
 
                 /* =========================================
-                   PHOTO CLOUDINARY
+                   PHOTO PROFIL
                 ========================================== */
 
                 let photoURL = "";
@@ -1613,24 +1971,28 @@ if (signupForm) {
                 if (photoFile) {
 
                     photoURL =
-                        await uploadProfilePhoto(
-                            photoFile
+                        await uploadImage(
+                            photoFile,
+                            "camu-services/profiles"
                         );
+
                 }
 
 
                 /* =========================================
-                   PROFIL FIREBASE AUTH
+                   PROFIL AUTH
                 ========================================== */
 
                 await updateProfile(
                     user,
                     {
+
                         displayName:
                             fullName,
 
                         photoURL:
                             photoURL || null
+
                     }
                 );
 
@@ -1679,6 +2041,7 @@ if (signupForm) {
 
                     updatedAt:
                         serverTimestamp()
+
                 };
 
 
@@ -1699,13 +2062,21 @@ if (signupForm) {
                 await createProfessionalProfile(
                     user.uid,
                     {
+
                         fullName,
+
                         email,
+
                         phone,
+
                         whatsapp,
+
                         ville,
+
                         commune,
+
                         photoURL
+
                     }
                 );
 
@@ -1715,10 +2086,21 @@ if (signupForm) {
                 ========================================== */
 
                 showMessage(
-                    selectedAccountType === "client"
+
+                    selectedAccountType ===
+                    "client"
+
                         ? "Votre compte a été créé avec succès."
-                        : "Votre compte a été créé. Votre profil professionnel sera vérifié avant sa publication.",
+
+                        : selectedAccountType ===
+                          "taxi"
+
+                            ? "Votre compte CAMU TAXI a été créé. Votre profil sera vérifié avant sa publication."
+
+                            : "Votre compte a été créé. Votre profil professionnel sera vérifié avant sa publication.",
+
                     "success"
+
                 );
 
 
@@ -1737,6 +2119,23 @@ if (signupForm) {
 
                     preview.style.display =
                         "none";
+
+                }
+
+
+                const vehiclePreview =
+                    document.getElementById(
+                        "vehiclePhotoPreview"
+                    );
+
+
+                if (vehiclePreview) {
+
+                    vehiclePreview.src = "";
+
+                    vehiclePreview.style.display =
+                        "none";
+
                 }
 
 
@@ -1770,6 +2169,7 @@ if (signupForm) {
 
                     message =
                         "Cette adresse e-mail est déjà utilisée.";
+
                 }
 
                 else if (
@@ -1779,6 +2179,7 @@ if (signupForm) {
 
                     message =
                         "L'adresse e-mail est invalide.";
+
                 }
 
                 else if (
@@ -1788,6 +2189,7 @@ if (signupForm) {
 
                     message =
                         "Le mot de passe est trop faible.";
+
                 }
 
                 else if (
@@ -1797,18 +2199,19 @@ if (signupForm) {
 
                     message =
                         "Problème de connexion Internet.";
+
                 }
 
                 else if (
                     error.code ===
-                    "permission-denied"
-                    ||
+                    "permission-denied" ||
                     error.code ===
                     "firestore/permission-denied"
                 ) {
 
                     message =
-                        "Votre compte a été créé, mais votre profil n'a pas pu être enregistré à cause des règles de sécurité Firestore.";
+                        "Le compte a été créé, mais Firestore a refusé l'enregistrement du profil. Vérifiez les règles de sécurité.";
+
                 }
 
                 else if (
@@ -1817,6 +2220,7 @@ if (signupForm) {
 
                     message =
                         error.message;
+
                 }
 
 
@@ -1825,13 +2229,17 @@ if (signupForm) {
                     "error"
                 );
 
-            } finally {
+            }
+
+            finally {
 
                 setLoading(false);
+
             }
 
         }
     );
+
 }
 
 
@@ -1845,13 +2253,21 @@ async function createProfessionalProfile(
 ) {
 
     const {
+
         fullName,
+
         email,
+
         phone,
+
         whatsapp,
+
         ville,
+
         commune,
+
         photoURL
+
     } = common;
 
 
@@ -1865,11 +2281,12 @@ async function createProfessionalProfile(
     ) {
 
         return;
+
     }
 
 
     /* =====================================================
-       IMMOBILIER
+       CAMU IMMO
     ====================================================== */
 
     if (
@@ -1878,51 +2295,49 @@ async function createProfessionalProfile(
     ) {
 
         const type =
-            getValue("immoType");
+            getValue(
+                "immoType"
+            );
 
 
         const agency =
-            getValue("immoAgency");
+            getValue(
+                "immoAgency"
+            );
 
 
         const description =
-            getValue("immoDescription");
+            getValue(
+                "immoDescription"
+            );
 
 
         const profile = {
 
-            uid:
-                uid,
+            uid,
 
             name:
                 fullName,
 
-            email:
-                email,
+            email,
 
-            phone:
-                phone,
+            phone,
 
             WhatsApp:
                 whatsapp,
 
-            ville:
-                ville,
+            ville,
 
-            commune:
-                commune,
+            commune,
 
-            type:
-                type,
+            type,
 
             agencyName:
                 agency,
 
-            description:
-                description,
+            description,
 
-            photoURL:
-                photoURL,
+            photoURL,
 
             active:
                 false,
@@ -1932,6 +2347,7 @@ async function createProfessionalProfile(
 
             updatedAt:
                 serverTimestamp()
+
         };
 
 
@@ -1944,12 +2360,14 @@ async function createProfessionalProfile(
             profile
         );
 
+
         return;
+
     }
 
 
     /* =====================================================
-       COMMERCE
+       CAMU COMMERCE
     ====================================================== */
 
     if (
@@ -1983,38 +2401,29 @@ async function createProfessionalProfile(
 
         const profile = {
 
-            uid:
-                uid,
+            uid,
 
-            name:
-                name,
+            name,
 
-            email:
-                email,
+            email,
 
-            phone:
-                phone,
+            phone,
 
             WhatsApp:
                 whatsapp,
 
-            ville:
-                ville,
+            ville,
 
-            commune:
-                commune,
+            commune,
 
             adresse:
                 address,
 
-            category:
-                category,
+            category,
 
-            description:
-                description,
+            description,
 
-            photoURL:
-                photoURL,
+            photoURL,
 
             active:
                 false,
@@ -2024,6 +2433,7 @@ async function createProfessionalProfile(
 
             updatedAt:
                 serverTimestamp()
+
         };
 
 
@@ -2036,190 +2446,151 @@ async function createProfessionalProfile(
             profile
         );
 
+
         return;
+
     }
 
 
     /* =====================================================
-       VÉHICULES
+       CAMU TAXI
     ====================================================== */
 
     if (
         selectedAccountType ===
-        "vehicules"
+        "taxi"
     ) {
 
-        const professionalType =
+        const quartier =
             getValue(
-                "vehicleProfessionalType"
+                "taxiQuartier"
             );
 
 
         const vehicleType =
             getValue(
-                "vehicleType"
+                "taxiVehicleType"
             );
 
 
-        const brand =
+        const vehicleBrand =
             getValue(
-                "vehicleBrand"
+                "taxiVehicleBrand"
             );
 
 
-        const plate =
+        const vehiclePlate =
             getValue(
-                "vehiclePlate"
+                "taxiVehiclePlate"
             );
 
 
-        const service =
+        const availabilityValue =
             getValue(
-                "vehicleService"
+                "taxiAvailability"
             );
 
 
         const description =
             getValue(
-                "vehicleDescription"
+                "taxiDescription"
             );
 
 
-        /* =============================================
-           AGENCE
-        ============================================== */
-
-        if (
-            professionalType ===
-            "agence"
-        ) {
-
-            const profile = {
-
-                uid:
-                    uid,
-
-                nom:
-                    fullName,
-
-                name:
-                    fullName,
-
-                email:
-                    email,
-
-                phone:
-                    phone,
-
-                whatsapp:
-                    whatsapp,
-
-                ville:
-                    ville,
-
-                commune:
-                    commune,
-
-                description:
-                    description,
-
-                logoURL:
-                    photoURL,
-
-                photoURL:
-                    photoURL,
-
-                services:
-                    service,
-
-                active:
-                    false,
-
-                createdAt:
-                    serverTimestamp(),
-
-                updatedAt:
-                    serverTimestamp()
-            };
+        const vehiclePhotoFile =
+            getSelectedVehiclePhoto();
 
 
-            await setDoc(
-                doc(
-                    db,
-                    "agences_automobiles",
-                    uid
-                ),
-                profile
-            );
+        let photoVehicule = "";
 
 
-            return;
+        if (vehiclePhotoFile) {
+
+            photoVehicule =
+                await uploadImage(
+                    vehiclePhotoFile,
+                    "camu-services/taxis"
+                );
+
         }
 
 
-        /* =============================================
-           CHAUFFEUR / PROPRIÉTAIRE / TRANSPORTEUR
-        ============================================== */
-
         const profile = {
 
-            uid:
-                uid,
+            uid,
 
             name:
                 fullName,
 
-            email:
-                email,
+            email,
 
-            phone:
-                phone,
+            phone,
 
             WhatsApp:
                 whatsapp,
 
-            ville:
-                ville,
+            ville,
 
-            commune:
-                commune,
+            commune,
+
+            quartier,
 
             typeProfessionnel:
-                professionalType,
+                "chauffeur",
 
             typeVehicule:
                 vehicleType,
 
             marqueVehicule:
-                brand,
+                vehicleBrand,
 
             plaque:
-                plate,
+                vehiclePlate,
 
             service:
-                service,
+                "Taxi",
 
-            description:
-                description,
+            description,
 
-            photoURL:
-                photoURL,
+            photoURL,
+
+            photoVehicule,
 
             active:
                 false,
+
+            disponible:
+                availabilityValue ===
+                "true",
+
+            latitude:
+                null,
+
+            longitude:
+                null,
+
+            lastLocationUpdate:
+                null,
+
+            rating:
+                0,
+
+            totalRatings:
+                0,
 
             createdAt:
                 serverTimestamp(),
 
             updatedAt:
                 serverTimestamp()
+
         };
 
 
         await setDoc(
             doc(
                 db,
-                COLLECTIONS.vehicules,
+                COLLECTIONS.taxi,
                 uid
             ),
             profile
@@ -2227,11 +2598,12 @@ async function createProfessionalProfile(
 
 
         return;
+
     }
 
 
     /* =====================================================
-       HÔTELS
+       CAMU HÔTELS
     ====================================================== */
 
     if (
@@ -2265,26 +2637,19 @@ async function createProfessionalProfile(
 
         const profile = {
 
-            uid:
-                uid,
+            uid,
 
-            name:
-                name,
+            name,
 
-            email:
-                email,
+            email,
 
-            phone:
-                phone,
+            phone,
 
-            whatsapp:
-                whatsapp,
+            whatsapp,
 
-            ville:
-                ville,
+            ville,
 
-            commune:
-                commune,
+            commune,
 
             adresse:
                 address,
@@ -2292,11 +2657,9 @@ async function createProfessionalProfile(
             category:
                 type,
 
-            description:
-                description,
+            description,
 
-            photoURL:
-                photoURL,
+            photoURL,
 
             active:
                 false,
@@ -2306,6 +2669,7 @@ async function createProfessionalProfile(
 
             updatedAt:
                 serverTimestamp()
+
         };
 
 
@@ -2317,7 +2681,9 @@ async function createProfessionalProfile(
             ),
             profile
         );
+
     }
+
 }
 
 
@@ -2328,7 +2694,9 @@ async function createProfessionalProfile(
 function getValue(id) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
 
     if (!element) {
@@ -2339,6 +2707,7 @@ function getValue(id) {
     return String(
         element.value || ""
     ).trim();
+
 }
 
 
@@ -2362,6 +2731,7 @@ function showMessage(
 
     signupMessage.className =
         `signup-message show ${type}`;
+
 }
 
 
@@ -2372,10 +2742,13 @@ function clearMessage() {
     }
 
 
-    signupMessage.textContent = "";
+    signupMessage.textContent =
+        "";
+
 
     signupMessage.className =
         "signup-message";
+
 }
 
 
@@ -2414,6 +2787,7 @@ function setLoading(
 
             icon.className =
                 "fa-solid fa-spinner fa-spin";
+
         }
 
 
@@ -2421,14 +2795,18 @@ function setLoading(
 
             span.textContent =
                 "Création du compte...";
+
         }
 
-    } else {
+    }
+
+    else {
 
         if (icon) {
 
             icon.className =
                 "fa-solid fa-user-plus";
+
         }
 
 
@@ -2436,13 +2814,16 @@ function setLoading(
 
             span.textContent =
                 "Créer mon compte";
+
         }
+
     }
+
 }
 
 
 /* =========================================================
-   PASSWORD VISIBILITY
+   VISIBILITÉ MOT DE PASSE
 ========================================================= */
 
 document
@@ -2480,21 +2861,26 @@ document
                             "text";
 
 
-                        button.innerHTML =
-                            `
-                            <i class="fa-solid fa-eye-slash"></i>
-                            `;
+                        button.innerHTML = `
 
-                    } else {
+                            <i class="fa-solid fa-eye-slash"></i>
+
+                        `;
+
+                    }
+
+                    else {
 
                         input.type =
                             "password";
 
 
-                        button.innerHTML =
-                            `
+                        button.innerHTML = `
+
                             <i class="fa-solid fa-eye"></i>
-                            `;
+
+                        `;
+
                     }
 
                 }
@@ -2508,31 +2894,39 @@ document
    ESCAPE HTML
 ========================================================= */
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     return String(
         value ?? ""
     )
+
         .replaceAll(
             "&",
             "&amp;"
         )
+
         .replaceAll(
             "<",
             "&lt;"
         )
+
         .replaceAll(
             ">",
             "&gt;"
         )
+
         .replaceAll(
             '"',
             "&quot;"
         )
+
         .replaceAll(
             "'",
             "&#039;"
         );
+
 }
 
 
@@ -2546,5 +2940,5 @@ loadCities();
 
 
 console.log(
-    "CAMU INSCRIPTION — formulaire dynamique initialisé."
+    "CAMU INSCRIPTION — formulaire CAMU TAXI initialisé."
 );
