@@ -223,20 +223,6 @@ const ACCOUNT_INFO = {
     },
 
 
-    taxi: {
-
-        name: "CAMU TAXI BOOKING",
-
-        icon: "fa-solid fa-taxi",
-
-        title: "CAMU TAXI BOOKING",
-
-        description:
-            "Accédez à l'espace chauffeur CAMU TAXI pour proposer vos services de transport."
-
-    },
-
-
     hotels: {
 
         name: "CAMU HÔTELS",
