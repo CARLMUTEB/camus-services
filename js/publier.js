@@ -125,16 +125,17 @@ const publishOverlay =
 
 if (publishMenuButton) {
 
-    publishMenuButton.addEventListener(
-        "click",
-        () => {
+    publishMenuButton.addEventListener("click", () => {
 
-            publishSidebar?.classList.add("open");
+        publishSidebar?.classList.add("open");
+        publishOverlay?.classList.add("open");
 
-            publishOverlay?.classList.add("open");
+        publishMenuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
 
-        }
-    );
+    });
 
 }
 
@@ -152,8 +153,12 @@ if (publishOverlay) {
 function closeMobileMenu() {
 
     publishSidebar?.classList.remove("open");
-
     publishOverlay?.classList.remove("open");
+
+    publishMenuButton?.setAttribute(
+        "aria-expanded",
+        "false"
+    );
 
 }
 
@@ -171,7 +176,7 @@ if (publishYear) {
 
 
 /* =========================================================
-   INFORMATIONS DES ESPACES GÉNÉRIQUES
+   INFORMATIONS DES ESPACES
 ========================================================= */
 
 const ACCOUNT_INFO = {
@@ -218,23 +223,23 @@ const ACCOUNT_INFO = {
     },
 
 
-    vehicules: {
+    taxi: {
 
-        name: "VÉHICULES & TRANSPORT",
+        name: "CAMU TAXI BOOKING",
 
-        icon: "fa-solid fa-car",
+        icon: "fa-solid fa-taxi",
 
-        title: "Publier une annonce véhicule",
+        title: "CAMU TAXI BOOKING",
 
         description:
-            "Publiez un véhicule, un service de transport ou une offre automobile."
+            "Accédez à l'espace chauffeur CAMU TAXI pour proposer vos services de transport."
 
     },
 
 
     hotels: {
 
-        name: "HÔTELS & HÉBERGEMENT",
+        name: "CAMU HÔTELS",
 
         icon: "fa-solid fa-hotel",
 
@@ -249,7 +254,7 @@ const ACCOUNT_INFO = {
 
 
 /* =========================================================
-   ESPACES DISPONIBLES POUR L'ADMINISTRATEUR
+   ESPACES ADMINISTRATEUR
 ========================================================= */
 
 const ADMIN_SPACES = [
@@ -260,13 +265,11 @@ const ADMIN_SPACES = [
         icon: "fa-solid fa-user"
     },
 
-
     {
         value: "immobilier",
         label: "CAMU IMMO",
         icon: "fa-solid fa-house"
     },
-
 
     {
         value: "commerce",
@@ -274,31 +277,27 @@ const ADMIN_SPACES = [
         icon: "fa-solid fa-store"
     },
 
-
     {
-        value: "vehicules",
-        label: "Véhicules & Transport",
-        icon: "fa-solid fa-car"
+        value: "taxi",
+        label: "CAMU TAXI BOOKING",
+        icon: "fa-solid fa-taxi"
     },
-
 
     {
         value: "hotels",
-        label: "Hôtels & Hébergement",
+        label: "CAMU HÔTELS",
         icon: "fa-solid fa-hotel"
     },
 
-
     {
         value: "jobs",
-        label: "JOBS",
+        label: "CAMU JOBS",
         icon: "fa-solid fa-briefcase"
     },
 
-
     {
         value: "services",
-        label: "SERVICES",
+        label: "CAMU SERVICES",
         icon: "fa-solid fa-hand-holding-heart"
     }
 
@@ -352,27 +351,6 @@ const COMMERCE_CATEGORIES = [
 
 
 /* =========================================================
-   TYPES VÉHICULES
-========================================================= */
-
-const VEHICLE_TYPES = [
-
-    "Taxi / Voiture",
-
-    "Moto",
-
-    "Bus / Minibus",
-
-    "Camion",
-
-    "Engin / Machine",
-
-    "Autre"
-
-];
-
-
-/* =========================================================
    TYPES HÔTELS
 ========================================================= */
 
@@ -414,7 +392,6 @@ onAuthStateChanged(
             showAccessDenied();
 
             return;
-
         }
 
 
@@ -428,18 +405,6 @@ onAuthStateChanged(
             ADMIN_EMAIL.toLowerCase();
 
 
-        console.log(
-            "CAMU PUBLICATION — utilisateur :",
-            user.email
-        );
-
-
-        console.log(
-            "CAMU PUBLICATION — administrateur :",
-            isAdmin
-        );
-
-
         try {
 
             await loadUserProfile(user);
@@ -451,12 +416,10 @@ onAuthStateChanged(
                 error
             );
 
-
             showMessage(
                 "Impossible de récupérer votre profil.",
                 "error"
             );
-
 
             hideLoading();
 
@@ -473,7 +436,6 @@ onAuthStateChanged(
 async function loadUserProfile(user) {
 
     let userData = {};
-
 
     const userRef =
         doc(
@@ -504,7 +466,6 @@ async function loadUserProfile(user) {
         currentAccountType =
             "client";
 
-
         buildAdminSpaceSelector();
 
     }
@@ -523,11 +484,9 @@ async function loadUserProfile(user) {
                 "error"
             );
 
-
             hideLoading();
 
             return;
-
         }
 
 
@@ -536,8 +495,21 @@ async function loadUserProfile(user) {
                 userData.accountType ||
                 "client"
             )
-            .trim()
-            .toLowerCase();
+                .trim()
+                .toLowerCase();
+
+
+        /*
+         * Compatibilité avec les anciens comptes
+         */
+        if (
+            currentAccountType === "vehicules" ||
+            currentAccountType === "transport"
+        ) {
+
+            currentAccountType = "taxi";
+
+        }
 
 
         if (!ACCOUNT_INFO[currentAccountType]) {
@@ -599,14 +571,164 @@ async function loadUserProfile(user) {
 
 
     /* =====================================================
-       CONSTRUIRE LE FORMULAIRE
-    ====================================================== */
+       CAMU TAXI
+    ===================================================== */
+
+    if (
+        currentAccountType === "taxi" &&
+        !isAdmin
+    ) {
+
+        showTaxiRedirect();
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FORMULAIRE
+    ===================================================== */
 
     buildPublishTypes();
 
     buildSpecificFields();
 
     hideLoading();
+
+}
+
+
+/* =========================================================
+   REDIRECTION CAMU TAXI
+========================================================= */
+
+function showTaxiRedirect() {
+
+    hideLoading();
+
+    if (!publishFormContainer) {
+        return;
+    }
+
+    publishFormContainer.classList.remove(
+        "hidden"
+    );
+
+
+    if (publishSpaceName) {
+
+        publishSpaceName.textContent =
+            "CAMU TAXI BOOKING";
+
+    }
+
+
+    if (publishSpaceIcon) {
+
+        publishSpaceIcon.className =
+            "fa-solid fa-taxi";
+
+    }
+
+
+    if (publishHeroTitle) {
+
+        publishHeroTitle.textContent =
+            "CAMU TAXI BOOKING";
+
+    }
+
+
+    if (publishHeroDescription) {
+
+        publishHeroDescription.textContent =
+            "Devenez chauffeur CAMU TAXI et proposez vos services de transport.";
+
+    }
+
+
+    if (publishTypeFields) {
+
+        publishTypeFields.innerHTML = `
+
+            <div class="publish-taxi-access">
+
+                <div class="publish-taxi-access-icon">
+                    <i class="fa-solid fa-taxi"></i>
+                </div>
+
+                <h3>Devenir chauffeur CAMU TAXI</h3>
+
+                <p>
+                    Pour proposer vos services sur CAMU TAXI,
+                    créez ou complétez votre profil chauffeur.
+                </p>
+
+                <a
+                    href="devenir-chauffeur.html"
+                    class="publish-button"
+                >
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Accéder à l'espace chauffeur
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+
+    if (publishSpecificFields) {
+
+        publishSpecificFields.innerHTML = "";
+
+    }
+
+
+    /*
+     * Les champs classiques ne sont pas nécessaires
+     * pour CAMU TAXI.
+     */
+
+    document
+        .querySelectorAll(
+            "#publishForm > .publish-form-section"
+        )
+        .forEach(section => {
+
+            const title =
+                section.querySelector(
+                    ".publish-section-title h2"
+                );
+
+            if (!title) {
+                return;
+            }
+
+            const text =
+                title.textContent.trim();
+
+            if (
+                text === "Localisation" ||
+                text === "Contact" ||
+                text === "Photos"
+            ) {
+
+                section.style.display = "none";
+
+            }
+
+        });
+
+
+    if (publishSubmit) {
+
+        publishSubmit.style.display =
+            "none";
+
+    }
 
 }
 
@@ -646,14 +768,9 @@ function buildAdminSpaceSelector() {
     container.id =
         "adminSpaceSelector";
 
-
     container.className =
         "admin-space-selector";
 
-
-    /* =====================================================
-       TITRE
-    ====================================================== */
 
     const title =
         document.createElement(
@@ -666,6 +783,7 @@ function buildAdminSpaceSelector() {
 
 
     title.innerHTML = `
+
         <i class="fa-solid fa-user-shield"></i>
 
         <div>
@@ -679,6 +797,7 @@ function buildAdminSpaceSelector() {
             </small>
 
         </div>
+
     `;
 
 
@@ -686,10 +805,6 @@ function buildAdminSpaceSelector() {
         title
     );
 
-
-    /* =====================================================
-       GRILLE
-    ====================================================== */
 
     const grid =
         document.createElement(
@@ -713,37 +828,34 @@ function buildAdminSpaceSelector() {
             button.type =
                 "button";
 
-
             button.className =
                 "admin-space-button";
-
 
             button.dataset.space =
                 space.value;
 
 
             button.innerHTML = `
+
                 <i class="${escapeHtml(space.icon)}"></i>
-                <span>${escapeHtml(space.label)}</span>
+
+                <span>
+                    ${escapeHtml(space.label)}
+                </span>
+
             `;
 
-
-            /* =============================================
-               ACTION AU CLIC
-            ============================================== */
 
             button.addEventListener(
                 "click",
                 () => {
 
-                    /* =====================================
+                    /* ==============================
                        JOBS
-                       Formulaire séparé
-                    ====================================== */
+                    =============================== */
 
                     if (
-                        space.value ===
-                        "jobs"
+                        space.value === "jobs"
                     ) {
 
                         window.location.href =
@@ -754,14 +866,12 @@ function buildAdminSpaceSelector() {
                     }
 
 
-                    /* =====================================
+                    /* ==============================
                        SERVICES
-                       Formulaire séparé
-                    ====================================== */
+                    =============================== */
 
                     if (
-                        space.value ===
-                        "services"
+                        space.value === "services"
                     ) {
 
                         window.location.href =
@@ -772,9 +882,25 @@ function buildAdminSpaceSelector() {
                     }
 
 
-                    /* =====================================
+                    /* ==============================
+                       CAMU TAXI
+                    =============================== */
+
+                    if (
+                        space.value === "taxi"
+                    ) {
+
+                        window.location.href =
+                            "devenir-chauffeur.html";
+
+                        return;
+
+                    }
+
+
+                    /* ==============================
                        AUTRES ESPACES
-                    ====================================== */
+                    =============================== */
 
                     currentAccountType =
                         space.value;
@@ -798,6 +924,33 @@ function buildAdminSpaceSelector() {
                     button.classList.add(
                         "active"
                     );
+
+
+                    /*
+                     * Réafficher les sections
+                     * éventuellement masquées.
+                     */
+
+                    document
+                        .querySelectorAll(
+                            "#publishForm > .publish-form-section"
+                        )
+                        .forEach(
+                            section => {
+
+                                section.style.display =
+                                    "";
+
+                            }
+                        );
+
+
+                    if (publishSubmit) {
+
+                        publishSubmit.style.display =
+                            "";
+
+                    }
 
 
                     updateSpaceHeader();
@@ -825,19 +978,11 @@ function buildAdminSpaceSelector() {
     );
 
 
-    /* =====================================================
-       INSERTION
-    ====================================================== */
-
     publishTypeFields.parentNode.insertBefore(
         container,
         publishTypeFields
     );
 
-
-    /* =====================================================
-       CLIENT SÉLECTIONNÉ PAR DÉFAUT
-    ====================================================== */
 
     const firstButton =
         container.querySelector(
@@ -946,8 +1091,7 @@ async function loadCities(
 
 
                 if (
-                    data.active ===
-                    false
+                    data.active === false
                 ) {
 
                     return;
@@ -1010,9 +1154,11 @@ async function loadCities(
 
 
         publishVille.innerHTML = `
+
             <option value="">
                 Sélectionner une ville
             </option>
+
         `;
 
 
@@ -1065,9 +1211,11 @@ async function loadCities(
 
 
         publishVille.innerHTML = `
+
             <option value="">
                 Impossible de charger les villes
             </option>
+
         `;
 
     }
@@ -1152,46 +1300,6 @@ function buildPublishTypes() {
 
 
     /* =====================================================
-       VÉHICULES
-    ====================================================== */
-
-    else if (
-        currentAccountType ===
-        "vehicules"
-    ) {
-
-        types = [
-
-            [
-                "vente_vehicule",
-                "Vente de véhicule",
-                "fa-car"
-            ],
-
-            [
-                "location",
-                "Location",
-                "fa-key"
-            ],
-
-            [
-                "transport",
-                "Transport",
-                "fa-route"
-            ],
-
-            [
-                "service_auto",
-                "Service automobile",
-                "fa-screwdriver-wrench"
-            ]
-
-        ];
-
-    }
-
-
-    /* =====================================================
        HÔTELS
     ====================================================== */
 
@@ -1250,10 +1358,6 @@ function buildPublishTypes() {
     }
 
 
-    /* =====================================================
-       AFFICHER LES TYPES
-    ====================================================== */
-
     types.forEach(
         (type, index) => {
 
@@ -1292,6 +1396,7 @@ function buildPublishTypes() {
                     </strong>
 
                 </span>
+
             `;
 
 
@@ -1444,6 +1549,7 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
+
         `;
 
         return;
@@ -1566,174 +1672,7 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
-        `;
 
-        return;
-    }
-
-
-    /* =====================================================
-       VÉHICULES
-    ====================================================== */
-
-    if (
-        currentAccountType ===
-        "vehicules"
-    ) {
-
-        const vehicleOptions =
-            VEHICLE_TYPES
-                .map(
-                    type => `
-
-                        <option
-                            value="${escapeHtml(type)}"
-                        >
-                            ${escapeHtml(type)}
-                        </option>
-
-                    `
-                )
-                .join("");
-
-
-        publishSpecificFields.innerHTML = `
-
-            <div class="publish-form-group full">
-
-                <label for="publishTitle">
-                    Titre de l'annonce <span>*</span>
-                </label>
-
-                <input
-                    type="text"
-                    id="publishTitle"
-                    placeholder="Ex. Nissan Patrol à vendre"
-                    required
-                >
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishVehicleType">
-                    Type de véhicule <span>*</span>
-                </label>
-
-                <select
-                    id="publishVehicleType"
-                    required
-                >
-
-                    <option value="">
-                        Sélectionner
-                    </option>
-
-                    ${vehicleOptions}
-
-                </select>
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishBrand">
-                    Marque
-                </label>
-
-                <input
-                    type="text"
-                    id="publishBrand"
-                    placeholder="Ex. Nissan"
-                >
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishModel">
-                    Modèle
-                </label>
-
-                <input
-                    type="text"
-                    id="publishModel"
-                    placeholder="Ex. Patrol"
-                >
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishYearVehicle">
-                    Année
-                </label>
-
-                <input
-                    type="number"
-                    id="publishYearVehicle"
-                    min="1900"
-                    max="2100"
-                    placeholder="Ex. 2022"
-                >
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishPrice">
-                    Prix
-                </label>
-
-                <input
-                    type="number"
-                    id="publishPrice"
-                    min="0"
-                    placeholder="Ex. 15000"
-                >
-
-            </div>
-
-
-            <div class="publish-form-group">
-
-                <label for="publishCurrency">
-                    Devise
-                </label>
-
-                <select id="publishCurrency">
-
-                    <option value="USD">
-                        USD
-                    </option>
-
-                    <option value="CDF">
-                        CDF
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="publish-form-group full">
-
-                <label for="publishDescription">
-                    Description <span>*</span>
-                </label>
-
-                <textarea
-                    id="publishDescription"
-                    placeholder="Décrivez le véhicule ou le service..."
-                    required
-                ></textarea>
-
-            </div>
         `;
 
         return;
@@ -1855,6 +1794,7 @@ function buildSpecificFields() {
                 ></textarea>
 
             </div>
+
         `;
 
         return;
@@ -2075,10 +2015,6 @@ if (publishForm) {
             clearMessage();
 
 
-            /* =============================================
-               UTILISATEUR CONNECTÉ
-            ============================================== */
-
             if (!currentUser) {
 
                 showMessage(
@@ -2086,6 +2022,21 @@ if (publishForm) {
                     "error"
                 );
 
+                return;
+
+            }
+
+
+            /*
+             * CAMU TAXI n'est pas une annonce classique.
+             */
+
+            if (
+                currentAccountType === "taxi"
+            ) {
+
+                window.location.href =
+                    "devenir-chauffeur.html";
 
                 return;
 
@@ -2102,15 +2053,10 @@ if (publishForm) {
 
                 publishForm.reportValidity();
 
-
                 return;
 
             }
 
-
-            /* =============================================
-               TYPE DE PUBLICATION
-            ============================================== */
 
             const selectedType =
                 document.querySelector(
@@ -2125,16 +2071,17 @@ if (publishForm) {
                     "error"
                 );
 
-
                 return;
 
             }
 
 
-            /* =============================================
-               PHOTO OBLIGATOIRE
-               SAUF POUR CLIENT
-            ============================================== */
+            /*
+             * Une photo est obligatoire pour les espaces
+             * professionnels.
+             *
+             * Le client peut publier sans photo.
+             */
 
             if (
                 selectedFiles.length === 0 &&
@@ -2145,7 +2092,6 @@ if (publishForm) {
                     "Ajoutez au moins une photo à votre annonce.",
                     "error"
                 );
-
 
                 return;
 
@@ -2223,84 +2169,63 @@ if (publishForm) {
 
                 const data = {
 
-                    title:
-                        title,
+                    title,
 
-
-                    description:
-                        description,
-
+                    description,
 
                     category:
                         getCategory(),
 
-
                     publicationType:
                         publishType,
-
 
                     city:
                         ville,
 
-
                     commune:
                         commune,
-
 
                     neighborhood:
                         neighborhood,
 
-
                     whatsapp:
                         whatsapp,
-
 
                     phone:
                         phone,
 
-
                     images:
                         imageURLs,
-
 
                     imageURL:
                         imageURLs[0] ||
                         "",
 
-
                     imageCount:
                         imageURLs.length,
-
 
                     userId:
                         currentUser.uid,
 
-
                     ownerId:
                         currentUser.uid,
 
-
                     ownerName:
                         currentUser.displayName ||
-                        "Administrateur",
-
+                        "Utilisateur CAMU",
 
                     ownerEmail:
                         currentUser.email ||
                         "",
 
-
                     accountType:
                         currentAccountType,
-
 
                     status:
                         "active",
 
-
                     createdAt:
                         serverTimestamp(),
-
 
                     updatedAt:
                         serverTimestamp()
@@ -2361,7 +2286,6 @@ if (publishForm) {
 
                 publishForm.reset();
 
-
                 selectedFiles = [];
 
 
@@ -2381,18 +2305,14 @@ if (publishForm) {
                 }
 
 
-                /* =========================================
-                   RECONSTRUIRE LE FORMULAIRE
-                ========================================== */
-
                 buildPublishTypes();
 
                 buildSpecificFields();
 
 
-                /* =========================================
-                   REDIRECTION
-                ========================================== */
+                /*
+                 * Redirection vers le détail
+                 */
 
                 setTimeout(
                     () => {
@@ -2465,10 +2385,10 @@ function getCategory() {
 
     if (
         currentAccountType ===
-        "vehicules"
+        "taxi"
     ) {
 
-        return "vehicules";
+        return "taxi";
 
     }
 
@@ -2560,63 +2480,6 @@ function addSpecificData(
             getValue(
                 "publishCurrency"
             );
-
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       VÉHICULES
-    ====================================================== */
-
-    if (
-        currentAccountType ===
-        "vehicules"
-    ) {
-
-        data.vehicleType =
-            getValue(
-                "publishVehicleType"
-            );
-
-
-        data.marque =
-            getValue(
-                "publishBrand"
-            );
-
-
-        data.modele =
-            getValue(
-                "publishModel"
-            );
-
-
-        data.annee =
-            numberValue(
-                "publishYearVehicle"
-            );
-
-
-        data.price =
-            numberValue(
-                "publishPrice"
-            );
-
-
-        data.currency =
-            getValue(
-                "publishCurrency"
-            );
-
-
-        data.vehiclePublicationType =
-            document.querySelector(
-                'input[name="publishType"]:checked'
-            )?.value ||
-            "";
 
 
         return;
@@ -2890,15 +2753,15 @@ function normalizeText(
         value ||
         ""
     )
-    .trim()
-    .toLowerCase()
-    .normalize(
-        "NFD"
-    )
-    .replace(
-        /[\u0300-\u036f]/g,
-        ""
-    );
+        .trim()
+        .toLowerCase()
+        .normalize(
+            "NFD"
+        )
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        );
 
 }
 
@@ -2914,26 +2777,26 @@ function escapeHtml(
     return String(
         value
     )
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
-    .replaceAll(
-        "'",
-        "&#039;"
-    );
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
@@ -3147,5 +3010,5 @@ function getErrorMessage(
 ========================================================= */
 
 console.log(
-    "CAMU PUBLICATION — système dynamique initialisé."
+    "CAMU PUBLICATION — système harmonisé initialisé."
 );
