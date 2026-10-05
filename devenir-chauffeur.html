@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Devenez chauffeur CAMU TAXI et proposez vos services de transport dans le Grand Katanga."
+    >
+
+    <meta name="theme-color" content="#063b73">
+
+    <title>Devenir chauffeur — CAMU TAXI</title>
+
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/devenir-chauffeur.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- ================================
+         SIDEBAR
+    ================================= -->
+
+    <aside
+        class="driver-sidebar"
+        id="driverSidebar"
+    >
+
+        <div class="driver-sidebar-logo">
+            <a href="index.html">
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
+        </div>
+
+        <nav class="driver-sidebar-nav">
+
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+
+            <a href="categories.html">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Catégories</span>
+            </a>
+
+            <a href="recherche.html">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Recherche</span>
+            </a>
+
+            <a href="camu-taxi.html">
+                <i class="fa-solid fa-taxi"></i>
+                <span>CAMU TAXI</span>
+            </a>
+
+            <a
+                href="publier.html"
+            >
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Publier</span>
+            </a>
+
+            <a href="favoris.html">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favoris</span>
+            </a>
+
+            <div class="driver-sidebar-divider"></div>
+
+            <a
+                href="compte.html"
+                class="active"
+            >
+                <i class="fa-solid fa-user"></i>
+                <span>Mon compte</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Overlay mobile -->
+    <div
+        class="driver-overlay"
+        id="driverOverlay"
+    ></div>
+
+
+    <!-- ================================
+         CONTENU PRINCIPAL
+    ================================= -->
+
+    <main class="driver-main">
+
+        <!-- TOPBAR -->
+
+        <header class="driver-topbar">
+
+            <button
+                type="button"
+                class="driver-menu-button"
+                id="driverMenuButton"
+                aria-label="Ouvrir le menu"
+                aria-controls="driverSidebar"
+                aria-expanded="false"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <a
+                href="index.html"
+                class="driver-top-logo"
+            >
+                <img
+                    src="assets/logo/camu-services-logo.png"
+                    alt="CAMU SERVICES"
+                >
+            </a>
+
+            <div class="driver-top-actions">
+
+                <a
+                    href="favoris.html"
+                    class="driver-top-icon"
+                    aria-label="Favoris"
+                >
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+
+                <a
+                    href="compte.html"
+                    class="driver-top-icon"
+                    aria-label="Mon compte"
+                >
+                    <i class="fa-regular fa-user"></i>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================================
+             HERO
+        ================================= -->
+
+        <section class="driver-hero">
+
+            <div class="driver-container">
+
+                <div class="driver-hero-icon">
+                    <i class="fa-solid fa-taxi"></i>
+                </div>
+
+                <div>
+
+                    <span class="driver-kicker">
+                        CAMU TAXI
+                    </span>
+
+                    <h1>
+                        Devenir chauffeur
+                    </h1>
+
+                    <p>
+                        Rejoignez CAMU TAXI et permettez aux clients
+                        de vous trouver facilement dans votre zone.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             FORMULAIRE
+        ================================= -->
+
+        <section class="driver-section">
+
+            <div class="driver-container">
+
+                <div
+                    id="driverLoading"
+                    class="driver-loading"
+                >
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Chargement de votre profil...</span>
+                </div>
+
+
+                <div
+                    id="driverMessage"
+                    class="driver-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <form
+                    id="driverForm"
+                    class="driver-card hidden"
+                    novalidate
+                >
+
+                    <!-- ================================
+                         IDENTITÉ
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Informations personnelles
+                                </h2>
+
+                                <p>
+                                    Présentez-vous aux clients CAMU TAXI.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="driver-fields-grid">
+
+                            <div class="driver-form-group driver-full">
+
+                                <label for="driverName">
+                                    Nom complet
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverName"
+                                    name="name"
+                                    placeholder="Ex. Jean Kabongo"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverPhone">
+                                    Téléphone
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="driverPhone"
+                                    name="phone"
+                                    placeholder="+243..."
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverWhatsapp">
+                                    WhatsApp
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="driverWhatsapp"
+                                    name="whatsapp"
+                                    placeholder="+243..."
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group driver-full">
+
+                                <label for="driverEmail">
+                                    E-mail
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="driverEmail"
+                                    name="email"
+                                    placeholder="exemple@email.com"
+                                    autocomplete="email"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================
+                         LOCALISATION
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Localisation
+                                </h2>
+
+                                <p>
+                                    Indiquez votre zone habituelle de travail.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="driver-fields-grid">
+
+                            <div class="driver-form-group">
+
+                                <label for="driverVille">
+                                    Ville
+                                    <span>*</span>
+                                </label>
+
+                                <select
+                                    id="driverVille"
+                                    name="ville"
+                                    required
+                                >
+                                    <option value="">
+                                        Sélectionner une ville
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverCommune">
+                                    Commune
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverCommune"
+                                    name="commune"
+                                    placeholder="Ex. Katuba"
+                                    autocomplete="address-level2"
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverQuartier">
+                                    Quartier
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverQuartier"
+                                    name="quartier"
+                                    placeholder="Ex. Golf"
+                                    autocomplete="address-line2"
+                                >
+
+                            </div>
+
+
+                            <div class="driver-location-box driver-full">
+
+                                <div class="driver-location-icon">
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                </div>
+
+                                <div class="driver-location-content">
+
+                                    <strong>
+                                        Votre position actuelle
+                                    </strong>
+
+                                    <p id="driverLocationStatus">
+                                        La position GPS permet aux clients
+                                        de trouver les chauffeurs proches.
+                                    </p>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    id="driverGetLocation"
+                                    class="driver-secondary-button"
+                                >
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                    <span>Utiliser ma position</span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================
+                         VÉHICULE
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-car"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Votre véhicule
+                                </h2>
+
+                                <p>
+                                    Renseignez les informations de votre véhicule.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="driver-fields-grid">
+
+                            <div class="driver-form-group">
+
+                                <label for="driverVehicleType">
+                                    Type de véhicule
+                                    <span>*</span>
+                                </label>
+
+                                <select
+                                    id="driverVehicleType"
+                                    name="typeVehicule"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Sélectionner
+                                    </option>
+
+                                    <option value="Berline">
+                                        Berline
+                                    </option>
+
+                                    <option value="SUV">
+                                        SUV
+                                    </option>
+
+                                    <option value="4x4">
+                                        4x4
+                                    </option>
+
+                                    <option value="Minibus">
+                                        Minibus
+                                    </option>
+
+                                    <option value="Bus">
+                                        Bus
+                                    </option>
+
+                                    <option value="Autre">
+                                        Autre
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverBrand">
+                                    Marque
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverBrand"
+                                    name="marqueVehicule"
+                                    placeholder="Ex. Toyota"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverModel">
+                                    Modèle
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverModel"
+                                    name="modeleVehicule"
+                                    placeholder="Ex. Corolla"
+                                >
+
+                            </div>
+
+
+                            <div class="driver-form-group">
+
+                                <label for="driverPlate">
+                                    Plaque d'immatriculation
+                                    <span>*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="driverPlate"
+                                    name="plaque"
+                                    placeholder="Ex. CGO 1234 AB"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================
+                         PHOTOS
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Photos
+                                </h2>
+
+                                <p>
+                                    Ajoutez une photo de vous et de votre véhicule.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="driver-photo-grid">
+
+                            <!-- Photo chauffeur -->
+
+                            <div class="driver-photo-card">
+
+                                <div class="driver-photo-preview">
+                                    <img
+                                        id="driverPhotoPreview"
+                                        src=""
+                                        alt="Photo du chauffeur"
+                                    >
+
+                                    <div
+                                        id="driverPhotoPlaceholder"
+                                        class="driver-photo-placeholder"
+                                    >
+                                        <i class="fa-solid fa-user"></i>
+                                        <span>Photo chauffeur</span>
+                                    </div>
+                                </div>
+
+                                <label
+                                    for="driverPhoto"
+                                    class="driver-photo-button"
+                                >
+                                    <i class="fa-solid fa-camera"></i>
+                                    Choisir une photo
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="driverPhoto"
+                                    accept="image/*"
+                                    hidden
+                                >
+
+                            </div>
+
+
+                            <!-- Photo véhicule -->
+
+                            <div class="driver-photo-card">
+
+                                <div class="driver-photo-preview">
+
+                                    <img
+                                        id="driverVehiclePhotoPreview"
+                                        src=""
+                                        alt="Photo du véhicule"
+                                    >
+
+                                    <div
+                                        id="driverVehiclePhotoPlaceholder"
+                                        class="driver-photo-placeholder"
+                                    >
+                                        <i class="fa-solid fa-car"></i>
+                                        <span>Photo véhicule</span>
+                                    </div>
+
+                                </div>
+
+                                <label
+                                    for="driverVehiclePhoto"
+                                    class="driver-photo-button"
+                                >
+                                    <i class="fa-solid fa-camera"></i>
+                                    Choisir une photo
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="driverVehiclePhoto"
+                                    accept="image/*"
+                                    hidden
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================
+                         PROFIL
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Présentation
+                                </h2>
+
+                                <p>
+                                    Donnez quelques informations supplémentaires
+                                    aux clients.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="driver-fields-grid">
+
+                            <div class="driver-form-group driver-full">
+
+                                <label for="driverDescription">
+                                    Description
+                                </label>
+
+                                <textarea
+                                    id="driverDescription"
+                                    name="description"
+                                    rows="5"
+                                    maxlength="500"
+                                    placeholder="Ex. Chauffeur professionnel disponible pour les déplacements en ville et les longues distances."
+                                ></textarea>
+
+                                <small>
+                                    Maximum 500 caractères.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================
+                         DISPONIBILITÉ
+                    ================================= -->
+
+                    <div class="driver-form-section">
+
+                        <div class="driver-section-title">
+
+                            <div class="driver-section-title-icon">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                            <div>
+                                <h2>
+                                    Disponibilité
+                                </h2>
+
+                                <p>
+                                    Indiquez si vous acceptez actuellement
+                                    des courses.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <label
+                            class="driver-availability"
+                            for="driverAvailable"
+                        >
+
+                            <div class="driver-availability-icon">
+                                <i class="fa-solid fa-taxi"></i>
+                            </div>
+
+                            <div class="driver-availability-text">
+
+                                <strong>
+                                    Je suis disponible
+                                </strong>
+
+                                <span>
+                                    Mon profil peut apparaître aux clients
+                                    à la recherche d'un chauffeur.
+                                </span>
+
+                            </div>
+
+                            <input
+                                type="checkbox"
+                                id="driverAvailable"
+                                checked
+                            >
+
+                            <span class="driver-switch"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- ================================
+                         CONDITIONS
+                    ================================= -->
+
+                    <div class="driver-terms">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="driverTerms"
+                                required
+                            >
+
+                            <span>
+                                Je confirme que les informations fournies
+                                sont exactes et j'accepte les conditions
+                                d'utilisation de CAMU TAXI.
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- ================================
+                         ACTIONS
+                    ================================= -->
+
+                    <div class="driver-form-actions">
+
+                        <a
+                            href="camu-taxi.html"
+                            class="driver-cancel-button"
+                        >
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Retour
+                        </a>
+
+                        <button
+                            type="submit"
+                            id="driverSubmit"
+                            class="driver-submit-button"
+                        >
+                            <i class="fa-solid fa-taxi"></i>
+                            <span>Devenir chauffeur</span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             FOOTER
+        ================================= -->
+
+        <footer class="driver-footer">
+
+            <p>
+                © <span id="driverYear">2026</span>
+                CAMU SERVICES. Tous droits réservés.
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- ================================
+         SCRIPTS
+    ================================= -->
+
+    <script
+        type="module"
+        src="js/devenir-chauffeur.js"
+    ></script>
+
+    <script
+        type="module"
+        src="js/auth-guard.js"
+    ></script>
+
+</body>
+</html>
