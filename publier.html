@@ -1,74 +1,157 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Publier une annonce — CAMU SERVICES</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Publier — CAMU SERVICES</title>
 
     <meta
         name="description"
-        content="Publiez une annonce sur CAMU SERVICES."
+        content="Publiez une annonce, un service, une offre d'emploi ou accédez à CAMU TAXI sur CAMU SERVICES."
     >
 
-    <link rel="icon" href="assets/logo/camu-services-logo.png">
+    <meta
+        name="theme-color"
+        content="#063b73"
+    >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/publier.css">
+    <link
+        rel="icon"
+        href="assets/logo/camu-services-logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/publier.css"
+    >
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
+
 </head>
 
+
 <body>
+
 
 <!-- =========================================================
      SIDEBAR
 ========================================================= -->
 
-<aside class="publish-sidebar" id="publishSidebar">
+<aside
+    class="publish-sidebar"
+    id="publishSidebar"
+>
 
     <div class="publish-sidebar-logo">
+
         <a href="index.html">
+
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
+
         </a>
+
     </div>
+
 
     <nav class="publish-sidebar-nav">
 
         <a href="index.html">
+
             <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
+
+            <span>
+                Accueil
+            </span>
+
         </a>
+
 
         <a href="categories.html">
+
             <i class="fa-solid fa-layer-group"></i>
-            <span>Catégories</span>
+
+            <span>
+                Catégories
+            </span>
+
         </a>
+
 
         <a href="recherche.html">
+
             <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Recherche</span>
+
+            <span>
+                Recherche
+            </span>
+
         </a>
 
-        <a href="publier.html" class="active">
-            <i class="fa-solid fa-plus"></i>
-            <span>Publier</span>
+
+        <a
+            href="camu-taxi.html"
+        >
+
+            <i class="fa-solid fa-taxi"></i>
+
+            <span>
+                CAMU TAXI
+            </span>
+
         </a>
+
+
+        <a
+            href="publier.html"
+            class="active"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            <span>
+                Publier
+            </span>
+
+        </a>
+
 
         <a href="favoris.html">
+
             <i class="fa-solid fa-heart"></i>
-            <span>Favoris</span>
+
+            <span>
+                Favoris
+            </span>
+
         </a>
 
+
         <a href="compte.html">
+
             <i class="fa-solid fa-user"></i>
-            <span>Mon compte</span>
+
+            <span>
+                Mon compte
+            </span>
+
         </a>
 
     </nav>
@@ -76,10 +159,16 @@
 </aside>
 
 
+
+<!-- =========================================================
+     OVERLAY MOBILE
+========================================================= -->
+
 <div
     class="publish-overlay"
     id="publishOverlay"
 ></div>
+
 
 
 <!-- =========================================================
@@ -88,50 +177,72 @@
 
 <main class="publish-main">
 
-    <!-- TOPBAR -->
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
 
     <header class="publish-topbar">
+
 
         <button
             type="button"
             id="publishMenuButton"
             class="publish-menu-button"
             aria-label="Ouvrir le menu"
+            aria-controls="publishSidebar"
+            aria-expanded="false"
         >
+
             <i class="fa-solid fa-bars"></i>
+
         </button>
+
 
         <a
             href="index.html"
             class="publish-top-logo"
+            aria-label="CAMU SERVICES — Accueil"
         >
+
             <img
                 src="assets/logo/camu-services-logo.png"
                 alt="CAMU SERVICES"
             >
+
         </a>
 
+
         <div class="publish-top-actions">
+
 
             <a
                 href="favoris.html"
                 class="publish-top-icon"
                 title="Favoris"
+                aria-label="Favoris"
             >
+
                 <i class="fa-solid fa-heart"></i>
+
             </a>
+
 
             <a
                 href="compte.html"
                 class="publish-top-icon"
                 title="Mon compte"
+                aria-label="Mon compte"
             >
+
                 <i class="fa-solid fa-user"></i>
+
             </a>
 
         </div>
 
     </header>
+
 
 
     <!-- =====================================================
@@ -142,21 +253,28 @@
 
         <div class="publish-hero-content">
 
+
             <div class="publish-hero-icon">
+
                 <i class="fa-solid fa-circle-plus"></i>
+
             </div>
 
+
             <h1 id="publishHeroTitle">
-                Publier une annonce
+                Publier sur CAMU SERVICES
             </h1>
 
+
             <p id="publishHeroDescription">
-                Publiez facilement votre annonce sur CAMU SERVICES.
+                Choisissez votre espace pour publier une annonce,
+                un service ou une opportunité.
             </p>
 
         </div>
 
     </section>
+
 
 
     <!-- =====================================================
@@ -167,7 +285,10 @@
 
         <div class="publish-container">
 
-            <!-- CHARGEMENT -->
+
+            <!-- =================================================
+                 CHARGEMENT
+            ================================================== -->
 
             <div
                 id="publishLoading"
@@ -183,61 +304,87 @@
             </div>
 
 
-            <!-- ACCÈS REFUSÉ -->
+
+            <!-- =================================================
+                 ACCÈS REFUSÉ
+            ================================================== -->
 
             <div
                 id="publishAccessDenied"
                 class="publish-access-denied hidden"
             >
 
+
                 <div class="access-denied-icon">
+
                     <i class="fa-solid fa-lock"></i>
+
                 </div>
 
-                <h2>Connexion requise</h2>
+
+                <h2>
+                    Connexion requise
+                </h2>
+
 
                 <p>
                     Vous devez être connecté pour publier
-                    une annonce.
+                    ou accéder aux espaces professionnels
+                    de CAMU SERVICES.
                 </p>
+
 
                 <a
                     href="connexion.html"
                     class="publish-button"
                 >
+
                     <i class="fa-solid fa-right-to-bracket"></i>
+
                     Se connecter
+
                 </a>
 
             </div>
 
 
-            <!-- FORMULAIRE -->
+
+            <!-- =================================================
+                 FORMULAIRE / ESPACE
+            ================================================== -->
 
             <div
                 id="publishFormContainer"
                 class="publish-card hidden"
             >
 
-                <!-- ESPACE -->
+
+                <!-- =============================================
+                     ESPACE ACTUEL
+                ============================================== -->
 
                 <div
                     class="publish-space"
                     id="publishSpace"
                 >
 
+
                     <div class="publish-space-icon">
 
                         <i
                             id="publishSpaceIcon"
-                            class="fa-solid fa-store"
+                            class="fa-solid fa-layer-group"
                         ></i>
 
                     </div>
 
+
                     <div>
 
-                        <span>Vous publiez dans</span>
+                        <span>
+                            Vous publiez dans
+                        </span>
+
 
                         <strong id="publishSpaceName">
                             CAMU SERVICES
@@ -248,26 +395,35 @@
                 </div>
 
 
+
+                <!-- =============================================
+                     FORMULAIRE
+                ============================================== -->
+
                 <form
                     id="publishForm"
                     novalidate
                 >
 
-                    <!-- =====================================
-                         TYPE D'ANNONCE
-                    ====================================== -->
+
+                    <!-- =========================================
+                         TYPE D'ESPACE / ANNONCE
+                    ========================================== -->
 
                     <div class="publish-form-section">
+
 
                         <div class="publish-section-title">
 
                             <i class="fa-solid fa-list"></i>
 
+
                             <div>
 
                                 <h2>
-                                    Type d'annonce
+                                    Type de publication
                                 </h2>
+
 
                                 <p>
                                     Sélectionnez le type correspondant
@@ -279,25 +435,31 @@
                         </div>
 
 
+
                         <div
                             id="publishTypeFields"
                             class="publish-type-grid"
                         >
-                            <!-- JS -->
+
+                            <!-- Généré dynamiquement par publier.js -->
+
                         </div>
 
                     </div>
 
 
-                    <!-- =====================================
+
+                    <!-- =========================================
                          INFORMATIONS
-                    ====================================== -->
+                    ========================================== -->
 
                     <div class="publish-form-section">
+
 
                         <div class="publish-section-title">
 
                             <i class="fa-solid fa-circle-info"></i>
+
 
                             <div>
 
@@ -305,8 +467,10 @@
                                     Informations
                                 </h2>
 
+
                                 <p>
-                                    Décrivez ce que vous souhaitez publier.
+                                    Décrivez ce que vous souhaitez
+                                    publier.
                                 </p>
 
                             </div>
@@ -314,25 +478,31 @@
                         </div>
 
 
+
                         <div
                             id="publishSpecificFields"
                             class="publish-fields-grid"
                         >
-                            <!-- JS -->
+
+                            <!-- Généré dynamiquement par publier.js -->
+
                         </div>
 
                     </div>
 
 
-                    <!-- =====================================
+
+                    <!-- =========================================
                          LOCALISATION
-                    ====================================== -->
+                    ========================================== -->
 
                     <div class="publish-form-section">
+
 
                         <div class="publish-section-title">
 
                             <i class="fa-solid fa-location-dot"></i>
+
 
                             <div>
 
@@ -340,9 +510,10 @@
                                     Localisation
                                 </h2>
 
+
                                 <p>
-                                    Où se trouve votre produit,
-                                    service ou établissement ?
+                                    Indiquez où se trouve votre
+                                    produit, service ou établissement.
                                 </p>
 
                             </div>
@@ -350,13 +521,24 @@
                         </div>
 
 
+
                         <div class="publish-fields-grid">
+
+
+                            <!-- VILLE -->
 
                             <div class="publish-form-group">
 
                                 <label for="publishVille">
-                                    Ville <span>*</span>
+
+                                    Ville
+
+                                    <span>
+                                        *
+                                    </span>
+
                                 </label>
+
 
                                 <select
                                     id="publishVille"
@@ -372,20 +554,28 @@
                             </div>
 
 
+
+                            <!-- COMMUNE -->
+
                             <div class="publish-form-group">
 
                                 <label for="publishCommune">
                                     Commune
                                 </label>
 
+
                                 <input
                                     type="text"
                                     id="publishCommune"
                                     placeholder="Ex. Katuba"
+                                    autocomplete="address-level2"
                                 >
 
                             </div>
 
+
+
+                            <!-- QUARTIER -->
 
                             <div
                                 class="publish-form-group"
@@ -396,10 +586,12 @@
                                     Quartier
                                 </label>
 
+
                                 <input
                                     type="text"
                                     id="publishNeighborhood"
                                     placeholder="Ex. Golf"
+                                    autocomplete="address-line2"
                                 >
 
                             </div>
@@ -409,15 +601,18 @@
                     </div>
 
 
-                    <!-- =====================================
+
+                    <!-- =========================================
                          CONTACT
-                    ====================================== -->
+                    ========================================== -->
 
                     <div class="publish-form-section">
+
 
                         <div class="publish-section-title">
 
                             <i class="fa-solid fa-phone"></i>
+
 
                             <div>
 
@@ -425,8 +620,10 @@
                                     Contact
                                 </h2>
 
+
                                 <p>
-                                    Les clients pourront vous contacter.
+                                    Les clients pourront vous
+                                    contacter directement.
                                 </p>
 
                             </div>
@@ -434,23 +631,38 @@
                         </div>
 
 
+
                         <div class="publish-fields-grid">
+
+
+                            <!-- WHATSAPP -->
 
                             <div class="publish-form-group">
 
                                 <label for="publishWhatsapp">
-                                    WhatsApp <span>*</span>
+
+                                    WhatsApp
+
+                                    <span>
+                                        *
+                                    </span>
+
                                 </label>
+
 
                                 <input
                                     type="tel"
                                     id="publishWhatsapp"
                                     placeholder="+243..."
+                                    autocomplete="tel"
                                     required
                                 >
 
                             </div>
 
+
+
+                            <!-- TÉLÉPHONE -->
 
                             <div class="publish-form-group">
 
@@ -458,10 +670,12 @@
                                     Téléphone
                                 </label>
 
+
                                 <input
                                     type="tel"
                                     id="publishPhone"
                                     placeholder="+243..."
+                                    autocomplete="tel"
                                 >
 
                             </div>
@@ -471,21 +685,25 @@
                     </div>
 
 
-                    <!-- =====================================
+
+                    <!-- =========================================
                          PHOTOS
-                    ====================================== -->
+                    ========================================== -->
 
                     <div class="publish-form-section">
+
 
                         <div class="publish-section-title">
 
                             <i class="fa-solid fa-images"></i>
+
 
                             <div>
 
                                 <h2>
                                     Photos
                                 </h2>
+
 
                                 <p>
                                     Ajoutez des photos pour présenter
@@ -497,12 +715,14 @@
                         </div>
 
 
+
                         <label
                             for="publishPhotos"
                             class="publish-photo-button"
                         >
 
                             <i class="fa-solid fa-camera"></i>
+
 
                             <span>
                                 Choisir les photos
@@ -525,30 +745,35 @@
                             class="publish-photo-preview"
                         ></div>
 
+
                         <p
                             id="publishPhotoInfo"
                             class="publish-photo-info"
                         >
-                            Vous pouvez sélectionner plusieurs photos.
+                            Vous pouvez sélectionner plusieurs
+                            photos.
                         </p>
 
                     </div>
 
 
-                    <!-- =====================================
+
+                    <!-- =========================================
                          MESSAGE
-                    ====================================== -->
+                    ========================================== -->
 
                     <div
                         id="publishMessage"
                         class="publish-message"
                         role="alert"
+                        aria-live="polite"
                     ></div>
 
 
-                    <!-- =====================================
-                         SUBMIT
-                    ====================================== -->
+
+                    <!-- =========================================
+                         PUBLICATION
+                    ========================================== -->
 
                     <button
                         type="submit"
@@ -557,6 +782,7 @@
                     >
 
                         <i class="fa-solid fa-cloud-arrow-up"></i>
+
 
                         <span>
                             Publier l'annonce
@@ -573,13 +799,24 @@
     </section>
 
 
-    <!-- FOOTER -->
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
 
     <footer class="publish-footer">
 
         <p>
-            © <span id="publishYear"></span>
-            CAMU SERVICES. Tous droits réservés.
+
+            ©
+
+            <span id="publishYear">
+                2026
+            </span>
+
+            CAMU SERVICES.
+            Tous droits réservés.
+
         </p>
 
     </footer>
@@ -587,15 +824,23 @@
 </main>
 
 
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script
     type="module"
     src="js/publier.js"
-    ></script>
-    
-    <script
+></script>
+
+
+<script
     type="module"
     src="js/auth-guard.js"
 ></script>
 
+
 </body>
+
 </html>
