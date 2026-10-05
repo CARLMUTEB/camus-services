@@ -1,6 +1,14 @@
 /* =========================================================
-   CAMU SERVICES — COMPTE
-   ========================================================= */
+   CAMU SERVICES — MON COMPTE
+   Gestion :
+   - Profil utilisateur
+   - CAMU TAXI
+   - Annonces
+   - Abonnement
+   - Photo
+   - Disponibilité chauffeur
+   - Géolocalisation chauffeur
+========================================================= */
 
 import { auth, db } from "./firebase-config.js";
 
@@ -11,36 +19,51 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
+    doc,
+    getDoc,
+    updateDoc,
     collection,
     query,
     where,
     getDocs,
-    doc,
-    getDoc,
-    updateDoc,
-    deleteDoc
+    orderBy,
+    limit,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 /* =========================================================
-   VARIABLES
-   ========================================================= */
+   CLOUDINARY
+========================================================= */
 
-let currentUser = null;
-let currentUserData = null;
+const CLOUDINARY_CLOUD_NAME = "lc9jiidc";
+
+const CLOUDINARY_UPLOAD_PRESET = "camu_services";
+
+const CLOUDINARY_UPLOAD_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =========================================================
-   ÉLÉMENTS
-   ========================================================= */
+   VARIABLES
+========================================================= */
 
-const accountName = document.getElementById("accountName");
-const accountEmail = document.getElementById("accountEmail");
+let currentUser = null;
 
-const profileName = document.getElementById("profileName");
-const profileEmail = document.getElementById("profileEmail");
-const profilePhone = document.getElementById("profilePhone");
-const profileDescription = document.getElementById("profileDescription");
+let currentUserData = null;
+
+let currentTaxiData = null;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const accountName =
+    document.getElementById("accountName");
+
+const accountEmail =
+    document.getElementById("accountEmail");
 
 const accountAvatarImage =
     document.getElementById("accountAvatarImage");
@@ -48,607 +71,1604 @@ const accountAvatarImage =
 const accountAvatarDefault =
     document.getElementById("accountAvatarDefault");
 
-const profilePhotoInput =
-    document.getElementById("profilePhotoInput");
+const accountStatusText =
+    document.getElementById("accountStatusText");
 
-const editProfileButton =
-    document.getElementById("editProfileButton");
+const accountTypeLabel =
+    document.getElementById("accountTypeLabel");
 
-const cancelEditProfileButton =
-    document.getElementById("cancelEditProfileButton");
+const accountSpaceTitle =
+    document.getElementById("accountSpaceTitle");
 
-const profileEditSection =
-    document.getElementById("profileEditSection");
+const accountSpaceDescription =
+    document.getElementById(
+        "accountSpaceDescription"
+    );
 
-const profileForm =
-    document.getElementById("profileForm");
+const accountSpaceIcon =
+    document.getElementById(
+        "accountSpaceIcon"
+    );
 
-const editName =
-    document.getElementById("editName");
+const accountVille =
+    document.getElementById(
+        "accountVille"
+    );
 
-const editPhone =
-    document.getElementById("editPhone");
+const accountCommune =
+    document.getElementById(
+        "accountCommune"
+    );
 
-const editDescription =
-    document.getElementById("editDescription");
+const accountQuartier =
+    document.getElementById(
+        "accountQuartier"
+    );
 
-const myAdsContainer =
-    document.getElementById("myAdsContainer");
+const accountQuartierCard =
+    document.getElementById(
+        "accountQuartierCard"
+    );
 
-const myAdsEmpty =
-    document.getElementById("myAdsEmpty");
+const profileName =
+    document.getElementById(
+        "profileName"
+    );
 
-const myAdsCount =
-    document.getElementById("myAdsCount");
+const profileEmail =
+    document.getElementById(
+        "profileEmail"
+    );
 
-const subscriptionPlan =
-    document.getElementById("subscriptionPlan");
+const profilePhone =
+    document.getElementById(
+        "profilePhone"
+    );
 
-const subscriptionInfo =
-    document.getElementById("subscriptionInfo");
+const profileWhatsapp =
+    document.getElementById(
+        "profileWhatsapp"
+    );
 
-const subscriptionDays =
-    document.getElementById("subscriptionDays");
-
-const logoutButton =
-    document.getElementById("logoutButton");
+const profileDescription =
+    document.getElementById(
+        "profileDescription"
+    );
 
 
 /* =========================================================
-   UTILITAIRES
-   ========================================================= */
+   TYPES DE COMPTE
+========================================================= */
 
-function safeText(value, fallback = "") {
+const ACCOUNT_TYPES = {
 
-    if (value === null || value === undefined) {
-        return fallback;
+    client: {
+
+        name:
+            "Client",
+
+        icon:
+            "fa-solid fa-user",
+
+        description:
+            "Votre espace personnel pour rechercher et utiliser les services CAMU."
+
+    },
+
+
+    immobilier: {
+
+        name:
+            "CAMU IMMO",
+
+        icon:
+            "fa-solid fa-house",
+
+        description:
+            "Votre espace professionnel immobilier."
+
+    },
+
+
+    commerce: {
+
+        name:
+            "CAMU COMMERCE",
+
+        icon:
+            "fa-solid fa-store",
+
+        description:
+            "Votre espace professionnel pour présenter votre commerce."
+
+    },
+
+
+    taxi: {
+
+        name:
+            "CAMU TAXI",
+
+        icon:
+            "fa-solid fa-taxi",
+
+        description:
+            "Votre espace chauffeur pour être visible par les clients CAMU et recevoir des demandes de transport."
+
+    },
+
+
+    hotels: {
+
+        name:
+            "CAMU HÔTELS",
+
+        icon:
+            "fa-solid fa-hotel",
+
+        description:
+            "Votre espace professionnel pour présenter votre établissement."
+
     }
 
-    return String(value).trim() || fallback;
-}
-
-
-function escapeHTML(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-function formatPrice(price, currency = "USD") {
-
-    if (
-        price === null ||
-        price === undefined ||
-        price === ""
-    ) {
-        return "Prix sur demande";
-    }
-
-    const number = Number(price);
-
-    if (Number.isNaN(number)) {
-        return escapeHTML(String(price));
-    }
-
-    let currencyCode = safeText(currency, "USD").toUpperCase();
-
-    const currencyMap = {
-        USD: "USD",
-        CDF: "CDF",
-        EUR: "EUR"
-    };
-
-    if (!currencyMap[currencyCode]) {
-        currencyCode = "USD";
-    }
-
-    try {
-
-        return new Intl.NumberFormat("fr-FR", {
-            style: "currency",
-            currency: currencyCode,
-            maximumFractionDigits: 0
-        }).format(number);
-
-    } catch {
-
-        return `${number.toLocaleString("fr-FR")} ${currencyCode}`;
-    }
-}
-
-
-function getFirstImage(ad) {
-
-    let images = ad?.images;
-
-    if (typeof images === "string") {
-
-        try {
-            images = JSON.parse(images);
-        } catch {
-            images = [];
-        }
-    }
-
-    if (Array.isArray(images) && images.length > 0) {
-
-        const valid = images.find(
-            image =>
-                typeof image === "string" &&
-                image.trim() !== "" &&
-                image.startsWith("http")
-        );
-
-        if (valid) {
-            return valid;
-        }
-    }
-
-    const candidates = [
-        ad?.imageURL,
-        ad?.imageUrl,
-        ad?.image,
-        ad?.photoURL,
-        ad?.photoUrl
-    ];
-
-    const found = candidates.find(
-        image =>
-            typeof image === "string" &&
-            image.trim() !== "" &&
-            image.startsWith("http")
-    );
-
-    if (found) {
-        return found;
-    }
-
-    return "assets/logo/camu-services-logo.png";
-}
-
-
-function getAdDate(ad) {
-
-    if (!ad?.createdAt) {
-        return "";
-    }
-
-    try {
-
-        let date;
-
-        if (
-            typeof ad.createdAt === "object" &&
-            typeof ad.createdAt.toDate === "function"
-        ) {
-            date = ad.createdAt.toDate();
-        } else {
-            date = new Date(ad.createdAt);
-        }
-
-        if (Number.isNaN(date.getTime())) {
-            return "";
-        }
-
-        return date.toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        });
-
-    } catch {
-
-        return "";
-    }
-}
+};
 
 
 /* =========================================================
    AUTHENTIFICATION
-   ========================================================= */
+========================================================= */
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+    auth,
+    async user => {
 
-    if (!user) {
+        if (!user) {
 
-        window.location.href = "connexion.html";
-        return;
+            window.location.replace(
+                "connexion.html"
+            );
+
+            return;
+
+        }
+
+
+        currentUser =
+            user;
+
+
+        await loadAccount();
+
     }
-
-    currentUser = user;
-
-    await loadAccount();
-});
+);
 
 
 /* =========================================================
-   CHARGEMENT DU COMPTE
-   ========================================================= */
+   CHARGER LE COMPTE
+========================================================= */
 
 async function loadAccount() {
 
     try {
 
-        const userRef = doc(db, "users", currentUser.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-            currentUserData = userSnap.data();
-        } else {
-            currentUserData = {};
-        }
-
-        renderProfile();
-
-        renderSubscription();
-
-        await loadMyAds();
-
         console.log(
-            "CAMU SERVICES — compte chargé."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "CAMU SERVICES — erreur chargement compte :",
-            error
-        );
-
-        /*
-         * Même si Firestore rencontre une erreur,
-         * les informations Firebase Auth restent affichées.
-         */
-
-        currentUserData = {};
-
-        renderProfile();
-        renderSubscription();
-    }
-}
-
-
-/* =========================================================
-   PROFIL
-   ========================================================= */
-
-function renderProfile() {
-
-    const name =
-        safeText(
-            currentUserData?.name,
-            safeText(
-                currentUser?.displayName,
-                "Utilisateur"
-            )
-        );
-
-    const email =
-        safeText(
-            currentUserData?.email,
-            safeText(
-                currentUser?.email,
-                "—"
-            )
-        );
-
-    const phone =
-        safeText(
-            currentUserData?.phone,
-            "Non renseigné"
-        );
-
-    const description =
-        safeText(
-            currentUserData?.description,
-            "Aucune description renseignée."
+            "CAMU COMPTE — chargement du compte :",
+            currentUser.uid
         );
 
 
-    if (accountName) {
-        accountName.textContent = name;
-    }
-
-    if (accountEmail) {
-        accountEmail.textContent = email;
-    }
-
-    if (profileName) {
-        profileName.textContent = name;
-    }
-
-    if (profileEmail) {
-        profileEmail.textContent = email;
-    }
-
-    if (profilePhone) {
-        profilePhone.textContent = phone;
-    }
-
-    if (profileDescription) {
-        profileDescription.textContent = description;
-    }
+        const userRef =
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
 
 
-    if (editName) {
-        editName.value = name;
-    }
+        const userSnapshot =
+            await getDoc(
+                userRef
+            );
 
-    if (editPhone) {
-        editPhone.value =
-            phone === "Non renseigné" ? "" : phone;
-    }
-
-    if (editDescription) {
-        editDescription.value =
-            description === "Aucune description renseignée."
-                ? ""
-                : description;
-    }
-
-
-    const photoURL =
-        safeText(
-            currentUserData?.photoURL,
-            safeText(
-                currentUser?.photoURL,
-                ""
-            )
-        );
-
-
-    if (
-        accountAvatarImage &&
-        accountAvatarDefault
-    ) {
 
         if (
-            photoURL &&
-            photoURL.startsWith("http")
+            !userSnapshot.exists()
         ) {
 
-            accountAvatarImage.src = photoURL;
-            accountAvatarImage.style.display = "block";
-
-            accountAvatarDefault.style.display = "none";
-
-        } else {
-
-            accountAvatarImage.removeAttribute("src");
-            accountAvatarImage.style.display = "none";
-
-            accountAvatarDefault.style.display = "flex";
-        }
-    }
-}
-
-
-/* =========================================================
-   ÉDITION PROFIL
-   ========================================================= */
-
-editProfileButton?.addEventListener(
-    "click",
-    () => {
-
-        profileEditSection?.classList.remove("hidden");
-
-        profileEditSection?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-);
-
-
-cancelEditProfileButton?.addEventListener(
-    "click",
-    () => {
-
-        profileEditSection?.classList.add("hidden");
-
-        renderProfile();
-    }
-);
-
-
-profileForm?.addEventListener(
-    "submit",
-    async (event) => {
-
-        event.preventDefault();
-
-        if (!currentUser) {
-            return;
-        }
-
-        const name =
-            safeText(
-                editName?.value,
-                ""
-            );
-
-        const phone =
-            safeText(
-                editPhone?.value,
-                ""
-            );
-
-        const description =
-            safeText(
-                editDescription?.value,
-                ""
-            );
-
-
-        if (!name) {
-
-            alert(
-                "Veuillez renseigner votre nom complet."
-            );
-
-            return;
-        }
-
-
-        const submitButton =
-            profileForm.querySelector(
-                'button[type="submit"]'
-            );
-
-        const originalHTML =
-            submitButton?.innerHTML;
-
-
-        try {
-
-            if (submitButton) {
-
-                submitButton.disabled = true;
-
-                submitButton.innerHTML =
-                    `<i class="fa-solid fa-spinner fa-spin"></i>
-                     Enregistrement...`;
-            }
-
-
-            const userRef =
-                doc(db, "users", currentUser.uid);
-
-
-            await updateDoc(
-                userRef,
-                {
-                    name,
-                    phone,
-                    description,
-                    updatedAt: new Date()
-                }
-            );
-
-
-            await updateProfile(
-                currentUser,
-                {
-                    displayName: name
-                }
+            console.warn(
+                "CAMU COMPTE — document users introuvable."
             );
 
 
             currentUserData = {
-                ...currentUserData,
-                name,
-                phone,
-                description
+
+                uid:
+                    currentUser.uid,
+
+                name:
+                    currentUser.displayName ||
+                    "Utilisateur",
+
+                email:
+                    currentUser.email || "",
+
+                phone:
+                    "",
+
+                whatsapp:
+                    "",
+
+                accountType:
+                    "client"
+
             };
 
+        }
 
-            renderProfile();
+        else {
 
-            profileEditSection?.classList.add(
-                "hidden"
+            currentUserData =
+                userSnapshot.data();
+
+        }
+
+
+        renderAccount();
+
+
+        await loadMyAds();
+
+        await loadSubscription();
+
+
+        if (
+            currentUserData.accountType ===
+            "taxi"
+        ) {
+
+            await loadTaxiProfile();
+
+        }
+
+
+        console.log(
+            "CAMU COMPTE — compte chargé."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CAMU COMPTE — erreur chargement :",
+            error
+        );
+
+        showAccountMessage(
+            "Impossible de charger toutes les informations du compte.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHER COMPTE
+========================================================= */
+
+function renderAccount() {
+
+    const data =
+        currentUserData;
+
+
+    const accountType =
+        data.accountType ||
+        "client";
+
+
+    const info =
+        ACCOUNT_TYPES[
+            accountType
+        ] ||
+        ACCOUNT_TYPES.client;
+
+
+    const name =
+        data.name ||
+        data.fullName ||
+        currentUser.displayName ||
+        "Utilisateur";
+
+
+    const email =
+        data.email ||
+        currentUser.email ||
+        "";
+
+
+    /* ---------------------------------------------
+       IDENTITÉ
+    --------------------------------------------- */
+
+    setText(
+        accountName,
+        name
+    );
+
+
+    setText(
+        accountEmail,
+        email
+    );
+
+
+    setText(
+        profileName,
+        name
+    );
+
+
+    setText(
+        profileEmail,
+        email
+    );
+
+
+    setText(
+        profilePhone,
+        data.phone || "—"
+    );
+
+
+    setText(
+        profileWhatsapp,
+        data.whatsapp ||
+        data.WhatsApp ||
+        data.phone ||
+        "—"
+    );
+
+
+    setText(
+        profileDescription,
+        data.description ||
+        "Aucune description renseignée."
+    );
+
+
+    /* ---------------------------------------------
+       ESPACE
+    --------------------------------------------- */
+
+    setText(
+        accountTypeLabel,
+        info.name
+    );
+
+
+    setText(
+        accountSpaceTitle,
+        info.name
+    );
+
+
+    setText(
+        accountSpaceDescription,
+        info.description
+    );
+
+
+    if (accountSpaceIcon) {
+
+        accountSpaceIcon.className =
+            info.icon;
+
+    }
+
+
+    /* ---------------------------------------------
+       LOCALISATION
+    --------------------------------------------- */
+
+    setText(
+        accountVille,
+        data.ville || "—"
+    );
+
+
+    setText(
+        accountCommune,
+        data.commune || "—"
+    );
+
+
+    if (
+        data.quartier
+    ) {
+
+        setText(
+            accountQuartier,
+            data.quartier
+        );
+
+        accountQuartierCard.hidden =
+            false;
+
+    }
+
+    else {
+
+        accountQuartierCard.hidden =
+            true;
+
+    }
+
+
+    /* ---------------------------------------------
+       PHOTO
+    --------------------------------------------- */
+
+    const photoURL =
+        data.photoURL ||
+        currentUser.photoURL ||
+        "";
+
+
+    displayAvatar(
+        photoURL
+    );
+
+
+    /* ---------------------------------------------
+       STATUT
+    --------------------------------------------- */
+
+    const status =
+        data.accountStatus ||
+        "active";
+
+
+    if (
+        status ===
+        "pending"
+    ) {
+
+        setText(
+            accountStatusText,
+            "Profil en attente de validation"
+        );
+
+    }
+
+    else {
+
+        setText(
+            accountStatusText,
+            "Compte actif"
+        );
+
+    }
+
+
+    /* ---------------------------------------------
+       ADAPTATION CONTENU TAXI
+    --------------------------------------------- */
+
+    if (
+        accountType ===
+        "taxi"
+    ) {
+
+        activateTaxiAccountContent();
+
+    }
+
+    else {
+
+        deactivateTaxiAccountContent();
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTENU NON TAXI
+========================================================= */
+
+function deactivateTaxiAccountContent() {
+
+    const taxiSection =
+        document.getElementById(
+            "taxiAccountSection"
+        );
+
+
+    if (taxiSection) {
+
+        taxiSection.hidden =
+            true;
+
+    }
+
+
+    setText(
+        document.getElementById(
+            "quickAdsTitle"
+        ),
+        "Mes annonces"
+    );
+
+
+    setText(
+        document.getElementById(
+            "quickAdsDescription"
+        ),
+        "Gérer mes publications"
+    );
+
+
+    setText(
+        document.getElementById(
+            "quickPublishTitle"
+        ),
+        "Publier une annonce"
+    );
+
+
+    setText(
+        document.getElementById(
+            "quickPublishDescription"
+        ),
+        "Créer une nouvelle publication"
+    );
+
+}
+
+
+/* =========================================================
+   CONTENU CAMU TAXI
+========================================================= */
+
+function activateTaxiAccountContent() {
+
+    const taxiSection =
+        document.getElementById(
+            "taxiAccountSection"
+        );
+
+
+    if (taxiSection) {
+
+        taxiSection.hidden =
+            false;
+
+    }
+
+
+    setText(
+        document.getElementById(
+            "quickAdsTitle"
+        ),
+        "Mon profil chauffeur"
+    );
+
+
+    setText(
+        document.getElementById(
+            "quickAdsDescription"
+        ),
+        "Gérer mon profil CAMU TAXI"
+    );
+
+
+    const quickAds =
+        document.getElementById(
+            "quickAdsAction"
+        );
+
+
+    if (quickAds) {
+
+        quickAds.href =
+            "#taxiAccountSection";
+
+    }
+
+
+    setText(
+        document.getElementById(
+            "quickPublishTitle"
+        ),
+        "CAMU TAXI"
+    );
+
+
+    setText(
+        document.getElementById(
+            "quickPublishDescription"
+        ),
+        "Trouver les clients et gérer ma disponibilité"
+    );
+
+
+    const quickPublish =
+        document.getElementById(
+            "quickPublishAction"
+        );
+
+
+    if (quickPublish) {
+
+        quickPublish.href =
+            "camu-taxi.html";
+
+    }
+
+
+    const publishButton =
+        document.getElementById(
+            "publishAdsButton"
+        );
+
+
+    if (publishButton) {
+
+        publishButton.href =
+            "camu-taxi.html";
+
+        publishButton.innerHTML = `
+
+            <i class="fa-solid fa-taxi"></i>
+
+            CAMU TAXI
+
+        `;
+
+    }
+
+
+    const servicePublishCard =
+        document.getElementById(
+            "servicePublishCard"
+        );
+
+
+    if (servicePublishCard) {
+
+        servicePublishCard.href =
+            "camu-taxi.html";
+
+
+        servicePublishCard.innerHTML = `
+
+            <i class="fa-solid fa-taxi"></i>
+
+            <strong>
+                CAMU TAXI
+            </strong>
+
+            <span>
+                Accéder à mon espace chauffeur
+            </span>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   CHARGER PROFIL CHAUFFEUR
+========================================================= */
+
+async function loadTaxiProfile() {
+
+    const taxiSection =
+        document.getElementById(
+            "taxiAccountSection"
+        );
+
+
+    if (!taxiSection) {
+        return;
+    }
+
+
+    try {
+
+        const taxiRef =
+            doc(
+                db,
+                "chauffeurs",
+                currentUser.uid
             );
 
 
-            alert(
-                "Votre profil a été mis à jour."
+        const taxiSnapshot =
+            await getDoc(
+                taxiRef
             );
 
 
-        } catch (error) {
+        if (
+            !taxiSnapshot.exists()
+        ) {
+
+            console.warn(
+                "CAMU TAXI — profil chauffeur introuvable."
+            );
+
+
+            showTaxiNotConfigured();
+
+            return;
+
+        }
+
+
+        currentTaxiData =
+            taxiSnapshot.data();
+
+
+        renderTaxiProfile();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CAMU TAXI — erreur profil chauffeur :",
+            error
+        );
+
+
+        showTaxiNotConfigured();
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHER PROFIL TAXI
+========================================================= */
+
+function renderTaxiProfile() {
+
+    const taxi =
+        currentTaxiData;
+
+
+    /* ---------------------------------------------
+       INFORMATIONS
+    --------------------------------------------- */
+
+    setText(
+        document.getElementById(
+            "taxiVehicleType"
+        ),
+        taxi.typeVehicule ||
+        taxi.typeVehicle ||
+        "—"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiVehicleBrand"
+        ),
+        taxi.marqueVehicule ||
+        taxi.vehicleBrand ||
+        "—"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiVehiclePlate"
+        ),
+        taxi.plaque ||
+        taxi.plate ||
+        "—"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiWhatsapp"
+        ),
+        taxi.WhatsApp ||
+        taxi.whatsapp ||
+        taxi.phone ||
+        "—"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiDescription"
+        ),
+        taxi.description ||
+        "Aucune présentation renseignée."
+    );
+
+
+    /* ---------------------------------------------
+       QUARTIER
+    --------------------------------------------- */
+
+    if (
+        taxi.quartier
+    ) {
+
+        setText(
+            accountQuartier,
+            taxi.quartier
+        );
+
+        accountQuartierCard.hidden =
+            false;
+
+    }
+
+
+    /* ---------------------------------------------
+       PHOTOS
+    --------------------------------------------- */
+
+    setText(
+        document.getElementById(
+            "taxiDriverPhotoStatus"
+        ),
+        taxi.photoURL
+            ? "Photo enregistrée"
+            : "Aucune photo"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiVehiclePhotoStatus"
+        ),
+        taxi.photoVehicule ||
+        taxi.photoVehicle
+            ? "Photo enregistrée"
+            : "Aucune photo"
+    );
+
+
+    /* ---------------------------------------------
+       DISPONIBILITÉ
+    --------------------------------------------- */
+
+    renderTaxiAvailability();
+
+
+    /* ---------------------------------------------
+       POSITION
+    --------------------------------------------- */
+
+    renderTaxiLocation();
+
+}
+
+
+/* =========================================================
+   STATUT TAXI SANS PROFIL
+========================================================= */
+
+function showTaxiNotConfigured() {
+
+    setText(
+        document.getElementById(
+            "taxiStatus"
+        ),
+        "Profil en attente"
+    );
+
+
+    setText(
+        document.getElementById(
+            "taxiStatusInfo"
+        ),
+        "Votre profil chauffeur CAMU TAXI n'est pas encore disponible."
+    );
+
+}
+
+
+/* =========================================================
+   DISPONIBILITÉ TAXI
+========================================================= */
+
+function renderTaxiAvailability() {
+
+    const available =
+        currentTaxiData?.disponible === true;
+
+
+    const status =
+        document.getElementById(
+            "taxiStatus"
+        );
+
+
+    const statusInfo =
+        document.getElementById(
+            "taxiStatusInfo"
+        );
+
+
+    const button =
+        document.getElementById(
+            "taxiAvailabilityButton"
+        );
+
+
+    if (available) {
+
+        setText(
+            status,
+            "Disponible"
+        );
+
+
+        setText(
+            statusInfo,
+            "Les clients peuvent voir votre disponibilité."
+        );
+
+
+        if (button) {
+
+            button.innerHTML = `
+
+                <i class="fa-solid fa-toggle-on"></i>
+
+                Passer indisponible
+
+            `;
+
+        }
+
+    }
+
+    else {
+
+        setText(
+            status,
+            "Indisponible"
+        );
+
+
+        setText(
+            statusInfo,
+            "Vous n'êtes actuellement pas disponible pour les clients."
+        );
+
+
+        if (button) {
+
+            button.innerHTML = `
+
+                <i class="fa-solid fa-toggle-off"></i>
+
+                Devenir disponible
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CHANGER DISPONIBILITÉ
+========================================================= */
+
+const taxiAvailabilityButton =
+    document.getElementById(
+        "taxiAvailabilityButton"
+    );
+
+
+if (taxiAvailabilityButton) {
+
+    taxiAvailabilityButton.addEventListener(
+        "click",
+        toggleTaxiAvailability
+    );
+
+}
+
+
+async function toggleTaxiAvailability() {
+
+    if (
+        !currentUser ||
+        !currentTaxiData
+    ) {
+        return;
+    }
+
+
+    const newStatus =
+        currentTaxiData.disponible !== true;
+
+
+    try {
+
+        taxiAvailabilityButton.disabled =
+            true;
+
+
+        await updateDoc(
+
+            doc(
+                db,
+                "chauffeurs",
+                currentUser.uid
+            ),
+
+            {
+
+                disponible:
+                    newStatus,
+
+                updatedAt:
+                    serverTimestamp()
+
+            }
+
+        );
+
+
+        currentTaxiData.disponible =
+            newStatus;
+
+
+        renderTaxiAvailability();
+
+
+        showAccountMessage(
+
+            newStatus
+                ? "Vous êtes maintenant disponible sur CAMU TAXI."
+                : "Vous êtes maintenant indisponible sur CAMU TAXI.",
+
+            "success"
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "CAMU TAXI — erreur disponibilité :",
+            error
+        );
+
+
+        showAccountMessage(
+            "Impossible de modifier votre disponibilité.",
+            "error"
+        );
+
+    }
+
+    finally {
+
+        taxiAvailabilityButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   GÉOLOCALISATION TAXI
+========================================================= */
+
+const taxiLocationButton =
+    document.getElementById(
+        "taxiLocationButton"
+    );
+
+
+if (taxiLocationButton) {
+
+    taxiLocationButton.addEventListener(
+        "click",
+        updateTaxiLocation
+    );
+
+}
+
+
+function updateTaxiLocation() {
+
+    if (
+        !currentUser ||
+        !currentTaxiData
+    ) {
+        return;
+    }
+
+
+    if (
+        !navigator.geolocation
+    ) {
+
+        showAccountMessage(
+            "La géolocalisation n'est pas disponible sur cet appareil.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    taxiLocationButton.disabled =
+        true;
+
+
+    setText(
+        document.getElementById(
+            "taxiLocationText"
+        ),
+        "Recherche de votre position..."
+    );
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        async position => {
+
+            try {
+
+                const latitude =
+                    position.coords.latitude;
+
+
+                const longitude =
+                    position.coords.longitude;
+
+
+                await updateDoc(
+
+                    doc(
+                        db,
+                        "chauffeurs",
+                        currentUser.uid
+                    ),
+
+                    {
+
+                        latitude,
+
+                        longitude,
+
+                        lastLocationUpdate:
+                            serverTimestamp(),
+
+                        updatedAt:
+                            serverTimestamp()
+
+                    }
+
+                );
+
+
+                currentTaxiData.latitude =
+                    latitude;
+
+
+                currentTaxiData.longitude =
+                    longitude;
+
+
+                renderTaxiLocation();
+
+
+                showAccountMessage(
+                    "Votre position a été mise à jour.",
+                    "success"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "CAMU TAXI — erreur mise à jour position :",
+                    error
+                );
+
+
+                showAccountMessage(
+                    "Impossible d'enregistrer votre position.",
+                    "error"
+                );
+
+            }
+
+            finally {
+
+                taxiLocationButton.disabled =
+                    false;
+
+            }
+
+        },
+
+
+        error => {
 
             console.error(
-                "CAMU SERVICES — erreur modification profil :",
+                "CAMU TAXI — géolocalisation :",
                 error
             );
 
-            alert(
-                "Impossible de mettre à jour votre profil. Vérifiez votre connexion et réessayez."
+
+            setText(
+                document.getElementById(
+                    "taxiLocationText"
+                ),
+                "Position non disponible"
             );
 
 
-        } finally {
+            showAccountMessage(
+                getGeolocationErrorMessage(
+                    error
+                ),
+                "error"
+            );
 
-            if (submitButton) {
 
-                submitButton.disabled = false;
+            taxiLocationButton.disabled =
+                false;
 
-                submitButton.innerHTML =
-                    originalHTML ||
-                    `<i class="fa-solid fa-check"></i>
-                     Enregistrer`;
-            }
+        },
+
+
+        {
+
+            enableHighAccuracy:
+                true,
+
+            timeout:
+                15000,
+
+            maximumAge:
+                60000
+
         }
+
+    );
+
+}
+
+
+/* =========================================================
+   AFFICHER POSITION
+========================================================= */
+
+function renderTaxiLocation() {
+
+    const text =
+        document.getElementById(
+            "taxiLocationText"
+        );
+
+
+    if (!text) {
+        return;
     }
-);
+
+
+    const latitude =
+        currentTaxiData?.latitude;
+
+
+    const longitude =
+        currentTaxiData?.longitude;
+
+
+    if (
+        typeof latitude ===
+            "number" &&
+
+        typeof longitude ===
+            "number"
+    ) {
+
+        text.textContent =
+            `Position enregistrée : ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+
+    }
+
+    else {
+
+        text.textContent =
+            "Position non enregistrée";
+
+    }
+
+}
 
 
 /* =========================================================
    PHOTO DE PROFIL
-   ========================================================= */
+========================================================= */
 
-profilePhotoInput?.addEventListener(
-    "change",
-    async () => {
-
-        const file =
-            profilePhotoInput.files?.[0];
-
-        if (!file || !currentUser) {
-            return;
-        }
+const profilePhotoInput =
+    document.getElementById(
+        "profilePhotoInput"
+    );
 
 
-        if (!file.type.startsWith("image/")) {
+if (profilePhotoInput) {
 
-            alert(
-                "Veuillez sélectionner une image."
+    profilePhotoInput.addEventListener(
+        "change",
+        uploadProfilePhoto
+    );
+
+}
+
+
+async function uploadProfilePhoto() {
+
+    const file =
+        profilePhotoInput?.files?.[0];
+
+
+    if (!file) {
+        return;
+    }
+
+
+    if (
+        ![
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ].includes(file.type)
+    ) {
+
+        showAccountMessage(
+            "Utilisez une image JPG, PNG ou WEBP.",
+            "error"
+        );
+
+        profilePhotoInput.value =
+            "";
+
+        return;
+
+    }
+
+
+    if (
+        file.size >
+        5 * 1024 * 1024
+    ) {
+
+        showAccountMessage(
+            "La photo ne doit pas dépasser 5 MB.",
+            "error"
+        );
+
+        profilePhotoInput.value =
+            "";
+
+        return;
+
+    }
+
+
+    try {
+
+        showAccountMessage(
+            "Téléversement de la photo...",
+            "info"
+        );
+
+
+        const photoURL =
+            await uploadImage(
+                file,
+                "camu-services/profiles"
             );
 
-            profilePhotoInput.value = "";
-            return;
-        }
 
-
-        /*
-         * Prévisualisation locale.
-         *
-         * La sauvegarde définitive de la photo peut être
-         * raccordée à Cloudinary comme pour les annonces.
-         */
-
-        const previewURL =
-            URL.createObjectURL(file);
-
-
-        if (accountAvatarImage) {
-
-            accountAvatarImage.src = previewURL;
-            accountAvatarImage.style.display = "block";
-        }
-
-        if (accountAvatarDefault) {
-
-            accountAvatarDefault.style.display = "none";
-        }
-
-
-        /*
-         * Pour éviter de prétendre que la photo est déjà
-         * sauvegardée dans Firebase sans upload Cloudinary,
-         * on conserve ici uniquement la prévisualisation.
-         */
-
-        alert(
-            "La photo est prévisualisée. Pour la sauvegarder définitivement, il faut utiliser le même système Cloudinary que celui des annonces."
+        await updateProfile(
+            currentUser,
+            {
+                photoURL
+            }
         );
+
+
+        await updateDoc(
+
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            ),
+
+            {
+
+                photoURL,
+
+                updatedAt:
+                    serverTimestamp()
+
+            }
+
+        );
+
+
+        currentUserData.photoURL =
+            photoURL;
+
+
+        displayAvatar(
+            photoURL
+        );
+
+
+        showAccountMessage(
+            "Photo de profil mise à jour.",
+            "success"
+        );
+
     }
-);
+
+    catch (error) {
+
+        console.error(
+            "CAMU COMPTE — photo :",
+            error
+        );
+
+
+        showAccountMessage(
+            "Impossible de mettre à jour la photo.",
+            "error"
+        );
+
+    }
+
+    finally {
+
+        profilePhotoInput.value =
+            "";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPLOAD CLOUDINARY
+========================================================= */
+
+async function uploadImage(
+    file,
+    folder
+) {
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file
+    );
+
+
+    formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+    );
+
+
+    formData.append(
+        "folder",
+        folder
+    );
+
+
+    const response =
+        await fetch(
+            CLOUDINARY_UPLOAD_URL,
+            {
+
+                method:
+                    "POST",
+
+                body:
+                    formData
+
+            }
+        );
+
+
+    const result =
+        await response.json();
+
+
+    if (
+        !response.ok ||
+        !result.secure_url
+    ) {
+
+        throw new Error(
+            "Échec Cloudinary."
+        );
+
+    }
+
+
+    return result.secure_url;
+
+}
+
+
+/* =========================================================
+   AFFICHER AVATAR
+========================================================= */
+
+function displayAvatar(
+    photoURL
+) {
+
+    if (
+        photoURL &&
+        isValidImageURL(
+            photoURL
+        )
+    ) {
+
+        accountAvatarImage.src =
+            photoURL;
+
+        accountAvatarImage.style.display =
+            "block";
+
+        accountAvatarDefault.style.display =
+            "none";
+
+    }
+
+    else {
+
+        accountAvatarImage.src =
+            "";
+
+        accountAvatarImage.style.display =
+            "none";
+
+        accountAvatarDefault.style.display =
+            "flex";
+
+    }
+
+}
 
 
 /* =========================================================
@@ -657,387 +1677,282 @@ profilePhotoInput?.addEventListener(
 
 async function loadMyAds() {
 
-    if (!myAdsContainer || !currentUser) {
+    const container =
+        document.getElementById(
+            "myAdsContainer"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "myAdsEmpty"
+        );
+
+
+    const count =
+        document.getElementById(
+            "myAdsCount"
+        );
+
+
+    if (!container) {
         return;
     }
 
 
-    myAdsContainer.innerHTML = `
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-            </div>
-            <h3>Chargement...</h3>
-            <p>Nous récupérons vos annonces.</p>
-        </div>
-    `;
-
-
     try {
+
+        container.innerHTML = `
+
+            <div class="loading-state">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                Chargement...
+
+            </div>
+
+        `;
+
 
         const adsQuery =
             query(
-                collection(db, "annonces"),
+
+                collection(
+                    db,
+                    "annonces"
+                ),
+
                 where(
                     "ownerId",
                     "==",
                     currentUser.uid
-                )
+                ),
+
+                orderBy(
+                    "createdAt",
+                    "desc"
+                ),
+
+                limit(50)
+
             );
 
 
         const snapshot =
-            await getDocs(adsQuery);
+            await getDocs(
+                adsQuery
+            );
 
 
-        const ads = [];
-
-        snapshot.forEach((documentSnapshot) => {
-
-            ads.push({
-                id: documentSnapshot.id,
-                ...documentSnapshot.data()
-            });
-        });
+        const ads =
+            [];
 
 
-        ads.sort((a, b) => {
+        snapshot.forEach(
+            item => {
 
-            const aDate =
-                a.createdAt?.toDate?.()
-                || new Date(0);
+                ads.push({
 
-            const bDate =
-                b.createdAt?.toDate?.()
-                || new Date(0);
+                    id:
+                        item.id,
 
-            return bDate - aDate;
-        });
+                    ...item.data()
+
+                });
+
+            }
+        );
 
 
-        if (myAdsCount) {
-            myAdsCount.textContent = ads.length;
+        if (count) {
+
+            count.textContent =
+                ads.length;
+
         }
 
 
-        if (ads.length === 0) {
+        if (!ads.length) {
 
-            myAdsContainer.innerHTML = "";
+            container.innerHTML =
+                "";
 
-            if (myAdsEmpty) {
-                myAdsEmpty.hidden = false;
+            if (empty) {
+
+                empty.hidden =
+                    false;
+
             }
 
             return;
+
         }
 
 
-        if (myAdsEmpty) {
-            myAdsEmpty.hidden = true;
+        if (empty) {
+
+            empty.hidden =
+                true;
+
         }
 
 
-        renderMyAds(ads);
+        container.innerHTML =
+            ads
+                .map(
+                    renderAdCard
+                )
+                .join("");
 
 
-        console.log(
-            `CAMU SERVICES — ${ads.length} annonce(s) chargée(s).`
-        );
+    }
 
-
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "CAMU SERVICES — erreur chargement annonces :",
+            "CAMU COMPTE — annonces :",
             error
         );
 
 
-        if (myAdsCount) {
-            myAdsCount.textContent = "0";
-        }
+        container.innerHTML = `
 
-
-        myAdsContainer.innerHTML = `
             <div class="empty-state">
+
                 <div class="empty-icon">
+
                     <i class="fa-solid fa-triangle-exclamation"></i>
+
                 </div>
 
-                <h3>Impossible de charger les annonces</h3>
+                <h3>
+                    Impossible de charger vos annonces
+                </h3>
 
                 <p>
-                    Une erreur est survenue lors de la récupération
-                    de vos publications.
+                    Réessayez plus tard.
                 </p>
+
             </div>
+
         `;
+
     }
+
 }
 
 
 /* =========================================================
-   AFFICHAGE DES ANNONCES
+   CARTE ANNONCE
 ========================================================= */
 
-function renderMyAds(ads) {
+function renderAdCard(
+    ad
+) {
 
-    myAdsContainer.innerHTML = "";
-
-
-    ads.forEach((ad) => {
-
-        const card =
-            document.createElement("article");
-
-        card.className = "my-ad-card";
-
-
-        const image =
-            getFirstImage(ad);
-
-        const title =
-            safeText(
-                ad.title,
-                "Annonce sans titre"
-            );
-
-        const price =
-            formatPrice(
-                ad.price,
-                ad.currency
-            );
-
-        const city =
-            safeText(
-                ad.city,
-                "Ville non renseignée"
-            );
-
-        const status =
-            safeText(
-                ad.status,
-                "active"
-            );
+    const title =
+        escapeHtml(
+            ad.title ||
+            ad.nom ||
+            ad.name ||
+            "Annonce sans titre"
+        );
 
 
-        const date =
-            getAdDate(ad);
+    const city =
+        escapeHtml(
+            ad.ville ||
+            ad.city ||
+            ""
+        );
 
 
-        let statusLabel =
-            "Active";
-
-        if (status === "approved") {
-            statusLabel = "Approuvée";
-        }
-
-        if (status === "pending") {
-            statusLabel = "En attente";
-        }
-
-        if (status === "inactive") {
-            statusLabel = "Inactive";
-        }
+    const image =
+        getValidImage(
+            ad.imageURL ||
+            ad.imageUrl ||
+            ad.photoURL ||
+            ad.images?.[0]
+        );
 
 
-        card.innerHTML = `
+    const status =
+        ad.status ||
+        "active";
 
-            <img
-                class="my-ad-image"
-                src="${escapeHTML(image)}"
-                alt="${escapeHTML(title)}"
-                loading="lazy"
-                onerror="this.src='assets/logo/camu-services-logo.png'"
-            >
+
+    return `
+
+        <article class="my-ad-card">
+
+            ${
+                image
+
+                    ? `
+
+                        <div class="my-ad-image">
+
+                            <img
+                                src="${escapeAttribute(image)}"
+                                alt="${title}"
+                            >
+
+                        </div>
+
+                    `
+
+                    : `
+
+                        <div class="my-ad-image my-ad-image-empty">
+
+                            <i class="fa-solid fa-image"></i>
+
+                        </div>
+
+                    `
+            }
+
 
             <div class="my-ad-content">
 
-                <h3 class="my-ad-title">
-                    ${escapeHTML(title)}
+                <h3>
+                    ${title}
                 </h3>
 
-                <div class="my-ad-price">
-                    ${price}
-                </div>
-
-                <div class="my-ad-meta">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    <span>
-                        ${escapeHTML(city)}
-                    </span>
-
-                </div>
 
                 ${
-                    date
+                    city
+
                         ? `
-                            <div
-                                class="my-ad-meta"
-                                style="margin-top:5px;"
-                            >
-                                <i class="fa-regular fa-calendar"></i>
-                                <span>${escapeHTML(date)}</span>
-                            </div>
+
+                            <p>
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                ${city}
+
+                            </p>
+
                         `
+
                         : ""
+
                 }
 
-                <div style="margin-top:10px;">
-                    <span class="my-ad-status">
-                        ${escapeHTML(statusLabel)}
-                    </span>
-                </div>
 
+                <span class="my-ad-status">
 
-                <div class="my-ad-actions">
+                    ${escapeHtml(status)}
 
-                    <a
-                        href="explorer.html?id=${encodeURIComponent(ad.id)}"
-                    >
-                        <i class="fa-solid fa-eye"></i>
-                        Voir
-                    </a>
-
-                    <a
-                        href="modifier.html?id=${encodeURIComponent(ad.id)}"
-                    >
-                        <i class="fa-solid fa-pen"></i>
-                        Modifier
-                    </a>
-
-                    <button
-                        type="button"
-                        class="delete-ad"
-                        data-id="${escapeHTML(ad.id)}"
-                    >
-                        <i class="fa-solid fa-trash"></i>
-                        Supprimer
-                    </button>
-
-                </div>
+                </span>
 
             </div>
-        `;
 
+        </article>
 
-        myAdsContainer.appendChild(card);
-    });
+    `;
 
-
-    document
-        .querySelectorAll(".delete-ad")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                async () => {
-
-                    const adId =
-                        button.dataset.id;
-
-                    await deleteMyAd(adId);
-                }
-            );
-        });
-}
-
-
-/* =========================================================
-   SUPPRESSION ANNONCE
-========================================================= */
-
-async function deleteMyAd(adId) {
-
-    if (!currentUser || !adId) {
-        return;
-    }
-
-
-    const confirmed =
-        confirm(
-            "Voulez-vous vraiment supprimer cette annonce ? Cette action est définitive."
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        const adRef =
-            doc(
-                db,
-                "annonces",
-                adId
-            );
-
-
-        const adSnap =
-            await getDoc(adRef);
-
-
-        if (!adSnap.exists()) {
-
-            alert(
-                "Cette annonce n'existe plus."
-            );
-
-            await loadMyAds();
-
-            return;
-        }
-
-
-        const adData =
-            adSnap.data();
-
-
-        /*
-         * Vérification côté interface.
-         * Les règles Firestore restent la vraie protection.
-         */
-
-        if (
-            adData.ownerId !==
-            currentUser.uid
-        ) {
-
-            alert(
-                "Vous ne pouvez pas supprimer cette annonce."
-            );
-
-            return;
-        }
-
-
-        await deleteDoc(adRef);
-
-
-        alert(
-            "Annonce supprimée avec succès."
-        );
-
-
-        await loadMyAds();
-
-
-    } catch (error) {
-
-        console.error(
-            "CAMU SERVICES — erreur suppression annonce :",
-            error
-        );
-
-
-        alert(
-            "Impossible de supprimer cette annonce. Vérifiez vos permissions Firestore."
-        );
-    }
 }
 
 
@@ -1045,153 +1960,899 @@ async function deleteMyAd(adId) {
    ABONNEMENT
 ========================================================= */
 
-function renderSubscription() {
+async function loadSubscription() {
 
     const plan =
-        safeText(
-            currentUserData?.plan,
-            "Gratuit"
-        );
-
-    const subscriptionStatus =
-        safeText(
-            currentUserData?.subscriptionStatus,
-            "active"
+        document.getElementById(
+            "subscriptionPlan"
         );
 
 
-    if (subscriptionPlan) {
-        subscriptionPlan.textContent = plan;
+    const info =
+        document.getElementById(
+            "subscriptionInfo"
+        );
+
+
+    const days =
+        document.getElementById(
+            "subscriptionDays"
+        );
+
+
+    if (!plan) {
+        return;
     }
 
 
-    if (subscriptionInfo) {
+    try {
+
+        const snapshot =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    currentUser.uid
+                )
+
+            );
+
+
+        const data =
+            snapshot.exists()
+                ? snapshot.data()
+                : {};
+
+
+        const currentPlan =
+            data.plan ||
+            "Gratuit";
+
+
+        const subscriptionStatus =
+            data.subscriptionStatus ||
+            "active";
+
+
+        setText(
+            plan,
+            currentPlan
+        );
+
+
+        setText(
+            info,
+            getSubscriptionText(
+                subscriptionStatus,
+                data
+            )
+        );
+
 
         if (
-            subscriptionStatus === "active"
+            days &&
+            data.subscriptionEnd
         ) {
 
-            subscriptionInfo.textContent =
-                "Votre compte utilise actuellement la formule gratuite.";
-
-        } else {
-
-            subscriptionInfo.textContent =
-                `Statut de l'abonnement : ${subscriptionStatus}`;
-        }
-    }
+            const endDate =
+                convertFirestoreDate(
+                    data.subscriptionEnd
+                );
 
 
-    if (subscriptionDays) {
+            if (endDate) {
 
-        const end =
-            currentUserData?.subscriptionEnd;
-
-        if (end) {
-
-            let endDate;
-
-            try {
-
-                endDate =
-                    typeof end.toDate === "function"
-                        ? end.toDate()
-                        : new Date(end);
-
-            } catch {
-
-                endDate = null;
-            }
-
-
-            if (
-                endDate &&
-                !Number.isNaN(endDate.getTime())
-            ) {
-
-                const now =
-                    new Date();
-
-                const difference =
-                    endDate.getTime()
-                    - now.getTime();
-
-                const days =
+                const remaining =
                     Math.ceil(
-                        difference /
-                        (1000 * 60 * 60 * 24)
+                        (
+                            endDate.getTime() -
+                            Date.now()
+                        ) /
+                        86400000
                     );
 
 
-                if (days > 0) {
+                if (remaining > 0) {
 
-                    subscriptionDays.textContent =
-                        `${days} jour(s) restant(s)`;
+                    days.textContent =
+                        `${remaining} jour(s) restant(s)`;
 
-                } else {
-
-                    subscriptionDays.textContent =
-                        "Abonnement arrivé à échéance.";
                 }
+
+                else {
+
+                    days.textContent =
+                        "Abonnement expiré";
+
+                }
+
             }
+
         }
+
     }
+
+    catch (error) {
+
+        console.error(
+            "CAMU COMPTE — abonnement :",
+            error
+        );
+
+
+        setText(
+            plan,
+            "Gratuit"
+        );
+
+
+        setText(
+            info,
+            "Aucune information d'abonnement disponible."
+        );
+
+    }
+
 }
+
+
+/* =========================================================
+   MODIFICATION PROFIL
+========================================================= */
+
+const editProfileButton =
+    document.getElementById(
+        "editProfileButton"
+    );
+
+const profileEditSection =
+    document.getElementById(
+        "profileEditSection"
+    );
+
+const cancelEditProfileButton =
+    document.getElementById(
+        "cancelEditProfileButton"
+    );
+
+const profileForm =
+    document.getElementById(
+        "profileForm"
+    );
+
+
+editProfileButton?.addEventListener(
+    "click",
+    () => {
+
+        fillEditForm();
+
+        profileEditSection?.classList.remove(
+            "hidden"
+        );
+
+        profileEditSection?.scrollIntoView({
+            behavior:
+                "smooth"
+        });
+
+    }
+);
+
+
+cancelEditProfileButton?.addEventListener(
+    "click",
+    () => {
+
+        profileEditSection?.classList.add(
+            "hidden"
+        );
+
+    }
+);
+
+
+function fillEditForm() {
+
+    setInputValue(
+        "editName",
+        currentUserData?.name ||
+        currentUser.displayName ||
+        ""
+    );
+
+
+    setInputValue(
+        "editPhone",
+        currentUserData?.phone ||
+        ""
+    );
+
+
+    setInputValue(
+        "editWhatsapp",
+        currentUserData?.whatsapp ||
+        currentUserData?.WhatsApp ||
+        ""
+    );
+
+
+    setInputValue(
+        "editDescription",
+        currentUserData?.description ||
+        ""
+    );
+
+}
+
+
+/* =========================================================
+   ENREGISTRER PROFIL
+========================================================= */
+
+profileForm?.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        const name =
+            getInputValue(
+                "editName"
+            );
+
+
+        const phone =
+            getInputValue(
+                "editPhone"
+            );
+
+
+        const whatsapp =
+            getInputValue(
+                "editWhatsapp"
+            );
+
+
+        const description =
+            getInputValue(
+                "editDescription"
+            );
+
+
+        if (!name) {
+
+            showAccountMessage(
+                "Veuillez renseigner votre nom.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const button =
+                profileForm.querySelector(
+                    "button[type='submit']"
+                );
+
+
+            if (button) {
+
+                button.disabled =
+                    true;
+
+            }
+
+
+            await updateProfile(
+                currentUser,
+                {
+
+                    displayName:
+                        name
+
+                }
+            );
+
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "users",
+                    currentUser.uid
+                ),
+
+                {
+
+                    name,
+
+                    phone,
+
+                    whatsapp,
+
+                    description,
+
+                    updatedAt:
+                        serverTimestamp()
+
+                }
+
+            );
+
+
+            currentUserData.name =
+                name;
+
+            currentUserData.phone =
+                phone;
+
+            currentUserData.whatsapp =
+                whatsapp;
+
+            currentUserData.description =
+                description;
+
+
+            /* -----------------------------------------
+               SI TAXI : synchroniser aussi chauffeurs
+            ----------------------------------------- */
+
+            if (
+                currentUserData.accountType ===
+                "taxi"
+            ) {
+
+                await updateDoc(
+
+                    doc(
+                        db,
+                        "chauffeurs",
+                        currentUser.uid
+                    ),
+
+                    {
+
+                        name,
+
+                        phone,
+
+                        WhatsApp:
+                            whatsapp,
+
+                        description,
+
+                        updatedAt:
+                            serverTimestamp()
+
+                    }
+
+                );
+
+
+                if (currentTaxiData) {
+
+                    currentTaxiData.name =
+                        name;
+
+                    currentTaxiData.phone =
+                        phone;
+
+                    currentTaxiData.WhatsApp =
+                        whatsapp;
+
+                    currentTaxiData.description =
+                        description;
+
+                }
+
+            }
+
+
+            renderAccount();
+
+
+            if (
+                currentUserData.accountType ===
+                "taxi"
+            ) {
+
+                renderTaxiProfile();
+
+            }
+
+
+            profileEditSection?.classList.add(
+                "hidden"
+            );
+
+
+            showAccountMessage(
+                "Votre profil a été mis à jour.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "CAMU COMPTE — modification :",
+                error
+            );
+
+
+            showAccountMessage(
+                "Impossible de mettre à jour votre profil.",
+                "error"
+            );
+
+        }
+
+        finally {
+
+            const button =
+                profileForm.querySelector(
+                    "button[type='submit']"
+                );
+
+
+            if (button) {
+
+                button.disabled =
+                    false;
+
+            }
+
+        }
+
+    }
+);
 
 
 /* =========================================================
    DÉCONNEXION
 ========================================================= */
 
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+
 logoutButton?.addEventListener(
     "click",
     async () => {
 
-        const confirmed =
-            confirm(
-                "Voulez-vous vraiment vous déconnecter ?"
+        try {
+
+            logoutButton.disabled =
+                true;
+
+
+            await signOut(
+                auth
             );
 
 
-        if (!confirmed) {
-            return;
+            window.location.replace(
+                "connexion.html"
+            );
+
         }
 
-
-        try {
-
-            logoutButton.disabled = true;
-
-            logoutButton.innerHTML =
-                `<i class="fa-solid fa-spinner fa-spin"></i>
-                 Déconnexion...`;
-
-
-            await signOut(auth);
-
-
-            window.location.href =
-                "connexion.html";
-
-
-        } catch (error) {
+        catch (error) {
 
             console.error(
-                "CAMU SERVICES — erreur déconnexion :",
+                "CAMU COMPTE — déconnexion :",
                 error
             );
 
 
-            alert(
-                "Impossible de vous déconnecter. Veuillez réessayer."
+            logoutButton.disabled =
+                false;
+
+
+            showAccountMessage(
+                "Impossible de vous déconnecter.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ANNÉE
+========================================================= */
+
+const accountYear =
+    document.getElementById(
+        "accountYear"
+    );
+
+
+if (accountYear) {
+
+    accountYear.textContent =
+        new Date().getFullYear();
+
+}
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function setText(
+    element,
+    value
+) {
+
+    if (!element) {
+        return;
+    }
+
+
+    element.textContent =
+        value ??
+        "—";
+
+}
+
+
+function setInputValue(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.value =
+            value ?? "";
+
+    }
+
+}
+
+
+function getInputValue(
+    id
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    return String(
+        element?.value ||
+        ""
+    ).trim();
+
+}
+
+
+function isValidImageURL(
+    url
+) {
+
+    try {
+
+        const parsed =
+            new URL(
+                url
             );
 
 
-            logoutButton.disabled = false;
+        return (
+            parsed.protocol ===
+                "http:" ||
 
-            logoutButton.innerHTML =
-                `<i class="fa-solid fa-right-from-bracket"></i>
-                 Se déconnecter`;
-        }
+            parsed.protocol ===
+                "https:"
+        );
+
     }
+
+    catch {
+
+        return false;
+
+    }
+
+}
+
+
+function getValidImage(
+    value
+) {
+
+    if (
+        typeof value !==
+        "string"
+    ) {
+
+        return "";
+
+    }
+
+
+    const url =
+        value.trim();
+
+
+    return isValidImageURL(
+        url
+    )
+        ? url
+        : "";
+
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+function escapeAttribute(
+    value
+) {
+
+    return escapeHtml(
+        value
+    );
+
+}
+
+
+function convertFirestoreDate(
+    value
+) {
+
+    if (
+        !value
+    ) {
+        return null;
+    }
+
+
+    if (
+        typeof value.toDate ===
+        "function"
+    ) {
+
+        return value.toDate();
+
+    }
+
+
+    if (
+        value instanceof Date
+    ) {
+
+        return value;
+
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    return Number.isNaN(
+        date.getTime()
+    )
+        ? null
+        : date;
+
+}
+
+
+/* =========================================================
+   TEXTE ABONNEMENT
+========================================================= */
+
+function getSubscriptionText(
+    status,
+    data
+) {
+
+    if (
+        status ===
+        "active"
+    ) {
+
+        return "Votre abonnement est actuellement actif.";
+
+    }
+
+
+    if (
+        status ===
+        "pending"
+    ) {
+
+        return "Votre demande d'abonnement est en attente de validation.";
+
+    }
+
+
+    if (
+        status ===
+        "expired"
+    ) {
+
+        return "Votre abonnement est arrivé à expiration.";
+
+    }
+
+
+    return "Votre formule actuelle est disponible dans votre espace.";
+
+}
+
+
+/* =========================================================
+   ERREUR GÉOLOCALISATION
+========================================================= */
+
+function getGeolocationErrorMessage(
+    error
+) {
+
+    if (
+        error?.code ===
+        1
+    ) {
+
+        return "Autorisez l'accès à votre position pour utiliser cette fonction.";
+
+    }
+
+
+    if (
+        error?.code ===
+        2
+    ) {
+
+        return "Votre position n'a pas pu être déterminée.";
+
+    }
+
+
+    if (
+        error?.code ===
+        3
+    ) {
+
+        return "La recherche de votre position a pris trop de temps.";
+
+    }
+
+
+    return "Impossible d'obtenir votre position.";
+
+}
+
+
+/* =========================================================
+   MESSAGE COMPTE
+========================================================= */
+
+function showAccountMessage(
+    message,
+    type = "info"
+) {
+
+    let element =
+        document.getElementById(
+            "accountDynamicMessage"
+        );
+
+
+    if (!element) {
+
+        element =
+            document.createElement(
+                "div"
+            );
+
+
+        element.id =
+            "accountDynamicMessage";
+
+
+        element.className =
+            "signup-message show";
+
+
+        document
+            .querySelector(
+                ".account-container"
+            )
+            ?.prepend(
+                element
+            );
+
+    }
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        `signup-message show ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            element.classList.remove(
+                "show"
+            );
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================================================
+   FIN
+========================================================= */
+
+console.log(
+    "CAMU COMPTE — module initialisé."
 );
