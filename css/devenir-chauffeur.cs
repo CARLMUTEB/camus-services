@@ -1,6 +1,6 @@
 /* =========================================================
-   CAMU SERVICES — DEVENIR CHAUFFEUR CAMU TAXI
-   css/devenir-chauffeur.css
+   CAMU SERVICES — CAMU TAXI
+   DEVENIR CHAUFFEUR
    ========================================================= */
 
 :root {
@@ -19,7 +19,6 @@
     --driver-text: #1d2939;
     --driver-muted: #667085;
     --driver-danger: #d92d20;
-    --driver-warning: #f79009;
 
     --driver-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     --driver-radius: 14px;
@@ -29,20 +28,24 @@
 
 
 /* =========================================================
-   RESET
+   RESET LOCAL
    ========================================================= */
 
 .driver-main *,
 .driver-main *::before,
-.driver-main *::after,
-.driver-sidebar *,
-.driver-sidebar *::before,
-.driver-sidebar *::after {
+.driver-main *::after {
     box-sizing: border-box;
 }
 
 .driver-main img {
     max-width: 100%;
+}
+
+.driver-main button,
+.driver-main input,
+.driver-main select,
+.driver-main textarea {
+    font-family: inherit;
 }
 
 
@@ -58,12 +61,12 @@
     width: var(--driver-sidebar-width);
     height: 100vh;
 
+    display: flex;
+    flex-direction: column;
+
     background: var(--driver-blue);
 
     z-index: 1000;
-
-    display: flex;
-    flex-direction: column;
 
     box-shadow: 4px 0 18px rgba(0, 0, 0, 0.08);
 }
@@ -71,43 +74,48 @@
 .driver-sidebar-logo {
     height: 105px;
 
-    background: var(--driver-white);
-
     display: flex;
     align-items: center;
     justify-content: center;
 
     padding: 15px 20px;
 
+    background: var(--driver-white);
+
     flex-shrink: 0;
 }
 
 .driver-sidebar-logo a {
+    width: 100%;
+    height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 100%;
-    height: 100%;
 }
 
 .driver-sidebar-logo img {
-    display: block;
-
     width: 175px;
     max-width: 100%;
     max-height: 70px;
 
+    display: block;
+
     object-fit: contain;
 }
+
+
+/* =========================================================
+   NAVIGATION SIDEBAR
+   ========================================================= */
 
 .driver-sidebar-nav {
     display: flex;
     flex-direction: column;
 
-    padding: 20px 13px;
-
     gap: 5px;
+
+    padding: 20px 13px;
 
     overflow-y: auto;
 }
@@ -117,15 +125,16 @@
 
     display: flex;
     align-items: center;
+
     gap: 13px;
 
     padding: 11px 14px;
 
+    border-radius: 10px;
+
     color: rgba(255, 255, 255, 0.82);
 
     text-decoration: none;
-
-    border-radius: 10px;
 
     font-size: 14px;
     font-weight: 600;
@@ -139,6 +148,8 @@
 .driver-sidebar-nav a i {
     width: 21px;
 
+    flex-shrink: 0;
+
     text-align: center;
 
     font-size: 16px;
@@ -146,13 +157,15 @@
 
 .driver-sidebar-nav a:hover {
     color: var(--driver-white);
-    background: rgba(255, 255, 255, 0.1);
+
+    background: rgba(255, 255, 255, 0.10);
 
     transform: translateX(2px);
 }
 
 .driver-sidebar-nav a.active {
     color: var(--driver-blue);
+
     background: var(--driver-white);
 }
 
@@ -166,7 +179,7 @@
 
 
 /* =========================================================
-   OVERLAY
+   OVERLAY MOBILE
    ========================================================= */
 
 .driver-overlay {
@@ -221,10 +234,8 @@
 .driver-top-logo {
     position: absolute;
 
-    left: 50%;
     top: 50%;
-
-    transform: translate(-50%, -50%);
+    left: 50%;
 
     width: 190px;
     height: 72px;
@@ -232,6 +243,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    transform: translate(-50%, -50%);
 }
 
 .driver-top-logo img {
@@ -258,11 +271,11 @@
     align-items: center;
     justify-content: center;
 
-    color: var(--driver-blue);
+    border-radius: 11px;
 
     background: var(--driver-blue-light);
 
-    border-radius: 11px;
+    color: var(--driver-blue);
 
     text-decoration: none;
 
@@ -285,10 +298,14 @@
     width: 42px;
     height: 42px;
 
+    align-items: center;
+    justify-content: center;
+
     border: 0;
     border-radius: 10px;
 
     background: var(--driver-blue-light);
+
     color: var(--driver-blue);
 
     cursor: pointer;
@@ -302,16 +319,16 @@
    ========================================================= */
 
 .driver-hero {
+    padding: 42px 25px;
+
+    color: var(--driver-white);
+
     background:
         linear-gradient(
             135deg,
             var(--driver-blue) 0%,
             #0b4d8d 100%
         );
-
-    color: var(--driver-white);
-
-    padding: 42px 25px;
 }
 
 .driver-container {
@@ -362,7 +379,7 @@
 .driver-hero h1 {
     margin: 0;
 
-    font-size: clamp(27px, 4vw, 38px);
+    font-size: clamp(28px, 4vw, 38px);
 
     line-height: 1.15;
 
@@ -370,11 +387,11 @@
 }
 
 .driver-hero p {
-    max-width: 680px;
+    max-width: 700px;
 
     margin: 9px 0 0;
 
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.87);
 
     font-size: 15px;
 
@@ -383,7 +400,7 @@
 
 
 /* =========================================================
-   SECTION
+   FORMULAIRE SECTION
    ========================================================= */
 
 .driver-section {
@@ -399,10 +416,10 @@
     min-height: 220px;
 
     display: flex;
+    flex-direction: column;
+
     align-items: center;
     justify-content: center;
-
-    flex-direction: column;
 
     gap: 12px;
 
@@ -414,7 +431,7 @@
 .driver-loading i {
     color: var(--driver-blue);
 
-    font-size: 25px;
+    font-size: 26px;
 }
 
 
@@ -436,11 +453,12 @@
 
     margin-bottom: 20px;
 
-    padding: 13px 16px;
+    padding: 14px 16px;
 
     border-radius: 10px;
 
     font-size: 14px;
+
     line-height: 1.5;
 }
 
@@ -482,6 +500,8 @@
 .driver-card {
     width: 100%;
 
+    overflow: hidden;
+
     background: var(--driver-white);
 
     border: 1px solid var(--driver-border);
@@ -489,8 +509,6 @@
     border-radius: var(--driver-radius);
 
     box-shadow: var(--driver-shadow);
-
-    overflow: hidden;
 }
 
 
@@ -554,13 +572,14 @@
 
 
 /* =========================================================
-   FIELDS GRID
+   GRID
    ========================================================= */
 
 .driver-fields-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 20px;
 }
@@ -606,11 +625,11 @@
 
     border-radius: 10px;
 
+    outline: none;
+
     background: var(--driver-white);
 
     color: var(--driver-text);
-
-    outline: none;
 
     font-family: inherit;
 
@@ -639,7 +658,8 @@
 .driver-form-group textarea:focus {
     border-color: var(--driver-blue);
 
-    box-shadow: 0 0 0 3px rgba(6, 59, 115, 0.09);
+    box-shadow:
+        0 0 0 3px rgba(6, 59, 115, 0.09);
 }
 
 .driver-form-group small {
@@ -650,7 +670,7 @@
 
 
 /* =========================================================
-   LOCATION BOX
+   LOCALISATION GPS
    ========================================================= */
 
 .driver-location-box {
@@ -661,11 +681,11 @@
 
     padding: 16px;
 
-    background: #f8fafc;
-
     border: 1px solid var(--driver-border);
 
     border-radius: 12px;
+
+    background: #f8fafc;
 }
 
 .driver-location-icon {
@@ -722,7 +742,7 @@
 
     gap: 8px;
 
-    padding: 9px 13px;
+    padding: 9px 14px;
 
     flex-shrink: 0;
 
@@ -736,9 +756,8 @@
 
     cursor: pointer;
 
-    font-family: inherit;
-
     font-size: 12px;
+
     font-weight: 700;
 
     transition: all 0.2s ease;
@@ -750,6 +769,12 @@
     color: var(--driver-white);
 }
 
+.driver-secondary-button:disabled {
+    opacity: 0.65;
+
+    cursor: wait;
+}
+
 
 /* =========================================================
    PHOTOS
@@ -758,7 +783,8 @@
 .driver-photo-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 20px;
 }
@@ -779,19 +805,19 @@
     width: 100%;
     height: 220px;
 
-    margin-bottom: 12px;
-
-    overflow: hidden;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    margin-bottom: 12px;
+
+    overflow: hidden;
+
+    border: 1px dashed #cbd5e1;
+
     border-radius: 10px;
 
     background: #eef2f6;
-
-    border: 1px dashed #cbd5e1;
 }
 
 .driver-photo-preview img {
@@ -803,16 +829,12 @@
     object-fit: cover;
 }
 
-.driver-photo-preview img[src]:not([src=""]) {
-    display: block;
-}
-
 .driver-photo-placeholder {
     display: flex;
+    flex-direction: column;
+
     align-items: center;
     justify-content: center;
-
-    flex-direction: column;
 
     gap: 9px;
 
@@ -847,6 +869,7 @@
     cursor: pointer;
 
     font-size: 13px;
+
     font-weight: 700;
 
     transition: all 0.2s ease;
@@ -860,7 +883,7 @@
 
 
 /* =========================================================
-   AVAILABILITY
+   DISPONIBILITÉ
    ========================================================= */
 
 .driver-availability {
@@ -937,6 +960,9 @@
     pointer-events: none;
 }
 
+
+/* SWITCH */
+
 .driver-switch {
     position: relative;
 
@@ -967,7 +993,8 @@
 
     background: var(--driver-white);
 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    box-shadow:
+        0 2px 5px rgba(0, 0, 0, 0.15);
 
     transition: transform 0.2s ease;
 }
@@ -982,7 +1009,7 @@
 
 
 /* =========================================================
-   TERMS
+   CONDITIONS
    ========================================================= */
 
 .driver-terms {
@@ -999,9 +1026,9 @@
 
     gap: 10px;
 
-    cursor: pointer;
-
     color: var(--driver-muted);
+
+    cursor: pointer;
 
     font-size: 12px;
 
@@ -1012,9 +1039,9 @@
     width: 17px;
     height: 17px;
 
-    margin-top: 2px;
-
     flex-shrink: 0;
+
+    margin-top: 2px;
 
     accent-color: var(--driver-blue);
 
@@ -1023,7 +1050,7 @@
 
 
 /* =========================================================
-   FORM ACTIONS
+   BOUTONS
    ========================================================= */
 
 .driver-form-actions {
@@ -1055,6 +1082,7 @@
     font-family: inherit;
 
     font-size: 13px;
+
     font-weight: 700;
 
     text-decoration: none;
@@ -1063,6 +1091,7 @@
 
     transition:
         background 0.2s ease,
+        color 0.2s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
@@ -1082,7 +1111,7 @@
 }
 
 .driver-submit-button {
-    min-width: 190px;
+    min-width: 195px;
 
     border: 1px solid var(--driver-green);
 
@@ -1094,7 +1123,8 @@
 .driver-submit-button:hover {
     background: var(--driver-green-dark);
 
-    box-shadow: 0 5px 14px rgba(32, 168, 107, 0.2);
+    box-shadow:
+        0 5px 14px rgba(32, 168, 107, 0.20);
 
     transform: translateY(-1px);
 }
@@ -1117,9 +1147,9 @@
 .driver-footer {
     padding: 22px 25px;
 
-    text-align: center;
-
     color: var(--driver-muted);
+
+    text-align: center;
 
     font-size: 12px;
 }
@@ -1159,10 +1189,6 @@
         padding: 35px 20px;
     }
 
-    .driver-section {
-        padding-top: 28px;
-    }
-
     .driver-container {
         width: min(100% - 30px, 1100px);
     }
@@ -1170,12 +1196,11 @@
     .driver-form-section {
         padding: 24px;
     }
-
 }
 
 
 /* =========================================================
-   MOBILE — SIDEBAR
+   TABLET / MOBILE — SIDEBAR
    ========================================================= */
 
 @media (max-width: 800px) {
@@ -1187,7 +1212,8 @@
 
         transition: transform 0.25s ease;
 
-        box-shadow: 8px 0 25px rgba(0, 0, 0, 0.15);
+        box-shadow:
+            8px 0 25px rgba(0, 0, 0, 0.15);
     }
 
     .driver-sidebar.open {
@@ -1207,6 +1233,7 @@
 
     .driver-overlay.open {
         opacity: 1;
+
         visibility: visible;
     }
 
@@ -1216,8 +1243,6 @@
 
     .driver-menu-button {
         display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .driver-topbar {
@@ -1246,7 +1271,6 @@
 
         font-size: 15px;
     }
-
 }
 
 
@@ -1271,8 +1295,8 @@
     }
 
     .driver-hero-icon {
-        width: 50px;
-        height: 50px;
+        width: 52px;
+        height: 52px;
 
         border-radius: 13px;
 
@@ -1421,12 +1445,11 @@
 
         font-size: 11px;
     }
-
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   PETIT MOBILE
    ========================================================= */
 
 @media (max-width: 380px) {
@@ -1455,7 +1478,6 @@
     .driver-form-section {
         padding: 18px 12px;
     }
-
 }
 
 
@@ -1493,5 +1515,4 @@
     .driver-switch::after {
         transition: none !important;
     }
-
 }
